@@ -1,0 +1,657 @@
+version = 4.2
+
+//
+// Saved by sw version: 2021.1
+// Save timestamp: 09-Feb-2021 @ 11:52:24 AM
+//
+
+model "dss_InverterLoad_dynamic_external" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = 1e-6
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/SimDSS" SimDSS1 {
+            currents = "Elem"
+            sim_counter = "77"
+            sim_status = "Sim77 complete"
+            voltagebases = "[1]"
+            voltages = "LL"
+        }
+        [
+            position = 8072, 7752
+            size = 96, 96
+        ]
+
+        component "OpenDSS/Bus" Bus2 {
+            conf = "on both sides"
+        }
+        [
+            position = 7992, 7928
+            size = 12, 96
+        ]
+
+        component "OpenDSS/Bus" Bus3 {
+            conf = "on both sides"
+        }
+        [
+            position = 8264, 7928
+            size = 12, 96
+        ]
+
+        component "OpenDSS/Vsource" Vsource1 {
+            basekv = "1"
+            r0 = "0.01"
+            r1 = ".01"
+            x0 = "0.01"
+            x1 = ".01"
+        }
+        [
+            position = 8712, 7928
+            scale = -1, 1
+            size = 64, 96
+        ]
+
+        component src_scada_input PINV1_set {
+            def_value = "-500"
+            unit = ""
+        }
+        [
+            position = 7648, 7704
+        ]
+
+        component src_scada_input QINV1_set {
+            unit = ""
+        }
+        [
+            position = 7648, 7760
+        ]
+
+        component "core/Three-phase Meter" "Three-phase Meter1" {
+            P_meas = "True"
+        }
+        [
+            position = 8568, 7928
+            scale = -1, 1
+            size = 48, 104
+        ]
+
+        component "core/Three-phase Meter" "Three-phase Meter2" {
+            P_meas = "True"
+        }
+        [
+            position = 8176, 8040
+            rotation = right
+            hide_name = True
+            size = 48, 104
+        ]
+
+        component "core/Meter Split" "Meter Split1" {
+            power_p = "True"
+            power_q = "True"
+            van = "False"
+            vbn = "False"
+            vcn = "False"
+        }
+        [
+            position = 8736, 7840
+            size = 96, 48
+        ]
+
+        component gen_gain Gain20 {
+            gain = "0.001"
+        }
+        [
+            position = 8840, 7808
+            hide_name = True
+        ]
+
+        component gen_gain Gain21 {
+            gain = "0.001"
+        }
+        [
+            position = 8840, 7864
+            hide_name = True
+        ]
+
+        component gen_probe Pg {
+            streaming_en = "True"
+        }
+        [
+            position = 8912, 7808
+        ]
+
+        component gen_probe Qg {
+            streaming_en = "True"
+        }
+        [
+            position = 8912, 7864
+        ]
+
+        component "OpenDSS/Line" Line2 {
+            L0 = "4.1264e-4"
+            L1 = "2.9337e-4"
+            Length = "1"
+            R0 = "0.03864"
+            R1 = "0.0001273"
+            X_ratio = "0.1"
+            dC1 = "30.74e-9"
+        }
+        [
+            position = 8368, 7928
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus4 {
+            conf = "on both sides"
+        }
+        [
+            position = 8472, 7928
+            size = 12, 96
+        ]
+
+        component "OpenDSS/Line" Line3 {
+            L0 = "4.1264e-4"
+            L1 = "0.9337e-4"
+            Length = "10"
+            R0 = "0.03864"
+            R1 = "0.0001273"
+            coupling = "Core coupling"
+            dC1 = "30.74e-9"
+        }
+        [
+            position = 8080, 7928
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Load" Load1 {
+            Sn_3ph = "600"
+            Ts = "300e-6"
+            Vn_3ph = "1"
+            ground_connected = "True"
+            load_model = "Constant Power"
+            pf_mode_3ph = "Unit"
+        }
+        [
+            position = 8176, 8144
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component src_ground gnd2 {
+        }
+        [
+            position = 8368, 8040
+        ]
+
+        component "core/Meter Split" "Meter Split2" {
+            power_p = "True"
+            power_q = "True"
+            van = "False"
+            vbn = "False"
+            vcn = "False"
+        }
+        [
+            position = 8320, 8136
+            size = 96, 48
+        ]
+
+        component gen_gain Gain23 {
+            gain = "0.001"
+        }
+        [
+            position = 8424, 8104
+            hide_name = True
+        ]
+
+        component gen_gain Gain24 {
+            gain = "0.001"
+        }
+        [
+            position = 8424, 8160
+            hide_name = True
+        ]
+
+        component gen_probe PL1 {
+            streaming_en = "True"
+        }
+        [
+            position = 8488, 8104
+        ]
+
+        component gen_probe QL1 {
+            streaming_en = "True"
+        }
+        [
+            position = 8488, 8160
+        ]
+
+        component "OpenDSS/VSConverter" VSConverter1 {
+            vac_set = "1"
+            vdc_set = "2"
+        }
+        [
+            position = 7808, 7928
+            size = 220, 175
+        ]
+
+        component pas_resistor R1 {
+            resistance = "8"
+        }
+        [
+            position = 7576, 7936
+            rotation = left
+        ]
+
+        component src_scada_input VACINV1_set {
+            def_value = "1000"
+            unit = ""
+        }
+        [
+            position = 7648, 7816
+        ]
+
+        component gen_gain Gain25 {
+            gain = "0.001"
+        }
+        [
+            position = 7736, 7816
+        ]
+
+        component src_scada_input FsINV1_set {
+            def_value = "60"
+            unit = ""
+        }
+        [
+            position = 7648, 8080
+        ]
+
+        component src_scada_input VDCINV1_set {
+            def_value = "2000"
+            unit = ""
+        }
+        [
+            position = 7648, 8136
+        ]
+
+        component src_scada_input mode_set {
+            def_value = "1"
+            unit = ""
+        }
+        [
+            position = 7648, 8192
+        ]
+
+        component gen_gain Gain26 {
+            gain = "0.001"
+        }
+        [
+            position = 7728, 8136
+        ]
+
+        junction Junction34 pe
+        [
+            position = 8208, 7896
+        ]
+
+        junction Junction35 pe
+        [
+            position = 8176, 7928
+        ]
+
+        junction Junction36 pe
+        [
+            position = 8144, 7960
+        ]
+
+        comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">OpenDSS example:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">AVM model of a Voltage source converter, operating as an inverter load.</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Control setting: External control</p></body></html> ENDCOMMENT 
+        [
+            position = 7432, 8240
+        ]
+
+        comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Typhoon Only.</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt; font-weight:600; font-style:italic; text-decoration: underline;">NOTE: INVERTER LOAD OPERATION NOT SUPPORTED</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt; font-weight:600; font-style:italic; text-decoration: underline;">BY OPENDSS CONVERSION AT THIS TIME</span>   </p></body></html> ENDCOMMENT 
+        [
+            position = 8128, 7704
+        ]
+
+        connect "Three-phase Meter1.Out" "Meter Split1.Input" as Connection643
+        connect "Meter Split1.POWER_P" Gain20.in as Connection644
+        connect "Meter Split1.POWER_Q" Gain21.in as Connection645
+        connect Gain20.out Pg.in as Connection646
+        connect Gain21.out Qg.in as Connection647
+        connect Bus3.C2 Line2.C1 as Connection896
+        connect Bus3.B2 Line2.B1 as Connection898
+        connect Bus3.A2 Line2.A1 as Connection900
+        connect Line2.A2 Bus4.A1 as Connection901
+        connect Line2.B2 Bus4.B1 as Connection903
+        connect Line2.C2 Bus4.C1 as Connection905
+        connect Bus2.A2 Line3.A1 as Connection945
+        connect Bus2.B2 Line3.B1 as Connection946
+        connect Bus2.C2 Line3.C1 as Connection947
+        connect "Three-phase Meter2.A+" Junction34 as Connection948
+        connect Junction34 Bus3.A1 as Connection949
+        connect Bus3.B1 Junction35 as Connection951
+        connect Junction35 "Three-phase Meter2.B+" as Connection952
+        connect Junction36 "Three-phase Meter2.C+" as Connection955
+        connect Line3.C2 Junction36 as Connection956
+        connect Bus4.A2 "Three-phase Meter1.A-" as Connection974
+        connect "Three-phase Meter1.B-" Bus4.B2 as Connection975
+        connect Bus4.C2 "Three-phase Meter1.C-" as Connection976
+        connect "Three-phase Meter1.C+" Vsource1.C1 as Connection977
+        connect Vsource1.B1 "Three-phase Meter1.B+" as Connection978
+        connect "Three-phase Meter1.A+" Vsource1.A1 as Connection979
+        connect Junction36 Bus3.C1 as Connection1005
+        connect Load1.A1 "Three-phase Meter2.A-" as Connection1038
+        connect Load1.B1 "Three-phase Meter2.B-" as Connection1039
+        connect "Three-phase Meter2.C-" Load1.C1 as Connection1040
+        connect Junction35 Line3.B2 as Connection1041
+        connect Junction34 Line3.A2 as Connection1048
+        connect gnd2.node Line2.N as Connection1049
+        connect "Meter Split2.POWER_P" Gain23.in as Connection1063
+        connect "Meter Split2.POWER_Q" Gain24.in as Connection1064
+        connect Gain23.out PL1.in as Connection1065
+        connect Gain24.out QL1.in as Connection1066
+        connect "Three-phase Meter2.Out" "Meter Split2.Input" as Connection1067
+        connect R1.n_node VSConverter1.DC+ as Connection1095
+        connect VSConverter1.A1 Bus2.A1 as Connection1098
+        connect VSConverter1.B1 Bus2.B1 as Connection1099
+        connect VSConverter1.C1 Bus2.C1 as Connection1100
+        connect PINV1_set.out VSConverter1.P_set as Connection1101
+        connect QINV1_set.out VSConverter1.Q_set as Connection1102
+        connect VACINV1_set.out Gain25.in as Connection1103
+        connect Gain25.out VSConverter1.V_set as Connection1104
+        connect mode_set.out VSConverter1.mode as Connection1105
+        connect FsINV1_set.out VSConverter1.fs_set as Connection1107
+        connect VDCINV1_set.out Gain26.in as Connection1108
+        connect Gain26.out VSConverter1.vdc_set as Connection1109
+        connect R1.p_node VSConverter1.DC- as Connection1110
+    }
+
+    logically_deleted {
+        "Load1.CIL"
+    }
+
+    default {
+        gen_gain {
+            gain = "1"
+            multiplication = "Element-wise(K.*u)"
+            execution_rate = "inherit"
+        }
+
+        gen_probe {
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        pas_resistor {
+            resistance = "1"
+            param_set = ""
+        }
+
+        src_scada_input {
+            addr = "0"
+            format = "real"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "real"
+            min = "-1e6"
+            max = "1e6"
+            def_value = "0"
+            unit = " "
+            execution_rate = "100e-6"
+        }
+
+        "OpenDSS/Bus" {
+            type = "ABC"
+            conf = "on one side"
+        }
+
+        "OpenDSS/Line" {
+            Length = "100"
+            BaseFreq = "60"
+            R1 = "0.01273"
+            R0 = "0.3864"
+            L1 = "0.9337e-3"
+            L0 = "4.1264e-3"
+            dC1 = "12.74e-9"
+            dC0 = "7.751e-9"
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            X1 = "0"
+            X0 = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            coupling = "None"
+            X_ratio = "0.01"
+        }
+
+        "OpenDSS/Load" {
+            fn = "60"
+            conn_type = "Y"
+            ground_connected = "False"
+            phases = "3"
+            Vn_3ph = "4.16"
+            Sn_3ph = "3500"
+            pf_mode_3ph = "Lag"
+            pf_3ph = "0.9"
+            pf_3ph_set = "0"
+            load_model = "Constant Impedance"
+            model = "2"
+            Pow_ref_s = "Fixed"
+            Ts = "600e-6"
+            Tfast = "100e-6"
+            CPL_LMT = "2"
+            Vn_3ph_CPL = "0"
+            P_CPL = "0"
+            Q_CPL = "0"
+            kV = "0"
+            pf = "0"
+            conn = "0"
+            kVA = "0"
+            basefreq = "0"
+        }
+
+        "core/Meter Split" {
+            van = "True"
+            vbn = "True"
+            vcn = "True"
+            van_rms = "False"
+            vbn_rms = "False"
+            vcn_rms = "False"
+            vln_rms = "False"
+            vab = "False"
+            vbc = "False"
+            vca = "False"
+            vab_rms = "False"
+            vbc_rms = "False"
+            vca_rms = "False"
+            vll_rms = "False"
+            ia = "False"
+            ib = "False"
+            ic = "False"
+            ia_rms = "False"
+            ib_rms = "False"
+            ic_rms = "False"
+            i_rms = "False"
+            freq = "False"
+            power_p = "False"
+            power_q = "False"
+            power_s = "False"
+            power_pf = "False"
+            enable_extra_in = "No"
+            power_pa = "False"
+            power_pb = "False"
+            power_pc = "False"
+            power_qa = "False"
+            power_qb = "False"
+            power_qc = "False"
+            power_sa = "False"
+            power_sb = "False"
+            power_sc = "False"
+            power_pfa = "False"
+            power_pfb = "False"
+            power_pfc = "False"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            basefrequency = "60"
+            voltagebases = "[0.480, 12.47]"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+        }
+
+        "core/Three-phase Meter" {
+            R = "1e5"
+            n_cycles = "1"
+            Ts = "100e-6"
+            enable_probes = "True"
+            enable_out = "True"
+            remove_snubber = "False"
+            VAn = "True"
+            VBn = "True"
+            VCn = "True"
+            VAB = "False"
+            VBC = "False"
+            VCA = "False"
+            IA = "True"
+            IB = "True"
+            IC = "True"
+            freq = "False"
+            VLn_rms = "False"
+            VLL_rms = "False"
+            VLn_avg_rms = "False"
+            VLL_avg_rms = "False"
+            I_rms = "False"
+            I_avg_rms = "False"
+            P_method = "alpha-beta"
+            enable_extra_out = "False"
+            P_meas = "False"
+        }
+
+        "OpenDSS/VSConverter" {
+            ctrl_mode_str = "External Control"
+            ctrl_mode_int = "0"
+            ext_mode = "0"
+            P_ref_str = "External input"
+            P_sel = "0"
+            Q_ref_str = "External input"
+            Q_sel = "0"
+            V_ref_str = "External input"
+            V_sel = "0"
+            vdc_ref_str = "External input"
+            fs_ref_str = "External input"
+            w_sel = "0"
+            P_kp = "2e-3"
+            P_ki = "0.2"
+            Q_kp = "2e-3"
+            Q_ki = "0.05"
+            V_kp = "1e-6"
+            V_ki = "50"
+            vdc_kp = "1000e-6"
+            vdc_ki = "0.01"
+            vdc_set = "2.5"
+            dc_cap_en = "True"
+            dc_cap = "1e-2"
+            dc_snub = "500"
+            vac_set = "1.73"
+            Fs = "60"
+            Sinv = "500"
+            Qinv = "0"
+            Rac = "0.01"
+            Lac = "3e-5"
+            Ts = "100e-6"
+            cont_t = "0"
+            dss_ctrl = "Fixed"
+            Phases = "0"
+            kv = "0"
+            kw = "0"
+            pf = "0"
+            model = "0"
+            basefreq = "0"
+        }
+
+        "OpenDSS/Vsource" {
+            ground_connected = "True"
+            basekv = "115"
+            pu = "1"
+            Angle = "0"
+            Frequency = "60"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+        }
+    }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        INVTs = 100e-6
+    ENDCODE
+}
