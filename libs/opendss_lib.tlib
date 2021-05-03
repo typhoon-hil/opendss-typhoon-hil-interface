@@ -12041,7 +12041,6 @@ if (counter >= Ts) {
 
                 mask {
                     description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A three-phase balanced or unbalanced constant impedance load. The impedance is set in series. The combinations possible for each phase individually are R, RL and RC.</p></body></html>"
-                    help_file = "constant_impedance_load.html"
 
                     fn {
                         label = "Nominal frequency"
