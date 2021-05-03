@@ -866,7 +866,7 @@ library "OpenDSS" {
                 kind = pe
             }
             [
-                position = 8008, 7976
+                position = 8008, 7936
                 rotation = down
             ]
 
@@ -884,17 +884,17 @@ library "OpenDSS" {
                 kind = pe
             }
             [
-                position = 8008, 8080
+                position = 8008, 8128
                 rotation = down
             ]
 
             port N {
-                position = bottom center
+                position = bottom left
                 kind = pe
             }
             [
-                position = 7744, 8144
-                rotation = left
+                position = 7728, 8144
+                rotation = up
             ]
 
             connect N TL.gnd as Connection1
@@ -1150,7 +1150,7 @@ library "OpenDSS" {
                     
                         d_R = [[R0, 0, 0],[0, R1, 0], [0, 0, R1]]
                         d_L = [[L0, 0, 0],[0, L1, 0], [0, 0, L1]]
-                        d_C = [[dC0, 0, 0],[0, 1.5*dC1-0.5*dC0, 0], [0, 0, 1.5*dC1-0.5*dC0]]
+                        d_C = [[dC0, 0, 0],[0, dC1, 0], [0, 0, dC1]]
                     
                         mdl.set_property_value(mdl.prop(item_handle, "Length"), Length)
                         mdl.set_property_value(mdl.prop(item_handle, "Len"), Length)
@@ -1217,6 +1217,7 @@ library "OpenDSS" {
                         if coupling_type == "None":
                             if coupling:
                                 model.delete_item(coupling)
+                                model.delete_item(model.get_item("N2", parent=comp_handle, item_type="port"))
                                 model.create_connection(port_A2, mdl.term(transmission_line, "a_out"))
                                 model.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
                                 model.create_connection(port_C2, mdl.term(transmission_line, "c_out"))
@@ -1231,21 +1232,34 @@ library "OpenDSS" {
                                 model.delete_item(model.find_connections(port_C2)[0])
                     
                             if coupling_type == "Device coupling":
-                                coup_component_type = "core/Three Phase TLM Device Coupling"
+                                coup_component_type = "core/Four Phase TLM Device Coupling"
                             elif coupling_type == "Core coupling":
-                                coup_component_type = "core/Three Phase TLM Core Coupling"
-                    
+                                coup_component_type = "core/Four Phase TLM Core Coupling"
+
+                            portN2 = model.get_item("N2", parent=comp_handle, item_type="port")
+
+                            if not portN2:
+                                portN2 = mdl.create_port(
+                                            name="N2",
+                                            parent=comp_handle,
+                                            kind="pe",
+                                            terminal_position=("bottom", "right"),
+                                            position=(8008, 8224),
+                                            rotation="down"
+                                            )
+
                             try:
                                 coup = mdl.create_component(
                                         coup_component_type,
                                         name = "CC",
                                         parent = comp_handle,
-                                        position = (7944, 8032)
+                                        position = (7944, 8082)
                                         )
                             except:
                                 model.create_connection(port_A2, mdl.term(transmission_line, "a_out"))
                                 model.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
                                 model.create_connection(port_C2, mdl.term(transmission_line, "c_out"))
+                                model.delete_item(portN2)
                                 model.info("It was not possible to create the Device Coupling because the component is not"+
                                 " available in the library. Make sure the HIL device model and configuration are properly set.")
                                 model.set_property_value(coupling_prop, "Core coupling")
@@ -1253,9 +1267,11 @@ library "OpenDSS" {
                                 model.create_connection(port_A2, mdl.term(coup, "a_out"))
                                 model.create_connection(port_B2, mdl.term(coup, "b_out"))
                                 model.create_connection(port_C2, mdl.term(coup, "c_out"))
+                                model.create_connection(portN2, mdl.term(coup, "d_out"))
                                 model.create_connection(mdl.term(coup, "a_in"), mdl.term(transmission_line, "a_out"))
                                 model.create_connection(mdl.term(coup, "b_in"), mdl.term(transmission_line, "b_out"))
                                 model.create_connection(mdl.term(coup, "c_in"), mdl.term(transmission_line, "c_out"))
+                                model.create_connection(mdl.term(coup, "d_in"), mdl.term(transmission_line, "gnd"))
                     
                         else: # Old model was loaded
                             model.set_property_value(coupling_prop, "None")
@@ -12025,7 +12041,6 @@ if (counter >= Ts) {
 
                 mask {
                     description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A three-phase balanced or unbalanced constant impedance load. The impedance is set in series. The combinations possible for each phase individually are R, RL and RC.</p></body></html>"
-                    help_file = "constant_impedance_load.html"
 
                     fn {
                         label = "Nominal frequency"
@@ -13815,14 +13830,18 @@ if (counter >= Ts) {
                             
                             if phss == "3":
                                 tagBCPL = mdl.get_item("TagB3", parent=comp_handle, item_type="tag")
+                                connBCPL = mdl.get_item("ConnB1CPL", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not tagBCPL:
                                     tagBCPL = mdl.create_tag("B1", name="TagB3", parent=comp_handle, scope="local",
                                                            kind="pe", rotation="right", position=(8063, 8088))
+                                if not connBCPL:
                                     mdl.create_connection(mdl.term(CPL1, "B1"), tagBCPL, name="ConnB1CPL")
                                 tagCCPL = mdl.get_item("TagC3", parent=comp_handle, item_type="tag")
+                                connCCPL = mdl.get_item("ConnC1CPL", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not tagCCPL:
                                     tagCCPL = mdl.create_tag("C1", name="TagC3", parent=comp_handle, scope="local",
                                                            kind="pe", rotation="right", position=(8127, 8088))
+                                if not connCCPL:
                                     mdl.create_connection(mdl.term(CPL1, "C1"), tagCCPL, name="ConnC1CPL")
                             
                             tagACIL = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
@@ -22436,6 +22455,175 @@ Te_mem = Te;
         [
             position = 4784, 3872
             size = 96, 96
+        ]
+
+        component Subsystem Isource {
+            layout = static
+
+            component src_current Ia {
+                init_frequency = "60"
+                init_phase = "0"
+                init_rms_value = "0"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8096
+                rotation = down
+            ]
+
+            component src_current Ib {
+                init_frequency = "60"
+                init_phase = "-120"
+                init_rms_value = "0"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8192
+                rotation = down
+            ]
+
+            component src_current Ic {
+                init_frequency = "60"
+                init_phase = "-240"
+                init_rms_value = "0"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8288
+                rotation = down
+            ]
+
+            component src_ground gnd1 {
+            }
+            [
+                position = 8000, 8400
+            ]
+
+            port A1 {
+                position = 32.0, -32.0
+                kind = pe
+            }
+            [
+                position = 8496, 8096
+                rotation = down
+            ]
+
+            port B1 {
+                position = 32.0, 0.0
+                kind = pe
+            }
+            [
+                position = 8496, 8192
+                rotation = down
+            ]
+
+            port C1 {
+                position = 32.0, 32.0
+                kind = pe
+            }
+            [
+                position = 8496, 8288
+                rotation = down
+            ]
+
+            connect Ib.p_node B1 as Connection25
+            connect Ia.p_node A1 as Connection26
+            connect Ic.p_node C1 as Connection27
+            connect gnd1.node Ia.n_node as Connection31
+            connect Ic.n_node gnd1.node as Connection32
+            connect Ib.n_node gnd1.node as Connection33
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A Vsource object is a voltage source behind an impedance. The most common way to use a voltage source object is with the first terminal connected to one bus with the second terminal connected to ground, but it is possible to connect it to two different buses by unchecking the “ground-connected” property.</p></body></html>"
+
+                amps {
+                    label = "Current"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "A"
+
+                    CODE property_value_changed
+                        update_source_values(container_handle)
+                    ENDCODE
+                }
+
+                Angle {
+                    label = "Angle"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "°"
+
+                    CODE property_value_changed
+                        update_source_values(container_handle)
+                    ENDCODE
+                }
+
+                Frequency {
+                    label = "Frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+
+                    CODE property_value_changed
+                        update_source_values(container_handle)
+                    ENDCODE
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    image('images/isource.svg')
+
+                ENDCODE
+
+                CODE init
+                    x0, y0 = (8192, 8192)
+
+                    def update_source_values(mask_handle):
+                        comp_handle = mdl.get_parent(mask_handle)
+
+                        # Source handles
+                        Va = mdl.get_item("Va", parent=comp_handle)
+                        Vb = mdl.get_item("Vb", parent=comp_handle)
+                        Vc = mdl.get_item("Vc", parent=comp_handle)
+
+                        # Property handles
+                        frequency_prop = mdl.prop(comp_handle, "Frequency")
+                        angle_prop = mdl.prop(comp_handle, "Angle")
+                        amps_prop = mdl.prop(comp_handle, "amps")
+
+                        for idx, letter in enumerate(["a", "b", "c"]):
+
+                            # Source handles
+                            isource = mdl.get_item("I"+letter, parent=comp_handle)
+
+                            rms_prop = mdl.prop(isource, "init_rms_value")
+                            f_prop = mdl.prop(isource, "init_frequency")
+                            ph_prop = mdl.prop(isource, "init_phase")
+
+                            mdl.set_property_value(rms_prop, mdl.get_property_value(amps_prop))
+                            mdl.set_property_value(f_prop, mdl.get_property_value(frequency_prop))
+                            mdl.set_property_value(ph_prop, mdl.get_property_value(angle_prop)-120*idx)
+
+                ENDCODE
+            }
+        }
+        [
+            position = 4328, 4088
+            size = 64, 96
         ]
     }
 

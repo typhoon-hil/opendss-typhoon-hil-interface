@@ -10,6 +10,7 @@ def dss_data_build(data_source_object_type):
                 "basekVs": [],
                 "powers": [],
                 "phases": []
+
                 }
 
     # Go to first
