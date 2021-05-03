@@ -162,6 +162,17 @@ class Vsource(TwoTerminal):
         super().__init__(name, self.buses, init_data)
 
 
+class Isource(TwoTerminal):
+    def __init__(self, elem_type, name, nodes, buses_dict, init_data):
+
+        self.type = elem_type
+        self.phases = 3
+        self.num_buses = 1
+
+        self.buses = return_bus_connections(name, nodes, buses_dict, self.num_buses, self.phases)
+
+        super().__init__(name, self.buses, init_data)
+
 class Line(TwoTerminal):
     def __init__(self, elem_type, name, nodes, buses_dict, init_data):
 
