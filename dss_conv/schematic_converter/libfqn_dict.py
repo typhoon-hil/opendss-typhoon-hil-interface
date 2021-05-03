@@ -4,7 +4,7 @@ def determine_elem(libfqn):
     elem_dict = {
         "Bus":"BUS",
         "Vsource":"VSOURCE",
-        "":"ISOURCE",
+        "Isource":"ISOURCE",
         "Fault":"FAULT",
         "":"CAPACITOR",
         "Line":"LINE",

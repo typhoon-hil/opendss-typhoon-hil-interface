@@ -1,0 +1,77 @@
+    INFO: 2021-03-25 14:55:25,645:               log.py:   20: Logging to D:\Dropbox\Typhoon HIL\Repository\opendss_integration\libs\help\mdpdf.log
+   DEBUG: 2021-03-25 14:55:25,646:               cli.py:  103: simdss.md
+    INFO: 2021-03-25 14:55:25,646:         converter.py:   14: simdss.md
+   DEBUG: 2021-03-25 14:55:25,652:      pdf_renderer.py:  470: printSegment: SimDSS
+   DEBUG: 2021-03-25 14:55:25,690:      pdf_renderer.py:  470: printSegment: Use this component to control the simulation and interact with the model.
+   DEBUG: 2021-03-25 14:55:25,692:      pdf_renderer.py:  470: printSegment: Simulation tab
+   DEBUG: 2021-03-25 14:55:25,692:      pdf_renderer.py:  470: printSegment: In this tab you can define basic simulation parameters, append DSS commands or files and start the simulation.
+   DEBUG: 2021-03-25 14:55:25,693:      pdf_renderer.py:  470: printSegment:  1 
+   DEBUG: 2021-03-25 14:55:25,693:      pdf_renderer.py:  470: printSegment: Simulation mode
+   DEBUG: 2021-03-25 14:55:25,693:      pdf_renderer.py:  470: printSegment: Two modes are available currently.
+   DEBUG: 2021-03-25 14:55:25,693:      pdf_renderer.py:  470: printSegment:  1 
+   DEBUG: 2021-03-25 14:55:25,694:      pdf_renderer.py:  470: printSegment: Snap: Solve a single snapshot power flow for the present conditions.
+   DEBUG: 2021-03-25 14:55:25,694:      pdf_renderer.py:  470: printSegment:  2 
+   DEBUG: 2021-03-25 14:55:25,694:      pdf_renderer.py:  470: printSegment: Faultstudy: Do a full fault study solution, determining the Thevenin equivalents for
+   DEBUG: 2021-03-25 14:55:25,694:      pdf_renderer.py:  470: printSegment: each bus in the
+   DEBUG: 2021-03-25 14:55:25,694:      pdf_renderer.py:  470: printSegment:  
+   DEBUG: 2021-03-25 14:55:25,694:      pdf_renderer.py:  470: printSegment: active circuit.
+   DEBUG: 2021-03-25 14:55:25,695:      pdf_renderer.py:  470: printSegment:  2 
+   DEBUG: 2021-03-25 14:55:25,695:      pdf_renderer.py:  470: printSegment: Base frequency
+   DEBUG: 2021-03-25 14:55:25,695:      pdf_renderer.py:  470: printSegment: The fundamental frequency for harmonic solution and the default base frequency for all impedance
+   DEBUG: 2021-03-25 14:55:25,695:      pdf_renderer.py:  470: printSegment: quantities.
+   DEBUG: 2021-03-25 14:55:25,695:      pdf_renderer.py:  470: printSegment:  3 
+   DEBUG: 2021-03-25 14:55:25,696:      pdf_renderer.py:  470: printSegment: Voltage Bases
+   DEBUG: 2021-03-25 14:55:25,696:      pdf_renderer.py:  470: printSegment: Define legal bus voltage bases for this circuit. Enter an array of the legal voltage bases, in
+   DEBUG: 2021-03-25 14:55:25,696:      pdf_renderer.py:  470: printSegment: phase-to-phase voltages.
+   DEBUG: 2021-03-25 14:55:25,696:      pdf_renderer.py:  470: printSegment:  4 
+   DEBUG: 2021-03-25 14:55:25,696:      pdf_renderer.py:  470: printSegment: Append DSS commands
+   DEBUG: 2021-03-25 14:55:25,697:      pdf_renderer.py:  470: printSegment: Opens a new dialog where you can define commands to be run before the Solve command is issued,
+   DEBUG: 2021-03-25 14:55:25,697:      pdf_renderer.py:  470: printSegment: and after.
+   DEBUG: 2021-03-25 14:55:25,697:      pdf_renderer.py:  470: printSegment:  
+   DEBUG: 2021-03-25 14:55:25,697:      pdf_renderer.py:  470: printSegment: Existing .dss files may be directly referenced.
+   DEBUG: 2021-03-25 14:55:25,697:      pdf_renderer.py:  470: printSegment:  5 
+   DEBUG: 2021-03-25 14:55:25,698:      pdf_renderer.py:  470: printSegment: Start the simulation
+   DEBUG: 2021-03-25 14:55:25,698:      pdf_renderer.py:  470: printSegment: Converts the Typhoon schematic into a .dss file and then calls OpenDSS.
+   DEBUG: 2021-03-25 14:55:25,698:      pdf_renderer.py:  470: printSegment:  6 
+   DEBUG: 2021-03-25 14:55:25,698:      pdf_renderer.py:  470: printSegment: Last simulation status
+   DEBUG: 2021-03-25 14:55:25,698:      pdf_renderer.py:  470: printSegment: Displays if the last simulation attempt (identified by a number) completed successfully in OpenDSS
+   DEBUG: 2021-03-25 14:55:25,699:      pdf_renderer.py:  470: printSegment: or failed.
+   DEBUG: 2021-03-25 14:55:25,699:      pdf_renderer.py:  470: printSegment: Show tab
+   DEBUG: 2021-03-25 14:55:25,699:      pdf_renderer.py:  470: printSegment: The 
+   DEBUG: 2021-03-25 14:55:25,701:      pdf_renderer.py:  470: printSegment: Show
+   DEBUG: 2021-03-25 14:55:25,702:      pdf_renderer.py:  470: printSegment:  commands writes a text file report of the specified quantity for the most
+   DEBUG: 2021-03-25 14:55:25,702:      pdf_renderer.py:  470: printSegment:  
+   DEBUG: 2021-03-25 14:55:25,703:      pdf_renderer.py:  470: printSegment: recent solution and opens
+   DEBUG: 2021-03-25 14:55:25,703:      pdf_renderer.py:  470: printSegment: Notepad to display the file. Select the quantity and click the respective button.
+   DEBUG: 2021-03-25 14:55:25,703:      pdf_renderer.py:  470: printSegment: Report tab
+   DEBUG: 2021-03-25 14:55:25,703:      pdf_renderer.py:  470: printSegment: Generate an automatic PDF report for the most recent solution. Make sure the selected mode matches the report
+   DEBUG: 2021-03-25 14:55:25,703:      pdf_renderer.py:  470: printSegment: type.
+   DEBUG: 2021-03-25 14:55:25,704:      pdf_renderer.py:  470: printSegment: Advanced tab
+   DEBUG: 2021-03-25 14:55:25,704:      pdf_renderer.py:  470: printSegment:  1 
+   DEBUG: 2021-03-25 14:55:25,704:      pdf_renderer.py:  470: printSegment: Algorithm
+   DEBUG: 2021-03-25 14:55:25,704:      pdf_renderer.py:  470: printSegment: Normal is a fixed point current-injection iteration that is a little quicker (about twice as fast) than the
+   DEBUG: 2021-03-25 14:55:25,704:      pdf_renderer.py:  470: printSegment:  
+   DEBUG: 2021-03-25 14:55:25,705:      pdf_renderer.py:  470: printSegment: Newton iteration. Normal is adequate for most distribution systems. Newton is more robust for circuits
+   DEBUG: 2021-03-25 14:55:25,705:      pdf_renderer.py:  470: printSegment:  
+   DEBUG: 2021-03-25 14:55:25,705:      pdf_renderer.py:  470: printSegment: that are difficult to solve.
+   DEBUG: 2021-03-25 14:55:25,705:      pdf_renderer.py:  470: printSegment:  2 
+   DEBUG: 2021-03-25 14:55:25,705:      pdf_renderer.py:  470: printSegment: Load model
+   DEBUG: 2021-03-25 14:55:25,706:      pdf_renderer.py:  470: printSegment: If Power flow is selected, loads do not appear in the System Y matrix. For iterative solution types,
+   DEBUG: 2021-03-25 14:55:25,706:      pdf_renderer.py:  470: printSegment:  
+   DEBUG: 2021-03-25 14:55:25,706:      pdf_renderer.py:  470: printSegment: loads (actually all PC Elements) are current injection sources. If Admittance is selected, all PC elements appear
+   DEBUG: 2021-03-25 14:55:25,706:      pdf_renderer.py:  470: printSegment: in the System Y matrix and the solution mode is set automatically to Direct, because there will be no injection
+   DEBUG: 2021-03-25 14:55:25,707:      pdf_renderer.py:  470: printSegment: currents.
+   DEBUG: 2021-03-25 14:55:25,707:      pdf_renderer.py:  470: printSegment:  3 
+   DEBUG: 2021-03-25 14:55:25,707:      pdf_renderer.py:  470: printSegment: Minimum and maximum iterations:
+   DEBUG: 2021-03-25 14:55:25,707:      pdf_renderer.py:  470: printSegment: Minimum and maximum accepted number of iterations for the solution.
+   DEBUG: 2021-03-25 14:55:25,708:      pdf_renderer.py:  470: printSegment:  4 
+   DEBUG: 2021-03-25 14:55:25,708:      pdf_renderer.py:  470: printSegment: Command:
+   DEBUG: 2021-03-25 14:55:25,708:      pdf_renderer.py:  470: printSegment: Intended for experienced OpenDSS users. Type in the command you would like to issue to
+   DEBUG: 2021-03-25 14:55:25,709:      pdf_renderer.py:  470: printSegment: OpenDSS and click
+   DEBUG: 2021-03-25 14:55:25,709:      pdf_renderer.py:  470: printSegment:  
+   DEBUG: 2021-03-25 14:55:25,709:      pdf_renderer.py:  470: printSegment: Run. Example: show voltages
+   DEBUG: 2021-03-25 14:55:25,709:      pdf_renderer.py:   53: 0, [1, 'SimDSS', 1, 68.0]
+   DEBUG: 2021-03-25 14:55:25,709:      pdf_renderer.py:   53: 1, [2, 'Simulation tab', 1, 124.0]
+   DEBUG: 2021-03-25 14:55:25,709:      pdf_renderer.py:   53: 2, [2, 'Show tab', 1, 427.6]
+   DEBUG: 2021-03-25 14:55:25,710:      pdf_renderer.py:   53: 3, [2, 'Report tab', 1, 491.20000000000005]
+   DEBUG: 2021-03-25 14:55:25,710:      pdf_renderer.py:   53: 4, [2, 'Advanced tab', 1, 554.8]
