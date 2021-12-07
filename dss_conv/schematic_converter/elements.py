@@ -538,7 +538,7 @@ class Load(TwoTerminal):
             else:
                 self.num_buses = 1
                 self.phases = 2
-        self.parameters["phases"] = self.phases
+
         # Update parameter names to match OpenDSS
         if self.gnd and self.init_data["phases"] == "1":
             self.parameters[r"kV"] = str(float(self.parameters.pop("kV")) / 3 ** (0.5))
