@@ -1,13 +1,13 @@
 version = 4.2
 
 //
-// Saved by sw version: 2021.1
-// Save timestamp: 09-Feb-2021 @ 10:46:50 AM
+// Saved by sw version: 2021.3 DEV
+// Save timestamp: 22-Jun-2021 @ 02:06:03 PM
 //
 
 model "dss_generator_dynamic" {
     configuration {
-        hil_device = "HIL604"
+        hil_device = "HIL404"
         hil_configuration_id = 1
         simulation_method = exact
         simulation_time_step = 1e-6
@@ -34,6 +34,7 @@ model "dss_generator_dynamic" {
         matrix_based_reduction = True
         cpl_dynamics_analysis = False
         export_ss_to_pickle = False
+        ground_scope_core = False
         cce_platform = "generic"
         cce_use_relative_names = False
         cce_type_mapping_real = "double"
@@ -43,6 +44,7 @@ model "dss_generator_dynamic" {
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
         cce_custom_type_real = ""
+        tunable_params = "component defined"
     }
 
     component Subsystem Root {
@@ -63,7 +65,7 @@ model "dss_generator_dynamic" {
         }
         [
             position = 7992, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus3 {
@@ -71,7 +73,7 @@ model "dss_generator_dynamic" {
         }
         [
             position = 8264, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Vsource" Vsource1 {
@@ -208,7 +210,8 @@ model "dss_generator_dynamic" {
             R0 = "0.03864"
             R1 = "0.0001273"
             X_ratio = "0.1"
-            dC1 = "50.74e-9"
+            dC0 = "20.751e-9"
+            dC1 = "20.74e-9"
         }
         [
             position = 8368, 7928
@@ -220,7 +223,7 @@ model "dss_generator_dynamic" {
         }
         [
             position = 8472, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component gen_probe VfdG1 {
@@ -233,13 +236,14 @@ model "dss_generator_dynamic" {
         ]
 
         component "OpenDSS/Line" Line3 {
-            L0 = "4.1264e-4"
+            L0 = "1.1264e-4"
             L1 = "0.9337e-4"
             Length = "10"
             R0 = "0.03864"
             R1 = "0.0001273"
             coupling = "Core coupling"
-            dC1 = "50.74e-9"
+            dC0 = "2.751e-9"
+            dC1 = "20.74e-9"
         }
         [
             position = 8080, 7928
@@ -471,6 +475,7 @@ model "dss_generator_dynamic" {
         gen_gain {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
             execution_rate = "inherit"
         }
 

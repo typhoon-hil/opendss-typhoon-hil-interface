@@ -1,13 +1,13 @@
 version = 4.2
 
 //
-// Saved by sw version: 2021.1
-// Save timestamp: 09-Feb-2021 @ 11:51:11 AM
+// Saved by sw version: 2021.3 DEV
+// Save timestamp: 22-Jun-2021 @ 12:54:39 PM
 //
 
 model "dss_converter_dynamic" {
     configuration {
-        hil_device = "HIL604"
+        hil_device = "HIL404"
         hil_configuration_id = 1
         simulation_method = exact
         simulation_time_step = 1e-6
@@ -34,6 +34,7 @@ model "dss_converter_dynamic" {
         matrix_based_reduction = True
         cpl_dynamics_analysis = False
         export_ss_to_pickle = False
+        ground_scope_core = False
         cce_platform = "generic"
         cce_use_relative_names = False
         cce_type_mapping_real = "double"
@@ -43,13 +44,14 @@ model "dss_converter_dynamic" {
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
         cce_custom_type_real = ""
+        tunable_params = "component defined"
     }
 
     component Subsystem Root {
         component "OpenDSS/SimDSS" SimDSS1 {
             currents = "Elem"
-            sim_counter = "79"
-            sim_status = "Sim79 complete"
+            sim_counter = "96"
+            sim_status = "Sim96 complete"
             voltagebases = "[1]"
             voltages = "LL"
         }
@@ -63,7 +65,7 @@ model "dss_converter_dynamic" {
         }
         [
             position = 7992, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus3 {
@@ -71,7 +73,7 @@ model "dss_converter_dynamic" {
         }
         [
             position = 8264, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Vsource" Vsource1 {
@@ -170,7 +172,8 @@ model "dss_converter_dynamic" {
             R0 = "0.03864"
             R1 = "0.0001273"
             X_ratio = "0.1"
-            dC1 = "30.74e-9"
+            dC0 = "2.74e-9"
+            dC1 = "20.74e-9"
         }
         [
             position = 8368, 7928
@@ -182,17 +185,18 @@ model "dss_converter_dynamic" {
         }
         [
             position = 8472, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Line" Line3 {
-            L0 = "4.1264e-4"
+            L0 = "1.1264e-4"
             L1 = "0.9337e-4"
             Length = "10"
             R0 = "0.03864"
             R1 = "0.0001273"
             coupling = "Core coupling"
-            dC1 = "30.74e-9"
+            dC0 = "2.74e-9"
+            dC1 = "10.74e-9"
         }
         [
             position = 8080, 7928
@@ -204,7 +208,6 @@ model "dss_converter_dynamic" {
             Ts = "300e-6"
             Vn_3ph = "1"
             ground_connected = "True"
-            load_model = "Constant Power"
             pf_mode_3ph = "Unit"
         }
         [
@@ -262,6 +265,7 @@ model "dss_converter_dynamic" {
         ]
 
         component "OpenDSS/VSConverter" VSConverter1 {
+            Lac = "3e-4"
             Sinv = "600"
             V_ref_str = "Converter nominal"
             ctrl_mode_str = "PQ"
@@ -359,13 +363,14 @@ model "dss_converter_dynamic" {
     }
 
     logically_deleted {
-        "Load1.CIL"
+        "Load1.CPL"
     }
 
     default {
         gen_gain {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
             execution_rate = "inherit"
         }
 

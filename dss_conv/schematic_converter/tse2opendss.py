@@ -3,10 +3,9 @@ import os
 import time
 import pathlib
 
-import schematic_converter.elements as elements
-from schematic_converter.libfqn_dict import determine_elem
-from schematic_converter.libfqn_dict import collapse_nodes
-
+import dss_conv.schematic_converter.elements as elements
+from dss_conv.schematic_converter.libfqn_dict import determine_elem
+from dss_conv.schematic_converter.libfqn_dict import collapse_nodes
 
 # Converts jsonfile to an OpenDSS compatible syntax
 def convert(jsonfile, sim_parameters):
@@ -18,6 +17,15 @@ def convert(jsonfile, sim_parameters):
     switch_command_lines = []
 
     t0 = time.time()
+
+    extra_parameters = {
+        "basefrequency": sim_parameters.get("basefrequency"),
+        "algorithm": sim_parameters.get("algorithm"),
+        "maxiter": sim_parameters.get("maxiter"),
+        "miniterations": sim_parameters.get("miniterations"),
+        "voltagebases": sim_parameters.get("voltagebases"),
+        "maxcontroliter": "10"
+    }
 
     with open(jsonfile) as f:
         data = json.load(f)
@@ -32,6 +40,10 @@ def convert(jsonfile, sim_parameters):
     node_data = data["dev_partitions"][0]["nodes"]
     # Initialization of the output text variables
     lines = ""
+
+    dss_folder_path = pathlib.Path(jsonfile).parent.joinpath('dss')
+    dss_data_path = dss_folder_path.joinpath('data')
+    loadshape_lib_path = dss_data_path.joinpath("dss_loadshapes.txt")
 
     def create_fqn(elem_json):
         # Create a proper preceding string if the component is located inside subsystem(s)
@@ -77,6 +89,7 @@ def convert(jsonfile, sim_parameters):
         # Determine the element type by searching for the libfqn entry
         # using libfqn_dict.py
         elem_type = determine_elem(elem_json["lib_fqn"])
+        elem_type_orig = elem_json["lib_fqn"]
         # Initialization of the data to be returned
         elem_data = {}
 
@@ -98,6 +111,8 @@ def convert(jsonfile, sim_parameters):
             prop_list = elem_json["masks"][0]["properties"]
             # Return the dict based on the element properties
             init_dict = {prop["name"]: str(prop["value"]) for prop in prop_list}
+            init_dict.update({"tse_comp": elem_json["lib_fqn"]})
+            init_dict.update({"loadshape_lib": loadshape_lib_path})
             # Relevant data for instantiation
             elem_data = {
                 "name": elem_name, "nodes": elem_get_nodes(),
@@ -163,28 +178,59 @@ def convert(jsonfile, sim_parameters):
         elem_data.update({"buses_dict": buses_dict})
         # Use the type and data to instantiate the correct class
         this_element = elements.Element.pick_correct_subclass(elem_type, elem_data)
+        if this_element.control:
+            if this_element.control_iters > int(extra_parameters.get('maxcontroliter')):
+                extra_parameters['maxcontroliter'] = str(this_element.control_iters)
 
         lines += this_element.dss_line()
 
-    extra_parameters = {
-        "basefrequency": sim_parameters.get("basefrequency"),
-        "algorithm": sim_parameters.get("algorithm"),
-        "maxiter": sim_parameters.get("maxiter"),
-        "miniterations": sim_parameters.get("miniterations"),
-        "voltagebases": sim_parameters.get("voltagebases")
-    }
+    mLines = ""
+    if sim_parameters.get("sim_mode") == "Time Series":
+        for monType in ["voltage", "power"]:
+            for elem in non_bus_list:
+                elem_type, elem_data = get_elem_data(elem)
+                elem_data.update({"buses_dict": buses_dict})
+                this_element = elements.Element.pick_correct_subclass(elem_type, elem_data)
+                buscount = len(this_element.buses)
+                mode = "0"
+                for x in range(buscount):
+                    if monType == "voltage":
+                        This_line = (f'new monitor.{str(this_element.name) + "_voltage"}{str(x+1)}'
+                                     f'{" element=" + str(elem_type) + "." + str(this_element.name)}'
+                                     f'{" terminal=" + str(x+1)}{" mode=" + str(mode)}\n')
+                    else:
+                        mode = "1"
+                        This_line = (f'new monitor.{str(this_element.name) + "_power"}{str(x+1)}'
+                                     f'{" element=" + str(elem_type) + "." + str(this_element.name)}'
+                                     f'{" terminal=" + str(x+1)}{" mode=" + str(mode)}{" PPolar=no"}\n')
+                    mLines += This_line
+
+    jsonfile_name = pathlib.Path(jsonfile).stem
+    dss_folder_path = pathlib.Path(jsonfile).parent.joinpath('dss')
+    dss_data_path = dss_folder_path.joinpath('data')
+    if not dss_data_path.is_dir():
+        os.makedirs(dss_data_path)
+
+    # Object redirects
+    obj_redirects = ""
+    if dss_data_path.joinpath("dss_linecodes.txt").is_file():
+        obj_redirects += f"redirect dss_linecodes.txt\n"
+    if dss_data_path.joinpath("dss_loadshapes.txt").is_file():
+        obj_redirects += f"redirect dss_loadshapes.txt\n"
+    obj_redirects += "\n"
 
     parameter_lines = ""
     for par, val in extra_parameters.items():
         parameter_lines += f'set {par} = {val} \n'
 
+    # Appended commands
     appended_commands_before_file = 'appended_commands_before.dss'
     appended_commands_after_file = 'appended_commands_after.dss'
-    if pathlib.Path(jsonfile).parent.joinpath(appended_commands_before_file).is_file():
+    if dss_data_path.joinpath(appended_commands_before_file).is_file():
         append_commands_before = f"redirect {appended_commands_before_file}\n\n"
     else:
         append_commands_before = "\n"
-    if pathlib.Path(jsonfile).parent.joinpath(appended_commands_after_file).is_file():
+    if dss_data_path.joinpath(appended_commands_after_file).is_file():
         append_commands_after = f"redirect {appended_commands_after_file}\n\n"
     else:
         append_commands_after = "\n"
@@ -196,39 +242,52 @@ def convert(jsonfile, sim_parameters):
         f'Clear\n\n'
         
         f'new "Circuit.{circuit_name}"\n'
-        f'edit vsource.source basekv=0.0001 bus1 = "not used" pu=0\n'
+        f'Vsource.Source.Enabled=No //Default source is not used\n\n' 
+        f'set Datapath="{str(dss_data_path)}"\n'
+
+        f'{obj_redirects}'
         f'{lines}\n\n'
+        f'{mLines}\n\n'
         f'{parameter_lines}\n'
-        #f'{append_commands_before}'
+        f'{"set mode = daily" if sim_parameters.get("sim_mode")=="Time Series" else ""}\n'
+        f'{("set stepsize = " + str(sim_parameters.get("stepsize")) + "h") if sim_parameters.get("sim_mode")=="Time Series" else ""}\n'
+        f'{("set number = " + str(sim_parameters.get("number"))) if sim_parameters.get("sim_mode")=="Time Series" else ""}\n\n'
+        f'{append_commands_before}'
         f'Calcv\n\n'
-        f'Solve Mode={sim_parameters.get("sim_mode") if sim_parameters["loadmodel"]=="Power flow" else "direct"}\n\n'
+        f'Solve{"" if sim_parameters.get("sim_mode")=="Time Series" else (" Mode=" + str(sim_parameters.get("sim_mode"))) if sim_parameters["loadmodel"]=="Power flow" else "direct"}\n\n'
+        #f'Solve Mode={sim_parameters.get("sim_mode") if sim_parameters["loadmodel"]=="Power flow" else "direct"}\n\n'
         #f'{"show faults" if sim_parameters.get("sim_mode")=="faultstudy" else ""}\n'
-        #f'{append_commands_after}'
+        f'{append_commands_after}'
         f'!END\n'
     )
 
-    # Write a .dss file with the same name as the JSON, and in the same folder
-    with open(os.path.splitext(jsonfile)[0]+".dss", "w+") as f:
+    # Write a .dss file with the same name as the JSON in the dss folder
+
+    with open(dss_folder_path.joinpath(jsonfile_name + ".dss"), "w+") as f:
         f.write(output)
 
-    # Program speed test
+    # Speed testing
     print(f"Total conversion time: {time.time() - t0} seconds")
 
     return True
 
 if __name__ == "__main__":
     import opendssdirect as dss
-    import dss_conv.gui.report_functions as rf
 
-    jsonfile = r"D:\Dropbox\Typhoon HIL\Repository\opendss_integration\examples\simple_dist_demo Target files\simple_dist_demo.json"
-    sim_parameters = {"sim_mode": "faultstudy",
+    jsonfile = r"D:\Dropbox\Typhoon HIL\Ideas\delete_this_2 Target files\delete_this_2.json"
+    jsonfile_name = pathlib.Path(jsonfile).stem
+    dss_folder_path = pathlib.Path(jsonfile).parent.joinpath('dss')
+    sim_parameters = {"sim_mode": "snap",
                   "basefrequency": "60",
+                  "stepsize": "1",
+                  "number": "5",
                   "maxiter": "15",
                   "miniterations": "2",
                   "loadmodel": "Power flow",
                   "voltagebases": "[0.480, 12.47]"}
     convert(jsonfile, sim_parameters)
-    dssfile = os.path.splitext(jsonfile)[0]+".dss"
+    dssfile = dss_folder_path.joinpath(jsonfile_name + ".dss")
     dss.utils.run_command(f'Compile "{dssfile}"')
 
-    rf.generate_faultstudy_report("report")[1]
+    # rf.generate_faultstudy_report(jsonfile_name)[1]
+    # rf.generate_report(jsonfile_name)[1]

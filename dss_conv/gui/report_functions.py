@@ -10,7 +10,6 @@ def dss_data_build(data_source_object_type):
                 "basekVs": [],
                 "powers": [],
                 "phases": []
-
                 }
 
     # Go to first
@@ -19,48 +18,49 @@ def dss_data_build(data_source_object_type):
 
     if not dss.ActiveClass.First() == 0 and not data_source_object_type == "Bus":
         for _ in range(dss.ActiveClass.Count()):
-             # Get the name
-            obj_data["names"].append(dss.CktElement.Name().split(data_source_object_type + ".")[1])
+            if dss.CktElement.Enabled():
+                 # Get the name
+                obj_data["names"].append(dss.CktElement.Name().split(data_source_object_type + ".")[1])
 
-            # Get the connected buses names
-            obj_data["buses"].append([bname.split(".")[0] for bname in dss.CktElement.BusNames()])
-            num_buses = len(dss.CktElement.BusNames())
+                # Get the connected buses names
+                obj_data["buses"].append([bname.split(".")[0] for bname in dss.CktElement.BusNames()])
+                num_buses = len(dss.CktElement.BusNames())
 
-            # Voltage data (first phase only)
-            vdata = dss.CktElement.VoltagesMagAng()
-            num_terminals_per_bus = int(len(vdata) / num_buses)
+                # Voltage data (first phase only)
+                vdata = dss.CktElement.VoltagesMagAng()
+                num_terminals_per_bus = int(len(vdata) / num_buses)
 
-            v_list = []
-            for idx in range(num_buses):
-                if dss.CktElement.NumPhases() == 3:
-                    vmag = vdata[idx * num_terminals_per_bus] * 3 ** (0.5)
-                    vangle = vdata[idx * num_terminals_per_bus + 1] + 30
-                else:
-                    vmag = vdata[idx * num_terminals_per_bus]
-                    vangle = vdata[idx * num_terminals_per_bus + 1]
-                v_list.extend([vmag, vangle])
-            obj_data["voltages"].append(v_list)
+                v_list = []
+                for idx in range(num_buses):
+                    if dss.CktElement.NumPhases() == 3:
+                        vmag = vdata[idx * num_terminals_per_bus] * 3 ** (0.5)
+                        vangle = vdata[idx * num_terminals_per_bus + 1] + 30
+                    else:
+                        vmag = vdata[idx * num_terminals_per_bus]
+                        vangle = vdata[idx * num_terminals_per_bus + 1]
+                    v_list.extend([vmag, vangle])
+                obj_data["voltages"].append(v_list)
 
-            if data_source_object_type == "Vsource":
-                obj_data["basekVs"].append(dss.Vsources.BasekV())
-            if data_source_object_type == "Generator":
-                obj_data["basekVs"].append(dss.Generators.kV())
+                if data_source_object_type == "Vsource":
+                    obj_data["basekVs"].append(dss.Vsources.BasekV())
+                if data_source_object_type == "Generator":
+                    obj_data["basekVs"].append(dss.Generators.kV())
 
-            # Power data
-            sdata = dss.CktElement.Powers()
-            s_list = []
-            for idx in range(num_buses):
-                p = sum(sdata[idx * num_terminals_per_bus:(1 + idx) * num_terminals_per_bus:2])
-                q = sum(sdata[(idx * num_terminals_per_bus + 1):((1 + idx) * num_terminals_per_bus + 1):2])
-                s_list.extend([p, q])
-            obj_data["powers"].append(s_list)
+                # Power data
+                sdata = dss.CktElement.Powers()
+                s_list = []
+                for idx in range(num_buses):
+                    p = sum(sdata[idx * num_terminals_per_bus:(1 + idx) * num_terminals_per_bus:2])
+                    q = sum(sdata[(idx * num_terminals_per_bus + 1):((1 + idx) * num_terminals_per_bus + 1):2])
+                    s_list.extend([p, q])
+                obj_data["powers"].append(s_list)
 
             dss.ActiveClass.Next()
 
         return obj_data
     elif data_source_object_type == "Bus":
          # Get the names
-        obj_data["names"].extend(dss.Circuit.AllBusNames()[1:]) # Ignore sourcebus
+        obj_data["names"].extend(dss.Circuit.AllBusNames())
         for busname in obj_data["names"]:
             dss.Circuit.SetActiveBus(busname)
             obj_data["basekVs"].append(dss.Bus.kVBase())
@@ -251,8 +251,8 @@ def generate_report(filename):
             proc_line = []
             cktname = dss.Circuit.Name() if len(dss.Circuit.Name()) < 30 else dss.Circuit.Name()[:27] + "..."
             proc_line.append(cktname)
-            proc_line.append(dss.Circuit.NumBuses() - 1) # SOURCEBUS skipped
-            proc_line.append(dss.Circuit.NumCktElements() - 1)  # VSOURCE.SOURCE skipped
+            proc_line.append(dss.Circuit.NumBuses())
+            proc_line.append(dss.Circuit.NumCktElements())
             # Calculate total Load power
             l_kW = 0
             l_kVAr = 0
@@ -472,17 +472,15 @@ def generate_report(filename):
             story.append(kt)
 
             data = dss_data_build(object_type)
-            processed_data = []
-            for idx in range(len(data.get("names"))):
-                processed_data.extend(func_dict[object_type](data, idx))
 
-            if object_type == "Vsource":
-                # Remove the default SOURCE line
-                processed_data = processed_data[1:]
+            if data:
+                processed_data = []
+                for idx in range(len(data.get("names"))):
+                    processed_data.extend(func_dict[object_type](data, idx))
 
-            data_flow = data_table(processed_data, col_widths)
-            story.append(data_flow)
-            story.append(PageBreak())
+                data_flow = data_table(processed_data, col_widths)
+                story.append(data_flow)
+                story.append(PageBreak())
 
     # Add the sections
     add_section("Summary")
@@ -500,9 +498,13 @@ def generate_report(filename):
 
 
     try:
-        doc = SimpleDocTemplate(f"{filename}.pdf", rightMargin=margin, leftMargin=margin, topMargin=40, bottomMargin=50)
+        if not os.path.isdir('reports'):
+            os.makedirs('reports')
+
+        doc = SimpleDocTemplate(f'reports/{filename}_powerflow_report.pdf', rightMargin=margin, leftMargin=margin, topMargin=40,
+                                bottomMargin=50)
         doc.build(story, canvasmaker=NumberedCanvas)
-        subprocess.Popen(f"{filename}.pdf", shell=True)
+        subprocess.Popen(f'{filename}_powerflow_report.pdf', cwd='reports', shell=True)
 
         return [True, ""]
     except PermissionError:
@@ -517,11 +519,10 @@ def dss_faultstudy_data_build():
                 "iscs": [],
                 }
 
-    obj_data["names"].extend(dss.Circuit.AllBusNames()[1:]) # Ignore sourcebus
+    obj_data["names"].extend(dss.Circuit.AllBusNames())
     for busname in obj_data["names"]:
         dss.Circuit.SetActiveBus(busname)
         obj_data["iscs"].append(dss.Bus.Isc())
-        # print(dss.Bus.ZscMatrix())
     return obj_data
 
 def generate_faultstudy_report(filename):
@@ -671,8 +672,8 @@ def generate_faultstudy_report(filename):
             proc_line = []
             cktname = dss.Circuit.Name() if len(dss.Circuit.Name()) < 30 else dss.Circuit.Name()[:27] + "..."
             proc_line.append(cktname)
-            proc_line.append(dss.Circuit.NumBuses() - 1) # SOURCEBUS skipped
-            proc_line.append(dss.Circuit.NumCktElements() - 1)  # VSOURCE.SOURCE skipped
+            proc_line.append(dss.Circuit.NumBuses())
+            proc_line.append(dss.Circuit.NumCktElements())
 
             return proc_line
 
@@ -723,26 +724,27 @@ def generate_faultstudy_report(filename):
             story.append(kt)
 
             data = dss_faultstudy_data_build()
-            processed_data = []
-            for idx in range(len(data.get("names"))):
-                processed_data.append(func_dict[object_type](data, idx))
 
-            if object_type == "Vsource":
-                # Remove the default SOURCE line
-                processed_data = processed_data[1:]
+            if data:
+                processed_data = []
+                for idx in range(len(data.get("names"))):
+                    processed_data.append(func_dict[object_type](data, idx))
 
-            data_flow = data_table(processed_data, col_widths)
-            story.append(data_flow)
-            story.append(PageBreak())
+                data_flow = data_table(processed_data, col_widths)
+                story.append(data_flow)
+                story.append(PageBreak())
 
     # Add the sections
     add_section("Summary")
     add_section("Short-circuit currents")
 
     try:
-        doc = SimpleDocTemplate(f"{filename}.pdf", rightMargin=margin, leftMargin=margin, topMargin=40, bottomMargin=50)
+        if not os.path.isdir('reports'):
+            os.makedirs('reports')
+
+        doc = SimpleDocTemplate(f"reports/{filename}_faultstudy_report.pdf", rightMargin=margin, leftMargin=margin, topMargin=40, bottomMargin=50)
         doc.build(story, canvasmaker=NumberedCanvas)
-        subprocess.Popen(f"{filename}.pdf", shell=True)
+        subprocess.Popen(f"{filename}_faultstudy_report.pdf", cwd='reports', shell=True)
 
         return [True, ""]
     except PermissionError:

@@ -1,8 +1,8 @@
 version = 4.2
 
 //
-// Saved by sw version: 2021.1
-// Save timestamp: 09-Feb-2021 @ 11:29:01 AM
+// Saved by sw version: 2021.3 DEV
+// Save timestamp: 22-Jun-2021 @ 01:16:08 PM
 //
 
 model "dss_generator_converter_dynamic" {
@@ -34,6 +34,7 @@ model "dss_generator_converter_dynamic" {
         matrix_based_reduction = True
         cpl_dynamics_analysis = False
         export_ss_to_pickle = False
+        ground_scope_core = False
         cce_platform = "generic"
         cce_use_relative_names = False
         cce_type_mapping_real = "double"
@@ -43,13 +44,14 @@ model "dss_generator_converter_dynamic" {
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
         cce_custom_type_real = ""
+        tunable_params = "component defined"
     }
 
     component Subsystem Root {
         component "OpenDSS/SimDSS" SimDSS1 {
             currents = "Elem"
-            sim_counter = "85"
-            sim_status = "Sim85 complete"
+            sim_counter = "86"
+            sim_status = "Sim86 complete"
             voltagebases = "[1]"
             voltages = "LL"
         }
@@ -63,7 +65,7 @@ model "dss_generator_converter_dynamic" {
         }
         [
             position = 7992, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus3 {
@@ -71,7 +73,7 @@ model "dss_generator_converter_dynamic" {
         }
         [
             position = 8448, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Vsource" Vsource1 {
@@ -209,8 +211,8 @@ model "dss_generator_converter_dynamic" {
             R0 = "0.03864"
             R1 = "0.0001273"
             coupling = "Core coupling"
-            dC0 = "50.74e-9"
-            dC1 = "50.74e-9"
+            dC0 = "2.74e-9"
+            dC1 = "20.74e-9"
         }
         [
             position = 8552, 7928
@@ -222,7 +224,7 @@ model "dss_generator_converter_dynamic" {
         }
         [
             position = 8688, 7928
-            size = 12, 96
+            size = 16, 96
         ]
 
         component gen_probe VfdG1 {
@@ -241,8 +243,8 @@ model "dss_generator_converter_dynamic" {
             R0 = "0.03864"
             R1 = "0.0001273"
             coupling = "Core coupling"
-            dC0 = "50.74e-9"
-            dC1 = "50.74e-9"
+            dC0 = "2.74e-9"
+            dC1 = "20.74e-9"
         }
         [
             position = 8080, 7928
@@ -406,7 +408,7 @@ model "dss_generator_converter_dynamic" {
         }
         [
             position = 7976, 8440
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Line" Line4 {
@@ -416,7 +418,7 @@ model "dss_generator_converter_dynamic" {
             R0 = "0.03864"
             R1 = "0.0001273"
             coupling = "Core coupling"
-            dC0 = "30.74e-9"
+            dC0 = "2.74e-9"
             dC1 = "30.74e-9"
         }
         [
@@ -569,6 +571,7 @@ model "dss_generator_converter_dynamic" {
         gen_gain {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
             execution_rate = "inherit"
         }
 

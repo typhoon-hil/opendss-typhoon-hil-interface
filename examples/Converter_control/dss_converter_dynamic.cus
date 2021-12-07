@@ -1,5 +1,5 @@
 <ui_settings>
-    <version>2.5</version>
+    <version>2.6</version>
     <model_locked>False</model_locked>
     <canvas_bg_color>#ffffff</canvas_bg_color>
     <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be
@@ -27,16 +27,18 @@ SETTINGS_DIR = get_settings_dir_path()
     <components>
         <component_data>
                 <id>6163b6f71ce511eb9edeb06ebfcda420</id>
-                <name><![CDATA[Capture/Scope]]></name>
+                <name><![CDATA[Capture_Scope]]></name>
                 <type>Capture/Scope</type>
                 <description><![CDATA[]]></description>
-                <hierarchy_position>1</hierarchy_position>
                 <working_mode>windowed</working_mode>
                 <widget_settings>
                     <x>576</x>
                     <y>288</y>
                     <width>120</width>
                     <height>120</height>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                     <appearance><![CDATA[Flat]]></appearance>
                     <state>Scope</state>
                     <layout>None</layout>
@@ -214,6 +216,19 @@ SETTINGS_DIR = get_settings_dir_path()
                             <viewports>
                                 
                                 <num_viewport>4</num_viewport>
+                                
+                           </viewports>
+                        </analog>
+                            <analog>
+                            <channel>11</channel>
+                            <name><![CDATA[Three-phase Meter1.IA]]></name>
+                            <is_locked>False</is_locked>
+                            <vertical_scale>200</vertical_scale>
+                            <vertical_offset>0.0</vertical_offset>
+                            <coupling>False</coupling>
+                            <viewports>
+                                
+                                <num_viewport>2</num_viewport>
                                 
                            </viewports>
                         </analog>
@@ -411,6 +426,19 @@ SETTINGS_DIR = get_settings_dir_path()
                                 
                            </viewports>
                         </analog>
+                            <analog>
+                            <channel>11</channel>
+                            <name><![CDATA[Three-phase Meter1.IA]]></name>
+                            <is_locked>False</is_locked>
+                            <vertical_scale>200</vertical_scale>
+                            <vertical_offset>0.0</vertical_offset>
+                            <coupling>False</coupling>
+                            <viewports>
+                                
+                                <num_viewport>2</num_viewport>
+                                
+                           </viewports>
+                        </analog>
                             </analog_signals>
 
                         <digital_signals>
@@ -444,13 +472,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>816</x>
-                    <y>72</y>
+                    <x>816.0</x>
+                    <y>72.0</y>
                     <width>216</width>
                     <height>56</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -478,13 +509,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>816</x>
-                    <y>128</y>
+                    <x>816.0</x>
+                    <y>128.0</y>
                     <width>216</width>
                     <height>56</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -512,13 +546,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>536</x>
-                    <y>72</y>
+                    <x>536.0</x>
+                    <y>72.0</y>
                     <width>216</width>
                     <height>56</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -546,13 +583,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>536</x>
-                    <y>128</y>
+                    <x>536.0</x>
+                    <y>128.0</y>
                     <width>216</width>
                     <height>56</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -580,13 +620,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>64</x>
-                    <y>192</y>
+                    <x>64.0</x>
+                    <y>192.0</y>
                     <width>128</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -631,13 +674,16 @@ widgetValue = None
                 <min>0.0</min>
                 <max>1000.0</max>
                 <step>1.0</step>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
                     <x>32.0</x>
                     <y>256.0</y>
                     <width>392</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
             </component_data>
         <component_data>
@@ -676,13 +722,16 @@ widgetValue = None
                 <min>-500.0</min>
                 <max>500.0</max>
                 <step>1.0</step>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
                     <x>32.0</x>
                     <y>312.0</y>
                     <width>392</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
             </component_data>
         <component_data>
@@ -704,13 +753,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>64</x>
-                    <y>136</y>
+                    <x>64.0</x>
+                    <y>136.0</y>
                     <width>128</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -738,13 +790,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>64</x>
-                    <y>80</y>
+                    <x>64.0</x>
+                    <y>80.0</y>
                     <width>128</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -772,13 +827,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>536</x>
-                    <y>184</y>
+                    <x>536.0</x>
+                    <y>184.0</y>
                     <width>216</width>
                     <height>56</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -806,13 +864,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>816</x>
-                    <y>184</y>
+                    <x>816.0</x>
+                    <y>184.0</y>
                     <width>216</width>
                     <height>56</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
@@ -823,28 +884,30 @@ displayValue = 0.0
             </component_data>
         <component_data>
                 <id>71cbdc1d636111eb9faeb06ebfcda420</id>
-                <name><![CDATA[Note component]]></name>
+                <name><![CDATA[Note component1]]></name>
                 <type>TextNote</type>
                 <description><![CDATA[]]></description>
                 <text><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 <html><head><meta name="qrichtext" content="1" /><style type="text/css">
 p, li { white-space: pre-wrap; }
 </style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt;">BUS3: 600kW CPL</span></p></body></html>]]></text>
-                <hierarchy_position>1</hierarchy_position>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt;">BUS3: 600kW CIL</span></p></body></html>]]></text>
                 <widget_settings>
-                    <x>544</x>
-                    <y>24</y>
+                    <x>544.0</x>
+                    <y>24.0</y>
                     <width>200</width>
                     <height>32</height>
                     <background_color><![CDATA[#f0f0f0]]></background_color>
                     <background_type><![CDATA[Transparent]]></background_type>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[Note component]]></label>
+                    <use_label>True</use_label>
                 </widget_settings>
             </component_data>
         <component_data>
                 <id>84eacd9c636111ebb91fb06ebfcda420</id>
-                <name><![CDATA[Note component]]></name>
+                <name><![CDATA[Note component2]]></name>
                 <type>TextNote</type>
                 <description><![CDATA[]]></description>
                 <text><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
@@ -852,15 +915,17 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 </style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
 <p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt;">BUS4: GRID</span></p></body></html>]]></text>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>864</x>
-                    <y>32</y>
+                    <x>864.0</x>
+                    <y>32.0</y>
                     <width>144</width>
                     <height>32</height>
                     <background_color><![CDATA[#f0f0f0]]></background_color>
                     <background_type><![CDATA[Transparent]]></background_type>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[Note component]]></label>
+                    <use_label>True</use_label>
                 </widget_settings>
             </component_data>
         <component_data>
@@ -873,7 +938,6 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 </style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
 <p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt;">BUS2: 600kW Inverter</span></p></body></html>]]></text>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
                     <x>120.0</x>
                     <y>32.0</y>
@@ -882,6 +946,9 @@ p, li { white-space: pre-wrap; }
                     <background_color><![CDATA[#f0f0f0]]></background_color>
                     <background_type><![CDATA[Transparent]]></background_type>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
             </component_data>
         <component_data>
@@ -917,7 +984,6 @@ barData1 = {
 displayValue = [barData1]
 ]]></code>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <bars_data>
                     <bar>
                         <display_name><![CDATA[Modulation]]></display_name>
@@ -936,6 +1002,10 @@ displayValue = [barData1]
                     <width>368</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
             </component_data>
         <component_data>
@@ -957,13 +1027,16 @@ displayValue = 0.0
                 <automatic_unit>False</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>250</updateRate>
-                <hierarchy_position>1</hierarchy_position>
                 <widget_settings>
-                    <x>208</x>
-                    <y>192</y>
+                    <x>208.0</x>
+                    <y>192.0</y>
                     <width>128</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
                 </widget_settings>
                 <advance_widget_settings>
                     <color_range>False</color_range>
