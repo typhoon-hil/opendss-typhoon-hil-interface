@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 64 96"
+   version="1.1"
+   id="svg52"
+   sodipodi:docname="storage.svg"
+   height="96"
+   width="64"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview54"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="8.6666667"
+     inkscape:cx="32.019231"
+     inkscape:cy="48.057692"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg52" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.a,.b,.c,.d,.e,.f{fill:none;stroke:#000;}.a,.b,.c,.d{stroke-miterlimit:10;}.a,.c{stroke-width:1.07px;}.c,.d,.e,.f{stroke-linecap:round;}.e,.f{stroke-linejoin:round;}.f{stroke-dasharray:1.85 1.85;}</style>
+  </defs>
+  <title
+     id="title6">storage</title>
+  <line
+     class="a"
+     x1="6.34"
+     y1="47.99"
+     y2="48.01"
+     id="line8" />
+  <line
+     class="b"
+     x1="44.05"
+     y1="90.84"
+     x2="6.34"
+     y2="90.84"
+     id="line10" />
+  <line
+     class="c"
+     y1="80"
+     x2="6.34"
+     y2="80"
+     id="line12" />
+  <line
+     class="d"
+     x1="56.21"
+     y1="16.05"
+     x2="56.2"
+     y2="43.94"
+     id="line14" />
+  <line
+     class="b"
+     x1="56.24"
+     y1="52.06"
+     x2="56.21"
+     y2="79.95"
+     id="line16" />
+  <line
+     class="c"
+     y1="16"
+     x2="6.34"
+     y2="16"
+     id="line18" />
+  <line
+     class="e"
+     x1="6.34"
+     y1="90.84"
+     x2="6.34"
+     y2="3.58"
+     id="line20" />
+  <line
+     class="e"
+     x1="44.05"
+     y1="90.84"
+     x2="44.05"
+     y2="3.58"
+     id="line22" />
+  <line
+     class="e"
+     x1="63.21"
+     y1="43.94"
+     x2="49.21"
+     y2="43.94"
+     id="line24" />
+  <line
+     class="e"
+     x1="60.33"
+     y1="52.06"
+     x2="52.15"
+     y2="52.06"
+     id="line26" />
+  <line
+     class="e"
+     x1="63.21"
+     y1="49.36"
+     x2="49.21"
+     y2="49.36"
+     id="line28" />
+  <line
+     class="e"
+     x1="60.33"
+     y1="46.65"
+     x2="52.15"
+     y2="46.65"
+     id="line30" />
+  <line
+     class="b"
+     x1="44.05"
+     y1="3.58"
+     x2="6.34"
+     y2="3.58"
+     id="line32" />
+  <line
+     class="d"
+     x1="44.05"
+     y1="79.95"
+     x2="56.21"
+     y2="79.95"
+     id="line34" />
+  <line
+     class="d"
+     x1="44.05"
+     y1="16.05"
+     x2="56.21"
+     y2="16.05"
+     id="line36" />
+  <line
+     class="d"
+     x1="44.05"
+     y1="3.58"
+     x2="6.34"
+     y2="90.84"
+     id="line38" />
+  <path
+     class="e"
+     d="M15.65,10.8q3-5.91,5.92,0"
+     id="path40" />
+  <path
+     class="e"
+     d="M9.73,10.8q3,5.91,5.92,0"
+     id="path42" />
+  <line
+     class="e"
+     x1="39.33"
+     y1="82.57"
+     x2="28.05"
+     y2="82.57"
+     id="line44" />
+  <line
+     class="e"
+     x1="39.33"
+     y1="85.61"
+     x2="38.33"
+     y2="85.61"
+     id="line46" />
+  <line
+     class="f"
+     x1="36.47"
+     y1="85.61"
+     x2="29.98"
+     y2="85.61"
+     id="line48" />
+  <line
+     class="e"
+     x1="29.05"
+     y1="85.61"
+     x2="28.05"
+     y2="85.61"
+     id="line50" />
+</svg>

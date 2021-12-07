@@ -1,13 +1,13 @@
 version = 4.2
 
 //
-// Saved by sw version: 2021.1
-// Save timestamp: 09-Feb-2021 @ 11:46:39 AM
+// Saved by sw version: 2021.2
+// Save timestamp: 31-May-2021 @ 04:09:03 PM
 //
 
 model "dss_generator_static" {
     configuration {
-        hil_device = "HIL604"
+        hil_device = "HIL404"
         hil_configuration_id = 1
         simulation_method = exact
         simulation_time_step = 1e-6
@@ -43,13 +43,14 @@ model "dss_generator_static" {
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
         cce_custom_type_real = ""
+        tunable_params = "component defined"
     }
 
     component Subsystem Root {
         component "OpenDSS/SimDSS" SimDSS1 {
             currents = "Elem"
-            sim_counter = "77"
-            sim_status = "Sim77 complete"
+            sim_counter = "83"
+            sim_status = "Sim83 complete"
             voltagebases = "[1]"
             voltages = "LL"
         }
@@ -63,7 +64,7 @@ model "dss_generator_static" {
         }
         [
             position = 7888, 7944
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus3 {
@@ -71,7 +72,7 @@ model "dss_generator_static" {
         }
         [
             position = 8160, 7944
-            size = 12, 96
+            size = 16, 96
         ]
 
         component "OpenDSS/Vsource" Vsource1 {
@@ -164,7 +165,8 @@ model "dss_generator_static" {
             R0 = "0.03864"
             R1 = "0.0001273"
             X_ratio = "0.1"
-            dC1 = "50.74e-9"
+            dC0 = "20.74e-9"
+            dC1 = "20.74e-9"
         }
         [
             position = 8264, 7944
@@ -176,7 +178,7 @@ model "dss_generator_static" {
         }
         [
             position = 8368, 7944
-            size = 12, 96
+            size = 16, 96
         ]
 
         component gen_probe VfdG1 {
@@ -189,13 +191,14 @@ model "dss_generator_static" {
         ]
 
         component "OpenDSS/Line" Line3 {
-            L0 = "4.1264e-4"
+            L0 = "1.1264e-4"
             L1 = "0.9337e-4"
             Length = "10"
             R0 = "0.03864"
             R1 = "0.0001273"
             coupling = "Core coupling"
-            dC1 = "50.74e-9"
+            dC0 = "2.751e-9"
+            dC1 = "20.751e-9"
         }
         [
             position = 7976, 7944
@@ -282,6 +285,7 @@ model "dss_generator_static" {
 
         component "OpenDSS/Generator" Generator1 {
             H = "0.5"
+            pf = ".96"
         }
         [
             position = 7744, 7944
@@ -401,6 +405,7 @@ model "dss_generator_static" {
         gen_gain {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
             execution_rate = "inherit"
         }
 
