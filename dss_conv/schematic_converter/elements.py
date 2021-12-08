@@ -638,6 +638,11 @@ class Storage(TwoTerminal):
             self.parameters.pop('chargetrigger')
             self.parameters.pop('dischargetrigger')
 
+        if self.init_data["dispatch_q"] == "Constant PF":
+            self.parameters["pf"] = self.init_data['pf']
+        elif self.init_data["dispatch_q"] == "Constant kVAr":
+            self.parameters["kvar"] = self.init_data['kvar']
+
         self.buses = return_bus_connections(name, nodes, buses_dict, self.num_buses, self.phases)
         super().__init__(name, self.buses, self.parameters)
 
