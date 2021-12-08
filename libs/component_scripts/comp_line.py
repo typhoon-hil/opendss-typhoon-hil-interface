@@ -305,9 +305,6 @@ def configure_cable(mdl, container_handle):
         mdl.set_property_value(mdl.prop(transmission_line, "model_def"), "RLC")
         mdl.set_property_value(mdl.prop(transmission_line, "Length_metric"), "Length")
         mdl.set_property_value(mdl.prop(transmission_line, "Frequency"), "BaseFreq")
-        mdl.set_property_value(mdl.prop(transmission_line, "R_metric"), d_R)
-        mdl.set_property_value(mdl.prop(transmission_line, "L_metric"), d_L)
-        mdl.set_property_value(mdl.prop(transmission_line, "C_metric"), d_C)
 
         coupling = mdl.get_property_value(mdl.prop(container_handle, "coupling"))
         if not coupling == "None":
