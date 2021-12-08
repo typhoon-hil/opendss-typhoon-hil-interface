@@ -14,7 +14,7 @@
                 <name><![CDATA[Co-simulation]]></name>
                 <type>Group</type>
                 <description><![CDATA[]]></description>
-                <components_ids><![CDATA[['bcb8800d162911ec80b06245b4e7a4ef', 'edc0f5371af311ec938f6245b4e7a4ef', '9b765cb61af411eca8f46245b4e7a4ef', '1c25b3bd1af711ecb6ff6245b4e7a4ef', '9f26cac81af911eca1846245b4e7a4ef', 'd8dfdccc1af911eca5026245b4e7a4ef', '5242888451e611ec9ebbb42e99eebc19', '08f7d122537811ecaf10b42e99eebc19']]]></components_ids>
+                <components_ids><![CDATA[['bcb8800d162911ec80b06245b4e7a4ef', 'edc0f5371af311ec938f6245b4e7a4ef', '9b765cb61af411eca8f46245b4e7a4ef', '1c25b3bd1af711ecb6ff6245b4e7a4ef', '9f26cac81af911eca1846245b4e7a4ef', 'd8dfdccc1af911eca5026245b4e7a4ef', '5242888451e611ec9ebbb42e99eebc19']]]></components_ids>
                 <canvas_bg_color>#ffffff</canvas_bg_color>
                 <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
 # all Macro, Expression and handlers codes of components owned by this widget.
@@ -163,8 +163,8 @@ append_cosim_software_to_path()
 use_other_model = False
 other_model_path = "other_path"]]></initialization_code>
                 <widget_settings>
-                    <x>208</x>
-                    <y>96</y>
+                    <x>208.0</x>
+                    <y>96.0</y>
                     <width>688</width>
                     <height>208</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -220,8 +220,8 @@ displayValue = textDisplayData
 ]]></code>
                 <updateRate>250</updateRate>
                 <widget_settings>
-                    <x>512</x>
-                    <y>68</y>
+                    <x>512.0</x>
+                    <y>68.0</y>
                     <width>154</width>
                     <height>50</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -297,8 +297,8 @@ else:
 
 ]]></on_stop_code>
                 <widget_settings>
-                    <x>24</x>
-                    <y>64</y>
+                    <x>24.0</x>
+                    <y>64.0</y>
                     <width>200</width>
                     <height>40</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -622,60 +622,13 @@ widgetValue = None
                 <inputValueType>string</inputValueType>
                 <unit><![CDATA[]]></unit>
                 <widget_settings>
-                    <x>120</x>
-                    <y>128</y>
+                    <x>120.0</x>
+                    <y>128.0</y>
                     <width>432</width>
                     <height>32</height>
                     <inputWidgetWidth>345</inputWidgetWidth>
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position>2</hierarchy_position>
-                    <label><![CDATA[]]></label>
-                    <use_label>False</use_label>
-                </widget_settings>
-            </component_data>
-        <component_data>
-                <id>08f7d122537811ecaf10b42e99eebc19</id>
-                <name><![CDATA[Button]]></name>
-                <type>MacroButton</type>
-                <description><![CDATA[]]></description>
-                <on_use_code active="True"><![CDATA[# HIL API is imported as 'hil'
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-global added_sources, upd_isources, free_to_solve, v_string
-
-print(upd_isources)
-print(f"free to solve {free_to_solve}")
-print(f"added_sources {added_sources}")
-print(f"v_string {v_string}")]]></on_use_code>
-                <on_start_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed on simulation start.
-# NOTE: Variables specified here will be available in other handlers.
-# HIL API is imported as 'hil'
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-]]></on_start_code>
-                <on_stop_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed after simulation is stopped.
-# HIL API is imported as 'hil'
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-]]></on_stop_code>
-                <on_start_code_source><![CDATA[Custom code]]></on_start_code_source>
-                <widget_settings>
-                    <x>24.0</x>
-                    <y>120.0</y>
-                    <width>80</width>
-                    <height>32</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
                     <label><![CDATA[]]></label>
                     <use_label>False</use_label>
                 </widget_settings>
