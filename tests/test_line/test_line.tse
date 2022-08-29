@@ -1,0 +1,359 @@
+version = 4.2
+
+//
+// Saved by sw version: 2022.1 SP1
+// Save timestamp: 21-Mar-2022 @ 01:48:55 PM
+//
+
+model "test_line" {
+    configuration {
+        hil_device = "HIL402"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/Line" Line1 {
+            L0 = "4.1264e-3"
+            L1 = "Lac"
+            Length = "10"
+            R0 = "0.3864"
+            R1 = "0.01273"
+            X0 = "4.1264"
+            X1 = "0.9337"
+            dC0 = "7.751"
+            dC1 = "12.74"
+            d_C = "[[2.8e-09, -6e-10, -6e-10], [-6e-10, 2.8e-09, -6e-10], [-6e-10, -6e-10, 2.8e-09]]"
+            d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            enable_monitoring = "True"
+            obj_mode = "symmetrical"
+            selected_object = "Default"
+        }
+        [
+            position = 8584, 8480
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Load" Load1 {
+            Pow_ref_s = "Fixed"
+            Sn_3ph = "10"
+            T_mode = "Loadshape index"
+            Ts = "600e-6"
+            Vn_3ph = "10"
+            global_basefreq = "False"
+            load_model = "Constant Impedance"
+        }
+        [
+            position = 8896, 8576
+            size = 96, 64
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS1 {
+            command = "solve"
+            currents = "Elem"
+            sim_counter = "101"
+            sim_status = "Sim101 complete"
+            voltagebases = "[4.16, 12.47]"
+            voltages = "LL"
+        }
+        [
+            position = 8576, 8312
+            size = 96, 96
+        ]
+
+        component src_ground gnd1 {
+        }
+        [
+            position = 8568, 8576
+            hide_name = True
+        ]
+
+        component "OpenDSS/Bus" Bus1 {
+            conf = "on both sides"
+            i_meas = "True"
+        }
+        [
+            position = 8352, 8480
+            size = 16, 96
+        ]
+
+        component "core/Current RMS" Irms1 {
+        }
+        [
+            position = 8448, 8448
+            hide_name = True
+            size = 64, 32
+        ]
+
+        component "OpenDSS/Bus" Bus2 {
+            conf = "on both sides"
+            i_meas = "True"
+        }
+        [
+            position = 8712, 8480
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Vsource" Vsource1 {
+            basekv = "10"
+            r0 = "0.0001"
+            r1 = "0.01"
+            x0 = "0.0001"
+            x1 = "0.1"
+        }
+        [
+            position = 8216, 8480
+            size = 64, 96
+        ]
+
+        connect gnd1.node Line1.N as Connection296
+        connect Bus1.C2 Line1.C1 as Connection308
+        connect Line1.B1 Bus1.B2 as Connection309
+        connect Line1.C2 Bus2.C1 as Connection332
+        connect Bus2.C2 Load1.C1 as Connection333
+        connect Line1.B2 Bus2.B1 as Connection334
+        connect Bus2.B2 Load1.B1 as Connection335
+        connect Line1.A2 Bus2.A1 as Connection336
+        connect Vsource1.A1 Bus1.A1 as Connection338
+        connect Bus1.B1 Vsource1.B1 as Connection339
+        connect Vsource1.C1 Bus1.C1 as Connection340
+        connect Bus1.A2 Irms1.p_node as Connection341
+        connect Irms1.n_node Line1.A1 as Connection342
+        connect Bus2.A2 Load1.A1 as Connection343
+    }
+
+    logically_deleted {
+        "Line1.pisec"
+        "Load1.CPL"
+        "Load1.TS_module"
+        "Load1.T_switch"
+        "Load1.Constant1"
+        "Load1.Connection3"
+        "Load1.Connection4"
+    }
+
+    default {
+        "OpenDSS/Bus" {
+            type = "ABC"
+            ground = "False"
+            i_meas = "False"
+            v_meas = "False"
+            conf = "on one side"
+        }
+
+        "core/Current RMS" {
+            op_mode = "PLL based"
+            frequency = "50"
+            pin_to_system_cpu = "True"
+            Tfast = "100e-6"
+            Tslow = "200e-6"
+            sig_output = "False"
+            execution_rate = "inherit"
+            feed_forward = "False"
+            nd_msr_estimation = "false"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Load" {
+            global_basefreq = "True"
+            fn = "60"
+            conn_type = "Y"
+            ground_connected = "True"
+            phases = "3"
+            Vn_3ph = "1"
+            Sn_3ph = "600"
+            pf_mode_3ph = "Unit"
+            pf_3ph = "0.9"
+            pf_3ph_set = "0"
+            load_model = "Constant Power"
+            model = "2"
+            Pow_ref_s = "Time Series"
+            Ts = "300e-6"
+            Tfast = "100e-6"
+            CPL_LMT = "2"
+            Vn_3ph_CPL = "0"
+            P_CPL = "0"
+            Q_CPL = "0"
+            kV = "0"
+            pf = "0"
+            conn = "0"
+            kVA = "0"
+            basefreq = "0"
+            load_loadshape = "Choose"
+            loadshape_name = "loadsh01"
+            loadshape = "[0.5, 0.7, 1, 0.4, 0.5]"
+            loadshape_int = "1"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            T_mode = "Time"
+            S_Ts_mode = "Manual input"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "5"
+            T_Ts_max = "10"
+            del_Ts = "20"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            basefrequency = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tspoints = "5"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+        }
+
+        "OpenDSS/Vsource" {
+            ground_connected = "True"
+            basekv = "115"
+            pu = "1"
+            Angle = "0"
+            Frequency = "60"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            enable_monitoring = "False"
+        }
+    }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        #Vbase = 12.47 # kv
+        #phases = 3
+        class WireData_Contactor:
+            Runit = 'mi' # Length units for resistance: ohms per {mi|kft|km|m|Ft|in|cm } Default=none.
+            Rac = 0.306 # Resistance at 60 Hz per unit length. Defaults to Rdc if not specified.
+            GMRunits = 'ft' # Length units for resistance: ohms per {mi|kft|km|m|Ft|in|cm } Default=none.
+            GMRac = 0.0244 # GMR at 60 Hz. Defaults to .7788*radius if not specified.
+            Radunits = 'in' #Units for outside radius: {mi|kft|km|m|Ft|in|cm } Default=none.
+            Diam = 0.721 # Diameter
+            def calc_L(self,x,y):
+                dab = np.sqrt((x[1] - x[0])**2 + (y[1] - y[0])**2)
+                dbc = np.sqrt((x[2] - x[1])**2 + (y[2] - y[1])**2)
+                dca = np.sqrt((x[0] - x[2])**2 + (y[0] - y[2])**2)
+                Deq = (dab*dbc*dca)**(1/3)
+                Lac = 2*np.pi*(1e-7)*np.log(Deq/self.GMRac)
+                return Lac
+        
+        cond = WireData_Contactor()
+        
+        
+        x = [-4,-1.5,-3]
+        y = [28, 28, 28]
+        
+        Lac = cond.calc_L(x,y)
+        
+    ENDCODE
+}
