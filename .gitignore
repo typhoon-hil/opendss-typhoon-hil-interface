@@ -1,3 +1,7 @@
-__pycache__
+debug.py
 .idea
-*Target files
+__pycache__
+* Target files
+allure-html
+importer_output
+pytest_results/*
