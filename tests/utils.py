@@ -6,7 +6,7 @@ from typhoon.api.schematic_editor import model as mdl
 
 # TSE to OpenDSS converter
 import tse_to_opendss
-from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
+from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 
 # OpenDSS API
 import opendssdirect as dss
