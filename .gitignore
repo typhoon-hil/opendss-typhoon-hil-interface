@@ -5,3 +5,4 @@ __pycache__
 allure-html
 importer_output
 pytest_results/*
+release_zip
