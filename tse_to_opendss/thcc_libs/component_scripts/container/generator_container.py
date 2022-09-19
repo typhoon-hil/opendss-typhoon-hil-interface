@@ -1003,7 +1003,7 @@ def update_properties(mdl, _Generator_mask):
         name="S_Ts_mode",
         label="Power Profile mode",
         widget="combo",
-        combo_values=['Manual input', 'Loop cycle'],
+        combo_values=['Manual input'],
         evaluate=False,
         enabled=True,
         visible=False,
@@ -1030,7 +1030,7 @@ def update_properties(mdl, _Generator_mask):
         combo_values=['Daily', 'Yearly'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="OpenDSS model setting",
         unit=""
     )

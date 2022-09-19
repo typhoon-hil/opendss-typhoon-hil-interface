@@ -254,10 +254,82 @@ def update_properties(mdl, _Storage_mask):
         tab_name="",
         unit=""
     )
+    _Storage_mask_loadshape_from_file = mdl.create_property(
+        item_handle=_Storage_mask,
+        name="loadshape_from_file",
+        label="From CSV file",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="",
+        unit=""
+    )
+    _Storage_mask_useactual = mdl.create_property(
+        item_handle=_Storage_mask,
+        name="useactual",
+        label="Actual load value",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="",
+        unit=""
+    )
+    _Storage_mask_loadshape_from_file_path = mdl.create_property(
+        item_handle=_Storage_mask,
+        name="loadshape_from_file_path",
+        label="LoadShape from file - path",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="",
+        unit=""
+    )
+    _Storage_mask_loadshape_from_file_column = mdl.create_property(
+        item_handle=_Storage_mask,
+        name="loadshape_from_file_column",
+        label="LoadShape from file - column",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="",
+        unit=""
+    )
+    _Storage_mask_loadshape_from_file_header = mdl.create_property(
+        item_handle=_Storage_mask,
+        name="loadshape_from_file_header",
+        label="LoadShape from file - header",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="",
+        unit=""
+    )
     _Storage_mask_loadshape = mdl.create_property(
         item_handle=_Storage_mask,
         name="loadshape",
         label="LoadShape points",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="",
+        unit=""
+    )
+    _Storage_mask_loadshape_int = mdl.create_property(
+        item_handle=_Storage_mask,
+        name="loadshape_int",
+        label="LoadShape interval",
         widget="edit",
         combo_values=[],
         evaluate=False,
@@ -274,8 +346,8 @@ def update_properties(mdl, _Storage_mask):
         combo_values=['Daily', 'Yearly'],
         evaluate=False,
         enabled=True,
-        visible=True,
-        tab_name="Time Series Settings",
+        visible=False,
+        tab_name="",
         unit=""
     )
     _Storage_mask_pct_stored = mdl.create_property(
@@ -459,7 +531,13 @@ def update_properties(mdl, _Storage_mask):
     mdl.set_property_value(mdl.prop(_Storage_mask, "pct_reserve"), "20")
     mdl.set_property_value(mdl.prop(_Storage_mask, "load_loadshape"), "Choose")
     mdl.set_property_value(mdl.prop(_Storage_mask, "loadshape_name"), "")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "loadshape_from_file"), "False")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "useactual"), "False")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "loadshape_from_file_path"), "")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "loadshape_from_file_column"), "1")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "loadshape_from_file_header"), "True")
     mdl.set_property_value(mdl.prop(_Storage_mask, "loadshape"), "")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "loadshape_int"), "1")
     mdl.set_property_value(mdl.prop(_Storage_mask, "timespan"), "Daily")
     mdl.set_property_value(mdl.prop(_Storage_mask, "pct_stored"), "100")
     mdl.set_property_value(mdl.prop(_Storage_mask, "execution_rate"), "100e-6")
@@ -504,12 +582,30 @@ def update_properties(mdl, _Storage_mask):
     
     """
     mdl.set_handler_code(_Storage_mask_loadshape_name, "property_value_edited", _Storage_mask_loadshape_name_property_value_edited)
+    _Storage_mask_loadshape_from_file_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_Storage_mask_loadshape_from_file, "property_value_edited", _Storage_mask_loadshape_from_file_property_value_edited)
+    _Storage_mask_useactual_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_Storage_mask_useactual, "property_value_edited", _Storage_mask_useactual_property_value_edited)
     _Storage_mask_loadshape_property_value_edited = """
     old_value = mdl.get_property_value(prop_handle)
     mdl.set_property_value(prop_handle, old_value)
     
     """
     mdl.set_handler_code(_Storage_mask_loadshape, "property_value_edited", _Storage_mask_loadshape_property_value_edited)
+    _Storage_mask_loadshape_int_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_Storage_mask_loadshape_int, "property_value_edited", _Storage_mask_loadshape_int_property_value_edited)
 
 
     ## BUTTON HANDLERS

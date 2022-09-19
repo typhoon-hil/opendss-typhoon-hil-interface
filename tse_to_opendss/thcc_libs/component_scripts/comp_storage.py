@@ -87,7 +87,7 @@ def load_loadshape(mdl, container_handle):
     import sys
 
     try:
-        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
         import tse_to_opendss
     except:
         # If running from development folder instead of installed package
@@ -95,7 +95,7 @@ def load_loadshape(mdl, container_handle):
         if not dss_module_folder in sys.path:
             sys.path.append(dss_module_folder)
 
-        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
         import tse_to_opendss
 
     import tse_to_opendss.thcc_libs.gui_scripts.load_object as load_obj
@@ -278,7 +278,6 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
                     mdl.error(f"Could not find the CSV file '{loadshape_from_file_path}'."
                               f" Please edit or choose a new LoadShape.", context=mdl.get_parent(mask_handle))
                 if loadshape_name not in general_objects_dict.get("loadshapes"):
-                    mdl.info(f'{general_objects_dict.get("loadshapes")}')
                     with open(general_objects_json, 'w') as f:
                         new_loadshape_dict = {
                             "npts": str(len(current_points)),

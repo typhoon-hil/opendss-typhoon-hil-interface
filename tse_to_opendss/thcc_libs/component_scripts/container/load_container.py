@@ -314,6 +314,66 @@ def update_properties(mdl, _Load_mask):
         tab_name="Time Series Settings:4",
         unit=""
     )
+    _Load_mask_loadshape_from_file = mdl.create_property(
+        item_handle=_Load_mask,
+        name="loadshape_from_file",
+        label="From CSV file",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="Time Series Settings:4",
+        unit=""
+    )
+    _Load_mask_useactual = mdl.create_property(
+        item_handle=_Load_mask,
+        name="useactual",
+        label="Actual load value",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="Time Series Settings:4",
+        unit=""
+    )
+    _Load_mask_loadshape_from_file_path = mdl.create_property(
+        item_handle=_Load_mask,
+        name="loadshape_from_file_path",
+        label="LoadShape from file - path",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="Time Series Settings:4",
+        unit=""
+    )
+    _Load_mask_loadshape_from_file_column = mdl.create_property(
+        item_handle=_Load_mask,
+        name="loadshape_from_file_column",
+        label="LoadShape from file - column",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="Time Series Settings:4",
+        unit=""
+    )
+    _Load_mask_loadshape_from_file_header = mdl.create_property(
+        item_handle=_Load_mask,
+        name="loadshape_from_file_header",
+        label="LoadShape from file - header",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="Time Series Settings:4",
+        unit=""
+    )
     _Load_mask_loadshape = mdl.create_property(
         item_handle=_Load_mask,
         name="loadshape",
@@ -379,7 +439,7 @@ def update_properties(mdl, _Load_mask):
         name="S_Ts_mode",
         label="Power Profile mode",
         widget="combo",
-        combo_values=['Manual input', 'Loop cycle'],
+        combo_values=['Manual input'],
         evaluate=False,
         enabled=True,
         visible=False,
@@ -406,7 +466,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Daily', 'Yearly'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Time Series Settings",
         unit=""
     )
@@ -559,8 +619,13 @@ def update_properties(mdl, _Load_mask):
     mdl.set_property_value(mdl.prop(_Load_mask, "kVA"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "basefreq"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "load_loadshape"), "Choose")
-    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_name"), "loadsh01")
-    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape"), "[0.5, 0.7, 1, 0.4, 0.5]")
+    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_name"), "Default")
+    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_from_file"), "False")
+    mdl.set_property_value(mdl.prop(_Load_mask, "useactual"), "False")
+    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_from_file_path"), "")
+    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_from_file_column"), "1")
+    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_from_file_header"), "True")
+    mdl.set_property_value(mdl.prop(_Load_mask, "loadshape"), "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]")
     mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_int"), "1")
     mdl.set_property_value(mdl.prop(_Load_mask, "S_Ts"), "[0.2,0.28,0.5,0.32,0.2]")
     mdl.set_property_value(mdl.prop(_Load_mask, "Q_Ts"), "0")
@@ -589,6 +654,7 @@ def update_properties(mdl, _Load_mask):
     """
     mdl.set_handler_code(_Load_mask_global_basefreq, "property_value_edited", _Load_mask_global_basefreq_property_value_edited)
     _Load_mask_conn_type_property_value_edited = """
+    comp_script = return_comp_script(mdl, container_handle)
     comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
     
     """
@@ -619,6 +685,18 @@ def update_properties(mdl, _Load_mask):
     
     """
     mdl.set_handler_code(_Load_mask_loadshape_name, "property_value_edited", _Load_mask_loadshape_name_property_value_edited)
+    _Load_mask_loadshape_from_file_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_Load_mask_loadshape_from_file, "property_value_edited", _Load_mask_loadshape_from_file_property_value_edited)
+    _Load_mask_useactual_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_Load_mask_useactual, "property_value_edited", _Load_mask_useactual_property_value_edited)
     _Load_mask_loadshape_property_value_edited = """
     old_value = mdl.get_property_value(prop_handle)
     mdl.set_property_value(prop_handle, old_value)

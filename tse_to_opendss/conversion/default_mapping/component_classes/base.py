@@ -105,7 +105,6 @@ def convert_matrix_format(input_matrix, phase_num):
 
     # truncate number of lines and the size of the last line to the number of phases
     if len(evaluated_matrix) > phase_num:
-        print(phase_num)
         evaluated_matrix = evaluated_matrix[:phase_num]
         evaluated_matrix[-1] = evaluated_matrix[-1][:phase_num]
 

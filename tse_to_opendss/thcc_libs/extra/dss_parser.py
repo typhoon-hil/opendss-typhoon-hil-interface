@@ -220,10 +220,3 @@ def parse_loadshapes(dss_path, from_gui=False, debug_mode=False):
     pre_processsed = preprocess_lines(dss_path, debug_mode=debug_mode)
     return get_loadshapes_dict(pre_processsed, dss_path, from_gui=from_gui, debug_mode=debug_mode)
 
-
-if __name__ == "__main__":
-    #dss_path = r"D:\Dropbox\Typhoon HIL\Repository\opendss_integration\dev_models\randomtest Target files\randomtest.dss"
-    dss_path = r"C:\Users\MarcosPauloMoccelini\Downloads\loadshape.DSS"
-
-    parse_loadshapes(dss_path, debug_mode=True)
-

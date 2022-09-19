@@ -626,6 +626,18 @@ def update_properties(mdl, _VSConverter_mask):
         tab_name="Time Series",
         unit="pu"
     )
+    _VSConverter_mask_useactual = mdl.create_property(
+        item_handle=_VSConverter_mask,
+        name="useactual",
+        label="Actual load value",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="Time Series",
+        unit=""
+    )
     _VSConverter_mask_loadshape_int = mdl.create_property(
         item_handle=_VSConverter_mask,
         name="loadshape_int",
@@ -706,7 +718,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['Daily', 'Yearly'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Time Series",
         unit=""
     )
@@ -886,6 +898,7 @@ def update_properties(mdl, _VSConverter_mask):
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "load_loadshape"), "Choose")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_name"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape"), "0")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "useactual"), "False")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_int"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "gen_ts_en_bit"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "T_mode"), "Loadshape index")

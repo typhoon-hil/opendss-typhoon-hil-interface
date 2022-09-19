@@ -270,7 +270,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 line_elem = line.split()
 
                 monitor_name = re.search(r'new \"monitor\.([A-z 0-9\-]+)\"', string=line, flags=re.IGNORECASE).group(1)
-                dss_comp_name = monitor_name.split("_")[0]
+                chopped_name_len = len(monitor_name.split("_"))
+                true_name = monitor_name.split(str(
+                    "_" + monitor_name.split("_")[chopped_name_len - 2] + "_" + monitor_name.split("_")[
+                        chopped_name_len - 1]))[0]
+                dss_comp_name = true_name
 
                 for wrd in line_elem:
                     if "element" in wrd:
@@ -294,15 +298,19 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
 
     def dss_components(self):
         self.dss_comps = []
+
         if self.dssfile:
             f = open(self.dssfile, 'r')
             lines = f.readlines()
         else:
             lines = []
 
+
         for line in lines:
+
             if 'new "MONITOR.' in line:
                 dss_comp_name = re.search(r'new \"monitor\.([A-z 0-9\-]+)\"', string=line, flags=re.IGNORECASE).group(1)
+
                 # line_elem = line.split()
                 # new_line_elem = []
                 # for wrd in line_elem:
@@ -329,8 +337,12 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 #         monitor_name = wrd.split("MONITOR.")
                 #         dss_comp_name_temp = monitor_name[1].split("_")
                 #         dss_comp_name = dss_comp_name_temp[0]
-                if not dss_comp_name.split("_")[0] in self.dss_comps:
-                    self.dss_comps.append(dss_comp_name.split("_")[0])
+
+                chopped_name_len = len(dss_comp_name.split("_"))
+                true_name = dss_comp_name.split(str("_" + dss_comp_name.split("_")[chopped_name_len-2] + "_" + dss_comp_name.split("_")[chopped_name_len-1]))[0]
+
+                if not true_name in self.dss_comps:
+                    self.dss_comps.append(true_name)
 
     def update_comp_handle(self, handle):
 
@@ -553,7 +565,6 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
         mode = "0"
         if current_item:
             csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(current_item.text())])
-            print(csv_name)
             if "VOLTAGE" in csv_name:
                 mode = "0"
             elif "POWER" in csv_name:
@@ -632,7 +643,7 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 p3 = plt.subplot(subplotsize+3)
                 # plt.ion()
                 plt.plot(csvread[time_header], csvread[" VAngle1"], label="V1 Angle", color='blue', marker='o')
-                if " Vangle2" in csvread.columns:
+                if " VAngle2" in csvread.columns:
                     plt.plot(csvread[time_header], csvread[" VAngle2"], label="V2 Angle", color='green', marker='o')
                 if " VAngle3" in csvread.columns:
                     plt.plot(csvread[time_header], csvread[" VAngle3"], label="V3 Angle", color='red', marker='o')
@@ -899,7 +910,7 @@ def sim_with_opendss(mdl, mask_handle):
     sim_parameters["number"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tspoints"))
 
     import tse_to_opendss
-    from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+    from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
 
     if tse2tpt.convert(json_file_path, tse_to_opendss, sim_parameters):
         # Compile dss model
@@ -1019,33 +1030,5 @@ def report(mdl, mask_handle, mode="snap"):
 
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, "images/monitoring.svg")
-
-if __name__ == "__main__":
-    import sys
-    import traceback
-
-    # Show tracebacks #
-    if QtCore.QT_VERSION >= 0x50501:
-        def excepthook(type_, value, traceback_):
-            traceback.print_exception(type_, value, traceback_)
-            QtCore.qFatal('')
-    sys.excepthook = excepthook
-
-    app = QtWidgets.QApplication(sys.argv)
-    bla = {"linecodes": {"aaa": {
-                "mode": "symmetrical",
-                "r1": "0.01273",
-                "r0": "0.3864",
-                "x1": "0.9337e-3",
-                "x0": "4.1264e-3",
-                "c1": "12.74e-9",
-                "c0": "7.751e-9",
-            }}}
-
-    mainwindow = Mon_obj("")
-    mainwindow.show()
-    dss_monitors_file = pathlib.Path("D:\Dropbox\Typhoon HIL\Ideas\delete_this_2 Target files\dss\data\monitors.dss")
-    mainwindow.update_comps_list(str(dss_monitors_file))
-    app.exec()
 
 

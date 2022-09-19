@@ -175,7 +175,7 @@ def sim_with_opendss(mdl, mask_handle):
     import opendssdirect as dss
 
     try:
-        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
         import tse_to_opendss
     except:
         # If running from development folder instead of installed package
@@ -183,7 +183,7 @@ def sim_with_opendss(mdl, mask_handle):
         if not dss_module_folder in sys.path:
             sys.path.append(dss_module_folder)
 
-        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
         import tse_to_opendss
 
     mdlfile = mdl.get_model_file_path()
@@ -319,15 +319,19 @@ def command_buttons(mdl, mask_handle, prop_handle):
 
 def report(mdl, mask_handle, mode="snap"):
 
-    import report_functions as repf
+    import tse_to_opendss
+    import tse_to_opendss.thcc_libs.extra.auto_report.power_flow_report as pf_rep
+    import tse_to_opendss.thcc_libs.extra.auto_report.fault_report as fault_rep
+    import tse_to_opendss.thcc_libs.extra.auto_report.comp_data_report as comp_rep
+    import tse_to_opendss.thcc_libs.extra.auto_report.time_series_report as ts_rep
 
     mdlfile = mdl.get_model_file_path()
     mdlfile_name = pathlib.Path(mdlfile).stem
 
     if mode == "snap":
-        rep_successful = repf.generate_report(mdlfile_name)
+        rep_successful = pf_rep.generate_report(mdlfile_name)
     elif mode == "fault":
-        rep_successful = repf.generate_faultstudy_report(mdlfile_name)
+        rep_successful = fault_rep.generate_report(mdlfile_name)
     if not rep_successful[0]:
         mdl.info(rep_successful[1])
 

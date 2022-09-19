@@ -1015,6 +1015,7 @@ library "OpenDSS" {
 
         component Subsystem VSConverter {
             layout = static
+            label = "VSC"
             component "core/abc to dq" "abc to dq1" {
             }
             [
@@ -14663,6 +14664,7 @@ if (counter >= Ts) {
                     ENDCODE
 
                     CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
                         comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
                     ENDCODE
                 }
@@ -15547,6 +15549,7 @@ if (counter >= Ts) {
 
         component Subsystem "Generator Control" {
             layout = dynamic
+            label = "GenCtrl"
             component gen_bus_split "Bus Split1" {
                 outputs = "8"
             }
@@ -17956,6 +17959,7 @@ else {
 
         component Subsystem Generator {
             layout = static
+            label = "Gen"
             component gen_c_function "C function2" {
                 global_variables = "real thet_r_mem;real wr_k1;real wr_k2;real wm_mem;real psifd_mem;real psikq_mem;real wr_est;real Te_mem;real psikq2_mem;real psikd_mem;real ppsikq;real ppsikq2;real ppsikd;real ppsifd;"
                 init_fnc = "/*Begin code section*/
@@ -21818,6 +21822,7 @@ Te_mem = Te;
 
         component Subsystem Vsource {
             layout = static
+            label = "V"
             component src_voltage Va {
                 init_frequency = "60"
                 init_phase = "0"
@@ -22360,6 +22365,7 @@ Te_mem = Te;
 
         component Subsystem "Controlled Switch" {
             layout = static
+            label = "SW"
             component "core/Triple Pole Single Throw Contactor" S {
                 ctrl_src = "Model"
                 initial_state = "on"
@@ -22758,6 +22764,7 @@ Te_mem = Te;
 
         component Subsystem "Single-Phase Transformer" {
             layout = static
+            label = "T"
             component "core/Single Phase Multi-Winding Transformer" T1 {
                 I_prim = "0"
                 I_sec = "[0]"
@@ -24882,6 +24889,7 @@ Te_mem = Te;
 
         component Subsystem "Three-Phase Transformer" {
             layout = static
+            label = "T"
             component Subsystem Vreg {
                 layout = dynamic
                 component Subsystem Auto1 {
@@ -28825,6 +28833,7 @@ Te_mem = Te;
                     default_value = "Generate"
                     group = "Report:3"
                     no_evaluate
+                    nonvisible
 
                     CODE button_clicked
                         comp_script = return_comp_script(mdl, container_handle)
@@ -28948,6 +28957,7 @@ Te_mem = Te;
 
         component Subsystem Isource {
             layout = static
+            label = "I"
             component src_current Ia {
                 init_frequency = "60"
                 init_phase = "0"
@@ -29233,6 +29243,7 @@ Te_mem = Te;
 
         component Subsystem "Capacitor Bank" {
             layout = static
+            label = "C"
             component pas_capacitor Ca {
                 capacitance = "C"
             }
@@ -29458,6 +29469,7 @@ Te_mem = Te;
 
         component Subsystem Storage {
             layout = static
+
             component src_constant chtrigger {
                 execution_rate = "execution_rate"
                 value = "chargetrigger"
@@ -31743,6 +31755,7 @@ out = out_value;
 
         component Subsystem "Co-simulation Interface" {
             layout = dynamic
+            label = "CoSim"
             component src_constant f {
                 execution_rate = "execution_rate"
                 value = "f"

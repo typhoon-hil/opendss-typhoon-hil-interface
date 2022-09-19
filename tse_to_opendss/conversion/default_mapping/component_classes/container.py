@@ -78,7 +78,6 @@ class Container(MultiTerminal):
                       "tse_properties": self.new_format_properties
                      }
         converted_comp_type = mappings.get(contained_component_type)
-        print(contained_component_type)
 
         new_component = create_comp_instance(converted_comp_type, comp_data)
 

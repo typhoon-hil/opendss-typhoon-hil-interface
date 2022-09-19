@@ -124,9 +124,6 @@ class Load(TwoTerminal):
 
         time_series_mode = tse_properties["Pow_ref_s"] == "Time Series"
 
-        print(time_series_mode)
-        print(loadshape_exists)
-
         if time_series_mode and not loadshape_exists:
 
             # loadshape_props = {

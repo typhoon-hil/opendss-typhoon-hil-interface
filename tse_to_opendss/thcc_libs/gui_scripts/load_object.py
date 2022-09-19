@@ -283,8 +283,8 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
         self.selected_object = self.list_object.currentItem().text()
         self.accept()
 
-    def get_points_from_csv(self, loaded_file_path, headers, column):
 
+    def get_points_from_csv(self, loaded_file_path, headers, column):
         try:
             with open(loaded_file_path, 'r') as f:
                 if headers == "True":
@@ -295,49 +295,5 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
                     df = df.fillna(0)
                 datapoints = list(df.iloc[:, int(column) - 1])
                 return datapoints
-
         except FileNotFoundError:
             return "File not found."
-
-if __name__ == "__main__":
-    import sys
-    import traceback
-
-    from typhoon.api.schematic_editor import SchematicAPI
-    mdl = SchematicAPI()
-    jsonfile = r"D:\Dropbox\Typhoon HIL\Ideas\test_freq Target files\test_freq.json"
-    mdl.load(r"D:\Dropbox\Typhoon HIL\Ideas\test_freq.tse")
-
-    # Show tracebacks #
-    if QtCore.QT_VERSION >= 0x50501:
-        def excepthook(type_, value, traceback_):
-            traceback.print_exception(type_, value, traceback_)
-            QtCore.qFatal('')
-    sys.excepthook = excepthook
-
-    app = QtWidgets.QApplication(sys.argv)
-    bla = {"linecodes": {"aaa": {
-        "mode": "symmetrical",
-        "r1": "0.01273",
-        "r0": "0.3864",
-        "x1": "0.9337e-3",
-        "x0": "4.1264e-3",
-        "c1": "12.74e-9",
-        "c0": "7.751e-9",
-    }}, "loadshapes": { "loadshape1": {
-                "npts": "23",
-                "mult": "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]",
-                "interval": "1",
-                "interval_unit": "h",
-                "hour": "",
-                "useactual": "False",
-                "csv_file": "False",
-                "csv_path": "D:\Dropbox\Typhoon HIL\Ideas\co_sim Target files\dss\mycsvfile.txt",
-                "headers": "True",
-                "column": "2"
-            }}}
-
-
-    mainwindow = LoadObject(mdl, "LoadShape", obj_dicts=bla)
-    mainwindow.show()
-    app.exec()

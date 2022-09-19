@@ -93,7 +93,7 @@ class Line(TwoTerminal):
 
         if not self.num_phases == 3:
             params = [f'{param}={self.new_format_properties.get(param)}' for param in self.new_format_properties]
-            return f'new {self.identifier()} Bus1={self.buses[0]}' \
+            return f'new {self.identifier()} phases={self.num_phases} Bus1={self.buses[0]}' \
                    f'{" Bus2=" + self.buses[1] if len(self.buses) == 2 else ""} {" ".join(params)}\n'
         else:
             return super().output_line()

@@ -257,7 +257,7 @@ def load_loadshape(mdl, container_handle):
     import pathlib
 
     try:
-        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
         import tse_to_opendss
     except:
         # If running from development folder instead of installed package
@@ -265,7 +265,7 @@ def load_loadshape(mdl, container_handle):
         if not dss_module_folder in sys.path:
             sys.path.append(dss_module_folder)
 
-        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
         import tse_to_opendss
 
     import tse_to_opendss.thcc_libs.gui_scripts.load_object as load_obj
@@ -432,7 +432,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     load_model = mdl.get_property_disp_value(load_model_prop)
 
     ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_disp_value(ground_connected_prop)
+    ground_connected = mdl.get_property_value(ground_connected_prop)
 
     gnd_check = False
     if str(ground_connected) == "True":
@@ -723,7 +723,7 @@ def connections_dynamics(mdl, mask_handle, created_ports):
     load_model = mdl.get_property_disp_value(load_model_prop)
 
     ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_disp_value(ground_connected_prop)
+    ground_connected = mdl.get_property_value(ground_connected_prop)
 
     gnd_check = False
     if str(ground_connected) == "True":
@@ -771,7 +771,7 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
     load_model = mdl.get_property_disp_value(load_model_prop)
 
     ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_disp_value(ground_connected_prop)
+    ground_connected = mdl.get_property_value(ground_connected_prop)
 
     gnd_check = False
     if str(ground_connected) == "True":
@@ -842,7 +842,7 @@ def connections_phases_dynamics(mdl, mask_handle, created_ports):
     load_model = mdl.get_property_disp_value(load_model_prop)
 
     ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_disp_value(ground_connected_prop)
+    ground_connected = mdl.get_property_value(ground_connected_prop)
 
     gnd_check = False
     if str(ground_connected) == "True":
