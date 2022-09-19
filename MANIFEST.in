@@ -1,5 +1,0 @@
-recursive-include tse_to_opendss *.*
-prune tests
-recursive-exclude tse_to_opendss .git
-recursive-exclude tse_to_opendss .gitignore
-

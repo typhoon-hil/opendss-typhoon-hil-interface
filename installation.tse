@@ -1,0 +1,147 @@
+version = 4.2
+
+//
+// Saved by sw version: 2022.2
+//
+
+model "installation" {
+    configuration {
+        hil_device = "HIL402"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+    }
+
+    component Subsystem Root {
+        component Subsystem "Double-click to install" {
+            layout = dynamic
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                install {
+                    widget = button
+                    type = string
+                    default_value = "Install"
+                    no_evaluate
+
+                    CODE button_clicked
+                        install(mdl)
+                    ENDCODE
+                }
+
+                CODE open
+                    import sys
+                    import pathlib
+                    import subprocess
+                    import os
+                    from typhoon.model.library.registry import get_library_registry
+
+                    # Install converter
+
+                    mdl.info("OpenDSS library installation started.")
+                    typhoon_path = pathlib.Path(sys.executable).parent
+                    appdata = pathlib.Path(os.getenv("appdata"))
+                    with open(str(typhoon_path.joinpath(".version")), "r") as f:
+                        sw_ver = f.readline()
+
+                    p3path = typhoon_path.joinpath("bin").joinpath("python3-portable.cmd")
+
+                    source_path = pathlib.Path(mdl.get_model_file_path()).parent.joinpath("source.tar.gz")
+
+                    commands = f'''"{str(p3path)}"
+                    pip install "{source_path}"
+                    '''
+
+                    mdl.info("Installing the converter...")
+                    process = subprocess.Popen('cmd', stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    out, err = process.communicate(commands.encode('utf-8'))
+                    successful_install = True
+
+
+                    if not "Successfully installed" in out.decode('utf-8', errors="ignore"):
+                        mdl.info("- Converter installation failed")
+                        mdl.info("-------")
+                        mdl.info("Command line output:")
+                        for line in out.decode('utf-8', errors="ignore").split("\n"):
+                          mdl.info(line)
+                        mdl.info("-------")
+                        mdl.info("Errors:")
+                        for l in err.decode('utf-8', errors="ignore").split("\n"):
+                          mdl.info(l)
+                        mdl.info("-------")
+                        mdl.info("-------")
+                        successful_install = False
+
+                    mdl.info("Adding the OpenDSS library to the Schematic Editor...")
+                    current_lib = get_library_registry(load=False)
+                    old_paths = current_lib.user_lib_paths
+                    addpath = str(appdata.joinpath('typhoon', sw_ver,'python_portables', 'python3_portable', 'lib', 'site-packages', 'tse_to_opendss', 'thcc_libs'))
+                    new_paths = old_paths + (f"{addpath}", )
+                    old_subdirs = tuple(current_lib.user_lib_paths_subdirs.values())
+                    if not addpath in old_paths:
+                        current_lib.user_lib_paths = new_paths
+                        current_lib.user_lib_paths_subdirs = dict(zip(new_paths, old_subdirs + (False,)))
+                        current_lib.save()
+                    else:
+                        mdl.info("- Library path already exists.")
+
+                    if successful_install:
+                        mdl.info("- Installation complete. Please reload the libraries from the File menu.")
+                    else:
+                        mdl.info("- The converter installation failed. Please check the debug information.")
+
+
+                ENDCODE
+            }
+        }
+        [
+            position = 8112, 8104
+            size = 80, 80
+        ]
+    }
+}

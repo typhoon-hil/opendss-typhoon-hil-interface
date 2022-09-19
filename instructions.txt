@@ -1,0 +1,2 @@
+1. Open installation.tse with the Typhoon Schematic Editor and double-click the component on the model.
+2. Click File | Reload libraries

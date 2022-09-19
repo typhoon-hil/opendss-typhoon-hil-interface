@@ -1,8 +1,0 @@
-debug.py
-.idea
-__pycache__
-* Target files
-allure-html
-importer_output
-pytest_results/*
-release_zip
