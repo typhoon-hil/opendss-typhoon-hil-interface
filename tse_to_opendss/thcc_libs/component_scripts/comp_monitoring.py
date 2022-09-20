@@ -910,7 +910,7 @@ def sim_with_opendss(mdl, mask_handle):
     sim_parameters["number"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tspoints"))
 
     import tse_to_opendss
-    from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
+    from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 
     if tse2tpt.convert(json_file_path, tse_to_opendss, sim_parameters):
         # Compile dss model
