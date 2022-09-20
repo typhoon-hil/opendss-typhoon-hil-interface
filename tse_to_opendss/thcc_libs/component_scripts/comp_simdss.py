@@ -175,7 +175,7 @@ def sim_with_opendss(mdl, mask_handle):
     import opendssdirect as dss
 
     try:
-        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
+        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
         import tse_to_opendss
     except:
         # If running from development folder instead of installed package
@@ -183,7 +183,7 @@ def sim_with_opendss(mdl, mask_handle):
         if not dss_module_folder in sys.path:
             sys.path.append(dss_module_folder)
 
-        from tse_to_opendss.tse_to_third_party_tools_converter import tse2tpt
+        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
         import tse_to_opendss
 
     mdlfile = mdl.get_model_file_path()
