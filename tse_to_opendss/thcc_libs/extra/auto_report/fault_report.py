@@ -25,8 +25,9 @@ def dss_data_build(dss_data_dict):
         dss_data_dict[obj_type].update({busname: obj_data})
 
 
-def generate_report(filename):
+def generate_report(mdlfile):
     import os
+    filename = pathlib.Path(mdlfile).stem
 
     pg_w, pg_h = A4
     margin = 15
@@ -330,10 +331,13 @@ def generate_report(filename):
     add_section("Short-circuit currents")
 
     try:
-        if not os.path.isdir('reports'):
-            os.makedirs('reports')
+        target_files_folder = pathlib.Path(mdlfile).parent.joinpath(f"{filename} Target files")
 
-        doc = SimpleDocTemplate(f"reports/{filename}_faultstudy_report.pdf", rightMargin=margin, leftMargin=margin, topMargin=40, bottomMargin=50)
+        if not os.path.isdir(f'{target_files_folder}/dss/reports'):
+            os.makedirs(f'{target_files_folder}/dss/reports')
+
+        doc = SimpleDocTemplate(f"{target_files_folder}/dss/reports/{filename}_faultstudy_report.pdf",
+                                rightMargin=margin, leftMargin=margin, topMargin=40, bottomMargin=50)
         doc.build(story, canvasmaker=NumberedCanvas)
         subprocess.Popen(f"{filename}_faultstudy_report.pdf", cwd='reports', shell=True)
 
