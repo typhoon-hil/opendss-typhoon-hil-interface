@@ -1,0 +1,610 @@
+version = 4.2
+
+//
+// Saved by sw version: 2022.1 SP1
+// Save timestamp: 12-Apr-2022 @ 04:03:46 PM
+//
+
+model "all_components" {
+    configuration {
+        hil_device = "HIL402"
+        hil_configuration_id = 1
+        simulation_method = bilinear
+        simulation_time_step = 10e-6
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/Capacitor Bank" "Capacitor Bank" {
+        }
+        [
+            position = 4648, 6848
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Controlled Switch" "Controlled Switch" {
+        }
+        [
+            position = 5056, 6880
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Fault" Fault {
+        }
+        [
+            position = 5304, 6880
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Generator" Generator {
+            gen_ts_en = "False"
+            global_basefreq = "False"
+        }
+        [
+            position = 5592, 6888
+            size = 175, 175
+        ]
+
+        component "OpenDSS/Isource" Isource {
+        }
+        [
+            position = 5944, 6856
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Line" Line {
+        }
+        [
+            position = 6168, 6864
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Load" Load {
+            Pow_ref_s = "Fixed"
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            global_basefreq = "False"
+            ground_connected = "False"
+            load_model = "Constant Impedance"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 6432, 6864
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Single-Phase Transformer" "Single-Phase Transformer" {
+            KVAs = "[1000, 1000]"
+            KVs = "[12.47, 12.47]"
+            XscArray = "[2]"
+            percentNoloadloss = "2"
+            percentRs = "[1, 1]"
+        }
+        [
+            position = 4728, 7376
+            size = 64, 64
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" "Three-Phase Transformer" {
+        }
+        [
+            position = 5096, 7376
+            size = 64, 96
+        ]
+
+        component "OpenDSS/VSConverter" VSConverter {
+            loadshape = "[0.5, 0.8, 1, 0.4, 0.5]"
+            loadshape_int = "1"
+            loadshape_name = "vsc1"
+        }
+        [
+            position = 5520, 7384
+            size = 220, 175
+        ]
+
+        component "OpenDSS/Vsource" Vsource {
+        }
+        [
+            position = 5856, 7384
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Storage" Storage {
+        }
+        [
+            position = 6192, 7384
+            size = 64, 96
+        ]
+    }
+
+    logically_deleted {
+        "Generator.TS_module"
+        "Generator.T_switch"
+        "Generator.Constant102"
+        "Generator.Connection3"
+        "Generator.Connection5116"
+        "Line.pisec"
+        "Load.CPL"
+        "Load.TS_module"
+        "Load.T_switch"
+        "Load.Constant1"
+        "Load.Connection3"
+        "Load.Connection4"
+        "Single-Phase Transformer.Vreg"
+        "Single-Phase Transformer.Connection58"
+        "Single-Phase Transformer.Connection60"
+        "Single-Phase Transformer.Connection61"
+        "Single-Phase Transformer.Connection63"
+        "Three-Phase Transformer.Vreg"
+        "Three-Phase Transformer.Connection57"
+        "Three-Phase Transformer.Connection58"
+        "Three-Phase Transformer.Connection59"
+        "Three-Phase Transformer.Connection60"
+        "Three-Phase Transformer.Connection61"
+        "Three-Phase Transformer.Connection62"
+        "Three-Phase Transformer.Connection63"
+        "VSConverter.TS_module"
+        "VSConverter.T_switch"
+        "VSConverter.Constant102"
+        "VSConverter.Connection3"
+        "VSConverter.Connection5658"
+    }
+
+    default {
+        "OpenDSS/Capacitor Bank" {
+            tp_connection = "Y"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            phases = "3"
+            Kv = "12.47"
+            Kvar = "600"
+            C = "1e-6"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Controlled Switch" {
+            enable_fb_out = "False"
+            fb_out_type = "real"
+            execution_rate = "inherit"
+            initial_state = "on"
+            on_delay = "0"
+            off_delay = "0"
+        }
+
+        "OpenDSS/Fault" {
+            type = "A-B-C-GND"
+            resistance = "0.0001"
+        }
+
+        "OpenDSS/Generator" {
+            phases = "0"
+            kw = "0"
+            kvar = "0"
+            kv = "1"
+            global_basefreq = "True"
+            basefreq = "60"
+            nom_rpm = "1800"
+            kVA = "1000"
+            pf = ".96"
+            model = "0"
+            Xd = "1"
+            Xdp = "0.3"
+            Xdpp = ".2"
+            XRdp = "50"
+            H = "0.5"
+            J = "0"
+            rs = "0"
+            Lls = "0"
+            Lmq = "0"
+            Lmd = "0"
+            Lmzq = "0"
+            Lmzd = "0"
+            rkq = "0"
+            rkq2 = "0"
+            rkd = "0"
+            rfd = "0"
+            Llkq = "0"
+            Llkq2 = "0"
+            Llkd = "0"
+            Llfd = "0"
+            PP = "0"
+            w_base = "0"
+            T_base = "0"
+            ws = "0"
+            ws_inv = "0"
+            Z_base = "0"
+            G_mod = "Constant kW, Fixed Q"
+            Ts = "100e-6"
+            dA = "0"
+            dB = "0"
+            dA11 = "0"
+            dA12 = "0"
+            dA13 = "0"
+            dA14 = "0"
+            dA21 = "0"
+            dA22 = "0"
+            dA23 = "0"
+            dA24 = "0"
+            dA31 = "0"
+            dA32 = "0"
+            dA33 = "0"
+            dA34 = "0"
+            dA41 = "0"
+            dA42 = "0"
+            dA43 = "0"
+            dA44 = "0"
+            dB11 = "0"
+            dB12 = "0"
+            dB13 = "0"
+            dB21 = "0"
+            dB22 = "0"
+            dB23 = "0"
+            dB31 = "0"
+            dB32 = "0"
+            dB33 = "0"
+            dB41 = "0"
+            dB42 = "0"
+            dB43 = "0"
+            Init_En = "True"
+            Init_switch = "0"
+            V_ph_init = "0.581"
+            thet_ph_init = "-1.58"
+            V2M_t = "5"
+            Mech_En = "9"
+            gen_ts_en = "True"
+            load_loadshape = "Choose"
+            loadshape_name = "gen1"
+            loadshape = "[0.5, 0.8, 1, 0.4, 0.5]"
+            loadshape_int = "1"
+            gen_ts_en_bit = "0"
+            T_mode = "Loadshape index"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            S_Ts_mode = "Manual input"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "0"
+            T_Ts_max = "20"
+            del_Ts = "10"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Isource" {
+            amps = "0"
+            Angle = "0"
+            Frequency = "60"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Load" {
+            global_basefreq = "True"
+            fn = "60"
+            conn_type = "Y"
+            ground_connected = "True"
+            phases = "3"
+            Vn_3ph = "1"
+            Sn_3ph = "600"
+            pf_mode_3ph = "Unit"
+            pf_3ph = "0.9"
+            pf_3ph_set = "0"
+            load_model = "Constant Power"
+            model = "2"
+            Pow_ref_s = "Time Series"
+            Ts = "300e-6"
+            Tfast = "100e-6"
+            CPL_LMT = "2"
+            Vn_3ph_CPL = "0"
+            P_CPL = "0"
+            Q_CPL = "0"
+            kV = "0"
+            pf = "0"
+            conn = "0"
+            kVA = "0"
+            basefreq = "0"
+            load_loadshape = "Choose"
+            loadshape_name = "loadsh01"
+            loadshape = "[0.5, 0.7, 1, 0.4, 0.5]"
+            loadshape_int = "1"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            T_mode = "Time"
+            S_Ts_mode = "Manual input"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "5"
+            T_Ts_max = "10"
+            del_Ts = "20"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Single-Phase Transformer" {
+            num_windings = "2"
+            embedded_cpl_12 = "None"
+            embedded_cpl_13 = "None"
+            embedded_cpl_14 = "None"
+            embedded_cpl_15 = "None"
+            embedded_cpl_16 = "None"
+            embedded_cpl_17 = "None"
+            embedded_cpl_18 = "None"
+            embedded_cpl_19 = "None"
+            embedded_cpl_110 = "None"
+            KVs = "[12.47e3, 12.47e3]"
+            KVAs = "[12e6, 6e6]"
+            percentRs = "[2, 2]"
+            XArray = "[1, 1]"
+            XscArray = "[1]"
+            global_basefreq = "True"
+            Basefreq = "60"
+            percentNoloadloss = "1"
+            percentimag = "0"
+            regcontrol_on = "False"
+            maxtap = "1.1"
+            mintap = "0.9"
+            numtaps = "32"
+            ctrl_winding = "Winding 1"
+            vreg = "207.84"
+            ptratio = "60"
+            winding_voltage = "12470"
+            band = "3"
+            delay = "15"
+            execution_rate = "100e-6"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Storage" {
+            dispatch_p = "Default"
+            dispatch_q = "Unit PF"
+            snap_status = "Charging"
+            kv = "115"
+            global_basefreq = "True"
+            basefreq = "60"
+            kwrated = "25"
+            kwhrated = "50"
+            chargetrigger = "0.2"
+            dischargetrigger = "0.6"
+            pct_charge = "100"
+            pct_discharge = "100"
+            pct_effcharge = "90"
+            pct_effdischarge = "90"
+            kvar = "0"
+            pf = "1"
+            pct_idlingkvar = "0"
+            pct_idlingkw = "1"
+            pct_reserve = "20"
+            load_loadshape = "Choose"
+            loadshape_name = ""
+            loadshape = ""
+            timespan = "Daily"
+            pct_stored = "100"
+            execution_rate = "100e-6"
+            vmaxpu = "1.1"
+            vminpu = "0.9"
+            kva = "0"
+            inv_r = "1e-5"
+            inv_l = "100e-6"
+            inv_rf = "100e-3"
+            inv_cf = "1.013e-3"
+            inv_kp = "0.0001"
+            inv_ki = "0.03"
+            loadshape_n_points = "0"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Three-Phase Transformer" {
+            num_windings = "2"
+            embedded_cpl = "None"
+            embedded_cpl_12 = "None"
+            embedded_cpl_13 = "None"
+            embedded_cpl_14 = "None"
+            KVs = "[12.47, 12.47]"
+            KVAs = "[1000, 1000]"
+            percentRs = "[2, 2]"
+            XArray = "[1, 1]"
+            XscArray = "[2.0, 2.0]"
+            global_basefreq = "True"
+            Basefreq = "60"
+            percentNoloadloss = "2"
+            percentimag = "0"
+            prim_conn = "Y"
+            grounded_prim = "False"
+            sec1_conn = "Y"
+            grounded_sec1 = "False"
+            sec2_conn = "Y"
+            grounded_sec2 = "False"
+            sec3_conn = "Y"
+            grounded_sec3 = "False"
+            regcontrol_on = "False"
+            maxtap = "1.1"
+            mintap = "0.9"
+            numtaps = "32"
+            ctrl_winding = "Winding 1"
+            vreg = "120"
+            ptratio = "60"
+            winding_voltage = "7200.0"
+            band = "3"
+            delay = "15"
+            execution_rate = "100e-6"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/VSConverter" {
+            ctrl_mode_str = "PQ"
+            ctrl_mode_int = "0"
+            ext_mode = "0"
+            P_ref_str = "Converter nominal"
+            P_sel = "0"
+            Q_ref_str = "Converter nominal"
+            Q_sel = "0"
+            V_ref_str = "Converter nominal"
+            V_sel = "0"
+            vdc_ref_str = "Converter nominal"
+            fs_ref_str = "Converter nominal"
+            w_sel = "0"
+            P_kp = "2e-3"
+            P_ki = "0.2"
+            Q_kp = "2e-3"
+            Q_ki = "0.05"
+            V_kp = "1e-6"
+            V_ki = "50"
+            vdc_kp = "1000e-6"
+            vdc_ki = "0.01"
+            vdc_set = "2.5"
+            dc_cap_en = "True"
+            dc_cap = "1e-2"
+            dc_snub = "500"
+            vac_set = "1.73"
+            global_basefreq = "True"
+            Fs = "60"
+            Sinv = "500"
+            Qinv = "0"
+            Rac = "0.01"
+            Lac = "3e-5"
+            Ts = "100e-6"
+            cont_t = "0"
+            dss_ctrl = "Fixed"
+            Phases = "0"
+            kv = "0"
+            kw = "0"
+            pf = "0"
+            model = "0"
+            basefreq = "0"
+            r0 = "0"
+            r1 = "0"
+            x0 = "0"
+            x1 = "0"
+            pu = "0"
+            Angle = "0"
+            Frequency = "0"
+            basekv = "0"
+            gen_ts_en = "False"
+            load_loadshape = "Choose"
+            loadshape_name = "0"
+            loadshape = "0"
+            loadshape_int = "0"
+            gen_ts_en_bit = "0"
+            T_mode = "Loadshape index"
+            S_Ts = "0"
+            Q_Ts = "0"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "0"
+            dssnpts = "0"
+            T_Ts_max = "0"
+            del_Ts = "0"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Vsource" {
+            ground_connected = "True"
+            basekv = "115"
+            pu = "1"
+            Angle = "0"
+            Frequency = "60"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            enable_monitoring = "False"
+        }
+    }
+}

@@ -2,17 +2,35 @@
 
 The purpose of this library is to build, run and interact with OpenDSS models through the Typhoon HIL interface.
 
-## Getting started
+## Getting started (user)
 
-1) Download the source code from the latest release and extract it
-2) With Typhoon HIL Control Center closed, run *install.bat*
-3) Add the OpenDSS library to Typhoon Schematic Editor
-    1) Open the Schematic Editor and click on *File* | *Modify library paths*
-    2) Click *Browse* and point to the *libs* folder in the root source code folder
-    3) Click *Apply and save*
-    4) Click on *File* | *Reload libraries*
-    
-## Running your first model
+Follow this guide to set up everything needed to build circuit schematics with Typhoon HIL software and simulate using the OpenDSS open-source engine.
+If you wish to contribute to the interface's development, please go to the end of this document.
+
+There are three main steps:
+1) Downloading and installing Typhoon HIL Control Center
+2) Setting up the Typhoon HIL/OpenDSS interface
+3) Building a circuit model
+
+### 1) Typhoon HIL Control Center
+
+If you already have Control Center installed you can ignore these steps, but we highly recommend an update to the latest version
+
+1) Go to https://www.typhoon-hil.com/products/hil-software/
+2) In the *Test drive on Virtual HIL* section, click *Download*
+3) Fill in the details and submit
+4) Follow the installer steps
+5) Open the Typhoon HIL Control Center and on the main window, click *Schematic Editor*
+6) Wait for the first run setup to finish and close Control Center
+
+### 2) OpenDSS interface
+
+1) Download the latest release of the repository: https://github.com/typhoon-hil/opendss-typhoon-hil-interface/releases
+2) Extract the contents
+3) Open *installation.tse* with the Schematic Editor and double-click the component in the model
+4) Click on the menu option *File | Reload libraries*
+
+### 3) Running your first model
 
 On the *Library explorer* panel to the left a new folder called *OpenDSS* appears. This folder contains the supported
 components for OpenDSS simulations. For this example, drag and drop the following components:
@@ -70,4 +88,11 @@ You can start the simulation now and compare the results to the OpenDSS Load-flo
 
 ![Widgets](docs/img/first_mdl_widgets.png?raw=true "Digital Display widgets")
 
+## Getting started (developer)
+
+1) Clone the repository
+2) From the main repository folder, run the command *git submodule update --remote*
+3) With Typhoon HIL installed, run the command *python3-portable*
+4) Run the command *pip install -e* **path_to_the_repo_folder** to install the module on Typhoon's environment
+5) Add the *thcc_libs* folder to the Schematic Editor's library paths and reload
 
