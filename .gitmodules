@@ -1,3 +1,0 @@
-[submodule "tse_to_opendss/tse2tpt_base_converter"]
-	path = tse_to_opendss/tse2tpt_base_converter
-	url = https://github.com/typhoon-hil/tse2tpt-base-converter
