@@ -326,12 +326,11 @@ def report(mdl, mask_handle, mode="snap"):
     import tse_to_opendss.thcc_libs.extra.auto_report.time_series_report as ts_rep
 
     mdlfile = mdl.get_model_file_path()
-    mdlfile_name = pathlib.Path(mdlfile).stem
 
     if mode == "snap":
-        rep_successful = pf_rep.generate_report(mdlfile_name)
+        rep_successful = pf_rep.generate_report(mdlfile)
     elif mode == "fault":
-        rep_successful = fault_rep.generate_report(mdlfile_name)
+        rep_successful = fault_rep.generate_report(mdlfile)
     if not rep_successful[0]:
         mdl.info(rep_successful[1])
 
