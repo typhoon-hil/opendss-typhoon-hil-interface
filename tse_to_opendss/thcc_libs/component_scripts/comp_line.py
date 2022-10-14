@@ -253,7 +253,7 @@ def convert_matrix_to_hil_format(mdl, container_handle, matrix_props):
     prop_dict = {'rmatrix': 'd_R', 'xmatrix': 'd_X', 'cmatrix': 'd_C'}
     for mat_name in matrix_props:
         mat_prop = mdl.prop(container_handle, mat_name)
-        mat = mdl.get_property_disp_value(mat_prop)
+        mat = mdl.get_property_value(mat_prop)
 
         mod_mat = mat.strip(" [](){}\"\'")
         matrix_rows = mod_mat.split("|")
@@ -279,7 +279,7 @@ def convert_matrix_to_hil_format(mdl, container_handle, matrix_props):
 
         # Check if the matrix input is on the lower triangular form
         if not all([len(row) >= n + 1 for n, row in enumerate(evaluated_matrix)]):
-            raise Exception(
+            raise mdl.error(
                 f"One or more rows of the matrix {mat_name} on {mdl.get_name(comp_handle)} have dimension "
                 f"that does not match with the minimum entries required for a lower triangular matrix.",
                 context=mdl.prop(comp_handle, mat_name))
@@ -511,10 +511,6 @@ def toggle_coupling(mdl, mask_handle, created_ports):
     phases_prop = mdl.prop(comp_handle, "phases")
     phase_num = mdl.get_property_value(phases_prop)
 
-    if phase_num == "1":
-        num_phases = "2"
-    else:
-        num_phases = phase_num
     coupling_prop = mdl.prop(comp_handle, "coupling")
     coupling_type = mdl.get_property_value(coupling_prop)
     dCp = mdl.prop(comp_handle, "dC1")
@@ -524,55 +520,59 @@ def toggle_coupling(mdl, mask_handle, created_ports):
     RL_active = 0
     RL_section = 0
 
-    if not phase_num == "1":
-        if input_type == "Matrix" or (input_type == "LineCode" and mode == "matrix"):
-            cmtx_prop = mdl.prop(comp_handle, "cmatrix")
-            cmtx = mdl.get_property_disp_value(cmtx_prop)
-            cmtx_sum = 0
-            if re.match(r'[^\n\|\s]+', cmtx):
-                re_str = '([+-]?[0-9]+[.]?[0-9]*[eE]?[+-]?[0-9]*|[+-]?[0-9]*[.]?[0-9]+[eE]?[+-]?[0-9]*)'
-                cmtx_elements = re.findall(re_str, cmtx)
-            for idx, _ in enumerate(cmtx_elements):
-                cmtx_sum = cmtx_sum + float(cmtx_elements[idx])
+    if input_type == "Matrix" or (input_type == "LineCode" and mode == "matrix"):
+        cmtx_prop = mdl.prop(comp_handle, "cmatrix")
 
-            if cmtx_sum == 0:
+        cmtx = mdl.get_property_value(cmtx_prop)
+
+        mod_mat = cmtx.strip(" [](){}\"\'")
+        matrix_rows = mod_mat.split("|")
+
+        dummy_matrix = "["
+        for row_number in range(len(matrix_rows) - 1):
+            dummy_matrix += f'[{matrix_rows[row_number].strip()}], '
+        dummy_matrix += f'[{matrix_rows[-1].strip()}]]'
+        dummy_matrix = re.sub(r"[\s,]+", ", ", dummy_matrix)
+        try:
+            evaluated_matrix = ast.literal_eval(dummy_matrix)
+            if not np.any(np.matrix(evaluated_matrix)):
                 RL_section = 1
             else:
                 RL_section = 0
+
+        except ValueError:
+            mdl.info((f"It wasn't possible to evaluate the property {mdl.get_name(cmtx_prop)} on the Line"
+                      f" {mdl.get_name(comp_handle)}: {cmtx}. \n Check if the property exists on the init script "
+                      f"and click on the 'Validate Model' button to update the namespace."
+                      f"Since the evaluation failed, the Line will be set to the PI model"))
+
+    else:
+        dCp = mdl.prop(comp_handle, "dC1")
+        dCp_value = mdl.get_property_value(dCp)
+        dCz = mdl.prop(comp_handle, "dC0")
+        dCz_value = mdl.get_property_value(dCz)
+        if str(dCp_value) == "0" and str(dCz_value) == "0":
+            RL_section = 1
         else:
-            dCp = mdl.prop(comp_handle, "dC1")
-            dCp_value = mdl.get_property_value(dCp)
-            dCz = mdl.prop(comp_handle, "dC0")
-            dCz_value = mdl.get_property_value(dCz)
-            if str(dCp_value) == "0" and str(dCz_value) == "0":
-                RL_section = 1
-            else:
-                RL_section = 0
+            RL_section = 0
 
     if input_type == "Matrix" or (input_type == "LineCode" and mode == "matrix"):
         mdl.set_property_value(mdl.prop(transmission_line, "model_def"), "RLC")
-        mdl.set_property_value(mdl.prop(transmission_line, "num_of_phases"), num_phases)
+        mdl.set_property_value(mdl.prop(transmission_line, "num_of_phases"), phase_num)
     else:
-        mdl.set_property_value(mdl.prop(transmission_line, "num_of_phases"), num_phases)
+        mdl.set_property_value(mdl.prop(transmission_line, "num_of_phases"), phase_num)
 
     ###########
-    conn1phin = mdl.get_item("Conn_1ph_gnd_in", parent=comp_handle, item_type="connection")
-    conn1phout = mdl.get_item("Conn_1ph_gnd_out", parent=comp_handle, item_type="connection")
 
-    if phase_num == "3":
-        if conn1phin:
-            mdl.delete_item(conn1phin)
-        if conn1phout:
-            mdl.delete_item(conn1phout)
-    elif phase_num == "2":
-        if conn1phin:
-            mdl.delete_item(conn1phin)
-        if conn1phout:
-            mdl.delete_item(conn1phout)
-
+    port_A1 = mdl.get_item("A1", parent=comp_handle, item_type="port")
+    port_B1 = mdl.get_item("B1", parent=comp_handle, item_type="port")
+    port_C1 = mdl.get_item("C1", parent=comp_handle, item_type="port")
     port_A2 = mdl.get_item("A2", parent=comp_handle, item_type="port")
     port_B2 = mdl.get_item("B2", parent=comp_handle, item_type="port")
     port_C2 = mdl.get_item("C2", parent=comp_handle, item_type="port")
+    coup = mdl.get_item("CC", parent=comp_handle)
+
+    mdl.info(f"{coupling_type=}")
 
     if coupling_type == "None":
         if coupling:
@@ -581,11 +581,7 @@ def toggle_coupling(mdl, mask_handle, created_ports):
                 mdl.delete_item(portN2)
 
             mdl.create_connection(port_A2, mdl.term(transmission_line, "a_out"))
-            if phase_num == "1":
-                conn1phout = mdl.get_item("Conn_1ph_gnd_out", parent=comp_handle, item_type="connection")
-                if not conn1phout:
-                    mdl.create_connection(port_N, mdl.term(transmission_line, "b_out"), name="Conn_1ph_gnd_out")
-            elif phase_num == "2":
+            if phase_num == "2":
                 mdl.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
             elif phase_num == "3":
                 mdl.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
@@ -646,18 +642,14 @@ def toggle_coupling(mdl, mask_handle, created_ports):
             )
         except:
             mdl.create_connection(port_A2, mdl.term(transmission_line, "a_out"))
-            if phase_num == "1":
-                conn1phout = mdl.get_item("Conn_1ph_gnd_out", parent=comp_handle, item_type="connection")
-                if not conn1phout:
-                    mdl.create_connection(port_N, mdl.term(transmission_line, "b_out"), name="Conn_1ph_gnd_out")
-            elif phase_num == "2":
+            if phase_num == "2":
                 mdl.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
             elif phase_num == "3":
                 mdl.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
                 mdl.create_connection(port_C2, mdl.term(transmission_line, "c_out"))
             mdl.delete_item(portN2)
             mdl.info("It was not possible to create the Device Coupling because the component is not" +
-                       " available in the library. Make sure the HIL device model and configuration are properly set.")
+                     " available in the library. Make sure the HIL device model and configuration are properly set.")
             mdl.set_property_value(coupling_prop, "Core coupling")
         else:
             mdl.create_connection(port_A2, mdl.term(coup, "a_out"))
@@ -677,7 +669,7 @@ def toggle_coupling(mdl, mask_handle, created_ports):
 
             mdl.create_connection(mdl.term(coup, "a_in"), mdl.term(transmission_line, "a_out"))
             if phase_num == "1":
-                mdl.create_connection(mdl.term(coup, "b_in"), mdl.term(transmission_line, "b_out"))
+                mdl.create_connection(mdl.term(coup, "b_in"), port_N)
             elif phase_num == "2":
                 mdl.create_connection(mdl.term(coup, "b_in"), mdl.term(transmission_line, "b_out"))
             elif phase_num == "3":
@@ -689,27 +681,19 @@ def toggle_coupling(mdl, mask_handle, created_ports):
                     mdl.create_connection(mdl.term(coup, "d_in"), mdl.term(transmission_line, "gnd"))
                 elif phase_num == "2":
                     mdl.create_connection(mdl.term(coup, "c_in"), mdl.term(transmission_line, "gnd"))
-                elif phase_num == "1":
-                    mdl.create_connection(mdl.term(coup, "b_in"), mdl.term(transmission_line, "gnd"))
+                # elif phase_num == "1":
+                #     mdl.create_connection(mdl.term(coup, "b_in"), mdl.term(transmission_line, "gnd"))
             elif RL_active == 0 and mdl.get_property_value(mdl.prop(transmission_line, "model")) == "RL coupled":
                 if phase_num == "3":
                     mdl.create_connection(mdl.term(coup, "d_in"), port_N, name="ConnTLN2")
                 elif phase_num == "2":
                     mdl.create_connection(mdl.term(coup, "c_in"), port_N, name="ConnTLN2")
-                elif phase_num == "1":
-                    mdl.create_connection(mdl.term(coup, "b_in"), port_N, name="ConnTLN2")
+                # elif phase_num == "1":
+                #     mdl.create_connection(mdl.term(coup, "b_in"), port_N, name="ConnTLN2")
 
     else:  # Old model was loaded
         mdl.set_property_value(coupling_prop, "None")
-
-    port_A1 = mdl.get_item("A1", parent=comp_handle, item_type="port")
-    port_B1 = mdl.get_item("B1", parent=comp_handle, item_type="port")
-    port_C1 = mdl.get_item("C1", parent=comp_handle, item_type="port")
-    port_A2 = mdl.get_item("A2", parent=comp_handle, item_type="port")
-    port_B2 = mdl.get_item("B2", parent=comp_handle, item_type="port")
-    port_C2 = mdl.get_item("C2", parent=comp_handle, item_type="port")
-    coup = mdl.get_item("CC", parent=comp_handle)
-
+    mdl.info("got to 696")
     if RL_section == 1:
         if port_A1 and port_A2:
             if not len(mdl.find_connections(port_A1)) == 0:
@@ -730,11 +714,26 @@ def toggle_coupling(mdl, mask_handle, created_ports):
                 mdl.delete_item(mdl.find_connections(port_C1)[0])
             if not len(mdl.find_connections(port_C2)) == 0:
                 mdl.delete_item(mdl.find_connections(port_C2)[0])
+        mdl.info("got to 717")
+        # if not phase_num == 1:
+        if not port_N:
+            mdl.info("made it to port_N")
+            port_N = created_ports.get("N")
 
-        if phase_num == "1":
-            if not port_N:
-                port_N = created_ports.get("N")
+        coup = mdl.get_item("CC", parent=comp_handle, item_type="component")
+        if not coup and port_N:
+            mdl.delete_item(port_N)
+        if coup and not port_N:
+            port_N = mdl.create_port(
+                name="N",
+                parent=comp_handle,
+                kind="pe",
+                terminal_position=("bottom", "left"),
+                position=(7744, 8272),
+                rotation="left"
+            )
 
+        mdl.info("made it to line 732")
         mode_toggle = 0
         if mdl.get_property_value(mdl.prop(transmission_line, "model")) == "PI":
             mode_toggle = 1
@@ -745,26 +744,35 @@ def toggle_coupling(mdl, mask_handle, created_ports):
         elif phase_num == "3":
             mdl.create_connection(port_B1, mdl.term(transmission_line, "b_in"))
             mdl.create_connection(port_C1, mdl.term(transmission_line, "c_in"))
+
         if coup:
-            connTLN2 = mdl.get_item("ConnTLN2", parent=comp_handle, item_type="connection")
-            if connTLN2:
-                mdl.delete_item(connTLN2)
+            mdl.delete_item(coup)
+
+            coup = mdl.create_component(
+                coup_component_type,
+                name="CC",
+                parent=comp_handle,
+                position=(7944, 8082)
+            )
 
             mdl.create_connection(port_A2, mdl.term(coup, "a_out"))
-            if mode_toggle == 1:
-                mdl.create_connection(mdl.term(transmission_line, "a_out"), mdl.term(coup, "a_in"))
-            if phase_num == "2":
+            mdl.create_connection(mdl.term(transmission_line, "a_out"), mdl.term(coup, "a_in"))
+            if phase_num == "1":
+                mdl.create_connection(portN2, mdl.term(coup, "b_out"))
+                mdl.create_connection(port_N, mdl.term(coup, "b_in"))
+            elif phase_num == "2":
                 mdl.create_connection(port_B2, mdl.term(coup, "b_out"))
-                mdl.create_connection(port_N, mdl.term(coup, "c_in"), name="ConnTLN2")
-                if mode_toggle == 1:
-                    mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
+                mdl.create_connection(port_N, mdl.term(coup, "c_in"))
+                mdl.create_connection(portN2, mdl.term(coup, "c_out"))
+                mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
             elif phase_num == "3":
                 mdl.create_connection(port_B2, mdl.term(coup, "b_out"))
                 mdl.create_connection(port_C2, mdl.term(coup, "c_out"))
-                mdl.create_connection(port_N, mdl.term(coup, "d_in"), name="ConnTLN2")
-                if mode_toggle == 1:
-                    mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
-                    mdl.create_connection(mdl.term(transmission_line, "c_out"), mdl.term(coup, "c_in"))
+                mdl.create_connection(port_N, mdl.term(coup, "d_in"))
+                mdl.create_connection(portN2, mdl.term(coup, "d_out"))
+                mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
+                mdl.create_connection(mdl.term(transmission_line, "c_out"), mdl.term(coup, "c_in"))
+
 
         else:
             mdl.create_connection(port_A2, mdl.term(transmission_line, "a_out"))
@@ -775,6 +783,7 @@ def toggle_coupling(mdl, mask_handle, created_ports):
                 mdl.create_connection(port_C2, mdl.term(transmission_line, "c_out"))
 
     else:
+        mdl.info("got to 766")
         if port_A1 and port_A2:
             if not len(mdl.find_connections(port_A1)) == 0:
                 for xx in mdl.find_connections(port_A1):
@@ -794,9 +803,11 @@ def toggle_coupling(mdl, mask_handle, created_ports):
                 mdl.delete_item(mdl.find_connections(port_C1)[0])
             if not len(mdl.find_connections(port_C2)) == 0:
                 mdl.delete_item(mdl.find_connections(port_C2)[0])
+
         if not port_N:
             port_N = created_ports.get("N")
 
+        mdl.info("got to 788")
         mode_toggle = 0
         if mdl.get_property_value(mdl.prop(transmission_line, "model")) == "RL coupled":
             mode_toggle = 1
@@ -808,58 +819,55 @@ def toggle_coupling(mdl, mask_handle, created_ports):
         elif phase_num == "3":
             mdl.create_connection(port_B1, mdl.term(transmission_line, "b_in"))
             mdl.create_connection(port_C1, mdl.term(transmission_line, "c_in"))
+        mdl.info("got to 800")
+        coup = mdl.get_item("CC", parent=comp_handle, item_type="component")
+        mdl.info("got to 802")
+
         if coup:
+            mdl.delete_item(coup)
+
+            coup = mdl.create_component(
+                coup_component_type,
+                name="CC",
+                parent=comp_handle,
+                position=(7944, 8082)
+            )
+
             mdl.create_connection(port_A2, mdl.term(coup, "a_out"))
-            if mode_toggle == 1:
-                mdl.create_connection(mdl.term(transmission_line, "a_out"), mdl.term(coup, "a_in"))
+            mdl.info("also made it here")
+
+            mdl.create_connection(mdl.term(transmission_line, "a_out"), mdl.term(coup, "a_in"))
+            if phase_num == "1":
+                mdl.create_connection(mdl.term(transmission_line, "gnd"), mdl.term(coup, "b_in"))
+                mdl.create_connection(mdl.term(coup, "b_out"), portN2)
             if phase_num == "2":
                 mdl.create_connection(port_B2, mdl.term(coup, "b_out"))
-                if mode_toggle == 1:
-                    mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
+                mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
+                mdl.create_connection(mdl.term(transmission_line, "gnd"), mdl.term(coup, "c_in"))
+                mdl.create_connection(mdl.term(coup, "c_out"), portN2)
             elif phase_num == "3":
                 mdl.create_connection(port_B2, mdl.term(coup, "b_out"))
                 mdl.create_connection(port_C2, mdl.term(coup, "c_out"))
-                if mode_toggle == 1:
-                    mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
-                    mdl.create_connection(mdl.term(transmission_line, "c_out"), mdl.term(coup, "c_in"))
+                mdl.create_connection(mdl.term(transmission_line, "b_out"), mdl.term(coup, "b_in"))
+                mdl.create_connection(mdl.term(transmission_line, "c_out"), mdl.term(coup, "c_in"))
+                mdl.create_connection(mdl.term(transmission_line, "gnd"), mdl.term(coup, "d_in"))
+                mdl.create_connection(mdl.term(coup, "d_out"), portN2)
+            mdl.info("got to 813")
         else:
+            mdl.info("got to 822")
             mdl.create_connection(port_A2, mdl.term(transmission_line, "a_out"))
             if phase_num == "2":
                 mdl.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
             elif phase_num == "3":
                 mdl.create_connection(port_B2, mdl.term(transmission_line, "b_out"))
                 mdl.create_connection(port_C2, mdl.term(transmission_line, "c_out"))
+        mdl.info("got to 820")
         connTLN = mdl.get_item("ConnTLN1", parent=comp_handle, item_type="connection")
         if not connTLN:
             mdl.create_connection(port_N, mdl.term(transmission_line, "gnd"), name="ConnTLN1")
 
-    conn1pha1 = mdl.get_item("Conn1phA1", parent=comp_handle, item_type="connection")
-    conn1pha2 = mdl.get_item("Conn1phA2", parent=comp_handle, item_type="connection")
-    conn1phN = mdl.get_item("Conn1phN", parent=comp_handle, item_type="connection")
-    conn1phN2 = mdl.get_item("Conn1phN2", parent=comp_handle, item_type="connection")
-    if conn1pha1:
-        mdl.delete_item(conn1pha1)
-    if conn1pha2:
-        mdl.delete_item(conn1pha2)
-    if conn1phN:
-        mdl.delete_item(conn1phN)
-    if conn1phN2:
-        mdl.delete_item(conn1phN2)
-    if phase_num == "1":
-        if port_N:
-            mdl.create_connection(mdl.term(pi_section, "N"), port_N, name="Conn1phN")
-
-        mdl.create_connection(mdl.term(pi_section, "A1"), port_A1, name="Conn1phA1")
-        if coup:
-            mdl.create_connection(mdl.term(pi_section, "A2"), mdl.term(coup, "a_in"), name="Conn1phA2")
-            mdl.create_connection(mdl.term(pi_section, "N"), mdl.term(coup, "b_in"), name="Conn1phN2")
-        else:
-            mdl.create_connection(mdl.term(pi_section, "A2"), port_A2, name="Conn1phA2")
-        mdl.enable_items(pi_section)
-        mdl.disable_items(transmission_line)
-    else:
-        mdl.enable_items(transmission_line)
-        mdl.disable_items(pi_section)
+    mdl.info("got to the end of the function")
+    mdl.disable_items(pi_section)
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
@@ -923,18 +931,31 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     if not phase_num == "1":
         if input_type == "Matrix" or (input_type == "LineCode" and mode == "matrix"):
             cmtx_prop = mdl.prop(comp_handle, "cmatrix")
-            cmtx = mdl.get_property_disp_value(cmtx_prop)
-            cmtx_sum = 0
-            if re.match(r'[^\n\|\s]+', cmtx):
-                re_str = '([+-]?[0-9]+[.]?[0-9]*[eE]?[+-]?[0-9]*|[+-]?[0-9]*[.]?[0-9]+[eE]?[+-]?[0-9]*)'
-                cmtx_elements = re.findall(re_str, cmtx)
-            for idx, _ in enumerate(cmtx_elements):
-                cmtx_sum = cmtx_sum + float(cmtx_elements[idx])
 
-            if cmtx_sum == 0:
-                RL_section = 1
-            else:
+            cmtx = mdl.get_property_value(cmtx_prop)
+
+            mod_mat = cmtx.strip(" [](){}\"\'")
+            matrix_rows = mod_mat.split("|")
+
+            dummy_matrix = "["
+            for row_number in range(len(matrix_rows) - 1):
+                dummy_matrix += f'[{matrix_rows[row_number].strip()}], '
+            dummy_matrix += f'[{matrix_rows[-1].strip()}]]'
+            dummy_matrix = re.sub(r"[\s,]+", ", ", dummy_matrix)
+            try:
+                evaluated_matrix = ast.literal_eval(dummy_matrix)
+                if not np.any(np.matrix(evaluated_matrix)):
+                    RL_section = 1
+                else:
+                    RL_section = 0
+
+            except ValueError:
+                mdl.info((f"It wasn't possible to evaluate the property {mdl.get_name(cmtx_prop)} on the Line"
+                          f" {mdl.get_name(comp_handle)}: {cmtx}. \n Check if the property exists on the init script "
+                          f"and click on the 'Validate Model' button to update the namespace."
+                          f"Since the evaluation failed, the Line will be set to the PI model"))
                 RL_section = 0
+
         else:
             dCp = mdl.prop(comp_handle, "dC1")
             dCp_value = mdl.get_property_value(dCp)
@@ -952,7 +973,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=(-32, 0),
-                position=(7512, 8032)
+                position=(7512, 8032),
+                rotation="up"
             )
             created_ports.update({"B1": port_B1})
         if not port_B2:
@@ -961,7 +983,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=(32, 0),
-                position=(8008, 8032)
+                position=(8008, 8032),
+                rotation="down"
             )
             created_ports.update({"B2": port_B2})
         if not port_C1:
@@ -970,7 +993,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=(-32, 32),
-                position=(7512, 8088)
+                position=(7512, 8088),
+                rotation="up"
             )
             created_ports.update({"C1": port_C1})
         if not port_C2:
@@ -979,7 +1003,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=(32, 32),
-                position=(8008, 8128)
+                position=(8008, 8128),
+                rotation="down"
             )
             created_ports.update({"C2": port_C2})
     elif phase_num == "2":
@@ -995,7 +1020,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=(-32, 0),
-                position=(7512, 8032)
+                position=(7512, 8032),
+                rotation="up"
             )
             created_ports.update({"B1": port_B1})
         if not port_B2:
@@ -1004,7 +1030,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=(32, 0),
-                position=(8008, 8032)
+                position=(8008, 8032),
+                rotation="down"
             )
             created_ports.update({"B2": port_B2})
     elif phase_num == "1":
@@ -1042,7 +1069,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                     parent=comp_handle,
                     kind="pe",
                     terminal_position=("bottom", "left"),
-                    position=(7728, 8144)
+                    position=(7744, 8272),
+                    rotation="left"
                 )
                 created_ports.update({"N": port_N})
     else:
@@ -1052,7 +1080,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=("bottom", "left"),
-                position=(7728, 8144)
+                position=(7744, 8272),
+                rotation="left"
             )
             created_ports.update({"N": port_N})
 

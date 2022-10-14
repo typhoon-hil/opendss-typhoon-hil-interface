@@ -744,31 +744,28 @@ library "OpenDSS" {
                 rmatrix {
                     label = "Rmatrix"
                     widget = edit
-                    type = generic
+                    type = string
                     default_value = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
                     unit = "Ω/km"
                     group = "Line Parameters"
-                    no_evaluate
                 }
 
                 xmatrix {
                     label = "Xmatrix"
                     widget = edit
-                    type = generic
+                    type = string
                     default_value = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
                     unit = "Ω/km"
                     group = "Line Parameters"
-                    no_evaluate
                 }
 
                 cmatrix {
                     label = "Cmatrix"
                     widget = edit
-                    type = generic
+                    type = string
                     default_value = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
                     unit = "nF/km"
                     group = "Line Parameters"
-                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -22109,6 +22106,12 @@ Te_mem = Te;
                         return comp_script
 
                     comp_script.define_icon(mdl, item_handle)
+                    comp_script.update_source_values(mdl, item_handle)
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_source_values(mdl, item_handle)
                 ENDCODE
             }
         }
@@ -29146,6 +29149,11 @@ Te_mem = Te;
                         return comp_script
 
                     comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_source_values(mdl, item_handle)
                 ENDCODE
             }
         }

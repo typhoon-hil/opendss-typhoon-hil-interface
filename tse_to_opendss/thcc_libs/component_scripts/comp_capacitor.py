@@ -2,6 +2,7 @@ import numpy as np
 
 x0, y0 = (8192, 8192)
 
+
 def calculate_c(mdl, mask_handle):
     tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
     tp_connection = mdl.get_property_value(tp_connection_prop)
@@ -51,7 +52,6 @@ def recreate_capacitors(mdl, comp_handle):
             mdl.delete_item(cap_b)
         if cap_c:
             mdl.delete_item(cap_c)
-
 
 
 def y_delta_connection(mdl, comp_handle, tp_connection, phases):
@@ -207,7 +207,6 @@ def redo_connections(mdl, mask_handle):
         y_delta_connection(mdl, comp_handle, tp_connection, phases)
 
 
-
 def toggle_frequency_prop(mdl, mask_handle):
     frequency_prop = mdl.prop(mask_handle, "BaseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
@@ -239,6 +238,7 @@ def update_frequency_property(mdl, mask_handle, init=False):
             else:
                 mdl.set_property_value(global_frequency_prop, False)
         toggle_frequency_prop(mdl, mask_handle)
+
 
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     comp_handle = mdl.get_parent(mask_handle)
@@ -314,7 +314,6 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         if C1:
             deleted_ports.append(mdl.get_name(C1))
             mdl.delete_item(C1)
-
 
     tp_connection_prop = mdl.prop(comp_handle, "tp_connection")
     tp_connection = mdl.get_property_disp_value(tp_connection_prop)
@@ -424,6 +423,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             mdl.set_port_properties(gnd, terminal_position=(0, 32))
 
     return created_ports, deleted_ports
+
 
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
