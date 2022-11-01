@@ -600,6 +600,7 @@ library "OpenDSS" {
                     default_value = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
                     unit = "Ω/km"
                     group = "Line Parameters"
+                    no_evaluate
                 }
 
                 xmatrix {
@@ -609,6 +610,7 @@ library "OpenDSS" {
                     default_value = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
                     unit = "Ω/km"
                     group = "Line Parameters"
+                    no_evaluate
                 }
 
                 cmatrix {
@@ -618,6 +620,7 @@ library "OpenDSS" {
                     default_value = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
                     unit = "nF/km"
                     group = "Line Parameters"
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)

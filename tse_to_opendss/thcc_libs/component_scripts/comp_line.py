@@ -190,7 +190,13 @@ def load_line_parameters(mdl, container_handle):
             for param in ["phases", "rmatrix", "xmatrix", "cmatrix"]:
                 param_prop = mdl.prop(container_handle, param)
                 value = param_conversion_dict.get(param)
-                value = "" if not value else value
+                if param == "phases":
+                    if not value:
+                        mdl.warning("The linecode selected doesn't have the number of phases defined. "
+                                    "Assuming three-phase.", context=param_prop)
+                        value = 3
+                else:
+                    value = "" if not value else value
                 mdl.set_property_disp_value(param_prop, value)
                 mdl.set_property_value(param_prop, value)
         elif mode == "symmetrical":
@@ -236,7 +242,10 @@ def convert_matrix_to_hil_format(mdl, container_handle, matrix_props):
     prop_dict = {'rmatrix': 'd_R', 'xmatrix': 'd_X', 'cmatrix': 'd_C'}
     for mat_name in matrix_props:
         mat_prop = mdl.prop(container_handle, mat_name)
-        mat = mdl.get_property_value(mat_prop)
+        try:
+            mat = str(mdl.get_ns_var(mdl.get_property_value(mat_prop)))
+        except:
+            mat = str(mdl.get_property_value(mat_prop))
 
         mod_mat = mat.strip(" [](){}\"\'")
         matrix_rows = mod_mat.split("|")
@@ -329,7 +338,6 @@ def configure_cable(mdl, container_handle):
     phase_num = mdl.get_property_value(mdl.prop(container_handle, "phases"))
     w = 2 * np.pi * BaseFreq
     transmission_line = mdl.get_item("TL", parent=comp_handle)
-    pi_section = mdl.get_item("pisec", parent=comp_handle)
 
     mdl.set_property_value(mdl.prop(container_handle, "Length"), Length)
     mdl.set_property_value(mdl.prop(container_handle, "Len"), Length)
@@ -395,35 +403,14 @@ def configure_cable(mdl, container_handle):
 
         convert_matrix_to_hil_format(mdl, container_handle, matrix_props)
 
-        if phase_num == "1":
-            # R1 = mdl.get_property_value(mdl.prop(container_handle, "R1"))
-            # X1 = mdl.get_property_value(mdl.prop(container_handle, "X1"))
-            # dC1 = mdl.get_property_value(mdl.prop(container_handle, "dC1"))
-            R1 = mdl.get_property_value(mdl.prop(container_handle, "d_R"))
-            X1 = mdl.get_property_value(mdl.prop(container_handle, "d_X"))
-            C1 = mdl.get_property_value(mdl.prop(container_handle, "d_C"))
+        Xarray = np.array(mdl.get_property_value(mdl.prop(container_handle, "d_X")))
+        Larray = Xarray/w
+        mdl.set_property_value(mdl.prop(container_handle, "d_L"), Larray.tolist())
 
-            L1 = X1 / w
-
-            R1_one = R1 * Length
-            L1_one = L1 * Length
-            C1_one = C1 * Length
-
-            mdl.set_property_value(mdl.prop(pi_section, "R"), R1_one)
-            mdl.set_property_value(mdl.prop(pi_section, "L"), L1_one)
-            mdl.set_property_value(mdl.prop(pi_section, "C"), C1_one)
-            mdl.set_property_value(mdl.prop(container_handle, "C1"), C1)
-            mdl.set_property_value(mdl.prop(container_handle, "d_L"), L1_one)
-        else:
-            # Convert Xarray to inductance
-            Xarray = np.array(mdl.get_property_value(mdl.prop(container_handle, "d_X")))
-            Larray = Xarray/w
-            mdl.set_property_value(mdl.prop(container_handle, "d_L"), Larray.tolist())
-
-            # RLC model
-            mdl.set_property_value(mdl.prop(transmission_line, "model_def"), "RLC")
-            mdl.set_property_value(mdl.prop(transmission_line, "Length_metric"), "Length")
-            mdl.set_property_value(mdl.prop(transmission_line, "Frequency"), "BaseFreq")
+        # RLC model
+        mdl.set_property_value(mdl.prop(transmission_line, "model_def"), "RLC")
+        mdl.set_property_value(mdl.prop(transmission_line, "Length_metric"), "Length")
+        mdl.set_property_value(mdl.prop(transmission_line, "Frequency"), "BaseFreq")
 
         coupling = mdl.get_property_value(mdl.prop(container_handle, "coupling"))
         if not coupling == "None":
@@ -511,8 +498,10 @@ def toggle_coupling(mdl, mask_handle, created_ports):
     # evaluates the cmatrix property and analyze if the line should have the capacitors (PI model) or not
     if input_type == "Matrix" or (input_type == "LineCode" and mode == "matrix"):
         cmtx_prop = mdl.prop(comp_handle, "cmatrix")
-
-        cmtx = mdl.get_property_value(cmtx_prop)
+        try:
+            cmtx = str(mdl.get_ns_var(mdl.get_property_value(cmtx_prop)))
+        except:
+            cmtx = str(mdl.get_property_value(cmtx_prop))
 
         mod_mat = cmtx.strip(" [](){}\"\'")
         matrix_rows = mod_mat.split("|")
@@ -781,51 +770,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     port_N = mdl.get_item("N", parent=comp_handle, item_type="port")
     portN2 = mdl.get_item("N2", parent=comp_handle, item_type="port")
 
-    input_type_prop = mdl.prop(comp_handle, "input_type")
-    input_type = mdl.get_property_value(input_type_prop)
     coupling_prop = mdl.prop(comp_handle, "coupling")
     coupling_type = mdl.get_property_value(coupling_prop)
-    mode_prop = mdl.prop(comp_handle, "obj_mode")
-    mode = mdl.get_property_value(mode_prop)
-    RL_section = 0
-
-    if not phase_num == "1":
-        if input_type == "Matrix" or (input_type == "LineCode" and mode == "matrix"):
-            cmtx_prop = mdl.prop(comp_handle, "cmatrix")
-
-            cmtx = mdl.get_property_value(cmtx_prop)
-
-            mod_mat = cmtx.strip(" [](){}\"\'")
-            matrix_rows = mod_mat.split("|")
-
-            dummy_matrix = "["
-            for row_number in range(len(matrix_rows) - 1):
-                dummy_matrix += f'[{matrix_rows[row_number].strip()}], '
-            dummy_matrix += f'[{matrix_rows[-1].strip()}]]'
-            dummy_matrix = re.sub(r"[\s,]+", ", ", dummy_matrix)
-            try:
-                evaluated_matrix = ast.literal_eval(dummy_matrix)
-                if not np.any(np.matrix(evaluated_matrix)):
-                    RL_section = 1
-                else:
-                    RL_section = 0
-
-            except ValueError:
-                mdl.info((f"It wasn't possible to evaluate the property {mdl.get_name(cmtx_prop)} on the Line"
-                          f" {mdl.get_name(comp_handle)}: {cmtx}. \n Check if the property exists on the init script "
-                          f"and click on the 'Validate Model' button to update the namespace."
-                          f"Since the evaluation failed, the Line will be set to the PI model"))
-                RL_section = 0
-
-        else:
-            dCp = mdl.prop(comp_handle, "dC1")
-            dCp_value = mdl.get_property_value(dCp)
-            dCz = mdl.prop(comp_handle, "dC0")
-            dCz_value = mdl.get_property_value(dCz)
-            if str(dCp_value) == "0" and str(dCz_value) == "0":
-                RL_section = 1
-            else:
-                RL_section = 0
 
     if phase_num == "3":
         if not port_B1:
@@ -922,19 +868,6 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             )
         created_ports.update({"N2": portN2})
 
-    if RL_section == 1:
-        if phase_num == "1":
-            if not port_N:
-                port_N = mdl.create_port(
-                    name="N",
-                    parent=comp_handle,
-                    kind="pe",
-                    terminal_position=("bottom", "left"),
-                    position=(7704, 8224),
-                    rotation="left"
-                )
-                created_ports.update({"N": port_N})
-    else:
         if not port_N:
             port_N = mdl.create_port(
                 name="N",
@@ -945,7 +878,6 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 rotation="left"
             )
             created_ports.update({"N": port_N})
-
 
     # Relocate ports
     mdl.refresh_icon(comp_handle)
