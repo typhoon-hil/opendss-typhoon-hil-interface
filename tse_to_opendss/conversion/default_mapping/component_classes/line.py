@@ -50,7 +50,9 @@ class Line(TwoTerminal):
                                      k in ["Length", "rmatrix", "xmatrix", "cmatrix"]}
         else:
             new_format_properties = {k: v for k, v in tse_properties.items() if
-                                     k in ["Length", "R1", "R0", "X1", "X0", "C1", "C0"]}
+                                     k in ["Length", "R1", "R0", "X1", "X0"]}
+            new_format_properties["C1"] = tse_properties["dC1"]
+            new_format_properties["C0"] = tse_properties["dC0"]
 
         # Specify the base frequency if not inheriting the global value
 
