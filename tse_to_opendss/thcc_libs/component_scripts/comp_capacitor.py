@@ -27,26 +27,32 @@ def recreate_capacitors(mdl, comp_handle):
 
     if phase_num == "3":
         if not cap_a:
-            cap_a = mdl.create_component("Capacitor", parent=comp_handle, name="Ca", position=(8111,8095), rotation="down")
+            cap_a = mdl.create_component("Capacitor", parent=comp_handle,
+                                         name="Ca", position=(8111, 8095), rotation="down")
             mdl.set_property_value(mdl.prop(cap_a, "capacitance"), "C")
         if not cap_b:
-            cap_b = mdl.create_component("Capacitor", parent=comp_handle, name="Cb", position=(8111,8191), rotation="down")
+            cap_b = mdl.create_component("Capacitor", parent=comp_handle,
+                                         name="Cb", position=(8111, 8191), rotation="down")
             mdl.set_property_value(mdl.prop(cap_b, "capacitance"), "C")
         if not cap_c:
-            cap_c = mdl.create_component("Capacitor", parent=comp_handle, name="Cc", position=(8111,8287), rotation="down")
+            cap_c = mdl.create_component("Capacitor", parent=comp_handle,
+                                         name="Cc", position=(8111, 8287), rotation="down")
             mdl.set_property_value(mdl.prop(cap_c, "capacitance"), "C")
     elif phase_num == "2":
         if not cap_a:
-            cap_a = mdl.create_component("Capacitor", parent=comp_handle, name="Ca", position=(8111,8095), rotation="down")
+            cap_a = mdl.create_component("Capacitor", parent=comp_handle,
+                                         name="Ca", position=(8111, 8095), rotation="down")
             mdl.set_property_value(mdl.prop(cap_a, "capacitance"), "C")
         if not cap_b:
-            cap_b = mdl.create_component("Capacitor", parent=comp_handle, name="Cb", position=(8111,8191), rotation="down")
+            cap_b = mdl.create_component("Capacitor", parent=comp_handle,
+                                         name="Cb", position=(8111, 8191), rotation="down")
             mdl.set_property_value(mdl.prop(cap_b, "capacitance"), "C")
         if cap_c:
             mdl.delete_item(cap_c)
     elif phase_num == "1":
         if not cap_a:
-            cap_a = mdl.create_component("Capacitor", parent=comp_handle, name="Ca", position=(8111,8095), rotation="down")
+            cap_a = mdl.create_component("Capacitor", parent=comp_handle,
+                                         name="Ca", position=(8111, 8095), rotation="down")
             mdl.set_property_value(mdl.prop(cap_a, "capacitance"), "C")
         if cap_b:
             mdl.delete_item(cap_b)
@@ -73,11 +79,11 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
     if gndc:
         mdl.delete_item(gndc)
 
-    #if B1:
+    # if B1:
     #    if not len(mdl.find_connections(B1)) == 0:
     #        for xx in mdl.find_connections(B1):
     #            mdl.delete_item(xx)
-    #if C1:
+    # if C1:
     #    if not len(mdl.find_connections(C1)) == 0:
     #        for xx in mdl.find_connections(C1):
     #            mdl.delete_item(xx)
@@ -202,7 +208,6 @@ def redo_connections(mdl, mask_handle):
             mdl.create_connection(B2, mdl.term(cap_b, "n_node"))
             mdl.create_connection(C2, mdl.term(cap_c, "n_node"))
 
-
     else:
         y_delta_connection(mdl, comp_handle, tp_connection, phases)
 
@@ -318,16 +323,6 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     tp_connection_prop = mdl.prop(comp_handle, "tp_connection")
     tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
-    if tp_connection == "Y" and phases == "1":
-        gnd = mdl.create_port(
-            name="N1",
-            parent=comp_handle,
-            kind="pe",
-            terminal_position=("bottom", "center"),
-            position=(x0 - 300, y0),
-            rotation="up"
-        )
-        created_ports.update({"N1": gnd})
     if (tp_connection == "Y" and phases == "1") or (tp_connection == "Y-grounded" and phases == "3"):
         gnd = mdl.create_port(
             name="N1",
