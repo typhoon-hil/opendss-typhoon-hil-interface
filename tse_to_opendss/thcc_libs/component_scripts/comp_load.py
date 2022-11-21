@@ -5,8 +5,9 @@ import pandas as pd
 
 got_loadshape_points_list = []
 
+
 def set_balanced_fcn(mdl, mask_handle, new_value):
-    if new_value == True:
+    if new_value is True:
         mdl.disable_property(mdl.prop(mask_handle, "VAn"))
         mdl.disable_property(mdl.prop(mask_handle, "VBn"))
         mdl.disable_property(mdl.prop(mask_handle, "VCn"))
@@ -30,8 +31,8 @@ def set_balanced_fcn(mdl, mask_handle, new_value):
         mdl.enable_property(mdl.prop(mask_handle, "Sn_3ph"))
         mdl.enable_property(mdl.prop(mask_handle, "pf_mode_3ph"))
 
-        Vn_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "Vn_3ph"))
-        Sn_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "Sn_3ph"))
+        vn_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "Vn_3ph"))
+        sn_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "Sn_3ph"))
         phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
         pf_mode_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_mode_3ph"))
         if not pf_mode_3ph == "Unit":
@@ -47,18 +48,18 @@ def set_balanced_fcn(mdl, mask_handle, new_value):
         else:
             ph_num = 3
 
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VAn'), Vn_3ph + '*1000/(3**0.5)')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VBn'), Vn_3ph + '*1000/(3**0.5)')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VCn'), Vn_3ph + '*1000/(3**0.5)')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VAB'), Vn_3ph + '*1000')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VBC'), Vn_3ph + '*1000')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VCA'), Vn_3ph + '*1000')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SAn'), Sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SBn'), Sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SCn'), Sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SAB'), Sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SBC'), Sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SCA'), Sn_3ph + '*1000/' + str(phases))
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VAn'), vn_3ph + '*1000/(3**0.5)')
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VBn'), vn_3ph + '*1000/(3**0.5)')
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VCn'), vn_3ph + '*1000/(3**0.5)')
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VAB'), vn_3ph + '*1000')
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VBC'), vn_3ph + '*1000')
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VCA'), vn_3ph + '*1000')
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SAn'), sn_3ph + '*1000/' + str(phases))
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SBn'), sn_3ph + '*1000/' + str(phases))
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SCn'), sn_3ph + '*1000/' + str(phases))
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SAB'), sn_3ph + '*1000/' + str(phases))
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SBC'), sn_3ph + '*1000/' + str(phases))
+        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SCA'), sn_3ph + '*1000/' + str(phases))
         mdl.set_property_disp_value(mdl.prop(mask_handle, 'pf_modeA'), pf_mode_3ph)
         mdl.set_property_disp_value(mdl.prop(mask_handle, 'pf_modeB'), pf_mode_3ph)
         mdl.set_property_disp_value(mdl.prop(mask_handle, 'pf_modeC'), pf_mode_3ph)
@@ -82,14 +83,14 @@ def set_balanced_fcn(mdl, mask_handle, new_value):
         mdl.enable_property(mdl.prop(mask_handle, "pf_modeA"))
         mdl.enable_property(mdl.prop(mask_handle, "pf_modeB"))
         mdl.enable_property(mdl.prop(mask_handle, "pf_modeC"))
-        pf_modeA = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeA"))
-        if not pf_modeA == "Unit":
+        pf_mode_a = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeA"))
+        if not pf_mode_a == "Unit":
             mdl.enable_property(mdl.prop(mask_handle, "pfA"))
-        pf_modeB = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeB"))
-        if not pf_modeB == "Unit":
+        pf_mode_b = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeB"))
+        if not pf_mode_b == "Unit":
             mdl.enable_property(mdl.prop(mask_handle, "pfB"))
-        pf_modeC = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeC"))
-        if not pf_modeC == "Unit":
+        pf_mode_c = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeC"))
+        if not pf_mode_c == "Unit":
             mdl.enable_property(mdl.prop(mask_handle, "pfC"))
 
         mdl.disable_property(mdl.prop(mask_handle, "Vn_3ph"))
@@ -103,73 +104,75 @@ def pf_mode_fcn(mdl, mask_handle, new_value, phase, comp_pos, jun_pos):
         ITEM_JUNCTION
 
     comp_handle = mdl.get_sub_level_handle(mask_handle)
-    R = mdl.get_item("R" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
+    resistance = mdl.get_item("R" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
 
     jun1 = mdl.get_item("J" + phase + "1", parent=comp_handle, item_type=ITEM_JUNCTION)
     if not jun1:
         jun1 = mdl.create_junction(name="J" + phase + "1", parent=comp_handle, kind='pe', position=jun_pos)
 
     if new_value == "Unit":
-        L = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-        C = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
+        inductance = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
+        capacitance = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
 
-        if L:
-            mdl.delete_item(L)
-        if C:
-            mdl.delete_item(C)
+        if inductance:
+            mdl.delete_item(inductance)
+        if capacitance:
+            mdl.delete_item(capacitance)
 
         conn = mdl.get_item("Conn_" + phase, parent=comp_handle, item_type=ITEM_CONNECTION)
         if not conn:
-            mdl.create_connection(mdl.term(R, "n_node"), jun1, name="Conn_" + phase)
+            mdl.create_connection(mdl.term(resistance, "n_node"), jun1, name="Conn_" + phase)
 
     elif new_value == "Lead":
-        L = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-        C = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
+        inductance = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
+        capacitance = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
 
-        if L:
-            mdl.delete_item(L)
-        if not C:
-            C = mdl.create_component("Capacitor", parent=comp_handle, name="C" + phase.lower(), position=comp_pos,
-                                     rotation="right")
-            mdl.set_property_value(mdl.prop(C, "capacitance"), "C" + phase.lower())
+        if inductance:
+            mdl.delete_item(inductance)
+        if not capacitance:
+            capacitance = mdl.create_component("Capacitor", parent=comp_handle, name="C" + phase.lower(),
+                                               position=comp_pos, rotation="right")
+            mdl.set_property_value(mdl.prop(capacitance, "capacitance"), "C" + phase.lower())
 
         conn = mdl.get_item("Conn_" + phase, parent=comp_handle, item_type=ITEM_CONNECTION)
         if conn:
             mdl.delete_item(conn)
 
-        conn = mdl.create_connection(mdl.term(C, "n_node"), jun1, name="Conn_" + phase)
+        conn = mdl.create_connection(mdl.term(capacitance, "n_node"), jun1, name="Conn_" + phase)
 
         conn0 = mdl.get_item("Conn_" + phase + "0", parent=comp_handle, item_type=ITEM_CONNECTION)
         if not conn0:
-            mdl.create_connection(mdl.term(R, "n_node"), mdl.term(C, "p_node"), name="Conn_" + phase + "0")
+            mdl.create_connection(mdl.term(resistance, "n_node"), mdl.term(capacitance, "p_node"),
+                                  name="Conn_" + phase + "0")
 
     else:
-        L = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-        C = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
+        inductance = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
+        capacitance = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
 
-        if C:
-            mdl.delete_item(C)
-        if not L:
-            L = mdl.create_component("Inductor", parent=comp_handle, name="L" + phase.lower(), position=comp_pos,
-                                     rotation="right")
-            mdl.set_property_value(mdl.prop(L, "inductance"), "L" + phase.lower())
+        if capacitance:
+            mdl.delete_item(capacitance)
+        if not inductance:
+            inductance = mdl.create_component("Inductor", parent=comp_handle, name="L" + phase.lower(),
+                                              position=comp_pos, rotation="right")
+            mdl.set_property_value(mdl.prop(inductance, "inductance"), "L" + phase.lower())
 
         conn = mdl.get_item("Conn_" + phase, parent=comp_handle, item_type=ITEM_CONNECTION)
         if conn:
             mdl.delete_item(conn)
 
-        conn = mdl.create_connection(mdl.term(L, "n_node"), jun1, name="Conn_" + phase)
+        conn = mdl.create_connection(mdl.term(inductance, "n_node"), jun1, name="Conn_" + phase)
 
         conn0 = mdl.get_item("Conn_" + phase + "0", parent=comp_handle, item_type=ITEM_CONNECTION)
         if not conn0:
-            mdl.create_connection(mdl.term(R, "n_node"), mdl.term(L, "p_node"), name="Conn_" + phase + "0")
+            mdl.create_connection(mdl.term(resistance, "n_node"), mdl.term(inductance, "p_node"),
+                                  name="Conn_" + phase + "0")
 
 
-def lock_prop(mdl, comp_handle, property, new_value, locking_value):
+def lock_prop(mdl, comp_handle, mask_property, new_value, locking_value):
     if new_value == locking_value:
-        mdl.disable_property(mdl.prop(comp_handle, property))
+        mdl.disable_property(mdl.prop(comp_handle, mask_property))
     else:
-        mdl.enable_property(mdl.prop(comp_handle, property))
+        mdl.enable_property(mdl.prop(comp_handle, mask_property))
 
 
 def conn_type_value_edited_fnc(mdl, container_handle, new_value):
@@ -251,6 +254,7 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.disable_property(mdl.prop(container_handle, "conn_type"))
         mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
 
+
 def load_loadshape(mdl, container_handle):
     import os
     import sys
@@ -262,7 +266,7 @@ def load_loadshape(mdl, container_handle):
     except:
         # If running from development folder instead of installed package
         dss_module_folder = str(pathlib.Path(__file__).parent.parent.parent.parent)
-        if not dss_module_folder in sys.path:
+        if dss_module_folder not in sys.path:
             sys.path.append(dss_module_folder)
 
         from tse_to_opendss.tse2tpt_base_converter import tse2tpt
@@ -311,7 +315,6 @@ def load_loadshape(mdl, container_handle):
         loadshape_from_file_path_prop = mdl.prop(container_handle, "loadshape_from_file_path")
         loadshape_from_file_header_prop = mdl.prop(container_handle, "loadshape_from_file_header")
         loadshape_from_file_column_prop = mdl.prop(container_handle, "loadshape_from_file_column")
-
 
         selected_obj_dict = obj_dicts.get("loadshapes").get(selected_object)
         loadshape_name = selected_object
@@ -420,6 +423,7 @@ def define_icon(mdl, mask_handle):
             else:
                 mdl.set_component_icon_image(mask_handle, 'images/load_3Y.svg')
 
+
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     comp_handle = mdl.get_parent(mask_handle)
     # deleted_ports = []
@@ -441,8 +445,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
-    Pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
-    Pow_ref_s = mdl.get_property_disp_value(Pow_ref_s_prop)
+    pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
+    pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
     # S_Ts_mode_prop = mdl.prop(mask_handle, "S_Ts_mode")
     # mdl.set_property_disp_value(S_Ts_mode_prop, "Manual input")
@@ -450,261 +454,261 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     # S_Ts_mode = mdl.get_property_disp_value(S_Ts_mode_prop)
 
     if phases == "3":
-        portA = mdl.get_item("A1", parent=comp_handle, item_type="port")
-        portB = mdl.get_item("B1", parent=comp_handle, item_type="port")
-        portC = mdl.get_item("C1", parent=comp_handle, item_type="port")
+        port_a = mdl.get_item("A1", parent=comp_handle, item_type="port")
+        port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
+        port_c = mdl.get_item("C1", parent=comp_handle, item_type="port")
 
-        P_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
-        Q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+        p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
+        q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
 
-        if P_ext:
-            mdl.set_port_properties(P_ext, terminal_position=(50, -15))
-            created_ports.update({"P_ext": P_ext})
-        if Q_ext:
-            mdl.set_port_properties(Q_ext, terminal_position=(50, 15))
-            created_ports.update({"Q_ext": Q_ext})
+        if p_ext:
+            mdl.set_port_properties(p_ext, terminal_position=(50, -15))
+            created_ports.update({"P_ext": p_ext})
+        if q_ext:
+            mdl.set_port_properties(q_ext, terminal_position=(50, 15))
+            created_ports.update({"Q_ext": q_ext})
 
-        if not portA:
-            portA = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
-                                    terminal_position=(-30, -32),
-                                    position=(7802, 7862), rotation="right")
-            created_ports.update({"portA": portA})
+        if not port_a:
+            port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
+                                     terminal_position=(-30, -32),
+                                     position=(7802, 7862), rotation="right")
+            created_ports.update({"portA": port_a})
         else:
-            mdl.set_port_properties(portA, terminal_position=(-30, -32))
-            created_ports.update({"portA": portA})
-        if not portB:
-            portB = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                    terminal_position=(0.0, -32),
-                                    position=(7919, 7862), rotation="right")
-            created_ports.update({"portB": portB})
+            mdl.set_port_properties(port_a, terminal_position=(-30, -32))
+            created_ports.update({"portA": port_a})
+        if not port_b:
+            port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
+                                     terminal_position=(0.0, -32),
+                                     position=(7919, 7862), rotation="right")
+            created_ports.update({"portB": port_b})
         else:
-            mdl.set_port_properties(portB, terminal_position=(0.0, -32))
-            created_ports.update({"portB": portB})
-        if not portC:
-            portC = mdl.create_port(parent=comp_handle, name="C1", direction="out", kind="pe",
-                                    terminal_position=(30, -32),
-                                    position=(8055, 7862), rotation="right")
-            created_ports.update({"portC": portC})
+            mdl.set_port_properties(port_b, terminal_position=(0.0, -32))
+            created_ports.update({"portB": port_b})
+        if not port_c:
+            port_c = mdl.create_port(parent=comp_handle, name="C1", direction="out", kind="pe",
+                                     terminal_position=(30, -32),
+                                     position=(8055, 7862), rotation="right")
+            created_ports.update({"portC": port_c})
         else:
-            created_ports.update({"portC": portC})
+            created_ports.update({"portC": port_c})
 
-        junN = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
         if not gnd_check:
-            if junN:
+            if jun_n:
                 if conn_type == "Y":
-                    portN = mdl.get_item("N1", parent=comp_handle, item_type="port")
-                    if not portN:
-                        portN = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                                terminal_position=(0, 30),
-                                                position=(7921, 8384), rotation="left")
-                        created_ports.update({"portN": portN})
+                    port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+                    if not port_n:
+                        port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
+                                                 terminal_position=(0, 30),
+                                                 position=(7921, 8384), rotation="left")
+                        created_ports.update({"portN": port_n})
                     else:
-                        created_ports.update({"portN": portN})
+                        created_ports.update({"portN": port_n})
 
     elif phases == "1":
-        portA = mdl.get_item("A1", parent=comp_handle, item_type="port")
-        portB = mdl.get_item("B1", parent=comp_handle, item_type="port")
-        portC = mdl.get_item("C1", parent=comp_handle, item_type="port")
+        port_a = mdl.get_item("A1", parent=comp_handle, item_type="port")
+        port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
+        port_c = mdl.get_item("C1", parent=comp_handle, item_type="port")
 
-        P_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
-        Q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
-        if P_ext:
-            mdl.set_port_properties(P_ext, terminal_position=(25, -15))
-            created_ports.update({"P_ext": P_ext})
-        if Q_ext:
-            mdl.set_port_properties(Q_ext, terminal_position=(25, 15))
-            created_ports.update({"Q_ext": Q_ext})
+        p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
+        q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+        if p_ext:
+            mdl.set_port_properties(p_ext, terminal_position=(25, -15))
+            created_ports.update({"P_ext": p_ext})
+        if q_ext:
+            mdl.set_port_properties(q_ext, terminal_position=(25, 15))
+            created_ports.update({"Q_ext": q_ext})
 
-        if not portA:
-            portA = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
-                                    terminal_position=(0, -32),
-                                    position=(7802, 7862), rotation="right")
-            created_ports.update({"portA": portA})
+        if not port_a:
+            port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
+                                     terminal_position=(0, -32),
+                                     position=(7802, 7862), rotation="right")
+            created_ports.update({"portA": port_a})
         else:
-            mdl.set_port_properties(portA, terminal_position=(0, -32))
-            created_ports.update({"portA": portA})
+            mdl.set_port_properties(port_a, terminal_position=(0, -32))
+            created_ports.update({"portA": port_a})
         if gnd_check:
-            if portB:
-                mdl.delete_item(portB)
+            if port_b:
+                mdl.delete_item(port_b)
                 created_ports.pop("portB", None)
         else:
-            if not portB:
-                portB = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                        terminal_position=(0, 30),
-                                        position=(7919, 7862), rotation="right")
-                created_ports.update({"portB": portB})
+            if not port_b:
+                port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
+                                         terminal_position=(0, 30),
+                                         position=(7919, 7862), rotation="right")
+                created_ports.update({"portB": port_b})
             else:
-                mdl.set_port_properties(portB, terminal_position=(0, 30))
-                created_ports.update({"portB": portB})
-            portN = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            if portN:
-                mdl.delete_item(portN)
+                mdl.set_port_properties(port_b, terminal_position=(0, 30))
+                created_ports.update({"portB": port_b})
+            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+            if port_n:
+                mdl.delete_item(port_n)
                 created_ports.pop("portN", None)
-        if portC:
-            mdl.delete_item(portC)
+        if port_c:
+            mdl.delete_item(port_c)
             created_ports.pop("portC", None)
 
     if conn_type == "Y":
         if not gnd_check:
-            portN = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            if not portN:
-                portN = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                        terminal_position=(0, 30),
-                                        position=(7921, 8384), rotation="left")
-                created_ports.update({"portN": portN})
+            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+            if not port_n:
+                port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
+                                         terminal_position=(0, 30),
+                                         position=(7921, 8384), rotation="left")
+                created_ports.update({"portN": port_n})
             else:
-                created_ports.update({"portN": portN})
+                created_ports.update({"portN": port_n})
     else:
         if load_model == "Constant Impedance":
-            portN = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            if portN:
-                mdl.delete_item(portN)
+            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+            if port_n:
+                mdl.delete_item(port_n)
                 created_ports.pop("portN", None)
 
     if not gnd_check:
-        junN = mdl.get_item("JN", parent=comp_handle, item_type="junction")
-        if junN:
-            portN = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            portB = mdl.get_item("B1", parent=comp_handle, item_type="port")
+        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+        if jun_n:
+            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+            port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
             if phases == "3":
-                if not portN:
-                    portN = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                            terminal_position=(0, 30),
-                                            position=(7921, 8384), rotation="left")
-                    created_ports.update({"portN": portN})
+                if not port_n:
+                    port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
+                                             terminal_position=(0, 30),
+                                             position=(7921, 8384), rotation="left")
+                    created_ports.update({"portN": port_n})
                 else:
-                    created_ports.update({"portN": portN})
+                    created_ports.update({"portN": port_n})
             else:
-                if not portB:
-                    portB = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                            terminal_position=(0.0, 30),
-                                            position=(7919, 7862), rotation="right")
-                    created_ports.update({"portB": portB})
+                if not port_b:
+                    port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
+                                             terminal_position=(0.0, 30),
+                                             position=(7919, 7862), rotation="right")
+                    created_ports.update({"portB": port_b})
                 else:
-                    mdl.set_port_properties(portB, terminal_position=(0.0, 30))
-                    created_ports.update({"portB": portB})
-                if portN:
-                    mdl.delete_item(portN)
+                    mdl.set_port_properties(port_b, terminal_position=(0.0, 30))
+                    created_ports.update({"portB": port_b})
+                if port_n:
+                    mdl.delete_item(port_n)
                     created_ports.pop("portN", None)
         if conn_type == "Δ":
             if load_model == "Constant Impedance":
-                portN = mdl.get_item("N1", parent=comp_handle, item_type="port")
-                if portN:
-                    mdl.delete_item(portN)
+                port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+                if port_n:
+                    mdl.delete_item(port_n)
                     created_ports.pop("portN", None)
 
     else:
-        portN = mdl.get_item("N1", parent=comp_handle, item_type="port")
+        port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
         if phases == "1":
-            portB = mdl.get_item("B1", parent=comp_handle, item_type="port")
-            if portB:
-                mdl.delete_item(portB)
+            port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
+            if port_b:
+                mdl.delete_item(port_b)
                 created_ports.pop("portB", None)
-        if portN:
-            mdl.delete_item(portN)
+        if port_n:
+            mdl.delete_item(port_n)
             created_ports.pop("portN", None)
 
-    if Pow_ref_s == "Fixed":
+    if pow_ref_s == "Fixed":
 
-        P_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
-        Q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
-        T_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
+        p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
+        q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+        t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
 
-        if P_ext:
-            mdl.delete_item(P_ext)
+        if p_ext:
+            mdl.delete_item(p_ext)
             created_ports.pop("P_ext", None)
-        if Q_ext:
-            mdl.delete_item(Q_ext)
+        if q_ext:
+            mdl.delete_item(q_ext)
             created_ports.pop("Q_ext", None)
-        if T_ext:
-            mdl.delete_item(T_ext)
+        if t_ext:
+            mdl.delete_item(t_ext)
             created_ports.pop("T_ext", None)
-    elif Pow_ref_s == "External input":
+    elif pow_ref_s == "External input":
 
-        P_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
+        p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
 
-        if not P_ext:
+        if not p_ext:
             if phases == "1":
-                P_ext = mdl.create_port(parent=comp_handle, name="P", direction="in", kind="sp",
+                p_ext = mdl.create_port(parent=comp_handle, name="P", direction="in", kind="sp",
                                         terminal_position=(25, -15),
                                         position=(7936, 8175))
-                created_ports.update({"P_ext": P_ext})
+                created_ports.update({"P_ext": p_ext})
             else:
-                P_ext = mdl.create_port(parent=comp_handle, name="P", direction="in", kind="sp",
+                p_ext = mdl.create_port(parent=comp_handle, name="P", direction="in", kind="sp",
                                         terminal_position=(50, -15),
                                         position=(7936, 8175))
-                created_ports.update({"P_ext": P_ext})
+                created_ports.update({"P_ext": p_ext})
         else:
-            created_ports.update({"P_ext": P_ext})
+            created_ports.update({"P_ext": p_ext})
 
-        Q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+        q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
 
-        if not Q_ext:
+        if not q_ext:
             if phases == "1":
-                Q_ext = mdl.create_port(parent=comp_handle, name="Q", direction="in", kind="sp",
+                q_ext = mdl.create_port(parent=comp_handle, name="Q", direction="in", kind="sp",
                                         terminal_position=(25, 15),
                                         position=(7936, 8240))
-                created_ports.update({"Q_ext": Q_ext})
+                created_ports.update({"Q_ext": q_ext})
             else:
-                Q_ext = mdl.create_port(parent=comp_handle, name="Q", direction="in", kind="sp",
+                q_ext = mdl.create_port(parent=comp_handle, name="Q", direction="in", kind="sp",
                                         terminal_position=(50, 15),
                                         position=(7936, 8240))
-                created_ports.update({"Q_ext": Q_ext})
+                created_ports.update({"Q_ext": q_ext})
         else:
-            created_ports.update({"Q_ext": Q_ext})
+            created_ports.update({"Q_ext": q_ext})
 
-        T_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
-        if T_ext:
-            mdl.delete_item(T_ext)
+        t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
+        if t_ext:
+            mdl.delete_item(t_ext)
             created_ports.pop("T_ext", None)
     else:
 
-        P_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
-        Q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
-        T_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
+        p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
+        q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+        t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
 
-        if P_ext:
-            mdl.delete_item(P_ext)
+        if p_ext:
+            mdl.delete_item(p_ext)
             created_ports.pop("P_ext", None)
-        if Q_ext:
-            mdl.delete_item(Q_ext)
+        if q_ext:
+            mdl.delete_item(q_ext)
             created_ports.pop("Q_ext", None)
         # if S_Ts_mode == "Manual input":
-        if not T_ext:
+        if not t_ext:
             if phases == "1":
-                T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
+                t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
                                         terminal_position=(25, 0),
                                         position=(7400, 8400))
-                created_ports.update({"T_ext": T_ext})
+                created_ports.update({"T_ext": t_ext})
             else:
-                T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
+                t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
                                         terminal_position=(50, 0),
                                         position=(7400, 8400))
-                created_ports.update({"T_ext": T_ext})
+                created_ports.update({"T_ext": t_ext})
         else:
-            created_ports.update({"T_ext": T_ext})
+            created_ports.update({"T_ext": t_ext})
         # else:
         #     if T_ext:
         #         mdl.delete_item(T_ext)
         #         created_ports.pop("T_ext", None)
 
     if load_model == "Constant Power":
-        if Pow_ref_s == "Time Series":
-            T_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
+        if pow_ref_s == "Time Series":
+            t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
             # if S_Ts_mode == "Manual input":
-            if not T_ext:
+            if not t_ext:
                 if phases == "1":
-                    T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
+                    t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
                                             terminal_position=(25, 0),
                                             position=(7740, 8210))
-                    created_ports.update({"T_ext": T_ext})
+                    created_ports.update({"T_ext": t_ext})
                 else:
-                    T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
+                    t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
                                             terminal_position=(50, 0),
                                             position=(7740, 8210))
-                    created_ports.update({"T_ext": T_ext})
+                    created_ports.update({"T_ext": t_ext})
             else:
-                created_ports.update({"T_ext": T_ext})
+                created_ports.update({"T_ext": t_ext})
             # else:
             #     if T_ext:
             #         mdl.delete_item(T_ext)
@@ -733,32 +737,32 @@ def connections_dynamics(mdl, mask_handle, created_ports):
     phases = mdl.get_property_disp_value(phases_prop)
 
     if conn_type == "Y":
-        CIL1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-        mdl.set_property_value(mdl.prop(CIL1, "conn_type"), "Y")
-        mdl.set_property_value(mdl.prop(CIL1, "ground_connected"), True)
-        mdl.set_property_value(mdl.prop(CIL1, "ground_connected"), False)
-        connNCIL = mdl.get_item("Conn_AN", parent=comp_handle, item_type="component")
-        junN = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+        cil1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
+        mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Y")
+        mdl.set_property_value(mdl.prop(cil1, "ground_connected"), True)
+        mdl.set_property_value(mdl.prop(cil1, "ground_connected"), False)
+        conn_n_cil = mdl.get_item("Conn_AN", parent=comp_handle, item_type="component")
+        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
 
-        if not junN:
-            junN = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
-                                       position=(7921, 8326))
-        if not connNCIL:
-            mdl.create_connection(mdl.term(CIL1, "N"), junN, name="Conn_AN")
+        if not jun_n:
+            jun_n = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
+                                        position=(7921, 8326))
+        if not conn_n_cil:
+            mdl.create_connection(mdl.term(cil1, "N"), jun_n, name="Conn_AN")
 
         if not gnd_check:
             gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
             if gnd1:
                 mdl.delete_item(gnd1)
-            if junN:
+            if jun_n:
                 if phases == "3":
-                    connN0 = mdl.get_item("Conn_N0", parent=comp_handle, item_type="connection")
-                    if not connN0:
-                        mdl.create_connection(junN, created_ports.get("portN"), name="Conn_N0")
+                    conn_n0 = mdl.get_item("Conn_N0", parent=comp_handle, item_type="connection")
+                    if not conn_n0:
+                        mdl.create_connection(jun_n, created_ports.get("portN"), name="Conn_N0")
 
     else:
-        CIL1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-        mdl.set_property_value(mdl.prop(CIL1, "conn_type"), "Δ")
+        cil1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
+        mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Δ")
 
 
 def connections_gnd_dynamics(mdl, mask_handle, created_ports):
@@ -781,55 +785,56 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
     phases = mdl.get_property_disp_value(phases_prop)
 
     if not gnd_check:
-        junN = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
         gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
         if gnd1:
             mdl.delete_item(gnd1)
-        if junN:
-            connBN = mdl.get_item("ConnB1N", parent=comp_handle, item_type="connection")
-            tagNN = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
-            tagBN = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
+        if jun_n:
+            conn_b_n = mdl.get_item("ConnB1N", parent=comp_handle, item_type="connection")
+            tag_n_n = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
+            tag_b_n = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
             if phases == "3":
-                if tagNN:
-                    mdl.delete_item(tagNN)
-                connN0 = mdl.get_item("Conn_N0", parent=comp_handle, item_type="connection")
-                portN = created_ports.get("portN")
-                if portN:
-                    if not connN0:
-                        mdl.create_connection(junN, portN, name="Conn_N0")
+                if tag_n_n:
+                    mdl.delete_item(tag_n_n)
+                conn_n0 = mdl.get_item("Conn_N0", parent=comp_handle, item_type="connection")
+                port_n = created_ports.get("portN")
+                if port_n:
+                    if not conn_n0:
+                        mdl.create_connection(jun_n, port_n, name="Conn_N0")
             else:
-                if tagBN:
-                    mdl.delete_item(tagBN)
-                tagBN = mdl.create_tag("BN", name="TagBN", parent=comp_handle, scope="local",
-                                       kind="pe", rotation="left", position=(7960, 7944))
-                if not connBN:
-                    mdl.create_connection(created_ports.get("portB"), tagBN, name="ConnB1N")
-                if not tagNN:
-                    tagNN = mdl.create_tag("BN", name="TagNN", parent=comp_handle, scope="local",
-                                           kind="pe", rotation="left", position=(7960, 8384))
-                connBN0 = mdl.get_item("Conn_BN0", parent=comp_handle, item_type="connection")
-                if not connBN0:
-                    mdl.create_connection(junN, tagNN, name="Conn_BN0")
+                if tag_b_n:
+                    mdl.delete_item(tag_b_n)
+                tag_b_n = mdl.create_tag("BN", name="TagBN", parent=comp_handle, scope="local",
+                                         kind="pe", rotation="left", position=(7960, 7944))
+                if not conn_b_n:
+                    mdl.create_connection(created_ports.get("portB"), tag_b_n, name="ConnB1N")
+                if not tag_n_n:
+                    tag_n_n = mdl.create_tag("BN", name="TagNN", parent=comp_handle, scope="local",
+                                             kind="pe", rotation="left", position=(7960, 8384))
+                conn_b_n0 = mdl.get_item("Conn_BN0", parent=comp_handle, item_type="connection")
+                if not conn_b_n0:
+                    mdl.create_connection(jun_n, tag_n_n, name="Conn_BN0")
         if conn_type == "Δ":
             if load_model == "Constant Impedance":
-                if tagNN:
-                    mdl.delete_item(tagNN)
+                tag_n_n = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
+                if tag_n_n:
+                    mdl.delete_item(tag_n_n)
     else:
-        tagNN = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
+        tag_n_n = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
         gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
-        junN = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
         if phases == "1":
-            tagBN = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
-            if tagBN:
-                mdl.delete_item(tagBN)
-        if tagNN:
-            mdl.delete_item(tagNN)
-        if junN:
+            tag_b_n = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
+            if tag_b_n:
+                mdl.delete_item(tag_b_n)
+        if tag_n_n:
+            mdl.delete_item(tag_n_n)
+        if jun_n:
             if not gnd1:
                 gnd1 = mdl.create_component("src_ground", parent=comp_handle, name="gndc", position=(7921, 8344))
-            connG = mdl.get_item("Conn_G", parent=comp_handle, item_type="connection")
-            if not connG:
-                mdl.create_connection(mdl.term(gnd1, "node"), junN, name="Conn_G")
+            conn_g = mdl.get_item("Conn_G", parent=comp_handle, item_type="connection")
+            if not conn_g:
+                mdl.create_connection(mdl.term(gnd1, "node"), jun_n, name="Conn_G")
 
 
 def connections_phases_dynamics(mdl, mask_handle, created_ports):
@@ -852,276 +857,275 @@ def connections_phases_dynamics(mdl, mask_handle, created_ports):
     phases = mdl.get_property_disp_value(phases_prop)
 
     if phases == "3":
-        CIL1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-        CPL1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        if mdl.is_enabled(CIL1):
+        cil1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
+        cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+        if mdl.is_enabled(cil1):
             if load_model == "Constant Impedance":
-                mdl.set_property_value(mdl.prop(CIL1, "phases"), "3")
-        if mdl.is_enabled(CPL1):
+                mdl.set_property_value(mdl.prop(cil1, "phases"), "3")
+        if mdl.is_enabled(cpl1):
             if load_model == "Constant Power":
-                mdl.set_property_value(mdl.prop(CPL1, "phases"), "3")
-        connACPL = mdl.get_item("ConnA1CPL", parent=comp_handle, item_type="connection")
-        connBCPL = mdl.get_item("ConnB1CPL", parent=comp_handle, item_type="connection")
-        connCCPL = mdl.get_item("ConnC1CPL", parent=comp_handle, item_type="connection")
-        connACIL = mdl.get_item("ConnA1CIL", parent=comp_handle, item_type="connection")
-        connBCIL = mdl.get_item("ConnB1CIL", parent=comp_handle, item_type="connection")
-        connCCIL = mdl.get_item("ConnC1CIL", parent=comp_handle, item_type="connection")
-        tagAP = mdl.get_item("TagA1", parent=comp_handle, item_type="tag")
-        tagBP = mdl.get_item("TagB1", parent=comp_handle, item_type="tag")
-        tagCP = mdl.get_item("TagC1", parent=comp_handle, item_type="tag")
-        tagACIL = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
-        tagBCIL = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
-        tagCCIL = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
-        tagACPL = mdl.get_item("TagA3", parent=comp_handle, item_type="tag")
-        tagBCPL = mdl.get_item("TagB3", parent=comp_handle, item_type="tag")
-        tagCCPL = mdl.get_item("TagC3", parent=comp_handle, item_type="tag")
-        tagBN = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
-        tagNN = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
+                mdl.set_property_value(mdl.prop(cpl1, "phases"), "3")
+        conn_a_cpl = mdl.get_item("ConnA1CPL", parent=comp_handle, item_type="connection")
+        conn_b_cpl = mdl.get_item("ConnB1CPL", parent=comp_handle, item_type="connection")
+        conn_c_cpl = mdl.get_item("ConnC1CPL", parent=comp_handle, item_type="connection")
+        conn_a_cil = mdl.get_item("ConnA1CIL", parent=comp_handle, item_type="connection")
+        conn_b_cil = mdl.get_item("ConnB1CIL", parent=comp_handle, item_type="connection")
+        conn_c_cil = mdl.get_item("ConnC1CIL", parent=comp_handle, item_type="connection")
+        tag_a_p = mdl.get_item("TagA1", parent=comp_handle, item_type="tag")
+        tag_b_p = mdl.get_item("TagB1", parent=comp_handle, item_type="tag")
+        tag_c_p = mdl.get_item("TagC1", parent=comp_handle, item_type="tag")
+        tag_a_cil = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
+        tag_b_cil = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
+        tagc_cil = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
+        tag_a_cpl = mdl.get_item("TagA3", parent=comp_handle, item_type="tag")
+        tag_b_cpl = mdl.get_item("TagB3", parent=comp_handle, item_type="tag")
+        tag_c_cpl = mdl.get_item("TagC3", parent=comp_handle, item_type="tag")
+        tag_b_n = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
+        tag_n_n = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
 
-        if tagBN:
-            mdl.delete_item(tagBN)
-        if tagNN:
-            mdl.delete_item(tagNN)
-        if not tagBP:
-            tagBP = mdl.create_tag("B1", name="TagB1", parent=comp_handle, scope="local",
-                                   kind="pe", rotation="left", position=(7920, 7944))
-        if not tagCP:
-            tagCP = mdl.create_tag("C1", name="TagC1", parent=comp_handle, scope="local",
-                                   kind="pe", rotation="left", position=(8056, 7944))
+        if tag_b_n:
+            mdl.delete_item(tag_b_n)
+        if tag_n_n:
+            mdl.delete_item(tag_n_n)
+        if not tag_b_p:
+            tag_b_p = mdl.create_tag("B1", name="TagB1", parent=comp_handle, scope="local",
+                                     kind="pe", rotation="left", position=(7920, 7944))
+        if not tag_c_p:
+            tag_c_p = mdl.create_tag("C1", name="TagC1", parent=comp_handle, scope="local",
+                                     kind="pe", rotation="left", position=(8056, 7944))
         if load_model == "Constant Impedance":
-            if not tagACIL:
-                tagACIL = mdl.create_tag("A1", name="TagA2", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(7694, 8088))
-            if not tagBCIL:
-                tagBCIL = mdl.create_tag("B1", name="TagB2", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(7758, 8088))
-            if not tagCCIL:
-                tagCCIL = mdl.create_tag("C1", name="TagC2", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(7823, 8088))
-            if not connACIL:
-                mdl.create_connection(mdl.term(CIL1, "A1"), tagACIL, name="ConnA1CIL")
-            if not connBCIL:
-                mdl.create_connection(mdl.term(CIL1, "B1"), tagBCIL, name="ConnB1CIL")
-            if not connCCIL:
-                mdl.create_connection(mdl.term(CIL1, "C1"), tagCCIL, name="ConnC1CIL")
+            if not tag_a_cil:
+                tag_a_cil = mdl.create_tag("A1", name="TagA2", parent=comp_handle, scope="local",
+                                           kind="pe", rotation="right", position=(7694, 8088))
+            if not tag_b_cil:
+                tag_b_cil = mdl.create_tag("B1", name="TagB2", parent=comp_handle, scope="local",
+                                           kind="pe", rotation="right", position=(7758, 8088))
+            if not tagc_cil:
+                tagc_cil = mdl.create_tag("C1", name="TagC2", parent=comp_handle, scope="local",
+                                          kind="pe", rotation="right", position=(7823, 8088))
+            if not conn_a_cil:
+                mdl.create_connection(mdl.term(cil1, "A1"), tag_a_cil, name="ConnA1CIL")
+            if not conn_b_cil:
+                mdl.create_connection(mdl.term(cil1, "B1"), tag_b_cil, name="ConnB1CIL")
+            if not conn_c_cil:
+                mdl.create_connection(mdl.term(cil1, "C1"), tagc_cil, name="ConnC1CIL")
         elif load_model == "Constant Power":
-            if not tagACPL:
-                tagACPL = mdl.create_tag("A1", name="TagA3", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(8000, 8088))
-            if not tagBCPL:
-                tagBCPL = mdl.create_tag("B1", name="TagB3", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(8063, 8088))
-            if not tagCCPL:
-                tagCCPL = mdl.create_tag("C1", name="TagC3", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(8127, 8088))
-            if not connACPL:
-                mdl.create_connection(mdl.term(CPL1, "A1"), tagACPL, name="ConnA1CPL")
-            if not connBCPL:
-                mdl.create_connection(mdl.term(CPL1, "B1"), tagBCPL, name="ConnB1CPL")
-            if not connCCPL:
-                mdl.create_connection(mdl.term(CPL1, "C1"), tagCCPL, name="ConnC1CPL")
+            if not tag_a_cpl:
+                tag_a_cpl = mdl.create_tag("A1", name="TagA3", parent=comp_handle, scope="local",
+                                           kind="pe", rotation="right", position=(8000, 8088))
+            if not tag_b_cpl:
+                tag_b_cpl = mdl.create_tag("B1", name="TagB3", parent=comp_handle, scope="local",
+                                           kind="pe", rotation="right", position=(8063, 8088))
+            if not tag_c_cpl:
+                tag_c_cpl = mdl.create_tag("C1", name="TagC3", parent=comp_handle, scope="local",
+                                           kind="pe", rotation="right", position=(8127, 8088))
+            if not conn_a_cpl:
+                mdl.create_connection(mdl.term(cpl1, "A1"), tag_a_cpl, name="ConnA1CPL")
+            if not conn_b_cpl:
+                mdl.create_connection(mdl.term(cpl1, "B1"), tag_b_cpl, name="ConnB1CPL")
+            if not conn_c_cpl:
+                mdl.create_connection(mdl.term(cpl1, "C1"), tag_c_cpl, name="ConnC1CPL")
 
-        connAP = mdl.get_item("ConnA1P", parent=comp_handle, item_type="connection")
-        connBP = mdl.get_item("ConnB1P", parent=comp_handle, item_type="connection")
-        connCP = mdl.get_item("ConnC1P", parent=comp_handle, item_type="connection")
+        conn_a_p = mdl.get_item("ConnA1P", parent=comp_handle, item_type="connection")
+        conn_b_p = mdl.get_item("ConnB1P", parent=comp_handle, item_type="connection")
+        conn_c_p = mdl.get_item("ConnC1P", parent=comp_handle, item_type="connection")
 
-        if not connAP:
-            mdl.create_connection(created_ports.get("portA"), tagAP, name="ConnA1P")
-        if not connBP:
-            mdl.create_connection(created_ports.get("portB"), tagBP, name="ConnB1P")
-        if not connCP:
-            mdl.create_connection(created_ports.get("portC"), tagCP, name="ConnC1P")
+        if not conn_a_p:
+            mdl.create_connection(created_ports.get("portA"), tag_a_p, name="ConnA1P")
+        if not conn_b_p:
+            mdl.create_connection(created_ports.get("portB"), tag_b_p, name="ConnB1P")
+        if not conn_c_p:
+            mdl.create_connection(created_ports.get("portC"), tag_c_p, name="ConnC1P")
 
-        junN = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
         gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
         if not gnd_check:
             if gnd1:
                 mdl.delete_item(gnd1)
             if conn_type == "Y":
-                if junN:
-                    connN0 = mdl.get_item("Conn_N0", parent=comp_handle, item_type="connection")
-                    if not connN0:
-                        mdl.create_connection(junN, created_ports.get("portN"), name="Conn_N0")
+                if jun_n:
+                    conn_n0 = mdl.get_item("Conn_N0", parent=comp_handle, item_type="connection")
+                    if not conn_n0:
+                        mdl.create_connection(jun_n, created_ports.get("portN"), name="Conn_N0")
 
     elif phases == "1":
 
-        CIL1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-        CPL1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        if mdl.is_enabled(CIL1):
+        cil1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
+        cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+        if mdl.is_enabled(cil1):
             if load_model == "Constant Impedance":
-                mdl.set_property_value(mdl.prop(CIL1, "phases"), "1")
-        if mdl.is_enabled(CPL1):
+                mdl.set_property_value(mdl.prop(cil1, "phases"), "1")
+        if mdl.is_enabled(cpl1):
             if load_model == "Constant Power":
-                mdl.set_property_value(mdl.prop(CPL1, "phases"), "1")
-        connACPL = mdl.get_item("ConnA1CPL", parent=comp_handle, item_type="connection")
-        connACIL = mdl.get_item("ConnA1CIL", parent=comp_handle, item_type="connection")
-        connAP = mdl.get_item("ConnA1P", parent=comp_handle, item_type="connection")
-        tagAP = mdl.get_item("TagA1", parent=comp_handle, item_type="tag")
-        tagBP = mdl.get_item("TagB1", parent=comp_handle, item_type="tag")
-        tagCP = mdl.get_item("TagC1", parent=comp_handle, item_type="tag")
-        tagACIL = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
-        tagBCIL = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
-        tagCCIL = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
-        tagACPL = mdl.get_item("TagA3", parent=comp_handle, item_type="tag")
-        tagBCPL = mdl.get_item("TagB3", parent=comp_handle, item_type="tag")
-        tagCCPL = mdl.get_item("TagC3", parent=comp_handle, item_type="tag")
-        tagBN = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
-        tagNN = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
+                mdl.set_property_value(mdl.prop(cpl1, "phases"), "1")
+        conn_a_cpl = mdl.get_item("ConnA1CPL", parent=comp_handle, item_type="connection")
+        conn_a_cil = mdl.get_item("ConnA1CIL", parent=comp_handle, item_type="connection")
+        conn_a_p = mdl.get_item("ConnA1P", parent=comp_handle, item_type="connection")
+        tag_a_p = mdl.get_item("TagA1", parent=comp_handle, item_type="tag")
+        tag_b_p = mdl.get_item("TagB1", parent=comp_handle, item_type="tag")
+        tag_c_p = mdl.get_item("TagC1", parent=comp_handle, item_type="tag")
+        tag_a_cil = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
+        tag_b_cil = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
+        tagc_cil = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
+        tag_a_cpl = mdl.get_item("TagA3", parent=comp_handle, item_type="tag")
+        tag_b_cpl = mdl.get_item("TagB3", parent=comp_handle, item_type="tag")
+        tag_c_cpl = mdl.get_item("TagC3", parent=comp_handle, item_type="tag")
+        tag_b_n = mdl.get_item("TagBN", parent=comp_handle, item_type="tag")
+        tag_n_n = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
 
         if load_model == "Constant Power":
-            tagACPL = mdl.get_item("TagA3", parent=comp_handle, item_type="tag")
-            if not tagACPL:
-                tagACPL = mdl.create_tag("A1", name="TagA3", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(8000, 8088))
-            if not connACPL:
-                mdl.create_connection(mdl.term(CPL1, "A1"), tagACPL, name="ConnA1CPL")
+            tag_a_cpl = mdl.get_item("TagA3", parent=comp_handle, item_type="tag")
+            if not tag_a_cpl:
+                tag_a_cpl = mdl.create_tag("A1", name="TagA3", parent=comp_handle, scope="local",
+                                           kind="pe", rotation="right", position=(8000, 8088))
+            if not conn_a_cpl:
+                mdl.create_connection(mdl.term(cpl1, "A1"), tag_a_cpl, name="ConnA1CPL")
         elif load_model == "Constant Impedance":
-            tagACIL = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
-            if not tagACIL:
-                tagACIL = mdl.create_tag("A1", name="TagA2", parent=comp_handle, scope="local",
-                                         kind="pe", rotation="right", position=(7694, 8088))
-            if not connACIL:
-                mdl.create_connection(mdl.term(CIL1, "A1"), tagACIL, name="ConnA1CIL")
-        if not connAP:
-            mdl.create_connection(created_ports.get("portA"), tagAP, name="ConnA1P")
+            tag_a_cil = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
+            if not tag_a_cil:
+                tag_a_cil = mdl.create_tag("A1", name="TagA2", parent=comp_handle, scope="local",
+                                           kind="pe", rotation="right", position=(7694, 8088))
+            if not conn_a_cil:
+                mdl.create_connection(mdl.term(cil1, "A1"), tag_a_cil, name="ConnA1CIL")
+        if not conn_a_p:
+            mdl.create_connection(created_ports.get("portA"), tag_a_p, name="ConnA1P")
         if gnd_check:
-            if tagBP:
-                mdl.delete_item(tagBP)
-            if tagBN:
-                mdl.delete_item(tagBN)
-            if tagNN:
-                mdl.delete_item(tagNN)
+            if tag_b_p:
+                mdl.delete_item(tag_b_p)
+            if tag_b_n:
+                mdl.delete_item(tag_b_n)
+            if tag_n_n:
+                mdl.delete_item(tag_n_n)
         else:
-            if tagBP:
-                mdl.delete_item(tagBP)
-            if tagBN:
-                mdl.delete_item(tagBN)
-            tagBN = mdl.create_tag("BN", name="TagBN", parent=comp_handle, scope="local",
-                                   kind="pe", rotation="left", position=(7960, 7944))
-            connBN = mdl.get_item("ConnB1N", parent=comp_handle, item_type="connection")
-            if not connBN:
-                mdl.create_connection(created_ports.get("portB"), tagBN, name="ConnB1N")
-            tagNN = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
-            if not tagNN:
-                tagNN = mdl.create_tag("BN", name="TagNN", parent=comp_handle, scope="local",
-                                       kind="pe", rotation="left", position=(7960, 8384))
-            connBN0 = mdl.get_item("Conn_BN0", parent=comp_handle, item_type="connection")
-            junN = mdl.get_item("JN", parent=comp_handle, item_type="junction")
-            if not connBN0:
-                mdl.create_connection(junN, tagNN, name="Conn_BN0")
-        if tagCP:
-            mdl.delete_item(tagCP)
-        if tagBCPL:
-            mdl.delete_item(tagBCPL)
-        if tagCCPL:
-            mdl.delete_item(tagCCPL)
-        if tagBCIL:
-            mdl.delete_item(tagBCIL)
-        if tagCCIL:
-            mdl.delete_item(tagCCIL)
+            if tag_b_p:
+                mdl.delete_item(tag_b_p)
+            if tag_b_n:
+                mdl.delete_item(tag_b_n)
+            tag_b_n = mdl.create_tag("BN", name="TagBN", parent=comp_handle, scope="local",
+                                     kind="pe", rotation="left", position=(7960, 7944))
+            conn_b_n = mdl.get_item("ConnB1N", parent=comp_handle, item_type="connection")
+            if not conn_b_n:
+                mdl.create_connection(created_ports.get("portB"), tag_b_n, name="ConnB1N")
+            tag_n_n = mdl.get_item("TagNN", parent=comp_handle, item_type="tag")
+            if not tag_n_n:
+                tag_n_n = mdl.create_tag("BN", name="TagNN", parent=comp_handle, scope="local",
+                                         kind="pe", rotation="left", position=(7960, 8384))
+            conn_b_n_g = mdl.get_item("Conn_BN0", parent=comp_handle, item_type="connection")
+            jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+            if not conn_b_n_g:
+                mdl.create_connection(jun_n, tag_n_n, name="Conn_BN0")
+        if tag_c_p:
+            mdl.delete_item(tag_c_p)
+        if tag_b_cpl:
+            mdl.delete_item(tag_b_cpl)
+        if tag_c_cpl:
+            mdl.delete_item(tag_c_cpl)
+        if tag_b_cil:
+            mdl.delete_item(tag_b_cil)
+        if tagc_cil:
+            mdl.delete_item(tagc_cil)
 
 
 def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
 
-    Pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
-    Pow_ref_s = mdl.get_property_disp_value(Pow_ref_s_prop)
+    pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
+    pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
     # S_Ts_mode_prop = mdl.prop(mask_handle, "S_Ts_mode")
     # mdl.set_property_disp_value(S_Ts_mode_prop, "Manual input")
     # mdl.set_property_value(S_Ts_mode_prop, "Manual input")
     # S_Ts_mode = mdl.get_property_disp_value(S_Ts_mode_prop)
 
+    if pow_ref_s == "Fixed":
+        cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+        ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
+        ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type="component")
+        ts_select1 = mdl.get_item("Constant1", parent=comp_handle, item_type="component")
+        mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
+        mdl.disable_items(ts_mdl)
+        mdl.disable_items(ts_select)
+        mdl.disable_items(ts_select1)
+        mdl.set_property_value(mdl.prop(cpl1, "kP_inp"), "Fixed")
+        mdl.set_property_value(mdl.prop(cpl1, "kQ_inp"), "Fixed")
 
-    if Pow_ref_s == "Fixed":
-        CPL1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        TSmdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
-        Ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type="component")
-        Ts_select1 = mdl.get_item("Constant1", parent=comp_handle, item_type="component")
-        mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Manual input")
-        mdl.disable_items(TSmdl)
-        mdl.disable_items(Ts_select)
-        mdl.disable_items(Ts_select1)
-        mdl.set_property_value(mdl.prop(CPL1, "kP_inp"), "Fixed")
-        mdl.set_property_value(mdl.prop(CPL1, "kQ_inp"), "Fixed")
+        conn_ts_p_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
+        conn_ts_q_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
 
-        conn_TsP_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
-        conn_TsQ_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
+        if conn_ts_p_int:
+            mdl.delete_item(conn_ts_p_int)
+        if conn_ts_q_int:
+            mdl.delete_item(conn_ts_q_int)
 
-        if conn_TsP_int:
-            mdl.delete_item(conn_TsP_int)
-        if conn_TsQ_int:
-            mdl.delete_item(conn_TsQ_int)
+    elif pow_ref_s == "External input":
+        cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+        mdl.set_property_value(mdl.prop(cpl1, "kP_inp"), "Variable input")
+        mdl.set_property_value(mdl.prop(cpl1, "kQ_inp"), "Variable input")
 
-    elif Pow_ref_s == "External input":
-        CPL1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        mdl.set_property_value(mdl.prop(CPL1, "kP_inp"), "Variable input")
-        mdl.set_property_value(mdl.prop(CPL1, "kQ_inp"), "Variable input")
+        p_inp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+        conn_p_int = mdl.get_item("connP", parent=comp_handle, item_type="connection")
 
-        P_inp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        conn_P_int = mdl.get_item("connP", parent=comp_handle, item_type="connection")
+        conn_ts_p_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
+        conn_ts_q_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
 
-        conn_TsP_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
-        conn_TsQ_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
+        if conn_ts_p_int:
+            mdl.delete_item(conn_ts_p_int)
+        if conn_ts_q_int:
+            mdl.delete_item(conn_ts_q_int)
 
-        if conn_TsP_int:
-            mdl.delete_item(conn_TsP_int)
-        if conn_TsQ_int:
-            mdl.delete_item(conn_TsQ_int)
+        if conn_p_int:
+            mdl.delete_item(conn_p_int)
 
-        if conn_P_int:
-            mdl.delete_item(conn_P_int)
+        mdl.create_connection(mdl.term(p_inp, "P_set"), created_ports.get("P_ext"), "ConnP")
 
-        mdl.create_connection(mdl.term(P_inp, "P_set"), created_ports.get("P_ext"), "ConnP")
+        conn_q_int = mdl.get_item("connQ", parent=comp_handle, item_type="connection")
+        if conn_q_int:
+            mdl.delete_item(conn_q_int)
 
-        conn_Q_int = mdl.get_item("connQ", parent=comp_handle, item_type="connection")
-        if conn_Q_int:
-            mdl.delete_item(conn_Q_int)
+        mdl.create_connection(mdl.term(p_inp, "Q_set"), created_ports.get("Q_ext"), "ConnQ")
 
-        mdl.create_connection(mdl.term(P_inp, "Q_set"), created_ports.get("Q_ext"), "ConnQ")
-
-        TSmdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
-        Ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type="component")
-        Ts_select1 = mdl.get_item("Constant1", parent=comp_handle, item_type="component")
-        mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Manual input")
-        mdl.disable_items(TSmdl)
-        mdl.disable_items(Ts_select)
-        mdl.disable_items(Ts_select1)
+        ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
+        ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type="component")
+        ts_select1 = mdl.get_item("Constant1", parent=comp_handle, item_type="component")
+        mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
+        mdl.disable_items(ts_mdl)
+        mdl.disable_items(ts_select)
+        mdl.disable_items(ts_select1)
     else:
-        CPL1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        mdl.set_property_value(mdl.prop(CPL1, "kP_inp"), "Variable input")
-        mdl.set_property_value(mdl.prop(CPL1, "kQ_inp"), "Variable input")
+        cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+        mdl.set_property_value(mdl.prop(cpl1, "kP_inp"), "Variable input")
+        mdl.set_property_value(mdl.prop(cpl1, "kQ_inp"), "Variable input")
 
-        P_inp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        conn_P_int = mdl.get_item("connP", parent=comp_handle, item_type="connection")
-        conn_Q_int = mdl.get_item("connQ", parent=comp_handle, item_type="connection")
-        conn_Ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type="connection")
+        p_inp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+        conn_p_int = mdl.get_item("connP", parent=comp_handle, item_type="connection")
+        conn_q_int = mdl.get_item("connQ", parent=comp_handle, item_type="connection")
+        conn_ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type="connection")
 
-        if conn_P_int:
-            mdl.delete_item(conn_P_int)
-        if conn_Q_int:
-            mdl.delete_item(conn_Q_int)
+        if conn_p_int:
+            mdl.delete_item(conn_p_int)
+        if conn_q_int:
+            mdl.delete_item(conn_q_int)
 
-        TSmdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
-        Ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type="component")
-        Ts_select1 = mdl.get_item("Constant1", parent=comp_handle, item_type="component")
-        mdl.enable_items(TSmdl)
-        mdl.enable_items(Ts_select)
-        mdl.enable_items(Ts_select1)
+        ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
+        ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type="component")
+        ts_select1 = mdl.get_item("Constant1", parent=comp_handle, item_type="component")
+        mdl.enable_items(ts_mdl)
+        mdl.enable_items(ts_select)
+        mdl.enable_items(ts_select1)
         # if S_Ts_mode == "Manual input":
-        mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Manual input")
-        if not conn_Ts_in:
-            mdl.create_connection(mdl.term(Ts_select, "T"), created_ports.get("T_ext"), "ConnTs")
+        mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
+        if not conn_ts_in:
+            mdl.create_connection(mdl.term(ts_select, "T"), created_ports.get("T_ext"), "ConnTs")
         # else:
         #     mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Loop cycle")
 
-        conn_TsP_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
-        conn_TsQ_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
+        conn_ts_p_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
+        conn_ts_q_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
 
-        if not conn_TsP_int:
-            mdl.create_connection(mdl.term(P_inp, "P_set"), mdl.term(TSmdl, "P"), "ConnTsP")
-        if not conn_TsQ_int:
-            mdl.create_connection(mdl.term(P_inp, "Q_set"), mdl.term(TSmdl, "Q"), "ConnTsQ")
+        if not conn_ts_p_int:
+            mdl.create_connection(mdl.term(p_inp, "P_set"), mdl.term(ts_mdl, "P"), "ConnTsP")
+        if not conn_ts_q_int:
+            mdl.create_connection(mdl.term(p_inp, "Q_set"), mdl.term(ts_mdl, "Q"), "ConnTsQ")
 
 
 def connections_ts_mode_dynamics(mdl, mask_handle, created_ports):
@@ -1130,8 +1134,8 @@ def connections_ts_mode_dynamics(mdl, mask_handle, created_ports):
     load_model_prop = mdl.prop(mask_handle, "load_model")
     load_model = mdl.get_property_disp_value(load_model_prop)
 
-    Pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
-    Pow_ref_s = mdl.get_property_disp_value(Pow_ref_s_prop)
+    pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
+    pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
     # S_Ts_mode_prop = mdl.prop(mask_handle, "S_Ts_mode")
     # mdl.set_property_disp_value(S_Ts_mode_prop, "Manual input")
@@ -1139,13 +1143,13 @@ def connections_ts_mode_dynamics(mdl, mask_handle, created_ports):
     # S_Ts_mode = mdl.get_property_disp_value(S_Ts_mode_prop)
 
     if load_model == "Constant Power":
-        if Pow_ref_s == "Time Series":
-            TSmdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
-            conn_Ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type="connection")
+        if pow_ref_s == "Time Series":
+            ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
+            conn_ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type="connection")
             # if S_Ts_mode == "Manual input":
-            mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Manual input")
-            if not conn_Ts_in:
-                mdl.create_connection(mdl.term(TSmdl, "T"), created_ports.get("T_ext"), "ConnTs")
+            mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
+            if not conn_ts_in:
+                mdl.create_connection(mdl.term(ts_mdl, "T"), created_ports.get("T_ext"), "ConnTs")
             # else:
             #     mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Loop cycle")
 
@@ -1183,6 +1187,7 @@ def restore_all_loads_points(mdl, mask_handle):
             load_mask_handle = mdl.get_mask(load)
             read_loadshape_from_json(mdl, load_mask_handle)
 
+
 def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
     global got_loadshape_points_list
 
@@ -1198,7 +1203,8 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
     if not reload_dict:
         loadshape_name = mdl.get_property_disp_value(mdl.prop(mask_handle, "loadshape_name"))
         loadshape_from_file = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file")) == "True"
-        loadshape_from_file_header = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_header")) == "True"
+        loadshape_from_file_header = mdl.get_property_value(
+            mdl.prop(mask_handle, "loadshape_from_file_header")) == "True"
         loadshape_from_file_column = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_column"))
         loadshape_from_file_path = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_path"))
     else:
