@@ -3,6 +3,7 @@ import os, sys, pathlib
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 
+
 # Append commands dialog
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -149,20 +150,28 @@ class FileDialog(QWidget):
     def save_file(self):
         return False
 
-# Reminder: this is not a published API call
-import typhoon.util.path as up
 
-py3_port_path = up.get_base_python_portable_path()
-sys.path.append(os.path.join(py3_port_path, "lib", "site-packages"))
+def add_python_portable_to_path(mdl, mask_handle):
+    # Reminder: this is not a published API call
+    import typhoon.util.path as up
 
-# # python_portable path
-# dss_direct_path = pathlib.Path(up.get_python_portable_path()).joinpath("lib", "site-packages")
-# if dss_direct_path not in sys.path:
-#     sys.path.append(dss_direct_path)
+    # PROGRAM FILES python_portable path
+    py3_port_path = str(pathlib.Path(up.get_base_python_portable_path()).joinpath("lib", "site-packages"))
+    if py3_port_path.lower() not in [str(p).lower() for p in sys.path]:
+        mdl.info(f"adding {py3_port_path}")
+        sys.path.append(py3_port_path)
+
+    # APPDATA python_portable path
+    py3_port_path_appdata = str(pathlib.Path(up.get_python_portable_path()).joinpath("lib", "site-packages"))
+    if py3_port_path_appdata.lower() not in [str(p).lower() for p in sys.path]:
+        mdl.info(f"adding {py3_port_path_appdata}")
+        sys.path.append(py3_port_path_appdata)
+
 
 def append_commands(mdl, mask_handle):
     new_diag = AppendDialog(mdl)
     new_diag.exec()
+
 
 def sim_with_opendss(mdl, mask_handle):
     try:
@@ -230,6 +239,7 @@ def sim_with_opendss(mdl, mask_handle):
         else:
             mdl.set_property_value(stat_prop, f"Sim{cur_count + 1} failed")
             mdl.error(str(comp_result), context=comp_handle)
+
 
 def run_command(mdl, mask_handle):
     import opendssdirect as dss
@@ -318,25 +328,31 @@ def command_buttons(mdl, mask_handle, prop_handle):
 
 
 def report(mdl, mask_handle, mode="snap"):
+    try:
+        import tse_to_opendss
+        import tse_to_opendss.thcc_libs.extra.auto_report.power_flow_report as pf_rep
+        import tse_to_opendss.thcc_libs.extra.auto_report.fault_report as fault_rep
+        import tse_to_opendss.thcc_libs.extra.auto_report.comp_data_report as comp_rep
+        import tse_to_opendss.thcc_libs.extra.auto_report.time_series_report as ts_rep
 
-    import tse_to_opendss
-    import tse_to_opendss.thcc_libs.extra.auto_report.power_flow_report as pf_rep
-    import tse_to_opendss.thcc_libs.extra.auto_report.fault_report as fault_rep
-    import tse_to_opendss.thcc_libs.extra.auto_report.comp_data_report as comp_rep
-    import tse_to_opendss.thcc_libs.extra.auto_report.time_series_report as ts_rep
+        mdlfile = mdl.get_model_file_path()
 
-    mdlfile = mdl.get_model_file_path()
+        if mode == "snap":
+            rep_successful = pf_rep.generate_report(mdlfile)
+        elif mode == "fault":
+            rep_successful = fault_rep.generate_report(mdlfile)
+        if not rep_successful[0]:
+            mdl.info(rep_successful[1])
 
-    if mode == "snap":
-        rep_successful = pf_rep.generate_report(mdlfile)
-    elif mode == "fault":
-        rep_successful = fault_rep.generate_report(mdlfile)
-    if not rep_successful[0]:
-        mdl.info(rep_successful[1])
+    except:
+        mdl.info("Make sure to successfully run an OpenDSS simulation before printing a report.")
+        return
+
 
 def set_basefrequency_ns_var(mdl, mask_handle):
     basefreq = mdl.get_property_value(mdl.prop(mask_handle, "basefrequency"))
     mdl.set_ns_var("simdss_basefreq", basefreq)
+
 
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, 'images/dss_logo.svg')

@@ -103,7 +103,8 @@ def vreg_connection(mdl, mask_handle):
 
     trafo_labels = [f"T{phase}_{winding}" for winding in wdg_n_list for phase in "AB"]
 
-    mdl.disable_items(vreg_handle)
+    place_voltage_regulator(mdl, mask_handle, False)
+
     for idx, tag in enumerate(left_reg_tag_names):
         this_tag = mdl.get_item(tag, parent=comp_handle, item_type="tag")
         if this_tag:
@@ -124,7 +125,8 @@ def vreg_connection(mdl, mask_handle):
     regcontrol_on = mdl.get_property_value(mdl.prop(mask_handle, "regcontrol_on"))
 
     if regcontrol_on:
-        mdl.enable_items(vreg_handle)
+        place_voltage_regulator(mdl, mask_handle, True)
+
         ctrl_winding = mdl.get_property_value(mdl.prop(mask_handle, "ctrl_winding"))
         n_ctrl = ctrl_winding[-1]  # Get number of the ctrl winding
         trafo_tag_names = [f"TagTA{n_ctrl}", f"TagTB{n_ctrl}"]
@@ -471,3 +473,56 @@ def define_icon(mdl, mask_handle):
     num_windings = mdl.get_property_value(mdl.prop(mask_handle, "num_windings"))
 
     mdl.set_component_icon_image(mask_handle, "images/" + images[num_windings])
+
+
+def place_voltage_regulator(mdl, mask_handle, new_value):
+    comp_handle = mdl.get_sub_level_handle(mask_handle)
+    if new_value:
+        vreg = mdl.get_item("Vreg", parent=comp_handle, item_type="component")
+        if not vreg:
+            vreg = mdl.create_component("OpenDSS/single-phase voltage regulator",
+                                        parent=comp_handle, name="Vreg",
+                                        position=(8960, 8232), rotation="up")
+        tag_reg_a1 = mdl.get_item("TagRegA1", parent=comp_handle, item_type="tag")
+        if not tag_reg_a1:
+            tag_reg_a1 = mdl.create_tag(name="TagRegA1", value="not_used", scope='local',
+                                        parent=comp_handle, rotation='up', position=(8776, 8136))
+
+        tag_reg_b1 = mdl.get_item("TagRegB1", parent=comp_handle, item_type="tag")
+        if not tag_reg_b1:
+            tag_reg_b1 = mdl.create_tag(name="TagRegB1", value="not_used", scope='local',
+                                        parent=comp_handle, rotation='up', position=(8776, 8328))
+
+        tag_reg_a2 = mdl.get_item("TagRegA2", parent=comp_handle, item_type="tag")
+        if not tag_reg_a2:
+            tag_reg_a2 = mdl.create_tag(name="TagRegA2", value="not_used", scope='local',
+                                        parent=comp_handle, rotation='down', position=(9128, 8136))
+
+        tag_reg_b2 = mdl.get_item("TagRegB2", parent=comp_handle, item_type="tag")
+        if not tag_reg_b2:
+            tag_reg_b2 = mdl.create_tag(name="TagRegB2", value="not_used", scope='local',
+                                        parent=comp_handle, rotation='down', position=(9128, 8328))
+
+        conn_netlist = [(tag_reg_a1, mdl.term(vreg, "RegA1")),
+                        (tag_reg_b1, mdl.term(vreg, "RegB1")),
+                        (mdl.term(vreg, "RegA2"), tag_reg_a2),
+                        (mdl.term(vreg, "RegB2"), tag_reg_b2)]
+        for conn_handle in conn_netlist:
+            if len(mdl.find_connections(conn_handle[0], conn_handle[1])) == 0:
+                mdl.create_connection(conn_handle[0], conn_handle[1])
+    else:
+        vreg = mdl.get_item("Vreg", parent=comp_handle, item_type="component")
+        tag_reg_a1 = mdl.get_item("TagRegA1", parent=comp_handle, item_type="tag")
+        tag_reg_b1 = mdl.get_item("TagRegB1", parent=comp_handle, item_type="tag")
+        tag_reg_a2 = mdl.get_item("TagRegA2", parent=comp_handle, item_type="tag")
+        tag_reg_b2 = mdl.get_item("TagRegB2", parent=comp_handle, item_type="tag")
+
+        delete_list = [vreg,
+                       tag_reg_a1,
+                       tag_reg_b1,
+                       tag_reg_a2,
+                       tag_reg_b2]
+
+        for component in delete_list:
+            if component:
+                mdl.delete_item(component)
