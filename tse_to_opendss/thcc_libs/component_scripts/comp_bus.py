@@ -1,4 +1,12 @@
 def v_meas_changed(mdl, mask_handle, v_meas_on, created_ports=None):
+    """
+
+    :param mdl:
+    :param mask_handle:
+    :param v_meas_on:
+    :param created_ports:
+    :return:
+    """
     comp_handle = mdl.get_parent(mask_handle)
     phases = mdl.get_property_value(mdl.prop(mask_handle, "type"))
 
@@ -49,6 +57,14 @@ def v_meas_changed(mdl, mask_handle, v_meas_on, created_ports=None):
 
 
 def i_meas_changed(mdl, mask_handle, i_meas_on, created_ports=None):
+    """
+
+    :param mdl:
+    :param mask_handle:
+    :param i_meas_on:
+    :param created_ports:
+    :return:
+    """
     comp_handle = mdl.get_parent(mask_handle)
     phases = mdl.get_property_value(mdl.prop(mask_handle, "type"))
 
@@ -99,7 +115,16 @@ def i_meas_changed(mdl, mask_handle, i_meas_on, created_ports=None):
         if "C" in phases:
             mdl.create_connection(j1c, j2c, name="sc_imeas_C")
 
+
 def type_value_changed(mdl, mask_handle, new_type, created_ports=None):
+    """
+
+    :param mdl:
+    :param mask_handle:
+    :param new_type:
+    :param created_ports:
+    :return:
+    """
     comp_handle = mdl.get_parent(mask_handle)
     conf = mdl.get_property_value(mdl.prop(mask_handle, "conf"))
 
@@ -184,7 +209,15 @@ def type_value_changed(mdl, mask_handle, new_type, created_ports=None):
     i_meas = mdl.get_property_value(mdl.prop(mask_handle, "i_meas"))
     i_meas_changed(mdl, mask_handle, i_meas)
 
+
 def ground_open_circuit(mdl, mask_handle, created_ports=None):
+    """
+
+    :param mdl:
+    :param mask_handle:
+    :param created_ports:
+    :return:
+    """
     comp_handle = mdl.get_parent(mask_handle)
     conf = mdl.get_property_disp_value(mdl.prop(mask_handle, "conf"))
     phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "type"))
@@ -233,7 +266,16 @@ def ground_open_circuit(mdl, mask_handle, created_ports=None):
             j = jb
         mdl.create_connection(mdl.term(gnd_oc, "n_node"), j)
 
+
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
+    """
+
+    :param mdl:
+    :param mask_handle:
+    :param caller_prop_handle:
+    :param init:
+    :return:
+    """
     comp_handle = mdl.get_parent(mask_handle)
     deleted_ports = []
     created_ports = {}
@@ -317,7 +359,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                                            )
                 created_ports.update({p: new_port})
 
-    elif prop_caller_name == "ground":
+    if prop_caller_name in ['type', 'conf', 'ground']:
 
         conf = mdl.get_property_disp_value(mdl.prop(mask_handle, "conf"))
         phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "type"))
@@ -347,8 +389,16 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
     return created_ports, deleted_ports
 
-def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
+def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
+    """
+
+    :param mdl:
+    :param mask_handle:
+    :param caller_prop_handle:
+    :param init:
+    :return:
+    """
     conf_prop = mdl.prop(mask_handle, "conf")
     type_prop = mdl.prop(mask_handle, "type")
     ground_prop = mdl.prop(mask_handle, "ground")
@@ -375,7 +425,14 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         mdl.enable_property(v_meas_prop)
         mdl.enable_property(ground_prop)
 
+
 def define_icon(mdl, mask_handle):
+    """
+
+    :param mdl:
+    :param mask_handle:
+    :return:
+    """
     images = {
         "A": "images/bus_1ph.svg",
         "B": "images/bus_1ph.svg",
@@ -388,5 +445,4 @@ def define_icon(mdl, mask_handle):
     type = mdl.get_property_value(mdl.prop(mask_handle, "type"))
 
     mdl.set_component_icon_image(mask_handle, images[type])
-
 
