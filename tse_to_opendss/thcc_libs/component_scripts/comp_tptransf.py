@@ -202,7 +202,7 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
         else:
             mdl.create_connection(mdl.term(trafo_handle, "sec_" + str(3 * (idx - 2) + 3)), new_tag_c)
         # N
-        #if not idx == 1:
+        # if not idx == 1:
         new_tag_n = mdl.create_tag(
             name=trafo_tag_names[4 * (idx - 1) + 3],
             value=trafo_tag_labels[4 * (idx - 1) + 3],

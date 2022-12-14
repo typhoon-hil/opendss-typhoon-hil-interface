@@ -3,10 +3,12 @@ from itertools import combinations
 
 x0, y0 = (8192, 8192)
 
+
 def delete_port(mdl, name, parent):
     comp = mdl.get_item(name, parent=parent, item_type="port")
     if comp:
         mdl.delete_item(comp)
+
 
 def update_subsystem_components(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
@@ -20,8 +22,8 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
         if tag_handle:
             mdl.delete_item(tag_handle)
 
-    T_handle = mdl.get_item("T1", parent=comp_handle)
-    mdl.set_property_value(mdl.prop(T_handle, "num_of_windings"), num_windings)
+    trafo_handle = mdl.get_item("T1", parent=comp_handle)
+    mdl.set_property_value(mdl.prop(trafo_handle, "num_of_windings"), num_windings)
 
     # Y positions
     tx0, ty0 = (8400, 8200)
@@ -29,38 +31,38 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
     # Create transformer tags
     trafo_tag_labels = [f"T_{phase}{winding}" for winding in wdg_n_list for phase in "AB"]
     for idx in range(1, num_windings + 1):
-        yposA = (-96 - 56 * (num_windings - 3)) + 112 * (idx - 2)
-        yposB = (-96 - 56 * (num_windings - 3) + 80) + 112 * (idx - 2)
+        ypos_a = (-96 - 56 * (num_windings - 3)) + 112 * (idx - 2)
+        ypos_b = (-96 - 56 * (num_windings - 3) + 80) + 112 * (idx - 2)
 
         # A
-        new_tag_A = mdl.create_tag(
+        new_tag_a = mdl.create_tag(
             name=trafo_tag_names[2*(idx-1)],
             value=trafo_tag_labels[2*(idx-1)],
             scope='local',
             parent=comp_handle,
             flip="none" if idx == 1 else "flip_horizontal",
             rotation='up',
-            position=(tx0 - 160 if idx == 1 else tx0 + 160, ty0 - 96 if idx == 1 else ty0 + yposA)
+            position=(tx0 - 160 if idx == 1 else tx0 + 160, ty0 - 96 if idx == 1 else ty0 + ypos_a)
         )
 
         if idx == 1:
-            mdl.create_connection(mdl.term(T_handle, "prm_1"), new_tag_A)
+            mdl.create_connection(mdl.term(trafo_handle, "prm_1"), new_tag_a)
         else:
-            mdl.create_connection(mdl.term(T_handle, "sec_" + str(2 * (idx - 2) + 1)), new_tag_A)
+            mdl.create_connection(mdl.term(trafo_handle, "sec_" + str(2 * (idx - 2) + 1)), new_tag_a)
         # B
-        new_tag_B = mdl.create_tag(
+        new_tag_b = mdl.create_tag(
             name=trafo_tag_names[2*(idx-1)+1],
             value=trafo_tag_labels[2*(idx-1)+1],
             scope='local',
             parent=comp_handle,
             flip="none" if idx == 1 else "flip_horizontal",
             rotation='up',
-            position=(tx0 - 160 if idx == 1 else tx0 + 160, ty0 + 96 if idx == 1 else ty0 + yposB)
+            position=(tx0 - 160 if idx == 1 else tx0 + 160, ty0 + 96 if idx == 1 else ty0 + ypos_b)
         )
         if idx == 1:
-            mdl.create_connection(mdl.term(T_handle, "prm_2"), new_tag_B)
+            mdl.create_connection(mdl.term(trafo_handle, "prm_2"), new_tag_b)
         else:
-            mdl.create_connection(mdl.term(T_handle, "sec_" + str(2 * (idx - 2) + 2)), new_tag_B)
+            mdl.create_connection(mdl.term(trafo_handle, "sec_" + str(2 * (idx - 2) + 2)), new_tag_b)
 
     # Right ports and tags
     port_names = [f"{phase}{winding}" for winding in wdg_n_list[1:] for phase in "AB"]
@@ -89,6 +91,7 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
         mdl.create_connection(new_tag, new_port)
 
     vreg_connection(mdl, mask_handle)
+
 
 def vreg_connection(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
@@ -175,10 +178,11 @@ def validate_properties(mdl, mask_handle):
         if not len(prop_value) == num_windings:
             mdl.info(f'{base_str} {prop_name} property: {len(prop_value)} ({num_windings} expected)')
 
+
 def convert_all_properties(mdl, mask_handle, prop_names=None):
     comp_handle = mdl.get_parent(mask_handle)
     num_windings = int(mdl.get_property_value(mdl.prop(mask_handle, "num_windings")))
-    T_inner = mdl.get_item("T1", parent=comp_handle)
+    trafo_inner = mdl.get_item("T1", parent=comp_handle)
     regcontrol_on = mdl.get_property_value(mdl.prop(mask_handle, "regcontrol_on"))
 
     if not prop_names:
@@ -194,93 +198,94 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
 
             # Power
             if prop_name == "KVAs":
-                Sn_prop = mdl.prop(T_inner, "Sn")
+                sn_prop = mdl.prop(trafo_inner, "Sn")
                 converted_value = prop_value[0] * 1000
-                mdl.set_property_value(Sn_prop, converted_value)
+                mdl.set_property_value(sn_prop, converted_value)
             # Frequency
             elif prop_name == "Basefreq":
-                f_prop = mdl.prop(T_inner, "f")
+                f_prop = mdl.prop(trafo_inner, "f")
                 prop_value = prop_value[0]
                 converted_value = prop_value
                 mdl.set_property_value(f_prop, converted_value)
             # Nominal voltages
             elif prop_name == "KVs":
-                n_prim_prop = mdl.prop(T_inner, "n_prim")
-                n_sec_prop = mdl.prop(T_inner, "n_sec")
+                n_prim_prop = mdl.prop(trafo_inner, "n_prim")
+                n_sec_prop = mdl.prop(trafo_inner, "n_sec")
                 mdl.set_property_value(n_prim_prop, 1000 * prop_value[0])
                 mdl.set_property_value(n_sec_prop, [1000 * v for v in prop_value[1:]])
             # Resistances
             elif prop_name == "percentRs":
-                R_prim_prop = mdl.prop(T_inner, "R_prim")
-                R_sec_prop = mdl.prop(T_inner, "R_sec")
-                KVs_prop = mdl.prop(comp_handle, "KVs")
-                KVAs_prop = mdl.prop(comp_handle, "KVAs")
-                KVs = mdl.get_property_value(KVs_prop)
-                KVAs = mdl.get_property_value(KVAs_prop)
-                baseR = KVs[0] * KVs[0] / KVAs[0] * 1000
-                resistances_SI = []
+                r_prim_prop = mdl.prop(trafo_inner, "R_prim")
+                r_sec_prop = mdl.prop(trafo_inner, "R_sec")
+                kvs_prop = mdl.prop(comp_handle, "KVs")
+                kvas_prop = mdl.prop(comp_handle, "KVAs")
+                kvs = mdl.get_property_value(kvs_prop)
+                kvas = mdl.get_property_value(kvas_prop)
+                base_r = kvs[0] * kvs[0] / kvas[0] * 1000
+                resistances_si = []
                 for num in range(1, num_windings + 1):
-                    a = KVs[0] / KVs[num - 1]
-                    converted_value = (baseR / 100 * prop_value[num - 1]) / a ** 2
-                    resistances_SI.append(converted_value)
-                mdl.set_property_value(R_prim_prop, resistances_SI[0])
-                mdl.set_property_value(R_sec_prop, resistances_SI[1:])
+                    a = kvs[0] / kvs[num - 1]
+                    converted_value = (base_r / 100 * prop_value[num - 1]) / a ** 2
+                    resistances_si.append(converted_value)
+                mdl.set_property_value(r_prim_prop, resistances_si[0])
+                mdl.set_property_value(r_sec_prop, resistances_si[1:])
             # Magnetization
             elif prop_name in ["percentNoloadloss", "percentimag"]:
                 prop_value = prop_value[0]
-                KVs_prop = mdl.prop(comp_handle, "KVs")
-                KVAs_prop = mdl.prop(comp_handle, "KVAs")
-                KVs = mdl.get_property_value(KVs_prop)
-                KVAs = mdl.get_property_value(KVAs_prop)
-                baseV = KVs[0] * 1000
-                baseP = KVAs[0] * 1000
-                Rm_prop = mdl.prop(T_inner, "Rm")
-                Lm_prop = mdl.prop(T_inner, "Lm")
+                kvs_prop = mdl.prop(comp_handle, "KVs")
+                kvas_prop = mdl.prop(comp_handle, "KVAs")
+                kvs = mdl.get_property_value(kvs_prop)
+                kvas = mdl.get_property_value(kvas_prop)
+                base_v = kvs[0] * 1000
+                base_p = kvas[0] * 1000
+                rm_prop = mdl.prop(trafo_inner, "Rm")
+                lm_prop = mdl.prop(trafo_inner, "Lm")
                 if prop_name == "percentNoloadloss":
                     try:
-                        converted_value = ((baseV * baseV) / baseP) / (prop_value / 100)
+                        converted_value = ((base_v * base_v) / base_p) / (prop_value / 100)
                     except ZeroDivisionError:
                         converted_value = "inf"
-                    mdl.set_property_value(Rm_prop, converted_value)
+                    mdl.set_property_value(rm_prop, converted_value)
                 elif prop_name == "percentimag":
-                    Basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
                     if not prop_value <= 0:
-                        converted_value = ((baseV * baseV) / baseP) / (prop_value / 100) / (
-                                    2 * np.pi * Basefreq)
+                        converted_value = ((base_v * base_v) / base_p) / (prop_value / 100) / (
+                                2 * np.pi * basefreq)
                     else:
                         converted_value = "inf"
-                    mdl.set_property_value(Lm_prop, converted_value)
+                    mdl.set_property_value(lm_prop, converted_value)
             # Inductances
             elif prop_name == "XArray":
-                KVs_prop = mdl.prop(comp_handle, "KVs")
-                KVAs_prop = mdl.prop(comp_handle, "KVAs")
-                KVs = mdl.get_property_value(KVs_prop)
-                KVAs = mdl.get_property_value(KVAs_prop)
-                Basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                kvs_prop = mdl.prop(comp_handle, "KVs")
+                kvas_prop = mdl.prop(comp_handle, "KVAs")
+                kvs = mdl.get_property_value(kvs_prop)
+                kvas = mdl.get_property_value(kvas_prop)
+                basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
                 reactances_pct = prop_value
-                L_prim_prop = mdl.prop(T_inner, "L_prim")
-                L_sec_prop = mdl.prop(T_inner, "L_sec")
+                l_prim_prop = mdl.prop(trafo_inner, "L_prim")
+                l_sec_prop = mdl.prop(trafo_inner, "L_sec")
                 xsc_array = []
-                inductances_SI = []
+                inductances_si = []
 
                 for num in range(1, num_windings + 1):
-                    base_prim = KVs[0] * KVs[0] / KVAs[0] * 1000
+                    base_prim = kvs[0] * kvs[0] / kvas[0] * 1000
 
-                    a = KVs[0] / KVs[num - 1]
-                    ind = reactances_pct[num - 1] * base_prim / 100 / 2 / np.pi / Basefreq / a ** 2
-                    inductances_SI.append(ind)
+                    a = kvs[0] / kvs[num - 1]
+                    ind = reactances_pct[num - 1] * base_prim / 100 / 2 / np.pi / basefreq / a ** 2
+                    inductances_si.append(ind)
 
                 xsc_idxs = list(combinations(range(num_windings), 2))
                 for idx in xsc_idxs:
                     xsc_array.append(reactances_pct[idx[0]] + reactances_pct[idx[1]])
 
                 mdl.set_property_value(mdl.prop(comp_handle, "XscArray"), str(xsc_array))
-                mdl.set_property_value(L_prim_prop, inductances_SI[0])
-                mdl.set_property_value(L_sec_prop, inductances_SI[1:])
+                mdl.set_property_value(l_prim_prop, inductances_si[0])
+                mdl.set_property_value(l_sec_prop, inductances_si[1:])
         set_autotrafo_properties(mdl, mask_handle)
 
     except IndexError:
         mdl.error(f"Make sure the arrays match the size required for {num_windings} windings.")
+
 
 def set_autotrafo_properties(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
@@ -319,6 +324,7 @@ def set_autotrafo_properties(mdl, mask_handle):
                     t_prop_value = mdl.get_property_value(t_prop)
                     mdl.set_property_value(at_prop, float(t_prop_value[n_ctrl-2]/1000))
 
+
 def show_hide_couplings(mdl, mask_handle):
     num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
 
@@ -328,6 +334,7 @@ def show_hide_couplings(mdl, mask_handle):
             mdl.show_property(coup_prop)
         else:
             mdl.hide_property(coup_prop)
+
 
 def calculate_winding_voltage(mdl, mask_handle):
 
@@ -347,7 +354,8 @@ def calculate_winding_voltage(mdl, mask_handle):
             try:
                 vreg = float(mdl.get_ns_var(vreg))
             except:
-                mdl.set_property_disp_value(winding_voltage_prop, f"Variable {vreg} is invalid (make sure to compile once)")
+                mdl.set_property_disp_value(winding_voltage_prop,
+                                            f"Variable {vreg} is invalid (make sure to compile once)")
                 return
 
         try:
@@ -356,7 +364,8 @@ def calculate_winding_voltage(mdl, mask_handle):
             try:
                 ptratio = float(mdl.get_ns_var(ptratio))
             except:
-                mdl.set_property_disp_value(winding_voltage_prop, f"Variable {ptratio} is invalid (make sure to compile once)")
+                mdl.set_property_disp_value(winding_voltage_prop,
+                                            f"Variable {ptratio} is invalid (make sure to compile once)")
                 return
 
         mdl.set_property_disp_value(winding_voltage_prop, str(vreg * ptratio))
@@ -383,6 +392,7 @@ def toggle_regcontrol_props(mdl, mask_handle):
         for i in range(len(props_list)):
             prop = mdl.prop(mask_handle, props_list[i])
             mdl.disable_property(prop)
+
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
     frequency_prop = mdl.prop(mask_handle, "Basefreq")
@@ -447,6 +457,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         created_ports.update({port_names[idx - 1]: new_port})
 
     return created_ports, deleted_ports
+
 
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
