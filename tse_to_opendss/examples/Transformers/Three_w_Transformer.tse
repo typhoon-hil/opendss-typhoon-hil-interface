@@ -1,10 +1,10 @@
 version = 4.2
 
 //
-// Saved by sw version: 2022.3
+// Saved by sw version: 2022.4
 //
 
-model "Three_w_Transformer" {
+model "three_w_transformer" {
     configuration {
         hil_device = "HIL404"
         hil_configuration_id = 1
@@ -59,10 +59,9 @@ model "Three_w_Transformer" {
     component Subsystem Root {
         component "OpenDSS/SimDSS" SimDSS1 {
             currents = "Elem"
-            sim_counter = "89"
-            sim_status = "Sim89 complete"
-            voltagebases = "[1]"
-            voltages = "LL"
+            sim_counter = "92"
+            sim_status = "Sim92 complete"
+            voltagebases = "[1,16,0.4]"
         }
         [
             position = 7912, 7536
@@ -694,6 +693,7 @@ model "Three_w_Transformer" {
         }
 
         gen_probe {
+            signal_access = "inherit"
             addr = "0"
             override_signal_name = "False"
             signal_name = ""
@@ -933,6 +933,8 @@ model "Three_w_Transformer" {
             vbn_rms = "False"
             vcn_rms = "False"
             vln_rms = "False"
+            vn = "False"
+            vn_rms = "False"
             vab = "False"
             vbc = "False"
             vca = "False"
@@ -947,6 +949,8 @@ model "Three_w_Transformer" {
             ib_rms = "False"
             ic_rms = "False"
             i_rms = "False"
+            ineutral = "False"
+            in_rms = "False"
             freq = "False"
             power_p = "False"
             power_q = "False"
@@ -1039,22 +1043,28 @@ model "Three_w_Transformer" {
             enable_probes = "True"
             enable_out = "True"
             remove_snubber = "False"
+            enable_bandwidth = "False"
+            bandwidth = "10e3"
             VAn = "True"
             VBn = "True"
             VCn = "True"
             VAB = "False"
             VBC = "False"
             VCA = "False"
+            VN = "False"
             IA = "True"
             IB = "True"
             IC = "True"
+            IN = "False"
             freq = "False"
             VLn_rms = "False"
             VLL_rms = "False"
             VLn_avg_rms = "False"
             VLL_avg_rms = "False"
+            VN_rms = "False"
             I_rms = "False"
             I_avg_rms = "False"
+            IN_rms = "False"
             P_method = "alpha-beta"
             enable_extra_out = "False"
             P_meas = "False"
