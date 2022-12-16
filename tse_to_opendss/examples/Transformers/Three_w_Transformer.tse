@@ -1,0 +1,1098 @@
+version = 4.2
+
+//
+// Saved by sw version: 2022.4
+//
+
+model "three_w_transformer" {
+    configuration {
+        hil_device = "HIL404"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = 1e-6
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/SimDSS" SimDSS1 {
+            currents = "Elem"
+            sim_counter = "92"
+            sim_status = "Sim92 complete"
+            voltagebases = "[1,16,0.4]"
+        }
+        [
+            position = 7912, 7536
+            size = 96, 96
+        ]
+
+        component "OpenDSS/Bus" Bus2 {
+            conf = "on both sides"
+            v_meas = "True"
+        }
+        [
+            position = 7592, 7936
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus3 {
+            conf = "on both sides"
+            v_meas = "True"
+        }
+        [
+            position = 7864, 7936
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Vsource" Vsource1 {
+            basekv = "16"
+            r0 = "0.01"
+            r1 = ".01"
+            x0 = "0.01"
+            x1 = ".01"
+        }
+        [
+            position = 8664, 7648
+            scale = -1, 1
+            size = 64, 96
+        ]
+
+        component "core/Three-phase Meter" "Three-phase Meter1" {
+            P_meas = "True"
+        }
+        [
+            position = 8520, 7648
+            scale = -1, 1
+            size = 48, 104
+        ]
+
+        component "core/Three-phase Meter" "Three-phase Meter2" {
+            P_meas = "True"
+        }
+        [
+            position = 8512, 8152
+            rotation = right
+            size = 48, 104
+        ]
+
+        component "core/Meter Split" "Meter Split1" {
+            power_p = "True"
+            power_q = "True"
+            van = "False"
+            vbn = "False"
+            vcn = "False"
+        }
+        [
+            position = 8600, 7528
+            size = 96, 48
+        ]
+
+        component gen_gain Gain20 {
+            gain = "0.001"
+        }
+        [
+            position = 8704, 7496
+            hide_name = True
+        ]
+
+        component gen_gain Gain21 {
+            gain = "0.001"
+        }
+        [
+            position = 8704, 7552
+            hide_name = True
+        ]
+
+        component gen_probe Pg {
+            streaming_en = "True"
+        }
+        [
+            position = 8768, 7496
+        ]
+
+        component gen_probe Qg {
+            streaming_en = "True"
+        }
+        [
+            position = 8768, 7552
+        ]
+
+        component gen_probe TmG1 {
+            signal_name = "P"
+            signal_type = "torque"
+            streaming_en = "True"
+        }
+        [
+            position = 7320, 7704
+        ]
+
+        component "OpenDSS/Line" Line2 {
+            L0 = "4.1264e-4"
+            L1 = "2.9337e-4"
+            Length = "1"
+            R0 = "0.3864"
+            R1 = "0.001273"
+            X0 = "0.0041264*(2*np.pi*60)"
+            X1 = "0.0029337*(2*np.pi*60)"
+            dC0 = "20.74e-9"
+            dC1 = "20.74e-9"
+        }
+        [
+            position = 8320, 7648
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus4 {
+            conf = "on both sides"
+            v_meas = "True"
+        }
+        [
+            position = 8424, 7648
+            size = 16, 96
+        ]
+
+        component gen_probe VfdG1 {
+            signal_name = "P"
+            signal_type = "torque"
+            streaming_en = "True"
+        }
+        [
+            position = 7288, 8032
+        ]
+
+        component "OpenDSS/Line" Line3 {
+            L0 = "1.1264e-4"
+            L1 = "0.9337e-4"
+            Length = "10"
+            R0 = "0.03864"
+            R1 = "0.0001273"
+            X0 = "0.00011264*(2*np.pi*60)"
+            X1 = "9.337e-05*(2*np.pi*60)"
+            coupling = "Core coupling"
+            dC0 = "2.751e-9"
+            dC1 = "20.751e-9"
+        }
+        [
+            position = 7680, 7936
+            size = 64, 112
+        ]
+
+        component gen_sum Sum1 {
+        }
+        [
+            position = 7232, 7984
+            rotation = right
+            hide_name = True
+        ]
+
+        component "OpenDSS/Load" Load1 {
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.4"
+            ground_connected = "True"
+            load_model = "Constant Power"
+        }
+        [
+            position = 8512, 8256
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component src_ground gnd2 {
+        }
+        [
+            position = 8304, 7760
+        ]
+
+        component gen_sum Sum2 {
+        }
+        [
+            position = 7256, 7752
+            rotation = left
+            hide_name = True
+        ]
+
+        component "core/Meter Split" "Meter Split2" {
+            power_p = "True"
+            power_q = "True"
+            van = "False"
+            vbn = "False"
+            vcn = "False"
+        }
+        [
+            position = 8656, 8248
+            size = 96, 48
+        ]
+
+        component gen_gain Gain23 {
+            gain = "0.001"
+        }
+        [
+            position = 8752, 8216
+            hide_name = True
+        ]
+
+        component gen_gain Gain24 {
+            gain = "0.001"
+        }
+        [
+            position = 8752, 8272
+            hide_name = True
+        ]
+
+        component gen_probe PL1 {
+            streaming_en = "True"
+        }
+        [
+            position = 8832, 8216
+        ]
+
+        component gen_probe QL1 {
+            streaming_en = "True"
+        }
+        [
+            position = 8832, 8272
+        ]
+
+        component "OpenDSS/Generator" Generator1 {
+            gen_ts_en = "False"
+        }
+        [
+            position = 7448, 7936
+            size = 175, 175
+        ]
+
+        component "OpenDSS/Generator Control" "Generator Control1" {
+            Q_ki = ".05"
+            Q_kp = ".01"
+            execution_rate = "100e-6"
+        }
+        [
+            position = 7104, 7824
+            size = 120, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" "Three-Phase Transformer1" {
+            KVAs = "[1000, 1000, 1000]"
+            KVs = "[1, 16, 0.4]"
+            XArray = "[1, 1, 1]"
+            grounded_prim = "True"
+            grounded_sec1 = "True"
+            grounded_sec2 = "True"
+            num_windings = "3"
+            percentRs = "[1, 1, 1]"
+        }
+        [
+            position = 7968, 7936
+            size = 64, 192
+        ]
+
+        component "OpenDSS/Bus" Bus5 {
+            conf = "on both sides"
+            v_meas = "True"
+        }
+        [
+            position = 8216, 7648
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus6 {
+            conf = "on both sides"
+            v_meas = "True"
+        }
+        [
+            position = 8208, 7984
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" Line4 {
+            L0 = "1.1264e-4"
+            L1 = "0.9337e-4"
+            Length = "2"
+            R0 = "0.03864"
+            R1 = "0.0001273"
+            X0 = "0.00011264*(2*np.pi*60)"
+            X1 = "9.337e-05*(2*np.pi*60)"
+            dC0 = "2.751e-9"
+            dC1 = "20.751e-9"
+        }
+        [
+            position = 8304, 7984
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus7 {
+            conf = "on both sides"
+            v_meas = "True"
+        }
+        [
+            position = 8416, 7984
+            size = 16, 96
+        ]
+
+        component src_ground gnd3 {
+        }
+        [
+            position = 8288, 8112
+        ]
+
+        component "core/Three-phase Meter" "Three-phase Meter3" {
+            P_meas = "True"
+        }
+        [
+            position = 7784, 7936
+            scale = -1, 1
+            size = 48, 104
+        ]
+
+        component "core/Three-phase Meter" "Three-phase Meter4" {
+            P_meas = "True"
+        }
+        [
+            position = 8144, 7648
+            size = 48, 104
+        ]
+
+        component "core/Three-phase Meter" "Three-phase Meter5" {
+            P_meas = "True"
+        }
+        [
+            position = 8128, 7984
+            size = 48, 104
+        ]
+
+        component "core/Meter Split" "Meter Split3" {
+            power_p = "True"
+            power_q = "True"
+            van = "False"
+            vbn = "False"
+            vcn = "False"
+        }
+        [
+            position = 7784, 7800
+            rotation = left
+            size = 96, 48
+        ]
+
+        component gen_gain Gain25 {
+            gain = "0.001"
+        }
+        [
+            position = 7752, 7704
+            rotation = left
+            hide_name = True
+        ]
+
+        component gen_gain Gain26 {
+            gain = "0.001"
+        }
+        [
+            position = 7816, 7704
+            rotation = left
+            hide_name = True
+        ]
+
+        component gen_probe PT1 {
+            streaming_en = "True"
+        }
+        [
+            position = 7752, 7648
+            rotation = left
+        ]
+
+        component gen_probe QT1 {
+            streaming_en = "True"
+        }
+        [
+            position = 7816, 7648
+            rotation = left
+        ]
+
+        component "core/Meter Split" "Meter Split4" {
+            power_p = "True"
+            power_q = "True"
+            van = "False"
+            vbn = "False"
+            vcn = "False"
+        }
+        [
+            position = 8224, 7520
+            size = 96, 48
+        ]
+
+        component gen_gain Gain27 {
+            gain = "0.001"
+        }
+        [
+            position = 8320, 7488
+            hide_name = True
+        ]
+
+        component gen_gain Gain28 {
+            gain = "0.001"
+        }
+        [
+            position = 8320, 7544
+            hide_name = True
+        ]
+
+        component gen_probe PT2 {
+            streaming_en = "True"
+        }
+        [
+            position = 8400, 7488
+        ]
+
+        component gen_probe QT2 {
+            streaming_en = "True"
+        }
+        [
+            position = 8400, 7544
+        ]
+
+        component "core/Meter Split" "Meter Split5" {
+            power_p = "True"
+            power_q = "True"
+            van = "False"
+            vbn = "False"
+            vcn = "False"
+        }
+        [
+            position = 8232, 7864
+            size = 96, 48
+        ]
+
+        component gen_gain Gain29 {
+            gain = "0.001"
+        }
+        [
+            position = 8344, 7832
+            hide_name = True
+        ]
+
+        component gen_gain Gain30 {
+            gain = "0.001"
+        }
+        [
+            position = 8344, 7888
+            hide_name = True
+        ]
+
+        component gen_probe PT3 {
+            streaming_en = "True"
+        }
+        [
+            position = 8424, 7832
+        ]
+
+        component gen_probe QT3 {
+            streaming_en = "True"
+        }
+        [
+            position = 8424, 7888
+        ]
+
+        junction Junction37 sp
+        [
+            position = 7224, 7936
+        ]
+
+        junction Junction38 sp
+        [
+            position = 7264, 7832
+        ]
+
+        comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">OpenDSS example:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Three-phase three winding transformer</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Generator Controller block setting: PQ control mode - fixed generator nominal rating</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">     </p></body></html> ENDCOMMENT 
+        [
+            position = 7184, 7480
+        ]
+
+        comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Generator initialization notes for time domain simulation:</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">- Generator acts as an ideal voltage source for 5 seconds, after which transition is done to full stator electrical model</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">- Rotor speed is constant until 9 seconds, after which mechanical model is activated.</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">- After 9 seconds, full generator model is in effect. </p></body></html> ENDCOMMENT 
+        [
+            position = 7096, 8088
+        ]
+
+        comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Tm0 and Vfd0 are predicted mechanical torque and excitation for initialization.</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Tm(actual) = Tm0 + Tm (input)</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Vfd(actual) = Vfd0 + Vfd (input) </p></body></html> ENDCOMMENT 
+        [
+            position = 7096, 8208
+        ]
+
+        connect "Three-phase Meter1.Out" "Meter Split1.Input" as Connection643
+        connect "Meter Split1.POWER_P" Gain20.in as Connection644
+        connect "Meter Split1.POWER_Q" Gain21.in as Connection645
+        connect Gain20.out Pg.in as Connection646
+        connect Gain21.out Qg.in as Connection647
+        connect Line2.A2 Bus4.A1 as Connection901
+        connect Line2.B2 Bus4.B1 as Connection903
+        connect Line2.C2 Bus4.C1 as Connection905
+        connect Bus2.A2 Line3.A1 as Connection945
+        connect Bus2.B2 Line3.B1 as Connection946
+        connect Bus2.C2 Line3.C1 as Connection947
+        connect Bus4.A2 "Three-phase Meter1.A-" as Connection974
+        connect "Three-phase Meter1.B-" Bus4.B2 as Connection975
+        connect Bus4.C2 "Three-phase Meter1.C-" as Connection976
+        connect "Three-phase Meter1.C+" Vsource1.C1 as Connection977
+        connect Vsource1.B1 "Three-phase Meter1.B+" as Connection978
+        connect "Three-phase Meter1.A+" Vsource1.A1 as Connection979
+        connect Sum1.out VfdG1.in as Connection992
+        connect Load1.A1 "Three-phase Meter2.A-" as Connection1038
+        connect Load1.B1 "Three-phase Meter2.B-" as Connection1039
+        connect "Three-phase Meter2.C-" Load1.C1 as Connection1040
+        connect gnd2.node Line2.N as Connection1049
+        connect TmG1.in Sum2.out as Connection1052
+        connect "Meter Split2.POWER_P" Gain23.in as Connection1063
+        connect "Meter Split2.POWER_Q" Gain24.in as Connection1064
+        connect Gain23.out PL1.in as Connection1065
+        connect Gain24.out QL1.in as Connection1066
+        connect "Three-phase Meter2.Out" "Meter Split2.Input" as Connection1067
+        connect Generator1.A1 Bus2.A1 as Connection1070
+        connect Generator1.B1 Bus2.B1 as Connection1071
+        connect Generator1.C1 Bus2.C1 as Connection1072
+        connect Generator1.Vfd0 Sum1.in as Connection1081
+        connect Generator1.Tm0 Sum2.in as Connection1082
+        connect Generator1.Vfd_in Junction37 as Connection1085
+        connect Junction37 Sum1.in1 as Connection1086
+        connect "Generator Control1.del_vfd" Junction37 as Connection1087
+        connect "Generator Control1.Gen_meas" Generator1.meas as Connection1088
+        connect "Generator Control1.Gen_ctrl" Generator1.ctrl as Connection1089
+        connect Generator1.Tm_in Junction38 as Connection1090
+        connect Junction38 Sum2.in1 as Connection1091
+        connect "Generator Control1.del_Tm" Junction38 as Connection1092
+        connect "Three-Phase Transformer1.A1" Bus3.A2 as Connection1096
+        connect Bus3.B2 "Three-Phase Transformer1.B1" as Connection1097
+        connect Bus3.C2 "Three-Phase Transformer1.C1" as Connection1098
+        connect Bus5.C2 Line2.C1 as Connection1100
+        connect Bus5.B2 Line2.B1 as Connection1102
+        connect Bus5.A2 Line2.A1 as Connection1104
+        connect Bus6.A2 Line4.A1 as Connection1108
+        connect Bus6.B2 Line4.B1 as Connection1109
+        connect Bus6.C2 Line4.C1 as Connection1110
+        connect Line4.A2 Bus7.A1 as Connection1111
+        connect Line4.B2 Bus7.B1 as Connection1112
+        connect Line4.C2 Bus7.C1 as Connection1113
+        connect Bus7.A2 "Three-phase Meter2.A+" as Connection1114
+        connect Bus7.B2 "Three-phase Meter2.B+" as Connection1115
+        connect Bus7.C2 "Three-phase Meter2.C+" as Connection1116
+        connect gnd3.node Line4.N as Connection1117
+        connect Bus3.A1 "Three-phase Meter3.A+" as Connection1118
+        connect "Three-phase Meter3.A-" Line3.A2 as Connection1119
+        connect Line3.B2 "Three-phase Meter3.B-" as Connection1120
+        connect "Three-phase Meter3.B+" Bus3.B1 as Connection1121
+        connect Line3.C2 "Three-phase Meter3.C-" as Connection1122
+        connect "Three-phase Meter3.C+" Bus3.C1 as Connection1123
+        connect "Meter Split3.POWER_P" Gain25.in as Connection1124
+        connect "Meter Split3.POWER_Q" Gain26.in as Connection1125
+        connect Gain25.out PT1.in as Connection1126
+        connect Gain26.out QT1.in as Connection1127
+        connect "Meter Split3.Input" "Three-phase Meter3.Out" as Connection1128
+        connect "Three-Phase Transformer1.A2" "Three-phase Meter4.A+" as Connection1129
+        [
+            breakpoints = 8032, 7856; 8032, 7616
+        ]
+        connect "Three-phase Meter4.A-" Bus5.A1 as Connection1130
+        connect "Three-Phase Transformer1.B2" "Three-phase Meter4.B+" as Connection1131
+        [
+            breakpoints = 8056, 7888; 8056, 7648
+        ]
+        connect "Three-phase Meter4.B-" Bus5.B1 as Connection1132
+        connect "Three-Phase Transformer1.C2" "Three-phase Meter4.C+" as Connection1133
+        [
+            breakpoints = 8080, 7920; 8080, 7680
+        ]
+        connect "Three-phase Meter4.C-" Bus5.C1 as Connection1134
+        connect "Three-Phase Transformer1.C3" "Three-phase Meter5.C+" as Connection1135
+        connect "Three-phase Meter5.C-" Bus6.C1 as Connection1136
+        connect "Three-Phase Transformer1.B3" "Three-phase Meter5.B+" as Connection1137
+        connect "Three-phase Meter5.B-" Bus6.B1 as Connection1138
+        connect "Three-Phase Transformer1.A3" "Three-phase Meter5.A+" as Connection1139
+        connect "Three-phase Meter5.A-" Bus6.A1 as Connection1140
+        connect "Meter Split4.POWER_P" Gain27.in as Connection1141
+        connect "Meter Split4.POWER_Q" Gain28.in as Connection1142
+        connect Gain27.out PT2.in as Connection1143
+        connect Gain28.out QT2.in as Connection1144
+        connect "Meter Split5.POWER_P" Gain29.in as Connection1145
+        connect "Meter Split5.POWER_Q" Gain30.in as Connection1146
+        connect Gain29.out PT3.in as Connection1147
+        connect Gain30.out QT3.in as Connection1148
+        connect "Meter Split5.Input" "Three-phase Meter5.Out" as Connection1149
+        connect "Meter Split4.Input" "Three-phase Meter4.Out" as Connection1150
+    }
+
+    logically_deleted {
+        "Line2.pisec"
+        "Line3.pisec"
+        "Load1.CIL"
+        "Load1.TS_module"
+        "Load1.T_switch"
+        "Load1.Constant1"
+        "Load1.Connection3"
+        "Load1.Connection4"
+        "Generator1.TS_module"
+        "Generator1.T_switch"
+        "Generator1.Constant102"
+        "Generator1.Connection3"
+        "Generator1.Connection5116"
+        "Three-Phase Transformer1.Vreg"
+        "Three-Phase Transformer1.Connection57"
+        "Three-Phase Transformer1.Connection58"
+        "Three-Phase Transformer1.Connection59"
+        "Three-Phase Transformer1.Connection60"
+        "Three-Phase Transformer1.Connection61"
+        "Three-Phase Transformer1.Connection62"
+        "Three-Phase Transformer1.Connection63"
+        "Line4.pisec"
+    }
+
+    default {
+        gen_gain {
+            gain = "1"
+            multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
+            execution_rate = "inherit"
+        }
+
+        gen_probe {
+            signal_access = "inherit"
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        gen_sum {
+            signs = "2"
+            execution_rate = "inherit"
+        }
+
+        "OpenDSS/Bus" {
+            type = "ABC"
+            ground = "False"
+            i_meas = "False"
+            v_meas = "False"
+            conf = "on one side"
+        }
+
+        "OpenDSS/Generator" {
+            phases = "0"
+            kw = "0"
+            kvar = "0"
+            kv = "1"
+            global_basefreq = "True"
+            basefreq = "60"
+            nom_rpm = "1800"
+            kVA = "1000"
+            pf = ".96"
+            model = "0"
+            Xd = "1"
+            Xdp = "0.3"
+            Xdpp = ".2"
+            XRdp = "50"
+            H = "0.5"
+            J = "0"
+            rs = "0"
+            Lls = "0"
+            Lmq = "0"
+            Lmd = "0"
+            Lmzq = "0"
+            Lmzd = "0"
+            rkq = "0"
+            rkq2 = "0"
+            rkd = "0"
+            rfd = "0"
+            Llkq = "0"
+            Llkq2 = "0"
+            Llkd = "0"
+            Llfd = "0"
+            PP = "0"
+            w_base = "0"
+            T_base = "0"
+            ws = "0"
+            ws_inv = "0"
+            Z_base = "0"
+            G_mod = "Constant kW, Fixed Q"
+            Ts = "100e-6"
+            dA = "0"
+            dB = "0"
+            dA11 = "0"
+            dA12 = "0"
+            dA13 = "0"
+            dA14 = "0"
+            dA21 = "0"
+            dA22 = "0"
+            dA23 = "0"
+            dA24 = "0"
+            dA31 = "0"
+            dA32 = "0"
+            dA33 = "0"
+            dA34 = "0"
+            dA41 = "0"
+            dA42 = "0"
+            dA43 = "0"
+            dA44 = "0"
+            dB11 = "0"
+            dB12 = "0"
+            dB13 = "0"
+            dB21 = "0"
+            dB22 = "0"
+            dB23 = "0"
+            dB31 = "0"
+            dB32 = "0"
+            dB33 = "0"
+            dB41 = "0"
+            dB42 = "0"
+            dB43 = "0"
+            Init_En = "True"
+            Init_switch = "0"
+            V_ph_init = "0.581"
+            thet_ph_init = "-1.58"
+            V2M_t = "5"
+            Mech_En = "9"
+            gen_ts_en = "True"
+            load_loadshape = "Choose"
+            loadshape_name = "gen1"
+            loadshape = "[0.5, 0.8, 1, 0.4, 0.5]"
+            loadshape_int = "1"
+            gen_ts_en_bit = "0"
+            T_mode = "Loadshape index"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            S_Ts_mode = "Manual input"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "0"
+            T_Ts_max = "20"
+            del_Ts = "10"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Generator Control" {
+            ctrl_mode_str = "PQ"
+            ctrl_mode_int = "0"
+            ext_mode = "0"
+            P_ref_str = "Generator nominal"
+            P_sel = "0"
+            Q_ref_str = "Generator nominal"
+            Q_sel = "0"
+            V_ref_str = "Generator nominal"
+            V_sel = "0"
+            w_ref_str = "Generator nominal"
+            w_sel = "0"
+            P_kp = "1"
+            P_ki = "2"
+            Q_kp = "0.01"
+            Q_ki = "0.05"
+            V_kp = "10"
+            V_ki = "60"
+            w_kp = "300"
+            w_ki = "300"
+            execution_rate = "0"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Load" {
+            global_basefreq = "True"
+            fn = "60"
+            conn_type = "Y"
+            ground_connected = "False"
+            phases = "3"
+            Vn_3ph = "1"
+            Sn_3ph = "600"
+            pf_mode_3ph = "Unit"
+            pf_3ph = "0.9"
+            pf_3ph_set = "0"
+            load_model = "Constant Impedance"
+            model = "2"
+            Pow_ref_s = "Fixed"
+            Ts = "300e-6"
+            Tfast = "100e-6"
+            CPL_LMT = "2"
+            Vn_3ph_CPL = "0"
+            P_CPL = "0"
+            Q_CPL = "0"
+            kV = "0"
+            pf = "0"
+            conn = "0"
+            kVA = "0"
+            basefreq = "0"
+            load_loadshape = "Choose"
+            loadshape_name = "Default"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+            loadshape_int = "1"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            T_mode = "Time"
+            S_Ts_mode = "Manual input"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "5"
+            T_Ts_max = "10"
+            del_Ts = "20"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+        }
+
+        "core/Meter Split" {
+            van = "True"
+            vbn = "True"
+            vcn = "True"
+            van_rms = "False"
+            vbn_rms = "False"
+            vcn_rms = "False"
+            vln_rms = "False"
+            vn = "False"
+            vn_rms = "False"
+            vab = "False"
+            vbc = "False"
+            vca = "False"
+            vab_rms = "False"
+            vbc_rms = "False"
+            vca_rms = "False"
+            vll_rms = "False"
+            ia = "False"
+            ib = "False"
+            ic = "False"
+            ia_rms = "False"
+            ib_rms = "False"
+            ic_rms = "False"
+            i_rms = "False"
+            ineutral = "False"
+            in_rms = "False"
+            freq = "False"
+            power_p = "False"
+            power_q = "False"
+            power_s = "False"
+            power_pf = "False"
+            enable_extra_in = "No"
+            power_pa = "False"
+            power_pb = "False"
+            power_pc = "False"
+            power_qa = "False"
+            power_qb = "False"
+            power_qc = "False"
+            power_sa = "False"
+            power_sb = "False"
+            power_sc = "False"
+            power_pfa = "False"
+            power_pfb = "False"
+            power_pfc = "False"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            basefrequency = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+        }
+
+        "OpenDSS/Three-Phase Transformer" {
+            num_windings = "2"
+            embedded_cpl = "None"
+            embedded_cpl_12 = "None"
+            embedded_cpl_13 = "None"
+            embedded_cpl_14 = "None"
+            KVs = "[12.47, 12.47]"
+            KVAs = "[1000, 1000]"
+            percentRs = "[2, 2]"
+            XArray = "[1, 1]"
+            XscArray = "[2.0, 2.0]"
+            global_basefreq = "True"
+            Basefreq = "60"
+            percentNoloadloss = "2"
+            percentimag = "0"
+            prim_conn = "Y"
+            grounded_prim = "False"
+            sec1_conn = "Y"
+            grounded_sec1 = "False"
+            sec2_conn = "Y"
+            grounded_sec2 = "False"
+            sec3_conn = "Y"
+            grounded_sec3 = "False"
+            regcontrol_on = "False"
+            maxtap = "1.1"
+            mintap = "0.9"
+            numtaps = "32"
+            ctrl_winding = "Winding 1"
+            vreg = "120"
+            ptratio = "60"
+            winding_voltage = "7200.0"
+            band = "3"
+            delay = "15"
+            execution_rate = "100e-6"
+            enable_monitoring = "False"
+        }
+
+        "core/Three-phase Meter" {
+            R = "1e5"
+            n_cycles = "1"
+            Ts = "100e-6"
+            enable_probes = "True"
+            enable_out = "True"
+            remove_snubber = "False"
+            enable_bandwidth = "False"
+            bandwidth = "10e3"
+            VAn = "True"
+            VBn = "True"
+            VCn = "True"
+            VAB = "False"
+            VBC = "False"
+            VCA = "False"
+            VN = "False"
+            IA = "True"
+            IB = "True"
+            IC = "True"
+            IN = "False"
+            freq = "False"
+            VLn_rms = "False"
+            VLL_rms = "False"
+            VLn_avg_rms = "False"
+            VLL_avg_rms = "False"
+            VN_rms = "False"
+            I_rms = "False"
+            I_avg_rms = "False"
+            IN_rms = "False"
+            P_method = "alpha-beta"
+            enable_extra_out = "False"
+            P_meas = "False"
+        }
+
+        "OpenDSS/Vsource" {
+            ground_connected = "True"
+            basekv = "115"
+            pu = "1"
+            Angle = "0"
+            Frequency = "60"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            enable_monitoring = "False"
+        }
+    }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        INVTs = 100e-6
+    ENDCODE
+}
