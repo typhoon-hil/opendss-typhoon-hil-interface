@@ -852,6 +852,27 @@ library "OpenDSS" {
 
                     comp_script.define_icon(mdl, item_handle)
 
+                    hil_device = mdl.core_model.configuration.hil_device
+                    prop_handle = mdl.prop(item_handle, "coupling")
+                    prop_combo_values = mdl.get_property_combo_values(prop_handle)
+                    if hil_device not in ["HIL404", "HIL602+", "HIL604", "HIL606"]:
+                        new_combo_values = ["None", "Core coupling"]
+                    else:
+                        new_combo_values = ["None", "Core coupling", "Device coupling"]
+                    mdl.set_property_combo_values(prop_handle, new_combo_values)
+
+                ENDCODE
+
+                CODE configuration_changed
+                    hil_device = mdl.core_model.configuration.hil_device
+                    prop_handle = mdl.prop(item_handle, "coupling")
+                    prop_combo_values = mdl.get_property_combo_values(prop_handle)
+                    if hil_device not in ["HIL404", "HIL602+", "HIL604", "HIL606"]:
+                        new_combo_values = ["None", "Core coupling"]
+                    else:
+                        new_combo_values = ["None", "Core coupling", "Device coupling"]
+                    mdl.set_property_combo_values(prop_handle, new_combo_values)
+
                 ENDCODE
 
                 CODE define_icon
