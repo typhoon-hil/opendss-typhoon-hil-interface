@@ -760,8 +760,7 @@ def connections_dynamics(mdl, mask_handle, created_ports):
                 mdl.delete_item(gnd1)
             if jun_n:
                 if phases == "3":
-                    conn_n0 = mdl.get_item("Conn_N0", parent=comp_handle, item_type="connection")
-                    if not conn_n0:
+                    if len(mdl.find_connections(created_ports.get("portN"))) == 0:
                         mdl.create_connection(jun_n, created_ports.get("portN"), name="Conn_N0")
 
     else:
