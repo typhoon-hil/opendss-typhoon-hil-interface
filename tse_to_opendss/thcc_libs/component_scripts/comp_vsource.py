@@ -2,6 +2,7 @@ import numpy as np
 
 x0, y0 = (8192, 8192)
 
+
 def update_source_values(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
 
@@ -27,8 +28,10 @@ def update_source_values(mdl, mask_handle):
     freq = mdl.get_property_value(frequency_prop)
     mdl.set_property_value(tl_f_prop, freq)
 
-    rseq = f'[[{r0}, 0, 0], [0, {r1}, 0], [0, 0, {r1}]]'
-    lseq = f'[[{x0 / 2 / np.pi / freq}, 0, 0], [0, {x1 / 2 / np.pi / freq}, 0], [0, 0, {x1 / 2 / np.pi / freq}]]'
+    rseq = '[[r0, 0, 0], [0, r1, 0], [0, 0, r1]]'
+    lseq = ('[[x0 / 2 / np.pi / Frequency, 0, 0], '
+            '[0, x1 / 2 / np.pi / Frequency, 0], '
+            '[0, 0, x1 / 2 / np.pi / Frequency]]')
 
     r_seq_prop = mdl.prop(tl_comp, "R_sequence_metric")
     l_seq_prop = mdl.prop(tl_comp, "L_sequence_metric")
@@ -43,10 +46,11 @@ def update_source_values(mdl, mask_handle):
         f_prop = mdl.prop(vsource, "init_frequency")
         ph_prop = mdl.prop(vsource, "init_phase")
 
-        mdl.set_property_value(rms_prop, round(
-            mdl.get_property_value(basekv_prop) * 1000 * mdl.get_property_value(pu_prop) / np.sqrt(3), 8))
-        mdl.set_property_value(f_prop, mdl.get_property_value(frequency_prop))
-        mdl.set_property_value(ph_prop, mdl.get_property_value(angle_prop) - 120 * idx)
+        mdl.set_property_value(f_prop, "Frequency")
+
+        mdl.set_property_value(rms_prop, "round(basekv * 1000 * pu/ np.sqrt(3), 8)")
+        mdl.set_property_value(ph_prop, f"Angle - {120 * idx}")
+
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
     frequency_prop = mdl.prop(mask_handle, "BaseFreq")
@@ -109,6 +113,7 @@ def update_connections(mdl, mask_handle, ports):
         mdl.create_connection(ports.get("A2"), mdl.term(va, 'n_node'))
         mdl.create_connection(ports.get("B2"), mdl.term(vb, 'n_node'))
         mdl.create_connection(ports.get("C2"), mdl.term(vc, 'n_node'))
+
 
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     comp_handle = mdl.get_parent(mask_handle)

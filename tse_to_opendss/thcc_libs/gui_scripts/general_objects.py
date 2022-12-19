@@ -274,6 +274,7 @@ class Ui_objects(object):
         self.label_xmatrix_unit.setText(_translate("objects", "Ω/km"))
         self.label_cmatrix.setText(_translate("objects", "cmatrix"))
         self.label_cmatrix_unit.setText(_translate("objects", "nF/km"))
+        self.label_phases.setText(_translate("objects", "nphases"))
         self.radio_symmetrical.setText(_translate("objects", "Symmetrical"))
         self.radio_matrix.setText(_translate("objects", "Matrix"))
         self.button_newlinecode.setText(_translate("objects", "New"))
@@ -313,7 +314,6 @@ class Ui_objects(object):
         self.button_ok.setText(_translate("objects", "Save"))
         self.button_cancel.setText(_translate("objects", "Cancel"))
         self.label_savewarning.setText(_translate("objects", "Warning: changes are independent from the schematic model and cannot be restored once saved."))
-
 
     def edited(self):
 
@@ -1003,7 +1003,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                         df = pd.read_csv(f, header=None)
                     df.fillna(0)
                     columns = [str(n + 1) for n in range(len(df.columns))]
-
 
                 current_selected_combo = self.combo_column.currentText()
                 self.combo_column.blockSignals(True)

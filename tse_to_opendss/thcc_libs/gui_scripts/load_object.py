@@ -13,6 +13,8 @@ import general_objects as obj
 import os, pathlib
 import pandas as pd
 
+from tse_to_opendss.conversion.default_mapping.component_classes.base import convert_matrix_format
+
 
 class Ui_load_object(object):
     def setupUi(self, load_object):
@@ -216,7 +218,7 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
         if edit_window.exec():
             import json
 
-            # Get the path to the the objects file
+            # Get the path to the objects file
             mdlfile = self.mdl.get_model_file_path()
             mdlfile_name = pathlib.Path(mdlfile).stem
             mdlfile_folder = pathlib.Path(mdlfile).parents[0]
@@ -273,6 +275,8 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
                         if num_phases == "1" and not parname == "nphases":
                             par_strs.append(f"{exchange_dict.get(parname)}={parval}")
                         else:
+                            if parname in ["rmatrix", "xmatrix", "cmatrix"]:
+                                parval = convert_matrix_format(parval, num_phases)
                             par_strs.append(f"{parname}={parval}")
 
                 par_strs.sort(key=lambda x: x in ['npts'])  # npts should appear first if present
