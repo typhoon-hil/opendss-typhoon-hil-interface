@@ -498,39 +498,16 @@ library "OpenDSS" {
                 ground {
                     label = "Show DSS ground terminal (0)"
                     widget = checkbox
-                    type = string
+                    type = bool
                     default_value = "False"
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                    ENDCODE
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                   ENDCODE
 
                     CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                    ENDCODE
-                }
-
-                i_meas {
-                    label = "RMS Current Measurements"
-                    widget = checkbox
-                    type = string
-                    default_value = "False"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                    ENDCODE
-                }
-
-                v_meas {
-                    label = "RMS Voltage Measurements"
-                    widget = checkbox
-                    type = string
-                    default_value = "False"
-                    no_evaluate
-
-                    CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                     ENDCODE
                 }
@@ -538,17 +515,107 @@ library "OpenDSS" {
                 conf {
                     label = "Configuration"
                     widget = combo
-                    combo_values = "on one side", "on both sides"
+                    combo_values = "On both sides", "On one side"
                     type = string
-                    default_value = "on one side"
+                    default_value = "On both sides"
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
+                    ENDCODE
+                }
+
+                i_rms_meas {
+                    label = "Line Currents  - RMS"
+                    previous_names = "i_meas"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                i_inst_meas {
+                    label = " Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    keepline
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_rms_meas {
+                    label = "Line Voltages  - RMS"
+                    previous_names = "v_meas"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_inst_meas {
+                    label = " instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    keepline
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_rms_meas {
+                    label = "Phase Voltage - RMS"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_inst_meas {
+                    label = " instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    keepline
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
 
