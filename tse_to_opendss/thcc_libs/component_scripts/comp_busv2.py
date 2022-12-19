@@ -116,280 +116,6 @@ def i_meas_changed(mdl, mask_handle, i_meas_on, created_ports=None):
             mdl.create_connection(j1c, j2c, name="sc_imeas_C")
 
 
-def type_value_changed(mdl, mask_handle, new_type, created_ports=None):
-    """
-
-    :param mdl:
-    :param mask_handle:
-    :param new_type:
-    :param created_ports:
-    :return:
-    """
-    comp_handle = mdl.get_parent(mask_handle)
-    conf = mdl.get_property_disp_value(mdl.prop(mask_handle, "conf"))
-
-    j1a = mdl.get_item(name="Aj", parent=comp_handle)
-    j1b = mdl.get_item(name="Bj", parent=comp_handle)
-    j1c = mdl.get_item(name="Cj", parent=comp_handle)
-    j2a = mdl.get_item(name="A_imeas_j", parent=comp_handle)
-    j2b = mdl.get_item(name="B_imeas_j", parent=comp_handle)
-    j2c = mdl.get_item(name="C_imeas_j", parent=comp_handle)
-
-    if new_type == "ABC":
-        term_positions = [(-8.0, -32.0), (8.0, -32.0), (-8.0, 0), (8.0, 0), (-8.0, 32.0), (8.0, 32.0)]
-    elif new_type == "AB":
-        term_positions = [(-8.0, -16), (8.0, -16), (-8.0, 16), (8.0, 16), (0, 0), (0, 0)]
-    elif new_type == "AC":
-        term_positions = [(-8.0, -16), (8.0, -16), (0, 0), (0, 0), (-8.0, 16), (8.0, 16)]
-    elif new_type == "BC":
-        term_positions = [(0, 0), (0, 0), (-8.0, -16), (8.0, -16), (-8.0, 16), (8.0, 16)]
-    elif new_type == "A":
-        term_positions = [(-8.0, 0), (8.0, 0), (0, 0), (0, 0), (0, 0), (0, 0)]
-    elif new_type == "B":
-        term_positions = [(0, 0), (0, 0), (-8.0, 0), (8.0, 0), (0, 0), (0, 0)]
-    elif new_type == "C":
-        term_positions = [(0, 0), (0, 0), (0, 0), (0, 0), (-8.0, 0), (8.0, 0)]
-    #
-    port_dict = {
-        f"A1": {"pos": (7400, 7856), "j1": j1a, "rotation": "up", "terminal_position": term_positions[0]},
-        f"A2": {"pos": (7900, 7856), "j1": j2a, "rotation": "down", "terminal_position": term_positions[1]},
-        f"B1": {"pos": (7400, 7952), "j1": j1b, "rotation": "up", "terminal_position": term_positions[2]},
-        f"B2": {"pos": (7900, 7952), "j1": j2b, "rotation": "down", "terminal_position": term_positions[3]},
-        f"C1": {"pos": (7400, 8048), "j1": j1c, "rotation": "up", "terminal_position": term_positions[4]},
-        f"C2": {"pos": (7900, 8048), "j1": j2c, "rotation": "down", "terminal_position": term_positions[5]}
-    }
-
-    disable_items = []
-
-    if "A" not in new_type:
-        disable_items.extend(["iA_RMS", "ShortCircuitA"])
-    if "B" not in new_type:
-        disable_items.extend(["iB_RMS", "ShortCircuitB"])
-    if "C" not in new_type:
-        disable_items.extend(["iC_RMS", "ShortCircuitC"])
-
-    for it in disable_items:
-        handle = mdl.get_item(it, parent=comp_handle)
-        if handle:
-            mdl.disable_items(handle)
-
-    # Restore
-
-    create_ports = []
-    enable_items = []
-
-    if "A" in new_type:
-        create_ports.append("A1")
-        if conf == "on both sides":
-            create_ports.append("A2")
-        enable_items.extend(["iA_RMS"])
-    if "B" in new_type:
-        create_ports.append("B1")
-        if conf == "on both sides":
-            create_ports.append("B2")
-        enable_items.extend(["iB_RMS"])
-    if "C" in new_type:
-        create_ports.append("C1")
-        if conf == "on both sides":
-            create_ports.append("C2")
-        enable_items.extend(["iC_RMS"])
-
-    for p in create_ports:
-        # handle = mdl.get_item(p, parent=comp_handle, item_type="port")
-        # if not handle:
-        new_port = created_ports.get(p)
-        mdl.create_connection(new_port, port_dict.get(p).get("j1"))
-    for it in enable_items:
-        handle = mdl.get_item(it, parent=comp_handle)
-        if handle:
-            mdl.enable_items(handle)
-
-    v_meas = mdl.get_property_value(mdl.prop(mask_handle, "v_meas"))
-    v_meas_changed(mdl, mask_handle, v_meas)
-    i_meas = mdl.get_property_value(mdl.prop(mask_handle, "i_meas"))
-    i_meas_changed(mdl, mask_handle, i_meas)
-
-
-def ground_open_circuit(mdl, mask_handle, created_ports=None):
-    """
-
-    :param mdl:
-    :param mask_handle:
-    :param created_ports:
-    :return:
-    """
-    comp_handle = mdl.get_parent(mask_handle)
-    conf = mdl.get_property_disp_value(mdl.prop(mask_handle, "conf"))
-    phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "type"))
-    ground = mdl.get_property_disp_value(mdl.prop(mask_handle, "ground"))
-
-    gnd_oc = mdl.get_item("gnd_open", parent=comp_handle)
-    if gnd_oc:
-        mdl.delete_item(gnd_oc)
-
-    ja = mdl.get_item(name="jA_vmeas", parent=comp_handle, item_type="junction")
-    jab = mdl.get_item(name="jAB_vmeas", parent=comp_handle, item_type="junction")
-    jb = mdl.get_item(name="jB_vmeas", parent=comp_handle, item_type="junction")
-
-    if len(phases) == 1 and conf == "on one side":
-        gnd = created_ports.get("0")
-        gnd_oc = mdl.create_component("el_open",
-                             parent=comp_handle,
-                             name="gnd_open",
-                             rotation="left",
-                             position=(7624, 8250)
-                             )
-        mdl.create_connection(mdl.term(gnd_oc, "p_node"), gnd)
-        if phases == "A":
-            j = ja
-        elif phases == "B":
-            j = jab
-        elif phases == "C":
-            j = jb
-        mdl.create_connection(mdl.term(gnd_oc, "n_node"), j)
-    elif ground == "True" or ground is True:
-        gnd_oc = mdl.create_component("el_open",
-                             parent=comp_handle,
-                             name="gnd_open",
-                             rotation="left",
-                             position=(7624, 8250)
-                             )
-
-        gnd = created_ports.get("0")
-
-        mdl.create_connection(mdl.term(gnd_oc, "p_node"), gnd)
-        if "B" in phases:
-            j = jab
-        elif "A" in phases:
-            j = ja
-        elif "C" in phases:
-            j = jb
-        mdl.create_connection(mdl.term(gnd_oc, "n_node"), j)
-
-
-def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
-    """
-
-    :param mdl:
-    :param mask_handle:
-    :param caller_prop_handle:
-    :param init:
-    :return:
-    """
-    comp_handle = mdl.get_parent(mask_handle)
-    deleted_ports = []
-    created_ports = {}
-
-    prop_caller_name = mdl.get_name(caller_prop_handle)
-
-    if prop_caller_name in ['type', 'conf']:
-        conf = mdl.get_property_value(mdl.prop(mask_handle, "conf"))
-
-        j1a = mdl.get_item(name="Aj", parent=comp_handle)
-        j1b = mdl.get_item(name="Bj", parent=comp_handle)
-        j1c = mdl.get_item(name="Cj", parent=comp_handle)
-        j2a = mdl.get_item(name="A_imeas_j", parent=comp_handle)
-        j2b = mdl.get_item(name="B_imeas_j", parent=comp_handle)
-        j2c = mdl.get_item(name="C_imeas_j", parent=comp_handle)
-
-        new_type = mdl.get_property_value(mdl.prop(mask_handle, "type"))
-
-        if new_type == "ABC":
-            term_positions = [(-8.0, -32.0), (8.0, -32.0), (-8.0, 0), (8.0, 0), (-8.0, 32.0), (8.0, 32.0)]
-        elif new_type == "AB":
-            term_positions = [(-8.0, -16), (8.0, -16), (-8.0, 16), (8.0, 16), (0, 0), (0, 0)]
-        elif new_type == "AC":
-            term_positions = [(-8.0, -16), (8.0, -16), (0, 0), (0, 0), (-8.0, 16), (8.0, 16)]
-        elif new_type == "BC":
-            term_positions = [(0, 0), (0, 0), (-8.0, -16), (8.0, -16), (-8.0, 16), (8.0, 16)]
-        elif new_type == "A":
-            term_positions = [(-8.0, 0), (8.0, 0), (0, 0), (0, 0), (0, 0), (0, 0)]
-        elif new_type == "B":
-            term_positions = [(0, 0), (0, 0), (-8.0, 0), (8.0, 0), (0, 0), (0, 0)]
-        elif new_type == "C":
-            term_positions = [(0, 0), (0, 0), (0, 0), (0, 0), (-8.0, 0), (8.0, 0)]
-
-        port_dict = {
-            f"A1": {"pos": (7400, 7856), "j1": j1a, "rotation": "up", "terminal_position": term_positions[0]},
-            f"A2": {"pos": (7900, 7856), "j1": j2a, "rotation": "down", "terminal_position": term_positions[1]},
-            f"B1": {"pos": (7400, 7952), "j1": j1b, "rotation": "up", "terminal_position": term_positions[2]},
-            f"B2": {"pos": (7900, 7952), "j1": j2b, "rotation": "down", "terminal_position": term_positions[3]},
-            f"C1": {"pos": (7400, 8048), "j1": j1c, "rotation": "up", "terminal_position": term_positions[4]},
-            f"C2": {"pos": (7900, 8048), "j1": j2c, "rotation": "down", "terminal_position": term_positions[5]}
-        }
-
-        # Delete
-
-        del_ports = ["A1", "A2", "B1", "B2", "C1", "C2"]
-        for p in del_ports:
-            handle = mdl.get_item(p, parent=comp_handle, item_type="port")
-            if handle:
-                deleted_ports.append(p)
-                mdl.delete_item(handle)
-
-        # Restore
-
-        create_ports = []
-        enable_items = []
-
-        if "A" in new_type:
-            create_ports.append("A1")
-            if conf == "on both sides":
-                create_ports.append("A2")
-            enable_items.extend(["iA_RMS"])
-        if "B" in new_type:
-            create_ports.append("B1")
-            if conf == "on both sides":
-                create_ports.append("B2")
-            enable_items.extend(["iB_RMS"])
-        if "C" in new_type:
-            create_ports.append("C1")
-            if conf == "on both sides":
-                create_ports.append("C2")
-            enable_items.extend(["iC_RMS"])
-
-        for p in create_ports:
-            handle = mdl.get_item(p, parent=comp_handle, item_type="port")
-            if not handle:
-                new_port = mdl.create_port(name=p,
-                                           parent=comp_handle,
-                                           position=port_dict.get(p).get("pos"),
-                                           terminal_position=port_dict.get(p).get("terminal_position"),
-                                           rotation=port_dict.get(p).get("rotation")
-                                           )
-                created_ports.update({p: new_port})
-
-    if prop_caller_name in ['type', 'conf', 'ground']:
-
-        conf = mdl.get_property_disp_value(mdl.prop(mask_handle, "conf"))
-        phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "type"))
-        ground = mdl.get_property_disp_value(mdl.prop(mask_handle, "ground"))
-
-        gnd = mdl.get_item("0", parent=comp_handle, item_type="port")
-        if gnd:
-            deleted_ports.append("0")
-            mdl.delete_item(gnd)
-
-        if len(phases) == 1 and conf == "on one side":
-            gnd = mdl.create_port(name="0",
-                                  parent=comp_handle,
-                                  position=(7624, 8300),
-                                  terminal_position=(0, 8),
-                                  rotation="left"
-                                  )
-            created_ports.update({"0": gnd})
-        elif ground == "True" or ground is True:
-            gnd = mdl.create_port(name="0",
-                                  parent=comp_handle,
-                                  position=(7624, 8300),
-                                  terminal_position=(0, 16 * len(phases)),
-                                  rotation="left"
-                                  )
-            created_ports.update({"0": gnd})
-
-    return created_ports, deleted_ports
-
-
 def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
     """
 
@@ -403,8 +129,13 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
     conf_prop = mdl.prop(container_handle, "conf")
     type_prop = mdl.prop(container_handle, "type")
     ground_prop = mdl.prop(container_handle, "ground")
-    v_meas_prop = mdl.prop(container_handle, "v_meas")
-    i_meas_prop = mdl.prop(container_handle, "i_meas")
+    i_rms_meas_prop = mdl.prop(container_handle, "i_rms_meas")
+    i_inst_meas_prop = mdl.prop(container_handle, "i_inst_meas")
+    v_line_rms_meas_prop = mdl.prop(container_handle, "v_line_rms_meas")
+    v_line_inst_meas_prop = mdl.prop(container_handle, "v_line_inst_meas")
+    v_phase_rms_meas_prop = mdl.prop(container_handle, "v_phase_rms_meas")
+    v_phase_inst_meas_prop = mdl.prop(container_handle, "v_phase_inst_meas")
+
     new_value = None
 
     if caller_prop_handle:
@@ -414,16 +145,57 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
     #  "conf" property code
     # ------------------------------------------------------------------------------------------------------------------
     if caller_prop_handle == conf_prop:
-        mdl.info(new_value)
+        comp_type = mdl.get_property_disp_value(type_prop)
+        # Components Vars
+        comp_handle = mdl.get_parent(container_handle)
+        comp_port_labels = ["A2", "B2", "C2"]
+        comp_port_handles = [mdl.get_item(p_name, item_type="port", parent=comp_handle)
+                             for p_name in comp_port_labels]
+        # Three-Phase Meter Vars
+        meas_handle = mdl.get_item("Measurements", parent=comp_handle)
+        meas_port_labels = ["A+", "B+", "C+", "A-", "B-", "C-"]
+        meas_port_handles = [mdl.get_item(p_name, item_type="terminal", parent=meas_handle)
+                             for p_name in meas_port_labels]
+        # Port Vars
+        port_attributes = get_port_const_attributes(comp_type)
+        create_delete_ports = [phase in comp_type for phase in ["A", "B", "C"]]
+        # External Meters Vars - I'll remove it in future
+        current_meas_handles = [mdl.get_item(name, parent=comp_handle) for name in ["iA_RMS", "iB_RMS", "iC_RMS"]]
+
+        # Updating the Terminal Positions
+        for cnt, handle in enumerate(comp_port_handles):
+            if handle:
+                mdl.set_port_properties(handle, terminal_position=port_attributes[comp_port_labels[cnt]]["term_pos"])
+
+        if new_value == "On one side":
+            # delete all downstream ports
+            for cnt, handle in enumerate(comp_port_handles):
+                if comp_port_handles[cnt]:
+                    mdl.delete_item(comp_port_handles[cnt])
+                    # TODO: Remove the external measurements
+                    mdl.create_connection(meas_port_handles[cnt], mdl.term(current_meas_handles[cnt], "n_node"))
+        else:
+            # Create downstream ports depending on comp_type
+            for cnt, action in enumerate(create_delete_ports):
+                if not comp_port_handles[cnt] and action:
+                    mdl.delete_item(mdl.find_connections(mdl.term(current_meas_handles[cnt], "n_node"))[0])
+                    new_port = mdl.create_port(name=comp_port_labels[cnt],
+                                               parent=comp_handle,
+                                               kind="pe",
+                                               direction="in",
+                                               position=port_attributes[comp_port_labels[cnt]]["pos"],
+                                               terminal_position=port_attributes[comp_port_labels[cnt]]["term_pos"],
+                                               flip="flip_horizontal")
+                    mdl.create_connection(mdl.term(current_meas_handles[cnt], "n_node"), new_port)
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "type" property code
     # ------------------------------------------------------------------------------------------------------------------
     if caller_prop_handle == type_prop:
-        conf = mdl.get_property_disp_value(mdl.prop(container_handle, "conf"))
+        conf = mdl.get_property_disp_value(conf_prop)
         # Component Vars
         comp_handle = mdl.get_parent(container_handle)
-        comp_port_labels = ["A1", "B1", "C1", "A2", "B2", "C2"]
+        comp_port_labels = ["A1", "B1", "C1", "A2", "B2", "C2", "GND"]
         comp_port_handles = [mdl.get_item(p_name, item_type="port", parent=comp_handle)
                              for p_name in comp_port_labels]
         # Three-Phase Meter Vars
@@ -437,7 +209,12 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
         # External Meters Vars - I'll remove it in future
         current_meas_handles = [mdl.get_item(name, parent=comp_handle) for name in ["iA_RMS", "iB_RMS", "iC_RMS"]]
 
-        # Create/Delete Ports
+        # Updating the Terminal Positions
+        for cnt, handle in enumerate(comp_port_handles):
+            if handle:
+                mdl.set_port_properties(handle, terminal_position=port_attributes[comp_port_labels[cnt]]["term_pos"])
+
+        # Creating/Deleting Ports
         for cnt, action in enumerate(create_delete_ports):
             if action:
                 # Upstream Logic
@@ -452,7 +229,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                     mdl.create_connection(new_port, meas_port_handles[cnt])
                 # Downstream Logic
                 if not comp_port_handles[cnt+3]:
-                    if conf == "on both sides":
+                    if conf == "On both sides":
                         mdl.delete_item(mdl.find_connections(mdl.term(current_meas_handles[cnt], "n_node"))[0])
                         new_port = mdl.create_port(name=comp_port_labels[cnt+3],
                                                    parent=comp_handle,
@@ -473,24 +250,43 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                     # TODO: Remove the external rms meters from the schematic
                     mdl.create_connection(meas_port_handles[cnt], mdl.term(current_meas_handles[cnt], "n_node"))
 
-        #mdl.info(create_delete_ports)
+        # Updating the icon
+        mdl.refresh_icon(container_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "ground" property code
     # ------------------------------------------------------------------------------------------------------------------
     if caller_prop_handle == ground_prop:
-        mdl.info(new_value)
+        comp_handle = mdl.get_parent(container_handle)
+        meas_handle = mdl.get_item("Measurements", parent=comp_handle)
+        comp_type = mdl.get_property_disp_value(type_prop)
+        port_attributes = get_port_const_attributes(comp_type)
+
+        if new_value:
+            new_port = mdl.create_port(name="GND",
+                                       parent=comp_handle,
+                                       label="0",
+                                       position=port_attributes["GND"]["pos"],
+                                       kind="pe",
+                                       direction="in",
+                                       terminal_position=port_attributes["GND"]["term_pos"],
+                                       rotation="left")
+            mdl.create_connection(new_port, mdl.term(meas_handle, "GND"))
+        else:
+            gnd_handle = mdl.get_item("GND", parent=comp_handle, item_type="port")
+            if gnd_handle:
+                mdl.delete_item(gnd_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "v_meas" property code
     # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == v_meas_prop:
+    if caller_prop_handle == v_line_rms_meas_prop:
         mdl.info(new_value)
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "i_meas" property code
     # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == i_meas_prop:
+    if caller_prop_handle == i_rms_meas_prop:
         mdl.info(new_value)
 
 
@@ -530,12 +326,12 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
         mdl.enable_property(ground_prop)
 
 
-def define_icon(mdl, mask_handle):
+def define_icon(mdl, container_handle):
     """
     Defines the component icon based on its type
 
     :param mdl: Schematic API
-    :param mask_handle: Component Handle
+    :param container_handle: Component Handle
     :return: no return
     """
     images = {
@@ -547,14 +343,18 @@ def define_icon(mdl, mask_handle):
         "BC": "images/bus_2ph.svg",
         "ABC": "images/bus_3ph.svg"
     }
-    bus_type = mdl.get_property_value(mdl.prop(mask_handle, "type"))
-    mdl.set_component_icon_image(mask_handle, images[bus_type])
+
+    comp_type = mdl.get_property_value(mdl.prop(container_handle, "type"))
+    comp_handle = mdl.get_parent(container_handle)
+    mask_handle = mdl.get_mask(comp_handle)
+    mdl.set_component_icon_image(mask_handle, images[comp_type])
 
 
 def get_port_const_attributes(comp_type):
     """
 
     """
+    term_positions = []
     if comp_type == "ABC":
         term_positions = [(-8.0, -32.0), (8.0, -32.0), (-8.0, 0), (8.0, 0), (-8.0, 32.0), (8.0, 32.0)]
     elif comp_type == "AB":
@@ -575,6 +375,20 @@ def get_port_const_attributes(comp_type):
                  "B1": {"pos": (7400, 7952), "term_pos": term_positions[2]},
                  "B2": {"pos": (7984, 7952), "term_pos": term_positions[3]},
                  "C1": {"pos": (7400, 8048), "term_pos": term_positions[4]},
-                 "C2": {"pos": (7984, 8048), "term_pos": term_positions[5]}}
+                 "C2": {"pos": (7984, 8048), "term_pos": term_positions[5]},
+                 "GND": {"pos": (7552, 8144), "term_pos": [0, 16*len(comp_type)]}}
 
     return port_dict
+
+
+def check_measurements(mdl, container_handle):
+    """
+
+    """
+    comp_handle = mdl.get_parent(container_handle)
+
+    comp_type = mdl.get_property_disp_value(mdl.prop(container_handle, "type"))
+    comp_conf = mdl.get_property_disp_value(mdl.prop(container_handle, "conf"))
+
+    phase_voltage_inst_names = ["VAn", "VBn", "VCn"]
+    phase_voltage_rms_names = ["VAn", "VBn", "VCn"]
