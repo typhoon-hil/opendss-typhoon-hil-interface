@@ -126,6 +126,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
     :return:
 
     """
+    # Property Registration
     conf_prop = mdl.prop(container_handle, "conf")
     type_prop = mdl.prop(container_handle, "type")
     ground_prop = mdl.prop(container_handle, "ground")
@@ -135,6 +136,8 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
     v_line_inst_meas_prop = mdl.prop(container_handle, "v_line_inst_meas")
     v_phase_rms_meas_prop = mdl.prop(container_handle, "v_phase_rms_meas")
     v_phase_inst_meas_prop = mdl.prop(container_handle, "v_phase_inst_meas")
+    freq_meas_prop = mdl.prop(container_handle, "freq_meas")
+    power_meas_prop = mdl.prop(container_handle, "power_meas")
 
     new_value = None
 
@@ -252,6 +255,8 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
 
         # Updating the icon
         mdl.refresh_icon(container_handle)
+        # Measurements Check
+        check_measurements(mdl, container_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "ground" property code
@@ -278,16 +283,11 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                 mdl.delete_item(gnd_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
-    #  "v_meas" property code
+    #  "Measurements" properties code
     # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == v_line_rms_meas_prop:
-        mdl.info(new_value)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "i_meas" property code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == i_rms_meas_prop:
-        mdl.info(new_value)
+    if caller_prop_handle in [i_rms_meas_prop, i_inst_meas_prop, v_line_rms_meas_prop, v_line_inst_meas_prop,
+                              v_phase_rms_meas_prop, v_phase_inst_meas_prop, freq_meas_prop, power_meas_prop]:
+        check_measurements(mdl, container_handle)
 
 
 def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
@@ -299,31 +299,66 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
     :param init:
     :return:
     """
+    # Property Registration
     conf_prop = mdl.prop(container_handle, "conf")
     type_prop = mdl.prop(container_handle, "type")
     ground_prop = mdl.prop(container_handle, "ground")
-    v_meas_prop = mdl.prop(container_handle, "v_meas")
-    i_meas_prop = mdl.prop(container_handle, "i_meas")
+    i_rms_meas_prop = mdl.prop(container_handle, "i_rms_meas")
+    i_inst_meas_prop = mdl.prop(container_handle, "i_inst_meas")
+    v_line_rms_meas_prop = mdl.prop(container_handle, "v_line_rms_meas")
+    v_line_inst_meas_prop = mdl.prop(container_handle, "v_line_inst_meas")
+    v_phase_rms_meas_prop = mdl.prop(container_handle, "v_phase_rms_meas")
+    v_phase_inst_meas_prop = mdl.prop(container_handle, "v_phase_inst_meas")
+    freq_meas_prop = mdl.prop(container_handle, "freq_meas")
+    power_meas_prop = mdl.prop(container_handle, "power_meas")
 
-    phases = mdl.get_property_disp_value(type_prop)
-    conf = mdl.get_property_disp_value(conf_prop)
+    new_value = None
 
-    if conf == "on one side":
-        mdl.set_property_disp_value(i_meas_prop, False)
-        mdl.disable_property(i_meas_prop)
-        mdl.set_property_disp_value(v_meas_prop, False)
-        if len(phases) == 1:
-            mdl.set_property_disp_value(v_meas_prop, False)
-            mdl.set_property_disp_value(ground_prop, True)
-            mdl.disable_property(v_meas_prop)
-            mdl.disable_property(ground_prop)
+    if caller_prop_handle:
+        new_value = mdl.get_property_disp_value(caller_prop_handle)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    #  "conf" property code
+    # ------------------------------------------------------------------------------------------------------------------
+    if caller_prop_handle == conf_prop:
+
+        comp_type = mdl.get_property_disp_value(type_prop)
+        if new_value == "On one side":
+            # Disable Current properties
+            [mdl.set_property_disp_value(prop, False) for prop in [i_rms_meas_prop, i_inst_meas_prop,
+                                                                   power_meas_prop]]
+            [mdl.disable_property(prop) for prop in [i_rms_meas_prop, i_inst_meas_prop,
+                                                     power_meas_prop]]
         else:
-            mdl.enable_property(v_meas_prop)
-            mdl.enable_property(ground_prop)
-    else:
-        mdl.enable_property(i_meas_prop)
-        mdl.enable_property(v_meas_prop)
-        mdl.enable_property(ground_prop)
+            # Enable Current Properties depending on component type
+            [mdl.enable_property(prop) for prop in [i_inst_meas_prop]]
+            if len(comp_type) == 3:
+                [mdl.enable_property(prop) for prop in [i_rms_meas_prop, power_meas_prop]]
+
+    # ------------------------------------------------------------------------------------------------------------------
+    #  "conf" property code
+    # ------------------------------------------------------------------------------------------------------------------
+    if caller_prop_handle == type_prop:
+
+        comp_conf = mdl.get_property_disp_value(conf_prop)
+
+        if len(new_value) == 3:
+            # Enable Line and rms properties
+            [mdl.enable_property(prop) for prop in [v_line_inst_meas_prop, v_line_rms_meas_prop,
+                                                    i_rms_meas_prop, power_meas_prop, freq_meas_prop, ground_prop]]
+        else:
+            # Disable Line and rms properties
+            [mdl.set_property_disp_value(prop, False) for prop in [v_line_inst_meas_prop, v_line_rms_meas_prop,
+                                                                   i_rms_meas_prop, power_meas_prop, freq_meas_prop,
+                                                                   v_phase_rms_meas_prop]]
+            [mdl.disable_property(prop) for prop in [v_line_inst_meas_prop, v_line_rms_meas_prop,
+                                                     i_rms_meas_prop, power_meas_prop, freq_meas_prop,
+                                                     v_phase_rms_meas_prop]]
+            if len(new_value) == 1:
+                [mdl.set_property_disp_value(prop, True) for prop in [ground_prop]]
+                [mdl.disable_property(prop) for prop in [ground_prop]]
+            else:
+                [mdl.enable_property(prop) for prop in [ground_prop]]
 
 
 def define_icon(mdl, container_handle):
@@ -386,9 +421,48 @@ def check_measurements(mdl, container_handle):
 
     """
     comp_handle = mdl.get_parent(container_handle)
-
+    # Meter vars
+    meter_handle = mdl.get_item("Measurements", parent=comp_handle)
+    meter_props_dict = {"v_phase_inst_meas": ["VAn", "VBn", "VCn", "VN"],
+                        "v_line_inst_meas": ["VAB", "VBC", "VCA"],
+                        "i_inst_meas": ["IA", "IB", "IC", "IN"],
+                        "freq_meas": ["freq"],
+                        "v_phase_rms_meas": ["VLn_rms", "VLn_avg_rms", "VN_rms"],
+                        "v_line_rms_meas": ["VLL_rms", "VLL_avg_rms"],
+                        "i_rms_meas": ["I_rms", "I_avg_rms", "IN_rms"],
+                        "power_meas": ["P_meas"]}
+    # Component Props
     comp_type = mdl.get_property_disp_value(mdl.prop(container_handle, "type"))
+    enabled_phase = [phase in comp_type for phase in ["A", "B", "C"]]
     comp_conf = mdl.get_property_disp_value(mdl.prop(container_handle, "conf"))
 
-    phase_voltage_inst_names = ["VAn", "VBn", "VCn"]
-    phase_voltage_rms_names = ["VAn", "VBn", "VCn"]
+    # Enable the assigned properties
+    # per phase props
+    for cnt, action in enumerate(enabled_phase):
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "i_inst_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["i_inst_meas"][cnt]), action)
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "v_line_inst_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_line_inst_meas"][cnt]), action)
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "v_phase_inst_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_phase_inst_meas"][cnt]), action)
+    # Three-Phase props
+    if comp_type == "ABC":
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "i_rms_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["i_rms_meas"][0]), True)
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "v_line_rms_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_line_rms_meas"][0]), True)
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "v_phase_rms_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_phase_rms_meas"][0]), True)
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "freq_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["freq_meas"][0]), True)
+        if mdl.get_property_disp_value(mdl.prop(container_handle, "power_meas")) is True:
+            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["power_meas"][0]), True)
+    else:
+        [mdl.set_property_value(mdl.prop(meter_handle, prop), False) for prop in meter_props_dict["freq_meas"]]
+        [mdl.set_property_value(mdl.prop(meter_handle, prop), False) for prop in meter_props_dict["v_phase_rms_meas"]]
+        [mdl.set_property_value(mdl.prop(meter_handle, prop), False) for prop in meter_props_dict["v_line_rms_meas"]]
+        [mdl.set_property_value(mdl.prop(meter_handle, prop), False) for prop in meter_props_dict["i_rms_meas"]]
+        [mdl.set_property_value(mdl.prop(meter_handle, prop), False) for prop in meter_props_dict["power_meas"]]
+
+    # TODO: Logic for external meters (I'll remove it on next versions)
+

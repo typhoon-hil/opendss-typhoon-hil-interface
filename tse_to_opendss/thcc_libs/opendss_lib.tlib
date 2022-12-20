@@ -492,6 +492,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
 
@@ -509,6 +510,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
 
@@ -527,6 +529,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
 
@@ -543,6 +546,11 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
                 }
 
                 i_inst_meas {
@@ -557,6 +565,11 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
 
@@ -573,6 +586,11 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
                 }
 
                 v_line_inst_meas {
@@ -588,6 +606,11 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
                 }
 
                 v_phase_rms_meas {
@@ -601,6 +624,11 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
 
@@ -616,6 +644,49 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                freq_meas {
+                    label = "Frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                power_meas {
+                    label = "Power"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
 
