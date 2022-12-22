@@ -69,8 +69,11 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
     delta_conn_2 = mdl.get_item('delta_conn_2', parent=comp_handle, item_type="connection")
     b1_conn = mdl.get_item('b1_conn', parent=comp_handle, item_type="connection")
     b1 = mdl.get_item('B1', parent=comp_handle, item_type="port")
-    c1_conn = mdl.get_item('c1_conn', parent=comp_handle, item_type="connection")
     c1 = mdl.get_item('C1', parent=comp_handle, item_type="port")
+    if cap_c and c1:
+        c1_conn_list = mdl.find_connections(c1, mdl.term(cap_c, "p_node"))
+    else:
+        c1_conn_list = []
     gndc = mdl.get_item("gndc", parent=comp_handle)
 
     if b1_conn:
@@ -92,17 +95,17 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
         mdl.create_connection(mdl.term(cap_a, "p_node"), mdl.term(cap_b, "n_node"), name="delta_conn_1")
         mdl.create_connection(mdl.term(cap_c, "p_node"), mdl.term(cap_b, "p_node"), name="delta_conn_2")
         mdl.create_connection(junc, b1, name="b1_conn")
-        c1_conn = mdl.get_item('c1_conn', parent=comp_handle, item_type="connection")
-        if not c1_conn:
-            mdl.create_connection(c1, mdl.term(cap_c, "p_node"), name="c1_conn")
+        if len(c1_conn_list) == 0:
+            mdl.create_connection(c1, mdl.term(cap_c, "p_node"))
 
     elif tp_connection == "Y" or tp_connection == "Y-grounded":
         if delta_conn_1:
             mdl.delete_item(delta_conn_1)
         if delta_conn_2:
             mdl.delete_item(delta_conn_2)
-        if c1_conn:
-            mdl.delete_item(c1_conn)
+        if len(c1_conn_list) > 0:
+            for c1_conn in c1_conn_list:
+                mdl.delete_item(c1_conn)
 
         if phases == "1":
             mdl.create_connection(junc, mdl.term(cap_a, "n_node"))
@@ -191,9 +194,8 @@ def redo_connections(mdl, mask_handle):
             if not b1_conn:
                 mdl.create_connection(b1, mdl.term(cap_b, "p_node"), name="b1_conn")
 
-            c1_conn = mdl.get_item('c1_conn', parent=comp_handle, item_type="connection")
-            if not c1_conn:
-                mdl.create_connection(c1, mdl.term(cap_c, "p_node"), name="c1_conn")
+            if len(mdl.find_connections(c1, mdl.term(cap_c, "p_node"))) == 0:
+                mdl.create_connection(c1, mdl.term(cap_c, "p_node"))
 
             mdl.create_connection(a2, mdl.term(cap_a, "n_node"))
             mdl.create_connection(b2, mdl.term(cap_b, "n_node"))
