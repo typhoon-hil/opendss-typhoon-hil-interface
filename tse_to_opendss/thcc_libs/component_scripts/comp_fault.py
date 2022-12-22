@@ -65,7 +65,7 @@ def update_inner_gnd(mdl, mask_handle, created_ports):
     gnd_connection = True if "GND" in mdl.get_property_value(type_prop) else False
 
     if gnd_connection:
-        if av_gnd and not (len(mdl.get_connected_items(av_gnd)) > 0):
+        if av_gnd and not (len(mdl.find_connections(av_gnd)) > 0):
             mdl.create_connection(av_gnd, mdl.term(inner_fault, 'GND'))
 
 
