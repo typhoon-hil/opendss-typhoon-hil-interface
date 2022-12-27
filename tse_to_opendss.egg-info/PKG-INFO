@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: tse-to-opendss
+Version: 0.3.0
+Summary: Typhoon HIL Schematic Editor to OpenDSS converter
+Home-page: https://www.typhoon-hil.com/
+Author: Marcos Moccelini
+Author-email: marcos.moccelini@typhoon-hil.com
+License: MIT
