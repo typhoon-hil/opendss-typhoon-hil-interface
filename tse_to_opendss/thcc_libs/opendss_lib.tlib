@@ -46,269 +46,8 @@ library "OpenDSS" {
     }
 
     component Subsystem Root {
+
         component Subsystem Bus {
-            layout = static
-
-            port A1 {
-                label = "A1"
-                position = -8.0, -32.0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 7400, 7856
-            ]
-
-            port B1 {
-                label = "B1"
-                position = -8.0, 0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 7400, 7952
-            ]
-
-            port C1 {
-                label = "C1"
-                position = -8.0, 32.0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 7400, 8048
-            ]
-
-            port A2 {
-                label = "A2"
-                position = 8.0, -32.0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 7900, 7856
-                scale = -1, 1
-            ]
-
-            port B2 {
-                label = "B2"
-                position = 8.0, 0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 7900, 7952
-                scale = -1, 1
-            ]
-
-            port C2 {
-                label = "C2"
-                position = 8.0, 32.0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 7900, 8048
-                scale = -1, 1
-            ]
-
-            junction Aj pe
-            [
-                position = 7504, 7856
-            ]
-
-            junction Bj pe
-            [
-                position = 7624, 7952
-            ]
-
-            junction Cj pe
-            [
-                position = 7744, 8048
-            ]
-
-            junction A_imeas_j pe
-            [
-                position = 7850, 7856
-            ]
-
-            junction B_imeas_j pe
-            [
-                position = 7850, 7952
-            ]
-
-            junction C_imeas_j pe
-            [
-                position = 7850, 8048
-            ]
-
-            junction jA_vmeas pe
-            [
-                position = 7504, 8200
-            ]
-
-            junction jAB_vmeas pe
-            [
-                position = 7624, 8200
-            ]
-
-            junction jB_vmeas pe
-            [
-                position = 7744, 8200
-            ]
-
-            connect A1 Aj as conn_A1Aj
-            connect B1 Bj as conn_B1Bj
-            connect C1 Cj as conn_C1Cj
-            connect A2 A_imeas_j as conn_A2Aj
-            connect B2 B_imeas_j as conn_B2Bj
-            connect C2 C_imeas_j as conn_C2Cj
-            connect Aj A_imeas_j as sc_imeas_A
-            connect Bj B_imeas_j as sc_imeas_B
-            connect Cj C_imeas_j as sc_imeas_C
-
-            conf = "on both sides"
-
-            mask {
-                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">While buses are discrete components in the Schematic Editor, they are not objects in OpenDSS. They however define the connections in OpenDSS syntax and thus must be added between between circuit elements.<br><br>Terminals from different buses cannot be directly connected.<br><br>Only up to three phases are supported at the moment.</p></body></html>"
-
-                type {
-                    label = "Type"
-                    widget = combo
-                    combo_values = "ABC", "AB", "AC", "BC", "A", "B", "C"
-                    type = string
-                    default_value = "ABC"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-
-                        conf = mdl.get_property_value(mdl.prop(container_handle, "conf"))
-                        created_ports , _ = comp_script.port_dynamics(mdl, container_handle, prop_handle)
-                        comp_script.type_value_changed(mdl, container_handle, new_value, created_ports)
-                        comp_script.ground_open_circuit(mdl, container_handle, created_ports)
-                        mdl.refresh_icon(container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle)
-                    ENDCODE
-                }
-
-                ground {
-                    label = "Show DSS ground terminal (0)"
-                    widget = checkbox
-                    type = string
-                    default_value = "False"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports , _ = comp_script.port_dynamics(mdl, container_handle, prop_handle)
-                        comp_script.ground_open_circuit(mdl, container_handle, created_ports)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle)
-                    ENDCODE
-                }
-
-                i_meas {
-                    label = "RMS Current Measurements"
-                    widget = checkbox
-                    type = string
-                    default_value = "False"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.i_meas_changed(mdl, container_handle, new_value)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle)
-                    ENDCODE
-                }
-
-                v_meas {
-                    label = "RMS Voltage Measurements"
-                    widget = checkbox
-                    type = string
-                    default_value = "False"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.v_meas_changed(mdl, container_handle, new_value)
-                    ENDCODE
-                }
-
-                conf {
-                    label = "Configuration"
-                    widget = combo
-                    combo_values = "on one side", "on both sides"
-                    type = string
-                    default_value = "on one side"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-
-                        type = mdl.get_property_value(mdl.prop(container_handle, "type"))
-                        created_ports , _ = comp_script.port_dynamics(mdl, container_handle, prop_handle)
-                        comp_script.type_value_changed(mdl, container_handle, type, created_ports)
-                        comp_script.ground_open_circuit(mdl, container_handle, created_ports)
-                        mdl.refresh_icon(container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle)
-                    ENDCODE
-                }
-
-                CODE open
-                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
-                    dialog = RegularComponentPropertiesDialog(
-                        component=component,
-                        property_container=component.masks[-1],
-                        current_diagram=current_diagram
-                    )
-                    dialog.exec_()
-
-                ENDCODE
-
-                CODE define_icon
-                    comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.define_icon(mdl, item_handle)
-                ENDCODE
-
-                CODE init
-                    import os
-                    import sys
-                    import importlib
-
-                    lib_path = mdl.get_library_resource_dir_path(item_handle)
-                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
-
-                    if not comp_scripts_path in sys.path:
-                        sys.path.append(comp_scripts_path)
-
-                    import comp_bus as comp_script
-                    importlib.reload(comp_script)
-                    def return_comp_script(mdl, item_handle):
-                        return comp_script
-
-                    comp_script.define_icon(mdl, item_handle)
-                ENDCODE
-            }
-        }
-        [
-            position = 4504, 4088
-            size = 16, 96
-        ]
-
-        component Subsystem Busv2_ {
             layout = static
 
 			component "core/Three-phase Meter" Measurements {
@@ -320,49 +59,11 @@ library "OpenDSS" {
 				VBn = "False"
 				VCn = "False"
 				enable_out = "False"
+				P_method = "RMS based"
 			}
 			[
-				position = 7552, 7952
+				position = 7536, 7952
 				size = 56, 240
-			]
-
-			component "core/Short Circuit" iA_RMS {
-			}
-			[
-				position = 7880, 7856
-			]
-
-			component "core/Short Circuit" iB_RMS {
-			}
-			[
-				position = 7880, 7952
-			]
-
-			component "core/Short Circuit" iC_RMS {
-			}
-			[
-				position = 7880, 8048
-			]
-
-			component "core/Open Circuit" vAB_RMS {
-			}
-			[
-				position = 7704, 7904
-				rotation = right
-			]
-
-			component "core/Open Circuit" vBC_RMS {
-			}
-			[
-				position = 7704, 8000
-				rotation = right
-			]
-
-			component "core/Open Circuit" vCA_RMS {
-			}
-			[
-				position = 7792, 8000
-				rotation = right
 			]
 
 			port A1 {
@@ -380,7 +81,7 @@ library "OpenDSS" {
 				direction =  in
 			}
 			[
-				position = 7984, 7856
+				position = 7672, 7856
 				scale = -1, 1
 			]
 
@@ -399,7 +100,7 @@ library "OpenDSS" {
 				direction =  in
 			}
 			[
-				position = 7984, 7952
+				position = 7672, 7952
 				scale = -1, 1
 			]
 
@@ -418,61 +119,16 @@ library "OpenDSS" {
 				direction =  in
 			}
 			[
-				position = 7984, 8048
+				position = 7672, 8048
 				scale = -1, 1
 			]
 
-			junction Junction1 pe
-			[
-				position = 7704, 7856
-			]
-
-			junction Junction2 pe
-			[
-				position = 7704, 7952
-			]
-
-			junction Junction3 pe
-			[
-				position = 7704, 7952
-			]
-
-			junction Junction4 pe
-			[
-				position = 7704, 8048
-			]
-
-			junction Junction5 pe
-			[
-				position = 7792, 8048
-			]
-
-			junction Junction6 pe
-			[
-				position = 7792, 7856
-			]
-
 			connect Measurements.A+ A1 as Connection1
-			connect B1 Measurements.B+ as Connection2
-			connect C1 Measurements.C+ as Connection3
-			connect A2 iA_RMS.n_node as Connection6
-			connect B2 iB_RMS.n_node as Connection8
-			connect iC_RMS.n_node C2 as Connection11
-			connect Junction1 Measurements.A- as Connection13
-			connect vAB_RMS.p_node Junction1 as Connection14
-			connect iB_RMS.p_node Junction2 as Connection15
-			connect Junction2 Measurements.B- as Connection16
-			connect vAB_RMS.n_node Junction3 as Connection18
-			connect Junction3 Junction2 as Connection19
-			connect vBC_RMS.p_node Junction3 as Connection20
-			connect Measurements.C- Junction4 as Connection21
-			connect vBC_RMS.n_node Junction4 as Connection23
-			connect Junction4 Junction5 as Connection24
-			connect Junction5 iC_RMS.p_node as Connection25
-			connect vCA_RMS.n_node Junction5 as Connection26
-			connect iA_RMS.p_node Junction6 as Connection27
-			connect Junction6 Junction1 as Connection28
-			connect vCA_RMS.p_node Junction6 as Connection29
+			connect Measurements.B+ B1 as Connection2
+			connect Measurements.C+ C1 as Connection3
+            connect Measurements.A- A2 as Connection4
+            connect Measurements.B- B2 as Connection5
+            connect Measurements.C- C2 as Connection6
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">While buses are discrete components in the Schematic Editor, they are not objects in OpenDSS. They however define the connections in OpenDSS syntax and thus must be added between between circuit elements.<br><br>Terminals from different buses cannot be directly connected.<br><br>Only up to three phases are supported at the moment.</p></body></html>"
