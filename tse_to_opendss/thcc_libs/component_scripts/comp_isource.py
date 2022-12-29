@@ -1,5 +1,6 @@
 x0, y0 = (8192, 8192)
 
+
 def update_source_values(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
 
@@ -22,9 +23,10 @@ def update_source_values(mdl, mask_handle):
         f_prop = mdl.prop(isource, "init_frequency")
         ph_prop = mdl.prop(isource, "init_phase")
 
-        mdl.set_property_value(rms_prop, mdl.get_property_value(amps_prop))
-        mdl.set_property_value(f_prop, mdl.get_property_value(frequency_prop))
-        mdl.set_property_value(ph_prop, mdl.get_property_value(angle_prop)-120*idx)
+        mdl.set_property_value(rms_prop, "amps")
+        mdl.set_property_value(f_prop, "Frequency")
+        mdl.set_property_value(ph_prop, f"Angle - {120 * idx}")
+
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
     frequency_prop = mdl.prop(mask_handle, "BaseFreq")
@@ -58,8 +60,10 @@ def update_frequency_property(mdl, mask_handle, init=False):
                 mdl.set_property_value(global_frequency_prop, False)
         toggle_frequency_prop(mdl, mask_handle, init)
 
+
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     toggle_frequency_prop(mdl, mask_handle)
+
 
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     comp_handle = mdl.get_parent(mask_handle)
@@ -67,6 +71,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     created_ports = {}
 
     return created_ports, deleted_ports
+
 
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, 'images/isource.svg')
