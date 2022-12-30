@@ -92,7 +92,7 @@ library "OpenDSS" {
 				direction =  in
 			}
 			[
-				position = 7672, 7856
+				position = 7792, 7856
 				scale = -1, 1
 			]
 
@@ -111,7 +111,7 @@ library "OpenDSS" {
 				direction =  in
 			}
 			[
-				position = 7672, 7952
+				position = 7792, 7952
 				scale = -1, 1
 			]
 
@@ -130,21 +130,63 @@ library "OpenDSS" {
 				direction =  in
 			}
 			[
-				position = 7672, 8048
+				position = 7792, 8048
 				scale = -1, 1
 			]
+
+            component "core/Short Circuit" SCA {
+            }
+            [
+                position = 7664, 7856
+            ]
+
+            component "core/Short Circuit" SCB {
+            }
+            [
+                position = 7664, 7952
+            ]
+
+            component "core/Short Circuit" SCC {
+            }
+            [
+                position = 7664, 8048
+            ]
+
+            component "core/Short Circuit" GND_SC {
+            }
+            [
+                position = 7464, 8152
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 7400, 8208
+                hide_name = True
+            ]
+
+            junction Junction_gnd pe
+            [
+                position = 7536, 8152
+            ]
 
 			connect Measurements.A+ A1 as Connection1
 			connect Measurements.B+ B1 as Connection2
 			connect Measurements.C+ C1 as Connection3
-            connect Measurements.A- A2 as Connection4
-            connect Measurements.B- B2 as Connection5
-            connect Measurements.C- C2 as Connection6
+			connect Measurements.A- SCA.p_node as Connection4
+            connect Measurements.B- SCB.p_node as Connection5
+            connect Measurements.C- SCC.p_node as Connection6
+            connect SCA.n_node A2 as Connection7
+            connect SCB.n_node B2 as Connection8
+            connect SCC.n_node C2 as Connection9
+            connect Junction_gnd Measurements.GND as Connection10
+            connect GND_SC.n_node Junction_gnd as Connection11
+            connect gnd1.node GND_SC.p_node as Connection12
 
             mask {
-                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">While buses are discrete components in the Schematic Editor, they are not objects in OpenDSS. They however define the connections in OpenDSS syntax and thus must be added between between circuit elements.<br><br>Terminals from different buses cannot be directly connected.<br><br>Only up to three phases are supported at the moment.</p></body></html>"
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be directly connected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has a Three-Phase meter from which electrical measurements can be accessed. Using a fixed three-phase meter, some measurements could be miss-results depending on the Bus Type (single/two-phase configuration).</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Only up to three phases are supported at the moment.</p></body></html>"
 
-                type {
+                type_prop {
                     label = "Type"
                     widget = combo
                     combo_values = "ABC", "AB", "AC", "BC", "A", "B", "C"
@@ -163,7 +205,7 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                ground {
+                ground_prop {
                     label = "Show DSS ground terminal (0)"
                     widget = checkbox
                     type = bool
@@ -212,6 +254,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -232,6 +275,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -252,6 +296,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -272,6 +317,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -291,6 +337,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -311,6 +358,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -330,6 +378,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -349,6 +398,34 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                ts {
+                    label = "Execution Rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                }
+
+                enable_output {
+                    label = "Enable Output"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -385,7 +462,7 @@ library "OpenDSS" {
                     if not comp_scripts_path in sys.path:
                         sys.path.append(comp_scripts_path)
 
-                    import comp_busv2 as comp_script
+                    import comp_bus as comp_script
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
