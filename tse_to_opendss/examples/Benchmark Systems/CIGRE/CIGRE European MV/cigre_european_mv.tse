@@ -74,7 +74,7 @@ model "cigre_european_mv" {
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
-            dC0 = "150.175"
+            dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
@@ -478,7 +478,13 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Three-Phase Transformer" T1 {
-            KVs = "[110, 20]"
+            KVAs = "[25000, 25000]"
+            KVs = "[110, 20*1.0625]"
+            XArray = "[6, 6]"
+            grounded_sec1 = "True"
+            percentNoloadloss = "0.05"
+            percentRs = "[.05, .05]"
+            prim_conn = "Δ"
         }
         [
             position = 8552, 7920
@@ -487,7 +493,13 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Three-Phase Transformer" T2 {
-            KVs = "[110, 20]"
+            KVAs = "[25000, 25000]"
+            KVs = "[110, 20*1.03125]"
+            XArray = "[6, 6]"
+            grounded_sec1 = "True"
+            percentNoloadloss = "0.05"
+            percentRs = "[.05, .05]"
+            prim_conn = "Δ"
         }
         [
             position = 9696, 7920
@@ -506,8 +518,8 @@ model "cigre_european_mv" {
 
         component "OpenDSS/SimDSS" SimDSS {
             basefrequency = "50"
-            sim_counter = "7"
-            sim_status = "Sim7 complete"
+            sim_counter = "9"
+            sim_status = "Sim9 complete"
             voltagebases = "[110, 20]"
         }
         [
@@ -691,6 +703,11 @@ model "cigre_european_mv" {
         component "OpenDSS/Vsource" V1 {
             Frequency = "50"
             basekv = "110"
+            pu = "1.01"
+            r0 = "2.41"
+            r1 = "2.41"
+            x0 = "0.24"
+            x1 = "0.24"
         }
         [
             position = 9096, 7504
