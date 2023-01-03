@@ -5387,10 +5387,8 @@ if (Vdc<-2) {
                     ENDCODE
 
                     CODE property_value_edited
-                        if new_value:
-                            mdl.set_property_value(mdl.prop(container_handle, 'ctrl_mode_str'), "PQ")
-                            mdl.set_property_value(mdl.prop(container_handle, 'P_ref_str'), "Converter nominal")
-                            mdl.set_property_value(mdl.prop(container_handle, 'Q_ref_str'), "Converter nominal")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_time_series_value_edited(mdl, container_handle, new_value)
                     ENDCODE
                 }
 

@@ -442,3 +442,25 @@ def place_internal_dc_capacitor(mdl, container_handle, new_value):
         if c_dc:
             mdl.delete_item(c_dc)
 
+
+def enable_time_series_value_edited(mdl, container_handle, new_value):
+    prop_list = ["ctrl_mode_str",
+                 "P_ref_str",
+                 "Q_ref_str",
+                 "V_ref_str",
+                 "vdc_ref_str",
+                 "fs_ref_str"]
+
+    if new_value:
+        for prop_name in prop_list:
+            if prop_name != "ctrl_mode_str":
+                mdl.set_property_value(mdl.prop(container_handle, prop_name), "Converter nominal")
+            else:
+                mdl.set_property_value(mdl.prop(container_handle, prop_name), "PQ")
+
+            mdl.disable_property(mdl.prop(container_handle, prop_name))
+
+    else:
+        for prop_name in prop_list:
+            mdl.enable_property(mdl.prop(container_handle, prop_name))
+
