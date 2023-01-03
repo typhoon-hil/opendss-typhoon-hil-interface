@@ -463,4 +463,3 @@ def enable_time_series_value_edited(mdl, container_handle, new_value):
     else:
         for prop_name in prop_list:
             mdl.enable_property(mdl.prop(container_handle, prop_name))
-
