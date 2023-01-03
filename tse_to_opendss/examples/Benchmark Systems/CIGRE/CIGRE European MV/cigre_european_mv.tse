@@ -6,10 +6,10 @@ version = 4.2
 
 model "cigre_european_mv" {
     configuration {
-        hil_device = "HIL402"
-        hil_configuration_id = 1
+        hil_device = "HIL604"
+        hil_configuration_id = 5
         simulation_method = exact
-        simulation_time_step = auto
+        simulation_time_step = 20e-6
         simulation_discret_scaling = 1.0
         dsp_timer_periods = 100e-6, 50e-3
         ss_calc_method = "systematic elimination"
@@ -518,8 +518,9 @@ model "cigre_european_mv" {
 
         component "OpenDSS/SimDSS" SimDSS {
             basefrequency = "50"
-            sim_counter = "9"
-            sim_status = "Sim9 complete"
+            powers = "kVA Elem"
+            sim_counter = "10"
+            sim_status = "Sim10 complete"
             voltagebases = "[110, 20]"
         }
         [
@@ -700,7 +701,7 @@ model "cigre_european_mv" {
             hide_name = True
         ]
 
-        component "OpenDSS/Vsource" V1 {
+        component "OpenDSS/Vsource" Grid {
             Frequency = "50"
             basekv = "110"
             pu = "1.01"
@@ -710,7 +711,7 @@ model "cigre_european_mv" {
             x1 = "0.24"
         }
         [
-            position = 9096, 7504
+            position = 9096, 7448
             rotation = right
             size = 64, 96
         ]
@@ -718,7 +719,16 @@ model "cigre_european_mv" {
         component Subsystem Load_1 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -830,7 +840,16 @@ model "cigre_european_mv" {
         component Subsystem Load_3 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -942,7 +961,16 @@ model "cigre_european_mv" {
         component Subsystem Load_4 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1028,7 +1056,16 @@ model "cigre_european_mv" {
         component Subsystem Load_5 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1114,7 +1151,16 @@ model "cigre_european_mv" {
         component Subsystem Load_6 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1200,7 +1246,16 @@ model "cigre_european_mv" {
         component Subsystem Load_7 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1286,7 +1341,16 @@ model "cigre_european_mv" {
         component Subsystem Load_8 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1372,7 +1436,16 @@ model "cigre_european_mv" {
         component Subsystem Load_9 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1458,7 +1531,16 @@ model "cigre_european_mv" {
         component Subsystem Load_10 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1570,7 +1652,16 @@ model "cigre_european_mv" {
         component Subsystem Load_11 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1656,7 +1747,16 @@ model "cigre_european_mv" {
         component Subsystem Load_12 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1768,7 +1868,16 @@ model "cigre_european_mv" {
         component Subsystem Load_14 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1880,7 +1989,16 @@ model "cigre_european_mv" {
         component Subsystem Load_13 {
             layout = dynamic
             component "core/Three-phase Meter" Meter {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
                 enable_out = "False"
+                freq = "True"
             }
             [
                 position = 7936, 8160
@@ -1961,6 +2079,29 @@ model "cigre_european_mv" {
         [
             position = 9864, 9040
             hide_name = True
+        ]
+
+        component "core/Ground" gnd29 {
+        }
+        [
+            position = 8960, 7624
+            hide_name = True
+        ]
+
+        component "core/Three-phase Meter" Grid_Meter {
+            P_meas = "True"
+            VAB = "True"
+            VBC = "True"
+            VCA = "True"
+            VLL_avg_rms = "True"
+            VLL_rms = "True"
+            enable_out = "False"
+            freq = "True"
+        }
+        [
+            position = 9096, 7544
+            rotation = right
+            size = 48, 104
         ]
 
         junction Junction11 pe
@@ -2385,9 +2526,6 @@ model "cigre_european_mv" {
         connect Line_15.A1 Bus14_aux.A2 as Connection401
         connect Bus14_aux.A1 S1.A2 as Connection402
         connect gnd15.node Line_15.N as Connection403
-        connect V1.C1 Bus0.C1 as Connection646
-        connect V1.B1 Bus0.B1 as Connection647
-        connect V1.A1 Bus0.A1 as Connection648
         connect Bus4.A2 Junction13 as Connection681
         [
             breakpoints = 8168, 9208
@@ -2588,6 +2726,13 @@ model "cigre_european_mv" {
             breakpoints = 8936, 10864; 8936, 10856
         ]
         connect Load_6.C Junction69 as Connection816
+        connect Grid.C1 Grid_Meter.C+ as Connection817
+        connect Grid.B1 Grid_Meter.B+ as Connection818
+        connect Grid.A1 Grid_Meter.A+ as Connection819
+        connect Grid_Meter.C- Bus0.C1 as Connection820
+        connect Grid_Meter.B- Bus0.B1 as Connection821
+        connect Grid_Meter.A- Bus0.A1 as Connection822
+        connect gnd29.node Grid_Meter.GND as Connection823
     }
 
     default {
