@@ -434,15 +434,17 @@ def check_measurements(mdl, container_handle):
     enabled_phase = [phase in comp_type for phase in ["A", "B", "C"]]
     comp_conf = mdl.get_property_disp_value(mdl.prop(container_handle, "conf"))
 
-    # Enable the assigned properties
+    # Enable/Disable the assigned properties
     # per phase props
     for cnt, action in enumerate(enabled_phase):
-        if mdl.get_property_disp_value(mdl.prop(container_handle, "i_inst_meas")) is True:
-            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["i_inst_meas"][cnt]), action)
-        if mdl.get_property_disp_value(mdl.prop(container_handle, "v_line_inst_meas")) is True:
-            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_line_inst_meas"][cnt]), action)
-        if mdl.get_property_disp_value(mdl.prop(container_handle, "v_phase_inst_meas")) is True:
-            mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_phase_inst_meas"][cnt]), action)
+        i_inst = mdl.get_property_disp_value(mdl.prop(container_handle, "i_inst_meas"))
+        mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["i_inst_meas"][cnt]), action and i_inst)
+
+        v_line = mdl.get_property_disp_value(mdl.prop(container_handle, "v_line_inst_meas"))
+        mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_line_inst_meas"][cnt]), action and v_line)
+
+        v_phase = mdl.get_property_disp_value(mdl.prop(container_handle, "v_phase_inst_meas"))
+        mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_phase_inst_meas"][cnt]), action and v_phase)
 
     # Three-Phase props (There are some miss measurements depending on comp_type)
     # Edit Handlers of the Meter is not called from external components (just GUI)
