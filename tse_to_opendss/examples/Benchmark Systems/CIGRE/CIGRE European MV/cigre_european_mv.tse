@@ -519,12 +519,13 @@ model "cigre_european_mv" {
         component "OpenDSS/SimDSS" SimDSS {
             basefrequency = "50"
             powers = "kVA Elem"
-            sim_counter = "10"
-            sim_status = "Sim10 complete"
+            sim_counter = "22"
+            sim_mode = "Time Series"
+            sim_status = "Sim22 complete"
             voltagebases = "[110, 20]"
         }
         [
-            position = 8744, 7576
+            position = 8712, 7392
             size = 96, 96
         ]
 
@@ -739,6 +740,7 @@ model "cigre_european_mv" {
                 Sn_3ph = "15300"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.98"
                 pf_mode_3ph = "Lag"
@@ -798,7 +800,7 @@ model "cigre_european_mv" {
 
             junction Junction1 pe
             [
-                position = 8064, 8128
+                position = 8128, 8128
             ]
 
             junction Junction2 pe
@@ -808,22 +810,31 @@ model "cigre_european_mv" {
 
             junction Junction3 pe
             [
-                position = 8128, 8192
+                position = 8064, 8192
             ]
 
             connect Meter.A+ A as Connection1
             connect Meter.B+ B as Connection2
             connect Meter.C+ C as Connection3
-            connect Junction1 Residential.C1 as Connection8
-            connect Junction1 Meter.A- as Connection9
-            connect Junction1 Commercial_Industrial.A1 as Connection10
-            connect Junction2 Residential.B1 as Connection11
-            connect Junction2 Meter.B- as Connection12
-            connect Junction2 Commercial_Industrial.B1 as Connection13
-            connect Junction3 Residential.A1 as Connection14
-            connect Junction3 Meter.C- as Connection15
-            connect Junction3 Commercial_Industrial.C1 as Connection16
             connect GND Meter.GND as Connection17
+            connect Meter.A- Junction1 as Connection32
+            [
+                breakpoints = 8064, 8128
+            ]
+            connect Junction1 Commercial_Industrial.A1 as Connection33
+            connect Residential.A1 Junction1 as Connection34
+            connect Commercial_Industrial.B1 Junction2 as Connection35
+            connect Junction2 Meter.B- as Connection36
+            [
+                breakpoints = 8096, 8160
+            ]
+            connect Residential.B1 Junction2 as Connection37
+            connect Commercial_Industrial.C1 Junction3 as Connection38
+            [
+                breakpoints = 8128, 8192
+            ]
+            connect Junction3 Meter.C- as Connection39
+            connect Residential.C1 Junction3 as Connection40
         }
         [
             position = 8704, 8248
@@ -2374,6 +2385,11 @@ model "cigre_european_mv" {
             position = 8936, 10864
         ]
 
+        comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">CIGRE EUR MV FEEDER</span> </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Comments:</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">- Taps of the transformers T1 and T2</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">are set mannually on the rated winding</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">voltage</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">- All load are represented as </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">constant impedances             </p></body></html> ENDCOMMENT 
+        [
+            position = 8592, 7464
+        ]
+
         connect Bus2.C2 Line_2.C1 as Connection13
         connect Bus2.B2 Line_2.B1 as Connection14
         connect Bus2.A2 Line_2.A1 as Connection15
@@ -2451,9 +2467,6 @@ model "cigre_european_mv" {
         connect Line_14.C2 Bus14.C1 as Connection296
         connect Line_14.B2 Bus14.B1 as Connection298
         connect Line_14.A2 Bus14.A1 as Connection300
-        connect Line_13.A2 Bus13.A1 as Connection302
-        connect Line_13.B2 Bus13.B1 as Connection304
-        connect Line_13.C2 Bus13.C1 as Connection306
         connect T2.C2 Bus12.C1 as Connection307
         connect T2.B2 Bus12.B1 as Connection308
         connect T2.A2 Bus12.A1 as Connection309
@@ -2733,6 +2746,18 @@ model "cigre_european_mv" {
         connect Grid_Meter.B- Bus0.B1 as Connection821
         connect Grid_Meter.A- Bus0.A1 as Connection822
         connect gnd29.node Grid_Meter.GND as Connection823
+        connect Bus13.C1 Line_13.C2 as Connection835
+        [
+            breakpoints = 9664, 8624
+        ]
+        connect Bus13.B1 Line_13.B2 as Connection834
+        [
+            breakpoints = 9696, 8592
+        ]
+        connect Line_13.A2 Bus13.A1 as Connection836
+        [
+            breakpoints = 9728, 8560
+        ]
     }
 
     default {
