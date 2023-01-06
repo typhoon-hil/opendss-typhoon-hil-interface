@@ -815,7 +815,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             )
             created_ports.update({"C2": port_c2})
             # Show Labels
-            [mdl.set_port_properties(port_handle, hide_term_label=False)
+            [mdl.set_port_properties(port_handle, hide_term_label=True)
              for port_handle in [port_a1, port_b1, port_c1, port_a2, port_b2, port_c2]]
     elif phase_num == "2":
         if port_c1:
