@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import string
 import math
-import objects_header_and_column
+import tse_to_opendss.thcc_libs.gui_scripts.objects_header_and_column as objects_header_and_column
 import pandas as pd
 import pathlib
 

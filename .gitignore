@@ -2,6 +2,7 @@ debug.py
 .idea
 __pycache__
 * Target files
+*.egg-info
 allure-html
 importer_output
 pytest_results/*
