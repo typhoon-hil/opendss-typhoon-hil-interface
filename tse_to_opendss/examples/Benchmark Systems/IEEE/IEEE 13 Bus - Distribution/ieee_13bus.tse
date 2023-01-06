@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.1 DEV
+// Saved by sw version: 2023.1
 //
 
 model "ieee_13bus" {
@@ -186,8 +186,8 @@ model "ieee_13bus" {
         component "OpenDSS/SimDSS" SimDSS {
             misc = "Losses"
             powers = "kVA Elem"
-            sim_counter = "81"
-            sim_status = "Sim81 complete"
+            sim_counter = "83"
+            sim_status = "Sim83 complete"
             voltagebases = "[115, 4.16, 0.48]"
         }
         [
