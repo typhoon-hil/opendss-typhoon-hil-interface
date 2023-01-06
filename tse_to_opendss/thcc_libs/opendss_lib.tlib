@@ -366,6 +366,7 @@ library "OpenDSS" {
             }
             [
                 position = 7512, 7976
+                hide_name = True
             ]
 
             port B1 {
@@ -374,6 +375,7 @@ library "OpenDSS" {
             }
             [
                 position = 7512, 8032
+                hide_name = True
             ]
 
             port C1 {
@@ -382,6 +384,7 @@ library "OpenDSS" {
             }
             [
                 position = 7512, 8088
+                hide_name = True
             ]
 
             port A2 {
@@ -391,6 +394,7 @@ library "OpenDSS" {
             [
                 position = 8008, 7936
                 rotation = down
+                hide_name = True
             ]
 
             port B2 {
@@ -400,6 +404,7 @@ library "OpenDSS" {
             [
                 position = 8008, 8032
                 rotation = down
+                hide_name = True
             ]
 
             port C2 {
@@ -409,6 +414,7 @@ library "OpenDSS" {
             [
                 position = 8008, 8128
                 rotation = down
+                hide_name = True
             ]
 
             port N {

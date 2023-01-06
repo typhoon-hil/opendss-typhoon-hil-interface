@@ -814,6 +814,9 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 rotation="down"
             )
             created_ports.update({"C2": port_c2})
+            # Show Labels
+            [mdl.set_port_properties(port_handle, hide_term_label=True)
+             for port_handle in [port_a1, port_b1, port_c1, port_a2, port_b2, port_c2]]
     elif phase_num == "2":
         if port_c1:
             deleted_ports.append(mdl.get_name(port_c1))
@@ -841,6 +844,9 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 rotation="down"
             )
             created_ports.update({"B2": port_b2})
+        # Hide Labels
+        [mdl.set_port_properties(port_handle, hide_term_label=True)
+         for port_handle in [port_a1, port_b1, port_a2, port_b2]]
     elif phase_num == "1":
         if port_b1:
             deleted_ports.append(mdl.get_name(port_b1))
@@ -854,6 +860,9 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         if port_c2:
             deleted_ports.append(mdl.get_name(port_c2))
             mdl.delete_item(port_c2)
+        # Hide Labels
+        [mdl.set_port_properties(port_handle, hide_term_label=True)
+         for port_handle in [port_a1, port_a2]]
 
     if coupling_type == "Device coupling" or coupling_type == "Core coupling":
 
