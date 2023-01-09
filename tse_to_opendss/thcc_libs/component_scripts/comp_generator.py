@@ -24,6 +24,7 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
 
     elif mdl.get_name(caller_prop_handle) == "gen_ts_en":
         s_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "S_Ts_mode"))
+        bus_join = mdl.get_item("Bus Join4", parent=comp_handle)
 
         if new_value:
 
@@ -35,61 +36,79 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
                                              name="Constant102",
                                              parent=comp_handle,
                                              position=(6200, 8536))
+            mdl.set_property_value(mdl.prop(const_102, "value"), "Ts_switch")
+            mdl.set_property_value(mdl.prop(const_102, "execution_rate"), "Ts")
+            mdl.set_property_value(mdl.prop(const_102, "signal_type"), "real")
             # Create Ts_Switch subsystem
-            ts_subsystem = mdl.create_component(type_name="core/Subsystem",
-                                                name="T_switch",
-                                                parent=comp_handle,
-                                                position=(6320, 8504),
-                                                size=(72, 64))
-            port1 = mdl.get_item("P1", parent=ts_subsystem, item_type=ITEM_PORT)
-            if port1:
-                mdl.delete_item(port1)
-            port2 = mdl.get_item("P2", parent=ts_subsystem, item_type=ITEM_PORT)
-            if port2:
-                mdl.delete_item(port2)
-            port_t = mdl.create_port(name="T",
-                                     parent=ts_subsystem,
-                                     terminal_position=("auto", "auto"),
-                                     kind="sp",
-                                     sp_type="auto",
-                                     position=(7176, 8040),
-                                     direction="out")
-            port_t_out = mdl.create_port(name="T_out",
+            try:
+                ts_subsystem = mdl.create_component(type_name="core/Subsystem",
+                                                    name="T_switch",
+                                                    parent=comp_handle,
+                                                    position=(6320, 8504),
+                                                    size=(72, 64))
+                port1 = mdl.get_item("P1", parent=ts_subsystem, item_type=ITEM_PORT)
+                if port1:
+                    mdl.delete_item(port1)
+                port2 = mdl.get_item("P2", parent=ts_subsystem, item_type=ITEM_PORT)
+                if port2:
+                    mdl.delete_item(port2)
+                port_t = mdl.create_port(name="T",
                                          parent=ts_subsystem,
-                                         terminal_position=("auto", "auto"),
+                                         terminal_position=("left", 1),
                                          kind="sp",
-                                         sp_type="inherit",
-                                         position=(8096, 8056),
+                                         sp_type="auto",
+                                         position=(7424, 8040),
                                          direction="in")
-            port_mode = mdl.create_port(name="mode",
-                                        parent=ts_subsystem,
-                                        terminal_position=("auto", "auto"),
-                                        kind="sp",
-                                        sp_type="inherit",
-                                        position=(7472, 7920),
-                                        direction="in")
-            comp_round = mdl.create_component(type_name="core/Round",
-                                              name="Round1",
-                                              parent=ts_subsystem,
-                                              position=(7392, 8072))
-            comp_limit = mdl.create_component(type_name="core/Limit",
-                                              name="Limit1",
-                                              parent=ts_subsystem,
-                                              position=(7808, 8056))
-            mdl.set_property_value(mdl.prop(comp_limit, "lower_limit"), "T_lim_low")
-            mdl.set_property_value(mdl.prop(comp_limit, "upper_limit"), "T_lim_high")
-            ts_select = mdl.create_component(type_name="core/Signal switch",
-                                             name="Signal switch1",
+                port_t_out = mdl.create_port(name="T_out",
                                              parent=ts_subsystem,
-                                             position=(7632, 8056))
-            mdl.set_property_value(mdl.prop(ts_select, "criterion"), "ctrl >= threshold")
-            mdl.set_property_value(mdl.prop(ts_select, "threshold"), "0.5")
-            mdl.create_connection(port_t, mdl.term(ts_select, "in"))
-            mdl.create_connection(port_t, mdl.term(comp_round, "in"))
-            mdl.create_connection(mdl.term(comp_round, "out"), mdl.term(ts_select, "in1"))
-            mdl.create_connection(port_mode, mdl.term(ts_select, "in2"))
-            mdl.create_connection(mdl.term(ts_select, "out"), mdl.term(comp_limit, "in"))
-            mdl.create_connection(mdl.term(comp_limit, "out"), port_t_out)
+                                             terminal_position=("right", 1),
+                                             kind="sp",
+                                             sp_type="inherit",
+                                             position=(7784, 8056),
+                                             direction="out")
+                port_mode = mdl.create_port(name="mode",
+                                            parent=ts_subsystem,
+                                            terminal_position=("left", 2),
+                                            kind="sp",
+                                            sp_type="inherit",
+                                            position=(7536, 7984),
+                                            direction="in")
+                comp_round = mdl.create_component(type_name="core/Round",
+                                                  name="Round1",
+                                                  parent=ts_subsystem,
+                                                  position=(7536, 8072))
+                comp_limit = mdl.create_component(type_name="core/Limit",
+                                                  name="Limit1",
+                                                  parent=ts_subsystem,
+                                                  position=(7704, 8056))
+                mdl.set_property_value(mdl.prop(comp_limit, "lower_limit"), "T_lim_low")
+                mdl.set_property_value(mdl.prop(comp_limit, "upper_limit"), "T_lim_high")
+                ts_select = mdl.create_component(type_name="core/Signal switch",
+                                                 name="Signal switch1",
+                                                 parent=ts_subsystem,
+                                                 position=(7632, 8056))
+                mdl.set_property_value(mdl.prop(ts_select, "criterion"), "ctrl >= threshold")
+                mdl.set_property_value(mdl.prop(ts_select, "threshold"), "0.5")
+                mdl.create_connection(port_t, mdl.term(ts_select, "in"))
+                mdl.create_connection(port_t, mdl.term(comp_round, "in"))
+                mdl.create_connection(mdl.term(comp_round, "out"), mdl.term(ts_select, "in1"))
+                mdl.create_connection(port_mode, mdl.term(ts_select, "in2"))
+                mdl.create_connection(mdl.term(ts_select, "out"), mdl.term(comp_limit, "in"))
+                mdl.create_connection(mdl.term(comp_limit, "out"), port_t_out)
+
+            except:
+                pass
+
+            ts_module = mdl.create_component(type_name="OpenDSS/TS_module",
+                                             parent=comp_handle,
+                                             name="TS_module",
+                                             position=(6440, 8504))
+            ext_port = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
+            mdl.create_connection(ext_port, mdl.term(ts_subsystem, "T"))
+            mdl.create_connection(mdl.term(const_102, "out"), mdl.term(ts_subsystem, "mode"))
+            mdl.create_connection(mdl.term(ts_subsystem, "T_out"), mdl.term(ts_module, "T"))
+            mdl.create_connection(mdl.term(ts_module, "P"), mdl.term(bus_join, "in9"))
+            mdl.create_connection(mdl.term(ts_module, "Q"), mdl.term(bus_join, "in10"))
 
             # ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type=ITEM_COMPONENT)
             # ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -115,35 +134,29 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
                 mdl.create_connection(mdl.term(p_inp, "in10"), mdl.term(ts_mdl, "Q"), "ConnTsQ")
             """
         else:
-            nulls = mdl.get_item("Constant33", parent=comp_handle, item_type=ITEM_COMPONENT)
-            ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type=ITEM_COMPONENT)
-            ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type=ITEM_COMPONENT)
-            ts_select1 = mdl.get_item("Constant102", parent=comp_handle, item_type=ITEM_COMPONENT)
-            conn_p_int = mdl.get_item("connP", parent=comp_handle, item_type=ITEM_CONNECTION)
-            conn_q_int = mdl.get_item("connQ", parent=comp_handle, item_type=ITEM_CONNECTION)
-            conn_tsp_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type=ITEM_CONNECTION)
-            conn_tsq_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type=ITEM_CONNECTION)
-            p_inp = mdl.get_item("Bus Join4", parent=comp_handle, item_type=ITEM_COMPONENT)
+            const_102 = mdl.get_item("Constant102", parent=comp_handle, item_type=ITEM_COMPONENT)
+            if const_102:
+                mdl.delete_item(const_102)
+            ts_module = mdl.get_item("TS_module", parent=comp_handle, item_type=ITEM_COMPONENT)
+            if ts_module:
+                mdl.delete_item(ts_module)
+            ts_subs = mdl.get_item("T_switch", parent=comp_handle, item_type=ITEM_COMPONENT)
+            if ts_subs:
+                mdl.delete_item(ts_subs)
 
-            mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
+            const_33 = mdl.get_item("Constant33", parent=comp_handle)
+            if not const_33:
+                const_33 = mdl.create_component(type_name="core/Constant",
+                                                name="Constant33",
+                                                parent=comp_handle,
+                                                position=(6472, 8400))
+                mdl.set_property_value(mdl.prop(const_33, "value"), "0")
+                mdl.set_property_value(mdl.prop(const_33, "execution_rate"), "Ts")
+                mdl.create_connection(mdl.term(const_33, "out"),mdl.term(bus_join, "in10"))
+                mdl.create_connection(mdl.term(const_33, "out"), mdl.term(bus_join, "in9"))
 
-            if conn_tsp_int:
-                mdl.delete_item(conn_tsp_int)
-            if conn_tsq_int:
-                mdl.delete_item(conn_tsq_int)
+            #mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
 
-            if conn_p_int:
-                mdl.delete_item(conn_p_int)
-            if conn_q_int:
-                mdl.delete_item(conn_q_int)
-
-            mdl.enable_items(nulls)
-            mdl.disable_items(ts_mdl)
-            mdl.disable_items(ts_select)
-            mdl.disable_items(ts_select1)
-
-            mdl.create_connection(mdl.term(p_inp, "in9"), mdl.term(nulls, "out"), "connP")
-            mdl.create_connection(mdl.term(p_inp, "in10"), mdl.term(nulls, "out"), "connQ")
 
     elif mdl.get_name(caller_prop_handle) == "S_Ts_mode":
         gen_en = mdl.get_property_disp_value(mdl.prop(mask_handle, "gen_ts_en"))
@@ -221,44 +234,48 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                     deleted_ports.append("Tm00")
 
         elif mdl.get_name(caller_prop_handle) == "gen_ts_en":
-            S_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "S_Ts_mode"))
-            T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
+            s_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "S_Ts_mode"))
+            t_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
 
             if new_value:
-                if S_mode == "Manual input":
-                    if not T_ext:
-                        T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
+                if s_mode == "Manual input":
+                    if not t_ext:
+                        t_ext = mdl.create_port(parent=comp_handle,
+                                                name="T",
+                                                direction="in",
+                                                kind="sp",
                                                 terminal_position=(-88, 40),
-                                                position=(6200, 8477))
-                        created_ports.update({"T": T_ext})
+                                                position=(6200, 8477),
+                                                label="T_series")
+                        created_ports.update({"T": t_ext})
                 else:
-                    if T_ext:
-                        deleted_ports.append(mdl.get_name(T_ext))
-                        mdl.delete_item(T_ext)
+                    if t_ext:
+                        deleted_ports.append(mdl.get_name(t_ext))
+                        mdl.delete_item(t_ext)
             else:
-                if T_ext:
-                    deleted_ports.append(mdl.get_name(T_ext))
-                    mdl.delete_item(T_ext)
+                if t_ext:
+                    deleted_ports.append(mdl.get_name(t_ext))
+                    mdl.delete_item(t_ext)
 
         elif mdl.get_name(caller_prop_handle) == "S_Ts_mode":
             gen_en = mdl.get_property_disp_value(mdl.prop(mask_handle, "gen_ts_en"))
-            T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
+            t_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
 
             if gen_en:
                 if new_value == "Manual input":
-                    if not T_ext:
-                        T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
+                    if not t_ext:
+                        t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
                                                 terminal_position=(-88, 40),
                                                 position=(6200, 8477))
-                        created_ports.update({"T": T_ext})
+                        created_ports.update({"T": t_ext})
                 else:
-                    if T_ext:
-                        deleted_ports.append(mdl.get_name(T_ext))
-                        mdl.delete_item(T_ext)
+                    if t_ext:
+                        deleted_ports.append(mdl.get_name(t_ext))
+                        mdl.delete_item(t_ext)
             else:
-                if T_ext:
-                    deleted_ports.append(mdl.get_name(T_ext))
-                    mdl.delete_item(T_ext)
+                if t_ext:
+                    deleted_ports.append(mdl.get_name(t_ext))
+                    mdl.delete_item(t_ext)
 
     return created_ports, deleted_ports
 
@@ -288,6 +305,13 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
         elif mdl.get_name(caller_prop_handle) == "global_basefreq":
             toggle_frequency_prop(mdl, mask_handle)
+
+        elif mdl.get_name(caller_prop_handle) == "gen_ts_en":
+            if new_value:
+                mdl.set_property_disp_value(mdl.prop(mask_handle, "G_mod"), "Constant kW")
+                mdl.disable_property(mdl.prop(mask_handle, "G_mod"))
+            else:
+                mdl.enable_property(mdl.prop(mask_handle, "G_mod"))
 
 
 def update_frequency_property(mdl, mask_handle, init=False):

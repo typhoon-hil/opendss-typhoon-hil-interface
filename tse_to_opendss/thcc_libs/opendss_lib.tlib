@@ -12829,6 +12829,11 @@ Te_mem = Te;
                         created_ports, _ = comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                         comp_script.components_and_connections(mdl, container_handle, created_ports, caller_prop_handle=prop_handle)
                     ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
                 }
 
                 load_loadshape {
