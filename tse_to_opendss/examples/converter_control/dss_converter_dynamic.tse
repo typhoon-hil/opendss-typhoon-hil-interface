@@ -376,19 +376,7 @@ model "dss_converter_dynamic" {
     }
 
     logically_deleted {
-        "Line2.pisec"
-        "Line3.pisec"
-        "Load1.CPL"
-        "Load1.TS_module"
-        "Load1.T_switch"
-        "Load1.Constant1"
-        "Load1.Connection3"
-        "Load1.Connection4"
-        "VSConverter1.TS_module"
-        "VSConverter1.T_switch"
-        "VSConverter1.Constant102"
-        "VSConverter1.Connection3"
-        "VSConverter1.Connection5658"
+
     }
 
     default {
