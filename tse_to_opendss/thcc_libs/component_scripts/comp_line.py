@@ -24,7 +24,7 @@ def show_hide_param_inputs(mdl, container_handle, new_value, mode=None):
         if mdl.get_property_disp_value(mdl.prop(mask_handle, "selected_object")):
             if mode == "matrix":
                 show_params = ["Load", "selected_object", "xmatrix", "rmatrix", "cmatrix"]
-                hide_params = ["R1", "R0", "dC1", "dC0", "X1", "X0", "coupling"]
+                hide_params = ["R1", "R0", "dC1", "dC0", "X1", "X0"]
             elif mode == "symmetrical":
                 show_params = ["Load", "selected_object", "R1", "R0", "dC1", "dC0", "X1", "X0"]
                 hide_params = ["xmatrix", "rmatrix", "cmatrix"]
