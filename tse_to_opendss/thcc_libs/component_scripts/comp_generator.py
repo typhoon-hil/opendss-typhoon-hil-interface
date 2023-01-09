@@ -39,7 +39,7 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
             mdl.set_property_value(mdl.prop(const_102, "value"), "Ts_switch")
             mdl.set_property_value(mdl.prop(const_102, "execution_rate"), "Ts")
             mdl.set_property_value(mdl.prop(const_102, "signal_type"), "real")
-            # Create Ts_Switch subsystem
+            # Create Ts_Switch subsystem (used a try/except just to separate the subsystem components)
             try:
                 ts_subsystem = mdl.create_component(type_name="core/Subsystem",
                                                     name="T_switch",
@@ -103,6 +103,15 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
                                              parent=comp_handle,
                                              name="TS_module",
                                              position=(6440, 8504))
+            # resetting properties avoiding errors from the ts_component modifications
+            mdl.set_property_value(mdl.prop(ts_module, "P_nom"), "kw")
+            mdl.set_property_value(mdl.prop(ts_module, "Q_nom"), "kvar")
+            mdl.set_property_value(mdl.prop(ts_module, "S_vec"), "S_Ts")
+            mdl.set_property_value(mdl.prop(ts_module, "P_mode"), "Manual input")
+            mdl.set_property_value(mdl.prop(ts_module, "T_vec"), "T_Ts_internal")
+            mdl.set_property_value(mdl.prop(ts_module, "Tmax"), "T_Ts_max")
+            mdl.set_property_value(mdl.prop(ts_module, "Tdel"), "del_Ts + Mech_En")
+            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "Ts")
             ext_port = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
             mdl.create_connection(ext_port, mdl.term(ts_subsystem, "T"))
             mdl.create_connection(mdl.term(const_102, "out"), mdl.term(ts_subsystem, "mode"))
@@ -110,14 +119,7 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
             mdl.create_connection(mdl.term(ts_module, "P"), mdl.term(bus_join, "in9"))
             mdl.create_connection(mdl.term(ts_module, "Q"), mdl.term(bus_join, "in10"))
 
-            # ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type=ITEM_COMPONENT)
-            # ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type=ITEM_COMPONENT)
-            # ts_select1 = mdl.get_item("Constant102", parent=comp_handle, item_type=ITEM_COMPONENT)
-            # conn_ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type=ITEM_CONNECTION)
-            # conn_p_int = mdl.get_item("connP", parent=comp_handle, item_type=ITEM_CONNECTION)
-            # conn_q_int = mdl.get_item("connQ", parent=comp_handle, item_type=ITEM_CONNECTION)
-            # p_inp = mdl.get_item("Bus Join4", parent=comp_handle, item_type=ITEM_COMPONENT)
-
+            # s_mode has only Manual input combo (I'll disable it for while)
             """
             if s_mode == "Manual input":
                 mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
@@ -152,11 +154,8 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
                                                 position=(6472, 8400))
                 mdl.set_property_value(mdl.prop(const_33, "value"), "0")
                 mdl.set_property_value(mdl.prop(const_33, "execution_rate"), "Ts")
-                mdl.create_connection(mdl.term(const_33, "out"),mdl.term(bus_join, "in10"))
+                mdl.create_connection(mdl.term(const_33, "out"), mdl.term(bus_join, "in10"))
                 mdl.create_connection(mdl.term(const_33, "out"), mdl.term(bus_join, "in9"))
-
-            #mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
-
 
     elif mdl.get_name(caller_prop_handle) == "S_Ts_mode":
         gen_en = mdl.get_property_disp_value(mdl.prop(mask_handle, "gen_ts_en"))
