@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import general_objects as obj
+import tse_to_opendss.thcc_libs.gui_scripts.general_objects as obj
 import os, pathlib
 import pandas as pd
 

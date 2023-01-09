@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import string
 import math
-import objects_header_and_column
+import tse_to_opendss.thcc_libs.gui_scripts.objects_header_and_column as objects_header_and_column
 import pandas as pd
 import pathlib
 
@@ -446,12 +446,18 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         ## Signals
 
         # Lists
+        self.old_listitem_name = ''
+        self.new_listitem_name = ''
+        self.changing_listitem = None
         self.list_linecodes.itemDoubleClicked.connect(self.rename_object_step1)
-        self.list_linecodes.itemDelegate().commitData.connect(lambda txt: self.rename_object_step2(txt, "linecode"))
+        self.linecodes_delegate = self.list_linecodes.itemDelegate()
+        self.linecodes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
+        self.linecodes_delegate.closeEditor.connect(lambda _: self.rename_object_step3("linecode"))
         self.list_linecodes.itemSelectionChanged.connect(lambda: self.update_parameters_from_dict(self.list_linecodes))
 
         self.list_loadshapes.itemDoubleClicked.connect(self.rename_object_step1)
-        self.list_loadshapes.itemDelegate().commitData.connect(lambda txt: self.rename_object_step2(txt, "loadshape"))
+        self.loadshapes_delegate = self.list_loadshapes.itemDelegate()
+        self.loadshapes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text(), "loadshape"))
         self.list_loadshapes.itemSelectionChanged.connect(
             lambda: self.update_parameters_from_dict(self.list_loadshapes))
         self.list_loadshapes.itemSelectionChanged.connect(self.update_csv_parameters)
@@ -836,24 +842,24 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 new_name = "Default" + str(k)
 
             if obj_type == "linecode":
-                if self.list_linecodes.findItems(new_name, QtCore.Qt.MatchExactly):
+                if self.list_linecodes.findItems(new_name, QtCore.Qt.MatchFixedString):
                     # If the new name already exists, count k + 1
                     pass
                 else:
                     self.linecodes_dict.update({new_name: self.get_obj_defaults("linecode")})
                     self.update_lists_with_names()
                     self.list_linecodes.setCurrentItem(
-                        self.list_linecodes.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                        self.list_linecodes.findItems(new_name, QtCore.Qt.MatchFixedString)[0])
                     break
             elif obj_type == "loadshape":
-                if self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchExactly):
+                if self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchFixedString):
                     # If the new name already exists, count k + 1
                     pass
                 else:
                     self.loadshape_dict.update({new_name: self.get_obj_defaults("loadshape")})
                     self.update_lists_with_names()
                     self.list_loadshapes.setCurrentItem(
-                        self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                        self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchFixedString)[0])
                     break
 
     def copy_object(self, obj_type):
@@ -892,21 +898,53 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     break
 
     def rename_object_step1(self, list_item):
+        # Save current name
         self.old_listitem_name = list_item.text()
         self.changing_listitem = list_item
 
-    def rename_object_step2(self, list_item, obj_type):
-        for c in list_item.text():
-            if c not in self.valid_characters:
+    def rename_object_step2(self, new_name):
+        # Get the new name after the itemdelegate data is commited
+        # Runs twice when Enter is pressed, which may lead to crashes when warnings are shown if not a separate step
+        self.new_listitem_name = new_name
+
+    def rename_object_step3(self, obj_type):
+        new_name = self.new_listitem_name
+        # Ignore if returning to original name
+        if self.new_listitem_name == self.old_listitem_name:
+            print("restoring, returning")
+            return
+
+        # Check if name already exists
+        duplicate = False
+        if obj_type == "linecode":
+            for row in range(self.list_linecodes.count()):
+                current_item = self.list_linecodes.item(row)
+                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                    duplicate = True
+        elif obj_type == "loadshape":
+            for row in range(self.list_loadshapes.count()):
+                current_item = self.list_loadshapes.item(row)
+                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                    duplicate = True
+        if duplicate:
+            msgbox_dup = QtWidgets.QMessageBox()
+            msgbox_dup.warning(self, "Invalid name", "Duplicate name")
+            if self.changing_listitem:
                 self.changing_listitem.setText(self.old_listitem_name)
-                msgbox = QtWidgets.QMessageBox
-                msgbox.warning(self, "Invalid name", "The object name contains invalid characters")
+            return
+
+        # Look for invalid character in the new name
+        for c in new_name:
+            if c not in self.valid_characters:
+                msgbox_invchar = QtWidgets.QMessageBox(self)
+                msgbox_invchar.warning(self, "Invalid name", "The object name contains invalid characters")
+                self.changing_listitem.setText(self.old_listitem_name)
                 return
 
         if obj_type == "linecode":
-            self.linecodes_dict.update({list_item.text(): self.linecodes_dict.pop(self.old_listitem_name)})
+            self.linecodes_dict.update({new_name: self.linecodes_dict.pop(self.old_listitem_name)})
         elif obj_type == "loadshape":
-            self.loadshape_dict.update({list_item.text(): self.loadshape_dict.pop(self.old_listitem_name)})
+            self.loadshape_dict.update({new_name: self.loadshape_dict.pop(self.old_listitem_name)})
 
     def delete_object(self, list_widget):
         msgbox = QtWidgets.QMessageBox()
@@ -1143,7 +1181,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     obj_list = self.list_loadshapes
                     if located_file[0][-3:].lower() == "dss":
                         added_items = dss_parser.parse_loadshapes(located_file[0], from_gui=True)
-                        # print(f"added_items = {added_items}")
                     elif located_file[0][-3:].lower() == "csv":
                         added_items = None
                         csv_loaded = True
@@ -1189,11 +1226,15 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                         if obj_type == "linecode":
                             self.linecodes_dict.update(added_items)
                             self.update_lists_with_names()
+                            self.list_linecodes.setCurrentItem(
+                                self.list_linecodes.findItems(list(added_items.keys())[0],
+                                                                QtCore.Qt.MatchFixedString)[0])
                         elif obj_type == "loadshape":
                             self.loadshape_dict.update(added_items)
                             self.update_lists_with_names()
-                    self.list_loadshapes.setCurrentItem(self.list_loadshapes.findItems(list(added_items.keys())[0],
-                                                                                   QtCore.Qt.MatchFixedString)[0])
+                            self.list_loadshapes.setCurrentItem(
+                                self.list_loadshapes.findItems(list(added_items.keys())[0],
+                                                                QtCore.Qt.MatchFixedString)[0])
                 elif csv_loaded:
                     from pathlib import Path
                     points, headers, column, columns = self.get_points_from_csv(located_file[0])
