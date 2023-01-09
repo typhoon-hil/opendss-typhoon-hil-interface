@@ -161,7 +161,7 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             ts_switch = mdl.create_component("Constant", parent=comp_handle,
                                              name="Ts_switch", position=(ref_pos[0], ref_pos[1]))
             mdl.set_property_value(mdl.prop(ts_switch, "value"), "Ts_switch")
-            mdl.set_property_value(mdl.prop(ts_switch, "execution_rate"), "Tfast")
+            mdl.set_property_value(mdl.prop(ts_switch, "execution_rate"), "Ts")
 
         port_t = mdl.get_item("T", parent=comp_handle, item_type="port")
         if not port_t:
@@ -273,7 +273,7 @@ def set_control_mode(mdl, container_handle, new_value):
 def set_external_input(mdl, container_handle, prop_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(container_handle)
 
-    input_dict = {"P_ref_str": {"external_port": {"name": "Pset",
+    input_dict = {"P_ref_str": {"external_port": {"name": "P_set",
                                                   "position": (6642, 8348),
                                                   "terminal_position": (-10, -87)},
                                 "input_comp": {"name": "Sum9"},
@@ -281,7 +281,7 @@ def set_external_input(mdl, container_handle, prop_handle, new_value):
                                                "position": (6567, 8352),
                                                "comp_type": "Termination"},
                                 "input_tag": {"name": "From11"}},
-                  "Q_ref_str": {"external_port": {"name": "Qset",
+                  "Q_ref_str": {"external_port": {"name": "Q_set",
                                                   "position": (6504, 8753),
                                                   "terminal_position": (25, -87)},
                                 "input_comp": {"name": "Sum7"},
@@ -462,4 +462,5 @@ def enable_time_series_value_edited(mdl, container_handle, new_value):
 
     else:
         for prop_name in prop_list:
-            mdl.enable_property(mdl.prop(container_handle, prop_name))
+            if prop_name in ["ctrl_mode_str", "P_ref_str", "Q_ref_str"]:
+                mdl.enable_property(mdl.prop(container_handle, prop_name))
