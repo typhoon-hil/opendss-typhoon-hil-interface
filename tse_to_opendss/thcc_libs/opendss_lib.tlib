@@ -12005,12 +12005,69 @@ Te_mem = Te;
                     ENDCODE
                 }
 
+                loadshape_from_file {
+                    label = "From CSV file"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "OpenDSS model setting"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file_path {
+                    label = "LoadShape from file - path"
+                    widget = edit
+                    type = generic
+                    default_value = ""
+                    group = "OpenDSS model setting"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_header {
+                    label = "LoadShape from file - header"
+                    widget = checkbox
+                    type = generic
+                    default_value = "True"
+                    group = "OpenDSS model setting"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_column {
+                    label = "LoadShape from file - column"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Time Series Settings:4"
+                    nonvisible
+                    no_evaluate
+                }
+
+                useactual {
+                    label = "Actual gen value"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "OpenDSS model setting"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
                 loadshape {
                     label = "LoadShape points"
                     widget = edit
                     type = generic
                     default_value = "[0.5, 0.8, 1, 0.4, 0.5]"
-                    unit = "pu"
                     group = "OpenDSS model setting"
                     no_evaluate
 
