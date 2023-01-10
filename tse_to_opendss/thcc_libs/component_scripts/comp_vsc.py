@@ -166,7 +166,7 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
         port_t = mdl.get_item("T", parent=comp_handle, item_type="port")
         if not port_t:
             port_t = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
-                                     terminal_position=(-40, -88), label="T_series",
+                                     terminal_position=(-10, -87), label="T_series",
                                      position=(ref_pos[0], ref_pos[1] + 128))
         else:
             mdl.set_port_properties(port_t, terminal_position=(50, 0))
