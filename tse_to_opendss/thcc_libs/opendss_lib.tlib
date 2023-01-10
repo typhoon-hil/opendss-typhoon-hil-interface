@@ -3078,612 +3078,6 @@ if (Vdc<-2) {
                 hide_name = True
             ]
 
-            component Subsystem TS_module {
-                layout = dynamic
-                component "core/Clock" Clock1 {
-                    execution_rate = "Texec"
-                }
-                [
-                    position = 6824, 8000
-                ]
-
-                component "core/Probe" d_rel {
-                    signal_name = "Delay release"
-                }
-                [
-                    position = 6928, 7936
-                ]
-
-                component "core/Comparator" Comparator1 {
-                }
-                [
-                    position = 6928, 8000
-                ]
-
-                component "core/Constant" Constant1 {
-                    execution_rate = "Texec"
-                    value = "Tdel"
-                }
-                [
-                    position = 6824, 8064
-                ]
-
-                component "core/Signal switch" "Signal switch1" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 7008, 8144
-                ]
-
-                component "core/Constant" Constant3 {
-                    execution_rate = "Texec"
-                }
-                [
-                    position = 6840, 8128
-                ]
-
-                component "core/Integrator" Integrator1 {
-                    show_reset = "rising"
-                    show_state = "True"
-                }
-                [
-                    position = 7352, 8152
-                ]
-
-                component "core/Constant" Constant4 {
-                    execution_rate = "Texec"
-                    value = "Tmax"
-                }
-                [
-                    position = 7152, 8304
-                ]
-
-                component "core/Comparator" Comparator2 {
-                }
-                [
-                    position = 7240, 8296
-                ]
-
-                component "core/1D look-up table" "1D look-up table1" {
-                    in_vec_x = "T_vecP"
-                    out_vec_f_x = "P_vec1"
-                }
-                [
-                    position = 7608, 8008
-                ]
-
-                component "core/1D look-up table" "1D look-up table2" {
-                    in_vec_x = "T_vecQ"
-                    out_vec_f_x = "Q_vec1"
-                }
-                [
-                    position = 7608, 8192
-                ]
-
-                component "core/Constant" Constant5 {
-                    execution_rate = "Texec"
-                    value = "0"
-                }
-                [
-                    position = 6840, 8176
-                ]
-
-                component "core/Signal switch" "Signal switch2" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 7176, 8144
-                ]
-
-                component "core/Constant" Constant6 {
-                    execution_rate = "Texec"
-                    value = "loop_en"
-                }
-                [
-                    position = 7112, 8048
-                ]
-
-                component "core/Signal switch" "Signal switch3" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 7456, 8160
-                ]
-
-                component "core/Constant" Constant7 {
-                    execution_rate = "Texec"
-                    value = "loop_en"
-                }
-                [
-                    position = 7400, 8064
-                ]
-
-                component "core/Gain" Gain1 {
-                }
-                [
-                    position = 7384, 8352
-                ]
-
-                port P {
-                    position = right:1
-                    kind = sp
-                    direction =  in
-                    sp_type {
-                        default = inherit
-                        readonly = True
-                    }
-                }
-                [
-                    position = 7976, 8008
-                ]
-
-                port Q {
-                    position = right:2
-                    kind = sp
-                    direction =  in
-                    sp_type {
-                        default = inherit
-                        readonly = True
-                    }
-                }
-                [
-                    position = 7976, 8192
-                ]
-
-                port T {
-                    position = left:1
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 7240, 8440
-                ]
-
-                junction Junction3 sp
-                [
-                    position = 6952, 8176
-                ]
-
-                junction Junction4 sp
-                [
-                    position = 7496, 8160
-                ]
-
-                connect Clock1.out Comparator1.in1 as Connection1
-                connect Constant1.out Comparator1.in2 as Connection2
-                connect d_rel.in Comparator1.out as Connection530
-                connect "Signal switch1.in2" Comparator1.out as Connection3
-                connect Constant3.out "Signal switch1.in" as Connection5
-                connect Constant4.out Comparator2.in2 as Connection7
-                connect Comparator2.out Integrator1.reset as Connection8
-                connect Comparator2.in1 Integrator1.state_port as Connection9
-                [
-                    position = 0, 0
-                    breakpoints = 7208, 8232; 7392, 8232
-                ]
-                connect "1D look-up table1.value" P as Connection10
-                connect "1D look-up table2.value" Q as Connection12
-                connect Constant6.out "Signal switch2.in2" as Connection21
-                connect "Signal switch1.out" "Signal switch2.in" as Connection26
-                connect Constant5.out Junction3 as Connection31
-                connect Junction3 "Signal switch1.in1" as Connection32
-                [
-                    position = 0, 0
-                ]
-                connect "Signal switch2.in1" Junction3 as Connection33
-                [
-                    position = 0, 0
-                ]
-                connect Constant7.out "Signal switch3.in2" as Connection38
-                connect Integrator1.out "Signal switch3.in" as Connection40
-                connect "1D look-up table2.addr" Junction4 as Connection41
-                [
-                    position = 0, 0
-                ]
-                connect "Signal switch3.out" Junction4 as Connection43
-                connect Gain1.out "Signal switch3.in1" as Connection44
-                connect Integrator1.in "Signal switch2.out" as Connection45
-                [
-                    position = 0, 0
-                ]
-                connect "1D look-up table1.addr" Junction4 as Connection49
-                [
-                    position = 0, 0
-                ]
-                connect Gain1.in T as connT
-
-                P_mode = "Manual input"
-                P_nom = "Sinv"
-                Q_nom = "Qinv"
-                T_vec = "T_Ts_internal"
-                Tdel = "10"
-                Texec = "Ts"
-                Tmax = "10"
-
-                mask {
-                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
-
-                    P_nom {
-                        label = "Nominal active power"
-                        widget = edit
-                        type = generic
-                        default_value = "P_CPL"
-                        unit = "kW"
-                    }
-
-                    Q_nom {
-                        label = "Nominal reactive power"
-                        widget = edit
-                        type = generic
-                        default_value = "Q_CPL"
-                        unit = "kVAR"
-                    }
-
-                    S_vec {
-                        label = "Load profile"
-                        widget = edit
-                        type = generic
-                        default_value = "S_Ts"
-                        unit = "pu"
-                    }
-
-                    S_vec1 {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    S_vec2 {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    P_vec1 {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Plen {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Q_vec1 {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    T_vecP {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    T_vecQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    P_mode {
-                        label = "Power profile mode"
-                        widget = combo
-                        combo_values = "Manual input", "Loop cycle"
-                        type = string
-                        default_value = "Loop cycle"
-                        no_evaluate
-
-                        CODE property_value_changed
-                            from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
-                            comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                            if new_value == "Loop cycle":
-                                T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
-                                T_inp = mdl.get_item("Gain1", parent=comp_handle, item_type=ITEM_COMPONENT)
-                                T_def = mdl.get_item("Constant5", parent=comp_handle, item_type=ITEM_COMPONENT)
-
-                                if T_ext:
-                                    mdl.delete_item(T_ext)
-
-                                conn_T_int = mdl.get_item("connT", parent=comp_handle, item_type=ITEM_CONNECTION)
-                                if not conn_T_int:
-                                    mdl.create_connection(mdl.term(T_inp, "in"), mdl.term(T_def, "out"), "connT")
-
-                            else:
-                                T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
-                                T_inp = mdl.get_item("Gain1", parent=comp_handle, item_type=ITEM_COMPONENT)
-                                conn_T_int = mdl.get_item("connT", parent=comp_handle, item_type=ITEM_CONNECTION)
-                                if conn_T_int:
-                                    mdl.delete_item(conn_T_int)
-
-                                if not T_ext:
-                                    T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind = "sp",
-                                                        terminal_position=("left", 1),
-                                                        position=(7237, 8437))
-
-                                mdl.create_connection(mdl.term(T_inp, "in"), T_ext, "connT")
-                        ENDCODE
-
-                        CODE property_value_edited
-                            if new_value == "Manual input":
-                                mdl.disable_property(mdl.prop(container_handle, "Tmax"))
-                                mdl.disable_property(mdl.prop(container_handle, "Tdel"))
-                                mdl.enable_property(mdl.prop(container_handle, "T_vec"))
-                            else:
-                                mdl.enable_property(mdl.prop(container_handle, "Tmax"))
-                                mdl.enable_property(mdl.prop(container_handle, "Tdel"))
-                                mdl.disable_property(mdl.prop(container_handle, "T_vec"))
-                        ENDCODE
-                    }
-
-                    loop_en {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    T_vec {
-                        label = "Time profile"
-                        widget = edit
-                        type = generic
-                        default_value = "T_Ts"
-                        unit = "h"
-                    }
-
-                    Tmax {
-                        label = "Power profile loop cycle"
-                        widget = edit
-                        type = generic
-                        default_value = "T_Ts_max"
-                        unit = "s"
-                        disabled
-                    }
-
-                    Tdel {
-                        label = "Profile start delay"
-                        widget = edit
-                        type = generic
-                        default_value = "del_Ts"
-                        unit = "s"
-                        disabled
-                    }
-
-                    Texec {
-                        label = "Execution rate"
-                        widget = edit
-                        type = generic
-                        default_value = "Tfast"
-                        unit = "s"
-                    }
-
-                    CODE open
-                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
-                        dialog = RegularComponentPropertiesDialog(
-                            component=component,
-                            property_container=component.masks[-1],
-                            current_diagram=current_diagram
-                        )
-                        dialog.exec_()
-
-                    ENDCODE
-
-                    CODE pre_compile
-                        # HEADER START
-                        P_nom = mdl.get_property_value(mdl.prop(item_handle, "P_nom"))
-                        Q_nom = mdl.get_property_value(mdl.prop(item_handle, "Q_nom"))
-                        S_vec = mdl.get_property_value(mdl.prop(item_handle, "S_vec"))
-                        S_vec1 = mdl.get_property_value(mdl.prop(item_handle, "S_vec1"))
-                        S_vec2 = mdl.get_property_value(mdl.prop(item_handle, "S_vec2"))
-                        P_vec1 = mdl.get_property_value(mdl.prop(item_handle, "P_vec1"))
-                        Plen = mdl.get_property_value(mdl.prop(item_handle, "Plen"))
-                        Q_vec1 = mdl.get_property_value(mdl.prop(item_handle, "Q_vec1"))
-                        T_vecP = mdl.get_property_value(mdl.prop(item_handle, "T_vecP"))
-                        T_vecQ = mdl.get_property_value(mdl.prop(item_handle, "T_vecQ"))
-                        P_mode = mdl.get_property_value(mdl.prop(item_handle, "P_mode"))
-                        loop_en = mdl.get_property_value(mdl.prop(item_handle, "loop_en"))
-                        T_vec = mdl.get_property_value(mdl.prop(item_handle, "T_vec"))
-                        Tmax = mdl.get_property_value(mdl.prop(item_handle, "Tmax"))
-                        Tdel = mdl.get_property_value(mdl.prop(item_handle, "Tdel"))
-                        Texec = mdl.get_property_value(mdl.prop(item_handle, "Texec"))
-                        # HEADER STOP
-                        from typhoon.api.schematic_editor.const import ITEM_COMPONENT
-                        import numpy as np
-                        import math
-
-                        if P_mode == "Manual input":
-                            loop_en = 0
-                        else:
-                            loop_en = 1
-
-
-                        Plen = len(S_vec)
-                        S_vec2 = S_vec
-
-                        S_vec1 = [0] * Plen
-
-                        idxS = 0
-                        for S_val in S_vec:
-                            S_vec1[idxS] = S_vec[idxS]
-                            idxS += 1
-
-
-                        T_vecP = [0] * Plen
-                        T_vecQ = [0] * Plen
-
-                        P_vec1 = [P_nom*i for i in S_vec2]
-                        Q_vec1 = [Q_nom*i for i in S_vec2]
-
-                        TstepP = Tmax/(Plen - 1)
-                        TstepQ = Tmax/(Plen - 1)
-
-                        idxP = 0
-                        for P_val in S_vec1:
-
-                            if loop_en == 1:
-                                T_vecP[idxP] = idxP * TstepP
-                            else:
-                                T_vecP[idxP] = T_vec[idxP]
-                            idxP += 1
-
-                        idxQ = 0
-                        for Q_val in S_vec1:
-
-                            if loop_en == 1:
-                                T_vecQ[idxQ] = idxQ * TstepQ
-                            else:
-                                T_vecQ[idxQ] = T_vec[idxQ]
-                            idxQ += 1
-
-
-
-
-
-
-                        mdl.set_property_value(mdl.prop(item_handle, "P_vec1"), P_vec1)
-                        mdl.set_property_value(mdl.prop(item_handle, "Q_vec1"), Q_vec1)
-                        mdl.set_property_value(mdl.prop(item_handle, "T_vecP"), T_vecP)
-                        mdl.set_property_value(mdl.prop(item_handle, "T_vecQ"), T_vecQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Tdel"), Tdel)
-                        mdl.set_property_value(mdl.prop(item_handle, "Tmax"), Tmax)
-                        mdl.set_property_value(mdl.prop(item_handle, "loop_en"), loop_en)
-                        mdl.set_property_value(mdl.prop(item_handle, "P_nom"), P_nom)
-                        mdl.set_property_value(mdl.prop(item_handle, "Q_nom"), Q_nom)
-                        mdl.set_property_value(mdl.prop(item_handle, "Plen"), Plen)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "S_vec"), S_vec)
-                        mdl.set_property_value(mdl.prop(item_handle, "S_vec1"), S_vec1)
-                        mdl.set_property_value(mdl.prop(item_handle, "S_vec2"), S_vec2)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Texec"), Texec)
-                    ENDCODE
-                }
-            }
-            [
-                position = 6112, 8416
-                size = 112, 72
-            ]
-
-            component Subsystem T_switch {
-                layout = dynamic
-                component "core/Signal switch" "Signal switch1" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 7632, 8056
-                ]
-
-                component "core/Round" Round1 {
-                }
-                [
-                    position = 7392, 8072
-                ]
-
-                component "core/Limit" Limit1 {
-                    lower_limit = "T_lim_low"
-                    upper_limit = "T_lim_high"
-                }
-                [
-                    position = 7808, 8056
-                ]
-
-                port T {
-                    position = auto:auto
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 7176, 8040
-                ]
-
-                port T_out {
-                    position = auto:auto
-                    kind = sp
-                    direction =  in
-                    sp_type {
-                        default = inherit
-                        readonly = True
-                    }
-                }
-                [
-                    position = 8096, 8056
-                ]
-
-                port mode {
-                    position = auto:auto
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 7472, 7920
-                ]
-
-                junction Junction1 sp
-                [
-                    position = 7280, 8040
-                ]
-
-                junction Junction2 sp
-                [
-                    position = 7712, 8056
-                ]
-
-                junction Junction3 sp
-                [
-                    position = 7880, 8056
-                ]
-
-                connect mode "Signal switch1.in2" as Connection1
-                connect T Junction1 as Connection5
-                connect Junction1 "Signal switch1.in" as Connection6
-                connect Round1.in Junction1 as Connection7
-                connect Round1.out "Signal switch1.in1" as Connection8
-                connect "Signal switch1.out" Junction2 as Connection11
-                connect Junction2 Limit1.in as Connection12
-                connect Limit1.out Junction3 as Connection14
-                connect Junction3 T_out as Connection15
-            }
-            [
-                position = 5984, 8416
-                size = 72, 64
-            ]
-
-            component "core/Constant" Constant102 {
-                execution_rate = "Ts"
-                value = "Ts_switch"
-            }
-            [
-                position = 5880, 8456
-            ]
-
             port A1 {
                 position = 110.0, -32.0
                 kind = pe
@@ -5502,8 +4896,8 @@ if (Vdc<-2) {
             connect Junction127 Sum28.in as Connection5655
             connect "Signal switch24.in1" Junction127 as Connection5656
             connect "Signal switch24.out" Sum23.in as Connection5657
-            connect Constant102.out T_switch.mode as Connection3
-            connect T_switch.T_out TS_module.T as Connection5658
+
+
             connect Gain32.in From25 as connmode
             connect Sum9.in From11 as connP
             connect Sum7.in From10 as connQ
@@ -5529,44 +4923,8 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        if new_value == "External Control":
-                            mode_ext = mdl.get_item("mode", parent=comp_handle, item_type=ITEM_PORT)
-                            mode_inp = mdl.get_item("Gain32", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            term_mode = mdl.get_item("Termination5", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            mode_int = mdl.get_item("From25", parent=comp_handle, item_type=ITEM_TAG)
-                            conn_mode_int = mdl.get_item("connmode", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if conn_mode_int:
-                                mdl.delete_item(conn_mode_int)
-
-                            if not term_mode:
-                                term_mode = mdl.create_component("Termination", parent=comp_handle,
-                                                                 name="Termination5", position=(7047, 9200),
-                                                                 hide_name=True)
-                            mdl.create_connection(mdl.term(term_mode, "in"), mode_int)
-                            if not mode_ext:
-                                mode_ext = mdl.create_port(parent=comp_handle, name="mode", direction="in", kind = "sp",
-                                                    terminal_position=(-10, 87),
-                                                    position=(7120, 9201))
-                                mdl.create_connection(mdl.term(mode_inp, "in"), mode_ext)
-                        else:
-                            mode_ext = mdl.get_item("mode", parent=comp_handle, item_type=ITEM_PORT)
-                            term_mode = mdl.get_item("Termination5", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            mode_int = mdl.get_item("From25", parent=comp_handle, item_type=ITEM_TAG)
-                            mode_inp = mdl.get_item("Gain32", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_mode_int = mdl.get_item("connmode", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if mode_ext:
-                                mdl.delete_item(mode_ext)
-                            if term_mode:
-                                mdl.delete_item(term_mode)
-                            if conn_mode_int:
-                                mdl.delete_item(conn_mode_int)
-                            mdl.create_connection(mdl.term(mode_inp, "in"), mode_int, name="connmode")
-
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_control_mode(mdl, container_handle, new_value)
                         comp_script.inv_control_mode_value_edited(mdl, container_handle, new_value)
                     ENDCODE
 
@@ -5600,43 +4958,8 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        if new_value == "External input":
-                            P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
-                            P_inp = mdl.get_item("Sum9", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            P_int = mdl.get_item("From11", parent=comp_handle, item_type=ITEM_TAG)
-                            conn_P_int = mdl.get_item("connP", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if conn_P_int:
-                                mdl.delete_item(conn_P_int)
-
-                            if not term_P:
-                                term_P = mdl.create_component("Termination", parent=comp_handle,
-                                                              name="Termination1", position=(6567, 8352),
-                                                              hide_name=True)
-                                mdl.create_connection(mdl.term(term_P, "in"), P_int)
-
-                            if not P_ext:
-                                P_ext = mdl.create_port(parent=comp_handle, name="P_set", direction="in", kind = "sp",
-                                                    terminal_position=(-10, -87),
-                                                    position=(6642, 8348))
-                                mdl.create_connection(mdl.term(P_inp, "in"), P_ext)
-                        elif new_value == "Converter nominal":
-                            P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
-                            term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            P_int = mdl.get_item("From11", parent=comp_handle, item_type=ITEM_TAG)
-                            P_inp = mdl.get_item("Sum9", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_P_int = mdl.get_item("connP", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if P_ext:
-                                mdl.delete_item(P_ext)
-                            if term_P:
-                                mdl.delete_item(term_P)
-                            if conn_P_int:
-                                mdl.delete_item(conn_P_int)
-                            mdl.create_connection(mdl.term(P_inp, "in"), P_int, name="connP")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_external_input(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -5657,43 +4980,8 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        if new_value == "External input":
-                            Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
-                            Q_inp = mdl.get_item("Sum7", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Q_int = mdl.get_item("From10", parent=comp_handle, item_type=ITEM_TAG)
-                            conn_Q_int = mdl.get_item("connQ", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if conn_Q_int:
-                                mdl.delete_item(conn_Q_int)
-
-                            if not term_Q:
-                                term_Q = mdl.create_component("Termination", parent=comp_handle,
-                                                              name="Termination2", position=(6424, 8751),
-                                                              hide_name=True)
-                                mdl.create_connection(mdl.term(term_Q, "in"), Q_int)
-
-                            if not Q_ext:
-                                Q_ext = mdl.create_port(parent=comp_handle, name="Q_set", direction="in", kind = "sp",
-                                                    terminal_position=(25, -87),
-                                                    position=(6504, 8753))
-                                mdl.create_connection(mdl.term(Q_inp, "in"), Q_ext)
-                        elif new_value == "Converter nominal":
-                            Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
-                            term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Q_int = mdl.get_item("From10", parent=comp_handle, item_type=ITEM_TAG)
-                            Q_inp = mdl.get_item("Sum7", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_Q_int = mdl.get_item("connQ", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if Q_ext:
-                                mdl.delete_item(Q_ext)
-                            if term_Q:
-                                mdl.delete_item(term_Q)
-                            if conn_Q_int:
-                                mdl.delete_item(conn_Q_int)
-                            mdl.create_connection(mdl.term(Q_inp, "in"), Q_int, name="connQ")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_external_input(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -5715,43 +5003,8 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        if new_value == "External input":
-                            V_ext = mdl.get_item("V_set", parent=comp_handle, item_type=ITEM_PORT)
-                            V_inp = mdl.get_item("Sum11", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            term_V = mdl.get_item("Termination3", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            V_int = mdl.get_item("From15", parent=comp_handle, item_type=ITEM_TAG)
-                            conn_V_int = mdl.get_item("connV", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if conn_V_int:
-                                mdl.delete_item(conn_V_int)
-
-                            if not term_V:
-                                term_V = mdl.create_component("Termination", parent=comp_handle,
-                                                              name="Termination3", position=(6376, 8930),
-                                                              hide_name=True)
-                                mdl.create_connection(mdl.term(term_V, "in"), V_int)
-
-                            if not V_ext:
-                                V_ext = mdl.create_port(parent=comp_handle, name="V_set", direction="in", kind = "sp",
-                                                    terminal_position=(55, -87),
-                                                    position=(6450, 8926))
-                                mdl.create_connection(mdl.term(V_inp, "in"), V_ext)
-                        elif new_value == "Converter nominal":
-                            V_ext = mdl.get_item("V_set", parent=comp_handle, item_type=ITEM_PORT)
-                            term_V = mdl.get_item("Termination3", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            V_int = mdl.get_item("From15", parent=comp_handle, item_type=ITEM_TAG)
-                            V_inp = mdl.get_item("Sum11", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_V_int = mdl.get_item("connV", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if V_ext:
-                                mdl.delete_item(V_ext)
-                            if term_V:
-                                mdl.delete_item(term_V)
-                            if conn_V_int:
-                                mdl.delete_item(conn_V_int)
-                            mdl.create_connection(mdl.term(V_inp, "in"), V_int, name="connV")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_external_input(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -5773,43 +5026,8 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        if new_value == "External input":
-                            vdc_ext = mdl.get_item("vdc_set", parent=comp_handle, item_type=ITEM_PORT)
-                            vdc_inp = mdl.get_item("Gain30", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            term_vdc = mdl.get_item("Termination4", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            vdc_int = mdl.get_item("From22", parent=comp_handle, item_type=ITEM_TAG)
-                            conn_vdc_int = mdl.get_item("connw", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if conn_vdc_int:
-                                mdl.delete_item(conn_vdc_int)
-
-                            if not term_vdc:
-                                term_vdc = mdl.create_component("Termination", parent=comp_handle,
-                                                                name="Termination4", position=(6621, 8663),
-                                                                hide_name=True)
-                                mdl.create_connection(mdl.term(term_vdc, "in"), vdc_int)
-
-                            if not vdc_ext:
-                                vdc_ext = mdl.create_port(parent=comp_handle, name="vdc_set", direction="in", kind = "sp",
-                                                    terminal_position=(25, 87),
-                                                    position=(6695, 8660))
-                                mdl.create_connection(mdl.term(vdc_inp, "in"), vdc_ext)
-                        elif new_value == "Converter nominal":
-                            vdc_ext = mdl.get_item("vdc_set", parent=comp_handle, item_type=ITEM_PORT)
-                            term_vdc = mdl.get_item("Termination4", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            vdc_int = mdl.get_item("From22", parent=comp_handle, item_type=ITEM_TAG)
-                            vdc_inp = mdl.get_item("Gain30", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_vdc_int = mdl.get_item("connw", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if vdc_ext:
-                                mdl.delete_item(vdc_ext)
-                            if term_vdc:
-                                mdl.delete_item(term_vdc)
-                            if conn_vdc_int:
-                                mdl.delete_item(conn_vdc_int)
-                            mdl.create_connection(mdl.term(vdc_inp, "in"), vdc_int, name="connw")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_external_input(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -5824,43 +5042,8 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        if new_value == "External input":
-                            fs_ext = mdl.get_item("fs_set", parent=comp_handle, item_type=ITEM_PORT)
-                            fs_inp = mdl.get_item("Gain33", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            term_fs = mdl.get_item("Termination8", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            fs_int = mdl.get_item("From44", parent=comp_handle, item_type=ITEM_TAG)
-                            conn_fs_int = mdl.get_item("connfs", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if conn_fs_int:
-                                mdl.delete_item(conn_fs_int)
-
-                            if not term_fs:
-                                term_fs = mdl.create_component("Termination", parent=comp_handle,
-                                                               name="Termination8", position=(6767, 8247),
-                                                               hide_name=True)
-                                mdl.create_connection(mdl.term(term_fs, "in"), fs_int)
-
-                            if not fs_ext:
-                                fs_ext = mdl.create_port(parent=comp_handle, name="fs_set", direction="in", kind = "sp",
-                                                    terminal_position=(55, 87),
-                                                    position=(6893, 8248))
-                                mdl.create_connection(mdl.term(fs_inp, "in"), fs_ext)
-                        elif new_value == "Converter nominal":
-                            fs_ext = mdl.get_item("fs_set", parent=comp_handle, item_type=ITEM_PORT)
-                            term_fs = mdl.get_item("Termination8", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            fs_int = mdl.get_item("From44", parent=comp_handle, item_type=ITEM_TAG)
-                            fs_inp = mdl.get_item("Gain33", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_fs_int = mdl.get_item("connfs", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            if fs_ext:
-                                mdl.delete_item(fs_ext)
-                            if term_fs:
-                                mdl.delete_item(term_fs)
-                            if conn_fs_int:
-                                mdl.delete_item(conn_fs_int)
-                            mdl.create_connection(mdl.term(fs_inp, "in"), fs_int, name="connfs")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_external_input(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -5957,26 +5140,8 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        mdl.refresh_icon(container_handle)
-
-                        if new_value == False:
-                            CDC = mdl.get_item("dccap", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            if CDC:
-                                mdl.delete_item(CDC)
-                        elif new_value == True:
-                            CDC = mdl.get_item("dccap", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            DCpport = mdl.get_item("Junction121", parent=comp_handle, item_type="junction")
-                            DCnport = mdl.get_item("Junction120", parent=comp_handle, item_type="junction")
-                            if not CDC:
-                                CDC = mdl.create_component("Capacitor", parent=comp_handle, name="dccap", position=(7709,9516), rotation="right")
-                                mdl.set_property_value(mdl.prop(CDC, "capacitance"), "dc_cap")
-                                mdl.set_property_value(mdl.prop(CDC, "initial_voltage"), "1000*vdc_set")
-                                dcp = mdl.create_connection(mdl.term(CDC, "p_node"), DCpport, name="dcConnp")
-                                dcn = mdl.create_connection(mdl.term(CDC, "n_node"), DCnport, name="dcConnn")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.place_internal_dc_capacitor(mdl, container_handle, new_value)
 
                         if new_value == False:
                             mdl.disable_property(mdl.prop(container_handle, "dc_cap"))
@@ -6223,88 +5388,14 @@ if (Vdc<-2) {
                     no_evaluate
 
                     CODE property_value_changed
-                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-
-                        if new_value:
-                            TSmdl = mdl.get_item("TS_module", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Ts_select1 = mdl.get_item("Constant102", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_Ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            conn_P_int = mdl.get_item("connPint", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            conn_Q_int = mdl.get_item("connQint", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
-                            P_inp = mdl.get_item("Goto10", parent=comp_handle, item_type=ITEM_TAG)
-                            Q_inp = mdl.get_item("Goto11", parent=comp_handle, item_type=ITEM_TAG)
-
-                            if conn_P_int:
-                                mdl.delete_item(conn_P_int)
-                            if conn_Q_int:
-                                mdl.delete_item(conn_Q_int)
-
-                            mdl.enable_items(TSmdl)
-                            mdl.enable_items(Ts_select)
-                            mdl.enable_items(Ts_select1)
-
-                            mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Manual input")
-                            if not T_ext:
-                                T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind = "sp",
-                                                    terminal_position=(-35, 60),
-                                                    position=(5879, 8399))
-                            if not conn_Ts_in:
-                                mdl.create_connection(mdl.term(Ts_select, "T"), T_ext, "ConnTs")
-
-
-                            conn_TsP_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            conn_TsQ_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type=ITEM_CONNECTION)
-
-                            if not conn_TsP_int:
-                                mdl.create_connection(P_inp, mdl.term(TSmdl, "P"), "ConnTsP")
-                            if not conn_TsQ_int:
-                                mdl.create_connection(Q_inp, mdl.term(TSmdl, "Q"), "ConnTsQ")
-                        else:
-                            TSmdl = mdl.get_item("TS_module", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Ts_select = mdl.get_item("T_switch", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Ts_select1 = mdl.get_item("Constant102", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Pnom = mdl.get_item("Constant22", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            Qnom = mdl.get_item("Constant23", parent=comp_handle, item_type=ITEM_COMPONENT)
-                            conn_Ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            conn_P_int = mdl.get_item("connPint", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            conn_Q_int = mdl.get_item("connQint", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            conn_TsP_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            conn_TsQ_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type=ITEM_CONNECTION)
-                            P_inp = mdl.get_item("Goto10", parent=comp_handle, item_type=ITEM_TAG)
-                            Q_inp = mdl.get_item("Goto11", parent=comp_handle, item_type=ITEM_TAG)
-
-                            T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
-                            mdl.set_property_value(mdl.prop(TSmdl, "P_mode"), "Manual input")
-
-                            if conn_TsP_int:
-                                mdl.delete_item(conn_TsP_int)
-                            if conn_TsQ_int:
-                                mdl.delete_item(conn_TsQ_int)
-
-                            if conn_P_int:
-                                mdl.delete_item(conn_P_int)
-                            if conn_Q_int:
-                                mdl.delete_item(conn_Q_int)
-
-                            mdl.disable_items(TSmdl)
-                            mdl.disable_items(Ts_select)
-                            mdl.disable_items(Ts_select1)
-
-                            mdl.create_connection(mdl.term(Pnom, "out"), P_inp, "connPint")
-                            mdl.create_connection(mdl.term(Qnom, "out"), Q_inp, "connQint")
-
-                            if T_ext:
-                                mdl.delete_item(T_ext)
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_time_series_value_edited(mdl, container_handle, new_value)
+                        comp_script.enable_time_series(mdl, container_handle, new_value)
                     ENDCODE
 
                     CODE property_value_edited
-                        if new_value:
-                            mdl.set_property_value(mdl.prop(container_handle, 'ctrl_mode_str'), "PQ")
-                            mdl.set_property_value(mdl.prop(container_handle, 'P_ref_str'), "Converter nominal")
-                            mdl.set_property_value(mdl.prop(container_handle, 'Q_ref_str'), "Converter nominal")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_time_series_value_edited(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -6334,6 +5425,50 @@ if (Vdc<-2) {
                         old_value = mdl.get_property_value(prop_handle)
                         mdl.set_property_value(prop_handle, old_value)
                     ENDCODE
+                }
+
+                loadshape_from_file {
+                    label = "From CSV file"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "Time Series"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file_path {
+                    label = "LoadShape from file - path"
+                    widget = edit
+                    type = generic
+                    default_value = ""
+                    group = "Time Series"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_column {
+                    label = "LoadShape from file - column"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Time Series"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_header {
+                    label = "LoadShape from file - header"
+                    widget = checkbox
+                    type = generic
+                    default_value = "True"
+                    group = "Time Series"
+                    nonvisible
+                    no_evaluate
                 }
 
                 loadshape {
