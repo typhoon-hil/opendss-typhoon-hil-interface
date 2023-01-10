@@ -17387,6 +17387,7 @@ Te_mem = Te;
         }
         [
             position = 4472, 4320
+            scale = -1, 1
             size = 96, 64
         ]
 
