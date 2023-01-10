@@ -5389,6 +5389,7 @@ if (Vdc<-2) {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_time_series_value_edited(mdl, container_handle, new_value)
                         comp_script.enable_time_series(mdl, container_handle, new_value)
                     ENDCODE
 
