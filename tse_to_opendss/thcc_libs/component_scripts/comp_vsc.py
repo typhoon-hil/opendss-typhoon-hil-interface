@@ -196,6 +196,10 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             ts_module = mdl.create_component("OpenDSS/TS_module", parent=comp_handle,
                                              name="TS_module", position=(ref_pos[0] + 456, ref_pos[1] + 48),
                                              rotation="left")
+            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "Ts")
+            mdl.set_property_value(mdl.prop(ts_module, "P_nom"), "Sinv")
+            mdl.set_property_value(mdl.prop(ts_module, "Q_nom"), "Qinv")
+
         conn_term_list = [(mdl.term(ts_switch, "out"), mdl.term(signal_switch, "in2")),
                           (port_t, mdl.term(signal_switch, "in")),
                           (port_t, mdl.term(round_comp, "in")),
