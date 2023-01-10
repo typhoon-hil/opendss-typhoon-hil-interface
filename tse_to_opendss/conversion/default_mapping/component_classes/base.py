@@ -126,7 +126,8 @@ def convert_matrix_format(input_matrix, phase_num):
     else:
         # Truncate the matrix row size to contain a number of entries equal to the number of phases
         for i in range(phase_num):
-            evaluated_matrix[i] = evaluated_matrix[i][:phase_num]
+            if len(evaluated_matrix) > phase_num:
+                evaluated_matrix[i] = evaluated_matrix[i][:phase_num]
     converted_matrix_hil = str(evaluated_matrix)
     converted_matrix_dss = re.sub(r"(?:\], \[)", " | ", converted_matrix_hil.strip("[]")).replace(",", " ")
     converted_matrix_dss = f"[{converted_matrix_dss}]"

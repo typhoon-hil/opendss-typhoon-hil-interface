@@ -483,6 +483,7 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         # Radio buttons
         self.radio_symmetrical.toggled.connect(lambda: self.radio_button_status("linecode"))
         self.radio_matrix.toggled.connect(lambda: self.radio_button_status("linecode"))
+        self.radio_matrix.toggled.connect(lambda txt: self.parameter_pending_save(txt, self.list_linecodes))
 
         # Highlight parameters changed but not saved
         # LineCode
@@ -785,7 +786,26 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
     def parameter_pending_save(self, _, list_widget):
 
         if list_widget == self.list_linecodes:
-            mode = "symmetrical" if self.radio_symmetrical.isChecked() else "matrix"
+
+            if self.radio_symmetrical.isChecked():
+                mode = "symmetrical"
+                not_mode = "matrix"
+                radio = self.radio_symmetrical
+                not_radio = self.radio_matrix
+            elif self.radio_matrix.isChecked():
+                mode = "matrix"
+                not_mode = "symmetrical"
+                radio = self.radio_matrix
+                not_radio = self.radio_symmetrical
+            if not (self.linecodes_dict.get(list_widget.currentItem().text()).get("mode") == mode):
+                radio.setStyleSheet("color: red;")
+                not_radio.setStyleSheet("color: black;")
+            else:
+                radio.setStyleSheet("color: black;")
+                not_radio.setStyleSheet("color: black;")
+            for param, widget in self.linecode_pars.get(not_mode).items():
+                widget.setStyleSheet("color: black;")
+
             pending = []
             for param, widget in self.linecode_pars.get(mode).items():
                 current_value = self.linecodes_dict.get(list_widget.currentItem().text()).get(param)
@@ -795,6 +815,7 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 else:
                     widget.setStyleSheet("color: black;")
                     pending.append(False)
+
             if any(pending):
                 self.button_linecode_save.setEnabled(True)
             else:
