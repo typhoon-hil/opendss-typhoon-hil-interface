@@ -1,0 +1,94 @@
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem Monitoring {
+            layout = dynamic
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                not_used {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                }
+
+                run {
+                    widget = button
+                    type = string
+                    default_value = "Run"
+                    group = "Advanced"
+                    no_evaluate
+
+                    CODE button_clicked
+                        #comp_script = return_comp_script(mdl, container_handle)
+                        #comp_script.run_command(mdl, container_handle)
+                    ENDCODE
+                }
+
+                CODE open
+                    import pathlib
+                    import json
+                    import os
+                    comp_script = return_comp_script(mdl, item_handle)
+
+                    # Get the path to the the objects file
+                    mdlfile = mdl.get_model_file_path()
+                    mdlfile_name = pathlib.Path(mdlfile).stem
+                    mdlfile_folder = pathlib.Path(mdlfile).parents[0]
+                    mdlfile_target_folder = mdlfile_folder.joinpath(mdlfile_name + ' Target files')
+                    dss_folder_path = pathlib.Path(mdlfile_target_folder).joinpath('dss')
+                    dss_monitors_file = dss_folder_path.joinpath('data', 'monitors.dss')
+
+                    if not dss_folder_path.is_dir():
+                        os.makedirs(dss_folder_path)
+
+                    monitors_dict = {}
+                    new_obj_window = comp_script.Mon_obj(monitors_dict)
+                    if os.path.isfile(dss_monitors_file):
+                        new_obj_window.update_comps_list(str(dss_monitors_file))
+                    new_obj_window.update_core_model(mdl, new_obj_window)
+                    new_obj_window.update_dss_path(dss_folder_path, mdlfile_name)
+                    new_obj_window.show()
+
+
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+                    gui_scripts_path = os.path.join(os.path.realpath(lib_path), "gui_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+                    if not gui_scripts_path in sys.path:
+                        sys.path.append(gui_scripts_path)
+
+                    import comp_monitoring as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4328, 4320
+            size = 64, 64
+        ]
+
+    }
+
+}
