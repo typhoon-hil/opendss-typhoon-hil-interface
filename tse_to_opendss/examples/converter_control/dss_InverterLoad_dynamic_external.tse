@@ -434,22 +434,6 @@ model "dss_InverterLoad_dynamic_external" {
         connect Load2.C1 "Three-phase Meter2.A-" as Connection1148
     }
 
-    logically_deleted {
-        "Line2.pisec"
-        "Line3.pisec"
-        "VSConverter1.TS_module"
-        "VSConverter1.T_switch"
-        "VSConverter1.Constant102"
-        "VSConverter1.Connection3"
-        "VSConverter1.Connection5658"
-        "Load2.CIL"
-        "Load2.TS_module"
-        "Load2.T_switch"
-        "Load2.Constant1"
-        "Load2.Connection3"
-        "Load2.Connection4"
-    }
-
     default {
         gen_gain {
             gain = "1"

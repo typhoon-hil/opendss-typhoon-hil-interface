@@ -581,28 +581,6 @@ model "dss_generator_converter_dynamic" {
         connect Bus5.C2 Line4.C1 as Connection1141
     }
 
-    logically_deleted {
-        "Line2.pisec"
-        "Line3.pisec"
-        "Load1.CPL"
-        "Load1.TS_module"
-        "Load1.T_switch"
-        "Load1.Constant1"
-        "Load1.Connection3"
-        "Load1.Connection4"
-        "Generator1.TS_module"
-        "Generator1.T_switch"
-        "Generator1.Constant102"
-        "Generator1.Connection3"
-        "Generator1.Connection5116"
-        "VSConverter1.TS_module"
-        "VSConverter1.T_switch"
-        "VSConverter1.Constant102"
-        "VSConverter1.Connection3"
-        "VSConverter1.Connection5658"
-        "Line4.pisec"
-    }
-
     default {
         gen_gain {
             gain = "1"

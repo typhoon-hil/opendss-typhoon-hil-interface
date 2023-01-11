@@ -659,31 +659,6 @@ model "three_w_transformer" {
         connect "Meter Split4.Input" "Three-phase Meter4.Out" as Connection1150
     }
 
-    logically_deleted {
-        "Line2.pisec"
-        "Line3.pisec"
-        "Load1.CIL"
-        "Load1.TS_module"
-        "Load1.T_switch"
-        "Load1.Constant1"
-        "Load1.Connection3"
-        "Load1.Connection4"
-        "Generator1.TS_module"
-        "Generator1.T_switch"
-        "Generator1.Constant102"
-        "Generator1.Connection3"
-        "Generator1.Connection5116"
-        "Three-Phase Transformer1.Vreg"
-        "Three-Phase Transformer1.Connection57"
-        "Three-Phase Transformer1.Connection58"
-        "Three-Phase Transformer1.Connection59"
-        "Three-Phase Transformer1.Connection60"
-        "Three-Phase Transformer1.Connection61"
-        "Three-Phase Transformer1.Connection62"
-        "Three-Phase Transformer1.Connection63"
-        "Line4.pisec"
-    }
-
     default {
         gen_gain {
             gain = "1"
