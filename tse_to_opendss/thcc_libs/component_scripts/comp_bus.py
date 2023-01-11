@@ -358,15 +358,18 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
 
         if new_value:
             [mdl.set_property_disp_value(prop, True)
-             for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop]]
+             for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop,
+                          freq_meas_prop]]
             if init:
                 [mdl.set_property_value(prop, True)
-                 for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop]]
+                 for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop,
+                              freq_meas_prop]]
             [mdl.disable_property(prop)
-             for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop]]
+             for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop,
+                          freq_meas_prop]]
         else:
             [mdl.enable_property(prop)
-             for prop in [i_rms_meas_prop, v_phase_rms_meas_prop]]
+             for prop in [i_rms_meas_prop, v_phase_rms_meas_prop, freq_meas_prop]]
 
 
 def define_icon(mdl, container_handle):
@@ -459,23 +462,27 @@ def check_measurements(mdl, container_handle):
 
     # Three-Phase props (There are some miss measurements depending on comp_type)
     # Edit Handlers of the Meter is not called from external components (just GUI)
-    # RMS calculation needs all instantaneous measurements (and frequency)
     i_rms_meas = mdl.get_property_disp_value(mdl.prop(container_handle, "i_rms_meas"))
     mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["i_rms_meas"][0]), i_rms_meas)
     if i_rms_meas:
         [mdl.set_property_value(mdl.prop(meter_handle, prop), True) for prop in meter_props_dict["i_inst_meas"]]
-    # RMS calculation needs all instantaneous measurements (and frequency)
+
     v_line_rms_meas = mdl.get_property_disp_value(mdl.prop(container_handle, "v_line_rms_meas"))
     mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_line_rms_meas"][0]), v_line_rms_meas)
     if v_line_rms_meas:
         [mdl.set_property_value(mdl.prop(meter_handle, prop), True) for prop in meter_props_dict["v_line_inst_meas"]]
-    # RMS calculation needs all instantaneous measurements (and frequency)
+
     v_phase_rms_meas = mdl.get_property_disp_value(mdl.prop(container_handle, "v_phase_rms_meas"))
     mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["v_phase_rms_meas"][0]), v_phase_rms_meas)
+    if v_phase_rms_meas:
+        [mdl.set_property_value(mdl.prop(meter_handle, prop), True) for prop in meter_props_dict["v_phase_inst_meas"]]
+
     freq_meas = mdl.get_property_disp_value(mdl.prop(container_handle, "freq_meas"))
     mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["freq_meas"][0]), freq_meas)
-    if v_phase_rms_meas or freq_meas:
-        [mdl.set_property_value(mdl.prop(meter_handle, prop), True) for prop in meter_props_dict["v_phase_inst_meas"]]
 
     power_meas = mdl.get_property_disp_value(mdl.prop(container_handle, "power_meas"))
     mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["power_meas"][0]), power_meas)
+    # RMS calculation needs all instantaneous measurements (and frequency/voltage)
+    if i_rms_meas or v_line_rms_meas or v_phase_rms_meas or freq_meas or power_meas:
+        mdl.set_property_value(mdl.prop(meter_handle, meter_props_dict["freq_meas"][0]), True)
+        [mdl.set_property_value(mdl.prop(meter_handle, prop), True) for prop in meter_props_dict["v_phase_inst_meas"]]
