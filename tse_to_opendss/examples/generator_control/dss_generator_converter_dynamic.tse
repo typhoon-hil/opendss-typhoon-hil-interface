@@ -581,10 +581,6 @@ model "dss_generator_converter_dynamic" {
         connect Bus5.C2 Line4.C1 as Connection1141
     }
 
-    logically_deleted {
-
-    }
-
     default {
         gen_gain {
             gain = "1"

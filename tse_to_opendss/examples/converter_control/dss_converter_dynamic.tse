@@ -375,10 +375,6 @@ model "dss_converter_dynamic" {
         connect QINV1_set.out VSConverter1.Q_set as Connection1102
     }
 
-    logically_deleted {
-
-    }
-
     default {
         gen_gain {
             gain = "1"

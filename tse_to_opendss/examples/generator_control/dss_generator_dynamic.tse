@@ -480,10 +480,6 @@ model "dss_generator_dynamic" {
         connect gnd3.node "Three-phase Meter2.GND" as Connection1098
     }
 
-    logically_deleted {
-
-    }
-
     default {
         gen_gain {
             gain = "1"
