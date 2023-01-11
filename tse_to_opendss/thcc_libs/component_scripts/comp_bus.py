@@ -55,7 +55,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
             if handle:
                 mdl.set_port_properties(handle, terminal_position=port_attributes[comp_port_labels[cnt]]["term_pos"])
 
-        if new_value == "On one side":
+        if new_value == "on one side":
             # delete all downstream ports and short circuit the meter ports
             for cnt, handle in enumerate(comp_port_handles):
                 if comp_port_handles[cnt]:
@@ -136,7 +136,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                     mdl.create_connection(new_port, meas_port_handles[cnt])
                 # Downstream Logic
                 if not comp_port_handles[cnt+3]:
-                    if conf == "On both sides":
+                    if conf == "on both sides":
                         mdl.delete_item(sc_handles[cnt])
                         # mdl.delete_item(mdl.find_connections(mdl.term(sc_handles[cnt], "n_node"))[0])
                         # Changed SC to OC to avoid bad voltage loops / Returning to SC
@@ -280,7 +280,7 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
     if caller_prop_handle == conf_prop:
 
         comp_type = mdl.get_property_disp_value(type_prop)
-        if new_value == "On one side":
+        if new_value == "on one side":
             # Disable Current properties
             [mdl.set_property_disp_value(prop, False) for prop in [i_rms_meas_prop, i_inst_meas_prop,
                                                                    power_meas_prop]]

@@ -226,9 +226,9 @@ library "OpenDSS" {
                 conf {
                     label = "Configuration"
                     widget = combo
-                    combo_values = "On both sides", "On one side"
+                    combo_values = "on both sides", "on one side"
                     type = string
-                    default_value = "On both sides"
+                    default_value = "on both sides"
                     no_evaluate
 
                     CODE property_value_changed
