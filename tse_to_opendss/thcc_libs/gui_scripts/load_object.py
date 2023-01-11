@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import general_objects as obj
+import tse_to_opendss.thcc_libs.gui_scripts.general_objects as obj
 import os, pathlib
 import pandas as pd
 
@@ -162,6 +162,10 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
 
         if self.list_object.currentItem():
             selected_object = self.list_object.currentItem().text()
+
+            # If an item has been renamed it won't be found in the list
+            if not selected_object in self.obj_dicts.get(self.getname):
+                return
 
             # Update LoadShape interval type
             interval_type = self.obj_dicts.get(self.getname).get(selected_object).get("interval_unit")

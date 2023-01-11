@@ -30,11 +30,11 @@ SETTINGS_DIR = get_settings_dir_path()
                 <name><![CDATA[Image]]></name>
                 <type>Image</type>
                 <description><![CDATA[]]></description>
-                <image><![CDATA[Unifilar.png]]></image>
+                <image><![CDATA[single_line Diagram.png]]></image>
                 <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
                 <widget_settings>
-                    <x>256.0</x>
-                    <y>72.0</y>
+                    <x>256</x>
+                    <y>72</y>
                     <width>968</width>
                     <height>744</height>
                     <background_color><![CDATA[#f0f0f0]]></background_color>
@@ -72,8 +72,8 @@ displayValue = hil.read_analog_signal(name="Load 634.Meter.VAn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1064</x>
-                    <y>352</y>
+                    <x>1064.0</x>
+                    <y>352.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -115,8 +115,8 @@ displayValue = hil.read_analog_signal(name="Load 634.Meter.VBn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1064</x>
-                    <y>400</y>
+                    <x>1064.0</x>
+                    <y>400.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -158,8 +158,8 @@ displayValue = hil.read_analog_signal(name="Load 634.Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1064</x>
-                    <y>448</y>
+                    <x>1064.0</x>
+                    <y>448.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -201,8 +201,8 @@ displayValue = hil.read_analog_signal(name="Load 675.Meter.VBn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1056</x>
-                    <y>640</y>
+                    <x>1056.0</x>
+                    <y>640.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -244,8 +244,8 @@ displayValue = hil.read_analog_signal(name="Load 675.Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1056</x>
-                    <y>688</y>
+                    <x>1056.0</x>
+                    <y>688.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -287,8 +287,8 @@ displayValue = hil.read_analog_signal(name="Load 675.Meter.VAn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1056</x>
-                    <y>592</y>
+                    <x>1056.0</x>
+                    <y>592.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -330,8 +330,8 @@ displayValue = hil.read_analog_signal(name="Load 692.Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>920</x>
-                    <y>640</y>
+                    <x>920.0</x>
+                    <y>640.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -373,8 +373,8 @@ displayValue = hil.read_analog_signal(name="Load 692.Meter.VAn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>920</x>
-                    <y>592</y>
+                    <x>920.0</x>
+                    <y>592.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -416,8 +416,8 @@ displayValue = hil.read_analog_signal(name="Load 611.Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>488</x>
-                    <y>584</y>
+                    <x>488.0</x>
+                    <y>584.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -459,8 +459,8 @@ displayValue = hil.read_analog_signal(name="Load 652.Meter.VAn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>616</x>
-                    <y>784</y>
+                    <x>616.0</x>
+                    <y>784.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -502,8 +502,8 @@ displayValue = hil.read_analog_signal(name="Load 671.Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>736</x>
-                    <y>680</y>
+                    <x>736.0</x>
+                    <y>680.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -545,8 +545,8 @@ displayValue = hil.read_analog_signal(name="Load 671.Meter.VBn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>736</x>
-                    <y>640</y>
+                    <x>736.0</x>
+                    <y>640.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -588,8 +588,8 @@ displayValue = hil.read_analog_signal(name="Load 671.Meter.VAn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>736</x>
-                    <y>584</y>
+                    <x>736.0</x>
+                    <y>584.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -631,8 +631,8 @@ displayValue = hil.read_analog_signal(name="Load 646.Meter.VBn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>360</x>
-                    <y>360</y>
+                    <x>360.0</x>
+                    <y>360.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -674,8 +674,8 @@ displayValue = hil.read_analog_signal(name="Load 646.Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>360</x>
-                    <y>408</y>
+                    <x>360.0</x>
+                    <y>408.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -717,8 +717,8 @@ displayValue = hil.read_analog_signal(name="Load 645.Meter.VBn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>616</x>
-                    <y>408</y>
+                    <x>616.0</x>
+                    <y>408.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -760,8 +760,8 @@ displayValue = hil.read_analog_signal(name="Dist Load 632.Meter.VBn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>744</x>
-                    <y>416</y>
+                    <x>744.0</x>
+                    <y>416.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -803,8 +803,8 @@ displayValue = hil.read_analog_signal(name="Dist Load 632.Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>744</x>
-                    <y>464</y>
+                    <x>744.0</x>
+                    <y>464.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -846,8 +846,8 @@ displayValue = hil.read_analog_signal(name="Dist Load 632.Meter.VAn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>744</x>
-                    <y>368</y>
+                    <x>744.0</x>
+                    <y>368.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -889,8 +889,8 @@ displayValue = hil.read_analog_signal(name="Source_Meter.VAn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>792</x>
-                    <y>48</y>
+                    <x>792.0</x>
+                    <y>48.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -932,8 +932,8 @@ displayValue = hil.read_analog_signal(name="Source_Meter.VCn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>792</x>
-                    <y>144</y>
+                    <x>792.0</x>
+                    <y>144.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -975,8 +975,8 @@ displayValue = hil.read_analog_signal(name="Source_Meter.VBn_RMS")/Vbase
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>792</x>
-                    <y>96</y>
+                    <x>792.0</x>
+                    <y>96.0</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1017,8 +1017,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_PA')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1040</x>
-                    <y>48</y>
+                    <x>1040.0</x>
+                    <y>48.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1059,8 +1059,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_QA')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1040</x>
-                    <y>96</y>
+                    <x>1040.0</x>
+                    <y>96.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1101,8 +1101,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_SA')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1040</x>
-                    <y>144</y>
+                    <x>1040.0</x>
+                    <y>144.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1143,8 +1143,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_PFA')
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1040</x>
-                    <y>192</y>
+                    <x>1040.0</x>
+                    <y>192.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1185,8 +1185,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_QB')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1216</x>
-                    <y>96</y>
+                    <x>1216.0</x>
+                    <y>96.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1227,8 +1227,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_PB')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1216</x>
-                    <y>48</y>
+                    <x>1216.0</x>
+                    <y>48.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1269,8 +1269,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_SB')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1216</x>
-                    <y>144</y>
+                    <x>1216.0</x>
+                    <y>144.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1311,8 +1311,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_PFB')
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1216</x>
-                    <y>192</y>
+                    <x>1216.0</x>
+                    <y>192.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1353,8 +1353,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_PC')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1384</x>
-                    <y>48</y>
+                    <x>1384.0</x>
+                    <y>48.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1395,8 +1395,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_SC')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1384</x>
-                    <y>144</y>
+                    <x>1384.0</x>
+                    <y>144.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1437,8 +1437,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_QC')/1000
                 <decimals><![CDATA[3]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1384</x>
-                    <y>96</y>
+                    <x>1384.0</x>
+                    <y>96.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -1479,8 +1479,8 @@ displayValue = hil.read_analog_signal(name='Source_Meter.POWER_PFC')
                 <decimals><![CDATA[4]]></decimals>
                 <updateRate>500</updateRate>
                 <widget_settings>
-                    <x>1384</x>
-                    <y>192</y>
+                    <x>1384.0</x>
+                    <y>192.0</y>
                     <width>160</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
