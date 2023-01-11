@@ -306,6 +306,8 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
 
         if new_value:
             mdl.set_property_disp_value(i_inst_meas_prop, True)
+            if init:
+                mdl.set_property_value(i_inst_meas_prop, True)
             mdl.disable_property(i_inst_meas_prop)
         else:
             mdl.enable_property(i_inst_meas_prop)
@@ -317,6 +319,8 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
 
         if new_value:
             mdl.set_property_disp_value(v_line_inst_meas_prop, True)
+            if init:
+                mdl.set_property_value(v_line_inst_meas_prop, True)
             mdl.disable_property(v_line_inst_meas_prop)
         else:
             mdl.enable_property(v_line_inst_meas_prop)
@@ -328,6 +332,8 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
 
         if new_value:
             mdl.set_property_disp_value(v_phase_inst_meas_prop, True)
+            if init:
+                mdl.set_property_value(v_phase_inst_meas_prop, True)
             mdl.disable_property(v_phase_inst_meas_prop)
         else:
             mdl.enable_property(v_phase_inst_meas_prop)
@@ -339,6 +345,8 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
 
         if new_value:
             mdl.set_property_disp_value(v_phase_inst_meas_prop, True)
+            if init:
+                mdl.set_property_value(v_phase_inst_meas_prop, True)
             mdl.disable_property(v_phase_inst_meas_prop)
         else:
             mdl.enable_property(v_phase_inst_meas_prop)
@@ -351,6 +359,9 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
         if new_value:
             [mdl.set_property_disp_value(prop, True)
              for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop]]
+            if init:
+                [mdl.set_property_value(prop, True)
+                 for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop]]
             [mdl.disable_property(prop)
              for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop, v_phase_inst_meas_prop]]
         else:

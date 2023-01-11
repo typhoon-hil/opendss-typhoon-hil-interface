@@ -254,7 +254,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
                     ENDCODE
 
                     CODE property_value_edited
@@ -275,7 +276,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
                     ENDCODE
 
                     CODE property_value_edited
@@ -296,7 +298,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
                     ENDCODE
 
                     CODE property_value_edited
@@ -317,7 +320,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value))
                     ENDCODE
 
                     CODE property_value_edited
@@ -337,7 +341,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
                     ENDCODE
 
                     CODE property_value_edited
@@ -358,7 +363,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
                     ENDCODE
 
                     CODE property_value_edited
@@ -378,7 +384,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
                     ENDCODE
 
                     CODE property_value_edited
@@ -398,7 +405,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
                     ENDCODE
 
                     CODE property_value_edited
