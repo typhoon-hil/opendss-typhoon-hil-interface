@@ -38,7 +38,7 @@ class RegControl(GeneralObject):
 
         new_format_properties = dict(tse_properties)
         new_format_properties.pop("control_iters")  # Removed
-        new_format_properties["transformer"] = f'"{tse_component.name.upper()}"'
+        new_format_properties["transformer"] = f'"{tse_component.fqn.upper().replace(".", "-")}"'
 
         return new_format_properties
 
