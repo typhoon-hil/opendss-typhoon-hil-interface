@@ -1,0 +1,97 @@
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem Container {
+            layout = static
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The Container component is converted to the selected component type in OpenDSS, but is unlinked from the library.<br><br>This allows the user to create any HIL model to represent real-time behavior and still be able to convert the model to OpenDSS.<br><br>Mask parameters and port creation will behave similarly to the original library component, and the created PE ports should not be removed, as they are required for the conversion.</p></body></html>"
+
+                dss_container_mask_type {
+                    label = "Component type"
+                    widget = combo
+                    combo_values = "Capacitor Bank", "Controlled Switch", "Fault", "Isource", "Line", "Single-Phase Transformer", "Three-Phase Transformer", "Storage", "Generator", "Load", "Vsource", "VSConverter"
+                    type = string
+                    default_value = "Line"
+                    no_evaluate
+                }
+
+                dss_apply_mask_type {
+                    label = "Apply mask type"
+                    widget = button
+                    type = string
+                    default_value = "Apply"
+                    no_evaluate
+
+                    CODE button_clicked
+                        import comp_container
+                        comp_container.apply_mask_button_handler(mdl, container_handle)
+                    ENDCODE
+                }
+
+                dss_container_comp_identifier {
+                    label = "Do not delete this property"
+                    widget = edit
+                    type = string
+                    default_value = "None"
+                    nonvisible
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    mdl.set_ns_var("container_dialog_handler", dialog)
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE model_loaded
+                    mdl.refresh_icon(mdl.get_parent(item_handle))
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+                    gui_scripts_path = os.path.join(os.path.realpath(lib_path), "gui_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+                    if not gui_scripts_path in sys.path:
+                        sys.path.append(gui_scripts_path)
+
+                    import comp_container
+                    importlib.reload(comp_container)
+                    comp_container.define_icon(mdl, item_handle)
+                    def return_comp_script(mdl, item_handle):
+                        id_prop = mdl.prop(item_handle, "dss_container_comp_identifier")
+                        id = mdl.get_property_value(id_prop)
+                        comp_script = comp_container.pick_comp_script(mdl, item_handle, "init")
+                        importlib.reload(comp_script)
+                        return comp_script
+                ENDCODE
+            }
+        }
+        [
+            position = 4616, 4320
+            size = 96, 96
+        ]
+
+    }
+
+}
