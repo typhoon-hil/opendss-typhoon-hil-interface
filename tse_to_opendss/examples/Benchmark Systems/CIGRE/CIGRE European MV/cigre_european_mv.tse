@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.1 DEV
+// Saved by sw version: 2023.1
 //
 
 model "cigre_european_mv" {
@@ -519,9 +519,8 @@ model "cigre_european_mv" {
         component "OpenDSS/SimDSS" SimDSS {
             basefrequency = "50"
             powers = "kVA Elem"
-            sim_counter = "23"
-            sim_mode = "Time Series"
-            sim_status = "Sim23 complete"
+            sim_counter = "24"
+            sim_status = "Sim24 complete"
             voltagebases = "[110, 20]"
         }
         [
