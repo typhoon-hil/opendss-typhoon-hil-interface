@@ -1217,6 +1217,7 @@ def set_load_model(mdl, mask_handle, new_value):
     connt = mdl.get_property_disp_value(mdl.prop(mask_handle, "conn_type"))
     comp_handle = mdl.get_sub_level_handle(mask_handle)
     phss = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
+    pf_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_mode_3ph"))
 
     if new_value == "Constant Impedance":
         mdl.set_property_disp_value(mdl.prop(mask_handle, 'Pow_ref_s'), "Fixed")
@@ -1230,6 +1231,7 @@ def set_load_model(mdl, mask_handle, new_value):
             cil1 = mdl.create_component("OpenDSS/CIL", parent=comp_handle,
                                         name="CIL", position=(7920, 8208),
                                         rotation="up")
+            set_pf_mode(mdl, mask_handle, pf_mode)
 
         if phss == "3":
             mdl.set_property_value(mdl.prop(cil1, "phases"), "3")

@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2022.4
+// Saved by sw version: 2023.1 DEV
 //
 
 model "three_w_transformer" {
@@ -50,6 +50,7 @@ model "three_w_transformer" {
         sig_stim = "off"
         export_resource_list = ""
         export_dependency_list = ""
+        excluded_resource_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
@@ -70,7 +71,7 @@ model "three_w_transformer" {
 
         component "OpenDSS/Bus" Bus2 {
             conf = "on both sides"
-            v_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7592, 7936
@@ -79,7 +80,7 @@ model "three_w_transformer" {
 
         component "OpenDSS/Bus" Bus3 {
             conf = "on both sides"
-            v_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7864, 7936
@@ -129,7 +130,7 @@ model "three_w_transformer" {
             size = 96, 48
         ]
 
-        component gen_gain Gain20 {
+        component "core/Gain" Gain20 {
             gain = "0.001"
         }
         [
@@ -137,7 +138,7 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_gain Gain21 {
+        component "core/Gain" Gain21 {
             gain = "0.001"
         }
         [
@@ -145,21 +146,21 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_probe Pg {
+        component "core/Probe" Pg {
             streaming_en = "True"
         }
         [
             position = 8768, 7496
         ]
 
-        component gen_probe Qg {
+        component "core/Probe" Qg {
             streaming_en = "True"
         }
         [
             position = 8768, 7552
         ]
 
-        component gen_probe TmG1 {
+        component "core/Probe" TmG1 {
             signal_name = "P"
             signal_type = "torque"
             streaming_en = "True"
@@ -186,14 +187,14 @@ model "three_w_transformer" {
 
         component "OpenDSS/Bus" Bus4 {
             conf = "on both sides"
-            v_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8424, 7648
             size = 16, 96
         ]
 
-        component gen_probe VfdG1 {
+        component "core/Probe" VfdG1 {
             signal_name = "P"
             signal_type = "torque"
             streaming_en = "True"
@@ -219,7 +220,7 @@ model "three_w_transformer" {
             size = 64, 112
         ]
 
-        component gen_sum Sum1 {
+        component "core/Sum" Sum1 {
         }
         [
             position = 7232, 7984
@@ -239,13 +240,13 @@ model "three_w_transformer" {
             size = 96, 64
         ]
 
-        component src_ground gnd2 {
+        component "core/Ground" gnd2 {
         }
         [
             position = 8304, 7760
         ]
 
-        component gen_sum Sum2 {
+        component "core/Sum" Sum2 {
         }
         [
             position = 7256, 7752
@@ -265,7 +266,7 @@ model "three_w_transformer" {
             size = 96, 48
         ]
 
-        component gen_gain Gain23 {
+        component "core/Gain" Gain23 {
             gain = "0.001"
         }
         [
@@ -273,7 +274,7 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_gain Gain24 {
+        component "core/Gain" Gain24 {
             gain = "0.001"
         }
         [
@@ -281,14 +282,14 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_probe PL1 {
+        component "core/Probe" PL1 {
             streaming_en = "True"
         }
         [
             position = 8832, 8216
         ]
 
-        component gen_probe QL1 {
+        component "core/Probe" QL1 {
             streaming_en = "True"
         }
         [
@@ -330,7 +331,7 @@ model "three_w_transformer" {
 
         component "OpenDSS/Bus" Bus5 {
             conf = "on both sides"
-            v_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8216, 7648
@@ -339,7 +340,7 @@ model "three_w_transformer" {
 
         component "OpenDSS/Bus" Bus6 {
             conf = "on both sides"
-            v_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8208, 7984
@@ -364,14 +365,14 @@ model "three_w_transformer" {
 
         component "OpenDSS/Bus" Bus7 {
             conf = "on both sides"
-            v_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8416, 7984
             size = 16, 96
         ]
 
-        component src_ground gnd3 {
+        component "core/Ground" gnd3 {
         }
         [
             position = 8288, 8112
@@ -415,7 +416,7 @@ model "three_w_transformer" {
             size = 96, 48
         ]
 
-        component gen_gain Gain25 {
+        component "core/Gain" Gain25 {
             gain = "0.001"
         }
         [
@@ -424,7 +425,7 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_gain Gain26 {
+        component "core/Gain" Gain26 {
             gain = "0.001"
         }
         [
@@ -433,7 +434,7 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_probe PT1 {
+        component "core/Probe" PT1 {
             streaming_en = "True"
         }
         [
@@ -441,7 +442,7 @@ model "three_w_transformer" {
             rotation = left
         ]
 
-        component gen_probe QT1 {
+        component "core/Probe" QT1 {
             streaming_en = "True"
         }
         [
@@ -461,7 +462,7 @@ model "three_w_transformer" {
             size = 96, 48
         ]
 
-        component gen_gain Gain27 {
+        component "core/Gain" Gain27 {
             gain = "0.001"
         }
         [
@@ -469,7 +470,7 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_gain Gain28 {
+        component "core/Gain" Gain28 {
             gain = "0.001"
         }
         [
@@ -477,14 +478,14 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_probe PT2 {
+        component "core/Probe" PT2 {
             streaming_en = "True"
         }
         [
             position = 8400, 7488
         ]
 
-        component gen_probe QT2 {
+        component "core/Probe" QT2 {
             streaming_en = "True"
         }
         [
@@ -503,7 +504,7 @@ model "three_w_transformer" {
             size = 96, 48
         ]
 
-        component gen_gain Gain29 {
+        component "core/Gain" Gain29 {
             gain = "0.001"
         }
         [
@@ -511,7 +512,7 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_gain Gain30 {
+        component "core/Gain" Gain30 {
             gain = "0.001"
         }
         [
@@ -519,14 +520,14 @@ model "three_w_transformer" {
             hide_name = True
         ]
 
-        component gen_probe PT3 {
+        component "core/Probe" PT3 {
             streaming_en = "True"
         }
         [
             position = 8424, 7832
         ]
 
-        component gen_probe QT3 {
+        component "core/Probe" QT3 {
             streaming_en = "True"
         }
         [
@@ -660,39 +661,29 @@ model "three_w_transformer" {
     }
 
     logically_deleted {
-        "Line2.pisec"
-        "Line3.pisec"
-        "Load1.CIL"
-        "Load1.TS_module"
-        "Load1.T_switch"
-        "Load1.Constant1"
         "Load1.Connection3"
-        "Load1.Connection4"
         "Generator1.TS_module"
         "Generator1.T_switch"
         "Generator1.Constant102"
         "Generator1.Connection3"
         "Generator1.Connection5116"
-        "Three-Phase Transformer1.Vreg"
         "Three-Phase Transformer1.Connection57"
         "Three-Phase Transformer1.Connection58"
         "Three-Phase Transformer1.Connection59"
         "Three-Phase Transformer1.Connection60"
         "Three-Phase Transformer1.Connection61"
         "Three-Phase Transformer1.Connection62"
-        "Three-Phase Transformer1.Connection63"
-        "Line4.pisec"
     }
 
     default {
-        gen_gain {
+        "core/Gain" {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
             _tunable = "False"
             execution_rate = "inherit"
         }
 
-        gen_probe {
+        "core/Probe" {
             signal_access = "inherit"
             addr = "0"
             override_signal_name = "False"
@@ -703,17 +694,25 @@ model "three_w_transformer" {
             execution_rate = "inherit"
         }
 
-        gen_sum {
+        "core/Sum" {
             signs = "2"
             execution_rate = "inherit"
         }
 
         "OpenDSS/Bus" {
-            type = "ABC"
-            ground = "False"
-            i_meas = "False"
-            v_meas = "False"
-            conf = "on one side"
+            type_prop = "ABC"
+            ground_prop = "False"
+            conf = "On both sides"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            ts = "100e-6"
+            enable_output = "False"
         }
 
         "OpenDSS/Generator" {
