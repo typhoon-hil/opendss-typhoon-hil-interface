@@ -821,7 +821,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 else:
                     widget.setStyleSheet("color: black;")
                     pending.append(False)
-
             if any(pending):
                 self.button_linecode_save.setEnabled(True)
             else:
@@ -993,6 +992,8 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
             self.linecodes_dict.update({self.list_linecodes.currentItem().text(): new_param_values})
 
+            self.radio_matrix.setStyleSheet("color: black;")
+            self.radio_symmetrical.setStyleSheet("color: black;")
             for param, widget in self.linecode_pars.get("symmetrical").items():
                 widget.setStyleSheet("color: black;")
             for param, widget in self.linecode_pars.get("matrix").items():
