@@ -7158,6 +7158,20 @@ if (Vdc<-2) {
                     unit = "s"
                     group = "CPL Parameters"
                     disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Ts_mask == Tfst_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
                 }
 
                 Tfast {
@@ -7168,6 +7182,20 @@ if (Vdc<-2) {
                     unit = "s"
                     group = "CPL Parameters"
                     disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Tfst_mask == Ts_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
                 }
 
                 CPL_LMT {
@@ -21081,7 +21109,7 @@ out = out_value;
                     hide_name = True
                 ]
 
-                component "core/Rate Transition" "Rate Transition1" {
+                component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
                     execution_rate = "Ts"
                 }
                 [
@@ -21090,7 +21118,7 @@ out = out_value;
                     size = 32, 32
                 ]
 
-                component "core/Rate Transition" "Rate Transition2" {
+                component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
                     execution_rate = "Ts"
                 }
                 [
@@ -21298,11 +21326,11 @@ out = out_value;
 
                 connect Constant1.out Goto3 as Connection341
                 connect Constant11.out Goto4 as Connection342
-                connect Gain1.out "Rate Transition1.in" as Connection370
-                connect Gain2.out "Rate Transition2.in" as Connection746
-                connect "Rate Transition1.out" "Rate Limiter1.in" as Connection945
+                connect Gain1.out "Rate Transition with Bypass1.In" as Connection370
+                connect Gain2.out "Rate Transition with Bypass2.In" as Connection746
+                connect "Rate Transition with Bypass1.Out" "Rate Limiter1.in" as Connection945
                 connect "Rate Limiter1.out" Goto1 as Connection1091
-                connect "Rate Transition2.out" "Rate Limiter2.in" as Connection1092
+                connect "Rate Transition with Bypass2.Out" "Rate Limiter2.in" as Connection1092
                 connect "Rate Limiter2.out" Goto2 as Connection1118
                 connect Junction11 N as Connection1152
                 [
@@ -21528,6 +21556,18 @@ out = out_value;
 
                         CODE property_value_changed
                             comp_handle = mdl.get_sub_level_handle(container_handle)
+
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+
+                            if new_value and not Tfst_mask == Ts_mask:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
 
                             for phase in ["A", "B", "C"]:
                                 CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type="component")
@@ -26584,6 +26624,128 @@ out = out_value;
                 size = 168, 232
             ]
 
+            component Subsystem "Rate Transition with Bypass" {
+                layout = dynamic
+                port In {
+					position = left:1
+					kind = sp
+					direction =  out
+					sp_type {
+						default = auto
+						readonly = True
+					}
+				}
+				[
+					position = 7520, 8056
+				]
+
+				port Out {
+					position = right:1
+					kind = sp
+					direction =  in
+					sp_type {
+						default = inherit
+						readonly = True
+					}
+				}
+				[
+					position = 7856, 8056
+				]
+
+                T_vec = "T_Ts_internal"
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Rate Transition block with the option to bypass signals through without alteration to their smapling rate</p></body></html>"
+
+                    bypass_flag {
+						label = "Rate Transition Bypass"
+						widget = checkbox
+						type = bool
+						default_value = "True"
+						no_evaluate
+
+						CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            inport = mdl.get_item("In", parent=comp_handle, item_type="port")
+                            outport = mdl.get_item("Out", parent=comp_handle, item_type="port")
+                            init_value_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "init_value"))
+                            execution_rate_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
+
+                            if new_value:
+                                rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+                                delay_one = mdl.get_item("unit delay", parent=comp_handle, item_type="component")
+                                if rate_trans:
+                                    mdl.delete_item(rate_trans)
+                                if not delay_one:
+                                    delay_one = mdl.create_component("core/Unit Delay", name="unit delay", parent=comp_handle, position=(7683, 8055))
+                                mdl.create_connection(mdl.term(delay_one, "in"), inport)
+                                mdl.create_connection(mdl.term(delay_one, "out"), outport)
+                            else:
+                                rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+                                delay_one = mdl.get_item("unit delay", parent=comp_handle, item_type="component")
+                                if delay_one:
+                                    mdl.delete_item(delay_one)
+                                if not rate_trans:
+                                    rate_trans = mdl.create_component("core/Rate Transition", name="rate transition", parent=comp_handle, position=(7683, 8055))
+                                mdl.create_connection(mdl.term(rate_trans, "in"), inport)
+                                mdl.create_connection(mdl.term(rate_trans, "out"), outport)
+                                mdl.set_property_value(mdl.prop(rate_trans, "init_value"), init_value_mask)
+                                mdl.set_property_value(mdl.prop(rate_trans, "execution_rate"), execution_rate_mask)
+
+                        ENDCODE
+					}
+
+                    init_value {
+						label = "Initial Value"
+						widget = edit
+						type = generic
+						default_value = "0"
+
+						CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+
+                            if rate_trans:
+                                mdl.set_property_value(mdl.prop(rate_trans, "init_value"), new_value)
+
+                        ENDCODE
+					}
+
+					execution_rate {
+						label = "Execution Rate"
+						widget = edit
+						type = generic
+						default_value = "Ts"
+
+						CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+
+                            if rate_trans:
+                                mdl.set_property_value(mdl.prop(rate_trans, "execution_rate"), new_value)
+
+                        ENDCODE
+					}
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+
+                    ENDCODE
+
+                }
+            }
+            [
+                position = 8424, 8112
+                size = 48, 48
+            ]
+
             component Subsystem "single-phase CPL" {
                 layout = dynamic
 				component "core/Resistor" R1 {
@@ -26627,7 +26789,7 @@ out = out_value;
 					size = 32, 32
 				]
 
-				component "core/Rate Transition" "Rate Transition1" {
+				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
 					execution_rate = "Tfst"
 				}
 				[
@@ -26698,7 +26860,7 @@ out = out_value;
 					hide_name = True
 				]
 
-				component "core/Rate Transition" "Rate Transition2" {
+				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
 					execution_rate = "Tfst"
 				}
 				[
@@ -26707,7 +26869,7 @@ out = out_value;
 					size = 32, 32
 				]
 
-				component "core/Rate Transition" "Rate Transition3" {
+				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass3" {
 					execution_rate = "Tfst"
 				}
 				[
@@ -27514,12 +27676,12 @@ out = out_value;
 
 				connect P Goto2 as Connection532
 				connect Q Goto3 as Connection533
-				connect "Rate Transition3.in" "Unit Delay10.out" as Connection615
-				connect "Rate Transition2.out" "C function1.zi" as Connection616
+				connect "Rate Transition with Bypass3.In" "Unit Delay10.out" as Connection615
+				connect "Rate Transition with Bypass2.Out" "C function1.zi" as Connection616
 				[
 					breakpoints = 8104, 9016; 8104, 8944
 				]
-				connect "Rate Transition3.out" "C function1.zii" as Connection617
+				connect "Rate Transition with Bypass3.Out" "C function1.zii" as Connection617
 				[
 					breakpoints = 8120, 9080; 8120, 8960
 				]
@@ -27527,7 +27689,7 @@ out = out_value;
 				[
 					position = 0, 0
 				]
-				connect "Rate Transition1.in" Junction102 as Connection622
+				connect "Rate Transition with Bypass1.In" Junction102 as Connection622
 				[
 					position = 0, 0
 				]
@@ -27548,7 +27710,7 @@ out = out_value;
 				[
 					position = 0, 0
 				]
-				connect "Rate Transition2.in" Junction109 as Connection684
+				connect "Rate Transition with Bypass2.In" Junction109 as Connection684
 				connect "Unit Delay10.in" Junction109 as Connection686
 				connect Constant28.out "C function1.Ts_fast" as Connection837
 				[
@@ -27608,7 +27770,7 @@ out = out_value;
 				connect From27 Junction177 as Connection1127
 				connect Junction177 Product31.in1 as Connection1128
 				connect Goto11 Sum19.out as Connection1130
-				connect "Rate Transition1.out" Junction178 as Connection1132
+				connect "Rate Transition with Bypass1.Out" Junction178 as Connection1132
 				[
 					breakpoints = 7880, 8952
 				]
@@ -27839,6 +28001,24 @@ out = out_value;
                         default_value = "Ts"
                         unit = "s"
                         group = "Execution rate:2"
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
+
+                            if new_value == Tfst_mask:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "True")
+                            else:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "False")
+
+                        ENDCODE
                     }
 
                     Fast_con {
@@ -27848,6 +28028,25 @@ out = out_value;
                         default_value = "True"
                         group = "Execution rate"
                         no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
+
+                            if new_value and not Ts_mask == Tfst_mask:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "True")
+
+                        ENDCODE
                     }
 
                     Tfst {
@@ -27857,6 +28056,24 @@ out = out_value;
                         default_value = "Tfast"
                         unit = "s"
                         group = "Execution rate"
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
+
+                            if new_value == Ts_mask:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "True")
+                            else:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "False")
+
+                        ENDCODE
                     }
 
                     Tfast_en {
