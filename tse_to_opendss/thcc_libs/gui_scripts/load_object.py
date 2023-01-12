@@ -67,8 +67,6 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
 
         self.starting_object = starting_object
 
-        self.setWindowModality(QtCore.Qt.WindowModal)
-
         # Layout
         self.layout = QtWidgets.QGridLayout(self.groupBox)
         self.vertical_spacer = QtWidgets.QSpacerItem(40, 30, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -279,8 +277,6 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
                         if num_phases == "1" and not parname == "nphases":
                             par_strs.append(f"{exchange_dict.get(parname)}={parval}")
                         else:
-                            if parname in ["rmatrix", "xmatrix", "cmatrix"]:
-                                parval = convert_matrix_format(parval, num_phases)
                             par_strs.append(f"{parname}={parval}")
 
                 par_strs.sort(key=lambda x: x in ['npts'])  # npts should appear first if present

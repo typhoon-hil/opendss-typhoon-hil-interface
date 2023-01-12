@@ -37,12 +37,14 @@ class LineCode(GeneralObject):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
         tse_props_copy = dict(tse_properties)
-        for p in ["rmatrix", "xmatrix", "cmatrix"]:
-            tse_props_copy[p] = convert_matrix_format(tse_props_copy[p], self.num_phases)
-        new_format_properties = {k: v for k, v in tse_props_copy.items() if
-                                 k in ["nphases", "basefreq", "rmatrix", "xmatrix", "cmatrix"]}
 
-        # new_format_properties = dict(tse_properties)
+        # Matrix parameters need to be converted
+        if any((tse_props_copy.get(p) for p in ["rmatrix", "xmatrix", "cmatrix"])):
+            tse_props_copy['nphases'] = self.num_phases
+            for p in ["rmatrix", "xmatrix", "cmatrix"]:
+                tse_props_copy[p] = convert_matrix_format(tse_props_copy.get(p), self.num_phases)
+
+        new_format_properties = tse_props_copy
 
         return new_format_properties
 
