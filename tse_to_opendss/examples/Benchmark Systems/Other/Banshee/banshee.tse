@@ -6,10 +6,10 @@ version = 4.2
 
 model "banshee" {
     configuration {
-        hil_device = "HIL402"
+        hil_device = "VHIL+"
         hil_configuration_id = 1
         simulation_method = exact
-        simulation_time_step = auto
+        simulation_time_step = 20e-6
         simulation_discret_scaling = 1.0
         dsp_timer_periods = 100e-6, 50e-3
         ss_calc_method = "systematic elimination"
@@ -1387,6 +1387,513 @@ model "banshee" {
             size = 16, 96
         ]
 
+        component "OpenDSS/Bus" Bus301 {
+        }
+        [
+            position = 13208, 7800
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB301 {
+        }
+        [
+            position = 12320, 8032
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB302 {
+        }
+        [
+            position = 12896, 8032
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB304 {
+        }
+        [
+            position = 14064, 8032
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus301x1 {
+        }
+        [
+            position = 12320, 8112
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus301x2 {
+        }
+        [
+            position = 12896, 8112
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus301x4 {
+        }
+        [
+            position = 14064, 8112
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB226 {
+        }
+        [
+            position = 13208, 7712
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB303 {
+        }
+        [
+            position = 13536, 8032
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus301x3 {
+        }
+        [
+            position = 13536, 8112
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" C301 {
+        }
+        [
+            position = 12320, 8224
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus302 {
+        }
+        [
+            position = 12320, 8368
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB305 {
+        }
+        [
+            position = 12096, 8528
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB306 {
+        }
+        [
+            position = 12536, 8528
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus302x1 {
+        }
+        [
+            position = 12096, 8632
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus302x2 {
+        }
+        [
+            position = 12536, 8632
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T301 {
+        }
+        [
+            position = 12096, 8736
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus302x3 {
+        }
+        [
+            position = 12096, 8840
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB310 {
+        }
+        [
+            position = 12096, 8928
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus303 {
+        }
+        [
+            position = 12096, 9016
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_C5 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 12224, 9208
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T302 {
+        }
+        [
+            position = 12536, 8736
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus302x4 {
+        }
+        [
+            position = 12536, 8840
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB311 {
+        }
+        [
+            position = 12536, 8928
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus304 {
+        }
+        [
+            position = 12536, 9016
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_I6 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 12672, 9360
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Manual Switch" CB308 {
+        }
+        [
+            position = 12672, 9192
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus304x1 {
+        }
+        [
+            position = 12672, 9280
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" C304 {
+        }
+        [
+            position = 12896, 8224
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus301x5 {
+        }
+        [
+            position = 12896, 8368
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T303 {
+        }
+        [
+            position = 12896, 8448
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus305 {
+        }
+        [
+            position = 12896, 8528
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_I7 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 13032, 8904
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Manual Switch" CB307 {
+        }
+        [
+            position = 13032, 8736
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus305x1 {
+        }
+        [
+            position = 13032, 8824
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" C302 {
+        }
+        [
+            position = 13536, 8224
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus306 {
+        }
+        [
+            position = 13536, 8368
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T304 {
+        }
+        [
+            position = 13392, 8544
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus306x1 {
+        }
+        [
+            position = 13392, 8624
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_CHP {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 13696, 8704
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Manual Switch" F3GCB {
+        }
+        [
+            position = 13696, 8536
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus306x2 {
+        }
+        [
+            position = 13696, 8624
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_C6 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 13392, 8704
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Line" C303 {
+        }
+        [
+            position = 14064, 8224
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus301x6 {
+        }
+        [
+            position = 14064, 8368
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T305 {
+        }
+        [
+            position = 14064, 8456
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus301x7 {
+        }
+        [
+            position = 14064, 8536
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB312 {
+        }
+        [
+            position = 14064, 8624
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus307 {
+        }
+        [
+            position = 14064, 8704
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB309 {
+        }
+        [
+            position = 14064, 8864
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus308 {
+        }
+        [
+            position = 14064, 8944
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_M {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 14248, 8864
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Load" Load_P6 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 14064, 9040
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Vsource" V1 {
+        }
+        [
+            position = 7864, 7480
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus1 {
+        }
+        [
+            position = 7864, 7592
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Vsource" V2 {
+        }
+        [
+            position = 10424, 7480
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus2 {
+        }
+        [
+            position = 10424, 7592
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Vsource" V3 {
+        }
+        [
+            position = 13208, 7480
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus3 {
+        }
+        [
+            position = 13208, 7592
+            rotation = right
+            size = 16, 96
+        ]
+
         tag "Electric Tag1" {
             value = "Bus104a_C108"
             scope = local
@@ -1745,6 +2252,150 @@ model "banshee" {
             rotation = left
             hide_name = True
             size = 83, 20
+        ]
+
+        tag "Electric Tag34" {
+            value = "Bus303a_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11984, 9200
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag35" {
+            value = "Bus303b_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11952, 9200
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag36" {
+            value = "Bus303c_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11920, 9200
+            rotation = left
+            hide_name = True
+            size = 81, 20
+        ]
+
+        tag "Electric Tag37" {
+            value = "Bus303a_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 12424, 9200
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag38" {
+            value = "Bus303b_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 12392, 9200
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag39" {
+            value = "Bus303c_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 12360, 9200
+            rotation = left
+            hide_name = True
+            size = 81, 20
+        ]
+
+        tag "Electric Tag40" {
+            value = "Bus305a_C206"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 12784, 8744
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag41" {
+            value = "Bus305b_C206"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 12752, 8744
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag42" {
+            value = "Bus305c_C206"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 12720, 8744
+            rotation = left
+            hide_name = True
+            size = 81, 20
+        ]
+
+        tag "Electric Tag43" {
+            value = "Bus307a_C109"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 13912, 8872
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag44" {
+            value = "Bus307b_C109"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 13880, 8872
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag45" {
+            value = "Bus307c_C109"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 13848, 8872
+            rotation = left
+            hide_name = True
+            size = 81, 20
         ]
 
         junction Junction10 pe
@@ -2122,6 +2773,156 @@ model "banshee" {
             position = 11512, 9088
         ]
 
+        junction Junction118 pe
+        [
+            position = 12864, 7944
+        ]
+
+        junction Junction119 pe
+        [
+            position = 13504, 7944
+        ]
+
+        junction Junction120 pe
+        [
+            position = 12896, 7920
+        ]
+
+        junction Junction121 pe
+        [
+            position = 13536, 7920
+        ]
+
+        junction Junction122 pe
+        [
+            position = 12928, 7896
+        ]
+
+        junction Junction123 pe
+        [
+            position = 13568, 7896
+        ]
+
+        junction Junction124 pe
+        [
+            position = 13176, 7944
+        ]
+
+        junction Junction125 pe
+        [
+            position = 13208, 7920
+        ]
+
+        junction Junction126 pe
+        [
+            position = 13240, 7896
+        ]
+
+        junction Junction127 pe
+        [
+            position = 12288, 8472
+        ]
+
+        junction Junction128 pe
+        [
+            position = 12320, 8448
+        ]
+
+        junction Junction129 pe
+        [
+            position = 12352, 8424
+        ]
+
+        junction Junction130 pe
+        [
+            position = 12128, 9072
+        ]
+
+        junction Junction131 pe
+        [
+            position = 12096, 9096
+        ]
+
+        junction Junction132 pe
+        [
+            position = 12064, 9120
+        ]
+
+        junction Junction133 pe
+        [
+            position = 12504, 9120
+        ]
+
+        junction Junction134 pe
+        [
+            position = 12536, 9096
+        ]
+
+        junction Junction135 pe
+        [
+            position = 12568, 9072
+        ]
+
+        junction Junction139 pe
+        [
+            position = 12864, 8664
+        ]
+
+        junction Junction140 pe
+        [
+            position = 12896, 8640
+        ]
+
+        junction Junction141 pe
+        [
+            position = 12928, 8616
+        ]
+
+        junction Junction142 pe
+        [
+            position = 13504, 8480
+        ]
+
+        junction Junction143 pe
+        [
+            position = 13536, 8456
+        ]
+
+        junction Junction144 pe
+        [
+            position = 13568, 8432
+        ]
+
+        junction Junction145 pe
+        [
+            position = 14064, 8776
+        ]
+
+        junction Junction146 pe
+        [
+            position = 14096, 8752
+        ]
+
+        junction Junction147 pe
+        [
+            position = 14032, 8800
+        ]
+
+        junction Junction148 pe
+        [
+            position = 14096, 8752
+        ]
+
+        junction Junction149 pe
+        [
+            position = 14064, 8776
+        ]
+
+        junction Junction150 pe
+        [
+            position = 14032, 8800
+        ]
+
         comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p></body></html> ENDCOMMENT 
         [
             position = 9000, 7784
@@ -2130,6 +2931,21 @@ model "banshee" {
         comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p></body></html> ENDCOMMENT 
         [
             position = 11776, 7776
+        ]
+
+        comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:26pt;">Feeder 1</span></p></body></html> ENDCOMMENT 
+        [
+            position = 7792, 7384
+        ]
+
+        comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:26pt;">Feeder 2</span></p></body></html> ENDCOMMENT 
+        [
+            position = 10352, 7384
+        ]
+
+        comment Comment5 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:26pt;">Feeder 3</span></p></body></html> ENDCOMMENT 
+        [
+            position = 13128, 7384
         ]
 
         connect C101.C2 Bus102.C1 as Connection4
@@ -2729,6 +3545,249 @@ model "banshee" {
         connect Bus210x2.C2 "Electric Tag33" as Connection944
         connect Bus210x2.B2 "Electric Tag32" as Connection945
         connect Bus210x2.A2 "Electric Tag31" as Connection946
+        connect Bus301x1.C1 CB301.C2 as Connection962
+        connect Bus301x1.B1 CB301.B2 as Connection963
+        connect Bus301x1.A1 CB301.A2 as Connection964
+        connect Bus301x2.C1 CB302.C2 as Connection965
+        connect Bus301x2.B1 CB302.B2 as Connection966
+        connect Bus301x2.A1 CB302.A2 as Connection967
+        connect CB304.C2 Bus301x4.C1 as Connection968
+        connect CB304.B2 Bus301x4.B1 as Connection969
+        connect CB304.A2 Bus301x4.A1 as Connection970
+        connect Bus301.C1 CB226.C2 as Connection971
+        connect Bus301.B1 CB226.B2 as Connection972
+        connect Bus301.A1 CB226.A2 as Connection973
+        connect Bus301x3.C1 CB303.C2 as Connection974
+        connect Bus301x3.B1 CB303.B2 as Connection975
+        connect Bus301x3.A1 CB303.A2 as Connection976
+        connect CB302.C1 Junction118 as Connection980
+        connect CB302.B1 Junction120 as Connection981
+        connect CB302.A1 Junction122 as Connection982
+        connect CB303.C1 Junction119 as Connection983
+        connect CB303.B1 Junction121 as Connection984
+        connect CB303.A1 Junction123 as Connection985
+        connect CB301.C1 Junction118 as Connection986
+        connect CB301.B1 Junction120 as Connection987
+        connect CB301.A1 Junction122 as Connection988
+        connect CB304.C1 Junction119 as Connection989
+        connect CB304.B1 Junction121 as Connection990
+        connect CB304.A1 Junction123 as Connection991
+        connect Junction124 Bus301.C2 as Connection992
+        connect Junction124 Junction118 as Connection993
+        connect Junction124 Junction119 as Connection994
+        connect Junction125 Bus301.B2 as Connection995
+        connect Junction125 Junction120 as Connection996
+        connect Junction125 Junction121 as Connection997
+        connect Junction126 Bus301.A2 as Connection998
+        connect Junction126 Junction122 as Connection999
+        connect Junction126 Junction123 as Connection1000
+        connect Bus301x1.C2 C301.C1 as Connection1001
+        connect Bus301x1.B2 C301.B1 as Connection1002
+        connect Bus301x1.A2 C301.A1 as Connection1003
+        connect C301.C2 Bus302.C1 as Connection1004
+        connect C301.B2 Bus302.B1 as Connection1005
+        connect C301.A2 Bus302.A1 as Connection1006
+        connect Junction127 Bus302.C2 as Connection1013
+        connect Junction127 CB306.C1 as Connection1014
+        connect Junction127 CB305.C1 as Connection1015
+        connect Junction128 Bus302.B2 as Connection1016
+        connect Junction128 CB306.B1 as Connection1017
+        connect Junction128 CB305.B1 as Connection1018
+        connect Junction129 Bus302.A2 as Connection1019
+        connect Junction129 CB306.A1 as Connection1020
+        connect Junction129 CB305.A1 as Connection1021
+        connect Bus302x2.C1 CB306.C2 as Connection1022
+        connect Bus302x2.B1 CB306.B2 as Connection1023
+        connect Bus302x2.A1 CB306.A2 as Connection1024
+        connect CB305.C2 Bus302x1.C1 as Connection1025
+        connect CB305.B2 Bus302x1.B1 as Connection1026
+        connect CB305.A2 Bus302x1.A1 as Connection1027
+        connect Bus302x1.C2 T301.C1 as Connection1028
+        connect Bus302x1.B2 T301.B1 as Connection1029
+        connect Bus302x1.A2 T301.A1 as Connection1030
+        connect T301.C2 Bus302x3.C1 as Connection1031
+        connect T301.B2 Bus302x3.B1 as Connection1032
+        connect T301.A2 Bus302x3.A1 as Connection1033
+        connect Bus302x3.C2 CB310.C1 as Connection1034
+        connect Bus302x3.B2 CB310.B1 as Connection1035
+        connect Bus302x3.A2 CB310.A1 as Connection1036
+        connect CB310.C2 Bus303.C1 as Connection1037
+        connect CB310.B2 Bus303.B1 as Connection1038
+        connect CB310.A2 Bus303.A1 as Connection1039
+        connect Load_C5.A1 Junction130 as Connection1043
+        connect Junction130 Bus303.A2 as Connection1044
+        [
+            breakpoints = 12128, 9072
+        ]
+        connect "Electric Tag34" Junction130 as Connection1045
+        connect Load_C5.B1 Junction131 as Connection1046
+        connect Junction131 Bus303.B2 as Connection1047
+        [
+            breakpoints = 12096, 9096
+        ]
+        connect "Electric Tag35" Junction131 as Connection1048
+        connect Load_C5.C1 Junction132 as Connection1049
+        connect Junction132 Bus303.C2 as Connection1050
+        [
+            breakpoints = 12064, 9120
+        ]
+        connect "Electric Tag36" Junction132 as Connection1051
+        connect Bus302x2.C2 T302.C1 as Connection1052
+        connect Bus302x2.B2 T302.B1 as Connection1053
+        connect Bus302x2.A2 T302.A1 as Connection1054
+        connect T302.C2 Bus302x4.C1 as Connection1055
+        connect T302.B2 Bus302x4.B1 as Connection1056
+        connect T302.A2 Bus302x4.A1 as Connection1057
+        connect Bus302x4.C2 CB311.C1 as Connection1058
+        connect Bus302x4.B2 CB311.B1 as Connection1059
+        connect Bus302x4.A2 CB311.A1 as Connection1060
+        connect CB311.C2 Bus304.C1 as Connection1070
+        connect CB311.B2 Bus304.B1 as Connection1071
+        connect CB311.A2 Bus304.A1 as Connection1072
+        connect Junction133 CB308.C1 as Connection1075
+        connect Junction133 Bus304.C2 as Connection1076
+        connect Junction133 "Electric Tag39" as Connection1077
+        connect Junction134 CB308.B1 as Connection1078
+        connect Junction134 Bus304.B2 as Connection1079
+        connect Junction134 "Electric Tag38" as Connection1080
+        connect Junction135 CB308.A1 as Connection1081
+        connect Junction135 "Electric Tag37" as Connection1082
+        connect Junction135 Bus304.A2 as Connection1083
+        connect Bus304x1.C1 CB308.C2 as Connection1084
+        connect Bus304x1.B1 CB308.B2 as Connection1085
+        connect Bus304x1.A1 CB308.A2 as Connection1086
+        connect Bus304x1.C2 Load_I6.C1 as Connection1087
+        connect Bus304x1.B2 Load_I6.B1 as Connection1088
+        connect Bus304x1.A2 Load_I6.A1 as Connection1089
+        connect Bus301x2.C2 C304.C1 as Connection1090
+        connect Bus301x2.B2 C304.B1 as Connection1091
+        connect Bus301x2.A2 C304.A1 as Connection1092
+        connect Bus301x5.C1 C304.C2 as Connection1093
+        connect Bus301x5.B1 C304.B2 as Connection1094
+        connect Bus301x5.A1 C304.A2 as Connection1095
+        connect Bus301x5.C2 T303.C1 as Connection1096
+        connect Bus301x5.B2 T303.B1 as Connection1097
+        connect Bus301x5.A2 T303.A1 as Connection1098
+        connect Bus305.C1 T303.C2 as Connection1099
+        connect Bus305.B1 T303.B2 as Connection1100
+        connect Bus305.A1 T303.A2 as Connection1101
+        connect Bus305x1.C1 CB307.C2 as Connection1108
+        connect Bus305x1.B1 CB307.B2 as Connection1109
+        connect Bus305x1.A1 CB307.A2 as Connection1110
+        connect Bus305x1.C2 Load_I7.C1 as Connection1111
+        connect Bus305x1.B2 Load_I7.B1 as Connection1112
+        connect Bus305x1.A2 Load_I7.A1 as Connection1113
+        connect Junction139 Bus305.C2 as Connection1114
+        connect Junction139 CB307.C1 as Connection1116
+        connect Junction140 Bus305.B2 as Connection1117
+        connect Junction140 CB307.B1 as Connection1119
+        connect Junction141 Bus305.A2 as Connection1120
+        connect Junction141 CB307.A1 as Connection1122
+        connect Bus301x3.C2 C302.C1 as Connection1123
+        connect Bus301x3.B2 C302.B1 as Connection1124
+        connect Bus301x3.A2 C302.A1 as Connection1125
+        connect C302.C2 Bus306.C1 as Connection1126
+        connect C302.B2 Bus306.B1 as Connection1127
+        connect C302.A2 Bus306.A1 as Connection1128
+        connect Bus306x1.C1 T304.C2 as Connection1129
+        connect Bus306x1.B1 T304.B2 as Connection1130
+        connect Bus306x1.A1 T304.A2 as Connection1131
+        connect Bus306x2.C1 F3GCB.C2 as Connection1132
+        connect Bus306x2.B1 F3GCB.B2 as Connection1133
+        connect Bus306x2.A1 F3GCB.A2 as Connection1134
+        connect Bus306x2.C2 Load_CHP.C1 as Connection1135
+        connect Bus306x2.B2 Load_CHP.B1 as Connection1136
+        connect Bus306x2.A2 Load_CHP.A1 as Connection1137
+        connect Junction142 Bus306.C2 as Connection1141
+        connect Junction142 T304.C1 as Connection1142
+        connect Junction142 F3GCB.C1 as Connection1143
+        connect Junction143 Bus306.B2 as Connection1144
+        connect Junction143 T304.B1 as Connection1145
+        connect Junction143 F3GCB.B1 as Connection1146
+        connect Junction144 Bus306.A2 as Connection1147
+        connect Junction144 T304.A1 as Connection1148
+        connect Junction144 F3GCB.A1 as Connection1149
+        connect Bus306x1.C2 Load_C6.C1 as Connection1150
+        connect Bus306x1.B2 Load_C6.B1 as Connection1151
+        connect Bus306x1.A2 Load_C6.A1 as Connection1152
+        connect C303.C2 Bus301x6.C1 as Connection1153
+        connect C303.B2 Bus301x6.B1 as Connection1154
+        connect C303.A2 Bus301x6.A1 as Connection1155
+        connect Bus301x4.C2 C303.C1 as Connection1156
+        connect Bus301x4.B2 C303.B1 as Connection1157
+        connect Bus301x4.A2 C303.A1 as Connection1158
+        connect Bus301x7.C1 T305.C2 as Connection1159
+        connect Bus301x7.B1 T305.B2 as Connection1160
+        connect Bus301x7.A1 T305.A2 as Connection1161
+        connect Bus301x6.C2 T305.C1 as Connection1162
+        connect Bus301x6.B2 T305.B1 as Connection1163
+        connect Bus301x6.A2 T305.A1 as Connection1164
+        connect "Electric Tag40" Junction141 as Connection1167
+        [
+            breakpoints = 12784, 8616; 12928, 8616; 12928, 8616
+        ]
+        connect Junction140 "Electric Tag41" as Connection1165
+        [
+            breakpoints = 12896, 8640; 12896, 8640
+        ]
+        connect "Electric Tag42" Junction139 as Connection1166
+        [
+            breakpoints = 12720, 8664; 12864, 8664; 12864, 8664
+        ]
+        connect Bus301x7.C2 CB312.C1 as Connection1168
+        connect Bus301x7.B2 CB312.B1 as Connection1169
+        connect Bus301x7.A2 CB312.A1 as Connection1170
+        connect CB312.C2 Bus307.C1 as Connection1171
+        connect CB312.B2 Bus307.B1 as Connection1172
+        connect CB312.A2 Bus307.A1 as Connection1173
+        connect CB309.C2 Bus308.C1 as Connection1174
+        connect CB309.B2 Bus308.B1 as Connection1175
+        connect CB309.A2 Bus308.A1 as Connection1176
+        connect CB309.B1 Junction145 as Connection1192
+        connect Junction145 Bus307.B2 as Connection1193
+        [
+            breakpoints = 14064, 8768
+        ]
+        connect Bus307.A2 Junction146 as Connection1195
+        connect Junction146 CB309.A1 as Connection1196
+        [
+            breakpoints = 14096, 8792
+        ]
+        connect CB309.C1 Junction147 as Connection1198
+        connect Junction147 Bus307.C2 as Connection1199
+        [
+            breakpoints = 14032, 8744
+        ]
+        connect Bus308.C2 Load_P6.C1 as Connection1201
+        connect Bus308.B2 Load_P6.B1 as Connection1202
+        connect Bus308.A2 Load_P6.A1 as Connection1203
+        connect Load_M.A1 Junction148 as Connection1204
+        connect Junction148 Junction146 as Connection1205
+        connect "Electric Tag43" Junction148 as Connection1206
+        connect Load_M.B1 Junction149 as Connection1207
+        connect Junction149 Junction145 as Connection1208
+        connect "Electric Tag44" Junction149 as Connection1209
+        connect Load_M.C1 Junction150 as Connection1210
+        connect Junction150 Junction147 as Connection1211
+        connect "Electric Tag45" Junction150 as Connection1212
+        connect V1.C1 Bus1.C1 as Connection1213
+        connect V1.B1 Bus1.B1 as Connection1214
+        connect V1.A1 Bus1.A1 as Connection1215
+        connect Bus1.C2 CB1.C1 as Connection1216
+        connect Bus1.B2 CB1.B1 as Connection1217
+        connect Bus1.A2 CB1.A1 as Connection1218
+        connect V2.C1 Bus2.C1 as Connection1219
+        connect V2.B1 Bus2.B1 as Connection1220
+        connect V2.A1 Bus2.A1 as Connection1221
+        connect Bus2.C2 CB2.C1 as Connection1222
+        connect Bus2.B2 CB2.B1 as Connection1223
+        connect Bus2.A2 CB2.A1 as Connection1224
+        connect V3.C1 Bus3.C1 as Connection1225
+        connect V3.B1 Bus3.B1 as Connection1226
+        connect V3.A1 Bus3.A1 as Connection1227
+        connect Bus3.C2 CB226.C1 as Connection1228
+        connect Bus3.B2 CB226.B1 as Connection1229
+        connect Bus3.A2 CB226.A1 as Connection1230
     }
 
     default {
@@ -2901,6 +3960,21 @@ model "banshee" {
             band = "3"
             delay = "15"
             execution_rate = "100e-6"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Vsource" {
+            ground_connected = "True"
+            basekv = "115"
+            pu = "1"
+            Angle = "0"
+            Frequency = "60"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
             enable_monitoring = "False"
         }
     }
