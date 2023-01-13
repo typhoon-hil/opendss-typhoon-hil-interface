@@ -229,6 +229,8 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.disable_property(mdl.prop(container_handle, "Ts"))
         mdl.disable_property(mdl.prop(container_handle, "Tfast"))
         mdl.disable_property(mdl.prop(container_handle, "CPL_LMT"))
+        mdl.disable_property(mdl.prop(container_handle, "q_gain_k"))
+        mdl.disable_property(mdl.prop(container_handle, "r_gain_k"))
         if phases == "1":
             mdl.disable_property(mdl.prop(container_handle, "conn_type"))
         else:
@@ -240,6 +242,8 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.enable_property(mdl.prop(container_handle, "Ts"))
         mdl.enable_property(mdl.prop(container_handle, "Tfast"))
         mdl.enable_property(mdl.prop(container_handle, "CPL_LMT"))
+        mdl.enable_property(mdl.prop(container_handle, "q_gain_k"))
+        mdl.enable_property(mdl.prop(container_handle, "r_gain_k"))
         mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
         mdl.disable_property(mdl.prop(container_handle, "conn_type"))
         mdl.enable_property(mdl.prop(container_handle, "ground_connected"))

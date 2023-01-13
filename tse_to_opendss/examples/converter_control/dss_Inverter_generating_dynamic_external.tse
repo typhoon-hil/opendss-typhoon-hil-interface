@@ -443,10 +443,6 @@ model "dss_Inverter_generating_dynamic_external" {
         connect Vs1.n_node VSConverter1.DC- as Connection1150
     }
 
-    logically_deleted {
-
-    }
-
     default {
         gen_gain {
             gain = "1"

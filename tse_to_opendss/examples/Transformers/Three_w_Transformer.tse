@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.1 DEV
+// Saved by sw version: 2022.4
 //
 
 model "three_w_transformer" {
@@ -50,7 +50,6 @@ model "three_w_transformer" {
         sig_stim = "off"
         export_resource_list = ""
         export_dependency_list = ""
-        excluded_resource_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
@@ -658,21 +657,6 @@ model "three_w_transformer" {
         connect Gain30.out QT3.in as Connection1148
         connect "Meter Split5.Input" "Three-phase Meter5.Out" as Connection1149
         connect "Meter Split4.Input" "Three-phase Meter4.Out" as Connection1150
-    }
-
-    logically_deleted {
-        "Load1.Connection3"
-        "Generator1.TS_module"
-        "Generator1.T_switch"
-        "Generator1.Constant102"
-        "Generator1.Connection3"
-        "Generator1.Connection5116"
-        "Three-Phase Transformer1.Connection57"
-        "Three-Phase Transformer1.Connection58"
-        "Three-Phase Transformer1.Connection59"
-        "Three-Phase Transformer1.Connection60"
-        "Three-Phase Transformer1.Connection61"
-        "Three-Phase Transformer1.Connection62"
     }
 
     default {

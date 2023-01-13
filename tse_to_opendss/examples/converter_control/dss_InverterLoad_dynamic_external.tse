@@ -434,10 +434,6 @@ model "dss_InverterLoad_dynamic_external" {
         connect Load2.C1 "Three-phase Meter2.A-" as Connection1148
     }
 
-    logically_deleted {
-
-    }
-
     default {
         gen_gain {
             gain = "1"

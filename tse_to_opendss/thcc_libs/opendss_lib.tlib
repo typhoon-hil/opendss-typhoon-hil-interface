@@ -6437,6 +6437,20 @@ if (Vdc<-2) {
                     unit = "s"
                     group = "CPL Parameters"
                     disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Ts_mask == Tfst_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
                 }
 
                 Tfast {
@@ -6447,6 +6461,20 @@ if (Vdc<-2) {
                     unit = "s"
                     group = "CPL Parameters"
                     disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Tfst_mask == Ts_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
                 }
 
                 CPL_LMT {
@@ -6455,6 +6483,24 @@ if (Vdc<-2) {
                     type = generic
                     default_value = "2"
                     unit = "pu"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                q_gain_k {
+                    label = "CPL Kalman Filter state matrix gain Q"
+                    widget = edit
+                    type = generic
+                    default_value = "0.5"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                r_gain_k {
+                    label = "CPL Kalman Filter measurement gain R"
+                    widget = edit
+                    type = generic
+                    default_value = "20"
                     group = "CPL Parameters"
                     disabled
                 }
@@ -6841,6 +6887,8 @@ if (Vdc<-2) {
                     Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
                     Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
                     CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
+                    q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                    r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                     Vn_3ph_CPL = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"))
                     P_CPL = mdl.get_property_value(mdl.prop(item_handle, "P_CPL"))
                     Q_CPL = mdl.get_property_value(mdl.prop(item_handle, "Q_CPL"))
@@ -6989,6 +7037,8 @@ if (Vdc<-2) {
 
                     mdl.set_property_value(mdl.prop(item_handle, "Tfast"), Tfast)
                     mdl.set_property_value(mdl.prop(item_handle, "CPL_LMT"), CPL_LMT)
+                    mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                    mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                     mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), S_Ts)
                     mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), T_Ts_internal)
                     mdl.set_property_value(mdl.prop(item_handle, "Slen"), Slen)
@@ -19820,7 +19870,7 @@ out = out_value;
                     hide_name = True
                 ]
 
-                component "core/Rate Transition" "Rate Transition1" {
+                component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
                     execution_rate = "Ts"
                 }
                 [
@@ -19829,7 +19879,7 @@ out = out_value;
                     size = 32, 32
                 ]
 
-                component "core/Rate Transition" "Rate Transition2" {
+                component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
                     execution_rate = "Ts"
                 }
                 [
@@ -19853,79 +19903,6 @@ out = out_value;
                 }
                 [
                     position = 7760, 7584
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant14 {
-                    execution_rate = "Ts"
-                    value = "Pc_T"
-                }
-                [
-                    position = 7920, 7520
-                    hide_name = True
-                ]
-
-                component "core/Product" Product23 {
-                }
-                [
-                    position = 8016, 7512
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum10 {
-                    signs = "++"
-                }
-                [
-                    position = 8096, 7464
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant17 {
-                    execution_rate = "Ts"
-                    value = "0.01*(Ts-600e-6)/Ts"
-                }
-                [
-                    position = 7808, 7672
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch27" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0"
-                }
-                [
-                    position = 7896, 7688
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant18 {
-                    execution_rate = "Ts"
-                    value = "0.005*(Ts-600e-6)/Ts"
-                }
-                [
-                    position = 7808, 7736
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum14 {
-                    signs = "++"
-                }
-                [
-                    position = 8096, 7592
-                    hide_name = True
-                ]
-
-                component "core/Sign" Sign3 {
-                }
-                [
-                    position = 7856, 7616
-                    hide_name = True
-                ]
-
-                component "core/Product" Product24 {
-                }
-                [
-                    position = 8008, 7680
                     hide_name = True
                 ]
 
@@ -20083,21 +20060,6 @@ out = out_value;
                     size = 60, 20
                 ]
 
-                junction Junction7 sp
-                [
-                    position = 7960, 7456
-                ]
-
-                junction Junction8 sp
-                [
-                    position = 7808, 7584
-                ]
-
-                junction Junction10 sp
-                [
-                    position = 7952, 7584
-                ]
-
                 junction Junction11 pe
                 [
                     position = 8248, 8088
@@ -20125,36 +20087,12 @@ out = out_value;
 
                 connect Constant1.out Goto3 as Connection341
                 connect Constant11.out Goto4 as Connection342
-                connect Gain1.out "Rate Transition1.in" as Connection370
-                connect Gain2.out "Rate Transition2.in" as Connection746
-                connect "Rate Transition1.out" "Rate Limiter1.in" as Connection945
-                connect Constant14.out Product23.in1 as Connection1081
-                connect Product23.out Sum10.in1 as Connection1086
-                connect "Rate Limiter1.out" Junction7 as Connection1088
-                connect Junction7 Product23.in as Connection1089
-                connect Sum10.in Junction7 as Connection1090
-                connect Sum10.out Goto1 as Connection1091
-                connect "Rate Transition2.out" "Rate Limiter2.in" as Connection1092
-                connect Sign3.out "Signal switch27.in2" as Connection1097
-                connect "Signal switch27.out" Product24.in1 as Connection1101
-                [
-                    position = 0, 0
-                ]
-                connect Product24.out Sum14.in1 as Connection1102
-                [
-                    position = 0, 0
-                ]
-                connect Constant17.out "Signal switch27.in" as Connection1106
-                connect Constant18.out "Signal switch27.in1" as Connection1107
-                connect "Rate Limiter2.out" Junction8 as Connection1108
-                connect Sign3.in Junction8 as Connection1110
-                connect Sum14.in Junction10 as Connection1114
-                connect Product24.in Junction10 as Connection1116
-                connect Junction10 Junction8 as Connection1117
-                [
-                    position = 0, 0
-                ]
-                connect Sum14.out Goto2 as Connection1118
+                connect Gain1.out "Rate Transition with Bypass1.In" as Connection370
+                connect Gain2.out "Rate Transition with Bypass2.In" as Connection746
+                connect "Rate Transition with Bypass1.Out" "Rate Limiter1.in" as Connection945
+                connect "Rate Limiter1.out" Goto1 as Connection1091
+                connect "Rate Transition with Bypass2.Out" "Rate Limiter2.in" as Connection1092
+                connect "Rate Limiter2.out" Goto2 as Connection1118
                 connect Junction11 N as Connection1152
                 [
                     position = 0, 0
@@ -20373,12 +20311,32 @@ out = out_value;
                         label = "Fast execution rate output conditioning"
                         widget = checkbox
                         type = bool
-                        default_value = "True"
+                        default_value = "False"
                         group = "Execution rate"
                         no_evaluate
 
                         CODE property_value_changed
                             comp_handle = mdl.get_sub_level_handle(container_handle)
+
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            P_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kP_inp"))
+                            Q_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kQ_inp"))
+
+                            if new_value and not Tfst_mask == Ts_mask:
+                                if P_inp_mask == "Variable input":
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                if Q_inp_mask == "Variable input":
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+                            else:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
 
                             for phase in ["A", "B", "C"]:
                                 CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type="component")
@@ -20588,6 +20546,22 @@ out = out_value;
                         group = "Load Parameters"
                     }
 
+                    q_gain_k {
+                        label = "Kalman filter Q gain"
+                        widget = edit
+                        type = generic
+                        default_value = "q_gain_k"
+                        group = "Load Parameters"
+                    }
+
+                    r_gain_k {
+                        label = "Kalman filter R gain"
+                        widget = edit
+                        type = generic
+                        default_value = "r_gain_k"
+                        group = "Load Parameters"
+                    }
+
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
@@ -20635,6 +20609,8 @@ out = out_value;
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
                         CPL_curr = mdl.get_property_value(mdl.prop(item_handle, "CPL_curr"))
+                        q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                        r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                         # HEADER STOP
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
@@ -20651,7 +20627,7 @@ out = out_value;
                         if SS==0:
                             Rsnb = 100000
                         else:
-                            Rsnb = 30 * (VLL*VLL/(SS))
+                            Rsnb = 30 * (VLL*VLL/(1.66*SS))
 
                         if Fast_con:
                             Tfast_en = 1
@@ -20721,6 +20697,8 @@ out = out_value;
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
 
                         mdl.set_property_value(mdl.prop(item_handle, "CPL_curr"), CPL_curr)
+                        mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                        mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                     ENDCODE
                 }
             }
@@ -25435,1646 +25413,1317 @@ out = out_value;
                 size = 168, 232
             ]
 
+            component Subsystem "Rate Transition with Bypass" {
+                layout = dynamic
+                port In {
+					position = left:1
+					kind = sp
+					direction =  out
+					sp_type {
+						default = auto
+						readonly = True
+					}
+				}
+				[
+					position = 7520, 8056
+				]
+
+				port Out {
+					position = right:1
+					kind = sp
+					direction =  in
+					sp_type {
+						default = inherit
+						readonly = True
+					}
+				}
+				[
+					position = 7856, 8056
+				]
+
+                T_vec = "T_Ts_internal"
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Rate Transition block with the option to bypass signals through without alteration to their smapling rate</p></body></html>"
+
+                    bypass_flag {
+						label = "Rate Transition Bypass"
+						widget = checkbox
+						type = bool
+						default_value = "False"
+						no_evaluate
+
+						CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            inport = mdl.get_item("In", parent=comp_handle, item_type="port")
+                            outport = mdl.get_item("Out", parent=comp_handle, item_type="port")
+                            init_value_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "init_value"))
+                            execution_rate_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
+
+                            if new_value:
+                                rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+                                delay_one = mdl.get_item("unit delay", parent=comp_handle, item_type="component")
+                                if rate_trans:
+                                    mdl.delete_item(rate_trans)
+                                if not delay_one:
+                                    delay_one = mdl.create_component("core/Unit Delay", name="unit delay", parent=comp_handle, position=(7683, 8055))
+                                mdl.create_connection(mdl.term(delay_one, "in"), inport)
+                                mdl.create_connection(mdl.term(delay_one, "out"), outport)
+                            else:
+                                rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+                                delay_one = mdl.get_item("unit delay", parent=comp_handle, item_type="component")
+                                if delay_one:
+                                    mdl.delete_item(delay_one)
+                                if not rate_trans:
+                                    rate_trans = mdl.create_component("core/Rate Transition", name="rate transition", parent=comp_handle, position=(7683, 8055))
+                                mdl.create_connection(mdl.term(rate_trans, "in"), inport)
+                                mdl.create_connection(mdl.term(rate_trans, "out"), outport)
+                                mdl.set_property_value(mdl.prop(rate_trans, "init_value"), init_value_mask)
+                                mdl.set_property_value(mdl.prop(rate_trans, "execution_rate"), execution_rate_mask)
+
+                        ENDCODE
+					}
+
+                    init_value {
+						label = "Initial Value"
+						widget = edit
+						type = generic
+						default_value = "0"
+
+						CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+
+                            if rate_trans:
+                                mdl.set_property_value(mdl.prop(rate_trans, "init_value"), new_value)
+
+                        ENDCODE
+					}
+
+					execution_rate {
+						label = "Execution Rate"
+						widget = edit
+						type = generic
+						default_value = "Ts"
+
+						CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
+
+                            if rate_trans:
+                                mdl.set_property_value(mdl.prop(rate_trans, "execution_rate"), new_value)
+
+                        ENDCODE
+					}
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+
+                    ENDCODE
+
+                }
+            }
+            [
+                position = 8424, 8112
+                size = 48, 48
+            ]
+
             component Subsystem "single-phase CPL" {
                 layout = dynamic
-                component "core/Limit" Limit1 {
-                    lower_limit = "0.1"
-                }
-                [
-                    position = 7464, 8168
-                    hide_name = True
-                ]
-
-                component "core/Product" Product1 {
-                    signs = "*/"
-                }
-                [
-                    position = 7928, 8152
-                    hide_name = True
-                ]
-
-                component "core/Product" Product2 {
-                }
-                [
-                    position = 7544, 8176
-                    hide_name = True
-                ]
-
-                component "core/Product" Product3 {
-                }
-                [
-                    position = 8392, 8144
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Discrete Transfer Function" "Discrete Transfer Function1" {
-                    a_coeff = "[0.01,1]"
-                    b_coeff = "[1]"
-                    domain = "S-domain"
-                    method = "Euler"
-                }
-                [
-                    position = 8296, 8136
-                    hide_name = True
-                ]
-
-                component "core/Resistor" R1 {
-                    resistance = "Rsnb"
-                }
-                [
-                    position = 7976, 8888
-                ]
-
-                component "core/Signal Controlled Current Source" Isp1 {
-                }
-                [
-                    position = 7968, 8784
-                    scale = -1, 1
-                    size = 64, 32
-                ]
-
-                component "core/Voltage RMS" Varms {
-                    sig_output = "True"
-                }
-                [
-                    position = 7968, 9088
-                    size = 64, 32
-                ]
-
-                component "core/Voltage Measurement" Va {
-                    execution_rate = "inherit"
-                    sig_output = "True"
-                }
-                [
-                    position = 7968, 9200
-                    size = 64, 32
-                ]
-
-                component "core/Limit" Limit2 {
-                }
-                [
-                    position = 8016, 8152
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch20" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 8200, 8136
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain2 {
-                    gain = "1000"
-                }
-                [
-                    position = 7816, 8120
-                    hide_name = True
-                ]
-
-                component "core/Comparator" Comparator1 {
-                }
-                [
-                    position = 8168, 7984
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant2 {
-                    execution_rate = "Ts"
-                    value = "CPL_curr/(VLL*kVLL)"
-                }
-                [
-                    position = 7768, 8048
-                    hide_name = True
-                ]
-
-                component "core/Product" Product4 {
-                }
-                [
-                    position = 7856, 8072
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Gain" Gain16 {
-                    gain = "-1"
-                }
-                [
-                    position = 8224, 7912
-                    hide_name = True
-                ]
-
-                component "core/Limit" Limit10 {
-                    upper_limit = "0"
-                }
-                [
-                    position = 8144, 7912
-                    hide_name = True
-                ]
-
-                component "core/Sign" Sign1 {
-                }
-                [
-                    position = 8288, 7912
-                    hide_name = True
-                ]
-
-                component "core/Product" Product19 {
-                    signs = "3"
-                }
-                [
-                    position = 8576, 7664
-                    hide_name = True
-                ]
-
-                component "core/Limit" Limit11 {
-                    lower_limit = "0"
-                }
-                [
-                    position = 7712, 7680
-                    hide_name = True
-                ]
-
-                component "core/Sign" Sign2 {
-                }
-                [
-                    position = 7776, 7680
-                    hide_name = True
-                ]
-
-                component "core/Product" Product14 {
-                    signs = "*/"
-                }
-                [
-                    position = 7992, 7832
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain15 {
-                    gain = "1000"
-                }
-                [
-                    position = 7888, 7824
-                    hide_name = True
-                ]
-
-                component "core/Limit" Limit7 {
-                    lower_limit = "0"
-                }
-                [
-                    position = 8064, 7832
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch23" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 8272, 7816
-                    hide_name = True
-                ]
-
-                component "core/Comparator" Comparator4 {
-                }
-                [
-                    position = 8208, 7744
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Product" Product15 {
-                }
-                [
-                    position = 7992, 7736
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant8 {
-                    execution_rate = "inherit"
-                    value = "CPL_curr/(VLL*kVLL)"
-                }
-                [
-                    position = 7896, 7760
-                    hide_name = True
-                ]
-
-                component "core/Discrete Transfer Function" "Discrete Transfer Function4" {
-                    a_coeff = "[0.01,1]"
-                    b_coeff = "[1]"
-                    domain = "S-domain"
-                    method = "Euler"
-                }
-                [
-                    position = 8336, 7816
-                    hide_name = True
-                ]
-
-                component "core/Product" Product17 {
-                    signs = "3"
-                }
-                [
-                    position = 8560, 7912
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum5 {
-                    signs = "+++"
-                }
-                [
-                    position = 8768, 8208
-                    rotation = right
-                    hide_name = True
-                ]
-
-                component "core/Abs" Abs1 {
-                }
-                [
-                    position = 7712, 7728
-                    hide_name = True
-                ]
-
-                component "core/Product" Product20 {
-                }
-                [
-                    position = 6864, 7696
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain18 {
-                    gain = "Pc_pQ"
-                }
-                [
-                    position = 6976, 7696
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum8 {
-                    signs = "+++-"
-                }
-                [
-                    position = 7360, 7976
-                    rotation = right
-                    hide_name = True
-                ]
-
-                component "core/Sign" Sign3 {
-                }
-                [
-                    position = 6832, 7640
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch24" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0"
-                }
-                [
-                    position = 7088, 7712
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain19 {
-                    gain = "Pc_nQ"
-                }
-                [
-                    position = 6976, 7728
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain20 {
-                    gain = "1/(1000*Rsnb)"
-                }
-                [
-                    position = 7368, 7552
-                    hide_name = True
-                ]
-
-                component "core/Product" Product21 {
-                }
-                [
-                    position = 7112, 7368
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Gain" Gain21 {
-                    gain = "nQc_P"
-                }
-                [
-                    position = 7208, 7368
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum9 {
-                    signs = "+++++"
-                }
-                [
-                    position = 7496, 7600
-                    rotation = right
-                    hide_name = True
-                ]
-
-                component "core/Limit" Limit12 {
-                    lower_limit = "0"
-                }
-                [
-                    position = 7008, 7416
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch25" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0"
-                }
-                [
-                    position = 7368, 7384
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Gain" Gain22 {
-                    gain = "pQc_P"
-                }
-                [
-                    position = 7208, 7400
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant14 {
-                    execution_rate = "Ts"
-                    value = "Pc_T_pQ"
-                }
-                [
-                    position = 6864, 7816
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch26" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0"
-                }
-                [
-                    position = 6976, 7840
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant15 {
-                    execution_rate = "Ts"
-                    value = "Pc_T_nQ"
-                }
-                [
-                    position = 6864, 7856
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant17 {
-                    execution_rate = "Ts"
-                    value = "pQc_T"
-                }
-                [
-                    position = 6920, 7496
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch27" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0"
-                }
-                [
-                    position = 7008, 7520
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant18 {
-                    execution_rate = "Ts"
-                    value = "nQc_T"
-                }
-                [
-                    position = 6920, 7536
-                    hide_name = True
-                ]
-
-                component "core/Abs" Abs2 {
-                }
-                [
-                    position = 8080, 7976
-                    hide_name = True
-                ]
-
-                component "core/Abs" Abs3 {
-                }
-                [
-                    position = 8120, 8032
-                    rotation = left
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum14 {
-                    signs = "+-"
-                }
-                [
-                    position = 6416, 7416
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant19 {
-                    execution_rate = "Ts"
-                    value = "60"
-                }
-                [
-                    position = 6320, 7456
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum15 {
-                    signs = "+-"
-                }
-                [
-                    position = 6568, 7360
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant20 {
-                    execution_rate = "Ts"
-                }
-                [
-                    position = 6488, 7352
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain24 {
-                    gain = "Fc"
-                }
-                [
-                    position = 6488, 7416
-                    hide_name = True
-                ]
-
-                component "core/Edge Detection" "Edge Detection1" {
-                }
-                [
-                    position = 9216, 8328
-                    rotation = right
-                    hide_name = True
-                    size = 32, 32
-                ]
-
-                component "core/Rate Transition" "Rate Transition1" {
-                    execution_rate = "Tfst"
-                }
-                [
-                    position = 8848, 8280
-                    hide_name = True
-                    size = 32, 32
-                ]
-
-                component "core/C function" "C function1" {
-                    global_variables = "real counter;real m0;real m1;real m2;real corr;"
-                    init_fnc = "/*Begin code section*/
-counter=0;
-/*End code section*/"
-                    input_terminals = "real sync;real z;real zi;real zii;real Ts;real Ts_fast;"
-                    input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit"
-                    input_terminals_feedthrough = "True;True;True;True;True;True"
-                    input_terminals_show_labels = "True;True;True;True;True;True"
-                    output_fnc = "/*Begin code section*/
-counter = counter + Ts_fast;
-if (sync > 0 ) {
-    out = z;
-    counter = 0;
-
-}
-else {
-    corr = 1 - 0.11 * (Ts - Ts_fast)/Ts;
-    m2 = (zi - zii)/Ts;
-    m1 = (z - zi)/Ts;
-    m0 = m1 + (m1-m2);
-
-    out = z + counter * corr * m0;
-}
-
-if (counter >= Ts) {
-    counter = 0;
-}
-/*End code section*/"
-                    output_terminals_dimensions = "inherit"
-                    output_terminals_feedthrough = "True"
-                    output_terminals_show_labels = "True"
-                }
-                [
-                    position = 9144, 8536
-                    rotation = right
-                    hide_name = True
-                    size = 48, 128
-                ]
-
-                component "core/Unit Delay" "Unit Delay9" {
-                }
-                [
-                    position = 8848, 8344
-                    hide_name = True
-                ]
-
-                component "core/Unit Delay" "Unit Delay10" {
-                }
-                [
-                    position = 8952, 8400
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant21 {
-                    execution_rate = "Tfst"
-                    value = "Ts"
-                }
-                [
-                    position = 9080, 8448
-                    hide_name = True
-                ]
-
-                component "core/Rate Transition" "Rate Transition2" {
-                    execution_rate = "Tfst"
-                }
-                [
-                    position = 8952, 8344
-                    hide_name = True
-                    size = 32, 32
-                ]
-
-                component "core/Rate Transition" "Rate Transition3" {
-                    execution_rate = "Tfst"
-                }
-                [
-                    position = 9032, 8400
-                    hide_name = True
-                    size = 32, 32
-                ]
-
-                component "core/Signal switch" "Signal switch28" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "Tfst"
-                }
-                [
-                    position = 9296, 8648
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Constant" Constant22 {
-                    execution_rate = "Tfst"
-                    value = "Ts"
-                }
-                [
-                    position = 9248, 8704
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch29" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 9392, 8608
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Constant" Constant23 {
-                    execution_rate = "Tfst"
-                    value = "Tfast_en"
-                }
-                [
-                    position = 9336, 8696
-                    hide_name = True
-                ]
-
-                component "core/Product" Product22 {
-                }
-                [
-                    position = 7120, 7512
-                    hide_name = True
-                ]
-
-                component "core/Product" Product23 {
-                }
-                [
-                    position = 7088, 7848
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant24 {
-                    execution_rate = "Ts"
-                    value = "pQc_Q"
-                }
-                [
-                    position = 7112, 7264
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant25 {
-                    execution_rate = "Ts"
-                    value = "nQc_Q"
-                }
-                [
-                    position = 7112, 7216
-                    hide_name = True
-                ]
-
-                component "core/Signal switch" "Signal switch30" {
-                    criterion = "ctrl >= threshold"
-                    threshold = "0"
-                }
-                [
-                    position = 7184, 7248
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Product" Product24 {
-                }
-                [
-                    position = 7336, 7256
-                    hide_name = True
-                ]
-
-                component "core/Termination" Termination70 {
-                }
-                [
-                    position = 7784, 8224
-                    rotation = left
-                    hide_name = True
-                ]
-
-                component "core/Termination" Termination71 {
-                }
-                [
-                    position = 7816, 8264
-                    rotation = left
-                    hide_name = True
-                ]
-
-                component "core/Termination" Termination72 {
-                }
-                [
-                    position = 7792, 8408
-                    rotation = right
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain26 {
-                    gain = "1/(1000*Rsnb)"
-                }
-                [
-                    position = 7272, 7928
-                    hide_name = True
-                ]
-
-                component "core/Single phase PLL" "Single phase PLL1" {
-                    k_SOGI = "0.6"
-                    kd_PLL_HIGH = "0"
-                    kd_PLL_LOW = "0"
-                    kp_PLL_HIGH = "65.7"
-                    kp_PLL_LOW = "5.81e2"
-                    offset_Hz = "Freq"
-                }
-                [
-                    position = 7728, 8320
-                    hide_name = True
-                    size = 64, 98
-                ]
-
-                component "core/Trigonometric function" "Trigonometric function1" {
-                }
-                [
-                    position = 8024, 8224
-                    hide_name = True
-                ]
-
-                component "core/Gain" Gain25 {
-                    gain = "1.41421356"
-                }
-                [
-                    position = 8192, 8264
-                    hide_name = True
-                ]
-
-                component "core/Product" Product25 {
-                }
-                [
-                    position = 8304, 8232
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                component "core/Capacitor" C1 {
-                    capacitance = "1/(Rsnb*2*np.pi*Freq)"
-                }
-                [
-                    position = 7976, 8984
-                ]
-
-                component "core/Trigonometric function" "Trigonometric function2" {
-                }
-                [
-                    position = 8192, 8344
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum16 {
-                    signs = "++"
-                }
-                [
-                    position = 8112, 8344
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant26 {
-                    execution_rate = "Ts"
-                    value = "-np.pi/2"
-                }
-                [
-                    position = 8016, 8360
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant28 {
-                    execution_rate = "Tfst"
-                    value = "Tfst"
-                }
-                [
-                    position = 9040, 8472
-                    hide_name = True
-                ]
-
-                component "core/Product" Product26 {
-                    signs = "**"
-                }
-                [
-                    position = 8408, 8352
-                    hide_name = True
-                ]
-
-                component "core/Sum" Sum17 {
-                    signs = "++"
-                }
-                [
-                    position = 8112, 8432
-                    hide_name = True
-                ]
-
-                component "core/Constant" Constant27 {
-                    execution_rate = "Ts"
-                    value = "np.pi/2"
-                }
-                [
-                    position = 8000, 8456
-                    hide_name = True
-                ]
-
-                component "core/Trigonometric function" "Trigonometric function3" {
-                }
-                [
-                    position = 8192, 8432
-                    hide_name = True
-                ]
-
-                component "core/Product" Product27 {
-                    signs = "**"
-                }
-                [
-                    position = 8304, 8424
-                    hide_name = True
-                    scale = 1, -1
-                ]
-
-                port P2 {
-                    position = right:2
-                    kind = pe
-                }
-                [
-                    position = 8192, 8784
-                    rotation = down
-                ]
-
-                port P3 {
-                    position = left:1
-                    kind = pe
-                }
-                [
-                    position = 7760, 8784
-                ]
-
-                port P {
-                    position = top:1
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 6288, 7592
-                ]
-
-                port Q {
-                    position = top:2
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 6288, 7664
-                ]
-
-                tag Goto1 {
-                    value = "ws"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 7888, 8320
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From1 {
-                    value = "ws"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 6320, 7408
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag Goto2 {
-                    value = "kP"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 6368, 7592
-                    size = 60, 20
-                ]
-
-                tag Goto3 {
-                    value = "kQ"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 6368, 7664
-                    size = 60, 20
-                ]
-
-                tag From2 {
-                    value = "kP"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7288, 7888
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From3 {
-                    value = "kP"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 6920, 7416
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From4 {
-                    value = "kQ"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7432, 7440
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From5 {
-                    value = "kQ"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 6712, 7640
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From6 {
-                    value = "kQ"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7000, 7896
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From7 {
-                    value = "kQ"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7248, 7264
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag Goto4 {
-                    value = "Va"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 7912, 9152
-                    rotation = down
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From8 {
-                    value = "Va"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7616, 8320
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From9 {
-                    value = "Va_rms"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 8104, 8264
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From10 {
-                    value = "Va_rms"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7376, 8168
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag Goto5 {
-                    value = "Va_rms"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 7912, 9048
-                    rotation = down
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag Goto6 {
-                    value = "Va_rms_squared"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 7680, 8176
-                    hide_name = True
-                    size = 100, 20
-                ]
-
-                tag From11 {
-                    value = "Va_rms_squared"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7816, 8176
-                    hide_name = True
-                    size = 97, 20
-                ]
-
-                tag From12 {
-                    value = "Va_rms_squared"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7248, 7552
-                    hide_name = True
-                    size = 97, 20
-                ]
-
-                tag From13 {
-                    value = "Va_rms_squared"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7160, 7928
-                    hide_name = True
-                    size = 97, 20
-                ]
-
-                tag From14 {
-                    value = "Va_rms_squared"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7872, 7856
-                    hide_name = True
-                    size = 97, 20
-                ]
-
-                tag Goto7 {
-                    value = "Q_sign"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 6912, 7640
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From15 {
-                    value = "Q_sign"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7312, 7440
-                    hide_name = True
-                    size = 57, 20
-                ]
-
-                tag From16 {
-                    value = "Q_sign"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7120, 7312
-                    hide_name = True
-                    size = 57, 20
-                ]
-
-                tag From17 {
-                    value = "Q_sign"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 6952, 7448
-                    hide_name = True
-                    size = 57, 20
-                ]
-
-                tag From18 {
-                    value = "Q_sign"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 6928, 7768
-                    hide_name = True
-                    size = 57, 20
-                ]
-
-                tag From19 {
-                    value = "Q_sign"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7032, 7664
-                    hide_name = True
-                    size = 57, 20
-                ]
-
-                tag Goto8 {
-                    value = "Ia_load"
-                    scope = local
-                    kind = sp
-                    direction = in
-                }
-                [
-                    position = 9528, 8608
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                tag From20 {
-                    value = "Ia_load"
-                    scope = local
-                    kind = sp
-                    direction = out
-                }
-                [
-                    position = 7896, 8744
-                    hide_name = True
-                    size = 60, 20
-                ]
-
-                junction Junction1 sp
-                [
-                    position = 7496, 8168
-                ]
-
-                junction Junction2 pe
-                [
-                    position = 8080, 8784
-                ]
-
-                junction Junction10 sp
-                [
-                    position = 8048, 8152
-                ]
-
-                junction Junction11 sp
-                [
-                    position = 8120, 8072
-                ]
-
-                junction Junction62 sp
-                [
-                    position = 7496, 7728
-                ]
-
-                junction Junction50 sp
-                [
-                    position = 8144, 7832
-                ]
-
-                junction Junction51 sp
-                [
-                    position = 8112, 7736
-                ]
-
-                junction Junction74 sp
-                [
-                    position = 7856, 7728
-                ]
-
-                junction Junction78 sp
-                [
-                    position = 6928, 7696
-                ]
-
-                junction Junction82 sp
-                [
-                    position = 7496, 7680
-                ]
-
-                junction Junction84 sp
-                [
-                    position = 7160, 7368
-                ]
-
-                junction Junction92 sp
-                [
-                    position = 7760, 8120
-                ]
-
-                junction Junction95 sp
-                [
-                    position = 6656, 7360
-                ]
-
-                junction Junction96 sp
-                [
-                    position = 6784, 7640
-                ]
-
-                junction Junction97 pe
-                [
-                    position = 7856, 8784
-                ]
-
-                junction Junction101 sp
-                [
-                    position = 9168, 8280
-                ]
-
-                junction Junction102 sp
-                [
-                    position = 8768, 8280
-                ]
-
-                junction Junction109 sp
-                [
-                    position = 8912, 8344
-                ]
-
-                junction Junction112 sp
-                [
-                    position = 7056, 7416
-                ]
-
-                junction Junction130 pe
-                [
-                    position = 7856, 8888
-                ]
-
-                junction Junction131 pe
-                [
-                    position = 8080, 8888
-                ]
-
-                junction Junction133 sp
-                [
-                    position = 8376, 7816
-                ]
-
-                junction Junction121 sp
-                [
-                    position = 8248, 8264
-                ]
-
-                junction Junction127 sp
-                [
-                    position = 8248, 8360
-                ]
-
-                junction Junction129 sp
-                [
-                    position = 7960, 8336
-                ]
-
-                junction Junction137 pe
-                [
-                    position = 8080, 8984
-                ]
-
-                junction Junction138 pe
-                [
-                    position = 7856, 8984
-                ]
-
-                junction Junction139 pe
-                [
-                    position = 8080, 9088
-                ]
-
-                junction Junction140 pe
-                [
-                    position = 7856, 9088
-                ]
-
-                junction Junction141 sp
-                [
-                    position = 7960, 8336
-                ]
-
-                junction Junction142 sp
-                [
-                    position = 9248, 8592
-                ]
-
-                junction Junction143 sp
-                [
-                    position = 9216, 8280
-                ]
-
-                connect Limit1.out Junction1 as Connection9
-                connect Junction1 Product2.in1 as Connection10
-                connect "Discrete Transfer Function1.out" Product3.in1 as Connection16
-                connect Product1.out Limit2.in as Connection44
-                connect Gain2.out Product1.in as Connection47
-                connect Constant2.out Product4.in1 as Connection54
-                connect Comparator1.out "Signal switch20.in2" as Connection57
-                connect Junction10 Limit2.out as Connection59
-                [
-                    position = 0, 0
-                ]
-                connect "Signal switch20.in1" Junction10 as Connection60
-                connect Product4.out Junction11 as Connection62
-                connect "Signal switch20.in" Junction11 as Connection64
-                connect Limit10.out Gain16.in as Connection299
-                connect Gain16.out Sign1.in as Connection315
-                connect Limit10.in Junction62 as Connection319
-                [
-                    position = 0, 0
-                ]
-                connect Limit11.out Sign2.in as Connection320
-                connect Gain15.out Product14.in as Connection227
-                connect Product14.out Limit7.in as Connection228
-                connect Comparator4.out "Signal switch23.in2" as Connection229
-                connect Limit7.out Junction50 as Connection233
-                connect Junction50 "Signal switch23.in1" as Connection234
-                connect Comparator4.in1 Junction50 as Connection235
-                connect "Signal switch23.in" Junction51 as Connection236
-                connect Product15.out Junction51 as Connection238
-                connect Constant8.out Product15.in1 as Connection239
-                connect "Signal switch23.out" "Discrete Transfer Function4.in" as Connection243
-                connect Junction51 Comparator4.in2 as Connection253
-                [
-                    position = 0, 0
-                ]
-                connect Abs1.in Junction62 as Connection395
-                [
-                    position = 0, 0
-                ]
-                connect Product15.in Junction74 as Connection396
-                connect Junction74 Abs1.out as Connection397
-                connect Gain15.in Junction74 as Connection398
-                connect "Signal switch24.in" Gain18.out as Connection419
-                [
-                    position = 0, 0
-                ]
-                connect "Signal switch24.out" Sum8.in as Connection420
-                connect Gain19.out "Signal switch24.in1" as Connection422
-                connect Product20.out Junction78 as Connection423
-                connect Junction78 Gain18.in as Connection424
-                connect Gain19.in Junction78 as Connection425
-                connect Product19.in2 Sign2.out as Connection430
-                [
-                    position = 0, 0
-                ]
-                connect Limit11.in Junction82 as Connection444
-                connect Junction82 Junction62 as Connection445
-                [
-                    position = 0, 0
-                ]
-                connect Sum9.out Junction82 as Connection446
-                connect Product21.out Junction84 as Connection461
-                [
-                    position = 0, 0
-                ]
-                connect Junction84 Gain21.in as Connection462
-                connect Gain22.in Junction84 as Connection463
-                connect Gain22.out "Signal switch25.in" as Connection464
-                connect Gain21.out "Signal switch25.in1" as Connection468
-                [
-                    position = 0, 0
-                ]
-                connect Junction92 Gain2.in as Connection509
-                [
-                    position = 0, 0
-                ]
-                connect Product4.in Junction92 as Connection510
-                connect Comparator1.in1 Abs2.out as Connection511
-                connect Abs2.in Junction10 as Connection512
-                connect Junction11 Abs3.in as Connection513
-                connect Abs3.out Comparator1.in2 as Connection514
-                connect Junction92 Sum8.out as Connection515
-                [
-                    position = 0, 0
-                ]
-                connect From1 Sum14.in as Connection523
-                connect Constant19.out Sum14.in1 as Connection524
-                connect Constant20.out Sum15.in as Connection525
-                connect Gain24.in Sum14.out as Connection526
-                connect Gain24.out Sum15.in1 as Connection527
-                connect Sum15.out Junction95 as Connection529
-                connect P Goto2 as Connection532
-                connect Q Goto3 as Connection533
-                connect From3 Limit12.in as Connection535
-                connect Sign3.in Junction96 as Connection538
-                connect Junction96 Product20.in as Connection539
-                [
-                    position = 0, 0
-                ]
-                connect From5 Junction96 as Connection540
-                connect "Signal switch20.out" "Discrete Transfer Function1.in" as Connection554
-                connect Constant21.out "C function1.Ts" as Connection605
-                connect Junction101 "C function1.z" as Connection607
-                [
-                    position = 0, 0
-                ]
-                connect "Rate Transition3.in" "Unit Delay10.out" as Connection615
-                connect "Rate Transition2.out" "C function1.zi" as Connection616
-                connect "Rate Transition3.out" "C function1.zii" as Connection617
-                connect "C function1.sync" "Edge Detection1.Out1" as Connection618
-                [
-                    position = 0, 0
-                ]
-                connect "Rate Transition1.in" Junction102 as Connection622
-                [
-                    position = 0, 0
-                ]
-                connect Constant22.out "Signal switch28.in2" as Connection624
-                connect Sum5.out Junction102 as Connection649
-                [
-                    position = 0, 0
-                ]
-                connect Constant23.out "Signal switch29.in2" as Connection653
-                connect "Signal switch28.out" "Signal switch29.in" as Connection660
-                [
-                    position = 0, 0
-                ]
-                connect Isp1.p_node Junction2 as Connection670
-                [
-                    position = 0, 0
-                ]
-                connect Isp1.n_node Junction97 as Connection669
-                [
-                    position = 0, 0
-                ]
-                connect Junction102 "Unit Delay9.in" as Connection683
-                [
-                    position = 0, 0
-                ]
-                connect "Rate Transition2.in" Junction109 as Connection684
-                connect Junction109 "Unit Delay9.out" as Connection685
-                connect "Unit Delay10.in" Junction109 as Connection686
-                connect Junction95 Product21.in1 as Connection697
-                [
-                    position = 0, 0
-                ]
-                connect "Signal switch27.out" Product22.in1 as Connection701
-                connect Product21.in Junction112 as Connection704
-                connect Junction112 Limit12.out as Connection705
-                [
-                    position = 0, 0
-                ]
-                connect Product22.in Junction112 as Connection706
-                connect Product23.in "Signal switch26.out" as Connection710
-                connect From6 Product23.in1 as Connection711
-                [
-                    position = 0, 0
-                ]
-                connect Constant24.out "Signal switch30.in" as Connection713
-                connect Constant25.out "Signal switch30.in1" as Connection714
-                connect "Single phase PLL1.f" Goto1 as Connection881
-                connect "Signal switch30.out" Product24.in as Connection718
-                connect From7 Product24.in1 as Connection719
-                connect "Single phase PLL1.d" Termination70.in as Connection882
-                connect "Single phase PLL1.q" Termination71.in as Connection883
-                connect Product20.in1 Junction95 as Connection721
-                [
-                    position = 0, 0
-                ]
-                connect "Single phase PLL1.sin(wt)" Termination72.in as Connection884
-                connect "Signal switch28.in" "C function1.out" as Connection724
-                [
-                    position = 0, 0
-                ]
-                connect Gain20.out Sum9.in4 as Connection869
-                [
-                    position = 0, 0
-                ]
-                connect Constant17.out "Signal switch27.in" as Connection875
-                connect Constant18.out "Signal switch27.in1" as Connection876
-                connect Constant14.out "Signal switch26.in" as Connection878
-                connect Constant15.out "Signal switch26.in1" as Connection879
-                connect Product3.in Product25.out as Connection767
-                connect Constant26.out Sum16.in1 as Connection771
-                connect Sum16.out "Trigonometric function2.in" as Connection772
-                connect "Trigonometric function1.out" Product25.in1 as Connection773
-                [
-                    position = 0, 0
-                ]
-                connect Constant28.out "C function1.Ts_fast" as Connection837
-                connect R1.p_node Junction130 as Connection838
-                connect Junction130 Junction97 as Connection839
-                [
-                    position = 0, 0
-                ]
-                connect Junction131 Junction2 as Connection842
-                [
-                    position = 0, 0
-                ]
-                connect R1.n_node Junction131 as Connection843
-                connect Product25.in Junction121 as Connection786
-                connect "Discrete Transfer Function4.out" Junction133 as Connection847
-                connect Junction121 Gain25.out as Connection787
-                connect Product17.in Junction133 as Connection849
-                connect "Trigonometric function2.out" Product26.in as Connection793
-                [
-                    position = 0, 0
-                ]
-                connect Product19.in1 Junction133 as Connection860
-                [
-                    position = 0, 0
-                ]
-                connect Constant27.out Sum17.in1 as Connection800
-                connect Junction1 Product2.in as Connection866
-                [
-                    position = 0, 0
-                ]
-                connect Sum17.out "Trigonometric function3.in" as Connection808
-                connect "Trigonometric function3.out" Product27.in as Connection809
-                connect Product26.in1 Junction127 as Connection813
-                connect Junction127 Junction121 as Connection814
-                connect Product27.in1 Junction127 as Connection815
-                connect Product19.in Product26.out as Connection818
-                [
-                    position = 0, 0
-                ]
-                connect "Trigonometric function1.in" Junction129 as Connection823
-                [
-                    position = 0, 0
-                ]
-                connect "Single phase PLL1.wt" Junction129 as Connection825
-                connect Product22.out Sum9.in3 as Connection889
-                connect From4 Sum9.in2 as Connection890
-                connect "Signal switch25.out" Sum9.in1 as Connection891
-                connect Product24.out Sum9.in as Connection892
-                connect Gain26.out Sum8.in3 as Connection894
-                connect C1.n_node Junction137 as Connection896
-                connect Junction137 Junction131 as Connection897
-                connect C1.p_node Junction138 as Connection900
-                connect Junction138 Junction130 as Connection901
-                connect P2 Junction2 as Connection903
-                connect Varms.n_node Junction139 as Connection904
-                connect Junction139 Junction137 as Connection905
-                connect Va.n_node Junction139 as Connection906
-                connect P3 Junction97 as Connection907
-                connect Varms.p_node Junction140 as Connection908
-                connect Junction140 Junction138 as Connection909
-                connect Va.p_node Junction140 as Connection910
-                connect Goto4 Va.out as Connection914
-                connect From8 "Single phase PLL1.In" as Connection915
-                connect From9 Gain25.in as Connection917
-                connect Limit1.in From10 as Connection918
-                connect Goto5 Varms.out as Connection919
-                connect Sum16.in Junction141 as Connection921
-                [
-                    position = 0, 0
-                    breakpoints = 7984, 8336
-                ]
-                connect Junction141 Junction129 as Connection922
-                connect Sum17.in Junction141 as Connection923
-                connect Sign1.out Product17.in1 as Connection925
-                connect Product27.out Product17.in2 as Connection926
-                connect From11 Product1.in1 as Connection931
-                connect From12 Gain20.in as Connection933
-                connect From13 Gain26.in as Connection935
-                connect Goto6 Product2.out as Connection936
-                connect From14 Product14.in1 as Connection937
-                connect From15 "Signal switch25.in2" as Connection942
-                connect From16 "Signal switch30.in2" as Connection944
-                connect From17 "Signal switch27.in2" as Connection946
-                connect Goto7 Sign3.out as Connection947
-                connect From18 "Signal switch26.in2" as Connection948
-                connect From19 "Signal switch24.in2" as Connection949
-                connect Product23.out Sum8.in1 as Connection950
-                connect From2 Sum8.in2 as Connection951
-                connect Product3.out Sum5.in2 as Connection952
-                connect Product17.out Sum5.in1 as Connection953
-                connect Product19.out Sum5.in as Connection954
-                connect Junction101 "Rate Transition1.out" as Connection956
-                connect "Signal switch28.in1" Junction142 as Connection957
-                connect Junction142 "Signal switch29.in1" as Connection958
-                connect Junction101 Junction143 as Connection959
-                connect Junction143 "Edge Detection1.In1" as Connection960
-                connect Junction142 Junction143 as Connection961
-                connect Goto8 "Signal switch29.out" as Connection965
-                connect From20 Isp1.in as Connection966
+				component "core/Resistor" R1 {
+					resistance = "Rsnb/15"
+				}
+				[
+					position = 7448, 8768
+				]
+
+				component "core/Signal Controlled Current Source" Isp1 {
+				}
+				[
+					position = 7440, 8664
+					scale = -1, 1
+					size = 64, 32
+				]
+
+				component "core/Product" Product38 {
+				}
+				[
+					position = 7311, 8598
+					hide_name = True
+				]
+
+				component "core/Comparator" Comparator7 {
+				}
+				[
+					position = 7124, 8590
+					hide_name = True
+				]
+
+				component "core/Constant" Constant1 {
+					execution_rate = "Tfst"
+					value = "5/Freq"
+				}
+				[
+					position = 7056, 8639
+					hide_name = True
+				]
+
+				component "core/Clock" Clock1 {
+					execution_rate = "Tfst"
+				}
+				[
+					position = 7055, 8582
+					hide_name = True
+				]
+
+				component "core/Voltage Measurement" Va {
+					execution_rate = "inherit"
+					sig_output = "True"
+				}
+				[
+					position = 7440, 9080
+					size = 64, 32
+				]
+
+				component "core/Sum" Sum5 {
+					signs = "++"
+				}
+				[
+					position = 7760, 8888
+					rotation = right
+					hide_name = True
+				]
+
+				component "core/Edge Detection" "Edge Detection1" {
+				}
+				[
+					position = 7960, 8912
+					hide_name = True
+					size = 32, 32
+				]
+
+				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
+					bypass_flag = "True"
+					execution_rate = "Tfst"
+				}
+				[
+					position = 7840, 8952
+					hide_name = True
+					size = 32, 32
+				]
+
+				component "core/C function" "C function1" {
+					global_variables = "real counter;real m0;real m1;real m2;real corr;"
+					init_fnc = "/*Begin code section*/
+	counter=0;
+	/*End code section*/"
+					input_terminals = "real sync;real z;real zi;real zii;real Ts;real Ts_fast;"
+					input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit"
+					input_terminals_feedthrough = "True;True;True;True;True;True"
+					input_terminals_show_labels = "True;True;True;True;True;True"
+					output_fnc = "/*Begin code section*/
+	counter = counter + Ts_fast;
+	if (sync > 0 ) {
+		out = z;
+		counter = 0;
+
+	}
+	else {
+		corr = 1 - 0.11 * (Ts - Ts_fast)/Ts;
+		m2 = (zi - zii)/Ts;
+		m1 = (z - zi)/Ts;
+		m0 = m1 + (m1-m2);
+
+		out = z + counter * corr * m0;
+	}
+
+	if (counter >= Ts) {
+		counter = 0;
+	}
+	/*End code section*/"
+					output_terminals_dimensions = "inherit"
+					output_terminals_feedthrough = "True"
+					output_terminals_show_labels = "True"
+				}
+				[
+					position = 8216, 8952
+					hide_name = True
+					size = 48, 128
+				]
+
+				component "core/Unit Delay" "Unit Delay9" {
+				}
+				[
+					position = 7840, 9016
+					hide_name = True
+				]
+
+				component "core/Unit Delay" "Unit Delay10" {
+				}
+				[
+					position = 7952, 9080
+					hide_name = True
+				]
+
+				component "core/Constant" Constant21 {
+					execution_rate = "Tfst"
+					value = "Ts"
+				}
+				[
+					position = 8080, 9112
+					hide_name = True
+				]
+
+				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
+					bypass_flag = "True"
+					execution_rate = "Tfst"
+				}
+				[
+					position = 7952, 9016
+					hide_name = True
+					size = 32, 32
+				]
+
+				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass3" {
+					bypass_flag = "True"
+					execution_rate = "Tfst"
+				}
+				[
+					position = 8032, 9080
+					hide_name = True
+					size = 32, 32
+				]
+
+				component "core/Signal switch" "Signal switch28" {
+				}
+				[
+					position = 8416, 9040
+					hide_name = True
+					scale = 1, -1
+				]
+
+				component "core/Signal switch" "Signal switch29" {
+				}
+				[
+					position = 8512, 9008
+					hide_name = True
+					scale = 1, -1
+				]
+
+				component "core/Constant" Constant23 {
+					execution_rate = "Tfst"
+					value = "Tfast_en"
+				}
+				[
+					position = 8464, 9088
+					hide_name = True
+				]
+
+				component "core/Capacitor" C1 {
+					capacitance = "1/(1*Rsnb*2*np.pi*Freq)"
+				}
+				[
+					position = 7448, 8864
+				]
+
+				component "core/Constant" Constant28 {
+					execution_rate = "Tfst"
+					value = "Tfst"
+				}
+				[
+					position = 8032, 9144
+					hide_name = True
+				]
+
+				component "core/Kalman Filter Sync" "Kalman Filter Sync1" {
+					q_gain = "q_gain_k"
+					r_gain = "r_gain_k"
+					normalize = "False"
+				}
+				[
+					position = 7440, 8392
+					size = 96, 168
+				]
+
+				component "core/Product" Product28 {
+				}
+				[
+					position = 7840, 8336
+					hide_name = True
+				]
+
+				component "core/Product" Product29 {
+				}
+				[
+					position = 7840, 8400
+					hide_name = True
+				]
+
+				component "core/Sum" Sum18 {
+					signs = "++"
+				}
+				[
+					position = 7936, 8368
+					hide_name = True
+				]
+
+				component "core/Product" Product30 {
+					signs = "*/"
+				}
+				[
+					position = 8192, 8624
+					hide_name = True
+				]
+
+				component "core/Product" Product31 {
+				}
+				[
+					position = 8856, 8592
+					hide_name = True
+				]
+
+				component "core/Gain" Gain29 {
+					gain = "1/(Rsnb/15)"
+				}
+				[
+					position = 8888, 8640
+					hide_name = True
+				]
+
+				component "core/Sum" Sum19 {
+					signs = "+-"
+				}
+				[
+					position = 8968, 8600
+					hide_name = True
+				]
+
+				component "core/Signal switch" "Signal switch31" {
+					criterion = "ctrl >= threshold"
+				}
+				[
+					position = 8656, 8584
+					hide_name = True
+				]
+
+				component "core/Comparator" Comparator5 {
+				}
+				[
+					position = 8560, 8512
+					hide_name = True
+				]
+
+				component "core/Abs" Abs4 {
+				}
+				[
+					position = 8464, 8656
+					hide_name = True
+				]
+
+				component "core/Abs" Abs5 {
+				}
+				[
+					position = 8464, 8520
+					hide_name = True
+				]
+
+				component "core/Gain" Gain30 {
+					gain = "CPL_curr/(1000*kVLL*kVLL)"
+				}
+				[
+					position = 8192, 8560
+					hide_name = True
+				]
+
+				component "core/Gain" Gain31 {
+					gain = "0.5"
+				}
+				[
+					position = 8032, 8368
+					hide_name = True
+				]
+
+				component "core/Limit" Limit2 {
+					lower_limit = "1"
+				}
+				[
+					position = 8182, 8366
+					hide_name = True
+				]
+
+				component "core/Gain" Gain32 {
+					gain = "0.001"
+				}
+				[
+					position = 8072, 8632
+					hide_name = True
+				]
+
+				component "core/Sum" Sum21 {
+					signs = "++"
+				}
+				[
+					position = 8784, 8944
+					hide_name = True
+				]
+
+				component "core/Product" Product33 {
+					signs = "*/"
+				}
+				[
+					position = 8520, 8816
+					hide_name = True
+				]
+
+				component "core/Product" Product34 {
+				}
+				[
+					position = 9184, 8784
+					hide_name = True
+				]
+
+				component "core/Signal switch" "Signal switch32" {
+					criterion = "ctrl >= threshold"
+				}
+				[
+					position = 8984, 8776
+					hide_name = True
+				]
+
+				component "core/Comparator" Comparator6 {
+				}
+				[
+					position = 8888, 8720
+					hide_name = True
+				]
+
+				component "core/Abs" Abs6 {
+				}
+				[
+					position = 8792, 8816
+					hide_name = True
+				]
+
+				component "core/Abs" Abs7 {
+				}
+				[
+					position = 8792, 8728
+					hide_name = True
+				]
+
+				component "core/Gain" Gain35 {
+					gain = "CPL_curr/(1000*kVLL*kVLL)"
+				}
+				[
+					position = 8520, 8752
+					hide_name = True
+				]
+
+				component "core/Gain" Gain36 {
+					gain = "0.001"
+				}
+				[
+					position = 8400, 8824
+					hide_name = True
+				]
+
+				component "core/Gain" Gain37 {
+					gain = "-1"
+				}
+				[
+					position = 8336, 8784
+					hide_name = True
+				]
+
+				component "core/Gain" Gain39 {
+					gain = "2*np.pi"
+				}
+				[
+					position = 7592, 8504
+					hide_name = True
+				]
+
+				component "core/Sum" Sum24 {
+					signs = "++"
+				}
+				[
+					position = 8248, 8784
+					hide_name = True
+				]
+
+				component "core/Gain" Gain40 {
+					gain = "1/(1*Rsnb*2*np.pi*Freq)"
+				}
+				[
+					position = 8000, 8816
+					hide_name = True
+				]
+
+				component "core/Product" Product37 {
+				}
+				[
+					position = 8080, 8792
+					hide_name = True
+				]
+
+				component "core/Gain" Gain41 {
+					gain = "0.001"
+				}
+				[
+					position = 8160, 8792
+					hide_name = True
+				]
+
+				component "core/Constant" Constant29 {
+					execution_rate = "Tfst"
+					value = "Ts"
+				}
+				[
+					position = 8256, 9096
+					hide_name = True
+				]
+
+				component "core/Relational operator" "Relational operator1" {
+				}
+				[
+					position = 8376, 9104
+					hide_name = True
+				]
+
+				component "core/Constant" Constant30 {
+					execution_rate = "Tfst"
+					value = "Tfst"
+				}
+				[
+					position = 8256, 9128
+					hide_name = True
+				]
+
+				component "core/Unit Delay" "Unit Delay11" {
+				}
+				[
+					position = 8368, 8952
+					hide_name = True
+				]
+
+				component "core/Sum" Sum26 {
+					signs = "+-"
+				}
+				[
+					position = 8592, 8936
+					hide_name = True
+				]
+
+				component "core/Unit Delay" "Unit Delay12" {
+				}
+				[
+					position = 8432, 8952
+					hide_name = True
+				]
+
+				port P2 {
+					position = right:2
+					kind = pe
+				}
+				[
+					position = 7664, 8664
+					rotation = down
+				]
+
+				port P3 {
+					position = left:1
+					kind = pe
+				}
+				[
+					position = 7232, 8664
+				]
+
+				port P {
+					position = top:1
+					kind = sp
+					direction =  out
+					sp_type {
+						default = auto
+						readonly = True
+					}
+				}
+				[
+					position = 7184, 8472
+				]
+
+				port Q {
+					position = top:2
+					kind = sp
+					direction =  out
+					sp_type {
+						default = auto
+						readonly = True
+					}
+				}
+				[
+					position = 7184, 8536
+				]
+
+				tag Goto2 {
+					value = "kP"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 7264, 8472
+					size = 60, 20
+				]
+
+				tag Goto3 {
+					value = "kQ"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 7264, 8536
+					size = 60, 20
+				]
+
+				tag Goto4 {
+					value = "Va"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 7384, 9032
+					rotation = down
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag Goto6 {
+					value = "Va_rms_squared"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 8322, 8371
+					hide_name = True
+					size = 100, 20
+				]
+
+				tag Goto8 {
+					value = "Ia_load"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 8880, 8944
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From20 {
+					value = "Ia_load"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7179, 8626
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From21 {
+					value = "Va"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7264, 8392
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From22 {
+					value = "kP"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 8032, 8592
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From23 {
+					value = "Va_rms_squared"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7944, 8632
+					hide_name = True
+					size = 97, 20
+				]
+
+				tag Goto9 {
+					value = "sinwt"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 7592, 8328
+					size = 60, 20
+				]
+
+				tag Goto10 {
+					value = "coswt"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 7592, 8392
+					size = 60, 20
+				]
+
+				tag From25 {
+					value = "sinwt"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7688, 8328
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From26 {
+					value = "coswt"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7688, 8392
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From27 {
+					value = "sinwt"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 8720, 8600
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag Goto11 {
+					value = "iph_active"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 9072, 8600
+					size = 60, 20
+				]
+
+				tag From28 {
+					value = "iph_active"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7664, 8832
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From29 {
+					value = "kQ"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 8152, 8744
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag From30 {
+					value = "Va_rms_squared"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 8272, 8824
+					hide_name = True
+					size = 97, 20
+				]
+
+				tag From31 {
+					value = "coswt"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 9048, 8792
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag Goto12 {
+					value = "iph_reactive"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 9304, 8784
+					size = 60, 20
+				]
+
+				tag From32 {
+					value = "iph_reactive"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7664, 8784
+					hide_name = True
+					size = 60, 20
+				]
+
+				tag Goto13 {
+					value = "freqHz"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 7592, 8456
+					size = 60, 20
+				]
+
+				tag Goto14 {
+					value = "omega"
+					scope = local
+					kind = sp
+					direction = in
+				}
+				[
+					position = 7672, 8504
+					size = 60, 20
+				]
+
+				tag From34 {
+					value = "Va_rms_squared"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7936, 8776
+					hide_name = True
+					size = 97, 20
+				]
+
+				tag From35 {
+					value = "omega"
+					scope = local
+					kind = sp
+					direction = out
+				}
+				[
+					position = 7920, 8816
+					hide_name = True
+					size = 60, 20
+				]
+
+				junction Junction2 pe
+				[
+					position = 7552, 8664
+				]
+
+				junction Junction97 pe
+				[
+					position = 7328, 8664
+				]
+
+				junction Junction102 sp
+				[
+					position = 7760, 8952
+				]
+
+				junction Junction109 sp
+				[
+					position = 7904, 9016
+				]
+
+				junction Junction130 pe
+				[
+					position = 7328, 8768
+				]
+
+				junction Junction131 pe
+				[
+					position = 7552, 8768
+				]
+
+				junction Junction137 pe
+				[
+					position = 7552, 8864
+				]
+
+				junction Junction138 pe
+				[
+					position = 7328, 8864
+				]
+
+				junction Junction160 sp
+				[
+					position = 8128, 8632
+				]
+
+				junction Junction175 sp
+				[
+					position = 7784, 8392
+				]
+
+				junction Junction176 sp
+				[
+					position = 7792, 8328
+				]
+
+				junction Junction177 sp
+				[
+					position = 8800, 8600
+				]
+
+				junction Junction178 sp
+				[
+					position = 7904, 8952
+				]
+
+				junction Junction179 sp
+				[
+					position = 8168, 8928
+				]
+
+				junction Junction184 sp
+				[
+					position = 8456, 8824
+				]
+
+				junction Junction185 sp
+				[
+					position = 8648, 8816
+				]
+
+				junction Junction186 sp
+				[
+					position = 8728, 8760
+				]
+
+				junction Junction187 sp
+				[
+					position = 8320, 8624
+				]
+
+				junction Junction188 sp
+				[
+					position = 8400, 8568
+				]
+
+				junction Junction189 sp
+				[
+					position = 8128, 8592
+				]
+
+				junction Junction209 sp
+				[
+					position = 8278, 8559
+				]
+
+				junction Junction211 sp
+				[
+					position = 8590, 8753
+				]
+
+				junction Junction190 sp
+				[
+					position = 8432, 8784
+				]
+
+				junction Junction192 sp
+				[
+					position = 7528, 8456
+				]
+
+				junction Junction193 sp
+				[
+					position = 8216, 9024
+				]
+
+				junction Junction194 sp
+				[
+					position = 8288, 8952
+				]
+
+				junction Junction195 sp
+				[
+					position = 8288, 8952
+				]
+
+				connect P Goto2 as Connection532
+				connect Q Goto3 as Connection533
+				connect "Rate Transition with Bypass3.In" "Unit Delay10.out" as Connection615
+				connect "Rate Transition with Bypass2.Out" "C function1.zi" as Connection616
+				[
+					breakpoints = 8104, 9016; 8104, 8944
+				]
+				connect "Rate Transition with Bypass3.Out" "C function1.zii" as Connection617
+				[
+					breakpoints = 8120, 9080; 8120, 8960
+				]
+				connect "C function1.sync" "Edge Detection1.Out1" as Connection618
+				[
+					position = 0, 0
+				]
+				connect "Rate Transition with Bypass1.In" Junction102 as Connection622
+				[
+					position = 0, 0
+				]
+				connect Sum5.out Junction102 as Connection649
+				[
+					position = 0, 0
+				]
+				connect Constant23.out "Signal switch29.in2" as Connection653
+				connect "Signal switch28.out" "Signal switch29.in" as Connection660
+				[
+					position = 0, 0
+				]
+				connect Isp1.p_node Junction2 as Connection670
+				[
+					position = 0, 0
+				]
+				connect Isp1.n_node Junction97 as Connection669
+				[
+					position = 0, 0
+				]
+				connect "Rate Transition with Bypass2.In" Junction109 as Connection684
+				connect "Unit Delay10.in" Junction109 as Connection686
+				connect Constant28.out "C function1.Ts_fast" as Connection837
+				[
+					breakpoints = 8152, 9144; 8152, 8992
+				]
+				connect R1.p_node Junction130 as Connection838
+				connect Junction130 Junction97 as Connection839
+				[
+					position = 0, 0
+				]
+				connect Junction131 Junction2 as Connection842
+				[
+					position = 0, 0
+				]
+				connect R1.n_node Junction131 as Connection843
+				connect C1.n_node Junction137 as Connection896
+				connect Junction137 Junction131 as Connection897
+				connect C1.p_node Junction138 as Connection900
+				connect Junction138 Junction130 as Connection901
+				connect P2 Junction2 as Connection903
+				connect P3 Junction97 as Connection907
+				connect Goto4 Va.out as Connection914
+				connect From20 Product38.in1 as Connection966
+				connect Comparator7.out Product38.in
+				connect Clock1.out Comparator7.in1
+				connect Constant1.out Comparator7.in2
+				connect Product38.out Isp1.in
+				connect Sum18.in Product28.out as Connection976
+				connect Product29.out Sum18.in1 as Connection977
+				connect Junction138 Va.p_node as Connection992
+				[
+					breakpoints = 7328, 8864; 7328, 8968
+				]
+				connect Va.n_node Junction137 as Connection993
+				[
+					breakpoints = 7552, 8968
+				]
+				connect Product31.out Sum19.in as Connection994
+				connect Gain29.out Sum19.in1 as Connection995
+				connect Gain30.out Junction209 as Connection1008
+				connect Product31.in "Signal switch31.out" as Connection1021
+				connect Gain31.in Sum18.out as Connection1035
+				connect From23 Gain32.in as Connection1043
+				connect Gain32.out Junction160 as Connection1045
+				connect Junction160 Product30.in1 as Connection1046
+				connect From26 Junction175 as Connection1112
+				connect Junction175 Product29.in as Connection1113
+				connect Product29.in1 Junction175 as Connection1114
+				connect Product28.in Junction176 as Connection1117
+				connect Junction176 Product28.in1 as Connection1118
+				[
+					breakpoints = 7792, 8328
+				]
+				connect From25 Junction176 as Connection1119
+				connect Goto9 "Kalman Filter Sync1.sin(wt)" as Connection1124
+				connect "Kalman Filter Sync1.cos(wt)" Goto10 as Connection1125
+				connect From27 Junction177 as Connection1127
+				connect Junction177 Product31.in1 as Connection1128
+				connect Goto11 Sum19.out as Connection1130
+				connect "Rate Transition with Bypass1.Out" Junction178 as Connection1132
+				[
+					breakpoints = 7880, 8952
+				]
+				connect "Edge Detection1.In1" Junction178 as Connection1134
+				connect "C function1.z" Junction179 as Connection1140
+				connect Junction179 Junction178 as Connection1141
+				[
+					breakpoints = 8000, 8952
+				]
+				connect Constant21.out "C function1.Ts" as Connection1146
+				[
+					breakpoints = 8136, 9112; 8136, 8976
+				]
+				connect Gain35.out Junction211 as Connection1153
+				connect Product34.in "Signal switch32.out" as Connection1159
+				connect From30 Gain36.in as Connection1163
+				connect Gain36.out Junction184 as Connection1164
+				connect Junction184 Product33.in1 as Connection1165
+				connect From32 Sum5.in1 as Connection1180
+				connect "Kalman Filter Sync1.Vgrid" From21 as Connection1181
+				[
+					breakpoints = 7320, 8392
+				]
+				connect Gain31.out Limit2.in as Connection1182
+				connect Limit2.out Goto6 as Connection2202
+				connect Gain29.in Junction177 as Connection1183
+				[
+					breakpoints = 8800, 8640
+				]
+				connect Sum21.out Goto8 as Connection1186
+				[
+					breakpoints = 8832, 8944
+				]
+				connect Comparator6.out "Signal switch32.in2" as Connection1195
+				connect Abs6.out Comparator6.in1 as Connection1196
+				connect Abs7.out Comparator6.in2 as Connection1197
+				connect Product33.out Junction185 as Connection1199
+				[
+					breakpoints = 8608, 8816
+				]
+				connect Junction185 Abs6.in as Connection1200
+				[
+					breakpoints = 8648, 8816
+				]
+				connect "Signal switch32.in1" Junction185 as Connection1201
+				connect Abs7.in Junction211 as Connection1202
+				connect "Signal switch32.in" Junction211 as Connection1204
+				connect Comparator5.out "Signal switch31.in2" as Connection1209
+				connect Comparator5.in1 Abs4.out as Connection1210
+				[
+					breakpoints = 8528, 8504; 8528, 8624
+				]
+				connect Product30.out Junction187 as Connection1211
+				connect Junction187 Abs4.in as Connection1212
+				[
+					breakpoints = 8320, 8624
+				]
+				connect "Signal switch31.in1" Junction187 as Connection1213
+				connect Abs5.in Junction209 as Connection1215
+				connect "Signal switch31.in" Junction209 as Connection1217
+				connect Abs5.out Comparator5.in2 as Connection1218
+				connect From28 Sum5.in as Connection1219
+				connect Product30.in Junction189 as Connection1221
+				[
+					breakpoints = 8152, 8592
+				]
+				connect Junction189 From22 as Connection1222
+				connect Gain30.in Junction189 as Connection1223
+				connect Product33.in Junction190 as Connection1224
+				[
+					breakpoints = 8480, 8784
+				]
+				connect Junction190 Gain37.out as Connection1225
+				connect Gain35.in Junction190 as Connection1226
+				connect "Kalman Filter Sync1.f (Hz)" Junction192 as Connection1234
+				connect Junction192 Goto13 as Connection1235
+				connect Gain39.in Junction192 as Connection1236
+				connect Gain39.out Goto14 as Connection1237
+				connect From29 Sum24.in as Connection1244
+				connect Sum24.out Gain37.in as Connection1245
+				connect From35 Gain40.in as Connection1246
+				connect Gain40.out Product37.in1 as Connection1247
+				connect Product37.in From34 as Connection1248
+				connect Product34.in1 From31 as Connection1250
+				[
+					breakpoints = 9128, 8792; 9096, 8792
+				]
+				connect Product34.out Goto12 as Connection1251
+				connect Product37.out Gain41.in as Connection1252
+				connect Gain41.out Sum24.in1 as Connection1253
+				connect "Relational operator1.in" Constant29.out as Connection1273
+				connect Constant30.out "Relational operator1.in1" as Connection1274
+				connect "Relational operator1.out" "Signal switch28.in2" as Connection1275
+				connect Junction193 Junction179 as Connection1278
+				[
+					breakpoints = 8168, 9024
+				]
+				connect "Signal switch28.in" Junction193 as Connection1279
+				connect "Signal switch29.in1" Junction193 as Connection1280
+				[
+					breakpoints = 8296, 8992; 8256, 9024
+				]
+				connect "Unit Delay9.in" Junction102 as Connection1284
+				[
+					breakpoints = 7760, 9008
+				]
+				connect "Unit Delay9.out" Junction109 as Connection1285
+				[
+					breakpoints = 7864, 9016
+				]
+				connect "Unit Delay12.in" "Unit Delay11.out" as Connection1301
+				connect "Unit Delay12.out" Sum26.in1 as Connection1302
+				connect Sum21.in1 "Signal switch29.out" as Connection1304
+				[
+					breakpoints = 8656, 8952; 8656, 9008
+				]
+				connect "C function1.out" Junction194 as Connection1305
+				[
+					breakpoints = 8264, 8952
+				]
+				connect Junction194 "Signal switch28.in1" as Connection1306
+				[
+					breakpoints = 8288, 8952
+				]
+				connect "Unit Delay11.in" Junction195 as Connection1308
+				connect Junction195 Junction194 as Connection1309
+				connect Sum26.in Junction195 as Connection1310
+				connect Sum26.out Sum21.in as Connection1311
 
                 mask {
                     description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
@@ -27169,15 +26818,35 @@ if (counter >= Ts) {
                         default_value = "Ts"
                         unit = "s"
                         group = "Execution rate:2"
+
                     }
 
                     Fast_con {
                         label = "Fast execution rate output conditioning"
                         widget = checkbox
                         type = bool
-                        default_value = "True"
+                        default_value = "False"
                         group = "Execution rate"
                         no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
+
+                            if new_value and not Ts_mask == Tfst_mask:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "True")
+
+                        ENDCODE
                     }
 
                     Tfst {
@@ -27187,6 +26856,7 @@ if (counter >= Ts) {
                         default_value = "Tfast"
                         unit = "s"
                         group = "Execution rate"
+
                     }
 
                     Tfast_en {
@@ -27305,6 +26975,22 @@ if (counter >= Ts) {
                         group = "Load Parameters"
                     }
 
+                    q_gain_k {
+                        label = "Kalman filter Q gain"
+                        widget = edit
+                        type = generic
+                        default_value = "q_gain_k"
+                        group = "Load Parameters"
+                    }
+
+                    r_gain_k {
+                        label = "Kalman filter R gain"
+                        widget = edit
+                        type = generic
+                        default_value = "r_gain_k"
+                        group = "Load Parameters"
+                    }
+
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
@@ -27349,6 +27035,8 @@ if (counter >= Ts) {
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
                         CPL_curr = mdl.get_property_value(mdl.prop(item_handle, "CPL_curr"))
+                        q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                        r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                         # HEADER STOP
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
@@ -27365,7 +27053,7 @@ if (counter >= Ts) {
                         if SS==0:
                             Rsnb = 100000
                         else:
-                            Rsnb = 30 * (VLL*VLL/(SS))
+                            Rsnb = 30 * (VLL*VLL/(1.66*SS))
 
                         if Fast_con:
                             Tfast_en = 1
@@ -27429,6 +27117,8 @@ if (counter >= Ts) {
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
 
                         mdl.set_property_value(mdl.prop(item_handle, "CPL_curr"), CPL_curr)
+                        mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                        mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                     ENDCODE
                 }
             }

@@ -409,10 +409,6 @@ model "dss_generator_static" {
         connect "Generator Control1.del_Tm" Junction38 as Connection1092
     }
 
-    logically_deleted {
-
-    }
-
     default {
         gen_gain {
             gain = "1"
