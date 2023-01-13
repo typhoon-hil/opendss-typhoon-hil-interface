@@ -1,0 +1,237 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Capacitor Bank" {
+            layout = static
+            label = "C"
+            component "core/Capacitor" Ca {
+                capacitance = "C"
+            }
+            [
+                position = 8112, 8096
+                rotation = down
+            ]
+
+            component "core/Capacitor" Cb {
+                capacitance = "C"
+            }
+            [
+                position = 8112, 8192
+                rotation = down
+            ]
+
+            component "core/Capacitor" Cc {
+                capacitance = "C"
+            }
+            [
+                position = 8112, 8288
+                rotation = down
+            ]
+
+            port A1 {
+                position = -32, -32
+                kind = pe
+            }
+            [
+                position = 8392, 8096
+                rotation = down
+            ]
+
+            port B1 {
+                position = 0, -32
+                kind = pe
+            }
+            [
+                position = 8392, 8192
+                rotation = down
+            ]
+
+            port C1 {
+                position = 32, -32
+                kind = pe
+            }
+            [
+                position = 8392, 8288
+                rotation = down
+            ]
+
+            junction j pe
+            [
+                position = 7992, 8192
+            ]
+
+            connect Ca.p_node A1 as Connection26
+            connect j Ca.n_node as Connection27
+            connect j Cb.n_node as Connection28
+            connect j Cc.n_node as Connection29
+            connect B1 Cb.p_node as b1_conn
+            connect Cc.p_node C1 as Connection30
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br>Three-Phase Capacitor Bank.</br></p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=171"
+
+                tp_connection {
+                    label = "Connection"
+                    widget = combo
+                    combo_values = "Y", "Y-grounded", "Δ", "Series"
+                    type = string
+                    default_value = "Y"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.redo_connections(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if old_value == new_value:
+                            comp_script.update_frequency_property(mdl, container_handle, init=True)
+                        else:
+                            comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+                }
+
+                BaseFreq {
+                    label = "Base frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    nonvisible
+                }
+
+                phases {
+                    label = "Phases"
+                    widget = combo
+                    combo_values = "3", "2", "1"
+                    type = string
+                    default_value = "3"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.redo_connections(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                Kv {
+                    label = "kV"
+                    widget = edit
+                    type = generic
+                    default_value = "12.47"
+                    unit = "kV"
+                }
+
+                Kvar {
+                    label = "kVar"
+                    widget = edit
+                    type = generic
+                    default_value = "600"
+                    unit = "kVAr"
+                }
+
+                C {
+                    label = "C"
+                    widget = edit
+                    type = generic
+                    default_value = "1e-6"
+                    nonvisible
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+                    gui_scripts_path = os.path.join(os.path.realpath(lib_path), "gui_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+                    if not gui_scripts_path in sys.path:
+                        sys.path.append(gui_scripts_path)
+
+                    import comp_capacitor as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_frequency_property(mdl, item_handle)
+                    comp_script.calculate_c(mdl, item_handle)
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4472, 4320
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+    }
+
+}

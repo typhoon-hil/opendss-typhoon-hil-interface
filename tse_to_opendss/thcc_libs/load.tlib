@@ -1,0 +1,1024 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem Load {
+            layout = static
+            component "OpenDSS/CIL" CIL {
+                VAB = "Vn_3ph_CPL*1000"
+                VAn = "Vn_3ph_CPL*1000/(3**0.5)"
+                VBC = "Vn_3ph_CPL*1000"
+                VBn = "Vn_3ph_CPL*1000/(3**0.5)"
+                VCA = "Vn_3ph_CPL*1000"
+                VCn = "Vn_3ph_CPL*1000/(3**0.5)"
+                pf_modeA = "Lead"
+                pf_modeB = "Lead"
+                pf_modeC = "Lead"
+                pf_mode_3ph = "Lead"
+            }
+            [
+                position = 7920, 8208
+                size = 96, 64
+            ]
+
+            port A1 {
+                position = -30, -32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7800, 7864
+                rotation = right
+            ]
+
+            port B1 {
+                position = 0.0, -32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7920, 7864
+                rotation = right
+            ]
+
+            port C1 {
+                position = 30.0, -32.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8056, 7864
+                rotation = right
+            ]
+
+            port N1 {
+                position = 0.0, 30.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7920, 8384
+                rotation = left
+            ]
+
+            tag TagA1 {
+                value = "A1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7800, 7944
+                rotation = left
+                size = 60, 20
+            ]
+
+            tag TagB1 {
+                value = "B1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7920, 7944
+                rotation = left
+                size = 60, 20
+            ]
+
+            tag TagC1 {
+                value = "C1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8056, 7944
+                rotation = left
+                size = 60, 20
+            ]
+
+            tag TagA2 {
+                value = "A1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7856, 8088
+                rotation = right
+                size = 60, 20
+            ]
+
+            tag TagB2 {
+                value = "B1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7920, 8088
+                rotation = right
+                size = 60, 20
+            ]
+
+            tag TagC2 {
+                value = "C1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7984, 8088
+                rotation = right
+                size = 60, 20
+            ]
+
+            junction JN pe
+            [
+                position = 7920, 8328
+            ]
+
+            connect A1 TagA1 as ConnA1P
+            connect B1 TagB1 as ConnB1P
+            connect C1 TagC1 as ConnC1P
+            connect JN N1 as Conn_N0
+            connect CIL.A1 TagA2 as Connection1
+            connect CIL.N JN as Conn_AN
+            connect CIL.B1 TagB2 as Connection2
+            connect CIL.C1 TagC2 as Connection3
+
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            pf_mode_3ph = "Lag"
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Three-phase/Single-phase constant-impedance/constant-power Load component.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=192"
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "General:1"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if old_value == new_value:
+                            comp_script.update_frequency_property(mdl, container_handle, init=True)
+                        else:
+                            comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_frequency_prop(mdl, container_handle)
+                    ENDCODE
+                }
+
+                fn {
+                    label = "Nominal frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    group = "General:1"
+                    nonvisible
+                }
+
+                conn_type {
+                    label = "Connection type"
+                    widget = combo
+                    combo_values = "Y", "Δ"
+                    type = string
+                    default_value = "Y"
+                    group = "General"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
+
+                        ports = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.connections_dynamics(mdl, container_handle, ports)
+
+                        mdl.refresh_icon(container_handle)
+
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                ground_connected {
+                    label = "Ground-connected"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "General"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        mdl.refresh_icon(container_handle)
+
+                        comp_script = return_comp_script(mdl, container_handle)
+                        ports = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.connections_gnd_dynamics(mdl, container_handle, ports)
+                    ENDCODE
+                }
+
+                phases {
+                    label = "Number of Phases"
+                    widget = combo
+                    combo_values = "3", "1"
+                    type = string
+                    default_value = "3"
+                    group = "General"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        comp_script.phase_value_edited_fnc(mdl, container_handle, new_value)
+
+                        ports = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.connections_phases_dynamics(mdl, container_handle, ports)
+
+
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.phase_value_edited_fnc(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                Vn_3ph {
+                    label = "Nominal line voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "kV"
+                    group = "Load Parameters:2"
+                }
+
+                Sn_3ph {
+                    label = "Total Nominal power"
+                    widget = edit
+                    type = generic
+                    default_value = "600"
+                    unit = "kVA"
+                    group = "Load Parameters"
+                }
+
+                pf_mode_3ph {
+                    label = "Power factor mode"
+                    widget = combo
+                    combo_values = "Lag", "Lead", "Unit"
+                    type = string
+                    default_value = "Unit"
+                    group = "Load Parameters"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
+
+                        if new_value == "Unit":
+                            mdl.disable_property(mdl.prop(container_handle, "pf_3ph"))
+                        else:
+                            mdl.enable_property(mdl.prop(container_handle, "pf_3ph"))
+
+                        comp_script.set_pf_mode(mdl, container_handle, new_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        if new_value == "Unit":
+                            mdl.disable_property(mdl.prop(container_handle, "pf_3ph"))
+                        else:
+                            mdl.enable_property(mdl.prop(container_handle, "pf_3ph"))
+                    ENDCODE
+                }
+
+                pf_3ph {
+                    label = "Power factor"
+                    widget = edit
+                    type = generic
+                    default_value = "0.9"
+                    group = "Load Parameters"
+                }
+
+                pf_3ph_set {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                load_model {
+                    label = "Load Model"
+                    widget = combo
+                    combo_values = "Constant Impedance", "Constant Power"
+                    type = string
+                    default_value = "Constant Impedance"
+                    group = "Load Parameters"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        if new_value == "Constant Power":
+                            mdl.info("Warning: Load Constant Power mode demands grounding for correct HIL simulation.")
+
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
+                        comp_script.set_load_model(mdl, container_handle, new_value)
+
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                model {
+                    widget = edit
+                    type = generic
+                    default_value = "2"
+                    nonvisible
+                }
+
+                Pow_ref_s {
+                    label = "CPL Power reference source"
+                    widget = combo
+                    combo_values = "Fixed", "External input", "Time Series"
+                    type = string
+                    default_value = "Fixed"
+                    group = "CPL Parameters:3"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        ports = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.connections_pow_ref_dynamics(mdl, container_handle, ports)
+                    ENDCODE
+                }
+
+                Ts {
+                    label = "CPL Execution rate"
+                    widget = edit
+                    type = generic
+                    default_value = "300e-6"
+                    unit = "s"
+                    group = "CPL Parameters"
+                    disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Ts_mask == Tfst_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
+                }
+
+                Tfast {
+                    label = "CPL Fast Execution rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                    unit = "s"
+                    group = "CPL Parameters"
+                    disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Tfst_mask == Ts_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
+                }
+
+                CPL_LMT {
+                    label = "CPL Current limit"
+                    widget = edit
+                    type = generic
+                    default_value = "2"
+                    unit = "pu"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                q_gain_k {
+                    label = "CPL Kalman Filter state matrix gain Q"
+                    widget = edit
+                    type = generic
+                    default_value = "0.5"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                r_gain_k {
+                    label = "CPL Kalman Filter measurement gain R"
+                    widget = edit
+                    type = generic
+                    default_value = "20"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                Vn_3ph_CPL {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                P_CPL {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                Q_CPL {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                kV {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                pf {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                conn {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                kVA {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                basefreq {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                load_loadshape {
+                    label = "LoadShape object"
+                    widget = button
+                    type = string
+                    default_value = "Choose"
+                    group = "Time Series Settings:4"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_loadshape(mdl, container_handle)
+                    ENDCODE
+                }
+
+                loadshape_name {
+                    label = "LoadShape name"
+                    widget = edit
+                    type = generic
+                    default_value = "Default"
+                    group = "Time Series Settings:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file {
+                    label = "From CSV file"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "Time Series Settings:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                useactual {
+                    label = "Actual load value"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "Time Series Settings:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file_path {
+                    label = "LoadShape from file - path"
+                    widget = edit
+                    type = generic
+                    default_value = ""
+                    group = "Time Series Settings:4"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_column {
+                    label = "LoadShape from file - column"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Time Series Settings:4"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_header {
+                    label = "LoadShape from file - header"
+                    widget = checkbox
+                    type = generic
+                    default_value = "True"
+                    group = "Time Series Settings:4"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape {
+                    label = "LoadShape points"
+                    widget = edit
+                    type = generic
+                    default_value = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+                    group = "Time Series Settings:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_int {
+                    label = "LoadShape interval"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Time Series Settings:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                S_Ts {
+                    label = "Power profile"
+                    widget = edit
+                    type = generic
+                    default_value = "[0.2,0.28,0.5,0.32,0.2]"
+                    unit = "pu"
+                    group = "Time Series Settings:4"
+                    nonvisible
+                }
+
+                Q_Ts {
+                    label = "Reactive power profile"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "kVAR"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                T_mode {
+                    label = "Loadshape input mode"
+                    widget = combo
+                    combo_values = "Loadshape index", "Time"
+                    type = string
+                    default_value = "Time"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        if new_value == "Time":
+                            mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
+                        else:
+                            mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+                    ENDCODE
+                }
+
+                S_Ts_mode {
+                    label = "Power Profile mode"
+                    widget = combo
+                    combo_values = "Manual input"
+                    type = string
+                    default_value = "Manual input"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        ports = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.connections_ts_mode_dynamics(mdl, container_handle, ports)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        if new_value == "Manual input":
+                            mdl.disable_property(mdl.prop(container_handle, "T_Ts_max"))
+                            mdl.disable_property(mdl.prop(container_handle, "del_Ts"))
+                            mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
+                        else:
+                            mdl.enable_property(mdl.prop(container_handle, "T_Ts_max"))
+                            mdl.enable_property(mdl.prop(container_handle, "del_Ts"))
+                            mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+                    ENDCODE
+                }
+
+                T_Ts {
+                    label = "Loadshape time range"
+                    widget = edit
+                    type = generic
+                    default_value = "[0, 6, 12, 18, 24]"
+                    unit = "h"
+                    group = "Time Series Settings"
+                    disabled
+                }
+
+                timespan {
+                    label = "Loadshape time span"
+                    widget = combo
+                    combo_values =  "Daily", "Yearly"
+                    type = string
+                    default_value = "Daily"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                T_Ts_internal {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                dssT {
+                    label = "OpenDSS time interval"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "h"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                dssnpts {
+                    widget = edit
+                    type = generic
+                    default_value = "5"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                T_Ts_max {
+                    label = "Power profile loop cycle"
+                    widget = edit
+                    type = generic
+                    default_value = "10"
+                    unit = "s"
+                    group = "Time Series Settings"
+                    nonvisible
+                    disabled
+                }
+
+                del_Ts {
+                    label = "Profile start delay"
+                    widget = edit
+                    type = generic
+                    default_value = "20"
+                    unit = "s"
+                    group = "Time Series Settings"
+                    nonvisible
+                    disabled
+                }
+
+                Slen {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                T_lim_low {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                T_lim_high {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                Ts_switch {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    nonvisible
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.read_loadshape_from_json(mdl, item_handle)
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.restore_all_loads_points(mdl, item_handle)
+
+                    # HEADER START
+                    global_basefreq = mdl.get_property_value(mdl.prop(item_handle, "global_basefreq"))
+                    fn = mdl.get_property_value(mdl.prop(item_handle, "fn"))
+                    conn_type = mdl.get_property_value(mdl.prop(item_handle, "conn_type"))
+                    ground_connected = mdl.get_property_value(mdl.prop(item_handle, "ground_connected"))
+                    phases = mdl.get_property_value(mdl.prop(item_handle, "phases"))
+                    Vn_3ph = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph"))
+                    Sn_3ph = mdl.get_property_value(mdl.prop(item_handle, "Sn_3ph"))
+                    pf_mode_3ph = mdl.get_property_value(mdl.prop(item_handle, "pf_mode_3ph"))
+                    pf_3ph = mdl.get_property_value(mdl.prop(item_handle, "pf_3ph"))
+                    pf_3ph_set = mdl.get_property_value(mdl.prop(item_handle, "pf_3ph_set"))
+                    load_model = mdl.get_property_value(mdl.prop(item_handle, "load_model"))
+                    model = mdl.get_property_value(mdl.prop(item_handle, "model"))
+                    Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
+                    Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                    Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
+                    CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
+                    q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                    r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
+                    Vn_3ph_CPL = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"))
+                    P_CPL = mdl.get_property_value(mdl.prop(item_handle, "P_CPL"))
+                    Q_CPL = mdl.get_property_value(mdl.prop(item_handle, "Q_CPL"))
+                    kV = mdl.get_property_value(mdl.prop(item_handle, "kV"))
+                    pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
+                    conn = mdl.get_property_value(mdl.prop(item_handle, "conn"))
+                    kVA = mdl.get_property_value(mdl.prop(item_handle, "kVA"))
+                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    load_loadshape = mdl.get_property_value(mdl.prop(item_handle, "load_loadshape"))
+                    loadshape_name = mdl.get_property_value(mdl.prop(item_handle, "loadshape_name"))
+                    loadshape = mdl.get_property_value(mdl.prop(item_handle, "loadshape"))
+                    loadshape_int = mdl.get_property_value(mdl.prop(item_handle, "loadshape_int"))
+                    S_Ts = mdl.get_property_value(mdl.prop(item_handle, "S_Ts"))
+                    Q_Ts = mdl.get_property_value(mdl.prop(item_handle, "Q_Ts"))
+                    T_mode = mdl.get_property_value(mdl.prop(item_handle, "T_mode"))
+                    S_Ts_mode = mdl.get_property_value(mdl.prop(item_handle, "S_Ts_mode"))
+                    T_Ts = mdl.get_property_value(mdl.prop(item_handle, "T_Ts"))
+                    T_Ts_internal = mdl.get_property_value(mdl.prop(item_handle, "T_Ts_internal"))
+                    dssT = mdl.get_property_value(mdl.prop(item_handle, "dssT"))
+                    dssnpts = mdl.get_property_value(mdl.prop(item_handle, "dssnpts"))
+                    T_Ts_max = mdl.get_property_value(mdl.prop(item_handle, "T_Ts_max"))
+                    del_Ts = mdl.get_property_value(mdl.prop(item_handle, "del_Ts"))
+                    Slen = mdl.get_property_value(mdl.prop(item_handle, "Slen"))
+                    T_lim_low = mdl.get_property_value(mdl.prop(item_handle, "T_lim_low"))
+                    T_lim_high = mdl.get_property_value(mdl.prop(item_handle, "T_lim_high"))
+                    Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
+                    enable_monitoring = mdl.get_property_value(mdl.prop(item_handle, "enable_monitoring"))
+                    # HEADER STOP
+                    from typhoon.api.schematic_editor.const import ITEM_COMPONENT
+                    import numpy
+                    import math
+
+                    basefreq = fn
+                    kVA = Sn_3ph
+
+                    if (conn_type == 'Δ'):
+                        conn = "delta"
+                    else:
+                        conn = "wye"
+
+
+                    if pf_mode_3ph == "Unit":
+                        pf = 1.0
+                        P_CPL = Sn_3ph
+                        Q_CPL = 0
+                        pf_3ph_set = 0.99
+                    elif pf_mode_3ph == "Lag":
+                        pf = pf_3ph
+                        P_CPL = Sn_3ph * pf
+                        Q_CPL = Sn_3ph * ((1 - pf*pf)**0.5)
+                        pf_3ph_set = pf_3ph
+                    else:
+                        pf = -1 * pf_3ph
+                        P_CPL = Sn_3ph * pf
+                        Q_CPL = -Sn_3ph * ((1 - pf*pf)**0.5)
+                        pf_3ph_set = pf_3ph
+
+
+
+                    if phases == "1":
+                        if ground_connected:
+                            kV = (Vn_3ph/(1))/1
+                            Vn_3ph_CPL = kV/(3**0.5)
+                        else:
+                            kV = Vn_3ph
+                            Vn_3ph_CPL = kV
+                    else:
+                        kV = Vn_3ph
+                        Vn_3ph_CPL = kV
+
+                    dssnpts = len(S_Ts)
+
+
+
+
+
+                    if load_model == "Constant Impedance":
+                        model = 2
+                    elif load_model == "Constant Power":
+                        model = 1
+                    else:
+                        model = 2
+
+
+                    S_Ts = loadshape
+                    dssT = loadshape_int
+                    Slen = len(S_Ts)
+
+                    if T_mode == "Loadshape index":
+                        T_Ts_internal = [0] * Slen
+                        S_vec1 = [0] * Slen
+                        idxS = 0
+                        for S_val in S_vec1:
+                            T_Ts_internal[idxS] = idxS
+                            idxS += 1
+                        T_lim_low = T_Ts_internal[0]
+                        T_lim_high = T_Ts_internal[Slen-1]
+                    elif T_mode == "Time":
+                        T_Ts_internal = [0] * Slen
+                        S_vec1 = [0] * Slen
+                        idxS = 0
+                        for T_val in T_Ts:
+                            T_Ts_internal[idxS] = T_val
+                            idxS += 1
+                        T_lim_low = T_Ts[0]
+                        T_lim_high = T_Ts[len(T_Ts)-1]
+                    else:
+                        T_Ts_internal = [0] * Slen
+                        S_vec1 = [0] * Slen
+                        idxS = 0
+                        for S_val in S_vec1:
+                            T_Ts_internal[idxS] = idxS
+                            idxS += 1
+                        T_lim_low = T_Ts_internal[0]
+                        T_lim_high = T_Ts_internal[Slen-1]
+
+
+
+                    if T_mode == "Loadshape index":
+                        Ts_switch = 0
+                    elif T_mode == "Time":
+                        Ts_switch = 1
+                    else:
+                        Ts_switch = 0
+
+
+                    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+                    mdl.set_property_value(mdl.prop(item_handle, "fn"), fn)
+                    mdl.set_property_value(mdl.prop(item_handle, "ground_connected"), ground_connected)
+                    mdl.set_property_value(mdl.prop(item_handle, "kVA"), kVA)
+                    mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph"), Vn_3ph)
+                    mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"), Vn_3ph_CPL)
+                    mdl.set_property_value(mdl.prop(item_handle, "P_CPL"), P_CPL)
+                    mdl.set_property_value(mdl.prop(item_handle, "Q_CPL"), Q_CPL)
+                    mdl.set_property_value(mdl.prop(item_handle, "conn"), conn)
+                    mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
+                    mdl.set_property_value(mdl.prop(item_handle, "pf_mode_3ph"), pf_mode_3ph)
+                    mdl.set_property_value(mdl.prop(item_handle, "pf_3ph"), pf_3ph)
+                    mdl.set_property_value(mdl.prop(item_handle, "pf_3ph_set"), pf_3ph_set)
+                    mdl.set_property_value(mdl.prop(item_handle, "phases"), phases)
+                    mdl.set_property_value(mdl.prop(item_handle, "kV"), kV)
+                    mdl.set_property_value(mdl.prop(item_handle, "load_model"), load_model)
+                    mdl.set_property_value(mdl.prop(item_handle, "model"), model)
+                    mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
+                    mdl.set_property_value(mdl.prop(item_handle, "Sn_3ph"), Sn_3ph)
+
+                    mdl.set_property_value(mdl.prop(item_handle, "Tfast"), Tfast)
+                    mdl.set_property_value(mdl.prop(item_handle, "CPL_LMT"), CPL_LMT)
+                    mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                    mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
+                    mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), S_Ts)
+                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), T_Ts_internal)
+                    mdl.set_property_value(mdl.prop(item_handle, "Slen"), Slen)
+                    mdl.set_property_value(mdl.prop(item_handle, "dssnpts"), dssnpts)
+                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_low"), T_lim_low)
+                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_high"), T_lim_high)
+                    mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), Ts_switch)
+
+                    mdl.set_property_value(mdl.prop(item_handle, "loadshape"), loadshape)
+                    mdl.set_property_value(mdl.prop(item_handle, "loadshape_int"), loadshape_int)
+                    mdl.set_property_value(mdl.prop(item_handle, "Sn_3ph"), Sn_3ph)
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+
+                    import comp_load as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+                ENDCODE
+            }
+        }
+        [
+            position = 5328, 4256
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+    }
+
+}
+

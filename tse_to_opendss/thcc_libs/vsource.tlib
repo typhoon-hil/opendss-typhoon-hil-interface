@@ -1,0 +1,313 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem Vsource {
+            layout = static
+            label = "V"
+            component "core/Voltage Source" Va {
+                init_frequency = "Frequency"
+                init_phase = "Angle - 0"
+                init_rms_value = "round(basekv * 1000 * pu/ np.sqrt(3), 8)"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8096
+                rotation = down
+            ]
+
+            component "core/Voltage Source" Vb {
+                init_frequency = "Frequency"
+                init_phase = "Angle - 120"
+                init_rms_value = "round(basekv * 1000 * pu/ np.sqrt(3), 8)"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8192
+                rotation = down
+            ]
+
+            component "core/Voltage Source" Vc {
+                init_frequency = "Frequency"
+                init_phase = "Angle - 240"
+                init_rms_value = "round(basekv * 1000 * pu/ np.sqrt(3), 8)"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8288
+                rotation = down
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 8000, 8400
+            ]
+
+            component "core/Transmission Line" TL1 {
+                Frequency = "60"
+                L_sequence_metric = "[[x0 / 2 / np.pi / Frequency, 0, 0], [0, x1 / 2 / np.pi / Frequency, 0], [0, 0, x1 / 2 / np.pi / Frequency]]"
+                Length_metric = "1"
+                R_sequence_metric = "[[r0, 0, 0], [0, r1, 0], [0, 0, r1]]"
+                model_def = "Sequence"
+                unit_sys = "metric"
+            }
+            [
+                position = 8304, 8192
+                size = 256, 72
+            ]
+
+            port A1 {
+                position = 32.0, -32.0
+                kind = pe
+            }
+            [
+                position = 8496, 8096
+                rotation = down
+            ]
+
+            port B1 {
+                position = 32.0, 0.0
+                kind = pe
+            }
+            [
+                position = 8496, 8192
+                rotation = down
+            ]
+
+            port C1 {
+                position = 32.0, 32.0
+                kind = pe
+            }
+            [
+                position = 8496, 8288
+                rotation = down
+            ]
+
+            connect Vb.p_node TL1.b_in as Connection25
+            connect Va.p_node TL1.a_in as Connection26
+            connect Vc.p_node TL1.c_in as Connection27
+            connect TL1.a_out A1 as Connection28
+            connect B1 TL1.b_out as Connection29
+            connect TL1.c_out C1 as Connection30
+            connect gnd1.node Va.n_node as Connection31
+            connect Vc.n_node gnd1.node as Connection32
+            connect Vb.n_node gnd1.node as Connection33
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A Vsource object is a voltage source behind an impedance. The most common way to use a voltage source object is with the first terminal connected to one bus with the second terminal connected to ground, but it is possible to connect it to two different buses by unchecking the “ground-connected” property.</p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=166"
+
+                ground_connected {
+                    label = "Ground-connected"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if not new_value == old_value:
+                            ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                            comp_script.update_connections(mdl, container_handle, ports)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                basekv {
+                    label = "Base voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "115"
+                    unit = "kV"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                pu {
+                    label = "pu"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Angle {
+                    label = "Angle"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "°"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Frequency {
+                    label = "Frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if old_value == new_value:
+                            comp_script.update_frequency_property(mdl, container_handle, init=True)
+                        else:
+                            comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+                }
+
+                BaseFreq {
+                    label = "Base frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    nonvisible
+                }
+
+                r1 {
+                    label = "Positive-sequence resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1.65"
+                    unit = "Ω"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                x1 {
+                    label = "Positive-sequence reactance"
+                    widget = edit
+                    type = generic
+                    default_value = "6.6"
+                    unit = "Ω"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                r0 {
+                    label = "Zero-sequence resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1.9"
+                    unit = "Ω"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                x0 {
+                    label = "Zero-sequence reactance"
+                    widget = edit
+                    type = generic
+                    default_value = "5.7"
+                    unit = "Ω"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+
+                    import comp_vsource as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+                    comp_script.update_source_values(mdl, item_handle)
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_source_values(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4328, 4064
+            size = 64, 96
+        ]
+
+    }
+
+}

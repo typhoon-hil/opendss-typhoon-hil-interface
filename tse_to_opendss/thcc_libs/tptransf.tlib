@@ -1,0 +1,863 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Three-Phase Transformer" {
+            layout = static
+            label = "T"
+
+            component "core/Three Phase Two Winding Transformer" T1 {
+                input = "SI"
+            }
+            [
+                position = 8448, 8192
+                size = 126, 256
+            ]
+
+            port A1 {
+                position = -32.0, -32.0
+                kind = pe
+            }
+            [
+                position = 8056, 8088
+            ]
+
+            port B1 {
+                position = -32.0, 0.0
+                kind = pe
+            }
+            [
+                position = 8056, 8160
+            ]
+
+            port C1 {
+                position = -32.0, 32.0
+                kind = pe
+            }
+            [
+                position = 8056, 8232
+            ]
+
+            port N1 {
+                position = -24, 48
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8224, 8496
+            ]
+
+            port N2 {
+                position = 24, 48
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8496, 8496
+                scale = -1, 1
+            ]
+
+            port A2 {
+                position = 32, -32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 9376, 8144
+                scale = -1, 1
+            ]
+
+            port B2 {
+                position = 32, 0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 9376, 8240
+                scale = -1, 1
+            ]
+
+            port C2 {
+                position = 32, 32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 9376, 8336
+                scale = -1, 1
+            ]
+
+            tag TagA1 {
+                value = "TA_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8136, 8088
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+            tag TagB1 {
+                value = "TB_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8136, 8160
+                scale = -1, 1
+                size = 59, 20
+            ]
+
+            tag TagC1 {
+                value = "TC_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8136, 8232
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+             tag TagTA1 {
+                value = "TA_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8256, 8096
+                size = 60, 20
+            ]
+
+            tag TagTB1 {
+                value = "TB_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8256, 8192
+                size = 60, 20
+            ]
+
+            tag TagTC1 {
+                value = "TC_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8256, 8288
+                size = 60, 20
+            ]
+
+            tag TagTN1 {
+                value = "T_N1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8256, 8416
+                size = 60, 20
+            ]
+
+            tag TagTA2 {
+                value = "TA_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8600, 8096
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+            tag TagTB2 {
+                value = "TB_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8600, 8192
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+            tag TagTC2 {
+                value = "TC_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8600, 8288
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+            tag TagTN2 {
+                value = "T_N2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8600, 8464
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+            tag TagA2 {
+                value = "TA_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 9272, 8144
+                size = 60, 20
+            ]
+
+            tag TagB2 {
+                value = "TB_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 9272, 8240
+                size = 60, 20
+            ]
+
+            tag TagC2 {
+                value = "TC_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 9272, 8336
+                size = 60, 20
+            ]
+
+            junction Junction1 pe
+            [
+                position = 8480, 8464
+            ]
+
+            connect TagA1 A1 as Connection42
+            connect B1 TagB1 as Connection43
+            connect TagC1 C1 as Connection44
+            connect T1.prm_1 TagTA1 as Connection45
+            connect T1.prm_2 TagTB1 as Connection46
+            connect T1.prm_3 TagTC1 as Connection47
+            connect T1.n1 TagTN1 as Connection48
+            connect T1.sec_1 TagTA2 as Connection49
+            connect T1.sec_2 TagTB2 as Connection50
+            connect T1.sec_3 TagTC2 as Connection51
+            connect T1.n2 TagTN2 as Connection52
+            connect TagA2 A2 as Connection53
+            connect TagB2 B2 as Connection54
+            connect TagC2 C2 as Connection55
+            connect T1.n1 N1 as N1n1
+            connect T1.n2 N2 as N2n2
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The Three-Phase Transfomer is implemented as a multi-terminal power delivery element and consists of two or more windings, with a default wye-wye connection.<br></br><br></br>Note that contrary to OpenDSS, individual reactances are defined in the mask. Reactances between windings will be calculated.</p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=179"
+
+                num_windings {
+                    label = "Number of windings"
+                    widget = combo
+                    combo_values = "2", "3", "4"
+                    type = string
+                    default_value = "2"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle, prop_handle)
+                        comp_script.update_subsystem_components(mdl, container_handle, created_ports)
+                        comp_script.update_all_windings(mdl, container_handle, created_ports)
+                        comp_script.show_hide_conn(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.show_hide_conn(mdl, container_handle)
+                        comp_script.show_hide_couplings(mdl, container_handle)
+                        comp_script.enable_disable_grounds(mdl, container_handle)
+                        comp_script.update_regctrl_combo(mdl, container_handle)
+                    ENDCODE
+                }
+
+                embedded_cpl {
+                    label = "Embedded coupling"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        T_type = mdl.get_component_type_name(T_handle)
+                        if "Two Winding" in T_type:
+                            prop_name = mdl.get_name(prop_handle)
+                            inner_prop_handle = mdl.prop(T_handle, prop_name)
+                            mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_disable_grounds(mdl, container_handle)
+                    ENDCODE
+                }
+
+                embedded_cpl_12 {
+                    label = "Embedded coupling 1-2"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        T_type = mdl.get_component_type_name(T_handle)
+                        types = ["Three Winding", "Four Winding"]
+                        if any(t in T_type for t in types):
+                            prop_name = mdl.get_name(prop_handle)
+                            inner_prop_handle = mdl.prop(T_handle, prop_name)
+                            mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_disable_grounds(mdl, container_handle)
+                    ENDCODE
+                }
+
+                embedded_cpl_13 {
+                    label = "Embedded coupling 1-3"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        T_type = mdl.get_component_type_name(T_handle)
+                        types = ["Three Winding", "Four Winding"]
+                        if any(t in T_type for t in types):
+                            prop_name = mdl.get_name(prop_handle)
+                            inner_prop_handle = mdl.prop(T_handle, prop_name)
+                            mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_disable_grounds(mdl, container_handle)
+                    ENDCODE
+                }
+
+                embedded_cpl_14 {
+                    label = "Embedded coupling 1-4"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        T_type = mdl.get_component_type_name(T_handle)
+                        if "Four Winding" in T_type:
+                            prop_name = mdl.get_name(prop_handle)
+                            inner_prop_handle = mdl.prop(T_handle, prop_name)
+                            mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.enable_disable_grounds(mdl, container_handle)
+                    ENDCODE
+                }
+
+                KVs {
+                    label = "Array of rated winding phase voltages"
+                    widget = edit
+                    type = generic
+                    default_value = "[12.47, 12.47]"
+                    unit = "kV"
+                }
+
+                KVAs {
+                    label = "Array of winding kVA ratings"
+                    widget = edit
+                    type = generic
+                    default_value = "[1000, 1000]"
+                    unit = "kVA"
+                }
+
+                percentRs {
+                    label = "Array of winding percent resistances"
+                    widget = edit
+                    type = generic
+                    default_value = "[2, 2]"
+                    unit = "%"
+                }
+
+                XArray {
+                    label = "Winding reactances"
+                    widget = edit
+                    type = generic
+                    default_value = "[1, 1]"
+                    unit = "%"
+                }
+
+                XscArray {
+                    label = "Short circuit reactances"
+                    widget = edit
+                    type = generic
+                    default_value = "[2.0, 2.0]"
+                    unit = "%"
+                    nonvisible
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_frequency_prop(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if old_value == new_value:
+                            comp_script.update_frequency_property(mdl, container_handle, init=True)
+                        else:
+                            comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Basefreq {
+                    label = "Base frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    nonvisible
+                }
+
+                percentNoloadloss {
+                    label = "No-load losses"
+                    widget = edit
+                    type = generic
+                    default_value = "2"
+                    unit = "%"
+                }
+
+                percentimag {
+                    label = "Magnetizing current"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                }
+
+                prim_conn {
+                    label = "Primary"
+                    widget = combo
+                    combo_values = "Y", "Δ"
+                    type = string
+                    default_value = "Y"
+                    group = "Winding connections:2"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                    ENDCODE
+                }
+
+                grounded_prim {
+                    label = "Grounded Primary"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Winding connections"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                    ENDCODE
+                }
+
+                sec1_conn {
+                    label = "Secondary 1"
+                    widget = combo
+                    combo_values = "Y", "Δ"
+                    type = string
+                    default_value = "Y"
+                    group = "Winding connections"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        comp_script.vreg_connection(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                    ENDCODE
+                }
+
+                grounded_sec1 {
+                    label = "Grounded Secondary 1"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Winding connections"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        comp_script.vreg_connection(mdl, container_handle)
+                    ENDCODE
+                }
+
+                sec2_conn {
+                    label = "Secondary 2"
+                    widget = combo
+                    combo_values = "Y", "Δ"
+                    type = string
+                    default_value = "Y"
+                    group = "Winding connections"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        comp_script.vreg_connection(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                    ENDCODE
+                }
+
+                grounded_sec2 {
+                    label = "Grounded Secondary 2"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Winding connections"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        comp_script.vreg_connection(mdl, container_handle)
+                    ENDCODE
+                }
+
+                sec3_conn {
+                    label = "Secondary 3"
+                    widget = combo
+                    combo_values = "Y", "Δ"
+                    type = string
+                    default_value = "Y"
+                    group = "Winding connections"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        comp_script.vreg_connection(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                    ENDCODE
+                }
+
+                grounded_sec3 {
+                    label = "Grounded Secondary 3"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Winding connections"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                    ENDCODE
+                }
+
+                regcontrol_on {
+                    label = "Activate RegControl"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "RegControl:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_regcontrol_props(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_regcontrol_props(mdl, container_handle)
+                        comp_script.vreg_connection(mdl, container_handle)
+                    ENDCODE
+                }
+
+                maxtap {
+                    label = "Maximum tap voltage"
+                    widget = edit
+                    type = string
+                    default_value = "1.1"
+                    unit = "pu"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                mintap {
+                    label = "Minimum tap voltage"
+                    widget = edit
+                    type = string
+                    default_value = "0.9"
+                    unit = "pu"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                numtaps {
+                    label = "Number of taps"
+                    widget = edit
+                    type = string
+                    default_value = "32"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                ctrl_winding {
+                    label = "Monitored winding"
+                    widget = combo
+                    combo_values = "Winding 1", "Winding 2"
+                    type = string
+                    default_value = "Winding 1"
+                    group = "RegControl:4"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.vreg_connection(mdl, container_handle)
+                        comp_script.update_regctrl_combo(mdl, container_handle)
+                    ENDCODE
+                }
+
+                vreg {
+                    label = "Vreg"
+                    widget = edit
+                    type = string
+                    default_value = "120"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.calculate_winding_voltage(mdl, container_handle)
+                    ENDCODE
+                }
+
+                ptratio {
+                    label = "PT ratio"
+                    widget = edit
+                    type = string
+                    default_value = "60"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.calculate_winding_voltage(mdl, container_handle)
+                    ENDCODE
+                }
+
+                winding_voltage {
+                    label = "Line voltage result"
+                    widget = edit
+                    type = string
+                    default_value = "7200.0"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                band {
+                    label = "Bandwidth"
+                    widget = edit
+                    type = string
+                    default_value = "3"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                delay {
+                    label = "Delay"
+                    widget = edit
+                    type = string
+                    default_value = "15"
+                    unit = "s"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                execution_rate {
+                    label = "Execution rate"
+                    widget = edit
+                    type = string
+                    default_value = "100e-6"
+                    unit = "s"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring:5"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+
+                    import comp_tptransf as comp_script
+
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_frequency_property(mdl, item_handle)
+                    # HEADER START
+                    num_windings = mdl.get_property_value(mdl.prop(item_handle, "num_windings"))
+                    embedded_cpl = mdl.get_property_value(mdl.prop(item_handle, "embedded_cpl"))
+                    embedded_cpl_12 = mdl.get_property_value(mdl.prop(item_handle, "embedded_cpl_12"))
+                    embedded_cpl_13 = mdl.get_property_value(mdl.prop(item_handle, "embedded_cpl_13"))
+                    embedded_cpl_14 = mdl.get_property_value(mdl.prop(item_handle, "embedded_cpl_14"))
+                    KVs = mdl.get_property_value(mdl.prop(item_handle, "KVs"))
+                    KVAs = mdl.get_property_value(mdl.prop(item_handle, "KVAs"))
+                    percentRs = mdl.get_property_value(mdl.prop(item_handle, "percentRs"))
+                    XArray = mdl.get_property_value(mdl.prop(item_handle, "XArray"))
+                    XscArray = mdl.get_property_value(mdl.prop(item_handle, "XscArray"))
+                    Basefreq = mdl.get_property_value(mdl.prop(item_handle, "Basefreq"))
+                    percentNoloadloss = mdl.get_property_value(mdl.prop(item_handle, "percentNoloadloss"))
+                    percentimag = mdl.get_property_value(mdl.prop(item_handle, "percentimag"))
+                    prim_conn = mdl.get_property_value(mdl.prop(item_handle, "prim_conn"))
+                    grounded_prim = mdl.get_property_value(mdl.prop(item_handle, "grounded_prim"))
+                    sec1_conn = mdl.get_property_value(mdl.prop(item_handle, "sec1_conn"))
+                    grounded_sec1 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec1"))
+                    sec2_conn = mdl.get_property_value(mdl.prop(item_handle, "sec2_conn"))
+                    grounded_sec2 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec2"))
+                    sec3_conn = mdl.get_property_value(mdl.prop(item_handle, "sec3_conn"))
+                    grounded_sec3 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec3"))
+                    # HEADER STOP
+
+                    comp_script.validate_properties(mdl, item_handle)
+                    comp_script.convert_all_properties(mdl, item_handle)
+
+                ENDCODE
+
+                CODE post_resolve
+                ENDCODE
+            }
+        }
+        [
+            position = 4616, 4064
+            size = 64, 96
+        ]
+
+    }
+
+}

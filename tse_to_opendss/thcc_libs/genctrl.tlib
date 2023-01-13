@@ -1,0 +1,2437 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Generator Control" {
+            layout = dynamic
+            component "core/Bus Split" "Bus Split1" {
+                outputs = "8"
+            }
+            [
+                position = 6144, 7344
+                rotation = right
+                hide_name = True
+            ]
+
+            component "core/abc to dq" "abc to dq1" {
+            }
+            [
+                position = 6632, 7416
+                hide_name = True
+                size = 48, 80
+            ]
+
+            component "core/Constant" Constant3 {
+                execution_rate = "execution_rate"
+                value = "0"
+            }
+            [
+                position = 6528, 7504
+                hide_name = True
+            ]
+
+            component "core/abc to dq" "abc to dq2" {
+            }
+            [
+                position = 6632, 7592
+                scale = 1, -1
+                size = 48, 80
+            ]
+
+            component "core/Product" Product1 {
+            }
+            [
+                position = 7016, 7448
+                hide_name = True
+            ]
+
+            component "core/Product" Product2 {
+            }
+            [
+                position = 7016, 7504
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum5 {
+                signs = "++"
+            }
+            [
+                position = 7120, 7480
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain9 {
+                gain = "-1.5"
+            }
+            [
+                position = 7192, 7480
+                hide_name = True
+            ]
+
+            component "core/Probe" P_gen {
+                signal_name = "P"
+                signal_type = "active power"
+            }
+            [
+                position = 7296, 7432
+                rotation = left
+            ]
+
+            component "core/Product" Product3 {
+            }
+            [
+                position = 7016, 7672
+                hide_name = True
+            ]
+
+            component "core/Product" Product4 {
+            }
+            [
+                position = 7016, 7616
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum6 {
+                signs = "+-"
+            }
+            [
+                position = 7120, 7648
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain10 {
+                gain = "-1.5"
+            }
+            [
+                position = 7192, 7648
+                hide_name = True
+            ]
+
+            component "core/Probe" Q_gen {
+                signal_name = "Q"
+                signal_type = "active power"
+            }
+            [
+                position = 7296, 7600
+                rotation = left
+            ]
+
+            component "core/Sum" Sum7 {
+                signs = "+-"
+            }
+            [
+                position = 7904, 7424
+                hide_name = True
+            ]
+
+            component "core/Integrator" Integrator3 {
+                limit_lower = "-1.3"
+                limit_upper = "1.3"
+            }
+            [
+                position = 8760, 7488
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum8 {
+                signs = "++"
+            }
+            [
+                position = 8872, 7480
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch3" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8152, 7456
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant4 {
+                execution_rate = "execution_rate"
+                value = "0"
+            }
+            [
+                position = 8072, 7512
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch4" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8288, 7472
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum9 {
+                signs = "+-"
+            }
+            [
+                position = 8000, 7688
+                hide_name = True
+            ]
+
+            component "core/Integrator" Integrator4 {
+                limit_lower = "-1.3"
+                limit_upper = "1.3"
+            }
+            [
+                position = 8736, 7800
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain13 {
+                gain = "P_ki"
+            }
+            [
+                position = 8424, 7784
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain14 {
+                gain = "P_kp"
+            }
+            [
+                position = 8416, 7672
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum10 {
+                signs = "++"
+            }
+            [
+                position = 8824, 7792
+                hide_name = True
+            ]
+
+            component "core/Limit" Limit4 {
+                lower_limit = "1"
+                upper_limit = "10000"
+            }
+            [
+                position = 6176, 7920
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch5" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8240, 7720
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant5 {
+                execution_rate = "execution_rate"
+                value = "0"
+            }
+            [
+                position = 8128, 7776
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch6" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8328, 7736
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain15 {
+                gain = "-1"
+            }
+            [
+                position = 8896, 7792
+                hide_name = True
+            ]
+
+            component "core/Bus Split" "Bus Split2" {
+                outputs = "11"
+            }
+            [
+                position = 6128, 7680
+                rotation = right
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum11 {
+                signs = "+-"
+            }
+            [
+                position = 7904, 7528
+                hide_name = True
+            ]
+
+            component "core/Product" Product5 {
+            }
+            [
+                position = 7016, 7312
+                hide_name = True
+            ]
+
+            component "core/Mathematical function" "Mathematical function1" {
+                mathematical_fn = "sqrt"
+            }
+            [
+                position = 7200, 7344
+                hide_name = True
+            ]
+
+            component "core/Product" Product6 {
+            }
+            [
+                position = 7016, 7368
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum13 {
+                signs = "++"
+            }
+            [
+                position = 7120, 7344
+                hide_name = True
+            ]
+
+            component "core/Probe" V_gen {
+                signal_name = "V"
+                signal_type = "active power"
+            }
+            [
+                position = 7320, 7296
+                rotation = left
+            ]
+
+            component "core/Gain" Gain21 {
+                gain = "0.001"
+            }
+            [
+                position = 7256, 7480
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain22 {
+                gain = "0.001"
+            }
+            [
+                position = 7256, 7648
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain23 {
+                gain = "1.224745"
+            }
+            [
+                position = 7272, 7344
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant9 {
+                execution_rate = "execution_rate"
+                value = "ext_mode"
+            }
+            [
+                position = 7016, 7792
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch12" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8024, 7440
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain24 {
+                gain = "Q_kp"
+            }
+            [
+                position = 8432, 7336
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch13" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8512, 7352
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain25 {
+                gain = "V_kp"
+            }
+            [
+                position = 8432, 7368
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch14" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8512, 7488
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain26 {
+                gain = "Q_ki"
+            }
+            [
+                position = 8432, 7472
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain27 {
+                gain = "V_ki"
+            }
+            [
+                position = 8432, 7504
+                hide_name = True
+            ]
+
+            component "core/C function" "C function1" {
+                input_terminals = "real mode_external;inherit Mode_select_ext;inherit Mode_select_int;"
+                input_terminals_dimensions = "inherit;inherit;inherit"
+                input_terminals_feedthrough = "True;True;True"
+                input_terminals_show_labels = "True;True;True"
+                output_fnc = "/*Begin code section*/
+if (mode_external) {
+    if (Mode_select_ext==0) {
+        Vfd_sel = 0;
+        Tm_sel = 1;
+    }
+    else if (Mode_select_ext==1) {
+        Vfd_sel = 1;
+        Tm_sel = 1;
+    }
+    else if (Mode_select_ext==2) {
+        Vfd_sel = 0;
+        Tm_sel = 0;
+    }
+    else {
+        Vfd_sel = 0;
+        Tm_sel = 1;
+    }
+}
+else {
+    if (Mode_select_int==0) {
+        Vfd_sel = 0;
+        Tm_sel = 1;
+    }
+    else if (Mode_select_int==1) {
+        Vfd_sel = 1;
+        Tm_sel = 1;
+    }
+    else if (Mode_select_int==2) {
+        Vfd_sel = 0;
+        Tm_sel = 0;
+    }
+    else {
+        Vfd_sel = 0;
+        Tm_sel = 1;
+    }
+}
+/*End code section*/"
+                output_terminals = "real Vfd_sel;inherit Tm_sel;"
+                output_terminals_dimensions = "inherit;inherit"
+                output_terminals_feedthrough = "True;True"
+                output_terminals_show_labels = "True;True"
+            }
+            [
+                position = 7224, 7848
+                size = 192, 96
+            ]
+
+            component "core/Constant" Constant13 {
+                execution_rate = "execution_rate"
+                value = "ctrl_mode_int"
+            }
+            [
+                position = 7016, 7904
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain28 {
+                gain = "w_kp"
+            }
+            [
+                position = 8416, 7704
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain29 {
+                gain = "w_ki"
+            }
+            [
+                position = 8424, 7816
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum14 {
+                signs = "+-"
+            }
+            [
+                position = 8000, 7784
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain30 {
+                gain = "2*np.pi"
+            }
+            [
+                position = 7832, 7768
+                hide_name = True
+            ]
+
+            component "core/Product" Product7 {
+                signs = "*/"
+            }
+            [
+                position = 7912, 7776
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain31 {
+                gain = "0.5/np.pi"
+            }
+            [
+                position = 6176, 7880
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch15" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8488, 7688
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch16" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8488, 7800
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch17" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8120, 7704
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant14 {
+                execution_rate = "execution_rate"
+            }
+            [
+                position = 6592, 7848
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain32 {
+            }
+            [
+                position = 7080, 7848
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain33 {
+                gain = "0.001"
+            }
+            [
+                position = 7368, 7344
+                hide_name = True
+            ]
+
+            component "core/Termination" Termination66 {
+            }
+            [
+                position = 6688, 7536
+                rotation = left
+                hide_name = True
+            ]
+
+            component "core/Termination" Termination67 {
+            }
+            [
+                position = 6688, 7480
+                rotation = right
+                hide_name = True
+            ]
+
+            component "core/Termination" Termination68 {
+            }
+            [
+                position = 6208, 7552
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch18" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8024, 7320
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch19" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8120, 7896
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum15 {
+                signs = "+-"
+            }
+            [
+                position = 7872, 7304
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum16 {
+                signs = "+-"
+            }
+            [
+                position = 8000, 7896
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch20" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8624, 7336
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch21" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8624, 7472
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch22" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8640, 7672
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch23" {
+                criterion = "ctrl >= threshold"
+                threshold = "0.5"
+            }
+            [
+                position = 8640, 7784
+                hide_name = True
+            ]
+
+            component "core/Probe" gents {
+                signal_name = "Q"
+                signal_type = "active power"
+            }
+            [
+                position = 8032, 7184
+                rotation = left
+            ]
+
+            port Gen_meas {
+                position = right:1
+                kind = sp
+                direction =  out
+                sp_type {
+                    default = auto
+                    readonly = True
+                }
+            }
+            [
+                position = 6080, 7280
+            ]
+
+            port del_vfd {
+                position = right:4
+                kind = sp
+                direction =  in
+                sp_type {
+                    default = inherit
+                    readonly = True
+                }
+            }
+            [
+                position = 8952, 7480
+            ]
+
+            port del_Tm {
+                position = right:3
+                kind = sp
+                direction =  in
+                sp_type {
+                    default = inherit
+                    readonly = True
+                }
+            }
+            [
+                position = 8960, 7792
+            ]
+
+            port Gen_ctrl {
+                position = right:2
+                kind = sp
+                direction =  out
+                sp_type {
+                    default = auto
+                    readonly = True
+                }
+            }
+            [
+                position = 6072, 7616
+            ]
+
+            tag Goto5 {
+                value = "P_out"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7360, 7480
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto6 {
+                value = "Q_out"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7360, 7648
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto7 {
+                value = "V_en"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7736
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto8 {
+                value = "M_en"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7760
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto9 {
+                value = "ctrl_en"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7784
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From4 {
+                value = "Q_out"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7816, 7440
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From5 {
+                value = "ctrl_en"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8104, 7376
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From6 {
+                value = "V_en"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8224, 7400
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From7 {
+                value = "P_out"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7912, 7696
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From8 {
+                value = "ctrl_en"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8184, 7664
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From9 {
+                value = "M_en"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8288, 7664
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto10 {
+                value = "Watt"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7808
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto11 {
+                value = "VAR"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7832
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From10 {
+                value = "VAR"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7656, 7416
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From11 {
+                value = "Watt"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7656, 7680
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto12 {
+                value = "VLL"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7856
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto13 {
+                value = "Gen_V_mag"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7448, 7344
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From14 {
+                value = "Gen_V_mag"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7816, 7544
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From15 {
+                value = "VLL"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7656, 7520
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto14 {
+                value = "Vf_sel"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7400, 7816
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto15 {
+                value = "Tm_sel"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7400, 7880
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From16 {
+                value = "Vf_sel"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7976, 7384
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From17 {
+                value = "Tm_sel"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8432, 7600
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From18 {
+                value = "Vf_sel"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8448, 7256
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From19 {
+                value = "Vf_sel"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8448, 7424
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto16 {
+                value = "fs"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7880
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto17 {
+                value = "pp"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7920
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto18 {
+                value = "wm"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6264, 7576
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From20 {
+                value = "wm"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7904, 7832
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From21 {
+                value = "pp"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7824, 7808
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From22 {
+                value = "fs"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7656, 7768
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From23 {
+                value = "Tm_sel"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8432, 7744
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From24 {
+                value = "Tm_sel"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8080, 7648
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto19 {
+                value = "mod_internal"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6696, 7848
+                hide_name = True
+                size = 93, 20
+            ]
+
+            tag From25 {
+                value = "mod_internal"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6848, 7848
+                hide_name = True
+                size = 103, 20
+            ]
+
+            tag From70 {
+                value = "ia"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6584, 7672
+                rotation = right
+                hide_name = True
+                scale = 1, -1
+                size = 60, 20
+            ]
+
+            tag From71 {
+                value = "ib"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6560, 7672
+                rotation = right
+                hide_name = True
+                scale = 1, -1
+                size = 60, 20
+            ]
+
+            tag From72 {
+                value = "ic"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6536, 7672
+                rotation = right
+                hide_name = True
+                scale = 1, -1
+                size = 58, 20
+            ]
+
+            tag From73 {
+                value = "va"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6584, 7320
+                rotation = right
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From74 {
+                value = "vb"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6560, 7320
+                rotation = right
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From75 {
+                value = "vc"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6536, 7320
+                rotation = right
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto20 {
+                value = "va"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6264, 7408
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto21 {
+                value = "vb"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6264, 7432
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto22 {
+                value = "vc"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6264, 7456
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto23 {
+                value = "ia"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6264, 7480
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto24 {
+                value = "ib"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6264, 7504
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto25 {
+                value = "ic"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6264, 7528
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From76 {
+                value = "vd"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6904, 7304
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From77 {
+                value = "vq"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6904, 7360
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From78 {
+                value = "vd"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7440
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From79 {
+                value = "vd"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7664
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From80 {
+                value = "vq"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7496
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From81 {
+                value = "vq"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7608
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From82 {
+                value = "id"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7464
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From83 {
+                value = "iq"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7520
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From84 {
+                value = "id"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7632
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From85 {
+                value = "iq"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 6928, 7688
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto26 {
+                value = "vd"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6752, 7392
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto27 {
+                value = "vq"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6752, 7416
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto28 {
+                value = "iq"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6752, 7592
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto29 {
+                value = "id"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6752, 7616
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto30 {
+                value = "gen_ts_bit"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7960
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto31 {
+                value = "P_ts"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 7992
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto32 {
+                value = "Q_ts"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 6256, 8024
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From86 {
+                value = "gen_ts_bit"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7976, 7264
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From87 {
+                value = "gen_ts_bit"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8072, 7840
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From88 {
+                value = "Q_out"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7784, 7320
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From89 {
+                value = "Q_ts"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7656, 7296
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From90 {
+                value = "P_out"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7912, 7904
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From91 {
+                value = "P_ts"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7656, 7888
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From92 {
+                value = "gen_ts_bit"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8576, 7264
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From93 {
+                value = "gen_ts_bit"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8568, 7424
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From94 {
+                value = "gen_ts_bit"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8592, 7600
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From95 {
+                value = "gen_ts_bit"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8592, 7728
+                hide_name = True
+                size = 60, 20
+            ]
+
+            junction Junction6 sp
+            [
+                position = 6592, 7504
+            ]
+
+            junction Junction13 sp
+            [
+                position = 8120, 7512
+            ]
+
+            junction Junction15 sp
+            [
+                position = 8208, 7776
+            ]
+
+            junction Junction16 sp
+            [
+                position = 8376, 7736
+            ]
+
+            junction Junction23 sp
+            [
+                position = 7320, 7344
+            ]
+
+            junction Junction28 sp
+            [
+                position = 8368, 7472
+            ]
+
+            junction Junction29 sp
+            [
+                position = 8368, 7368
+            ]
+
+            junction Junction31 sp
+            [
+                position = 8368, 7472
+            ]
+
+            junction Junction33 sp
+            [
+                position = 8376, 7704
+            ]
+
+            junction Junction34 sp
+            [
+                position = 8376, 7784
+            ]
+
+            junction Junction36 sp
+            [
+                position = 7296, 7480
+            ]
+
+            junction Junction37 sp
+            [
+                position = 7296, 7648
+            ]
+
+            junction Junction38 sp
+            [
+                position = 6960, 7304
+            ]
+
+            junction Junction39 sp
+            [
+                position = 6960, 7360
+            ]
+
+            junction Junction40 sp
+            [
+                position = 8464, 7336
+            ]
+
+            junction Junction41 sp
+            [
+                position = 8472, 7472
+            ]
+
+            junction Junction42 sp
+            [
+                position = 8448, 7672
+            ]
+
+            junction Junction43 sp
+            [
+                position = 8456, 7784
+            ]
+
+            junction Junction44 sp
+            [
+                position = 8024, 7264
+            ]
+
+            connect Gen_meas "Bus Split1.in" as Connection76
+            connect Constant3.out Junction6 as Connection84
+            connect Junction6 "abc to dq1.wt" as Connection85
+            connect "abc to dq2.wt" Junction6 as Connection86
+            connect Product1.out Sum5.in as Connection91
+            connect Product2.out Sum5.in1 as Connection92
+            connect Sum5.out Gain9.in as Connection93
+            connect Sum6.out Gain10.in as Connection109
+            connect Product4.out Sum6.in as Connection111
+            connect Product3.out Sum6.in1 as Connection112
+            connect From4 Sum7.in1 as Connection127
+            connect Integrator3.out Sum8.in1 as Connection136
+            connect From5 "Signal switch3.in2" as Connection142
+            connect "Signal switch3.out" "Signal switch4.in" as Connection144
+            connect Junction13 "Signal switch3.in1" as Connection146
+            connect "Signal switch4.in1" Junction13 as Connection147
+            connect From6 "Signal switch4.in2" as Connection148
+            connect From7 Sum9.in1 as Connection154
+            connect Integrator4.out Sum10.in1 as Connection158
+            connect From8 "Signal switch5.in2" as Connection160
+            connect "Signal switch5.out" "Signal switch6.in" as Connection161
+            connect Constant5.out Junction15 as Connection162
+            connect Junction15 "Signal switch5.in1" as Connection163
+            connect "Signal switch6.in1" Junction15 as Connection164
+            connect From9 "Signal switch6.in2" as Connection165
+            connect "Signal switch6.out" Junction16 as Connection168
+            connect Gain15.out del_Tm as Connection170
+            connect Gen_ctrl "Bus Split2.in" as Connection171
+            connect "Bus Split2.out" Goto7 as Connection172
+            connect "Bus Split2.out1" Goto8 as Connection173
+            connect "Bus Split2.out2" Goto9 as Connection174
+            connect Product6.out Sum13.in1 as Connection212
+            connect Sum13.out "Mathematical function1.in" as Connection213
+            connect From14 Sum11.in1 as Connection215
+            connect Sum10.out Gain15.in as Connection231
+            connect V_gen.in Junction23 as Connection251
+            connect Junction23 Gain23.out as Connection252
+            connect Gain23.in "Mathematical function1.out" as Connection253
+            connect Gain25.out "Signal switch13.in1" as Connection283
+            connect "Signal switch4.out" Junction28 as Connection284
+            connect Gain24.in Junction29 as Connection287
+            connect Junction29 Junction28 as Connection288
+            connect Gain25.in Junction29 as Connection289
+            connect Gain27.out "Signal switch14.in1" as Connection293
+            connect Gain26.in Junction31 as Connection297
+            connect Gain27.in Junction31 as Connection299
+            connect Sum8.out del_vfd as Connection301
+            connect Sum7.out "Signal switch12.in" as Connection302
+            connect "C function1.Vfd_sel" Goto14 as Connection309
+            connect Constant9.out "C function1.mode_external" as Connection315
+            connect Constant13.out "C function1.Mode_select_int" as Connection316
+            connect From16 "Signal switch12.in2" as Connection317
+            connect From18 "Signal switch13.in2" as Connection318
+            connect From19 "Signal switch14.in2" as Connection319
+            connect "Bus Split1.out7" Goto18 as Connection322
+            connect From20 Sum14.in1 as Connection323
+            connect Gain30.out Product7.in as Connection324
+            connect From21 Product7.in1 as Connection325
+            connect Product7.out Sum14.in as Connection326
+            connect "Bus Split2.out6" Gain31.in as Connection327
+            connect Gain31.out Goto16 as Connection328
+            connect Gain28.out "Signal switch15.in1" as Connection331
+            connect Gain14.in Junction33 as Connection332
+            connect Junction33 Junction16 as Connection333
+            connect Gain28.in Junction33 as Connection334
+            connect Gain29.out "Signal switch16.in1" as Connection335
+            connect From23 "Signal switch16.in2" as Connection336
+            connect Junction16 Junction34 as Connection340
+            connect Junction34 Gain13.in as Connection341
+            connect Gain29.in Junction34 as Connection342
+            connect From24 "Signal switch17.in2" as Connection343
+            connect "Bus Split2.out7" Limit4.in as Connection351
+            connect Limit4.out Goto17 as Connection352
+            connect Gain32.out "C function1.Mode_select_ext" as Connection368
+            connect Constant14.out Goto19 as Connection374
+            connect Junction13 Constant4.out as Connection382
+            connect "Signal switch17.in" Sum9.out as Connection397
+            connect "C function1.Tm_sel" Goto15 as Connection399
+            connect Sum14.out "Signal switch17.in1" as Connection409
+            connect Sum11.out "Signal switch12.in1" as Connection414
+            connect Goto12 "Bus Split2.out5" as Connection426
+            connect Goto13 Gain33.out as Connection427
+            connect Gain33.in Junction23 as Connection428
+            connect Gain21.in Gain9.out as Connection429
+            connect P_gen.in Junction36 as Connection430
+            connect Junction36 Gain21.out as Connection431
+            connect Goto5 Junction36 as Connection432
+            connect Gain22.in Gain10.out as Connection433
+            connect Gain22.out Junction37 as Connection434
+            connect Junction37 Q_gen.in as Connection435
+            connect Goto6 Junction37 as Connection436
+            connect Goto10 "Bus Split2.out3" as Connection437
+            connect Goto11 "Bus Split2.out4" as Connection438
+            connect Junction28 Junction31 as Connection439
+            connect Termination66.in "abc to dq2.zero_axis" as Connection440
+            connect Termination67.in "abc to dq1.zero_axis" as Connection441
+            connect "Signal switch15.in2" From17 as Connection442
+            connect Termination68.in "Bus Split1.out6" as Connection443
+            connect Product5.out Sum13.in as Connection444
+            connect From73 "abc to dq1.va" as Connection445
+            connect From74 "abc to dq1.vb" as Connection446
+            connect From75 "abc to dq1.vc" as Connection447
+            connect From70 "abc to dq2.va" as Connection448
+            connect From71 "abc to dq2.vb" as Connection449
+            connect From72 "abc to dq2.vc" as Connection450
+            connect Goto20 "Bus Split1.out" as Connection451
+            connect Goto21 "Bus Split1.out1" as Connection452
+            connect Goto22 "Bus Split1.out2" as Connection453
+            connect Goto23 "Bus Split1.out3" as Connection454
+            connect Goto24 "Bus Split1.out4" as Connection455
+            connect Goto25 "Bus Split1.out5" as Connection456
+            connect From76 Junction38 as Connection459
+            connect Junction38 Product5.in as Connection460
+            connect Product5.in1 Junction38 as Connection461
+            connect From77 Junction39 as Connection464
+            connect Junction39 Product6.in as Connection465
+            connect Product6.in1 Junction39 as Connection466
+            connect From78 Product1.in as Connection468
+            connect From79 Product3.in as Connection469
+            connect From80 Product2.in as Connection471
+            connect From81 Product4.in as Connection472
+            connect From82 Product1.in1 as Connection474
+            connect From83 Product2.in1 as Connection476
+            connect From84 Product4.in1 as Connection477
+            connect From85 Product3.in1 as Connection478
+            connect Goto26 "abc to dq1.d_axis" as Connection479
+            connect Goto27 "abc to dq1.q_axis" as Connection480
+            connect Goto28 "abc to dq2.q_axis" as Connection481
+            connect Goto29 "abc to dq2.d_axis" as Connection482
+            connect Goto30 "Bus Split2.out8" as Connection483
+            connect From87 "Signal switch19.in2" as Connection491
+            connect From88 Sum15.in1 as Connection492
+            connect Sum15.in From89 as connQ1
+            connect Sum15.out "Signal switch18.in" as Connection493
+            connect From90 Sum16.in1 as Connection498
+            connect Sum16.in From91 as connP1
+            connect Sum16.out "Signal switch19.in" as Connection499
+            connect From92 "Signal switch20.in2" as Connection500
+            connect Gain24.out Junction40 as Connection502
+            connect Junction40 "Signal switch13.in" as Connection503
+            connect "Signal switch20.in" Junction40 as Connection504
+            [
+                position = 0, 0
+                breakpoints = 8544, 7296; 8464, 7296
+            ]
+            connect From93 "Signal switch21.in2" as Connection506
+            connect Gain26.out Junction41 as Connection508
+            connect Junction41 "Signal switch14.in" as Connection509
+            connect "Signal switch21.in" Junction41 as Connection510
+            connect From94 "Signal switch22.in2" as Connection512
+            connect From95 "Signal switch23.in2" as Connection513
+            connect Gain14.out Junction42 as Connection515
+            connect Junction42 "Signal switch15.in" as Connection516
+            connect "Signal switch22.in" Junction42 as Connection517
+            connect "Signal switch16.in" Junction43 as Connection521
+            connect Junction43 Gain13.out as Connection522
+            connect "Signal switch23.in" Junction43 as Connection523
+            connect Goto31 "Bus Split2.out9" as Connection524
+            connect Goto32 "Bus Split2.out10" as Connection525
+            connect From86 Junction44 as Connection526
+            connect Junction44 "Signal switch18.in2" as Connection527
+            connect gents.in Junction44 as Connection528
+            connect "Signal switch17.out" "Signal switch19.in1" as Connection547
+            [
+                position = 0, 0
+                breakpoints = 8168, 7704; 8168, 7704; 8168, 7960; 8152, 7960; 8088, 7960
+            ]
+            connect "Signal switch5.in" "Signal switch19.out" as Connection548
+            connect "Signal switch18.in1" "Signal switch12.out" as Connection549
+            [
+                position = 0, 0
+                breakpoints = 8056, 7440
+            ]
+            connect "Signal switch3.in" "Signal switch18.out" as Connection550
+            connect "Signal switch13.out" "Signal switch20.in1" as Connection551
+            [
+                position = 0, 0
+                breakpoints = 8568, 7352
+            ]
+            connect "Signal switch20.out" Sum8.in as Connection552
+            connect "Signal switch21.in1" "Signal switch14.out" as Connection553
+            [
+                position = 0, 0
+                breakpoints = 8576, 7488
+            ]
+            connect "Signal switch21.out" Integrator3.in as Connection554
+            connect "Signal switch15.out" "Signal switch22.in1" as Connection555
+            [
+                position = 0, 0
+                breakpoints = 8536, 7688
+            ]
+            connect Sum10.in "Signal switch22.out" as Connection556
+            connect "Signal switch16.out" "Signal switch23.in1" as Connection557
+            [
+                position = 0, 0
+                breakpoints = 8576, 7800
+            ]
+            connect "Signal switch23.out" Integrator4.in as Connection558
+            connect Gain32.in From25 as connmode
+            connect Sum9.in From11 as connP
+            connect Sum7.in From10 as connQ
+            connect Sum11.in From15 as connV
+            connect Gain30.in From22 as connw
+
+            Q_ki = ".05"
+            Q_kp = ".01"
+            execution_rate = "100e-6"
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Generator Control module.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This module is used in conjuction with the Generator component (with enabled initializtion) to implement multiple modes of steady state operations.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">When external control mode is selected, the operation mode can be selected and changed in real time using the following inputs to \"Generator control mode\" input:</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">0 = PV operation mode</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">1 = PQ operation mode</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">2 = Grid forming operation mode</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Active power P (in Watts), Reactive power Q (In VARs), Line RMS voltage (in Volts), and Line frequency (in Hz) can be controlled individually depending on mode of operation. Controller coefficients for above variables can be set in \"Controller settings\" tab.</p></body></html>"
+
+                ctrl_mode_str {
+                    label = "Generator control mode"
+                    widget = combo
+                    combo_values = "PQ", "PV", "Grid Forming", "External Control"
+                    type = string
+                    default_value = "PQ"
+                    group = "Control mode:1"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
+
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+
+                        if new_value == "External Control":
+                            mode_ext = mdl.get_item("mode_set", parent=comp_handle, item_type=ITEM_PORT)
+                            mode_inp = mdl.get_item("Gain32", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            term_mode = mdl.get_item("Termination5", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            mode_int = mdl.get_item("From25", parent=comp_handle, item_type=ITEM_TAG)
+                            conn_mode_int = mdl.get_item("connmode", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if conn_mode_int:
+                                mdl.delete_item(conn_mode_int)
+
+                            if not term_mode:
+                                term_mode = mdl.create_component("Termination", parent=comp_handle,
+                                                                name="Termination5", position=(6909,7906),
+                                                                rotation='right', hide_name=True)
+                            mdl.create_connection(mdl.term(term_mode, "in"), mode_int)
+                            if not mode_ext:
+                                mode_ext = mdl.create_port(parent=comp_handle, name="mode_set", direction="in", kind = "sp",
+                                                    terminal_position=("left", 5),
+                                                    position=(6998, 7846))
+                                mdl.create_connection(mdl.term(mode_inp, "in"), mode_ext)
+                        else:
+                            mode_ext = mdl.get_item("mode_set", parent=comp_handle, item_type=ITEM_PORT)
+                            term_mode = mdl.get_item("Termination5", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            mode_int = mdl.get_item("From25", parent=comp_handle, item_type=ITEM_TAG)
+                            mode_inp = mdl.get_item("Gain32", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            conn_mode_int = mdl.get_item("connmode", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if mode_ext:
+                                mdl.delete_item(mode_ext)
+                            if term_mode:
+                                mdl.delete_item(term_mode)
+                            if conn_mode_int:
+                                mdl.delete_item(conn_mode_int)
+                            mdl.create_connection(mdl.term(mode_inp, "in"), mode_int, name="connmode")
+
+                        gen_control_mode_value_edited(mdl, container_handle, new_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        gen_control_mode_value_edited(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                ctrl_mode_int {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                ext_mode {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                P_ref_str {
+                    label = "Active power reference (kW)"
+                    widget = combo
+                    combo_values = "External input", "Generator nominal"
+                    type = string
+                    default_value = "Generator nominal"
+                    group = "Control mode"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
+
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+
+                        if new_value == "External input":
+                            P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
+                            P_inp = mdl.get_item("Sum9", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            P_int = mdl.get_item("From11", parent=comp_handle, item_type=ITEM_TAG)
+                            conn_P_int = mdl.get_item("connP", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if conn_P_int:
+                                mdl.delete_item(conn_P_int)
+
+                            if not term_P:
+                                term_P = mdl.create_component("Termination", parent=comp_handle,
+                                                              name="Termination1", position=(7706,7620),
+                                                              rotation='left', hide_name=True)
+                                mdl.create_connection(mdl.term(term_P, "in"), P_int)
+                            if not P_ext:
+                                P_ext = mdl.create_port(parent=comp_handle, name="P_set", direction="in", kind = "sp",
+                                                    terminal_position=("left", 1),
+                                                    position=(7909, 7640))
+                                mdl.create_connection(mdl.term(P_inp, "in"), P_ext)
+                        elif new_value == "Generator nominal":
+                            P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
+                            term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            P_int = mdl.get_item("From11", parent=comp_handle, item_type=ITEM_TAG)
+                            P_inp = mdl.get_item("Sum9", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            conn_P_int = mdl.get_item("connP", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if P_ext:
+                                mdl.delete_item(P_ext)
+                            if term_P:
+                                mdl.delete_item(term_P)
+                            if conn_P_int:
+                                mdl.delete_item(conn_P_int)
+                            mdl.create_connection(mdl.term(P_inp, "in"), P_int, name="connP")
+                    ENDCODE
+                }
+
+                P_sel {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                Q_ref_str {
+                    label = "Reactive power reference (kVAR)"
+                    widget = combo
+                    combo_values = "External input", "Generator nominal"
+                    type = string
+                    default_value = "Generator nominal"
+                    group = "Control mode"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
+
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+
+                        if new_value == "External input":
+                            Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
+                            Q_inp = mdl.get_item("Sum7", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            Q_int = mdl.get_item("From10", parent=comp_handle, item_type=ITEM_TAG)
+                            conn_Q_int = mdl.get_item("connQ", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if conn_Q_int:
+                                mdl.delete_item(conn_Q_int)
+
+                            if not term_Q:
+                                term_Q = mdl.create_component("Termination", parent=comp_handle,
+                                                            name="Termination2", position=(7709, 7343),
+                                                            rotation='left', hide_name=True)
+                                mdl.create_connection(mdl.term(term_Q, "in"), Q_int)
+                            if not Q_ext:
+                                Q_ext = mdl.create_port(parent=comp_handle, name="Q_set", direction="in", kind = "sp",
+                                                    terminal_position=("left", 2),
+                                                    position=(7808, 7390))
+                                mdl.create_connection(mdl.term(Q_inp, "in"), Q_ext)
+                        elif new_value == "Generator nominal":
+                            Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
+                            term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            Q_int = mdl.get_item("From10", parent=comp_handle, item_type=ITEM_TAG)
+                            Q_inp = mdl.get_item("Sum7", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            conn_Q_int = mdl.get_item("connQ", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if Q_ext:
+                                mdl.delete_item(Q_ext)
+                            if term_Q:
+                                mdl.delete_item(term_Q)
+                            if conn_Q_int:
+                                mdl.delete_item(conn_Q_int)
+                            mdl.create_connection(mdl.term(Q_inp, "in"), Q_int, name="connQ")
+                    ENDCODE
+                }
+
+                Q_sel {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                V_ref_str {
+                    label = "Line voltage reference (kV)"
+                    widget = combo
+                    combo_values = "External input", "Generator nominal"
+                    type = string
+                    default_value = "Generator nominal"
+                    group = "Control mode"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_changed
+                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
+
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+
+                        if new_value == "External input":
+                            V_ext = mdl.get_item("V_set", parent=comp_handle, item_type=ITEM_PORT)
+                            V_inp = mdl.get_item("Sum11", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            term_V = mdl.get_item("Termination3", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            V_int = mdl.get_item("From15", parent=comp_handle, item_type=ITEM_TAG)
+                            conn_V_int = mdl.get_item("connV", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if conn_V_int:
+                                mdl.delete_item(conn_V_int)
+
+                            if not term_V:
+                                term_V = mdl.create_component("Termination", parent=comp_handle,
+                                                              name="Termination3", position=(7706, 7560),
+                                                              rotation='right', hide_name=True)
+                                mdl.create_connection(mdl.term(term_V, "in"), V_int)
+                            if not V_ext:
+                                V_ext = mdl.create_port(parent=comp_handle, name="V_set", direction="in", kind = "sp",
+                                                    terminal_position=("left", 3),
+                                                    position=(7802, 7489))
+                                mdl.create_connection(mdl.term(V_inp, "in"), V_ext)
+                        elif new_value == "Generator nominal":
+                            V_ext = mdl.get_item("V_set", parent=comp_handle, item_type=ITEM_PORT)
+                            term_V = mdl.get_item("Termination3", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            V_int = mdl.get_item("From15", parent=comp_handle, item_type=ITEM_TAG)
+                            V_inp = mdl.get_item("Sum11", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            conn_V_int = mdl.get_item("connV", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if V_ext:
+                                mdl.delete_item(V_ext)
+                            if term_V:
+                                mdl.delete_item(term_V)
+                            if conn_V_int:
+                                mdl.delete_item(conn_V_int)
+                            mdl.create_connection(mdl.term(V_inp, "in"), V_int, name="connV")
+                    ENDCODE
+                }
+
+                V_sel {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                w_ref_str {
+                    label = "Frequency (Hz)"
+                    widget = combo
+                    combo_values = "External input", "Generator nominal"
+                    type = string
+                    default_value = "Generator nominal"
+                    group = "Control mode"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_changed
+                        from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
+
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+
+                        if new_value == "External input":
+                            w_ext = mdl.get_item("w_set", parent=comp_handle, item_type=ITEM_PORT)
+                            w_inp = mdl.get_item("Gain30", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            term_w = mdl.get_item("Termination4", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            w_int = mdl.get_item("From22", parent=comp_handle, item_type=ITEM_TAG)
+                            conn_w_int = mdl.get_item("connw", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if conn_w_int:
+                                mdl.delete_item(conn_w_int)
+
+                            if not term_w:
+                                term_w = mdl.create_component("Termination", parent=comp_handle,
+                                                              name="Termination4", position=(7706,7833),
+                                                              rotation='right', hide_name=True)
+                                mdl.create_connection(mdl.term(term_w, "in"), w_int)
+                            if not w_ext:
+                                w_ext = mdl.create_port(parent=comp_handle, name="w_set", direction="in", kind = "sp",
+                                                    terminal_position=("left", 4),
+                                                    position=(7760, 7768))
+                                mdl.create_connection(mdl.term(w_inp, "in"), w_ext)
+                        elif new_value == "Generator nominal":
+                            w_ext = mdl.get_item("w_set", parent=comp_handle, item_type=ITEM_PORT)
+                            term_w = mdl.get_item("Termination4", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            w_int = mdl.get_item("From22", parent=comp_handle, item_type=ITEM_TAG)
+                            w_inp = mdl.get_item("Gain30", parent=comp_handle, item_type=ITEM_COMPONENT)
+                            conn_w_int = mdl.get_item("connw", parent=comp_handle, item_type=ITEM_CONNECTION)
+                            if w_ext:
+                                mdl.delete_item(w_ext)
+                            if term_w:
+                                mdl.delete_item(term_w)
+                            if conn_w_int:
+                                mdl.delete_item(conn_w_int)
+                            mdl.create_connection(mdl.term(w_inp, "in"), w_int, name="connw")
+                    ENDCODE
+                }
+
+                w_sel {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                P_kp {
+                    label = "P Controller proportional gain"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Controller settings:2"
+                }
+
+                P_ki {
+                    label = "P Controller integral gain"
+                    widget = edit
+                    type = generic
+                    default_value = "2"
+                    group = "Controller settings"
+                }
+
+                Q_kp {
+                    label = "Q Controller proportional gain"
+                    widget = edit
+                    type = generic
+                    default_value = "0.01"
+                    group = "Controller settings"
+                }
+
+                Q_ki {
+                    label = "Q Controller integral gain"
+                    widget = edit
+                    type = generic
+                    default_value = "0.05"
+                    group = "Controller settings"
+                }
+
+                V_kp {
+                    label = "V Controller proportional gain"
+                    widget = edit
+                    type = generic
+                    default_value = "10"
+                    group = "Controller settings"
+                    disabled
+                }
+
+                V_ki {
+                    label = "V Controller integral gain"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    group = "Controller settings"
+                    disabled
+                }
+
+                w_kp {
+                    label = "Frequency Controller proportional gain"
+                    widget = edit
+                    type = generic
+                    default_value = "300"
+                    group = "Controller settings"
+                    disabled
+                }
+
+                w_ki {
+                    label = "Frequency Controller integral gain"
+                    widget = edit
+                    type = generic
+                    default_value = "300"
+                    group = "Controller settings"
+                    disabled
+                }
+
+                execution_rate {
+                    label = "Execution rate"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Controller settings"
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE pre_compile
+                    # HEADER START
+                    ctrl_mode_str = mdl.get_property_value(mdl.prop(item_handle, "ctrl_mode_str"))
+                    ctrl_mode_int = mdl.get_property_value(mdl.prop(item_handle, "ctrl_mode_int"))
+                    ext_mode = mdl.get_property_value(mdl.prop(item_handle, "ext_mode"))
+                    P_ref_str = mdl.get_property_value(mdl.prop(item_handle, "P_ref_str"))
+                    P_sel = mdl.get_property_value(mdl.prop(item_handle, "P_sel"))
+                    Q_ref_str = mdl.get_property_value(mdl.prop(item_handle, "Q_ref_str"))
+                    Q_sel = mdl.get_property_value(mdl.prop(item_handle, "Q_sel"))
+                    V_ref_str = mdl.get_property_value(mdl.prop(item_handle, "V_ref_str"))
+                    V_sel = mdl.get_property_value(mdl.prop(item_handle, "V_sel"))
+                    w_ref_str = mdl.get_property_value(mdl.prop(item_handle, "w_ref_str"))
+                    w_sel = mdl.get_property_value(mdl.prop(item_handle, "w_sel"))
+                    P_kp = mdl.get_property_value(mdl.prop(item_handle, "P_kp"))
+                    P_ki = mdl.get_property_value(mdl.prop(item_handle, "P_ki"))
+                    Q_kp = mdl.get_property_value(mdl.prop(item_handle, "Q_kp"))
+                    Q_ki = mdl.get_property_value(mdl.prop(item_handle, "Q_ki"))
+                    V_kp = mdl.get_property_value(mdl.prop(item_handle, "V_kp"))
+                    V_ki = mdl.get_property_value(mdl.prop(item_handle, "V_ki"))
+                    w_kp = mdl.get_property_value(mdl.prop(item_handle, "w_kp"))
+                    w_ki = mdl.get_property_value(mdl.prop(item_handle, "w_ki"))
+                    execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
+                    # HEADER STOP
+                    from typhoon.api.schematic_editor.const import ITEM_COMPONENT
+                    import numpy
+                    import math
+
+                    if ctrl_mode_str == "PQ":
+                        ctrl_mode_int = 1
+                        ext_mode = 0
+                    elif ctrl_mode_str == "PV":
+                        ctrl_mode_int = 0
+                        ext_mode = 0
+                    elif ctrl_mode_str == "Grid Forming":
+                        ctrl_mode_int = 2
+                        ext_mode = 0
+                    elif ctrl_mode_str == "External Control":
+                        ctrl_mode_int = -1
+                        ext_mode = 1
+                    else:
+                        ctrl_mode_int = 0
+                        ext_mode = 0
+
+                    mdl.set_property_value(mdl.prop(item_handle, "P_kp"), P_kp)
+                    mdl.set_property_value(mdl.prop(item_handle, "P_ki"), P_ki)
+                    mdl.set_property_value(mdl.prop(item_handle, "Q_kp"), Q_kp)
+                    mdl.set_property_value(mdl.prop(item_handle, "Q_ki"), Q_ki)
+                    mdl.set_property_value(mdl.prop(item_handle, "V_kp"), V_kp)
+                    mdl.set_property_value(mdl.prop(item_handle, "V_ki"), V_ki)
+                    mdl.set_property_value(mdl.prop(item_handle, "P_sel"), P_sel)
+                    mdl.set_property_value(mdl.prop(item_handle, "Q_sel"), Q_sel)
+                    mdl.set_property_value(mdl.prop(item_handle, "V_sel"), V_sel)
+                    mdl.set_property_value(mdl.prop(item_handle, "ctrl_mode_int"), ctrl_mode_int)
+                    mdl.set_property_value(mdl.prop(item_handle, "ext_mode"), ext_mode)
+                ENDCODE
+
+                CODE init
+                    def gen_control_mode_value_edited(mdl, container_handle, new_value):
+                        if new_value == "PQ":
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'V_ref_str'), "Generator nominal")
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'w_ref_str'), "Generator nominal")
+                            mdl.disable_property(mdl.prop(container_handle, "V_ref_str"))
+                            mdl.disable_property(mdl.prop(container_handle, "V_kp"))
+                            mdl.disable_property(mdl.prop(container_handle, "V_ki"))
+                            mdl.disable_property(mdl.prop(container_handle, "w_ref_str"))
+                            mdl.disable_property(mdl.prop(container_handle, "w_kp"))
+                            mdl.disable_property(mdl.prop(container_handle, "w_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "Q_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "Q_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "Q_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_ki"))
+                        elif new_value == "PV":
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'Q_ref_str'), "Generator nominal")
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'w_ref_str'), "Generator nominal")
+                            mdl.disable_property(mdl.prop(container_handle, "Q_ref_str"))
+                            mdl.disable_property(mdl.prop(container_handle, "Q_kp"))
+                            mdl.disable_property(mdl.prop(container_handle, "Q_ki"))
+                            mdl.disable_property(mdl.prop(container_handle, "w_ref_str"))
+                            mdl.disable_property(mdl.prop(container_handle, "w_kp"))
+                            mdl.disable_property(mdl.prop(container_handle, "w_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_ki"))
+                        elif new_value == "Grid Forming":
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'P_ref_str'), "Generator nominal")
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'Q_ref_str'), "Generator nominal")
+                            mdl.disable_property(mdl.prop(container_handle, "P_ref_str"))
+                            mdl.disable_property(mdl.prop(container_handle, "P_kp"))
+                            mdl.disable_property(mdl.prop(container_handle, "P_ki"))
+                            mdl.disable_property(mdl.prop(container_handle, "Q_ref_str"))
+                            mdl.disable_property(mdl.prop(container_handle, "Q_kp"))
+                            mdl.disable_property(mdl.prop(container_handle, "Q_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "w_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "w_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "w_ki"))
+                        elif new_value == "External Control":
+                            mdl.enable_property(mdl.prop(container_handle, "P_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "P_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "Q_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "Q_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "Q_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "V_ki"))
+                            mdl.enable_property(mdl.prop(container_handle, "w_ref_str"))
+                            mdl.enable_property(mdl.prop(container_handle, "w_kp"))
+                            mdl.enable_property(mdl.prop(container_handle, "w_ki"))
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'P_ref_str'), "External input")
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'Q_ref_str'), "External input")
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'V_ref_str'), "External input")
+                            mdl.set_property_disp_value(mdl.prop(container_handle, 'w_ref_str'), "External input")
+
+                ENDCODE
+            }
+        }
+        [
+            position = 5168, 4064
+            size = 120, 96
+        ]
+
+    }
+
+}

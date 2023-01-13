@@ -1,0 +1,434 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+        component Subsystem Bus {
+            layout = static
+
+			component "core/Three-phase Meter" Measurements {
+				IA = "False"
+				IB = "False"
+				IC = "False"
+				Ts = "ts"
+				VAn = "False"
+				VBn = "False"
+				VCn = "False"
+				enable_out = "False"
+				P_method = "RMS based"
+			}
+			[
+				position = 7536, 7952
+				size = 56, 240
+			]
+
+			port A1 {
+				position = -8.0, -32.0
+				kind = pe
+				direction =  in
+			}
+			[
+				position = 7400, 7856
+			]
+
+			port A2 {
+				position = 8.0, -32.0
+				kind = pe
+				direction =  in
+			}
+			[
+				position = 7792, 7856
+				scale = -1, 1
+			]
+
+			port B1 {
+				position = -8.0, 0
+				kind = pe
+				direction =  in
+			}
+			[
+				position = 7400, 7952
+			]
+
+			port B2 {
+				position = 8.0, 0
+				kind = pe
+				direction =  in
+			}
+			[
+				position = 7792, 7952
+				scale = -1, 1
+			]
+
+			port C1 {
+				position = -8.0, 32.0
+				kind = pe
+				direction =  in
+			}
+			[
+				position = 7400, 8048
+			]
+
+			port C2 {
+				position = 8.0, 32.0
+				kind = pe
+				direction =  in
+			}
+			[
+				position = 7792, 8048
+				scale = -1, 1
+			]
+
+            component "core/Short Circuit" SCA {
+            }
+            [
+                position = 7664, 7856
+            ]
+
+            component "core/Short Circuit" SCB {
+            }
+            [
+                position = 7664, 7952
+            ]
+
+            component "core/Short Circuit" SCC {
+            }
+            [
+                position = 7664, 8048
+            ]
+
+            component "core/Short Circuit" GND_SC {
+            }
+            [
+                position = 7464, 8152
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 7400, 8208
+                hide_name = True
+            ]
+
+            junction Junction_gnd pe
+            [
+                position = 7536, 8152
+            ]
+
+			connect Measurements.A+ A1 as Connection1
+			connect Measurements.B+ B1 as Connection2
+			connect Measurements.C+ C1 as Connection3
+			connect Measurements.A- SCA.p_node as Connection4
+            connect Measurements.B- SCB.p_node as Connection5
+            connect Measurements.C- SCC.p_node as Connection6
+            connect SCA.n_node A2 as Connection7
+            connect SCB.n_node B2 as Connection8
+            connect SCC.n_node C2 as Connection9
+            connect Junction_gnd Measurements.GND as Connection10
+            connect GND_SC.n_node Junction_gnd as Connection11
+            connect gnd1.node GND_SC.p_node as Connection12
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be directly connected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has a Three-Phase meter from which electrical measurements can be accessed. Using a fixed three-phase meter, some measurements could be miss-results depending on the Bus Type (single/two-phase configuration).</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Only up to three phases are supported at the moment.</p></body></html>"
+
+                type_prop {
+                    label = "Type"
+                    widget = combo
+                    combo_values = "ABC", "AB", "AC", "BC", "A", "B", "C"
+                    type = string
+                    default_value = "ABC"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                ground_prop {
+                    label = "Show DSS ground terminal (0)"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                   ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                conf {
+                    label = "Configuration"
+                    widget = combo
+                    combo_values = "on both sides", "on one side"
+                    type = string
+                    default_value = "on both sides"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                i_rms_meas {
+                    label = "Line Currents  - RMS"
+                    previous_names = "i_meas"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                i_inst_meas {
+                    label = " Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    keepline
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_rms_meas {
+                    label = "Line Voltages  - RMS"
+                    previous_names = "v_meas"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_inst_meas {
+                    label = " instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    keepline
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_rms_meas {
+                    label = "Phase Voltage - RMS"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_inst_meas {
+                    label = " instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    keepline
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                freq_meas {
+                    label = "Frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                power_meas {
+                    label = "Power"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
+                                                         init= new_value == old_value)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                ts {
+                    label = "Execution Rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                }
+
+                enable_output {
+                    label = "Enable Output"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Measurements:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+
+                    import comp_bus as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4480, 4064
+            size = 16, 96
+        ]
+
+    }
+
+}
