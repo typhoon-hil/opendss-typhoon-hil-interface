@@ -6343,6 +6343,24 @@ if (Vdc<-2) {
                     disabled
                 }
 
+                q_gain_k {
+                    label = "CPL Kalman Filter state matrix gain Q"
+                    widget = edit
+                    type = generic
+                    default_value = "0.5"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                r_gain_k {
+                    label = "CPL Kalman Filter measurement gain R"
+                    widget = edit
+                    type = generic
+                    default_value = "20"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
                 Vn_3ph_CPL {
                     widget = edit
                     type = generic
@@ -6725,6 +6743,8 @@ if (Vdc<-2) {
                     Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
                     Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
                     CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
+                    q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                    r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                     Vn_3ph_CPL = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"))
                     P_CPL = mdl.get_property_value(mdl.prop(item_handle, "P_CPL"))
                     Q_CPL = mdl.get_property_value(mdl.prop(item_handle, "Q_CPL"))
@@ -6873,6 +6893,8 @@ if (Vdc<-2) {
 
                     mdl.set_property_value(mdl.prop(item_handle, "Tfast"), Tfast)
                     mdl.set_property_value(mdl.prop(item_handle, "CPL_LMT"), CPL_LMT)
+                    mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                    mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                     mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), S_Ts)
                     mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), T_Ts_internal)
                     mdl.set_property_value(mdl.prop(item_handle, "Slen"), Slen)
@@ -20145,7 +20167,7 @@ out = out_value;
                         label = "Fast execution rate output conditioning"
                         widget = checkbox
                         type = bool
-                        default_value = "True"
+                        default_value = "False"
                         group = "Execution rate"
                         no_evaluate
 
@@ -20156,10 +20178,18 @@ out = out_value;
                             rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
                             Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
                             Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            P_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kP_inp"))
+                            Q_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kQ_inp"))
 
                             if new_value and not Tfst_mask == Ts_mask:
-                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
-                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                if P_inp_mask == "Variable input":
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                if Q_inp_mask == "Variable input":
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
                             else:
                                 mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
                                 mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
@@ -20372,6 +20402,22 @@ out = out_value;
                         group = "Load Parameters"
                     }
 
+                    q_gain_k {
+                        label = "Kalman filter Q gain"
+                        widget = edit
+                        type = generic
+                        default_value = "q_gain_k"
+                        group = "Load Parameters"
+                    }
+
+                    r_gain_k {
+                        label = "Kalman filter R gain"
+                        widget = edit
+                        type = generic
+                        default_value = "r_gain_k"
+                        group = "Load Parameters"
+                    }
+
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
@@ -20419,6 +20465,8 @@ out = out_value;
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
                         CPL_curr = mdl.get_property_value(mdl.prop(item_handle, "CPL_curr"))
+                        q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                        r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                         # HEADER STOP
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
@@ -20505,6 +20553,8 @@ out = out_value;
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
 
                         mdl.set_property_value(mdl.prop(item_handle, "CPL_curr"), CPL_curr)
+                        mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                        mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                     ENDCODE
                 }
             }
@@ -25256,7 +25306,7 @@ out = out_value;
 						label = "Rate Transition Bypass"
 						widget = checkbox
 						type = bool
-						default_value = "True"
+						default_value = "False"
 						no_evaluate
 
 						CODE property_value_changed
@@ -25358,6 +25408,37 @@ out = out_value;
 					size = 64, 32
 				]
 
+				component "core/Product" Product38 {
+				}
+				[
+					position = 7311, 8598
+					hide_name = True
+				]
+
+				component "core/Comparator" Comparator7 {
+				}
+				[
+					position = 7124, 8590
+					hide_name = True
+				]
+
+				component "core/Constant" Constant1 {
+					execution_rate = "Tfst"
+					value = "5/Freq"
+				}
+				[
+					position = 7056, 8639
+					hide_name = True
+				]
+
+				component "core/Clock" Clock1 {
+					execution_rate = "Tfst"
+				}
+				[
+					position = 7055, 8582
+					hide_name = True
+				]
+
 				component "core/Voltage Measurement" Va {
 					execution_rate = "inherit"
 					sig_output = "True"
@@ -25385,6 +25466,7 @@ out = out_value;
 				]
 
 				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
+					bypass_flag = "True"
 					execution_rate = "Tfst"
 				}
 				[
@@ -25456,6 +25538,7 @@ out = out_value;
 				]
 
 				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
+					bypass_flag = "True"
 					execution_rate = "Tfst"
 				}
 				[
@@ -25465,6 +25548,7 @@ out = out_value;
 				]
 
 				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass3" {
+					bypass_flag = "True"
 					execution_rate = "Tfst"
 				}
 				[
@@ -25499,7 +25583,7 @@ out = out_value;
 				]
 
 				component "core/Capacitor" C1 {
-					capacitance = "1/(40*Rsnb*2*np.pi*Freq)"
+					capacitance = "1/(1*Rsnb*2*np.pi*Freq)"
 				}
 				[
 					position = 7448, 8864
@@ -25515,8 +25599,8 @@ out = out_value;
 				]
 
 				component "core/Kalman Filter Sync" "Kalman Filter Sync1" {
-					q_gain = "0.5"
-					r_gain = "20"
+					q_gain = "q_gain_k"
+					r_gain = "r_gain_k"
 					normalize = "False"
 				}
 				[
@@ -25607,18 +25691,10 @@ out = out_value;
 				]
 
 				component "core/Gain" Gain30 {
-					gain = "CPL_curr"
+					gain = "CPL_curr/(1000*kVLL*kVLL)"
 				}
 				[
 					position = 8192, 8560
-					hide_name = True
-				]
-
-				component "core/Product" Product32 {
-					signs = "*/"
-				}
-				[
-					position = 8360, 8568
 					hide_name = True
 				]
 
@@ -25627,6 +25703,14 @@ out = out_value;
 				}
 				[
 					position = 8032, 8368
+					hide_name = True
+				]
+
+				component "core/Limit" Limit2 {
+					lower_limit = "1"
+				}
+				[
+					position = 8182, 8366
 					hide_name = True
 				]
 
@@ -25691,18 +25775,10 @@ out = out_value;
 				]
 
 				component "core/Gain" Gain35 {
-					gain = "CPL_curr"
+					gain = "CPL_curr/(1000*kVLL*kVLL)"
 				}
 				[
 					position = 8520, 8752
-					hide_name = True
-				]
-
-				component "core/Product" Product35 {
-					signs = "*/"
-				}
-				[
-					position = 8688, 8760
 					hide_name = True
 				]
 
@@ -25739,7 +25815,7 @@ out = out_value;
 				]
 
 				component "core/Gain" Gain40 {
-					gain = "1/(40*Rsnb*2*np.pi*Freq)"
+					gain = "1/(1*Rsnb*2*np.pi*Freq)"
 				}
 				[
 					position = 8000, 8816
@@ -25893,7 +25969,7 @@ out = out_value;
 					direction = in
 				}
 				[
-					position = 8152, 8368
+					position = 8322, 8371
 					hide_name = True
 					size = 100, 20
 				]
@@ -25917,7 +25993,7 @@ out = out_value;
 					direction = out
 				}
 				[
-					position = 7368, 8624
+					position = 7179, 8626
 					hide_name = True
 					size = 60, 20
 				]
@@ -26244,6 +26320,16 @@ out = out_value;
 					position = 8128, 8592
 				]
 
+				junction Junction209 sp
+				[
+					position = 8278, 8559
+				]
+
+				junction Junction211 sp
+				[
+					position = 8590, 8753
+				]
+
 				junction Junction190 sp
 				[
 					position = 8432, 8784
@@ -26328,7 +26414,11 @@ out = out_value;
 				connect P2 Junction2 as Connection903
 				connect P3 Junction97 as Connection907
 				connect Goto4 Va.out as Connection914
-				connect From20 Isp1.in as Connection966
+				connect From20 Product38.in1 as Connection966
+				connect Comparator7.out Product38.in
+				connect Clock1.out Comparator7.in1
+				connect Constant1.out Comparator7.in2
+				connect Product38.out Isp1.in
 				connect Sum18.in Product28.out as Connection976
 				connect Product29.out Sum18.in1 as Connection977
 				connect Junction138 Va.p_node as Connection992
@@ -26341,16 +26431,12 @@ out = out_value;
 				]
 				connect Product31.out Sum19.in as Connection994
 				connect Gain29.out Sum19.in1 as Connection995
-				connect Gain30.out Product32.in as Connection1008
+				connect Gain30.out Junction209 as Connection1008
 				connect Product31.in "Signal switch31.out" as Connection1021
 				connect Gain31.in Sum18.out as Connection1035
 				connect From23 Gain32.in as Connection1043
 				connect Gain32.out Junction160 as Connection1045
 				connect Junction160 Product30.in1 as Connection1046
-				connect Product32.in1 Junction160 as Connection1047
-				[
-					breakpoints = 8224, 8672; 8128, 8672
-				]
 				connect From26 Junction175 as Connection1112
 				connect Junction175 Product29.in as Connection1113
 				connect Product29.in1 Junction175 as Connection1114
@@ -26379,24 +26465,18 @@ out = out_value;
 				[
 					breakpoints = 8136, 9112; 8136, 8976
 				]
-				connect Gain35.out Product35.in as Connection1153
+				connect Gain35.out Junction211 as Connection1153
 				connect Product34.in "Signal switch32.out" as Connection1159
 				connect From30 Gain36.in as Connection1163
 				connect Gain36.out Junction184 as Connection1164
 				connect Junction184 Product33.in1 as Connection1165
-				connect Product35.in1 Junction184 as Connection1166
-				[
-					breakpoints = 8552, 8864; 8456, 8864
-				]
 				connect From32 Sum5.in1 as Connection1180
 				connect "Kalman Filter Sync1.Vgrid" From21 as Connection1181
 				[
 					breakpoints = 7320, 8392
 				]
-				connect Gain31.out Goto6 as Connection1182
-				[
-					breakpoints = 8064, 8368
-				]
+				connect Gain31.out Limit2.in as Connection1182
+				connect Limit2.out Goto6 as Connection2202
 				connect Gain29.in Junction177 as Connection1183
 				[
 					breakpoints = 8800, 8640
@@ -26417,9 +26497,8 @@ out = out_value;
 					breakpoints = 8648, 8816
 				]
 				connect "Signal switch32.in1" Junction185 as Connection1201
-				connect Abs7.in Junction186 as Connection1202
-				connect Junction186 Product35.out as Connection1203
-				connect "Signal switch32.in" Junction186 as Connection1204
+				connect Abs7.in Junction211 as Connection1202
+				connect "Signal switch32.in" Junction211 as Connection1204
 				connect Comparator5.out "Signal switch31.in2" as Connection1209
 				connect Comparator5.in1 Abs4.out as Connection1210
 				[
@@ -26431,9 +26510,8 @@ out = out_value;
 					breakpoints = 8320, 8624
 				]
 				connect "Signal switch31.in1" Junction187 as Connection1213
-				connect Abs5.in Junction188 as Connection1215
-				connect Junction188 Product32.out as Connection1216
-				connect "Signal switch31.in" Junction188 as Connection1217
+				connect Abs5.in Junction209 as Connection1215
+				connect "Signal switch31.in" Junction209 as Connection1217
 				connect Abs5.out Comparator5.in2 as Connection1218
 				connect From28 Sum5.in as Connection1219
 				connect Product30.in Junction189 as Connection1221
@@ -26597,30 +26675,13 @@ out = out_value;
                         unit = "s"
                         group = "Execution rate:2"
 
-                        CODE property_value_changed
-                            comp_handle = mdl.get_sub_level_handle(container_handle)
-                            Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
-                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
-                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
-                            rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
-
-                            if new_value == Tfst_mask:
-                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
-                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
-                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "True")
-                            else:
-                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
-                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
-                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "False")
-
-                        ENDCODE
                     }
 
                     Fast_con {
                         label = "Fast execution rate output conditioning"
                         widget = checkbox
                         type = bool
-                        default_value = "True"
+                        default_value = "False"
                         group = "Execution rate"
                         no_evaluate
 
@@ -26652,23 +26713,6 @@ out = out_value;
                         unit = "s"
                         group = "Execution rate"
 
-                        CODE property_value_changed
-                            comp_handle = mdl.get_sub_level_handle(container_handle)
-                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
-                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
-                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
-                            rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
-
-                            if new_value == Ts_mask:
-                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
-                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
-                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "True")
-                            else:
-                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
-                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
-                                mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "False")
-
-                        ENDCODE
                     }
 
                     Tfast_en {
@@ -26787,6 +26831,22 @@ out = out_value;
                         group = "Load Parameters"
                     }
 
+                    q_gain_k {
+                        label = "Kalman filter Q gain"
+                        widget = edit
+                        type = generic
+                        default_value = "q_gain_k"
+                        group = "Load Parameters"
+                    }
+
+                    r_gain_k {
+                        label = "Kalman filter R gain"
+                        widget = edit
+                        type = generic
+                        default_value = "r_gain_k"
+                        group = "Load Parameters"
+                    }
+
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
@@ -26831,6 +26891,8 @@ out = out_value;
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
                         CPL_curr = mdl.get_property_value(mdl.prop(item_handle, "CPL_curr"))
+                        q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                        r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                         # HEADER STOP
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
@@ -26911,6 +26973,8 @@ out = out_value;
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
 
                         mdl.set_property_value(mdl.prop(item_handle, "CPL_curr"), CPL_curr)
+                        mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                        mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                     ENDCODE
                 }
             }
