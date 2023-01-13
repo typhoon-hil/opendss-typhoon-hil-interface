@@ -61,7 +61,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus101 {
         }
         [
-            position = 8896, 7960
+            position = 7864, 7792
             rotation = right
             size = 16, 96
         ]
@@ -69,7 +69,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus102 {
         }
         [
-            position = 8056, 8528
+            position = 7024, 8360
             rotation = right
             size = 16, 96
         ]
@@ -77,7 +77,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus103 {
         }
         [
-            position = 9336, 8448
+            position = 8792, 8416
             rotation = right
             size = 16, 96
         ]
@@ -85,7 +85,7 @@ model "banshee" {
         component "OpenDSS/Line" C101 {
         }
         [
-            position = 8056, 8384
+            position = 7024, 8216
             rotation = right
             size = 64, 112
         ]
@@ -93,7 +93,7 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T101 {
         }
         [
-            position = 7936, 8864
+            position = 6904, 8696
             rotation = right
             size = 64, 96
         ]
@@ -101,12 +101,12 @@ model "banshee" {
         component "OpenDSS/Bus" Bus102x3 {
         }
         [
-            position = 7936, 8952
+            position = 6904, 8784
             rotation = right
             size = 16, 96
         ]
 
-        component "OpenDSS/Load" I1 {
+        component "OpenDSS/Load" Load_I1 {
             Sn_3ph = "3500"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
@@ -114,7 +114,7 @@ model "banshee" {
             pf_mode_3ph = "Lag"
         }
         [
-            position = 7936, 9040
+            position = 6904, 8872
             scale = -1, 1
             size = 96, 64
         ]
@@ -122,7 +122,7 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T102 {
         }
         [
-            position = 8176, 9072
+            position = 7144, 8696
             rotation = right
             size = 64, 96
         ]
@@ -130,15 +130,15 @@ model "banshee" {
         component "OpenDSS/Bus" Bus104 {
         }
         [
-            position = 8176, 9152
+            position = 7144, 8984
             rotation = right
             size = 16, 96
         ]
 
-        component "OpenDSS/Line" Line2 {
+        component "OpenDSS/Line" C103 {
         }
         [
-            position = 9616, 8344
+            position = 8792, 8328
             rotation = right
             size = 64, 112
         ]
@@ -146,7 +146,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus105 {
         }
         [
-            position = 8896, 8520
+            position = 7864, 8352
             rotation = right
             size = 16, 96
         ]
@@ -154,7 +154,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus106 {
         }
         [
-            position = 8680, 9152
+            position = 7648, 9176
             rotation = right
             size = 16, 96
         ]
@@ -162,12 +162,12 @@ model "banshee" {
         component "OpenDSS/Bus" Bus107 {
         }
         [
-            position = 8680, 9536
+            position = 7648, 9560
             rotation = right
             size = 16, 96
         ]
 
-        component "OpenDSS/Load" C1 {
+        component "OpenDSS/Load" Load_C1 {
             Sn_3ph = "3500"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
@@ -175,7 +175,7 @@ model "banshee" {
             pf_mode_3ph = "Lag"
         }
         [
-            position = 8328, 9328
+            position = 7296, 9160
             scale = -1, 1
             size = 96, 64
         ]
@@ -183,7 +183,7 @@ model "banshee" {
         component "OpenDSS/Line" C102 {
         }
         [
-            position = 8896, 8376
+            position = 7864, 8208
             rotation = right
             size = 64, 112
         ]
@@ -191,7 +191,7 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T103 {
         }
         [
-            position = 8680, 8864
+            position = 7648, 8888
             rotation = right
             size = 64, 96
         ]
@@ -199,7 +199,7 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T104 {
         }
         [
-            position = 8680, 9456
+            position = 7648, 9480
             rotation = right
             size = 64, 96
         ]
@@ -207,7 +207,7 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T105 {
         }
         [
-            position = 8856, 9304
+            position = 7824, 9328
             rotation = right
             size = 64, 96
         ]
@@ -215,12 +215,12 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T106 {
         }
         [
-            position = 8896, 8864
+            position = 7864, 8696
             rotation = right
             size = 64, 96
         ]
 
-        component "OpenDSS/Load" I2 {
+        component "OpenDSS/Load" Load_I2 {
             Sn_3ph = "3500"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
@@ -228,15 +228,15 @@ model "banshee" {
             pf_mode_3ph = "Lag"
         }
         [
-            position = 8896, 9056
+            position = 7864, 8888
             scale = -1, 1
             size = 96, 64
         ]
 
-        component "OpenDSS/Bus" BusI2 {
+        component "OpenDSS/Bus" Bus105x6 {
         }
         [
-            position = 8896, 8960
+            position = 7864, 8792
             rotation = right
             size = 16, 96
         ]
@@ -245,7 +245,7 @@ model "banshee" {
             switch_status = "False"
         }
         [
-            position = 9136, 8696
+            position = 8104, 8528
             rotation = right
             size = 64, 96
         ]
@@ -253,7 +253,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB101 {
         }
         [
-            position = 8056, 8184
+            position = 7024, 8016
             rotation = right
             size = 64, 96
         ]
@@ -261,7 +261,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB102 {
         }
         [
-            position = 8896, 8176
+            position = 7864, 8008
             rotation = right
             size = 64, 96
         ]
@@ -269,7 +269,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB103 {
         }
         [
-            position = 9352, 8176
+            position = 8592, 8016
             rotation = right
             size = 64, 96
         ]
@@ -277,7 +277,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus101x1 {
         }
         [
-            position = 8056, 8264
+            position = 7024, 8096
             rotation = right
             size = 16, 96
         ]
@@ -285,7 +285,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus101x2 {
         }
         [
-            position = 8896, 8256
+            position = 7864, 8088
             rotation = right
             size = 16, 96
         ]
@@ -293,7 +293,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus101x3 {
         }
         [
-            position = 9352, 8256
+            position = 8592, 8096
             rotation = right
             size = 16, 96
         ]
@@ -301,7 +301,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB104 {
         }
         [
-            position = 7936, 8696
+            position = 6904, 8528
             rotation = right
             size = 64, 96
         ]
@@ -309,7 +309,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus102x1 {
         }
         [
-            position = 7936, 8776
+            position = 6904, 8608
             rotation = right
             size = 16, 96
         ]
@@ -317,7 +317,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB105 {
         }
         [
-            position = 8176, 8696
+            position = 7144, 8528
             rotation = right
             size = 64, 96
         ]
@@ -325,7 +325,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus102x2 {
         }
         [
-            position = 8176, 8776
+            position = 7144, 8608
             rotation = right
             size = 16, 96
         ]
@@ -333,7 +333,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB116 {
         }
         [
-            position = 8176, 8864
+            position = 7144, 8872
             rotation = right
             size = 64, 96
         ]
@@ -341,7 +341,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus102x4 {
         }
         [
-            position = 8176, 8952
+            position = 7144, 8784
             rotation = right
             size = 16, 96
         ]
@@ -350,7 +350,7 @@ model "banshee" {
             switch_status = "False"
         }
         [
-            position = 8032, 9328
+            position = 7000, 9160
             rotation = right
             size = 64, 96
         ]
@@ -358,7 +358,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB106 {
         }
         [
-            position = 8680, 8696
+            position = 7648, 8528
             rotation = right
             size = 64, 96
         ]
@@ -366,7 +366,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB107 {
         }
         [
-            position = 8896, 8696
+            position = 7864, 8528
             rotation = right
             size = 64, 96
         ]
@@ -374,7 +374,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus105x1 {
         }
         [
-            position = 8680, 8768
+            position = 7648, 8600
             rotation = right
             size = 16, 96
         ]
@@ -382,7 +382,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus105x2 {
         }
         [
-            position = 8896, 8768
+            position = 7864, 8600
             rotation = right
             size = 16, 96
         ]
@@ -390,23 +390,23 @@ model "banshee" {
         component "OpenDSS/Bus" Bus105x3 {
         }
         [
-            position = 9136, 8768
+            position = 8104, 8600
             rotation = right
             size = 16, 96
         ]
 
-        component "OpenDSS/Bus" Bus105x4 {
+        component "OpenDSS/Bus" Bus105x5 {
         }
         [
-            position = 8680, 8944
+            position = 7648, 8968
             rotation = right
             size = 16, 96
         ]
 
-        component "OpenDSS/Manual Switch" CB215 {
+        component "OpenDSS/Manual Switch" CB115 {
         }
         [
-            position = 8680, 9064
+            position = 7648, 9080
             rotation = right
             size = 64, 96
         ]
@@ -415,7 +415,7 @@ model "banshee" {
             switch_status = "False"
         }
         [
-            position = 8512, 9304
+            position = 7480, 9328
             rotation = right
             size = 64, 96
         ]
@@ -423,7 +423,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB110 {
         }
         [
-            position = 8680, 9304
+            position = 7648, 9328
             rotation = right
             size = 64, 96
         ]
@@ -431,7 +431,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus106x2 {
         }
         [
-            position = 8680, 9376
+            position = 7648, 9400
             rotation = right
             size = 16, 96
         ]
@@ -439,12 +439,12 @@ model "banshee" {
         component "OpenDSS/Bus" Bus106x1 {
         }
         [
-            position = 8512, 9376
+            position = 7480, 9400
             rotation = right
             size = 16, 96
         ]
 
-        component "OpenDSS/Load" C103 {
+        component "OpenDSS/Load" Load_C2 {
             Sn_3ph = "3500"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
@@ -452,7 +452,7 @@ model "banshee" {
             pf_mode_3ph = "Lag"
         }
         [
-            position = 8856, 9464
+            position = 7824, 9488
             scale = -1, 1
             size = 96, 64
         ]
@@ -460,7 +460,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus106x3 {
         }
         [
-            position = 8856, 9376
+            position = 7824, 9400
             rotation = right
             size = 16, 96
         ]
@@ -468,7 +468,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB114 {
         }
         [
-            position = 8800, 9688
+            position = 7768, 9712
             rotation = right
             size = 64, 96
         ]
@@ -481,7 +481,7 @@ model "banshee" {
             pf_mode_3ph = "Lag"
         }
         [
-            position = 8568, 9696
+            position = 7536, 9720
             scale = -1, 1
             size = 96, 64
         ]
@@ -494,7 +494,7 @@ model "banshee" {
             pf_mode_3ph = "Lag"
         }
         [
-            position = 8800, 9864
+            position = 7768, 9888
             scale = -1, 1
             size = 96, 64
         ]
@@ -502,7 +502,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus107x1 {
         }
         [
-            position = 8800, 9776
+            position = 7768, 9800
             rotation = right
             size = 16, 96
         ]
@@ -510,7 +510,879 @@ model "banshee" {
         component "OpenDSS/Bus" Bus104x1 {
         }
         [
-            position = 8032, 9416
+            position = 7000, 9248
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" C104 {
+        }
+        [
+            position = 8416, 8328
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T107 {
+        }
+        [
+            position = 8416, 8696
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus101x4 {
+        }
+        [
+            position = 8416, 8416
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB112 {
+        }
+        [
+            position = 8416, 8504
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus101x5 {
+        }
+        [
+            position = 8416, 8592
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus101x6 {
+        }
+        [
+            position = 8416, 8800
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB113 {
+            switch_status = "False"
+        }
+        [
+            position = 8416, 8888
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" F1GCB {
+        }
+        [
+            position = 8792, 8504
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus103x1 {
+        }
+        [
+            position = 8792, 8592
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Diesel {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 8792, 8696
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Manual Switch" CB1 {
+        }
+        [
+            position = 7864, 7704
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS1 {
+        }
+        [
+            position = 7248, 7384
+            size = 96, 96
+        ]
+
+        component "OpenDSS/Line" C106 {
+        }
+        [
+            position = 7648, 8696
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus105x4 {
+        }
+        [
+            position = 7648, 8792
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus201 {
+        }
+        [
+            position = 10424, 7800
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204 {
+        }
+        [
+            position = 9536, 8360
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" C201 {
+        }
+        [
+            position = 9536, 8216
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T202 {
+        }
+        [
+            position = 9416, 8696
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x2 {
+        }
+        [
+            position = 9416, 8784
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_I3 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 9416, 8872
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T203 {
+        }
+        [
+            position = 9656, 8696
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus205 {
+        }
+        [
+            position = 9656, 8984
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203 {
+        }
+        [
+            position = 10424, 8360
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_P3 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 9792, 9488
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Line" C202 {
+        }
+        [
+            position = 10424, 8216
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T210 {
+        }
+        [
+            position = 10424, 8704
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus207 {
+        }
+        [
+            position = 10424, 8792
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB211 {
+            switch_status = "False"
+        }
+        [
+            position = 10720, 8536
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB201 {
+        }
+        [
+            position = 9536, 8016
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB202 {
+        }
+        [
+            position = 10424, 8016
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB203 {
+        }
+        [
+            position = 11280, 8032
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus201x1 {
+        }
+        [
+            position = 9536, 8096
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus201x2 {
+        }
+        [
+            position = 10424, 8096
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus101x9 {
+        }
+        [
+            position = 11280, 8112
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB206 {
+        }
+        [
+            position = 9416, 8528
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x1 {
+        }
+        [
+            position = 9416, 8608
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB207 {
+        }
+        [
+            position = 9656, 8528
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x3 {
+        }
+        [
+            position = 9656, 8608
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB222 {
+        }
+        [
+            position = 9656, 8872
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x4 {
+        }
+        [
+            position = 9656, 8784
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB208 {
+            switch_status = "False"
+        }
+        [
+            position = 9512, 9160
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB209 {
+        }
+        [
+            position = 10160, 8528
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB210 {
+        }
+        [
+            position = 10424, 8536
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203x1 {
+        }
+        [
+            position = 10160, 8600
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203x2 {
+        }
+        [
+            position = 10424, 8608
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203x3 {
+        }
+        [
+            position = 10720, 8608
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB219 {
+            switch_status = "False"
+        }
+        [
+            position = 9984, 9248
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus206x1 {
+        }
+        [
+            position = 9984, 9320
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_P2 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 9984, 9408
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Bus" Bus205x1 {
+        }
+        [
+            position = 9512, 9248
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T208 {
+        }
+        [
+            position = 11080, 8736
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB214 {
+        }
+        [
+            position = 11080, 8544
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus208x1 {
+        }
+        [
+            position = 11080, 8632
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus208x3 {
+        }
+        [
+            position = 11080, 8840
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB220 {
+            switch_status = "False"
+        }
+        [
+            position = 11080, 8928
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB215 {
+        }
+        [
+            position = 11480, 8544
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus208x2 {
+        }
+        [
+            position = 11480, 8632
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_P5 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 11368, 9376
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Manual Switch" CB2 {
+        }
+        [
+            position = 10424, 7712
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus206 {
+        }
+        [
+            position = 10160, 8792
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB205 {
+        }
+        [
+            position = 9872, 8528
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB204 {
+            switch_status = "False"
+        }
+        [
+            position = 9792, 9160
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus205x3 {
+        }
+        [
+            position = 9792, 9248
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T204 {
+        }
+        [
+            position = 9512, 9328
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus205x2 {
+        }
+        [
+            position = 9512, 9408
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_I4 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 9512, 9496
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T205 {
+        }
+        [
+            position = 9792, 9328
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus205x4 {
+        }
+        [
+            position = 9792, 9400
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x5 {
+        }
+        [
+            position = 9872, 8608
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T201 {
+        }
+        [
+            position = 9872, 8696
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus202 {
+        }
+        [
+            position = 9872, 8784
+            rotation = right
+            size = 16, 96
+        ]
+
+        component Subsystem BESS {
+            layout = dynamic
+
+            port A {
+                position = top:3
+                kind = pe
+            }
+            [
+                position = 7768, 8064
+            ]
+
+            port B {
+                position = top:2
+                kind = pe
+            }
+            [
+                position = 7768, 8112
+            ]
+
+            port C {
+                position = top:1
+                kind = pe
+            }
+            [
+                position = 7768, 8160
+            ]
+        }
+        [
+            position = 9776, 8936
+            size = 112, 64
+        ]
+
+        component "OpenDSS/Load" Load_C3 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 9960, 8944
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T206 {
+        }
+        [
+            position = 10160, 8696
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB212 {
+            switch_status = "False"
+        }
+        [
+            position = 10312, 8928
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus207x1 {
+        }
+        [
+            position = 10312, 9000
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_I5 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 10312, 9072
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Manual Switch" CB213 {
+            switch_status = "False"
+        }
+        [
+            position = 10544, 8928
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus207x2 {
+        }
+        [
+            position = 10544, 9000
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T207 {
+        }
+        [
+            position = 10720, 8704
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203x4 {
+        }
+        [
+            position = 10720, 8792
+            rotation = right
+            size = 16, 96
+        ]
+
+        component Subsystem PV {
+            layout = dynamic
+
+            port A {
+                position = top:3
+                kind = pe
+            }
+            [
+                position = 7768, 8064
+            ]
+
+            port B {
+                position = top:2
+                kind = pe
+            }
+            [
+                position = 7768, 8112
+            ]
+
+            port C {
+                position = top:1
+                kind = pe
+            }
+            [
+                position = 7768, 8160
+            ]
+        }
+        [
+            position = 10720, 8928
+            size = 112, 64
+        ]
+
+        component "OpenDSS/Line" C203 {
+        }
+        [
+            position = 11280, 8224
+            rotation = right
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Bus" Bus208 {
+        }
+        [
+            position = 11280, 8368
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T209 {
+        }
+        [
+            position = 11480, 8736
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus208x4 {
+        }
+        [
+            position = 11480, 8840
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB221 {
+            switch_status = "False"
+        }
+        [
+            position = 11480, 8928
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus209 {
+        }
+        [
+            position = 11080, 9016
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus210 {
+        }
+        [
+            position = 11480, 9016
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_C4 {
+            Sn_3ph = "3500"
+            T_mode = "Loadshape index"
+            Vn_3ph = "4.16"
+            ground_connected = "True"
+            pf_mode_3ph = "Lag"
+        }
+        [
+            position = 10968, 9208
+            scale = -1, 1
+            size = 96, 64
+        ]
+
+        component "OpenDSS/Manual Switch" CB217 {
+            switch_status = "False"
+        }
+        [
+            position = 11176, 9192
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus209x1 {
+        }
+        [
+            position = 11176, 9280
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB218 {
+            switch_status = "False"
+        }
+        [
+            position = 11368, 9192
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB216 {
+            switch_status = "False"
+        }
+        [
+            position = 11624, 9192
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus210x1 {
+        }
+        [
+            position = 11368, 9280
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus210x2 {
+        }
+        [
+            position = 11624, 9280
             rotation = right
             size = 16, 96
         ]
@@ -521,7 +1393,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8064, 9512
+            position = 7032, 9344
             rotation = left
             hide_name = True
             size = 83, 20
@@ -533,7 +1405,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8032, 9512
+            position = 7000, 9344
             rotation = left
             hide_name = True
             size = 83, 20
@@ -545,7 +1417,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8000, 9512
+            position = 6968, 9344
             rotation = left
             hide_name = True
             size = 83, 20
@@ -557,7 +1429,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8480, 9512
+            position = 7448, 9536
             rotation = left
             hide_name = True
             size = 83, 20
@@ -569,7 +1441,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8512, 9512
+            position = 7480, 9536
             rotation = left
             hide_name = True
             size = 83, 20
@@ -581,7 +1453,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8544, 9512
+            position = 7512, 9536
             rotation = left
             hide_name = True
             size = 83, 20
@@ -593,7 +1465,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9168, 8872
+            position = 8136, 8704
             rotation = left
             hide_name = True
             size = 83, 20
@@ -605,7 +1477,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9136, 8872
+            position = 8104, 8704
             rotation = left
             hide_name = True
             size = 83, 20
@@ -617,7 +1489,259 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9104, 8872
+            position = 8072, 8704
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag10" {
+            value = "Bus105a_C105"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8448, 9032
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag11" {
+            value = "Bus105b_C105"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8416, 9032
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag12" {
+            value = "Bus105c_C105"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8384, 9032
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag13" {
+            value = "Bus205a_C107"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9376, 9168
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag14" {
+            value = "Bus205b_C107"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9344, 9168
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag15" {
+            value = "Bus205c_C107"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9312, 9168
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag16" {
+            value = "Bus106c_C107"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 10224, 9256
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag17" {
+            value = "Bus106b_C107"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 10256, 9256
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag18" {
+            value = "Bus106a_C107"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 10288, 9256
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag22" {
+            value = "Bus209a_C205"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11208, 9376
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag23" {
+            value = "Bus209b_C205"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11176, 9376
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag24" {
+            value = "Bus209c_C205"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11144, 9376
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag25" {
+            value = "Bus204a_C105"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9272, 8536
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag26" {
+            value = "Bus204b_C105"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9240, 8536
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag27" {
+            value = "Bus204c_C105"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9208, 8536
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag28" {
+            value = "Bus207c_C106"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 10512, 9096
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag29" {
+            value = "Bus207b_C106"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 10544, 9096
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag30" {
+            value = "Bus207a_C106"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 10576, 9096
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag31" {
+            value = "Bus210a_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11656, 9376
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag32" {
+            value = "Bus210b_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11624, 9376
+            rotation = left
+            hide_name = True
+            size = 83, 20
+        ]
+
+        tag "Electric Tag33" {
+            value = "Bus210c_C204"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 11592, 9376
             rotation = left
             hide_name = True
             size = 83, 20
@@ -625,137 +1749,387 @@ model "banshee" {
 
         junction Junction10 pe
         [
-            position = 8928, 8032
+            position = 7896, 7864
         ]
 
         junction Junction11 pe
         [
-            position = 8896, 8064
+            position = 7864, 7896
         ]
 
         junction Junction12 pe
         [
-            position = 8864, 8096
+            position = 7832, 7928
         ]
 
         junction Junction13 pe
         [
-            position = 8928, 8032
+            position = 7896, 7864
         ]
 
         junction Junction14 pe
         [
-            position = 8896, 8064
+            position = 7864, 7896
         ]
 
         junction Junction15 pe
         [
-            position = 8864, 8096
+            position = 7832, 7928
         ]
 
         junction Junction16 pe
         [
-            position = 8024, 8640
+            position = 6992, 8472
         ]
 
         junction Junction17 pe
         [
-            position = 8056, 8616
+            position = 7024, 8448
         ]
 
         junction Junction18 pe
         [
-            position = 8088, 8592
-        ]
-
-        junction Junction19 pe
-        [
-            position = 8144, 9272
-        ]
-
-        junction Junction20 pe
-        [
-            position = 8176, 9248
-        ]
-
-        junction Junction21 pe
-        [
-            position = 8208, 9224
+            position = 7056, 8424
         ]
 
         junction Junction25 pe
         [
-            position = 8864, 8640
+            position = 7832, 8472
         ]
 
         junction Junction26 pe
         [
-            position = 8896, 8616
+            position = 7864, 8448
         ]
 
         junction Junction27 pe
         [
-            position = 8928, 8592
+            position = 7896, 8424
         ]
 
         junction Junction28 pe
         [
-            position = 8864, 8640
+            position = 7832, 8472
         ]
 
         junction Junction29 pe
         [
-            position = 8896, 8616
+            position = 7864, 8448
         ]
 
         junction Junction30 pe
         [
-            position = 8928, 8592
+            position = 7896, 8424
         ]
 
         junction Junction34 pe
         [
-            position = 8648, 9248
+            position = 7616, 9272
         ]
 
         junction Junction35 pe
         [
-            position = 8680, 9224
+            position = 7648, 9248
         ]
 
         junction Junction36 pe
         [
-            position = 8712, 9200
+            position = 7680, 9224
         ]
 
         junction Junction37 pe
         [
-            position = 8648, 9248
+            position = 7616, 9272
         ]
 
         junction Junction38 pe
         [
-            position = 8680, 9224
+            position = 7648, 9248
         ]
 
         junction Junction39 pe
         [
-            position = 8712, 9200
+            position = 7680, 9224
         ]
 
         junction Junction40 pe
         [
-            position = 8648, 9640
+            position = 7616, 9664
         ]
 
         junction Junction41 pe
         [
-            position = 8680, 9616
+            position = 7648, 9640
         ]
 
         junction Junction42 pe
         [
-            position = 8712, 9592
+            position = 7680, 9616
+        ]
+
+        junction Junction43 pe
+        [
+            position = 8560, 8272
+        ]
+
+        junction Junction44 pe
+        [
+            position = 8592, 8248
+        ]
+
+        junction Junction45 pe
+        [
+            position = 8624, 8224
+        ]
+
+        junction Junction46 pe
+        [
+            position = 7112, 9104
+        ]
+
+        junction Junction47 pe
+        [
+            position = 7144, 9080
+        ]
+
+        junction Junction48 pe
+        [
+            position = 7176, 9056
+        ]
+
+        junction Junction49 pe
+        [
+            position = 10456, 7872
+        ]
+
+        junction Junction50 pe
+        [
+            position = 10424, 7904
+        ]
+
+        junction Junction51 pe
+        [
+            position = 10392, 7936
+        ]
+
+        junction Junction52 pe
+        [
+            position = 10456, 7872
+        ]
+
+        junction Junction53 pe
+        [
+            position = 10424, 7904
+        ]
+
+        junction Junction54 pe
+        [
+            position = 10392, 7936
+        ]
+
+        junction Junction58 pe
+        [
+            position = 10392, 8472
+        ]
+
+        junction Junction59 pe
+        [
+            position = 10424, 8448
+        ]
+
+        junction Junction60 pe
+        [
+            position = 10456, 8424
+        ]
+
+        junction Junction80 pe
+        [
+            position = 9624, 8472
+        ]
+
+        junction Junction82 pe
+        [
+            position = 9656, 8448
+        ]
+
+        junction Junction84 pe
+        [
+            position = 9688, 8424
+        ]
+
+        junction Junction85 pe
+        [
+            position = 9504, 8472
+        ]
+
+        junction Junction86 pe
+        [
+            position = 9536, 8448
+        ]
+
+        junction Junction87 pe
+        [
+            position = 9568, 8424
+        ]
+
+        junction Junction88 pe
+        [
+            position = 9448, 8424
+        ]
+
+        junction Junction89 pe
+        [
+            position = 9416, 8448
+        ]
+
+        junction Junction90 pe
+        [
+            position = 9384, 8472
+        ]
+
+        junction Junction91 pe
+        [
+            position = 9688, 9056
+        ]
+
+        junction Junction92 pe
+        [
+            position = 9656, 9080
+        ]
+
+        junction Junction93 pe
+        [
+            position = 9624, 9104
+        ]
+
+        junction Junction94 pe
+        [
+            position = 9544, 9056
+        ]
+
+        junction Junction95 pe
+        [
+            position = 9512, 9080
+        ]
+
+        junction Junction96 pe
+        [
+            position = 9480, 9104
+        ]
+
+        junction Junction97 pe
+        [
+            position = 9840, 8880
+        ]
+
+        junction Junction98 pe
+        [
+            position = 9872, 8856
+        ]
+
+        junction Junction99 pe
+        [
+            position = 9904, 8832
+        ]
+
+        junction Junction100 pe
+        [
+            position = 10128, 9176
+        ]
+
+        junction Junction101 pe
+        [
+            position = 10160, 9152
+        ]
+
+        junction Junction102 pe
+        [
+            position = 10192, 9128
+        ]
+
+        junction Junction103 pe
+        [
+            position = 10392, 8472
+        ]
+
+        junction Junction104 pe
+        [
+            position = 10424, 8448
+        ]
+
+        junction Junction105 pe
+        [
+            position = 10456, 8424
+        ]
+
+        junction Junction106 pe
+        [
+            position = 10456, 8832
+        ]
+
+        junction Junction107 pe
+        [
+            position = 10424, 8856
+        ]
+
+        junction Junction108 pe
+        [
+            position = 10392, 8880
+        ]
+
+        junction Junction109 pe
+        [
+            position = 11248, 8488
+        ]
+
+        junction Junction110 pe
+        [
+            position = 11280, 8464
+        ]
+
+        junction Junction111 pe
+        [
+            position = 11312, 8440
+        ]
+
+        junction Junction112 pe
+        [
+            position = 11048, 9136
+        ]
+
+        junction Junction113 pe
+        [
+            position = 11080, 9112
+        ]
+
+        junction Junction114 pe
+        [
+            position = 11112, 9088
+        ]
+
+        junction Junction115 pe
+        [
+            position = 11448, 9136
+        ]
+
+        junction Junction116 pe
+        [
+            position = 11480, 9112
+        ]
+
+        junction Junction117 pe
+        [
+            position = 11512, 9088
+        ]
+
+        comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p></body></html> ENDCOMMENT 
+        [
+            position = 9000, 7784
+        ]
+
+        comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">|</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">:</p></body></html> ENDCOMMENT 
+        [
+            position = 11776, 7776
         ]
 
         connect C101.C2 Bus102.C1 as Connection4
@@ -764,35 +2138,32 @@ model "banshee" {
         connect Bus102x3.C1 T101.C2 as Connection10
         connect Bus102x3.B1 T101.B2 as Connection11
         connect Bus102x3.A1 T101.A2 as Connection12
-        connect Bus102x3.C2 I1.C1 as Connection13
-        connect Bus102x3.B2 I1.B1 as Connection14
-        connect Bus102x3.A2 I1.A1 as Connection15
-        connect T102.C2 Bus104.C1 as Connection16
-        connect T102.B2 Bus104.B1 as Connection17
-        connect T102.A2 Bus104.A1 as Connection18
+        connect Bus102x3.C2 Load_I1.C1 as Connection13
+        connect Bus102x3.B2 Load_I1.B1 as Connection14
+        connect Bus102x3.A2 Load_I1.A1 as Connection15
         connect Bus105.C1 C102.C2 as Connection43
         connect Bus105.B1 C102.B2 as Connection44
         connect Bus105.A1 C102.A2 as Connection45
-        connect T106.C2 BusI2.C1 as Connection73
-        connect T106.B2 BusI2.B1 as Connection74
-        connect T106.A2 BusI2.A1 as Connection75
-        connect BusI2.C2 I2.C1 as Connection76
-        connect BusI2.B2 I2.B1 as Connection77
-        connect BusI2.A2 I2.A1 as Connection78
+        connect T106.C2 Bus105x6.C1 as Connection73
+        connect T106.B2 Bus105x6.B1 as Connection74
+        connect T106.A2 Bus105x6.A1 as Connection75
+        connect Bus105x6.C2 Load_I2.C1 as Connection76
+        connect Bus105x6.B2 Load_I2.B1 as Connection77
+        connect Bus105x6.A2 Load_I2.A1 as Connection78
         connect CB102.A1 Junction10 as Connection166
         connect Junction10 Bus101.A2 as Connection167
         [
-            breakpoints = 8928, 8032
+            breakpoints = 7896, 7864
         ]
         connect Bus101.B2 Junction11 as Connection169
         connect Junction11 CB102.B1 as Connection170
         [
-            breakpoints = 8896, 8056
+            breakpoints = 7864, 7888
         ]
         connect CB102.C1 Junction12 as Connection172
         connect Junction12 Bus101.C2 as Connection173
         [
-            breakpoints = 8864, 8080
+            breakpoints = 7832, 7912
         ]
         connect CB103.A1 Junction13 as Connection175
         connect Junction13 Junction10 as Connection176
@@ -836,24 +2207,6 @@ model "banshee" {
         connect Bus102x1.C2 T101.C1 as Connection217
         connect Bus102x1.B2 T101.B1 as Connection218
         connect Bus102x1.A2 T101.A1 as Connection219
-        connect Bus102x2.C2 CB116.C1 as Connection220
-        connect Bus102x2.B2 CB116.B1 as Connection221
-        connect Bus102x2.A2 CB116.A1 as Connection222
-        connect CB116.C2 Bus102x4.C1 as Connection223
-        connect CB116.B2 Bus102x4.B1 as Connection224
-        connect CB116.A2 Bus102x4.A1 as Connection225
-        connect Bus102x4.C2 T102.C1 as Connection226
-        connect Bus102x4.B2 T102.B1 as Connection227
-        connect Bus102x4.A2 T102.A1 as Connection228
-        connect Junction19 Bus104.C2 as Connection232
-        connect Junction19 CB109.C1 as Connection233
-        connect Junction19 C1.C1 as Connection234
-        connect Junction20 Bus104.B2 as Connection235
-        connect Junction20 CB109.B1 as Connection236
-        connect Junction20 C1.B1 as Connection237
-        connect Junction21 Bus104.A2 as Connection238
-        connect Junction21 CB109.A1 as Connection239
-        connect Junction21 C1.A1 as Connection240
         connect CB107.C1 Junction25 as Connection250
         connect CB107.B1 Junction26 as Connection251
         connect CB107.A1 Junction27 as Connection252
@@ -878,18 +2231,15 @@ model "banshee" {
         connect CB108.C2 Bus105x3.C1 as Connection274
         connect CB108.B2 Bus105x3.B1 as Connection275
         connect CB108.A2 Bus105x3.A1 as Connection276
-        connect Bus105x1.C2 T103.C1 as Connection277
-        connect Bus105x1.B2 T103.B1 as Connection278
-        connect Bus105x1.A2 T103.A1 as Connection279
-        connect Bus105x4.C1 T103.C2 as Connection280
-        connect Bus105x4.B1 T103.B2 as Connection281
-        connect Bus105x4.A1 T103.A2 as Connection282
-        connect Bus105x4.C2 CB215.C1 as Connection283
-        connect Bus105x4.B2 CB215.B1 as Connection284
-        connect Bus105x4.A2 CB215.A1 as Connection285
-        connect CB215.C2 Bus106.C1 as Connection286
-        connect CB215.B2 Bus106.B1 as Connection287
-        connect CB215.A2 Bus106.A1 as Connection288
+        connect Bus105x5.C1 T103.C2 as Connection280
+        connect Bus105x5.B1 T103.B2 as Connection281
+        connect Bus105x5.A1 T103.A2 as Connection282
+        connect Bus105x5.C2 CB115.C1 as Connection283
+        connect Bus105x5.B2 CB115.B1 as Connection284
+        connect Bus105x5.A2 CB115.A1 as Connection285
+        connect CB115.C2 Bus106.C1 as Connection286
+        connect CB115.B2 Bus106.B1 as Connection287
+        connect CB115.A2 Bus106.A1 as Connection288
         connect CB110.C1 Junction34 as Connection298
         connect CB110.B1 Junction35 as Connection299
         connect CB110.A1 Junction36 as Connection300
@@ -914,9 +2264,9 @@ model "banshee" {
         connect Bus106x3.C1 T105.C2 as Connection322
         connect Bus106x3.B1 T105.B2 as Connection323
         connect Bus106x3.A1 T105.A2 as Connection324
-        connect Bus106x3.C2 C103.C1 as Connection325
-        connect Bus106x3.B2 C103.B1 as Connection326
-        connect Bus106x3.A2 C103.A1 as Connection327
+        connect Bus106x3.C2 Load_C2.C1 as Connection325
+        connect Bus106x3.B2 Load_C2.B1 as Connection326
+        connect Bus106x3.A2 Load_C2.A1 as Connection327
         connect Bus106x2.C2 T104.C1 as Connection328
         connect Bus106x2.B2 T104.B1 as Connection329
         connect Bus106x2.A2 T104.A1 as Connection330
@@ -953,6 +2303,432 @@ model "banshee" {
         connect Bus105x3.A2 "Electric Tag7" as Connection366
         connect Bus106x1.A2 "Electric Tag6" as Connection367
         connect "Electric Tag4" Bus106x1.C2 as Connection368
+        connect Junction43 Bus101x3.C2 as Connection375
+        connect Junction43 C103.C1 as Connection376
+        connect Junction43 C104.C1 as Connection377
+        connect Junction44 Bus101x3.B2 as Connection378
+        connect Junction44 C103.B1 as Connection379
+        connect Junction44 C104.B1 as Connection380
+        connect Junction45 Bus101x3.A2 as Connection381
+        connect Junction45 C103.A1 as Connection382
+        connect Junction45 C104.A1 as Connection383
+        connect Bus101x4.C1 C104.C2 as Connection384
+        connect Bus101x4.B1 C104.B2 as Connection385
+        connect Bus101x4.A1 C104.A2 as Connection386
+        connect Bus101x4.C2 CB112.C1 as Connection387
+        connect Bus101x4.B2 CB112.B1 as Connection388
+        connect Bus101x4.A2 CB112.A1 as Connection389
+        connect CB112.C2 Bus101x5.C1 as Connection390
+        connect CB112.B2 Bus101x5.B1 as Connection391
+        connect CB112.A2 Bus101x5.A1 as Connection392
+        connect Bus101x5.C2 T107.C1 as Connection393
+        connect Bus101x5.B2 T107.B1 as Connection394
+        connect Bus101x5.A2 T107.A1 as Connection395
+        connect Bus101x6.C1 T107.C2 as Connection396
+        connect Bus101x6.B1 T107.B2 as Connection397
+        connect Bus101x6.A1 T107.A2 as Connection398
+        connect Bus101x6.C2 CB113.C1 as Connection399
+        connect Bus101x6.B2 CB113.B1 as Connection400
+        connect Bus101x6.A2 CB113.A1 as Connection401
+        connect CB113.C2 "Electric Tag12" as Connection402
+        connect CB113.B2 "Electric Tag11" as Connection403
+        connect CB113.A2 "Electric Tag10" as Connection404
+        connect C103.C2 Bus103.C1 as Connection405
+        connect C103.B2 Bus103.B1 as Connection406
+        connect C103.A2 Bus103.A1 as Connection407
+        connect Bus103.C2 F1GCB.C1 as Connection408
+        connect Bus103.B2 F1GCB.B1 as Connection409
+        connect Bus103.A2 F1GCB.A1 as Connection410
+        connect Bus103x1.C1 F1GCB.C2 as Connection411
+        connect Bus103x1.B1 F1GCB.B2 as Connection412
+        connect Bus103x1.A1 F1GCB.A2 as Connection413
+        connect Bus103x1.C2 Diesel.C1 as Connection414
+        connect Bus103x1.B2 Diesel.B1 as Connection415
+        connect Bus103x1.A2 Diesel.A1 as Connection416
+        connect Bus101.C1 CB1.C2 as Connection417
+        connect Bus101.B1 CB1.B2 as Connection418
+        connect Bus101.A1 CB1.A2 as Connection419
+        connect Bus102x2.C2 T102.C1 as Connection423
+        connect Bus102x2.B2 T102.B1 as Connection424
+        connect Bus102x2.A2 T102.A1 as Connection425
+        connect T102.C2 Bus102x4.C1 as Connection426
+        connect T102.B2 Bus102x4.B1 as Connection427
+        connect T102.A2 Bus102x4.A1 as Connection428
+        connect Bus102x4.C2 CB116.C1 as Connection429
+        connect Bus102x4.B2 CB116.B1 as Connection430
+        connect Bus102x4.A2 CB116.A1 as Connection431
+        connect CB116.C2 Bus104.C1 as Connection432
+        connect CB116.B2 Bus104.B1 as Connection433
+        connect CB116.A2 Bus104.A1 as Connection434
+        connect Junction46 Bus104.C2 as Connection435
+        connect Junction46 Load_C1.C1 as Connection436
+        connect Junction46 CB109.C1 as Connection437
+        connect Junction47 Bus104.B2 as Connection438
+        connect Junction47 Load_C1.B1 as Connection439
+        connect Junction47 CB109.B1 as Connection440
+        connect Junction48 Bus104.A2 as Connection441
+        connect Junction48 Load_C1.A1 as Connection442
+        connect Junction48 CB109.A1 as Connection443
+        connect Bus105x1.C2 C106.C1 as Connection444
+        connect Bus105x1.B2 C106.B1 as Connection445
+        connect Bus105x1.A2 C106.A1 as Connection446
+        connect C106.C2 Bus105x4.C1 as Connection447
+        connect C106.B2 Bus105x4.B1 as Connection448
+        connect C106.A2 Bus105x4.A1 as Connection449
+        connect Bus105x4.C2 T103.C1 as Connection450
+        connect Bus105x4.B2 T103.B1 as Connection451
+        connect Bus105x4.A2 T103.A1 as Connection452
+        connect C201.C2 Bus204.C1 as Connection453
+        connect C201.B2 Bus204.B1 as Connection454
+        connect C201.A2 Bus204.A1 as Connection455
+        connect Bus204x2.C1 T202.C2 as Connection456
+        connect Bus204x2.B1 T202.B2 as Connection457
+        connect Bus204x2.A1 T202.A2 as Connection458
+        connect Bus204x2.C2 Load_I3.C1 as Connection459
+        connect Bus204x2.B2 Load_I3.B1 as Connection460
+        connect Bus204x2.A2 Load_I3.A1 as Connection461
+        connect Bus203.C1 C202.C2 as Connection462
+        connect Bus203.B1 C202.B2 as Connection463
+        connect Bus203.A1 C202.A2 as Connection464
+        connect T210.C2 Bus207.C1 as Connection465
+        connect T210.B2 Bus207.B1 as Connection466
+        connect T210.A2 Bus207.A1 as Connection467
+        connect CB202.A1 Junction49 as Connection471
+        connect Junction49 Bus201.A2 as Connection472
+        [
+            breakpoints = 10456, 7872
+        ]
+        connect Bus201.B2 Junction50 as Connection473
+        connect Junction50 CB202.B1 as Connection474
+        [
+            breakpoints = 10424, 7896
+        ]
+        connect CB202.C1 Junction51 as Connection475
+        connect Junction51 Bus201.C2 as Connection476
+        [
+            breakpoints = 10392, 7920
+        ]
+        connect CB203.A1 Junction52 as Connection477
+        connect Junction52 Junction49 as Connection478
+        connect CB201.A1 Junction52 as Connection479
+        connect CB203.B1 Junction53 as Connection480
+        connect Junction53 Junction50 as Connection481
+        connect CB201.B1 Junction53 as Connection482
+        connect CB203.C1 Junction54 as Connection483
+        connect Junction54 Junction51 as Connection484
+        connect CB201.C1 Junction54 as Connection485
+        connect Bus201x1.C1 CB201.C2 as Connection486
+        connect Bus201x1.B1 CB201.B2 as Connection487
+        connect Bus201x1.A1 CB201.A2 as Connection488
+        connect Bus201x1.C2 C201.C1 as Connection489
+        connect Bus201x1.B2 C201.B1 as Connection490
+        connect Bus201x1.A2 C201.A1 as Connection491
+        connect Bus201x2.C1 CB202.C2 as Connection492
+        connect Bus201x2.B1 CB202.B2 as Connection493
+        connect Bus201x2.A1 CB202.A2 as Connection494
+        connect Bus201x2.C2 C202.C1 as Connection495
+        connect Bus201x2.B2 C202.B1 as Connection496
+        connect Bus201x2.A2 C202.A1 as Connection497
+        connect CB203.C2 Bus101x9.C1 as Connection498
+        connect CB203.B2 Bus101x9.B1 as Connection499
+        connect CB203.A2 Bus101x9.A1 as Connection500
+        connect Bus204x1.C1 CB206.C2 as Connection501
+        connect Bus204x1.B1 CB206.B2 as Connection502
+        connect Bus204x1.A1 CB206.A2 as Connection503
+        connect Bus204x3.C1 CB207.C2 as Connection504
+        connect Bus204x3.B1 CB207.B2 as Connection505
+        connect Bus204x3.A1 CB207.A2 as Connection506
+        connect Bus204x1.C2 T202.C1 as Connection516
+        connect Bus204x1.B2 T202.B1 as Connection517
+        connect Bus204x1.A2 T202.A1 as Connection518
+        connect CB210.C1 Junction58 as Connection519
+        connect CB210.B1 Junction59 as Connection520
+        connect CB210.A1 Junction60 as Connection521
+        connect CB209.C1 Junction58 as Connection522
+        connect CB209.B1 Junction59 as Connection523
+        connect CB209.C2 Bus203x1.C1 as Connection534
+        connect CB209.B2 Bus203x1.B1 as Connection535
+        connect CB209.A2 Bus203x1.A1 as Connection536
+        connect CB210.C2 Bus203x2.C1 as Connection537
+        connect CB210.B2 Bus203x2.B1 as Connection538
+        connect CB210.A2 Bus203x2.A1 as Connection539
+        connect CB211.C2 Bus203x3.C1 as Connection540
+        connect CB211.B2 Bus203x3.B1 as Connection541
+        connect CB211.A2 Bus203x3.A1 as Connection542
+        connect Bus206x1.C1 CB219.C2 as Connection570
+        connect Bus206x1.B1 CB219.B2 as Connection571
+        connect Bus206x1.A1 CB219.A2 as Connection572
+        connect CB208.C2 Bus205x1.C1 as Connection600
+        connect CB208.B2 Bus205x1.B1 as Connection601
+        connect CB208.A2 Bus205x1.A1 as Connection602
+        connect Bus203x2.C2 T210.C1 as Connection603
+        connect Bus203x2.B2 T210.B1 as Connection604
+        connect Bus203x2.A2 T210.A1 as Connection605
+        connect CB214.C2 Bus208x1.C1 as Connection630
+        connect CB214.B2 Bus208x1.B1 as Connection631
+        connect CB214.A2 Bus208x1.A1 as Connection632
+        connect Bus208x1.C2 T208.C1 as Connection633
+        connect Bus208x1.B2 T208.B1 as Connection634
+        connect Bus208x1.A2 T208.A1 as Connection635
+        connect Bus208x3.C1 T208.C2 as Connection636
+        connect Bus208x3.B1 T208.B2 as Connection637
+        connect Bus208x3.A1 T208.A2 as Connection638
+        connect Bus208x3.C2 CB220.C1 as Connection639
+        connect Bus208x3.B2 CB220.B1 as Connection640
+        connect Bus208x3.A2 CB220.A1 as Connection641
+        connect Bus208x2.C1 CB215.C2 as Connection651
+        connect Bus208x2.B1 CB215.B2 as Connection652
+        connect Bus208x2.A1 CB215.A2 as Connection653
+        connect Bus201.C1 CB2.C2 as Connection657
+        connect Bus201.B1 CB2.B2 as Connection658
+        connect Bus201.A1 CB2.A2 as Connection659
+        connect Bus204x3.C2 T203.C1 as Connection660
+        connect Bus204x3.B2 T203.B1 as Connection661
+        connect Bus204x3.A2 T203.A1 as Connection662
+        connect T203.C2 Bus204x4.C1 as Connection663
+        connect T203.B2 Bus204x4.B1 as Connection664
+        connect T203.A2 Bus204x4.A1 as Connection665
+        connect Bus204x4.C2 CB222.C1 as Connection666
+        connect Bus204x4.B2 CB222.B1 as Connection667
+        connect Bus204x4.A2 CB222.A1 as Connection668
+        connect CB222.C2 Bus205.C1 as Connection669
+        connect CB222.B2 Bus205.B1 as Connection670
+        connect CB222.A2 Bus205.A1 as Connection671
+        connect CB207.C1 Junction80 as Connection696
+        connect CB207.B1 Junction82 as Connection697
+        connect CB207.A1 Junction84 as Connection698
+        connect CB205.C1 Junction80 as Connection702
+        connect CB205.B1 Junction82 as Connection703
+        connect CB205.A1 Junction84 as Connection704
+        connect Junction85 Bus204.C2 as Connection705
+        connect Junction85 Junction80 as Connection707
+        connect Junction86 Bus204.B2 as Connection708
+        connect Junction86 Junction82 as Connection710
+        connect Junction87 Bus204.A2 as Connection711
+        connect Junction87 Junction84 as Connection713
+        connect CB206.A1 Junction88 as Connection717
+        connect Junction88 Junction87 as Connection718
+        [
+            breakpoints = 9448, 8424
+        ]
+        connect "Electric Tag25" Junction88 as Connection719
+        connect CB206.B1 Junction89 as Connection720
+        connect Junction89 Junction86 as Connection721
+        [
+            breakpoints = 9416, 8448
+        ]
+        connect "Electric Tag26" Junction89 as Connection722
+        connect CB206.C1 Junction90 as Connection723
+        connect Junction90 Junction85 as Connection724
+        [
+            breakpoints = 9384, 8472
+        ]
+        connect "Electric Tag27" Junction90 as Connection725
+        connect Junction91 Bus205.A2 as Connection730
+        [
+            breakpoints = 9688, 9056
+        ]
+        connect CB204.A1 Junction91 as Connection731
+        connect Junction92 Bus205.B2 as Connection733
+        [
+            breakpoints = 9656, 9080
+        ]
+        connect CB204.B1 Junction92 as Connection734
+        connect Junction93 Bus205.C2 as Connection736
+        [
+            breakpoints = 9624, 9104
+        ]
+        connect CB204.C1 Junction93 as Connection737
+        connect CB204.C2 Bus205x3.C1 as Connection738
+        connect CB204.B2 Bus205x3.B1 as Connection739
+        connect CB204.A2 Bus205x3.A1 as Connection740
+        connect Bus205x1.C2 T204.C1 as Connection741
+        connect Bus205x1.B2 T204.B1 as Connection742
+        connect Bus205x1.A2 T204.A1 as Connection743
+        connect T204.C2 Bus205x2.C1 as Connection744
+        connect T204.B2 Bus205x2.B1 as Connection745
+        connect T204.A2 Bus205x2.A1 as Connection746
+        connect Bus205x2.C2 Load_I4.C1 as Connection747
+        connect Bus205x2.B2 Load_I4.B1 as Connection748
+        connect Bus205x2.A2 Load_I4.A1 as Connection749
+        connect Bus205x3.C2 T205.C1 as Connection750
+        connect Bus205x3.B2 T205.B1 as Connection751
+        connect Bus205x3.A2 T205.A1 as Connection752
+        connect T205.C2 Bus205x4.C1 as Connection753
+        connect T205.B2 Bus205x4.B1 as Connection754
+        connect T205.A2 Bus205x4.A1 as Connection755
+        connect Bus205x4.C2 Load_P3.C1 as Connection756
+        connect Bus205x4.B2 Load_P3.B1 as Connection757
+        connect Bus205x4.A2 Load_P3.A1 as Connection758
+        connect CB208.A1 Junction94 as Connection759
+        connect Junction94 Junction91 as Connection760
+        connect "Electric Tag13" Junction94 as Connection761
+        connect CB208.B1 Junction95 as Connection762
+        connect Junction95 Junction92 as Connection763
+        connect "Electric Tag14" Junction95 as Connection764
+        connect CB208.C1 Junction96 as Connection765
+        connect Junction96 Junction93 as Connection766
+        connect "Electric Tag15" Junction96 as Connection767
+        connect Bus204x5.C1 CB205.C2 as Connection768
+        connect Bus204x5.B1 CB205.B2 as Connection769
+        connect Bus204x5.A1 CB205.A2 as Connection770
+        connect Bus204x5.C2 T201.C1 as Connection771
+        connect Bus204x5.B2 T201.B1 as Connection772
+        connect Bus204x5.A2 T201.A1 as Connection773
+        connect Bus202.C1 T201.C2 as Connection774
+        connect Bus202.B1 T201.B2 as Connection775
+        connect Bus202.A1 T201.A2 as Connection776
+        connect Junction97 Bus202.C2 as Connection780
+        connect Junction97 BESS.C as Connection781
+        connect Junction97 Load_C3.C1 as Connection782
+        connect Junction98 Bus202.B2 as Connection783
+        connect Junction98 BESS.B as Connection784
+        connect Junction98 Load_C3.B1 as Connection785
+        connect Junction99 Bus202.A2 as Connection786
+        connect Junction99 BESS.A as Connection787
+        connect Junction99 Load_C3.A1 as Connection788
+        connect Bus203x1.C2 T206.C1 as Connection789
+        connect Bus203x1.B2 T206.B1 as Connection790
+        connect Bus203x1.A2 T206.A1 as Connection791
+        connect T206.C2 Bus206.C1 as Connection792
+        connect T206.B2 Bus206.B1 as Connection793
+        connect T206.A2 Bus206.A1 as Connection794
+        connect Bus206x1.C2 Load_P2.C1 as Connection795
+        connect Bus206x1.B2 Load_P2.B1 as Connection796
+        connect Bus206x1.A2 Load_P2.A1 as Connection797
+        connect Junction100 Bus206.C2 as Connection800
+        connect Junction100 "Electric Tag16" as Connection801
+        connect Junction100 CB219.C1 as Connection802
+        connect Junction101 Bus206.B2 as Connection803
+        connect Junction101 "Electric Tag17" as Connection804
+        connect Junction101 CB219.B1 as Connection805
+        connect Junction102 Bus206.A2 as Connection806
+        connect Junction102 "Electric Tag18" as Connection807
+        connect Junction102 CB219.A1 as Connection808
+        connect Bus207x1.C1 CB212.C2 as Connection809
+        connect Bus207x1.B1 CB212.B2 as Connection810
+        connect Bus207x1.A1 CB212.A2 as Connection811
+        connect Bus207x1.C2 Load_I5.C1 as Connection812
+        connect Bus207x1.B2 Load_I5.B1 as Connection813
+        connect Bus207x1.A2 Load_I5.A1 as Connection814
+        connect CB211.A1 Junction60 as Connection816
+        connect Junction103 Bus203.C2 as Connection818
+        connect Junction103 Junction58 as Connection819
+        connect Junction103 CB211.C1 as Connection820
+        connect Junction104 Bus203.B2 as Connection821
+        connect Junction104 CB211.B1 as Connection822
+        connect Junction104 Junction59 as Connection823
+        connect Junction105 Bus203.A2 as Connection824
+        connect Junction105 CB209.A1 as Connection825
+        connect Junction105 Junction60 as Connection826
+        connect CB212.A1 Junction106 as Connection842
+        [
+            breakpoints = 10344, 8832
+        ]
+        connect Junction106 Bus207.A2 as Connection843
+        [
+            breakpoints = 10456, 8832
+        ]
+        connect CB213.A1 Junction106 as Connection844
+        connect CB212.B1 Junction107 as Connection845
+        [
+            breakpoints = 10312, 8856
+        ]
+        connect Junction107 Bus207.B2 as Connection846
+        [
+            breakpoints = 10424, 8856
+        ]
+        connect CB213.B1 Junction107 as Connection847
+        connect CB212.C1 Junction108 as Connection848
+        [
+            breakpoints = 10280, 8880
+        ]
+        connect Junction108 Bus207.C2 as Connection849
+        [
+            breakpoints = 10392, 8880
+        ]
+        connect CB213.C1 Junction108 as Connection850
+        connect Bus207x2.C1 CB213.C2 as Connection851
+        connect Bus207x2.B1 CB213.B2 as Connection852
+        connect Bus207x2.A1 CB213.A2 as Connection853
+        connect Bus207x2.C2 "Electric Tag28" as Connection854
+        connect Bus207x2.B2 "Electric Tag29" as Connection855
+        connect Bus207x2.A2 "Electric Tag30" as Connection856
+        connect Bus203x3.C2 T207.C1 as Connection857
+        connect Bus203x3.B2 T207.B1 as Connection858
+        connect Bus203x3.A2 T207.A1 as Connection859
+        connect Bus203x4.C1 T207.C2 as Connection860
+        connect Bus203x4.B1 T207.B2 as Connection861
+        connect Bus203x4.A1 T207.A2 as Connection862
+        connect Bus203x4.C2 PV.C as Connection863
+        connect Bus203x4.B2 PV.B as Connection864
+        connect Bus203x4.A2 PV.A as Connection865
+        connect Bus101x9.C2 C203.C1 as Connection869
+        connect Bus101x9.B2 C203.B1 as Connection870
+        connect Bus101x9.A2 C203.A1 as Connection871
+        connect C203.C2 Bus208.C1 as Connection872
+        connect C203.B2 Bus208.B1 as Connection873
+        connect C203.A2 Bus208.A1 as Connection874
+        connect Junction109 Bus208.C2 as Connection878
+        connect Junction109 CB215.C1 as Connection879
+        connect Junction109 CB214.C1 as Connection880
+        connect Junction110 Bus208.B2 as Connection881
+        connect Junction110 CB215.B1 as Connection882
+        connect Junction110 CB214.B1 as Connection883
+        connect Junction111 Bus208.A2 as Connection884
+        connect Junction111 CB215.A1 as Connection885
+        connect Junction111 CB214.A1 as Connection886
+        connect Bus208x2.C2 T209.C1 as Connection887
+        connect Bus208x2.B2 T209.B1 as Connection888
+        connect Bus208x2.A2 T209.A1 as Connection889
+        connect Bus208x4.C1 T209.C2 as Connection890
+        connect Bus208x4.B1 T209.B2 as Connection891
+        connect Bus208x4.A1 T209.A2 as Connection892
+        connect Bus208x4.C2 CB221.C1 as Connection893
+        connect Bus208x4.B2 CB221.B1 as Connection894
+        connect Bus208x4.A2 CB221.A1 as Connection895
+        connect CB220.C2 Bus209.C1 as Connection896
+        connect CB220.B2 Bus209.B1 as Connection897
+        connect CB220.A2 Bus209.A1 as Connection898
+        connect CB221.C2 Bus210.C1 as Connection899
+        connect CB221.B2 Bus210.B1 as Connection900
+        connect CB221.A2 Bus210.A1 as Connection901
+        connect Junction112 Bus209.C2 as Connection905
+        connect Junction112 CB217.C1 as Connection906
+        connect Junction112 Load_C4.C1 as Connection907
+        connect Junction113 Bus209.B2 as Connection908
+        connect Junction113 CB217.B1 as Connection909
+        connect Junction113 Load_C4.B1 as Connection910
+        connect Junction114 Bus209.A2 as Connection911
+        connect Junction114 CB217.A1 as Connection912
+        connect Junction114 Load_C4.A1 as Connection913
+        connect CB217.A2 Bus209x1.A1 as Connection914
+        connect Bus209x1.A2 "Electric Tag22" as Connection915
+        connect CB217.B2 Bus209x1.B1 as Connection916
+        connect Bus209x1.B2 "Electric Tag23" as Connection917
+        connect CB217.C2 Bus209x1.C1 as Connection918
+        connect Bus209x1.C2 "Electric Tag24" as Connection919
+        connect Junction115 Bus210.C2 as Connection926
+        connect Junction115 CB216.C1 as Connection927
+        connect Junction115 CB218.C1 as Connection928
+        connect Junction116 Bus210.B2 as Connection929
+        connect Junction116 CB216.B1 as Connection930
+        connect Junction116 CB218.B1 as Connection931
+        connect Junction117 Bus210.A2 as Connection932
+        connect Junction117 CB216.A1 as Connection933
+        connect Junction117 CB218.A1 as Connection934
+        connect Bus210x1.C1 CB218.C2 as Connection935
+        connect Bus210x1.B1 CB218.B2 as Connection936
+        connect Bus210x1.A1 CB218.A2 as Connection937
+        connect Bus210x1.C2 Load_P5.C1 as Connection938
+        connect Bus210x1.B2 Load_P5.B1 as Connection939
+        connect Bus210x1.A2 Load_P5.A1 as Connection940
+        connect Bus210x2.C1 CB216.C2 as Connection941
+        connect Bus210x2.B1 CB216.B2 as Connection942
+        connect Bus210x2.A1 CB216.A2 as Connection943
+        connect Bus210x2.C2 "Electric Tag33" as Connection944
+        connect Bus210x2.B2 "Electric Tag32" as Connection945
+        connect Bus210x2.A2 "Electric Tag31" as Connection946
     }
 
     default {
@@ -1061,6 +2837,34 @@ model "banshee" {
 
         "OpenDSS/Manual Switch" {
             switch_status = "True"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            basefrequency = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
         }
 
         "OpenDSS/Three-Phase Transformer" {
