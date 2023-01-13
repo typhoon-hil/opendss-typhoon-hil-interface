@@ -1,7 +1,7 @@
 // Replace the Placeholder component with the code of the component you want to edit,
 // and open the tlib file with the Schematic Editor.
 // When finished, paste the generated code into the respective component tlib file.
-// Always rollback this file before commiting.
+// Always rollback this file before committing.
 
 library "OpenDSS" {
     configuration {

@@ -1,3 +1,5 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
 library "OpenDSS" {
 
     component Subsystem Root {
@@ -372,6 +374,20 @@ library "OpenDSS" {
                     unit = "s"
                     group = "CPL Parameters"
                     disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Ts_mask == Tfst_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
                 }
 
                 Tfast {
@@ -382,6 +398,20 @@ library "OpenDSS" {
                     unit = "s"
                     group = "CPL Parameters"
                     disabled
+
+                    CODE property_value_changed
+                        comp_handle = mdl.get_sub_level_handle(container_handle)
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+                        if CPL_comp:
+                            if Tfst_mask == Ts_mask:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
+                            else:
+                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+
+                    ENDCODE
                 }
 
                 CPL_LMT {
@@ -390,6 +420,24 @@ library "OpenDSS" {
                     type = generic
                     default_value = "2"
                     unit = "pu"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                q_gain_k {
+                    label = "CPL Kalman Filter state matrix gain Q"
+                    widget = edit
+                    type = generic
+                    default_value = "0.5"
+                    group = "CPL Parameters"
+                    disabled
+                }
+
+                r_gain_k {
+                    label = "CPL Kalman Filter measurement gain R"
+                    widget = edit
+                    type = generic
+                    default_value = "20"
                     group = "CPL Parameters"
                     disabled
                 }
@@ -776,6 +824,8 @@ library "OpenDSS" {
                     Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
                     Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
                     CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
+                    q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
+                    r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                     Vn_3ph_CPL = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"))
                     P_CPL = mdl.get_property_value(mdl.prop(item_handle, "P_CPL"))
                     Q_CPL = mdl.get_property_value(mdl.prop(item_handle, "Q_CPL"))
@@ -924,6 +974,8 @@ library "OpenDSS" {
 
                     mdl.set_property_value(mdl.prop(item_handle, "Tfast"), Tfast)
                     mdl.set_property_value(mdl.prop(item_handle, "CPL_LMT"), CPL_LMT)
+                    mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
+                    mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                     mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), S_Ts)
                     mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), T_Ts_internal)
                     mdl.set_property_value(mdl.prop(item_handle, "Slen"), Slen)
@@ -967,4 +1019,6 @@ library "OpenDSS" {
         ]
 
     }
+
 }
+

@@ -1,3 +1,5 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
 library "OpenDSS" {
 
     component Subsystem Root {
@@ -221,7 +223,7 @@ library "OpenDSS" {
                         property_container=component.masks[-1],
                         current_diagram=current_diagram
                     )
-                    ok = dialog.show()
+                    dialog.exec_()
                 ENDCODE
 
                 CODE define_icon
