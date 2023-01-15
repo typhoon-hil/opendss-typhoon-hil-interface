@@ -1497,6 +1497,16 @@ library "OpenDSS" {
                     position = 7832, 7944
                 ]
 
+                junction Junction32 sp
+                [
+                    position = 7824, 8250
+                ]
+
+                junction Junction33 sp
+                [
+                    position = 7928, 8250
+                ]
+
                 connect Constant1.out Goto3 as Connection341
                 connect Constant11.out Goto4 as Connection342
                 connect Gain1.out "Rate Transition with Bypass1.In" as Connection370
@@ -1509,6 +1519,7 @@ library "OpenDSS" {
                 [
                     position = 0, 0
                 ]
+                connect Junction32 Junction33 as Connection3165
                 connect Junction13 Junction15 as Connection1165
                 connect Junction15 From3 as Connection1166
                 connect Junction14 Junction16 as Connection1168
@@ -1567,8 +1578,18 @@ library "OpenDSS" {
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
 
                             comp_handle = mdl.get_sub_level_handle(container_handle)
+                            fast_con_prop = mdl.get_property_value(mdl.prop(container_handle, "Fast_con"))
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
 
                             if new_value == "Variable input":
+                                if fast_con_prop:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+
                                 P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
                                 P_inp = mdl.get_item("Gain1", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1587,6 +1608,8 @@ library "OpenDSS" {
                                                         position=(7613, 7452))
                                     mdl.create_connection(mdl.term(P_inp, "in"), P_ext)
                             elif new_value == "Fixed":
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
                                 P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
                                 term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 P_int = mdl.get_item("From1", parent=comp_handle, item_type=ITEM_TAG)
@@ -1652,8 +1675,18 @@ library "OpenDSS" {
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
 
                             comp_handle = mdl.get_sub_level_handle(container_handle)
+                            fast_con_prop = mdl.get_property_value(mdl.prop(container_handle, "Fast_con"))
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
 
                             if new_value == "Variable input":
+                                if fast_con_prop:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+
                                 Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
                                 Q_inp = mdl.get_item("Gain2", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1672,6 +1705,8 @@ library "OpenDSS" {
                                                         position=(7502, 7582))
                                     mdl.create_connection(mdl.term(Q_inp, "in"), Q_ext)
                             elif new_value == "Fixed":
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
                                 Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
                                 term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 Q_int = mdl.get_item("From2", parent=comp_handle, item_type=ITEM_TAG)
@@ -1764,6 +1799,120 @@ library "OpenDSS" {
                         default_value = "Tfast"
                         unit = "s"
                         group = "Execution rate"
+                    }
+
+                    zero_seq_remove {
+                        label = "Remove zero sequence"
+                        widget = checkbox
+                        type = bool
+                        default_value = "False"
+                        group = "Execution rate"
+                        no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            j33 =  mdl.get_item("Junction33", parent=comp_handle, item_type="junction")
+                            j32 =  mdl.get_item("Junction32", parent=comp_handle, item_type="junction")
+                            j33CPLA =  mdl.get_item("j33CPLA_conn", parent=comp_handle, item_type="connection")
+                            j33CPLB =  mdl.get_item("j33CPLB_conn", parent=comp_handle, item_type="connection")
+                            j32CPLC =  mdl.get_item("j32CPLC_conn", parent=comp_handle, item_type="connection")
+                            for phase in ["A", "B", "C"]:
+                                CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type="component")
+                                if CPL_phase:
+                                    mdl.set_property_value(mdl.prop(CPL_phase, "zero_seq_remove"), new_value)
+                                    if phase == "C":
+                                        if not j32CPLC:
+                                            mdl.create_connection(j32, mdl.term(CPL_phase, "v0"), "j32CPLC_conn")
+                                    elif phase == "B":
+                                        if not j33CPLB:
+                                            mdl.create_connection(j33, mdl.term(CPL_phase, "v0"), "j33CPLB_conn")
+                                    elif phase == "A":
+                                        if not j33CPLA:
+                                            mdl.create_connection(j33, mdl.term(CPL_phase, "v0"), "j33CPLA_conn")
+
+                            if new_value:
+                                sum_0 =  mdl.get_item("sum_abc", parent=comp_handle, item_type="component")
+                                K_filter =  mdl.get_item("Kalman_filter", parent=comp_handle, item_type="component")
+                                gain_third =  mdl.get_item("gain_zero", parent=comp_handle, item_type="component")
+                                zero_const = mdl.get_item("constant_zero", parent=comp_handle, item_type="component")
+
+                                if zero_const:
+                                    mdl.delete_item(zero_const)
+
+                                if not sum_0:
+                                    sum_0 = mdl.create_component("Sum", name="sum_abc", parent=comp_handle, position=(7685, 7740), rotation="down")
+                                mdl.set_property_value(mdl.prop(sum_0, "signs"), "3")
+
+                                if not K_filter:
+                                    K_filter = mdl.create_component("Kalman Filter Sync", name="Kalman_filter", parent=comp_handle, position=(7400, 7740), rotation="down")
+                                mdl.set_property_value(mdl.prop(K_filter, "normalize"), "False")
+
+                                if not gain_third:
+                                    gain_third = mdl.create_component("Gain", name="gain_zero", parent=comp_handle, position=(7560, 7740), rotation="down")
+                                mdl.set_property_value(mdl.prop(gain_third, "gain"), "-1/3")
+
+                                mdl.create_connection(mdl.term(K_filter, "Vgrid"), mdl.term(gain_third, "out"))
+                                mdl.create_connection(mdl.term(sum_0, "out"), mdl.term(gain_third, "in"))
+                                mdl.create_connection(mdl.term(K_filter, "sin(wt)"), j32)
+
+                                for phase in ["A", "B", "C"]:
+                                    if phase == "B":
+                                        port_offset = (0, 80)
+                                        cpl_offset = (-104, 80)
+                                        meter_offset = (0, 64)
+                                    elif phase == "C":
+                                        port_offset = (0, 160)
+                                        cpl_offset = (-208, 160)
+                                        meter_offset = (0, 128)
+                                    else:
+                                        port_offset = (0, 0)
+                                        cpl_offset = (0, 0)
+                                        meter_offset = (0, 0)
+
+                                    meas_phase =  mdl.get_item(f"v{phase}_m", parent=comp_handle, item_type="component")
+                                    port_n = mdl.get_item("N", parent=comp_handle, item_type="port")
+                                    CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type="component")
+
+                                    if not meas_phase:
+                                        meas_phase = mdl.create_component("Voltage Measurement", name=f"v{phase}_m", parent=comp_handle, position=(8100 + meter_offset[0], 7676 + meter_offset[1]))
+
+                                    if meas_phase:
+                                        mdl.set_property_value(mdl.prop(meas_phase, "sig_output"), new_value)
+                                        mdl.set_property_value(mdl.prop(meas_phase, "execution_rate"), "Tfst")
+                                        mdl.create_connection(mdl.term(meas_phase, "n_node"), port_n)
+
+                                    if CPL_phase:
+                                        mdl.create_connection(mdl.term(meas_phase, "p_node"), mdl.term(CPL_phase, "P3"))
+
+                                    if phase == "A":
+                                        mdl.create_connection(mdl.term(meas_phase, "out"), mdl.term(sum_0, "in2"))
+                                    elif phase == "B":
+                                        mdl.create_connection(mdl.term(meas_phase, "out"), mdl.term(sum_0, "in1"))
+                                    elif phase == "C":
+                                        mdl.create_connection(mdl.term(meas_phase, "out"), mdl.term(sum_0, "in"))
+                            else:
+                                sum_0 =  mdl.get_item("sum_abc", parent=comp_handle, item_type="component")
+                                K_filter =  mdl.get_item("Kalman_filter", parent=comp_handle, item_type="component")
+                                gain_third =  mdl.get_item("gain_zero", parent=comp_handle, item_type="component")
+                                zero_const = mdl.get_item("Constant_zero", parent=comp_handle, item_type="component")
+
+                                if sum_0:
+                                    mdl.delete_item(sum_0)
+                                if K_filter:
+                                    mdl.delete_item(K_filter)
+                                if gain_third:
+                                    mdl.delete_item(gain_third)
+                                if not zero_const:
+                                    zero_const = mdl.create_component("Constant", name="constant_zero", parent=comp_handle, position=(7650, 8250))
+                                mdl.set_property_value(mdl.prop(zero_const, "value"), "0")
+                                mdl.set_property_value(mdl.prop(zero_const, "execution_rate"), "Tfst")
+                                mdl.create_connection(mdl.term(zero_const, "out"), j32)
+
+                                for phase in ["A", "B", "C"]:
+                                    meas_phase =  mdl.get_item(f"v{phase}_m", parent=comp_handle, item_type="component")
+                                    if meas_phase:
+                                        mdl.delete_item(meas_phase)
+                        ENDCODE
                     }
 
                     Tfast_en {
@@ -1870,6 +2019,12 @@ library "OpenDSS" {
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
 
                             comp_handle = mdl.get_sub_level_handle(container_handle)
+                            fast_con_prop = mdl.get_property_value(mdl.prop(container_handle, "Fast_con"))
+                            j33 =  mdl.get_item("Junction33", parent=comp_handle, item_type="junction")
+                            j32 =  mdl.get_item("Junction32", parent=comp_handle, item_type="junction")
+                            j33CPLA =  mdl.get_item("j33CPLA_conn", parent=comp_handle, item_type="connection")
+                            j33CPLB =  mdl.get_item("j33CPLB_conn", parent=comp_handle, item_type="connection")
+                            j32CPLC =  mdl.get_item("j32CPLC_conn", parent=comp_handle, item_type="connection")
 
                             if new_value == "3":
                                 for phase in ["A", "B", "C"]:
@@ -1919,6 +2074,23 @@ library "OpenDSS" {
 
                                     if len(mdl.find_connections(mdl.term(CPL_phase, "Q"))) == 0:
                                         mdl.create_connection(mdl.term(CPL_phase, "Q"), jun_q)
+
+                                    if CPL_phase:
+                                        if fast_con_prop:
+                                            mdl.set_property_value(mdl.prop(CPL_phase, "Fast_con"), "True")
+                                        else:
+                                            mdl.set_property_value(mdl.prop(CPL_phase, "Fast_con"), "False")
+                                        if phase == "C":
+                                            if not j32CPLC:
+                                                mdl.create_connection(j32, mdl.term(CPL_phase, "v0"), "j32CPLC_conn")
+                                        elif phase == "B":
+                                            if not j33CPLB:
+                                                mdl.create_connection(j33, mdl.term(CPL_phase, "v0"), "j33CPLB_conn")
+                                        elif phase == "A":
+                                            if not j33CPLA:
+                                                mdl.create_connection(j33, mdl.term(CPL_phase, "v0"), "j33CPLA_conn")
+
+
 
 
                             if new_value == "1":
@@ -6953,13 +7125,13 @@ library "OpenDSS" {
 					resistance = "Rsnb/15"
 				}
 				[
-					position = 7448, 8768
+					position = 7328, 8768
 				]
 
 				component "core/Signal Controlled Current Source" Isp1 {
 				}
 				[
-					position = 7440, 8664
+					position = 7320, 8664
 					scale = -1, 1
 					size = 64, 32
 				]
@@ -7000,7 +7172,7 @@ library "OpenDSS" {
 					sig_output = "True"
 				}
 				[
-					position = 7440, 9080
+					position = 7320, 9080
 					size = 64, 32
 				]
 
@@ -7142,7 +7314,7 @@ library "OpenDSS" {
 					capacitance = "1/(1*Rsnb*2*np.pi*Freq)"
 				}
 				[
-					position = 7448, 8864
+					position = 7328, 8864
 				]
 
 				component "core/Constant" Constant28 {
@@ -7454,7 +7626,7 @@ library "OpenDSS" {
 					kind = pe
 				}
 				[
-					position = 7232, 8664
+					position = 7112, 8664
 				]
 
 				port P {
@@ -7481,6 +7653,19 @@ library "OpenDSS" {
 				}
 				[
 					position = 7184, 8536
+				]
+
+				port v0 {
+					position = bottom:1
+					kind = sp
+					direction =  out
+					sp_type {
+						default = auto
+						readonly = True
+					}
+				}
+				[
+					position = 7450, 8700
 				]
 
 				tag Goto2 {
@@ -7512,7 +7697,7 @@ library "OpenDSS" {
 					direction = in
 				}
 				[
-					position = 7384, 9032
+					position = 7264, 9032
 					rotation = down
 					hide_name = True
 					size = 60, 20
@@ -7778,12 +7963,17 @@ library "OpenDSS" {
 
 				junction Junction2 pe
 				[
-					position = 7552, 8664
+					position = 7432, 8664
+				]
+
+				junction Junction300 pe
+				[
+					position = 7630, 8664
 				]
 
 				junction Junction97 pe
 				[
-					position = 7328, 8664
+					position = 7208, 8664
 				]
 
 				junction Junction102 sp
@@ -7798,22 +7988,22 @@ library "OpenDSS" {
 
 				junction Junction130 pe
 				[
-					position = 7328, 8768
+					position = 7208, 8768
 				]
 
 				junction Junction131 pe
 				[
-					position = 7552, 8768
+					position = 7432, 8768
 				]
 
 				junction Junction137 pe
 				[
-					position = 7552, 8864
+					position = 7432, 8864
 				]
 
 				junction Junction138 pe
 				[
-					position = 7328, 8864
+					position = 7208, 8864
 				]
 
 				junction Junction160 sp
@@ -7967,7 +8157,7 @@ library "OpenDSS" {
 				connect Junction137 Junction131 as Connection897
 				connect C1.p_node Junction138 as Connection900
 				connect Junction138 Junction130 as Connection901
-				connect P2 Junction2 as Connection903
+				connect P2 Junction300 as Connection903
 				connect P3 Junction97 as Connection907
 				connect Goto4 Va.out as Connection914
 				connect From20 Product38.in1 as Connection966
@@ -7978,13 +8168,7 @@ library "OpenDSS" {
 				connect Sum18.in Product28.out as Connection976
 				connect Product29.out Sum18.in1 as Connection977
 				connect Junction138 Va.p_node as Connection992
-				[
-					breakpoints = 7328, 8864; 7328, 8968
-				]
-				connect Va.n_node Junction137 as Connection993
-				[
-					breakpoints = 7552, 8968
-				]
+				connect Va.n_node Junction300 as Connection993
 				connect Product31.out Sum19.in as Connection994
 				connect Gain29.out Sum19.in1 as Connection995
 				connect Gain30.out Junction209 as Connection1008
@@ -8269,6 +8453,44 @@ library "OpenDSS" {
                         unit = "s"
                         group = "Execution rate"
 
+                    }
+
+                    zero_seq_remove {
+                        label = "Remove zero sequence"
+                        widget = checkbox
+                        type = bool
+                        default_value = "False"
+                        group = "Execution rate"
+                        no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            j2 = mdl.get_item("Junction2", parent=comp_handle, item_type="junction")
+                            j300 = mdl.get_item("Junction300", parent=comp_handle, item_type="junction")
+                            j2j300 = mdl.get_item("j2j300_conn", parent=comp_handle, item_type="connection")
+                            termin = mdl.get_item("v0_termination", parent=comp_handle, item_type="component")
+                            v0_comp = mdl.get_item("v0s", parent=comp_handle, item_type="component")
+                            v0_port = mdl.get_item("v0", parent=comp_handle, item_type="port")
+
+                            if new_value:
+                                if j2j300:
+                                    mdl.delete_item(j2j300)
+                                if termin:
+                                    mdl.delete_item(termin)
+                                if not v0_comp:
+                                    v0_comp = mdl.create_component("Signal Controlled Voltage Source", parent=comp_handle, name="v0s", position=(7530,8663))
+                                mdl.create_connection(mdl.term(v0_comp, "in"), v0_port)
+                                mdl.create_connection(mdl.term(v0_comp, "n_node"), j300)
+                                mdl.create_connection(mdl.term(v0_comp, "p_node"), j2)
+                            else:
+                                if v0_comp:
+                                    mdl.delete_item(v0_comp)
+                                if not j2j300:
+                                    mdl.create_connection(j2, j300, name="j2j300_conn")
+                                if not termin:
+                                    termin = mdl.create_component("Termination", parent=comp_handle, name="v0_termination", position=(7530,8700), hide_name=True)
+                                mdl.create_connection(mdl.term(termin, "in"), v0_port)
+                        ENDCODE
                     }
 
                     Tfast_en {
