@@ -1835,6 +1835,8 @@ library "OpenDSS" {
                                 K_filter =  mdl.get_item("Kalman_filter", parent=comp_handle, item_type="component")
                                 gain_third =  mdl.get_item("gain_zero", parent=comp_handle, item_type="component")
                                 zero_const = mdl.get_item("constant_zero", parent=comp_handle, item_type="component")
+                                K_cos_term = mdl.get_item("cos_term", parent=comp_handle, item_type="component")
+                                K_f_term = mdl.get_item("f_term", parent=comp_handle, item_type="component")
 
                                 if zero_const:
                                     mdl.delete_item(zero_const)
@@ -1846,6 +1848,14 @@ library "OpenDSS" {
                                 if not K_filter:
                                     K_filter = mdl.create_component("Kalman Filter Sync", name="Kalman_filter", parent=comp_handle, position=(7400, 7740), rotation="down")
                                 mdl.set_property_value(mdl.prop(K_filter, "normalize"), "False")
+                                mdl.set_property_value(mdl.prop(K_filter, "q_gain"), "q_gain_k")
+                                mdl.set_property_value(mdl.prop(K_filter, "r_gain"), "r_gain_k")
+
+                                if not K_cos_term:
+                                    K_cos_term = mdl.create_component("Termination", name="cos_term", parent=comp_handle, position=(7260, 7740), rotation="down")
+
+                                if not K_f_term:
+                                    K_f_term = mdl.create_component("Termination", name="f_term", parent=comp_handle, position=(7260, 7680), rotation="down")
 
                                 if not gain_third:
                                     gain_third = mdl.create_component("Gain", name="gain_zero", parent=comp_handle, position=(7560, 7740), rotation="down")
@@ -1854,6 +1864,8 @@ library "OpenDSS" {
                                 mdl.create_connection(mdl.term(K_filter, "Vgrid"), mdl.term(gain_third, "out"))
                                 mdl.create_connection(mdl.term(sum_0, "out"), mdl.term(gain_third, "in"))
                                 mdl.create_connection(mdl.term(K_filter, "sin(wt)"), j32)
+                                mdl.create_connection(mdl.term(K_filter, "cos(wt)"), mdl.term(K_cos_term, "in"))
+                                mdl.create_connection(mdl.term(K_filter, "f (Hz)"), mdl.term(K_f_term, "in"))
 
                                 for phase in ["A", "B", "C"]:
                                     if phase == "B":
@@ -1895,11 +1907,17 @@ library "OpenDSS" {
                                 K_filter =  mdl.get_item("Kalman_filter", parent=comp_handle, item_type="component")
                                 gain_third =  mdl.get_item("gain_zero", parent=comp_handle, item_type="component")
                                 zero_const = mdl.get_item("Constant_zero", parent=comp_handle, item_type="component")
+                                K_cos_term = mdl.get_item("cos_term", parent=comp_handle, item_type="component")
+                                K_f_term = mdl.get_item("f_term", parent=comp_handle, item_type="component")
 
                                 if sum_0:
                                     mdl.delete_item(sum_0)
                                 if K_filter:
                                     mdl.delete_item(K_filter)
+                                if K_cos_term:
+                                    mdl.delete_item(K_cos_term)
+                                if K_f_term:
+                                    mdl.delete_item(K_f_term)
                                 if gain_third:
                                     mdl.delete_item(gain_third)
                                 if not zero_const:
@@ -1916,90 +1934,6 @@ library "OpenDSS" {
                     }
 
                     Tfast_en {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Fc {
                         widget = edit
                         type = generic
                         default_value = "0"
@@ -2177,18 +2111,6 @@ library "OpenDSS" {
                         Fast_con = mdl.get_property_value(mdl.prop(item_handle, "Fast_con"))
                         Tfst = mdl.get_property_value(mdl.prop(item_handle, "Tfst"))
                         Tfast_en = mdl.get_property_value(mdl.prop(item_handle, "Tfast_en"))
-                        pQc_P = mdl.get_property_value(mdl.prop(item_handle, "pQc_P"))
-                        nQc_P = mdl.get_property_value(mdl.prop(item_handle, "nQc_P"))
-                        pQc_T = mdl.get_property_value(mdl.prop(item_handle, "pQc_T"))
-                        nQc_T = mdl.get_property_value(mdl.prop(item_handle, "nQc_T"))
-                        pQc_Q = mdl.get_property_value(mdl.prop(item_handle, "pQc_Q"))
-                        nQc_Q = mdl.get_property_value(mdl.prop(item_handle, "nQc_Q"))
-                        Pc_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_pQ"))
-                        Pc_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_nQ"))
-                        Pc_T_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_pQ"))
-                        Pc_T_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_nQ"))
-                        Pc_T = mdl.get_property_value(mdl.prop(item_handle, "Pc_T"))
-                        Fc = mdl.get_property_value(mdl.prop(item_handle, "Fc"))
                         phases = mdl.get_property_value(mdl.prop(item_handle, "phases"))
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
@@ -2218,24 +2140,6 @@ library "OpenDSS" {
                         else:
                             Tfast_en = 0
 
-                        pQc_P = -1/9.7
-                        nQc_P = -0.097
-
-                        pQc_T = -0.015*(Ts-600e-6)/Ts
-                        nQc_T = -0.012*(Ts-600e-6)/Ts
-
-                        pQc_Q = 0.0266
-                        nQc_Q = 0.014
-
-                        Pc_pQ = 0.095
-                        Pc_nQ = 0.0933
-
-                        Pc_T = 0.005*(Ts-600e-6)/Ts
-
-                        Pc_T_pQ = 0.0075*(Ts-600e-6)/Ts
-                        Pc_T_nQ = 0.01*(Ts-600e-6)/Ts
-
-                        Fc = -0*1/15
 
                         if phases == "3":
                             inv_ph = 1/3
@@ -2256,24 +2160,6 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "kQ_tot"), kQ_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfast_en"), Tfast_en)
 
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_P"), pQc_P)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_P"), nQc_P)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_T"), pQc_T)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_T"), nQc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_Q"), pQc_Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_Q"), nQc_Q)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_pQ"), Pc_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_nQ"), Pc_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T"), Pc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_pQ"), Pc_T_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_nQ"), Pc_T_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Fc"), Fc)
                         mdl.set_property_value(mdl.prop(item_handle, "inv_ph"), inv_ph)
 
                         mdl.set_property_value(mdl.prop(item_handle, "Freq"), Freq)
@@ -8500,90 +8386,6 @@ library "OpenDSS" {
                         nonvisible
                     }
 
-                    pQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Fc {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
                     Freq {
                         label = "Nominal frequency"
                         widget = edit
@@ -8654,18 +8456,6 @@ library "OpenDSS" {
                         Fast_con = mdl.get_property_value(mdl.prop(item_handle, "Fast_con"))
                         Tfst = mdl.get_property_value(mdl.prop(item_handle, "Tfst"))
                         Tfast_en = mdl.get_property_value(mdl.prop(item_handle, "Tfast_en"))
-                        pQc_P = mdl.get_property_value(mdl.prop(item_handle, "pQc_P"))
-                        nQc_P = mdl.get_property_value(mdl.prop(item_handle, "nQc_P"))
-                        pQc_T = mdl.get_property_value(mdl.prop(item_handle, "pQc_T"))
-                        nQc_T = mdl.get_property_value(mdl.prop(item_handle, "nQc_T"))
-                        pQc_Q = mdl.get_property_value(mdl.prop(item_handle, "pQc_Q"))
-                        nQc_Q = mdl.get_property_value(mdl.prop(item_handle, "nQc_Q"))
-                        Pc_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_pQ"))
-                        Pc_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_nQ"))
-                        Pc_T_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_pQ"))
-                        Pc_T_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_nQ"))
-                        Pc_T = mdl.get_property_value(mdl.prop(item_handle, "Pc_T"))
-                        Fc = mdl.get_property_value(mdl.prop(item_handle, "Fc"))
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
                         CPL_curr = mdl.get_property_value(mdl.prop(item_handle, "CPL_curr"))
@@ -8694,24 +8484,6 @@ library "OpenDSS" {
                         else:
                             Tfast_en = 0
 
-                        pQc_P = -1/9.7
-                        nQc_P = -0.097
-
-                        pQc_T = -0.015*(Ts-600e-6)/Ts
-                        nQc_T = -0.012*(Ts-600e-6)/Ts
-
-                        pQc_Q = 0.0266
-                        nQc_Q = 0.014
-
-                        Pc_pQ = 0.095
-                        Pc_nQ = 0.0933
-
-                        Pc_T = 0.005*(Ts-600e-6)/Ts
-
-                        Pc_T_pQ = 0.0075*(Ts-600e-6)/Ts
-                        Pc_T_nQ = 0.01*(Ts-600e-6)/Ts
-
-                        Fc = -0*1/15
 
                         mdl.set_property_value(mdl.prop(item_handle, "kVLine"), kVLine)
                         mdl.set_property_value(mdl.prop(item_handle, "kVLL"), kVLL)
@@ -8726,24 +8498,7 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "kQ_tot"), kQ_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfast_en"), Tfast_en)
 
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_P"), pQc_P)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_P"), nQc_P)
 
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_T"), pQc_T)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_T"), nQc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_Q"), pQc_Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_Q"), nQc_Q)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_pQ"), Pc_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_nQ"), Pc_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T"), Pc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_pQ"), Pc_T_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_nQ"), Pc_T_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Fc"), Fc)
                         mdl.set_property_value(mdl.prop(item_handle, "inv_ph"), inv_ph)
 
                         mdl.set_property_value(mdl.prop(item_handle, "Freq"), Freq)
