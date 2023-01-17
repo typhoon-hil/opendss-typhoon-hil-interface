@@ -284,20 +284,14 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-
-                        if new_value == "Unit":
-                            mdl.disable_property(mdl.prop(container_handle, "pf_3ph"))
-                        else:
-                            mdl.enable_property(mdl.prop(container_handle, "pf_3ph"))
-
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
                         comp_script.set_pf_mode(mdl, container_handle, new_value)
                     ENDCODE
 
                     CODE property_value_edited
-                        if new_value == "Unit":
-                            mdl.disable_property(mdl.prop(container_handle, "pf_3ph"))
-                        else:
-                            mdl.enable_property(mdl.prop(container_handle, "pf_3ph"))
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -366,7 +360,8 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                Ts {
+                execution_rate {
+                    previous_names = "Ts"
                     label = "CPL Execution rate"
                     widget = edit
                     type = generic
@@ -376,16 +371,8 @@ library "OpenDSS" {
                     disabled
 
                     CODE property_value_changed
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
-                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
-                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-
-                        if CPL_comp:
-                            if Ts_mask == Tfst_mask:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
-                            else:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.validate_execution_rate(mdl, container_handle)
 
                     ENDCODE
                 }
@@ -400,16 +387,8 @@ library "OpenDSS" {
                     disabled
 
                     CODE property_value_changed
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
-                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
-                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-
-                        if CPL_comp:
-                            if Tfst_mask == Ts_mask:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
-                            else:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.validate_execution_rate(mdl, container_handle)
 
                     ENDCODE
                 }
@@ -642,10 +621,8 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_edited
-                        if new_value == "Time":
-                            mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
-                        else:
-                            mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.t_mode_value_edited(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -666,14 +643,8 @@ library "OpenDSS" {
                     ENDCODE
 
                     CODE property_value_edited
-                        if new_value == "Manual input":
-                            mdl.disable_property(mdl.prop(container_handle, "T_Ts_max"))
-                            mdl.disable_property(mdl.prop(container_handle, "del_Ts"))
-                            mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
-                        else:
-                            mdl.enable_property(mdl.prop(container_handle, "T_Ts_max"))
-                            mdl.enable_property(mdl.prop(container_handle, "del_Ts"))
-                            mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.s_ts_mode_value_edited(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -821,7 +792,7 @@ library "OpenDSS" {
                     load_model = mdl.get_property_value(mdl.prop(item_handle, "load_model"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
                     Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
-                    Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                    execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                     Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
                     CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
                     q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
@@ -854,139 +825,23 @@ library "OpenDSS" {
                     Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
                     enable_monitoring = mdl.get_property_value(mdl.prop(item_handle, "enable_monitoring"))
                     # HEADER STOP
-                    from typhoon.api.schematic_editor.const import ITEM_COMPONENT
-                    import numpy
-                    import math
-
-                    basefreq = fn
-                    kVA = Sn_3ph
-
-                    if (conn_type == 'Δ'):
-                        conn = "delta"
-                    else:
-                        conn = "wye"
-
-
-                    if pf_mode_3ph == "Unit":
-                        pf = 1.0
-                        P_CPL = Sn_3ph
-                        Q_CPL = 0
-                        pf_3ph_set = 0.99
-                    elif pf_mode_3ph == "Lag":
-                        pf = pf_3ph
-                        P_CPL = Sn_3ph * pf
-                        Q_CPL = Sn_3ph * ((1 - pf*pf)**0.5)
-                        pf_3ph_set = pf_3ph
-                    else:
-                        pf = -1 * pf_3ph
-                        P_CPL = Sn_3ph * pf
-                        Q_CPL = -Sn_3ph * ((1 - pf*pf)**0.5)
-                        pf_3ph_set = pf_3ph
-
-
-
-                    if phases == "1":
-                        if ground_connected:
-                            kV = (Vn_3ph/(1))/1
-                            Vn_3ph_CPL = kV/(3**0.5)
-                        else:
-                            kV = Vn_3ph
-                            Vn_3ph_CPL = kV
-                    else:
-                        kV = Vn_3ph
-                        Vn_3ph_CPL = kV
-
-                    dssnpts = len(S_Ts)
-
-
-
-
-
-                    if load_model == "Constant Impedance":
-                        model = 2
-                    elif load_model == "Constant Power":
-                        model = 1
-                    else:
-                        model = 2
-
-
-                    S_Ts = loadshape
-                    dssT = loadshape_int
-                    Slen = len(S_Ts)
-
-                    if T_mode == "Loadshape index":
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for S_val in S_vec1:
-                            T_Ts_internal[idxS] = idxS
-                            idxS += 1
-                        T_lim_low = T_Ts_internal[0]
-                        T_lim_high = T_Ts_internal[Slen-1]
-                    elif T_mode == "Time":
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for T_val in T_Ts:
-                            T_Ts_internal[idxS] = T_val
-                            idxS += 1
-                        T_lim_low = T_Ts[0]
-                        T_lim_high = T_Ts[len(T_Ts)-1]
-                    else:
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for S_val in S_vec1:
-                            T_Ts_internal[idxS] = idxS
-                            idxS += 1
-                        T_lim_low = T_Ts_internal[0]
-                        T_lim_high = T_Ts_internal[Slen-1]
-
-
-
-                    if T_mode == "Loadshape index":
-                        Ts_switch = 0
-                    elif T_mode == "Time":
-                        Ts_switch = 1
-                    else:
-                        Ts_switch = 0
-
-
-                    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
-                    mdl.set_property_value(mdl.prop(item_handle, "fn"), fn)
-                    mdl.set_property_value(mdl.prop(item_handle, "ground_connected"), ground_connected)
-                    mdl.set_property_value(mdl.prop(item_handle, "kVA"), kVA)
-                    mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph"), Vn_3ph)
-                    mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"), Vn_3ph_CPL)
-                    mdl.set_property_value(mdl.prop(item_handle, "P_CPL"), P_CPL)
-                    mdl.set_property_value(mdl.prop(item_handle, "Q_CPL"), Q_CPL)
-                    mdl.set_property_value(mdl.prop(item_handle, "conn"), conn)
-                    mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
-                    mdl.set_property_value(mdl.prop(item_handle, "pf_mode_3ph"), pf_mode_3ph)
-                    mdl.set_property_value(mdl.prop(item_handle, "pf_3ph"), pf_3ph)
-                    mdl.set_property_value(mdl.prop(item_handle, "pf_3ph_set"), pf_3ph_set)
-                    mdl.set_property_value(mdl.prop(item_handle, "phases"), phases)
-                    mdl.set_property_value(mdl.prop(item_handle, "kV"), kV)
-                    mdl.set_property_value(mdl.prop(item_handle, "load_model"), load_model)
-                    mdl.set_property_value(mdl.prop(item_handle, "model"), model)
-                    mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "Sn_3ph"), Sn_3ph)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "Tfast"), Tfast)
-                    mdl.set_property_value(mdl.prop(item_handle, "CPL_LMT"), CPL_LMT)
-                    mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
-                    mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
-                    mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), S_Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), T_Ts_internal)
-                    mdl.set_property_value(mdl.prop(item_handle, "Slen"), Slen)
-                    mdl.set_property_value(mdl.prop(item_handle, "dssnpts"), dssnpts)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_low"), T_lim_low)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_high"), T_lim_high)
-                    mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), Ts_switch)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "loadshape"), loadshape)
-                    mdl.set_property_value(mdl.prop(item_handle, "loadshape_int"), loadshape_int)
-                    mdl.set_property_value(mdl.prop(item_handle, "Sn_3ph"), Sn_3ph)
+                    prop_dict = {"fn": fn,
+                                 "Sn_3ph": Sn_3ph,
+                                 "conn_type": conn_type,
+                                 "pf_mode_3ph": pf_mode_3ph,
+                                 "pf_3ph": pf_3ph,
+                                 "phases": phases,
+                                 "ground_connected": ground_connected,
+                                 "Vn_3ph": Vn_3ph,
+                                 "S_Ts": S_Ts,
+                                 "load_model": load_model,
+                                 "loadshape": loadshape,
+                                 "loadshape_int": loadshape_int,
+                                 "T_mode": T_mode,
+                                 "T_Ts": T_Ts
+                                 }
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.generator_pre_compile_function(mdl, item_handle, prop_dict)
                 ENDCODE
 
                 CODE define_icon
