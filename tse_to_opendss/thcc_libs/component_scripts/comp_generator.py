@@ -37,7 +37,7 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
                                              parent=comp_handle,
                                              position=(6200, 8536))
             mdl.set_property_value(mdl.prop(const_102, "value"), "Ts_switch")
-            mdl.set_property_value(mdl.prop(const_102, "execution_rate"), "Ts")
+            mdl.set_property_value(mdl.prop(const_102, "execution_rate"), "execution_rate")
             mdl.set_property_value(mdl.prop(const_102, "signal_type"), "real")
             # Create Ts_Switch subsystem (used a try/except just to separate the subsystem components)
             try:
@@ -111,7 +111,7 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
             mdl.set_property_value(mdl.prop(ts_module, "T_vec"), "T_Ts_internal")
             mdl.set_property_value(mdl.prop(ts_module, "Tmax"), "T_Ts_max")
             mdl.set_property_value(mdl.prop(ts_module, "Tdel"), "del_Ts + Mech_En")
-            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "Ts")
+            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "execution_rate")
             ext_port = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
             mdl.create_connection(ext_port, mdl.term(ts_subsystem, "T"))
             mdl.create_connection(mdl.term(const_102, "out"), mdl.term(ts_subsystem, "mode"))
@@ -153,7 +153,7 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
                                                 parent=comp_handle,
                                                 position=(6472, 8400))
                 mdl.set_property_value(mdl.prop(const_33, "value"), "0")
-                mdl.set_property_value(mdl.prop(const_33, "execution_rate"), "Ts")
+                mdl.set_property_value(mdl.prop(const_33, "execution_rate"), "execution_rate")
                 mdl.create_connection(mdl.term(const_33, "out"), mdl.term(bus_join, "in10"))
                 mdl.create_connection(mdl.term(const_33, "out"), mdl.term(bus_join, "in9"))
 

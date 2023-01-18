@@ -16,7 +16,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant3 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -117,7 +117,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant4 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -187,7 +187,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant5 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -246,7 +246,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant9 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "ext_mode"
             }
             [
@@ -396,7 +396,7 @@ else {
             ]
 
             component "core/Constant" Constant13 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "ctrl_mode_int"
             }
             [
@@ -464,7 +464,7 @@ else {
             ]
 
             component "core/Constant" Constant14 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
             }
             [
                 position = 6688, 9200
@@ -548,7 +548,7 @@ else {
             ]
 
             component "core/Current Measurement" Ia {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -557,7 +557,7 @@ else {
             ]
 
             component "core/Current Measurement" Ib {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -566,7 +566,7 @@ else {
             ]
 
             component "core/Current Measurement" Ic {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -575,7 +575,7 @@ else {
             ]
 
             component "core/Voltage Measurement" Va {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -585,7 +585,7 @@ else {
             ]
 
             component "core/Voltage Measurement" Vb {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -595,7 +595,7 @@ else {
             ]
 
             component "core/Voltage Measurement" Vc {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -707,7 +707,7 @@ else {
                 ]
 
                 component "core/Constant" Constant5 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -741,7 +741,7 @@ else {
                 ]
 
                 component "core/Constant" Constant6 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0.001"
                 }
                 [
@@ -750,7 +750,7 @@ else {
                 ]
 
                 component "core/Constant" Constant7 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -783,7 +783,7 @@ else {
                 ]
 
                 component "core/Constant" Constant8 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "np.pi"
                 }
                 [
@@ -816,7 +816,7 @@ else {
                 ]
 
                 component "core/Constant" Constant9 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "-np.pi"
                 }
                 [
@@ -825,7 +825,7 @@ else {
                 ]
 
                 component "core/Constant" Constant10 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1031,7 +1031,7 @@ else {
             ]
 
             component "core/Clock" Clock1 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
             }
             [
                 position = 8080, 8256
@@ -1039,7 +1039,7 @@ else {
             ]
 
             component "core/Constant" Constant21 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "cont_t"
             }
             [
@@ -1048,7 +1048,7 @@ else {
             ]
 
             component "core/Constant" Constant22 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "Sinv"
             }
             [
@@ -1057,7 +1057,7 @@ else {
             ]
 
             component "core/Constant" Constant23 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "Qinv"
             }
             [
@@ -1066,7 +1066,7 @@ else {
             ]
 
             component "core/Constant" Constant24 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "Fs"
             }
             [
@@ -1075,7 +1075,7 @@ else {
             ]
 
             component "core/Constant" Constant25 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "vac_set"
             }
             [
@@ -1092,7 +1092,7 @@ else {
             ]
 
             component "core/Constant" Constant27 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -1110,7 +1110,7 @@ else {
             ]
 
             component "core/Constant" Constant28 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "2*np.pi"
             }
             [
@@ -1147,8 +1147,8 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant30 {
-                execution_rate = "Ts"
-                value = "Ts"
+                execution_rate = "execution_rate"
+                value = "execution_rate"
             }
             [
                 position = 7056, 8360
@@ -1165,8 +1165,8 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant31 {
-                execution_rate = "Ts"
-                value = "Ts*Fs*2*np.pi"
+                execution_rate = "execution_rate"
+                value = "execution_rate*Fs*2*np.pi"
             }
             [
                 position = 8664, 8960
@@ -1224,7 +1224,7 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant38 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -1251,7 +1251,7 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant39 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -1459,7 +1459,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Voltage Measurement" Va1 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -1540,7 +1540,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant5 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1574,7 +1574,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant6 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0.001"
                 }
                 [
@@ -1583,7 +1583,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant7 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1616,7 +1616,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant8 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "np.pi"
                 }
                 [
@@ -1649,7 +1649,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant9 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "-np.pi"
                 }
                 [
@@ -1658,7 +1658,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant10 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1949,7 +1949,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant43 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
             }
             [
                 position = 9688, 8952
@@ -1988,7 +1988,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant44 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "vdc_set"
             }
             [
@@ -2046,7 +2046,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant45 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -2124,7 +2124,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant47 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "vac_set"
             }
             [
@@ -4331,7 +4331,8 @@ if (Vdc<-2) {
                     group = "Inverter Parameters"
                 }
 
-                Ts {
+                execution_rate {
+                    previous_names = "Ts"
                     label = "Execution rate"
                     widget = edit
                     type = generic
@@ -4779,7 +4780,7 @@ if (Vdc<-2) {
                     Qinv = mdl.get_property_value(mdl.prop(item_handle, "Qinv"))
                     Rac = mdl.get_property_value(mdl.prop(item_handle, "Rac"))
                     Lac = mdl.get_property_value(mdl.prop(item_handle, "Lac"))
-                    Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                    execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                     cont_t = mdl.get_property_value(mdl.prop(item_handle, "cont_t"))
                     dss_ctrl = mdl.get_property_value(mdl.prop(item_handle, "dss_ctrl"))
                     Phases = mdl.get_property_value(mdl.prop(item_handle, "Phases"))
@@ -4923,7 +4924,7 @@ if (Vdc<-2) {
                     mdl.set_property_value(mdl.prop(item_handle, "V_sel"), V_sel)
                     mdl.set_property_value(mdl.prop(item_handle, "ctrl_mode_int"), ctrl_mode_int)
                     mdl.set_property_value(mdl.prop(item_handle, "ext_mode"), ext_mode)
-                    mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
+                    mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                     mdl.set_property_value(mdl.prop(item_handle, "cont_t"), cont_t)
                     mdl.set_property_value(mdl.prop(item_handle, "Sinv"), Sinv)
                     mdl.set_property_value(mdl.prop(item_handle, "Qinv"), Qinv)

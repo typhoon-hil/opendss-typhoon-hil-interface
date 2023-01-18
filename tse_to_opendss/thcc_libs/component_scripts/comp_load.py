@@ -229,7 +229,7 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
     if new_value == "Constant Impedance":
         mdl.set_property_disp_value(mdl.prop(container_handle, 'Pow_ref_s'), "Fixed")
         mdl.disable_property(mdl.prop(container_handle, "Pow_ref_s"))
-        mdl.disable_property(mdl.prop(container_handle, "Ts"))
+        mdl.disable_property(mdl.prop(container_handle, "execution_rate"))
         mdl.disable_property(mdl.prop(container_handle, "Tfast"))
         mdl.disable_property(mdl.prop(container_handle, "CPL_LMT"))
         mdl.disable_property(mdl.prop(container_handle, "q_gain_k"))
@@ -242,7 +242,7 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
             mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
     else:
         mdl.enable_property(mdl.prop(container_handle, "Pow_ref_s"))
-        mdl.enable_property(mdl.prop(container_handle, "Ts"))
+        mdl.enable_property(mdl.prop(container_handle, "execution_rate"))
         mdl.enable_property(mdl.prop(container_handle, "Tfast"))
         mdl.enable_property(mdl.prop(container_handle, "CPL_LMT"))
         mdl.enable_property(mdl.prop(container_handle, "q_gain_k"))
