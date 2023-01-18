@@ -366,7 +366,8 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                Ts {
+                execution_rate {
+                    previous_names = "Ts"
                     label = "CPL Execution rate"
                     widget = edit
                     type = generic
@@ -378,7 +379,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_handle = mdl.get_sub_level_handle(container_handle)
                         Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
-                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
                         CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
 
                         if CPL_comp:
@@ -401,7 +402,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_handle = mdl.get_sub_level_handle(container_handle)
-                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
                         Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
                         CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
 
@@ -821,7 +822,7 @@ library "OpenDSS" {
                     load_model = mdl.get_property_value(mdl.prop(item_handle, "load_model"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
                     Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
-                    Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                    execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                     Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
                     CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
                     q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
@@ -969,7 +970,7 @@ library "OpenDSS" {
                     mdl.set_property_value(mdl.prop(item_handle, "kV"), kV)
                     mdl.set_property_value(mdl.prop(item_handle, "load_model"), load_model)
                     mdl.set_property_value(mdl.prop(item_handle, "model"), model)
-                    mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
+                    mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                     mdl.set_property_value(mdl.prop(item_handle, "Sn_3ph"), Sn_3ph)
 
                     mdl.set_property_value(mdl.prop(item_handle, "Tfast"), Tfast)

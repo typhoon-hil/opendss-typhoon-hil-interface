@@ -1249,7 +1249,7 @@ library "OpenDSS" {
             component Subsystem CPL {
                 layout = dynamic
                 component "core/Constant" Constant1 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "kP_tot"
                 }
                 [
@@ -1258,7 +1258,7 @@ library "OpenDSS" {
                 ]
 
                 component "core/Constant" Constant11 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "kQ_tot"
                 }
                 [
@@ -1283,7 +1283,7 @@ library "OpenDSS" {
                 ]
 
                 component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                 }
                 [
                     position = 7792, 7456
@@ -1292,7 +1292,7 @@ library "OpenDSS" {
                 ]
 
                 component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                 }
                 [
                     position = 7680, 7584
@@ -1710,11 +1710,12 @@ library "OpenDSS" {
                         nonvisible
                     }
 
-                    Ts {
+                    execution_rate {
+                        previous_names = "Ts"
                         label = "Execution Rate"
                         widget = edit
                         type = generic
-                        default_value = "Ts"
+                        default_value = "execution_rate"
                         unit = "s"
                         group = "Execution rate:2"
                     }
@@ -1733,7 +1734,7 @@ library "OpenDSS" {
                             rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
                             rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
                             Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
-                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
                             P_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kP_inp"))
                             Q_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kQ_inp"))
 
@@ -2001,7 +2002,7 @@ library "OpenDSS" {
                         kQ_tot = mdl.get_property_value(mdl.prop(item_handle, "kQ_tot"))
                         kQ = mdl.get_property_value(mdl.prop(item_handle, "kQ"))
                         Q = mdl.get_property_value(mdl.prop(item_handle, "Q"))
-                        Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                        execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                         Fast_con = mdl.get_property_value(mdl.prop(item_handle, "Fast_con"))
                         Tfst = mdl.get_property_value(mdl.prop(item_handle, "Tfst"))
                         Tfast_en = mdl.get_property_value(mdl.prop(item_handle, "Tfast_en"))
@@ -2049,8 +2050,8 @@ library "OpenDSS" {
                         pQc_P = -1/9.7
                         nQc_P = -0.097
 
-                        pQc_T = -0.015*(Ts-600e-6)/Ts
-                        nQc_T = -0.012*(Ts-600e-6)/Ts
+                        pQc_T = -0.015*(execution_rate-600e-6)/execution_rate
+                        nQc_T = -0.012*(execution_rate-600e-6)/execution_rate
 
                         pQc_Q = 0.0266
                         nQc_Q = 0.014
@@ -2058,10 +2059,10 @@ library "OpenDSS" {
                         Pc_pQ = 0.095
                         Pc_nQ = 0.0933
 
-                        Pc_T = 0.005*(Ts-600e-6)/Ts
+                        Pc_T = 0.005*(execution_rate-600e-6)/execution_rate
 
-                        Pc_T_pQ = 0.0075*(Ts-600e-6)/Ts
-                        Pc_T_nQ = 0.01*(Ts-600e-6)/Ts
+                        Pc_T_pQ = 0.0075*(execution_rate-600e-6)/execution_rate
+                        Pc_T_nQ = 0.01*(execution_rate-600e-6)/execution_rate
 
                         Fc = -0*1/15
 
@@ -2079,7 +2080,7 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "Rsnb"), Rsnb)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ"), kQ)
                         mdl.set_property_value(mdl.prop(item_handle, "Q"), Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
+                        mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                         mdl.set_property_value(mdl.prop(item_handle, "kP_tot"), kP_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ_tot"), kQ_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfast_en"), Tfast_en)
@@ -6916,7 +6917,7 @@ library "OpenDSS" {
 						label = "Execution Rate"
 						widget = edit
 						type = generic
-						default_value = "Ts"
+						default_value = "execution_rate"
 
 						CODE property_value_changed
                             comp_handle = mdl.get_sub_level_handle(container_handle)
@@ -7048,15 +7049,15 @@ library "OpenDSS" {
 
 	}
 	else {
-		corr = 1 - 0.11 * (Ts - Ts_fast)/Ts;
-		m2 = (zi - zii)/Ts;
-		m1 = (z - zi)/Ts;
+		corr = 1 - 0.11 * (execution_rate - Ts_fast)/execution_rate;
+		m2 = (zi - zii)/execution_rate;
+		m1 = (z - zi)/execution_rate;
 		m0 = m1 + (m1-m2);
 
 		out = z + counter * corr * m0;
 	}
 
-	if (counter >= Ts) {
+	if (counter >= execution_rate) {
 		counter = 0;
 	}
 	/*End code section*/"
@@ -7086,7 +7087,7 @@ library "OpenDSS" {
 
 				component "core/Constant" Constant21 {
 					execution_rate = "Tfst"
-					value = "Ts"
+					value = "execution_rate"
 				}
 				[
 					position = 8080, 9112
@@ -7395,7 +7396,7 @@ library "OpenDSS" {
 
 				component "core/Constant" Constant29 {
 					execution_rate = "Tfst"
-					value = "Ts"
+					value = "execution_rate"
 				}
 				[
 					position = 8256, 9096
@@ -8223,11 +8224,12 @@ library "OpenDSS" {
                         nonvisible
                     }
 
-                    Ts {
+                    execution_rate {
+                        previous_names = "Ts"
                         label = "Execution Rate"
                         widget = edit
                         type = generic
-                        default_value = "Ts"
+                        default_value = "execution_rate"
                         unit = "s"
                         group = "Execution rate:2"
 
@@ -8246,7 +8248,7 @@ library "OpenDSS" {
                             rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
                             rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
                             rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
-                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
                             Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
 
                             if new_value and not Ts_mask == Tfst_mask:
@@ -8428,7 +8430,7 @@ library "OpenDSS" {
                         kQ_tot = mdl.get_property_value(mdl.prop(item_handle, "kQ_tot"))
                         kQ = mdl.get_property_value(mdl.prop(item_handle, "kQ"))
                         Q = mdl.get_property_value(mdl.prop(item_handle, "Q"))
-                        Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                        execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                         Fast_con = mdl.get_property_value(mdl.prop(item_handle, "Fast_con"))
                         Tfst = mdl.get_property_value(mdl.prop(item_handle, "Tfst"))
                         Tfast_en = mdl.get_property_value(mdl.prop(item_handle, "Tfast_en"))
@@ -8475,8 +8477,8 @@ library "OpenDSS" {
                         pQc_P = -1/9.7
                         nQc_P = -0.097
 
-                        pQc_T = -0.015*(Ts-600e-6)/Ts
-                        nQc_T = -0.012*(Ts-600e-6)/Ts
+                        pQc_T = -0.015*(execution_rate-600e-6)/execution_rate
+                        nQc_T = -0.012*(execution_rate-600e-6)/execution_rate
 
                         pQc_Q = 0.0266
                         nQc_Q = 0.014
@@ -8484,10 +8486,10 @@ library "OpenDSS" {
                         Pc_pQ = 0.095
                         Pc_nQ = 0.0933
 
-                        Pc_T = 0.005*(Ts-600e-6)/Ts
+                        Pc_T = 0.005*(execution_rate-600e-6)/execution_rate
 
-                        Pc_T_pQ = 0.0075*(Ts-600e-6)/Ts
-                        Pc_T_nQ = 0.01*(Ts-600e-6)/Ts
+                        Pc_T_pQ = 0.0075*(execution_rate-600e-6)/execution_rate
+                        Pc_T_nQ = 0.01*(execution_rate-600e-6)/execution_rate
 
                         Fc = -0*1/15
 
@@ -8499,7 +8501,7 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "Rsnb"), Rsnb)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ"), kQ)
                         mdl.set_property_value(mdl.prop(item_handle, "Q"), Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
+                        mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                         mdl.set_property_value(mdl.prop(item_handle, "kP_tot"), kP_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ_tot"), kQ_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfast_en"), Tfast_en)
