@@ -1224,7 +1224,7 @@ def set_load_model(mdl, mask_handle, new_value):
     connt = mdl.get_property_disp_value(mdl.prop(mask_handle, "conn_type"))
     comp_handle = mdl.get_sub_level_handle(mask_handle)
     phss = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
-    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "Ts"))
+    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "execution_rate"))
     t_fast = mdl.get_property_value(mdl.prop(mask_handle, "Tfast"))
     pf_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_mode_3ph"))
 
@@ -1346,7 +1346,7 @@ def exec_changed_slow(mdl, mask_handle, new_value):
 
 def exec_changed_fast(mdl, mask_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(mask_handle)
-    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "Ts"))
+    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "execution_rate"))
     cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
 
     if cpl1:
