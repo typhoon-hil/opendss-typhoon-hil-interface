@@ -7107,15 +7107,15 @@ library "OpenDSS" {
 
 	}
 	else {
-		corr = 1 - 0.11 * (execution_rate - Ts_fast)/execution_rate;
-		m2 = (zi - zii)/execution_rate;
-		m1 = (z - zi)/execution_rate;
+		corr = 1 - 0.11 * (Ts - Ts_fast)/Ts;
+		m2 = (zi - zii)/Ts;
+		m1 = (z - zi)/Ts;
 		m0 = m1 + (m1-m2);
 
 		out = z + counter * corr * m0;
 	}
 
-	if (counter >= execution_rate) {
+	if (counter >= Ts) {
 		counter = 0;
 	}
 	/*End code section*/"
