@@ -651,9 +651,9 @@ def generateSchematic(comp_dict, placement_info):
                     bus_type += 'A' if '1' in bus_phases else ''
                     bus_type += 'B' if '2' in bus_phases else ''
                     bus_type += 'C' if '3' in bus_phases else ''
-                    model.set_property_value(model.prop(comp_handle, 'type'), bus_type)
+                    model.set_property_value(model.prop(comp_handle, 'type_prop'), bus_type)
                     if '0' in bus_phases:
-                        model.set_property_value(model.prop(comp_handle, 'ground'), True)
+                        model.set_property_value(model.prop(comp_handle, 'ground_prop'), True)
                         
                 else:
                     comp_props = comp['properties']
