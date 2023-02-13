@@ -377,16 +377,8 @@ library "OpenDSS" {
                     disabled
 
                     CODE property_value_changed
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
-                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
-                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-
-                        if CPL_comp:
-                            if Ts_mask == Tfst_mask:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
-                            else:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.exec_changed_slow(mdl, container_handle, new_value)
 
                     ENDCODE
                 }
@@ -401,16 +393,8 @@ library "OpenDSS" {
                     disabled
 
                     CODE property_value_changed
-                        comp_handle = mdl.get_sub_level_handle(container_handle)
-                        Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
-                        Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
-                        CPL_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-
-                        if CPL_comp:
-                            if Tfst_mask == Ts_mask:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "False")
-                            else:
-                                mdl.set_property_value(mdl.prop(CPL_comp, "Fast_con"), "True")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.exec_changed_fast(mdl, container_handle, new_value)
 
                     ENDCODE
                 }
@@ -423,6 +407,20 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "CPL Parameters"
                     disabled
+                }
+
+                zero_seq_remove {
+                    label = "Remove zero sequence"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "CPL Parameters"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.zero_seq_removal(mdl, container_handle, new_value)
+                    ENDCODE
                 }
 
                 q_gain_k {
