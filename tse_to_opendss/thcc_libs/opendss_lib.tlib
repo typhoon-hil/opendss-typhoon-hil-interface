@@ -1,3 +1,7 @@
+//
+// Saved by sw version: 2023.1
+//
+
 library "OpenDSS" {
     configuration {
         hil_device = "HIL604"
@@ -52,7 +56,6 @@ library "OpenDSS" {
     }
 
     component Subsystem Root {
-
         component Category Auxiliary {
             layout = dynamic
             visible = "dev"
@@ -242,14 +245,14 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT
-
+                        
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-
+                        
                             comp_handle = mdl.get_sub_level_handle(container_handle)
                             mdl.refresh_icon(container_handle)
-
+                        
                             if new_value == "Δ":
                                 junA0 = mdl.get_item("JA0", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junB0 = mdl.get_item("JB0", parent=comp_handle, item_type=ITEM_JUNCTION)
@@ -258,7 +261,7 @@ library "OpenDSS" {
                                 junB1 = mdl.get_item("JB1", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junC1 = mdl.get_item("JC1", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junN = mdl.get_item("JN", parent=comp_handle, item_type=ITEM_JUNCTION)
-
+                        
                                 connAB = mdl.get_item("Conn_AB", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not connAB:
                                     mdl.create_connection(junA1, junB0, name="Conn_AB")
@@ -268,24 +271,24 @@ library "OpenDSS" {
                                 connCA = mdl.get_item("Conn_CA", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not connCA:
                                     mdl.create_connection(junC1, junA0, name="Conn_CA")
-
+                        
                                 if junN:
                                     mdl.delete_item(junN)
-
+                        
                                 portN = mdl.get_item("N", parent=comp_handle, item_type=ITEM_PORT)
                                 if portN:
                                     mdl.delete_item(portN)
-
+                        
                             else:
                                 junA1 = mdl.get_item("JA1", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junB1 = mdl.get_item("JB1", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junC1 = mdl.get_item("JC1", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junN = mdl.get_item("JN", parent=comp_handle, item_type=ITEM_JUNCTION)
-
+                        
                                 if not junN:
                                     junN = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
                                                                position=(8192, 8328))
-
+                        
                                 connAN = mdl.get_item("Conn_AN", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not connAN:
                                     mdl.create_connection(junA1, junN, name="Conn_AN")
@@ -295,7 +298,7 @@ library "OpenDSS" {
                                 connCN = mdl.get_item("Conn_CN", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not connCN:
                                     mdl.create_connection(junC1, junN, name="Conn_CN")
-
+                        
                                 connAB = mdl.get_item("Conn_AB", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if connAB:
                                     mdl.delete_item(connAB)
@@ -323,10 +326,10 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
-
+                        
                             comp_handle = mdl.get_sub_level_handle(container_handle)
                             mdl.refresh_icon(container_handle)
-
+                        
                             if not new_value:
                                 junN = mdl.get_item("JN", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -443,11 +446,11 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             if set_balanced is True:
                                 comp_script.lock_prop(mdl, container_handle, "pf_3ph", new_value, "Unit")
-
+                        
                             mdl.set_property_value(mdl.prop(container_handle, 'pf_modeA'), new_value)
                             mdl.set_property_value(mdl.prop(container_handle, 'pf_modeB'), new_value)
                             mdl.set_property_value(mdl.prop(container_handle, 'pf_modeC'), new_value)
@@ -455,11 +458,11 @@ library "OpenDSS" {
 
                         CODE property_value_edited
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             if set_balanced is True:
                                 comp_script.lock_prop(mdl, container_handle, "pf_3ph", new_value, "Unit")
-
+                        
                             mdl.set_property_disp_value(mdl.prop(container_handle, 'pf_modeA'), new_value)
                             mdl.set_property_disp_value(mdl.prop(container_handle, 'pf_modeB'), new_value)
                             mdl.set_property_disp_value(mdl.prop(container_handle, 'pf_modeC'), new_value)
@@ -543,19 +546,19 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
                             if set_balanced is False:
                                 comp_script.lock_prop(mdl, container_handle, "pfA", new_value, "Unit")
-
-
+                        
+                        
                             comp_script.pf_mode_fcn(mdl, container_handle, new_value, 'A', (8112, 8232), (8112, 8288))
                         ENDCODE
 
                         CODE property_value_edited
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             if set_balanced is False:
                                 comp_script.lock_prop(mdl, container_handle, "pfA", new_value, "Unit")
@@ -629,19 +632,19 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
                             if set_balanced is False:
                                 comp_script.lock_prop(mdl, container_handle, "pfB", new_value, "Unit")
-
+                        
                             if phases=="3" or phases=="2":
                                 comp_script.pf_mode_fcn(mdl, container_handle, new_value, 'B', (8192, 8232), (8192, 8288))
                         ENDCODE
 
                         CODE property_value_edited
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             if set_balanced is False:
                                 comp_script.lock_prop(mdl, container_handle, "pfB", new_value, "Unit")
@@ -715,19 +718,19 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
                             if set_balanced is False:
                                 comp_script.lock_prop(mdl, container_handle, "pfC", new_value, "Unit")
-
+                        
                             if phases=="3":
                                 comp_script.pf_mode_fcn(mdl, container_handle, new_value, 'C', (8272, 8232), (8272, 8288))
                         ENDCODE
 
                         CODE property_value_edited
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             set_balanced = mdl.get_property_disp_value(mdl.prop(container_handle, "set_balanced"))
                             if set_balanced is False:
                                 comp_script.lock_prop(mdl, container_handle, "pfC", new_value, "Unit")
@@ -768,16 +771,16 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
-
+                        
                             comp_script = return_comp_script(mdl, container_handle)
-
+                        
                             comp_script.phase_value_changed_fnc(mdl, container_handle, new_value)
-
+                        
                             pf_mode_3ph = mdl.get_property_disp_value(mdl.prop(container_handle, "pf_mode_3ph"))
                             comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                        
                             mdl.refresh_icon(container_handle)
-
+                        
                             if new_value == "3":
                                 mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
                                 mdl.enable_property(mdl.prop(container_handle, "conn_type"))
@@ -803,7 +806,7 @@ library "OpenDSS" {
                                 Ca = mdl.get_item("Ra", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 Cb = mdl.get_item("Rb", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 Cc = mdl.get_item("Rc", parent=comp_handle, item_type=ITEM_COMPONENT)
-
+                        
                                 if not pA:
                                     pA = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind = "pe",
                                                         terminal_position=(-30, -30),
@@ -817,7 +820,7 @@ library "OpenDSS" {
                                     mdl.create_connection(mdl.term(Ra, "p_node"), junA0, name="Conn17")
                                     mdl.create_connection(mdl.term(Ra, "n_node"), junA1, name="Conn_A")
                                     comp_script.pf_mode_fcn(mdl, container_handle, pf_mode_3ph, 'A', (8112, 8232), (8112, 8288))
-
+                        
                                 if not pB:
                                     pB = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind = "pe",
                                                         terminal_position=(0, -30),
@@ -840,11 +843,11 @@ library "OpenDSS" {
                                     mdl.create_connection(mdl.term(Rc, "p_node"), junC0, name="Conn21")
                                     mdl.create_connection(mdl.term(Rc, "n_node"), junC1, name="Conn_C")
                                     comp_script.pf_mode_fcn(mdl, container_handle, pf_mode_3ph, 'C', (8272, 8232), (8272, 8288))
-
-
-
-
-
+                        
+                        
+                        
+                        
+                        
                             elif new_value == "2":
                                 junA0 = mdl.get_item("JA0", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junB0 = mdl.get_item("JB0", parent=comp_handle, item_type=ITEM_JUNCTION)
@@ -894,9 +897,9 @@ library "OpenDSS" {
                                     comp_script.pf_mode_fcn(mdl, container_handle, "Unit", 'C', (8272, 8232), (8272, 8288))
                                     mdl.delete_item(pC)
                                     mdl.delete_item(Rc)
-
-
-
+                        
+                        
+                        
                             elif new_value == "1":
                                 junA0 = mdl.get_item("JA0", parent=comp_handle, item_type=ITEM_JUNCTION)
                                 junB0 = mdl.get_item("JB0", parent=comp_handle, item_type=ITEM_JUNCTION)
@@ -920,11 +923,11 @@ library "OpenDSS" {
                                 Ca = mdl.get_item("Ra", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 Cb = mdl.get_item("Rb", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 Cc = mdl.get_item("Rc", parent=comp_handle, item_type=ITEM_COMPONENT)
-
+                        
                                 if not junN:
                                     junN = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
                                                                position=(8192, 8328))
-
+                        
                                 connAN = mdl.get_item("Conn_AN", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not connAN:
                                     mdl.create_connection(junA1, junN, name="Conn_AN")
@@ -934,7 +937,7 @@ library "OpenDSS" {
                                 connCN = mdl.get_item("Conn_CN", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not connCN:
                                     mdl.create_connection(junC1, junN, name="Conn_CN")
-
+                        
                                 if not pA:
                                     pA = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind = "pe",
                                                         terminal_position=(0, -30),
@@ -942,7 +945,7 @@ library "OpenDSS" {
                                     mdl.create_connection(junA0, pA, name="ConnAA0")
                                 else:
                                     mdl.set_port_properties(pA, terminal_position=(0, -30))
-
+                        
                                 if not Ra:
                                     Ra = mdl.create_component("pas_resistor", parent=comp_handle, name="Ra", position=(8112,8128), rotation="right")
                                     mdl.set_property_value(mdl.prop(Ra, "resistance"), "Ra")
@@ -953,7 +956,7 @@ library "OpenDSS" {
                                     comp_script.pf_mode_fcn(mdl, container_handle, "Unit", 'B', (8192, 8232), (8192, 8288))
                                     mdl.delete_item(pB)
                                     mdl.delete_item(Rb)
-
+                        
                                 if pC:
                                     comp_script.pf_mode_fcn(mdl, container_handle, "Unit", 'C', (8272, 8232), (8272, 8288))
                                     mdl.delete_item(pC)
@@ -1022,23 +1025,23 @@ library "OpenDSS" {
                         import os
                         import sys
                         import importlib
-
+                    
                         lib_path = mdl.get_library_resource_dir_path(item_handle)
                         comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
                         gui_scripts_path = os.path.join(os.path.realpath(lib_path), "gui_scripts")
-
+                    
                         if not comp_scripts_path in sys.path:
                             sys.path.append(comp_scripts_path)
                         if not gui_scripts_path in sys.path:
                             sys.path.append(gui_scripts_path)
-
+                    
                         import comp_load as comp_script
                         importlib.reload(comp_script)
                         def return_comp_script(mdl, item_handle):
                             return comp_script
-
+                    
                         comp_script.define_icon(mdl, item_handle)
-
+                    
                     ENDCODE
 
                     CODE pre_compile
@@ -1082,7 +1085,7 @@ library "OpenDSS" {
                         # HEADER STOP
                         def calc_impedance(mdl, power_1ph, voltage, pf_mode, power_factor,
                                                frequency, phase_id):
-
+                    
                             if power_1ph <= 0:
                                 mdl.error("Power set is negative or zero.", kind="General error",
                                             context=mdl.prop(item_handle, "S" + phase_id))
@@ -1102,8 +1105,8 @@ library "OpenDSS" {
                                                 kind="General error",
                                                 context=mdl.prop(item_handle, "pf" + phase_id[0]))
                                     power_factor = 0.99
-
-
+                    
+                    
                             if pf_mode == "Unit":
                                 R = (voltage**2)/power_1ph
                                 L = float('nan')
@@ -1119,31 +1122,31 @@ library "OpenDSS" {
                                 L = float('nan')
                                 C = 1/(Z*2*np.pi*frequency*((1-power_factor**2)**0.5))
                             return R, L, C
-
+                    
                         if fn <= 0:
                             mdl.error("Frequency set is negative or zero.", kind="General error",
                                         context=mdl.prop(item_handle, "fn"))
                             fn = float('nan')
-
+                    
                         VAn = Vn_3ph*1000/(3**0.5)
                         VBn = Vn_3ph*1000/(3**0.5)
                         VCn = Vn_3ph*1000/(3**0.5)
                         VAB = Vn_3ph*1000
                         VBC = Vn_3ph*1000
                         VCA = Vn_3ph*1000
-
+                    
                         if phases == "3":
                             phs = 3
                         else:
                             phs = 1
-
+                    
                         SAn = Sn_3ph*1000/phs
                         SBn = Sn_3ph*1000/phs
                         SCn = Sn_3ph*1000/phs
                         SAB = Sn_3ph*1000/phs
                         SBC = Sn_3ph*1000/phs
                         SCA = Sn_3ph*1000/phs
-
+                    
                         if pf_mode_3ph == "Unit":
                             pfA = 1.0
                             pfB = 1.0
@@ -1152,9 +1155,9 @@ library "OpenDSS" {
                             pfA = pf_3ph
                             pfB = pf_3ph
                             pfC = pf_3ph
-
-
-
+                    
+                    
+                    
                         if (conn_type == 'Δ'):
                             Ra, La, Ca = calc_impedance(mdl, SAB, VAB, pf_mode_3ph, pfA, fn, "AB")
                             Rb, Lb, Cb = calc_impedance(mdl, SBC, VBC, pf_mode_3ph, pfB, fn, "BC")
@@ -1173,25 +1176,25 @@ library "OpenDSS" {
                                 Ra, La, Ca = calc_impedance(mdl, SAn, VAn, pf_mode_3ph, pfA, fn, "An")
                                 Rb, Lb, Cb = calc_impedance(mdl, SBn, VBn, pf_mode_3ph, pfB, fn, "Bn")
                                 Rc, Lc, Cc = calc_impedance(mdl, SCn, VCn, pf_mode_3ph, pfC, fn, "Cn")
-
+                    
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
                         import math
-
+                    
                         basefreq = fn
                         kVA = Sn_3ph
                         if (conn_type == 'Δ'):
                             conn = "delta"
                         else:
                             conn = "wye"
-
+                    
                         if pf_mode_3ph == "Unit":
                             pf = 1.0
                         elif pf_mode_3ph == "Lag":
                             pf = pf_3ph
                         else:
                             pf = -1 * pf_3ph
-
+                    
                         if phases == "1":
                             if ground_connected:
                                 kV = (Vn_3ph/(1))/1
@@ -1199,7 +1202,7 @@ library "OpenDSS" {
                                 kV = Vn_3ph
                         else:
                             kV = Vn_3ph
-
+                    
                         if dss_mod == "Constant P, Q":
                             model = 1
                         elif dss_mod == "Constant Impedance":
@@ -1212,7 +1215,7 @@ library "OpenDSS" {
                             model = 7
                         else:
                             model = 2
-
+                    
                         mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
                         mdl.set_property_value(mdl.prop(item_handle, "kVA"), kVA)
                         mdl.set_property_value(mdl.prop(item_handle, "conn"), conn)
@@ -1225,14 +1228,14 @@ library "OpenDSS" {
 
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
+                    
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
                             current_diagram=current_diagram
                         )
                         dialog.exec_()
-
+                    
                     ENDCODE
 
                     CODE define_icon
@@ -1249,7 +1252,7 @@ library "OpenDSS" {
             component Subsystem CPL {
                 layout = dynamic
                 component "core/Constant" Constant1 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "kP_tot"
                 }
                 [
@@ -1258,7 +1261,7 @@ library "OpenDSS" {
                 ]
 
                 component "core/Constant" Constant11 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "kQ_tot"
                 }
                 [
@@ -1270,7 +1273,7 @@ library "OpenDSS" {
                     gain = "inv_ph"
                 }
                 [
-                    position = 7704, 7456
+                    position = 7720, 7496
                     hide_name = True
                 ]
 
@@ -1278,26 +1281,26 @@ library "OpenDSS" {
                     gain = "inv_ph"
                 }
                 [
-                    position = 7576, 7584
+                    position = 7720, 7584
                     hide_name = True
                 ]
 
                 component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
-                    execution_rate = "Ts"
+                    bypass_flag = "True"
                 }
                 [
-                    position = 7792, 7456
+                    position = 7800, 7496
                     hide_name = True
-                    size = 32, 32
+                    size = 48, 48
                 ]
 
                 component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
-                    execution_rate = "Ts"
+                    bypass_flag = "True"
                 }
                 [
-                    position = 7680, 7584
+                    position = 7800, 7584
                     hide_name = True
-                    size = 32, 32
+                    size = 48, 48
                 ]
 
                 component "core/Rate Limiter" "Rate Limiter1" {
@@ -1305,7 +1308,7 @@ library "OpenDSS" {
                     rising_limit = "SS/Freq"
                 }
                 [
-                    position = 7880, 7456
+                    position = 7880, 7496
                     hide_name = True
                 ]
 
@@ -1314,7 +1317,7 @@ library "OpenDSS" {
                     rising_limit = "SS/Freq"
                 }
                 [
-                    position = 7760, 7584
+                    position = 7880, 7584
                     hide_name = True
                 ]
 
@@ -1383,7 +1386,7 @@ library "OpenDSS" {
                     direction = in
                 }
                 [
-                    position = 8200, 7464
+                    position = 7976, 7496
                     hide_name = True
                     size = 60, 20
                 ]
@@ -1395,7 +1398,7 @@ library "OpenDSS" {
                     direction = in
                 }
                 [
-                    position = 8208, 7592
+                    position = 7976, 7584
                     hide_name = True
                     size = 60, 20
                 ]
@@ -1431,7 +1434,7 @@ library "OpenDSS" {
                     direction = out
                 }
                 [
-                    position = 7424, 7456
+                    position = 7624, 7496
                     hide_name = True
                     size = 60, 20
                 ]
@@ -1443,7 +1446,7 @@ library "OpenDSS" {
                     direction = out
                 }
                 [
-                    position = 7336, 7584
+                    position = 7624, 7584
                     hide_name = True
                     size = 60, 20
                 ]
@@ -1565,10 +1568,20 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
+                            
                             comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            fast_con_prop = mdl.get_property_value(mdl.prop(container_handle, "Fast_con"))
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            
                             if new_value == "Variable input":
+                                if fast_con_prop:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+                            
                                 P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
                                 P_inp = mdl.get_item("Gain1", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1576,17 +1589,19 @@ library "OpenDSS" {
                                 conn_P_int = mdl.get_item("connP", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if conn_P_int:
                                     mdl.delete_item(conn_P_int)
-
+                            
                                 if not term_P:
                                     term_P = mdl.create_component("Termination", parent=comp_handle, name="Termination1", position=(7509,7452), hide_name=True)
                                     mdl.create_connection(mdl.term(term_P, "in"), P_int)
-
+                            
                                 if not P_ext:
                                     P_ext = mdl.create_port(parent=comp_handle, name="P_set", direction="in", kind = "sp",
                                                         terminal_position=("top", 1),
                                                         position=(7613, 7452))
                                     mdl.create_connection(mdl.term(P_inp, "in"), P_ext)
                             elif new_value == "Fixed":
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
                                 P_ext = mdl.get_item("P_set", parent=comp_handle, item_type=ITEM_PORT)
                                 term_P = mdl.get_item("Termination1", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 P_int = mdl.get_item("From1", parent=comp_handle, item_type=ITEM_TAG)
@@ -1650,10 +1665,20 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT, ITEM_TAG
-
+                            
                             comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            fast_con_prop = mdl.get_property_value(mdl.prop(container_handle, "Fast_con"))
+                            rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
+                            rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
+                            
                             if new_value == "Variable input":
+                                if fast_con_prop:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
+                                else:
+                                    mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                    mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
+                            
                                 Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
                                 Q_inp = mdl.get_item("Gain2", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1661,17 +1686,19 @@ library "OpenDSS" {
                                 conn_Q_int = mdl.get_item("connQ", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if conn_Q_int:
                                     mdl.delete_item(conn_Q_int)
-
+                            
                                 if not term_Q:
                                     term_Q = mdl.create_component("Termination", parent=comp_handle, name="Termination2", position=(7423,7582), hide_name=True)
                                     mdl.create_connection(mdl.term(term_Q, "in"), Q_int)
-
+                            
                                 if not Q_ext:
                                     Q_ext = mdl.create_port(parent=comp_handle, name="Q_set", direction="in", kind = "sp",
                                                         terminal_position=("top", 2),
                                                         position=(7502, 7582))
                                     mdl.create_connection(mdl.term(Q_inp, "in"), Q_ext)
                             elif new_value == "Fixed":
+                                mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
+                                mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
                                 Q_ext = mdl.get_item("Q_set", parent=comp_handle, item_type=ITEM_PORT)
                                 term_Q = mdl.get_item("Termination2", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 Q_int = mdl.get_item("From2", parent=comp_handle, item_type=ITEM_TAG)
@@ -1710,11 +1737,12 @@ library "OpenDSS" {
                         nonvisible
                     }
 
-                    Ts {
+                    execution_rate {
                         label = "Execution Rate"
+                        previous_names = "Ts"
                         widget = edit
                         type = generic
-                        default_value = "Ts"
+                        default_value = "execution_rate"
                         unit = "s"
                         group = "Execution rate:2"
                     }
@@ -1729,14 +1757,14 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            
                             rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
                             rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
                             Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
-                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
                             P_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kP_inp"))
                             Q_inp_mask = mdl.get_property_value(mdl.prop(container_handle, "kQ_inp"))
-
+                            
                             if new_value and not Tfst_mask == Ts_mask:
                                 if P_inp_mask == "Variable input":
                                     mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
@@ -1749,7 +1777,7 @@ library "OpenDSS" {
                             else:
                                 mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
                                 mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
-
+                            
                             for phase in ["A", "B", "C"]:
                                 CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type="component")
                                 if CPL_phase:
@@ -1773,90 +1801,6 @@ library "OpenDSS" {
                         nonvisible
                     }
 
-                    pQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Fc {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
                     phases {
                         label = "Number pf phases"
                         widget = combo
@@ -1868,9 +1812,10 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
-
+                            
                             comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            fast_con_prop = mdl.get_property_value(mdl.prop(container_handle, "Fast_con"))
+                            
                             if new_value == "3":
                                 for phase in ["A", "B", "C"]:
                                     if phase == "B":
@@ -1882,7 +1827,7 @@ library "OpenDSS" {
                                     else:
                                         port_offset = (0, 0)
                                         cpl_offset = (0, 0)
-
+                            
                                     port_phase = mdl.get_item(f"{phase}1", parent=comp_handle, item_type=ITEM_PORT)
                                     if not port_phase:
                                         port_phase = mdl.create_port(parent=comp_handle,
@@ -1891,42 +1836,47 @@ library "OpenDSS" {
                                                                      terminal_position=("left", 2),
                                                                      position=(7656 + port_offset[0], 8008 + port_offset[1]),
                                                                      rotation="up")
-
+                            
                                     CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type=ITEM_COMPONENT)
                                     if not CPL_phase:
                                         CPL_phase = mdl.create_component("OpenDSS/single-phase CPL",
                                                                          name=f"CPL{phase}",
                                                                          parent=comp_handle,
                                                                          position=(8032 + cpl_offset[0], 8008 + cpl_offset[1]))
-
+                            
                                     if len(mdl.find_connections(port_phase)) == 0:
                                         mdl.create_connection(port_phase, mdl.term(CPL_phase, "P3"))
-
+                            
                                     jun11 = mdl.get_item("Junction11", parent=comp_handle, item_type="junction")
-
+                            
                                     if len(mdl.find_connections(mdl.term(CPL_phase, "P2"))) == 0:
                                         mdl.create_connection(mdl.term(CPL_phase, "P2"), jun11)
-
+                            
                                     if phase in ["A", "B"]:
                                         jun_p = mdl.get_item("Junction13", parent=comp_handle, item_type="junction")
                                         jun_q = mdl.get_item("Junction14", parent=comp_handle, item_type="junction")
                                     else:
                                         jun_p = mdl.get_item("Junction15", parent=comp_handle, item_type="junction")
                                         jun_q = mdl.get_item("Junction16", parent=comp_handle, item_type="junction")
-
+                            
                                     if len(mdl.find_connections(mdl.term(CPL_phase, "P"))) == 0:
                                         mdl.create_connection(mdl.term(CPL_phase, "P"), jun_p)
-
+                            
                                     if len(mdl.find_connections(mdl.term(CPL_phase, "Q"))) == 0:
                                         mdl.create_connection(mdl.term(CPL_phase, "Q"), jun_q)
-
-
+                            
+                                    if CPL_phase:
+                                        if fast_con_prop:
+                                            mdl.set_property_value(mdl.prop(CPL_phase, "Fast_con"), "True")
+                                        else:
+                                            mdl.set_property_value(mdl.prop(CPL_phase, "Fast_con"), "False")
+                            
                             if new_value == "1":
                                 for phase in ["B", "C"]:
                                     port_phase = mdl.get_item(f"{phase}1", parent=comp_handle, item_type=ITEM_PORT)
                                     if port_phase:
                                         mdl.delete_item(port_phase)
-
+                            
                                     CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type=ITEM_COMPONENT)
                                     if CPL_phase:
                                         mdl.delete_item(CPL_phase)
@@ -1974,16 +1924,168 @@ library "OpenDSS" {
                         group = "Load Parameters"
                     }
 
+                    zero_seq_remove {
+                        label = "Remove zero sequence"
+                        widget = checkbox
+                        type = bool
+                        default_value = "False"
+                        group = "Load Parameters"
+                        no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                        
+                            if new_value:
+                        
+                                sum_0 =  mdl.get_item("sum_abc", parent=comp_handle, item_type="component")
+                                if not sum_0:
+                                    sum_0 = mdl.create_component("Sum", name="sum_abc", parent=comp_handle,
+                                                                 position=(7685, 7742), rotation="up", hide_name=True)
+                                mdl.set_property_value(mdl.prop(sum_0, "signs"), "3")
+                        
+                                goto_cpl_pos = {"A": (8088, 8048), "B": (8088, 8128), "C": (8088, 8208)}
+                                from_kalman_pos = {"A": (7732, 8048), "B": (7732, 8128), "C": (7732, 8208)}
+                                from_cpl_pos = {"A": (7588, 7710), "B": (7588, 7742), "C": (7588, 7774)}
+                        
+                                for phase in ["A", "B", "C"]:
+                                    CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type="component")
+                                    if CPL_phase:
+                                        mdl.set_property_value(mdl.prop(CPL_phase, "zero_seq_remove"), new_value)
+                        
+                                        goto_cpl = mdl.get_item(f"goto_cpl{phase}", parent=comp_handle, item_type="tag")
+                                        if not goto_cpl:
+                                            goto_cpl = mdl.create_tag(f"Vph{phase}", name=f"goto_cpl{phase}",
+                                                                      parent=comp_handle, scope="local", kind="sp",
+                                                                      direction="in", position=goto_cpl_pos[phase])
+                                            mdl.hide_name(goto_cpl)
+                                        if len(mdl.find_connections(mdl.term(CPL_phase, "vph_port"), goto_cpl)) == 0:
+                                            mdl.create_connection(mdl.term(CPL_phase, "vph_port"), goto_cpl)
+                        
+                                        from_kalman = mdl.get_item(f"from_kalman{phase}", parent=comp_handle, item_type="tag")
+                                        if not from_kalman:
+                                            from_kalman = mdl.create_tag(f"V0", name=f"from_kalman{phase}",
+                                                                         parent=comp_handle, scope="local", kind="sp",
+                                                                         direction="out", position=from_kalman_pos[phase])
+                                            mdl.hide_name(from_kalman)
+                                        if len(mdl.find_connections(mdl.term(CPL_phase, "v0"), from_kalman)) == 0:
+                                            mdl.create_connection(mdl.term(CPL_phase, "v0"), from_kalman)
+                        
+                                        from_cpl = mdl.get_item(f"from_cpl{phase}", parent=comp_handle, item_type="tag")
+                                        if not from_cpl:
+                                            from_cpl = mdl.create_tag(f"Vph{phase}", name=f"from_cpl{phase}",
+                                                                      parent=comp_handle, scope="local", kind="sp",
+                                                                      direction="out", position=from_cpl_pos[phase])
+                                            mdl.hide_name(from_cpl)
+                        
+                                        if phase == "C":
+                                            idx = 2
+                                        elif phase == "B":
+                                            idx = 1
+                                        else:
+                                            idx = ""
+                                        if len(mdl.find_connections(from_cpl, mdl.term(sum_0, f"in{idx}"))) == 0:
+                                            mdl.create_connection(from_cpl, mdl.term(sum_0, f"in{idx}"))
+                        
+                                gain_third =  mdl.get_item("gain_zero", parent=comp_handle, item_type="component")
+                                if not gain_third:
+                                    gain_third = mdl.create_component("Gain", name="gain_zero", parent=comp_handle,
+                                                                      position=(7794, 7742), rotation="up",
+                                                                      hide_name=True)
+                                mdl.set_property_value(mdl.prop(gain_third, "gain"), "-1/3")
+                        
+                                K_filter =  mdl.get_item("Kalman_filter", parent=comp_handle, item_type="component")
+                                if not K_filter:
+                                    K_filter = mdl.create_component("Kalman Filter Sync", name="Kalman_filter",
+                                                                    parent=comp_handle, position=(7944, 7742),
+                                                                    rotation="up", hide_name=True)
+                                mdl.set_property_value(mdl.prop(K_filter, "normalize"), "False")
+                                mdl.set_property_value(mdl.prop(K_filter, "q_gain"), "q_gain_k")
+                                mdl.set_property_value(mdl.prop(K_filter, "r_gain"), "r_gain_k")
+                        
+                                K_f_term = mdl.get_item("f_term", parent=comp_handle, item_type="component")
+                                if not K_f_term:
+                                    K_f_term = mdl.create_component("Termination", name="f_term", parent=comp_handle,
+                                                                    position=(8104, 7810), rotation="up",
+                                                                    hide_name=True)
+                        
+                                K_cos_term = mdl.get_item("cos_term", parent=comp_handle, item_type="component")
+                                if not K_cos_term:
+                                    K_cos_term = mdl.create_component("Termination", name="cos_term",
+                                                                      parent=comp_handle, position=(8104, 7742),
+                                                                      rotation="up", hide_name=True)
+                        
+                                goto_v0 = mdl.get_item("goto_v0", parent=comp_handle, item_type="tag")
+                                if not goto_v0:
+                                    goto_v0 = mdl.create_tag("V0", name="goto_v0",
+                                                             parent=comp_handle, scope="local", kind="sp",
+                                                             direction="in", position=(8104, 7678))
+                                    mdl.hide_name(goto_v0)
+                        
+                                if len(mdl.find_connections(mdl.term(K_filter, "Vgrid"), mdl.term(gain_third, "out"))) == 0:
+                                    mdl.create_connection(mdl.term(K_filter, "Vgrid"), mdl.term(gain_third, "out"))
+                        
+                                if len(mdl.find_connections(mdl.term(sum_0, "out"), mdl.term(gain_third, "in"))) == 0:
+                                    mdl.create_connection(mdl.term(sum_0, "out"), mdl.term(gain_third, "in"))
+                        
+                                if len(mdl.find_connections(mdl.term(K_filter, "cos(wt)"), mdl.term(K_cos_term, "in"))) == 0:
+                                    mdl.create_connection(mdl.term(K_filter, "cos(wt)"), mdl.term(K_cos_term, "in"))
+                        
+                                if len(mdl.find_connections(mdl.term(K_filter, "f (Hz)"), mdl.term(K_f_term, "in"))) == 0:
+                                    mdl.create_connection(mdl.term(K_filter, "f (Hz)"), mdl.term(K_f_term, "in"))
+                        
+                                if len(mdl.find_connections(mdl.term(K_filter, "sin(wt)"), goto_v0)) == 0:
+                                    mdl.create_connection(mdl.term(K_filter, "sin(wt)"), goto_v0)
+                        
+                            else:
+                                for phase in ["A", "B", "C"]:
+                                    CPL_phase = mdl.get_item(f"CPL{phase}", parent=comp_handle, item_type="component")
+                                    if CPL_phase:
+                                        mdl.set_property_value(mdl.prop(CPL_phase, "zero_seq_remove"), new_value)
+                        
+                                        goto_cpl = mdl.get_item(f"goto_cpl{phase}", parent=comp_handle, item_type="tag")
+                                        if goto_cpl:
+                                            mdl.delete_item(goto_cpl)
+                        
+                                        from_kalman = mdl.get_item(f"from_kalman{phase}", parent=comp_handle, item_type="tag")
+                                        if from_kalman:
+                                            mdl.delete_item(from_kalman)
+                        
+                                        from_cpl =  mdl.get_item(f"from_cpl{phase}", parent=comp_handle, item_type="tag")
+                                        if from_cpl:
+                                            mdl.delete_item(from_cpl)
+                        
+                                sum_0 =  mdl.get_item("sum_abc", parent=comp_handle, item_type="component")
+                                K_filter =  mdl.get_item("Kalman_filter", parent=comp_handle, item_type="component")
+                                gain_third =  mdl.get_item("gain_zero", parent=comp_handle, item_type="component")
+                                K_cos_term = mdl.get_item("cos_term", parent=comp_handle, item_type="component")
+                                K_f_term = mdl.get_item("f_term", parent=comp_handle, item_type="component")
+                                goto_v0 = mdl.get_item("goto_v0", parent=comp_handle, item_type="tag")
+                        
+                                if sum_0:
+                                    mdl.delete_item(sum_0)
+                                if K_filter:
+                                    mdl.delete_item(K_filter)
+                                if K_cos_term:
+                                    mdl.delete_item(K_cos_term)
+                                if K_f_term:
+                                    mdl.delete_item(K_f_term)
+                                if gain_third:
+                                    mdl.delete_item(gain_third)
+                                if goto_v0:
+                                    mdl.delete_item(goto_v0)
+                        ENDCODE
+                    }
+
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
+                    
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
                             current_diagram=current_diagram
                         )
                         dialog.exec_()
-
+                        
                     ENDCODE
 
                     CODE pre_compile
@@ -2001,22 +2103,11 @@ library "OpenDSS" {
                         kQ_tot = mdl.get_property_value(mdl.prop(item_handle, "kQ_tot"))
                         kQ = mdl.get_property_value(mdl.prop(item_handle, "kQ"))
                         Q = mdl.get_property_value(mdl.prop(item_handle, "Q"))
-                        Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                        execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                         Fast_con = mdl.get_property_value(mdl.prop(item_handle, "Fast_con"))
                         Tfst = mdl.get_property_value(mdl.prop(item_handle, "Tfst"))
+                        zero_seq_remove = mdl.get_property_value(mdl.prop(item_handle, "zero_seq_remove"))
                         Tfast_en = mdl.get_property_value(mdl.prop(item_handle, "Tfast_en"))
-                        pQc_P = mdl.get_property_value(mdl.prop(item_handle, "pQc_P"))
-                        nQc_P = mdl.get_property_value(mdl.prop(item_handle, "nQc_P"))
-                        pQc_T = mdl.get_property_value(mdl.prop(item_handle, "pQc_T"))
-                        nQc_T = mdl.get_property_value(mdl.prop(item_handle, "nQc_T"))
-                        pQc_Q = mdl.get_property_value(mdl.prop(item_handle, "pQc_Q"))
-                        nQc_Q = mdl.get_property_value(mdl.prop(item_handle, "nQc_Q"))
-                        Pc_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_pQ"))
-                        Pc_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_nQ"))
-                        Pc_T_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_pQ"))
-                        Pc_T_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_nQ"))
-                        Pc_T = mdl.get_property_value(mdl.prop(item_handle, "Pc_T"))
-                        Fc = mdl.get_property_value(mdl.prop(item_handle, "Fc"))
                         phases = mdl.get_property_value(mdl.prop(item_handle, "phases"))
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
@@ -2027,7 +2118,7 @@ library "OpenDSS" {
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
                         import math
-
+                        
                         kVLL = kVLine/(3**0.5)
                         VLL = kVLL * 1000
                         kP = kP_tot / 3
@@ -2035,42 +2126,24 @@ library "OpenDSS" {
                         P = kP * 1000
                         Q = kQ * 1000
                         SS = (P*P + Q*Q)**0.5
-
+                        
                         if SS==0:
                             Rsnb = 100000
                         else:
                             Rsnb = 30 * (VLL*VLL/(1.66*SS))
-
+                        
                         if Fast_con:
                             Tfast_en = 1
                         else:
                             Tfast_en = 0
-
-                        pQc_P = -1/9.7
-                        nQc_P = -0.097
-
-                        pQc_T = -0.015*(Ts-600e-6)/Ts
-                        nQc_T = -0.012*(Ts-600e-6)/Ts
-
-                        pQc_Q = 0.0266
-                        nQc_Q = 0.014
-
-                        Pc_pQ = 0.095
-                        Pc_nQ = 0.0933
-
-                        Pc_T = 0.005*(Ts-600e-6)/Ts
-
-                        Pc_T_pQ = 0.0075*(Ts-600e-6)/Ts
-                        Pc_T_nQ = 0.01*(Ts-600e-6)/Ts
-
-                        Fc = -0*1/15
-
+                        
+                        
                         if phases == "3":
                             inv_ph = 1/3
                         else:
                             inv_ph = 1
-
-
+                        
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "kVLine"), kVLine)
                         mdl.set_property_value(mdl.prop(item_handle, "kVLL"), kVLL)
                         mdl.set_property_value(mdl.prop(item_handle, "kP"), kP)
@@ -2079,35 +2152,17 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "Rsnb"), Rsnb)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ"), kQ)
                         mdl.set_property_value(mdl.prop(item_handle, "Q"), Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
+                        mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                         mdl.set_property_value(mdl.prop(item_handle, "kP_tot"), kP_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ_tot"), kQ_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfast_en"), Tfast_en)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_P"), pQc_P)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_P"), nQc_P)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_T"), pQc_T)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_T"), nQc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_Q"), pQc_Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_Q"), nQc_Q)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_pQ"), Pc_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_nQ"), Pc_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T"), Pc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_pQ"), Pc_T_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_nQ"), Pc_T_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Fc"), Fc)
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "inv_ph"), inv_ph)
-
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "Freq"), Freq)
                         mdl.set_property_value(mdl.prop(item_handle, "SS"), SS)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
-
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "CPL_curr"), CPL_curr)
                         mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
                         mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
@@ -2153,7 +2208,6 @@ library "OpenDSS" {
 
                 component "core/Signal switch" "Signal switch1" {
                     criterion = "ctrl >= threshold"
-                    threshold = "0.5"
                 }
                 [
                     position = 7008, 8144
@@ -2214,7 +2268,6 @@ library "OpenDSS" {
 
                 component "core/Signal switch" "Signal switch2" {
                     criterion = "ctrl >= threshold"
-                    threshold = "0.5"
                 }
                 [
                     position = 7176, 8144
@@ -2230,7 +2283,6 @@ library "OpenDSS" {
 
                 component "core/Signal switch" "Signal switch3" {
                     criterion = "ctrl >= threshold"
-                    threshold = "0.5"
                 }
                 [
                     position = 7456, 8160
@@ -2432,31 +2484,31 @@ library "OpenDSS" {
                         CODE property_value_changed
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
                             comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                        
                             if new_value == "Loop cycle":
                                 T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
                                 T_inp = mdl.get_item("Gain1", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 T_def = mdl.get_item("Constant5", parent=comp_handle, item_type=ITEM_COMPONENT)
-
+                        
                                 if T_ext:
                                     mdl.delete_item(T_ext)
-
+                        
                                 conn_T_int = mdl.get_item("connT", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if not conn_T_int:
                                     mdl.create_connection(mdl.term(T_inp, "in"), mdl.term(T_def, "out"), "connT")
-
+                        
                             else:
                                 T_ext = mdl.get_item("T", parent=comp_handle, item_type=ITEM_PORT)
                                 T_inp = mdl.get_item("Gain1", parent=comp_handle, item_type=ITEM_COMPONENT)
                                 conn_T_int = mdl.get_item("connT", parent=comp_handle, item_type=ITEM_CONNECTION)
                                 if conn_T_int:
                                     mdl.delete_item(conn_T_int)
-
+                        
                                 if not T_ext:
                                     T_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind = "sp",
                                                         terminal_position=("left", 1),
                                                         position=(7237, 8437))
-
+                        
                                 mdl.create_connection(mdl.term(T_inp, "in"), T_ext, "connT")
                         ENDCODE
 
@@ -2515,14 +2567,14 @@ library "OpenDSS" {
 
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
+                    
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
                             current_diagram=current_diagram
                         )
                         dialog.exec_()
-
+                    
                     ENDCODE
 
                     CODE pre_compile
@@ -2547,56 +2599,56 @@ library "OpenDSS" {
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy as np
                         import math
-
+                    
                         if P_mode == "Manual input":
                             loop_en = 0
                         else:
                             loop_en = 1
-
-
+                    
+                    
                         Plen = len(S_vec)
                         S_vec2 = S_vec
-
+                    
                         S_vec1 = [0] * Plen
-
+                    
                         idxS = 0
                         for S_val in S_vec:
                             S_vec1[idxS] = S_vec[idxS]
                             idxS += 1
-
-
+                    
+                    
                         T_vecP = [0] * Plen
                         T_vecQ = [0] * Plen
-
+                    
                         P_vec1 = [P_nom*i for i in S_vec2]
                         Q_vec1 = [Q_nom*i for i in S_vec2]
-
+                    
                         TstepP = Tmax/(Plen - 1)
                         TstepQ = Tmax/(Plen - 1)
-
+                    
                         idxP = 0
                         for P_val in S_vec1:
-
+                    
                             if loop_en == 1:
                                 T_vecP[idxP] = idxP * TstepP
                             else:
                                 T_vecP[idxP] = T_vec[idxP]
                             idxP += 1
-
+                    
                         idxQ = 0
                         for Q_val in S_vec1:
-
+                    
                             if loop_en == 1:
                                 T_vecQ[idxQ] = idxQ * TstepQ
                             else:
                                 T_vecQ[idxQ] = T_vec[idxQ]
                             idxQ += 1
-
-
-
-
-
-
+                    
+                    
+                    
+                    
+                    
+                    
                         mdl.set_property_value(mdl.prop(item_handle, "P_vec1"), P_vec1)
                         mdl.set_property_value(mdl.prop(item_handle, "Q_vec1"), Q_vec1)
                         mdl.set_property_value(mdl.prop(item_handle, "T_vecP"), T_vecP)
@@ -2607,11 +2659,11 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "P_nom"), P_nom)
                         mdl.set_property_value(mdl.prop(item_handle, "Q_nom"), Q_nom)
                         mdl.set_property_value(mdl.prop(item_handle, "Plen"), Plen)
-
+                    
                         mdl.set_property_value(mdl.prop(item_handle, "S_vec"), S_vec)
                         mdl.set_property_value(mdl.prop(item_handle, "S_vec1"), S_vec1)
                         mdl.set_property_value(mdl.prop(item_handle, "S_vec2"), S_vec2)
-
+                    
                         mdl.set_property_value(mdl.prop(item_handle, "Texec"), Texec)
                     ENDCODE
                 }
@@ -2689,7 +2741,6 @@ library "OpenDSS" {
 
                         component "core/Signal switch" "Signal switch1" {
                             criterion = "ctrl >= threshold"
-                            threshold = "0.5"
                         }
                         [
                             position = 8200, 8184
@@ -4354,7 +4405,7 @@ library "OpenDSS" {
                         position = 8512, 9688
                     ]
 
-                    comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Tap changer control</p></body></html> ENDCOMMENT
+                    comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Tap changer control</p></body></html> ENDCOMMENT 
                     [
                         position = 8488, 8168
                     ]
@@ -4779,13 +4830,13 @@ library "OpenDSS" {
 
                             CODE property_value_changed
                                 comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            
                                 for phase in ['a', 'b', 'c']:
                                     ET11 = mdl.get_item(f'ET11{phase}', parent=comp_handle, item_type='tag')
                                     ET12 = mdl.get_item(f'ET12{phase}', parent=comp_handle, item_type='tag')
                                     ET21 = mdl.get_item(f'ET21{phase}', parent=comp_handle, item_type='tag')
                                     ET22 = mdl.get_item(f'ET22{phase}', parent=comp_handle, item_type='tag')
-
+                            
                                     if new_value == 'Type A':
                                         mdl.set_tag_properties(ET11, value=f'S1{phase}')
                                         mdl.set_tag_properties(ET12, value=f'S2{phase}')
@@ -4796,7 +4847,7 @@ library "OpenDSS" {
                                         mdl.set_tag_properties(ET12, value=f'L2{phase}')
                                         mdl.set_tag_properties(ET21, value=f'S1{phase}')
                                         mdl.set_tag_properties(ET22, value=f'S2{phase}')
-
+                            
                                     mdl.refresh_icon(container_handle)
                             ENDCODE
                         }
@@ -4821,14 +4872,14 @@ library "OpenDSS" {
                                     mdl.hide_property(mdl.prop(container_handle, 'Xp'))
                                     mdl.hide_property(mdl.prop(container_handle, 'ptratio_auto'))
                                     mdl.hide_property(mdl.prop(container_handle, 'CTprim'))
-
+                            
                                 comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            
                                 if new_value == 'Bus voltage regulator':
                                     FromVLDC = mdl.get_item('FromVLDC', parent=comp_handle, item_type='tag')
                                     if FromVLDC:
                                         mdl.delete_item(FromVLDC)
-
+                            
                                     Vin = mdl.create_port(
                                                             name='vref',
                                                             parent=comp_handle,
@@ -4856,7 +4907,7 @@ library "OpenDSS" {
                                                                     scope='local'
                                                                  )
                                         mdl.hide_name(FromVLDC)
-
+                            
                                         VSum = mdl.get_item('VSum',parent=comp_handle,item_type='component')
                                         mdl.create_connection(FromVLDC, mdl.term(VSum,'in'))
                                     if new_value == 'Line drop compensator':
@@ -5016,14 +5067,14 @@ library "OpenDSS" {
                             YorD = mdl.get_property_value(mdl.prop(item_handle, "YorD"))
                             # HEADER STOP
                             from typhoon.api.schematic_editor.const import ITEM_COMPONENT
-
+                        
                             comp_handle = mdl.get_parent(item_handle)
-
+                        
                             Rmid = "1e9"
-
+                        
                             FromVLDC = mdl.get_item('FromVLDC', parent=comp_handle, item_type='tag')
                             FromVLDC_unused = mdl.get_item('FromVLDC_unused', parent=comp_handle, item_type='tag')
-
+                        
                             if YorD == "Δ":
                                 Vreg = float(Vreg)*np.sqrt(3)
                                 mdl.set_property_value(mdl.prop(item_handle, "Vreg"), Vreg)
@@ -5032,26 +5083,26 @@ library "OpenDSS" {
                             else:
                                 mdl.set_tag_properties(FromVLDC, value="VLoad_a", scope='local')
                                 mdl.set_tag_properties(FromVLDC_unused, value="VLoad_ab", scope='local')
-
+                        
                             n_taps = mdl.get_property_value(mdl.prop(item_handle, "n_taps"))
                             reg_range = mdl.get_property_value(mdl.prop(item_handle, "reg_range"))
-
+                        
                             maxtap = float(maxtap)
                             mintap = float(mintap)
-
+                        
                             var_per_tap = (maxtap-mintap)/n_taps
-
+                        
                             max_n_tap = int(round(((maxtap - 1) / (maxtap - mintap) * n_taps)))
                             min_n_tap = n_taps - max_n_tap
-
+                        
                             tap_difference = max_n_tap - (n_taps // 2 + n_taps % 2)
-
+                        
                             ptratio_auto = float(ptratio_auto)
                             mdl.set_property_value(mdl.prop(item_handle, "ptratio_auto"), ptratio_auto)
                             mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
-
+                        
                             atype = mdl.get_property_value(mdl.prop(item_handle, "atype"))
-
+                        
                             if atype == 'Type A':
                                 ABcomp = 1
                                 Rleft = R1
@@ -5064,19 +5115,19 @@ library "OpenDSS" {
                                 Lleft = L2
                                 Rright = R1
                                 Lright = L1
-
+                        
                         ENDCODE
 
                         CODE open
                             from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
+                        
                             dialog = RegularComponentPropertiesDialog(
                                 component=component,
                                 property_container=component.masks[-1],
                                 current_diagram=current_diagram
                             )
                             dialog.exec_()
-
+                        
                         ENDCODE
 
                         CODE init
@@ -5469,7 +5520,6 @@ library "OpenDSS" {
 
                         component "core/Signal switch" "Signal switch1" {
                             criterion = "ctrl >= threshold"
-                            threshold = "0.5"
                         }
                         [
                             position = 8200, 8184
@@ -6229,7 +6279,7 @@ library "OpenDSS" {
                         position = 8512, 8784
                     ]
 
-                    comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Tap changer control</p></body></html> ENDCOMMENT
+                    comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Tap changer control</p></body></html> ENDCOMMENT 
                     [
                         position = 8488, 8168
                     ]
@@ -6476,13 +6526,13 @@ library "OpenDSS" {
 
                             CODE property_value_changed
                                 comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            
                                 for phase in ['a']:
                                     ET11 = mdl.get_item(f'ET11{phase}', parent=comp_handle, item_type='tag')
                                     ET12 = mdl.get_item(f'ET12{phase}', parent=comp_handle, item_type='tag')
                                     ET21 = mdl.get_item(f'ET21{phase}', parent=comp_handle, item_type='tag')
                                     ET22 = mdl.get_item(f'ET22{phase}', parent=comp_handle, item_type='tag')
-
+                            
                                     if new_value == 'Type A':
                                         mdl.set_tag_properties(ET11, value=f'S1{phase}')
                                         mdl.set_tag_properties(ET12, value=f'S2{phase}')
@@ -6493,7 +6543,7 @@ library "OpenDSS" {
                                         mdl.set_tag_properties(ET12, value=f'L2{phase}')
                                         mdl.set_tag_properties(ET21, value=f'S1{phase}')
                                         mdl.set_tag_properties(ET22, value=f'S2{phase}')
-
+                            
                                     mdl.refresh_icon(container_handle)
                             ENDCODE
                         }
@@ -6518,14 +6568,14 @@ library "OpenDSS" {
                                     mdl.hide_property(mdl.prop(container_handle, 'Xp'))
                                     mdl.hide_property(mdl.prop(container_handle, 'ptratio_auto'))
                                     mdl.hide_property(mdl.prop(container_handle, 'CTprim'))
-
+                            
                                 comp_handle = mdl.get_sub_level_handle(container_handle)
-
+                            
                                 if new_value == 'Bus voltage regulator':
                                     FromVLDC = mdl.get_item('FromVLDC', parent=comp_handle, item_type='tag')
                                     if FromVLDC:
                                         mdl.delete_item(FromVLDC)
-
+                            
                                     Vin = mdl.create_port(
                                                             name='vref',
                                                             parent=comp_handle,
@@ -6553,7 +6603,7 @@ library "OpenDSS" {
                                                                     scope='local'
                                                                  )
                                         mdl.hide_name(FromVLDC)
-
+                            
                                         VSum = mdl.get_item('VSum',parent=comp_handle,item_type='component')
                                         mdl.create_connection(FromVLDC, mdl.term(VSum,'in'))
                                     if new_value == 'Line drop compensator':
@@ -6713,30 +6763,30 @@ library "OpenDSS" {
                             YorD = mdl.get_property_value(mdl.prop(item_handle, "YorD"))
                             # HEADER STOP
                             from typhoon.api.schematic_editor.const import ITEM_COMPONENT
-
+                        
                             comp_handle = mdl.get_parent(item_handle)
-
+                        
                             Rmid = "1e7"
-
+                        
                             n_taps = mdl.get_property_value(mdl.prop(item_handle, "n_taps"))
                             reg_range = mdl.get_property_value(mdl.prop(item_handle, "reg_range"))
-
+                        
                             maxtap = float(maxtap)
                             mintap = float(mintap)
-
+                        
                             var_per_tap = (maxtap-mintap)/n_taps
-
+                        
                             max_n_tap = int(round(((maxtap - 1) / (maxtap - mintap) * n_taps)))
                             min_n_tap = n_taps - max_n_tap
-
+                        
                             tap_difference = max_n_tap - (n_taps // 2 + n_taps % 2)
-
+                        
                             ptratio_auto = float(ptratio_auto)
                             mdl.set_property_value(mdl.prop(item_handle, "ptratio_auto"), ptratio_auto)
                             mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
-
+                        
                             atype = mdl.get_property_value(mdl.prop(item_handle, "atype"))
-
+                        
                             if atype == 'Type A':
                                 ABcomp = 1
                                 Rleft = R1
@@ -6749,19 +6799,19 @@ library "OpenDSS" {
                                 Lleft = L2
                                 Rright = R1
                                 Lright = L1
-
+                        
                         ENDCODE
 
                         CODE open
                             from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
+                        
                             dialog = RegularComponentPropertiesDialog(
                                 component=component,
                                 property_container=component.masks[-1],
                                 current_diagram=current_diagram
                             )
                             dialog.exec_()
-
+                        
                         ENDCODE
 
                         CODE init
@@ -6827,51 +6877,61 @@ library "OpenDSS" {
 
             component Subsystem "Rate Transition with Bypass" {
                 layout = dynamic
+                component "core/Rate Transition" "rate transition" {
+                    execution_rate = "execution_rate"
+                    init_value = "0"
+                }
+                [
+                    position = 7680, 8056
+                    size = 32, 32
+                ]
+
                 port In {
-					position = left:1
-					kind = sp
-					direction =  out
-					sp_type {
-						default = auto
-						readonly = True
-					}
-				}
-				[
-					position = 7520, 8056
-				]
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7520, 8056
+                ]
 
-				port Out {
-					position = right:1
-					kind = sp
-					direction =  in
-					sp_type {
-						default = inherit
-						readonly = True
-					}
-				}
-				[
-					position = 7856, 8056
-				]
+                port Out {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7856, 8056
+                ]
 
-                T_vec = "T_Ts_internal"
+                connect "rate transition.in" In as Connection1
+                connect "rate transition.out" Out as Connection2
 
                 mask {
                     description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Rate Transition block with the option to bypass signals through without alteration to their smapling rate</p></body></html>"
 
                     bypass_flag {
-						label = "Rate Transition Bypass"
-						widget = checkbox
-						type = bool
-						default_value = "False"
-						no_evaluate
+                        label = "Rate Transition Bypass"
+                        widget = checkbox
+                        type = bool
+                        default_value = "False"
+                        no_evaluate
 
-						CODE property_value_changed
+                        CODE property_value_changed
                             comp_handle = mdl.get_sub_level_handle(container_handle)
                             inport = mdl.get_item("In", parent=comp_handle, item_type="port")
                             outport = mdl.get_item("Out", parent=comp_handle, item_type="port")
                             init_value_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "init_value"))
                             execution_rate_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
-
+                        
                             if new_value:
                                 rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
                                 delay_one = mdl.get_item("unit delay", parent=comp_handle, item_type="component")
@@ -6892,1250 +6952,1288 @@ library "OpenDSS" {
                                 mdl.create_connection(mdl.term(rate_trans, "out"), outport)
                                 mdl.set_property_value(mdl.prop(rate_trans, "init_value"), init_value_mask)
                                 mdl.set_property_value(mdl.prop(rate_trans, "execution_rate"), execution_rate_mask)
-
+                        
                         ENDCODE
-					}
+                    }
 
                     init_value {
-						label = "Initial Value"
-						widget = edit
-						type = generic
-						default_value = "0"
+                        label = "Initial Value"
+                        widget = edit
+                        type = generic
+                        default_value = "0"
 
-						CODE property_value_changed
+                        CODE property_value_changed
                             comp_handle = mdl.get_sub_level_handle(container_handle)
                             rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
-
+                        
                             if rate_trans:
                                 mdl.set_property_value(mdl.prop(rate_trans, "init_value"), new_value)
-
+                        
                         ENDCODE
-					}
+                    }
 
-					execution_rate {
-						label = "Execution Rate"
-						widget = edit
-						type = generic
-						default_value = "Ts"
+                    execution_rate {
+                        label = "Execution Rate"
+                        widget = edit
+                        type = generic
+                        default_value = "execution_rate"
 
-						CODE property_value_changed
+                        CODE property_value_changed
                             comp_handle = mdl.get_sub_level_handle(container_handle)
                             rate_trans = mdl.get_item("rate transition", parent=comp_handle, item_type="component")
-
+                        
                             if rate_trans:
                                 mdl.set_property_value(mdl.prop(rate_trans, "execution_rate"), new_value)
-
+                        
                         ENDCODE
-					}
+                    }
 
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
+                    
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
                             current_diagram=current_diagram
                         )
                         dialog.exec_()
-
+                    
                     ENDCODE
-
                 }
             }
             [
-                position = 8424, 8112
+                position = 8424, 8256
                 size = 48, 48
             ]
 
             component Subsystem "single-phase CPL" {
                 layout = dynamic
-				component "core/Resistor" R1 {
-					resistance = "Rsnb/15"
-				}
-				[
-					position = 7448, 8768
-				]
-
-				component "core/Signal Controlled Current Source" Isp1 {
-				}
-				[
-					position = 7440, 8664
-					scale = -1, 1
-					size = 64, 32
-				]
-
-				component "core/Product" Product38 {
-				}
-				[
-					position = 7311, 8598
-					hide_name = True
-				]
-
-				component "core/Comparator" Comparator7 {
-				}
-				[
-					position = 7124, 8590
-					hide_name = True
-				]
-
-				component "core/Constant" Constant1 {
-					execution_rate = "Tfst"
-					value = "5/Freq"
-				}
-				[
-					position = 7056, 8639
-					hide_name = True
-				]
-
-				component "core/Clock" Clock1 {
-					execution_rate = "Tfst"
-				}
-				[
-					position = 7055, 8582
-					hide_name = True
-				]
-
-				component "core/Voltage Measurement" Va {
-					execution_rate = "inherit"
-					sig_output = "True"
-				}
-				[
-					position = 7440, 9080
-					size = 64, 32
-				]
-
-				component "core/Sum" Sum5 {
-					signs = "++"
-				}
-				[
-					position = 7760, 8888
-					rotation = right
-					hide_name = True
-				]
-
-				component "core/Edge Detection" "Edge Detection1" {
-				}
-				[
-					position = 7960, 8912
-					hide_name = True
-					size = 32, 32
-				]
-
-				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
-					bypass_flag = "True"
-					execution_rate = "Tfst"
-				}
-				[
-					position = 7840, 8952
-					hide_name = True
-					size = 32, 32
-				]
-
-				component "core/C function" "C function1" {
-					global_variables = "real counter;real m0;real m1;real m2;real corr;"
-					init_fnc = "/*Begin code section*/
-	counter=0;
-	/*End code section*/"
-					input_terminals = "real sync;real z;real zi;real zii;real Ts;real Ts_fast;"
-					input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit"
-					input_terminals_feedthrough = "True;True;True;True;True;True"
-					input_terminals_show_labels = "True;True;True;True;True;True"
-					output_fnc = "/*Begin code section*/
-	counter = counter + Ts_fast;
-	if (sync > 0 ) {
-		out = z;
-		counter = 0;
-
-	}
-	else {
-		corr = 1 - 0.11 * (Ts - Ts_fast)/Ts;
-		m2 = (zi - zii)/Ts;
-		m1 = (z - zi)/Ts;
-		m0 = m1 + (m1-m2);
-
-		out = z + counter * corr * m0;
-	}
-
-	if (counter >= Ts) {
-		counter = 0;
-	}
-	/*End code section*/"
-					output_terminals_dimensions = "inherit"
-					output_terminals_feedthrough = "True"
-					output_terminals_show_labels = "True"
-				}
-				[
-					position = 8216, 8952
-					hide_name = True
-					size = 48, 128
-				]
-
-				component "core/Unit Delay" "Unit Delay9" {
-				}
-				[
-					position = 7840, 9016
-					hide_name = True
-				]
-
-				component "core/Unit Delay" "Unit Delay10" {
-				}
-				[
-					position = 7952, 9080
-					hide_name = True
-				]
-
-				component "core/Constant" Constant21 {
-					execution_rate = "Tfst"
-					value = "Ts"
-				}
-				[
-					position = 8080, 9112
-					hide_name = True
-				]
-
-				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
-					bypass_flag = "True"
-					execution_rate = "Tfst"
-				}
-				[
-					position = 7952, 9016
-					hide_name = True
-					size = 32, 32
-				]
-
-				component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass3" {
-					bypass_flag = "True"
-					execution_rate = "Tfst"
-				}
-				[
-					position = 8032, 9080
-					hide_name = True
-					size = 32, 32
-				]
-
-				component "core/Signal switch" "Signal switch28" {
-				}
-				[
-					position = 8416, 9040
-					hide_name = True
-					scale = 1, -1
-				]
-
-				component "core/Signal switch" "Signal switch29" {
-				}
-				[
-					position = 8512, 9008
-					hide_name = True
-					scale = 1, -1
-				]
-
-				component "core/Constant" Constant23 {
-					execution_rate = "Tfst"
-					value = "Tfast_en"
-				}
-				[
-					position = 8464, 9088
-					hide_name = True
-				]
-
-				component "core/Capacitor" C1 {
-					capacitance = "1/(1*Rsnb*2*np.pi*Freq)"
-				}
-				[
-					position = 7448, 8864
-				]
-
-				component "core/Constant" Constant28 {
-					execution_rate = "Tfst"
-					value = "Tfst"
-				}
-				[
-					position = 8032, 9144
-					hide_name = True
-				]
-
-				component "core/Kalman Filter Sync" "Kalman Filter Sync1" {
-					q_gain = "q_gain_k"
-					r_gain = "r_gain_k"
-					normalize = "False"
-				}
-				[
-					position = 7440, 8392
-					size = 96, 168
-				]
-
-				component "core/Product" Product28 {
-				}
-				[
-					position = 7840, 8336
-					hide_name = True
-				]
-
-				component "core/Product" Product29 {
-				}
-				[
-					position = 7840, 8400
-					hide_name = True
-				]
-
-				component "core/Sum" Sum18 {
-					signs = "++"
-				}
-				[
-					position = 7936, 8368
-					hide_name = True
-				]
-
-				component "core/Product" Product30 {
-					signs = "*/"
-				}
-				[
-					position = 8192, 8624
-					hide_name = True
-				]
-
-				component "core/Product" Product31 {
-				}
-				[
-					position = 8856, 8592
-					hide_name = True
-				]
-
-				component "core/Gain" Gain29 {
-					gain = "1/(Rsnb/15)"
-				}
-				[
-					position = 8888, 8640
-					hide_name = True
-				]
-
-				component "core/Sum" Sum19 {
-					signs = "+-"
-				}
-				[
-					position = 8968, 8600
-					hide_name = True
-				]
-
-				component "core/Signal switch" "Signal switch31" {
-					criterion = "ctrl >= threshold"
-				}
-				[
-					position = 8656, 8584
-					hide_name = True
-				]
-
-				component "core/Comparator" Comparator5 {
-				}
-				[
-					position = 8560, 8512
-					hide_name = True
-				]
-
-				component "core/Abs" Abs4 {
-				}
-				[
-					position = 8464, 8656
-					hide_name = True
-				]
-
-				component "core/Abs" Abs5 {
-				}
-				[
-					position = 8464, 8520
-					hide_name = True
-				]
-
-				component "core/Gain" Gain30 {
-					gain = "CPL_curr/(1000*kVLL*kVLL)"
-				}
-				[
-					position = 8192, 8560
-					hide_name = True
-				]
-
-				component "core/Gain" Gain31 {
-					gain = "0.5"
-				}
-				[
-					position = 8032, 8368
-					hide_name = True
-				]
-
-				component "core/Limit" Limit2 {
-					lower_limit = "1"
-				}
-				[
-					position = 8182, 8366
-					hide_name = True
-				]
-
-				component "core/Gain" Gain32 {
-					gain = "0.001"
-				}
-				[
-					position = 8072, 8632
-					hide_name = True
-				]
-
-				component "core/Sum" Sum21 {
-					signs = "++"
-				}
-				[
-					position = 8784, 8944
-					hide_name = True
-				]
-
-				component "core/Product" Product33 {
-					signs = "*/"
-				}
-				[
-					position = 8520, 8816
-					hide_name = True
-				]
-
-				component "core/Product" Product34 {
-				}
-				[
-					position = 9184, 8784
-					hide_name = True
-				]
-
-				component "core/Signal switch" "Signal switch32" {
-					criterion = "ctrl >= threshold"
-				}
-				[
-					position = 8984, 8776
-					hide_name = True
-				]
-
-				component "core/Comparator" Comparator6 {
-				}
-				[
-					position = 8888, 8720
-					hide_name = True
-				]
-
-				component "core/Abs" Abs6 {
-				}
-				[
-					position = 8792, 8816
-					hide_name = True
-				]
-
-				component "core/Abs" Abs7 {
-				}
-				[
-					position = 8792, 8728
-					hide_name = True
-				]
-
-				component "core/Gain" Gain35 {
-					gain = "CPL_curr/(1000*kVLL*kVLL)"
-				}
-				[
-					position = 8520, 8752
-					hide_name = True
-				]
-
-				component "core/Gain" Gain36 {
-					gain = "0.001"
-				}
-				[
-					position = 8400, 8824
-					hide_name = True
-				]
-
-				component "core/Gain" Gain37 {
-					gain = "-1"
-				}
-				[
-					position = 8336, 8784
-					hide_name = True
-				]
-
-				component "core/Gain" Gain39 {
-					gain = "2*np.pi"
-				}
-				[
-					position = 7592, 8504
-					hide_name = True
-				]
-
-				component "core/Sum" Sum24 {
-					signs = "++"
-				}
-				[
-					position = 8248, 8784
-					hide_name = True
-				]
-
-				component "core/Gain" Gain40 {
-					gain = "1/(1*Rsnb*2*np.pi*Freq)"
-				}
-				[
-					position = 8000, 8816
-					hide_name = True
-				]
-
-				component "core/Product" Product37 {
-				}
-				[
-					position = 8080, 8792
-					hide_name = True
-				]
-
-				component "core/Gain" Gain41 {
-					gain = "0.001"
-				}
-				[
-					position = 8160, 8792
-					hide_name = True
-				]
-
-				component "core/Constant" Constant29 {
-					execution_rate = "Tfst"
-					value = "Ts"
-				}
-				[
-					position = 8256, 9096
-					hide_name = True
-				]
-
-				component "core/Relational operator" "Relational operator1" {
-				}
-				[
-					position = 8376, 9104
-					hide_name = True
-				]
-
-				component "core/Constant" Constant30 {
-					execution_rate = "Tfst"
-					value = "Tfst"
-				}
-				[
-					position = 8256, 9128
-					hide_name = True
-				]
-
-				component "core/Unit Delay" "Unit Delay11" {
-				}
-				[
-					position = 8368, 8952
-					hide_name = True
-				]
-
-				component "core/Sum" Sum26 {
-					signs = "+-"
-				}
-				[
-					position = 8592, 8936
-					hide_name = True
-				]
-
-				component "core/Unit Delay" "Unit Delay12" {
-				}
-				[
-					position = 8432, 8952
-					hide_name = True
-				]
-
-				port P2 {
-					position = right:2
-					kind = pe
-				}
-				[
-					position = 7664, 8664
-					rotation = down
-				]
-
-				port P3 {
-					position = left:1
-					kind = pe
-				}
-				[
-					position = 7232, 8664
-				]
-
-				port P {
-					position = top:1
-					kind = sp
-					direction =  out
-					sp_type {
-						default = auto
-						readonly = True
-					}
-				}
-				[
-					position = 7184, 8472
-				]
-
-				port Q {
-					position = top:2
-					kind = sp
-					direction =  out
-					sp_type {
-						default = auto
-						readonly = True
-					}
-				}
-				[
-					position = 7184, 8536
-				]
-
-				tag Goto2 {
-					value = "kP"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 7264, 8472
-					size = 60, 20
-				]
-
-				tag Goto3 {
-					value = "kQ"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 7264, 8536
-					size = 60, 20
-				]
-
-				tag Goto4 {
-					value = "Va"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 7384, 9032
-					rotation = down
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag Goto6 {
-					value = "Va_rms_squared"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 8322, 8371
-					hide_name = True
-					size = 100, 20
-				]
-
-				tag Goto8 {
-					value = "Ia_load"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 8880, 8944
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From20 {
-					value = "Ia_load"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7179, 8626
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From21 {
-					value = "Va"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7264, 8392
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From22 {
-					value = "kP"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 8032, 8592
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From23 {
-					value = "Va_rms_squared"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7944, 8632
-					hide_name = True
-					size = 97, 20
-				]
-
-				tag Goto9 {
-					value = "sinwt"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 7592, 8328
-					size = 60, 20
-				]
-
-				tag Goto10 {
-					value = "coswt"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 7592, 8392
-					size = 60, 20
-				]
-
-				tag From25 {
-					value = "sinwt"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7688, 8328
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From26 {
-					value = "coswt"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7688, 8392
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From27 {
-					value = "sinwt"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 8720, 8600
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag Goto11 {
-					value = "iph_active"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 9072, 8600
-					size = 60, 20
-				]
-
-				tag From28 {
-					value = "iph_active"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7664, 8832
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From29 {
-					value = "kQ"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 8152, 8744
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From30 {
-					value = "Va_rms_squared"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 8272, 8824
-					hide_name = True
-					size = 97, 20
-				]
-
-				tag From31 {
-					value = "coswt"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 9048, 8792
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag Goto12 {
-					value = "iph_reactive"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 9304, 8784
-					size = 60, 20
-				]
-
-				tag From32 {
-					value = "iph_reactive"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7664, 8784
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag Goto13 {
-					value = "freqHz"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 7592, 8456
-					size = 60, 20
-				]
-
-				tag Goto14 {
-					value = "omega"
-					scope = local
-					kind = sp
-					direction = in
-				}
-				[
-					position = 7672, 8504
-					size = 60, 20
-				]
-
-				tag From34 {
-					value = "Va_rms_squared"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7936, 8776
-					hide_name = True
-					size = 97, 20
-				]
-
-				tag From35 {
-					value = "omega"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 7920, 8816
-					hide_name = True
-					size = 60, 20
-				]
-
-				junction Junction2 pe
-				[
-					position = 7552, 8664
-				]
-
-				junction Junction97 pe
-				[
-					position = 7328, 8664
-				]
-
-				junction Junction102 sp
-				[
-					position = 7760, 8952
-				]
-
-				junction Junction109 sp
-				[
-					position = 7904, 9016
-				]
-
-				junction Junction130 pe
-				[
-					position = 7328, 8768
-				]
-
-				junction Junction131 pe
-				[
-					position = 7552, 8768
-				]
-
-				junction Junction137 pe
-				[
-					position = 7552, 8864
-				]
-
-				junction Junction138 pe
-				[
-					position = 7328, 8864
-				]
-
-				junction Junction160 sp
-				[
-					position = 8128, 8632
-				]
-
-				junction Junction175 sp
-				[
-					position = 7784, 8392
-				]
-
-				junction Junction176 sp
-				[
-					position = 7792, 8328
-				]
-
-				junction Junction177 sp
-				[
-					position = 8800, 8600
-				]
-
-				junction Junction178 sp
-				[
-					position = 7904, 8952
-				]
-
-				junction Junction179 sp
-				[
-					position = 8168, 8928
-				]
-
-				junction Junction184 sp
-				[
-					position = 8456, 8824
-				]
-
-				junction Junction185 sp
-				[
-					position = 8648, 8816
-				]
-
-				junction Junction186 sp
-				[
-					position = 8728, 8760
-				]
-
-				junction Junction187 sp
-				[
-					position = 8320, 8624
-				]
-
-				junction Junction188 sp
-				[
-					position = 8400, 8568
-				]
-
-				junction Junction189 sp
-				[
-					position = 8128, 8592
-				]
-
-				junction Junction209 sp
-				[
-					position = 8278, 8559
-				]
-
-				junction Junction211 sp
-				[
-					position = 8590, 8753
-				]
-
-				junction Junction190 sp
-				[
-					position = 8432, 8784
-				]
-
-				junction Junction192 sp
-				[
-					position = 7528, 8456
-				]
-
-				junction Junction193 sp
-				[
-					position = 8216, 9024
-				]
-
-				junction Junction194 sp
-				[
-					position = 8288, 8952
-				]
-
-				junction Junction195 sp
-				[
-					position = 8288, 8952
-				]
-
-				connect P Goto2 as Connection532
-				connect Q Goto3 as Connection533
-				connect "Rate Transition with Bypass3.In" "Unit Delay10.out" as Connection615
-				connect "Rate Transition with Bypass2.Out" "C function1.zi" as Connection616
-				[
-					breakpoints = 8104, 9016; 8104, 8944
-				]
-				connect "Rate Transition with Bypass3.Out" "C function1.zii" as Connection617
-				[
-					breakpoints = 8120, 9080; 8120, 8960
-				]
-				connect "C function1.sync" "Edge Detection1.Out1" as Connection618
-				[
-					position = 0, 0
-				]
-				connect "Rate Transition with Bypass1.In" Junction102 as Connection622
-				[
-					position = 0, 0
-				]
-				connect Sum5.out Junction102 as Connection649
-				[
-					position = 0, 0
-				]
-				connect Constant23.out "Signal switch29.in2" as Connection653
-				connect "Signal switch28.out" "Signal switch29.in" as Connection660
-				[
-					position = 0, 0
-				]
-				connect Isp1.p_node Junction2 as Connection670
-				[
-					position = 0, 0
-				]
-				connect Isp1.n_node Junction97 as Connection669
-				[
-					position = 0, 0
-				]
-				connect "Rate Transition with Bypass2.In" Junction109 as Connection684
-				connect "Unit Delay10.in" Junction109 as Connection686
-				connect Constant28.out "C function1.Ts_fast" as Connection837
-				[
-					breakpoints = 8152, 9144; 8152, 8992
-				]
-				connect R1.p_node Junction130 as Connection838
-				connect Junction130 Junction97 as Connection839
-				[
-					position = 0, 0
-				]
-				connect Junction131 Junction2 as Connection842
-				[
-					position = 0, 0
-				]
-				connect R1.n_node Junction131 as Connection843
-				connect C1.n_node Junction137 as Connection896
-				connect Junction137 Junction131 as Connection897
-				connect C1.p_node Junction138 as Connection900
-				connect Junction138 Junction130 as Connection901
-				connect P2 Junction2 as Connection903
-				connect P3 Junction97 as Connection907
-				connect Goto4 Va.out as Connection914
-				connect From20 Product38.in1 as Connection966
-				connect Comparator7.out Product38.in
-				connect Clock1.out Comparator7.in1
-				connect Constant1.out Comparator7.in2
-				connect Product38.out Isp1.in
-				connect Sum18.in Product28.out as Connection976
-				connect Product29.out Sum18.in1 as Connection977
-				connect Junction138 Va.p_node as Connection992
-				[
-					breakpoints = 7328, 8864; 7328, 8968
-				]
-				connect Va.n_node Junction137 as Connection993
-				[
-					breakpoints = 7552, 8968
-				]
-				connect Product31.out Sum19.in as Connection994
-				connect Gain29.out Sum19.in1 as Connection995
-				connect Gain30.out Junction209 as Connection1008
-				connect Product31.in "Signal switch31.out" as Connection1021
-				connect Gain31.in Sum18.out as Connection1035
-				connect From23 Gain32.in as Connection1043
-				connect Gain32.out Junction160 as Connection1045
-				connect Junction160 Product30.in1 as Connection1046
-				connect From26 Junction175 as Connection1112
-				connect Junction175 Product29.in as Connection1113
-				connect Product29.in1 Junction175 as Connection1114
-				connect Product28.in Junction176 as Connection1117
-				connect Junction176 Product28.in1 as Connection1118
-				[
-					breakpoints = 7792, 8328
-				]
-				connect From25 Junction176 as Connection1119
-				connect Goto9 "Kalman Filter Sync1.sin(wt)" as Connection1124
-				connect "Kalman Filter Sync1.cos(wt)" Goto10 as Connection1125
-				connect From27 Junction177 as Connection1127
-				connect Junction177 Product31.in1 as Connection1128
-				connect Goto11 Sum19.out as Connection1130
-				connect "Rate Transition with Bypass1.Out" Junction178 as Connection1132
-				[
-					breakpoints = 7880, 8952
-				]
-				connect "Edge Detection1.In1" Junction178 as Connection1134
-				connect "C function1.z" Junction179 as Connection1140
-				connect Junction179 Junction178 as Connection1141
-				[
-					breakpoints = 8000, 8952
-				]
-				connect Constant21.out "C function1.Ts" as Connection1146
-				[
-					breakpoints = 8136, 9112; 8136, 8976
-				]
-				connect Gain35.out Junction211 as Connection1153
-				connect Product34.in "Signal switch32.out" as Connection1159
-				connect From30 Gain36.in as Connection1163
-				connect Gain36.out Junction184 as Connection1164
-				connect Junction184 Product33.in1 as Connection1165
-				connect From32 Sum5.in1 as Connection1180
-				connect "Kalman Filter Sync1.Vgrid" From21 as Connection1181
-				[
-					breakpoints = 7320, 8392
-				]
-				connect Gain31.out Limit2.in as Connection1182
-				connect Limit2.out Goto6 as Connection2202
-				connect Gain29.in Junction177 as Connection1183
-				[
-					breakpoints = 8800, 8640
-				]
-				connect Sum21.out Goto8 as Connection1186
-				[
-					breakpoints = 8832, 8944
-				]
-				connect Comparator6.out "Signal switch32.in2" as Connection1195
-				connect Abs6.out Comparator6.in1 as Connection1196
-				connect Abs7.out Comparator6.in2 as Connection1197
-				connect Product33.out Junction185 as Connection1199
-				[
-					breakpoints = 8608, 8816
-				]
-				connect Junction185 Abs6.in as Connection1200
-				[
-					breakpoints = 8648, 8816
-				]
-				connect "Signal switch32.in1" Junction185 as Connection1201
-				connect Abs7.in Junction211 as Connection1202
-				connect "Signal switch32.in" Junction211 as Connection1204
-				connect Comparator5.out "Signal switch31.in2" as Connection1209
-				connect Comparator5.in1 Abs4.out as Connection1210
-				[
-					breakpoints = 8528, 8504; 8528, 8624
-				]
-				connect Product30.out Junction187 as Connection1211
-				connect Junction187 Abs4.in as Connection1212
-				[
-					breakpoints = 8320, 8624
-				]
-				connect "Signal switch31.in1" Junction187 as Connection1213
-				connect Abs5.in Junction209 as Connection1215
-				connect "Signal switch31.in" Junction209 as Connection1217
-				connect Abs5.out Comparator5.in2 as Connection1218
-				connect From28 Sum5.in as Connection1219
-				connect Product30.in Junction189 as Connection1221
-				[
-					breakpoints = 8152, 8592
-				]
-				connect Junction189 From22 as Connection1222
-				connect Gain30.in Junction189 as Connection1223
-				connect Product33.in Junction190 as Connection1224
-				[
-					breakpoints = 8480, 8784
-				]
-				connect Junction190 Gain37.out as Connection1225
-				connect Gain35.in Junction190 as Connection1226
-				connect "Kalman Filter Sync1.f (Hz)" Junction192 as Connection1234
-				connect Junction192 Goto13 as Connection1235
-				connect Gain39.in Junction192 as Connection1236
-				connect Gain39.out Goto14 as Connection1237
-				connect From29 Sum24.in as Connection1244
-				connect Sum24.out Gain37.in as Connection1245
-				connect From35 Gain40.in as Connection1246
-				connect Gain40.out Product37.in1 as Connection1247
-				connect Product37.in From34 as Connection1248
-				connect Product34.in1 From31 as Connection1250
-				[
-					breakpoints = 9128, 8792; 9096, 8792
-				]
-				connect Product34.out Goto12 as Connection1251
-				connect Product37.out Gain41.in as Connection1252
-				connect Gain41.out Sum24.in1 as Connection1253
-				connect "Relational operator1.in" Constant29.out as Connection1273
-				connect Constant30.out "Relational operator1.in1" as Connection1274
-				connect "Relational operator1.out" "Signal switch28.in2" as Connection1275
-				connect Junction193 Junction179 as Connection1278
-				[
-					breakpoints = 8168, 9024
-				]
-				connect "Signal switch28.in" Junction193 as Connection1279
-				connect "Signal switch29.in1" Junction193 as Connection1280
-				[
-					breakpoints = 8296, 8992; 8256, 9024
-				]
-				connect "Unit Delay9.in" Junction102 as Connection1284
-				[
-					breakpoints = 7760, 9008
-				]
-				connect "Unit Delay9.out" Junction109 as Connection1285
-				[
-					breakpoints = 7864, 9016
-				]
-				connect "Unit Delay12.in" "Unit Delay11.out" as Connection1301
-				connect "Unit Delay12.out" Sum26.in1 as Connection1302
-				connect Sum21.in1 "Signal switch29.out" as Connection1304
-				[
-					breakpoints = 8656, 8952; 8656, 9008
-				]
-				connect "C function1.out" Junction194 as Connection1305
-				[
-					breakpoints = 8264, 8952
-				]
-				connect Junction194 "Signal switch28.in1" as Connection1306
-				[
-					breakpoints = 8288, 8952
-				]
-				connect "Unit Delay11.in" Junction195 as Connection1308
-				connect Junction195 Junction194 as Connection1309
-				connect Sum26.in Junction195 as Connection1310
-				connect Sum26.out Sum21.in as Connection1311
+                component "core/Resistor" R1 {
+                    resistance = "Rsnb/15"
+                }
+                [
+                    position = 7328, 8768
+                ]
+
+                component "core/Signal Controlled Current Source" Isp1 {
+                }
+                [
+                    position = 7320, 8664
+                    scale = -1, 1
+                    size = 64, 32
+                ]
+
+                component "core/Product" Product38 {
+                }
+                [
+                    position = 7248, 8584
+                    hide_name = True
+                ]
+
+                component "core/Comparator" Comparator7 {
+                }
+                [
+                    position = 7056, 8576
+                    hide_name = True
+                ]
+
+                component "core/Constant" Constant1 {
+                    execution_rate = "Tfst"
+                    value = "5/Freq"
+                }
+                [
+                    position = 6992, 8624
+                    hide_name = True
+                ]
+
+                component "core/Clock" Clock1 {
+                    execution_rate = "Tfst"
+                }
+                [
+                    position = 6992, 8568
+                    hide_name = True
+                ]
+
+                component "core/Voltage Measurement" Va {
+                    execution_rate = "Tfst"
+                    sig_output = "True"
+                    signal_access = "Inherit"
+                }
+                [
+                    position = 7424, 8992
+                    size = 64, 32
+                ]
+
+                component "core/Sum" Sum5 {
+                    signs = "++"
+                }
+                [
+                    position = 7968, 8840
+                    rotation = right
+                    hide_name = True
+                ]
+
+                component "core/Edge Detection" "Edge Detection1" {
+                }
+                [
+                    position = 8168, 8864
+                    hide_name = True
+                    size = 32, 32
+                ]
+
+                component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass1" {
+                    bypass_flag = "True"
+                    execution_rate = "Tfst"
+                }
+                [
+                    position = 8048, 8904
+                    hide_name = True
+                    size = 48, 48
+                ]
+
+                component "core/C function" "C function1" {
+                    global_variables = "real counter;real m0;real m1;real m2;real corr;"
+                    init_fnc = "/*Begin code section*/
+counter=0;
+/*End code section*/"
+                    input_terminals = "real sync;real z;real zi;real zii;real Ts;real Ts_fast;"
+                    input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit"
+                    input_terminals_feedthrough = "True;True;True;True;True;True"
+                    input_terminals_show_labels = "True;True;True;True;True;True"
+                    output_fnc = "/*Begin code section*/
+counter = counter + Ts_fast;
+if (sync > 0 ) {
+	out = z;
+	counter = 0;
+
+}
+else {
+	corr = 1 - 0.11 * (Ts - Ts_fast)/Ts;
+	m2 = (zi - zii)/Ts;
+	m1 = (z - zi)/Ts;
+	m0 = m1 + (m1-m2);
+
+	out = z + counter * corr * m0;
+}
+
+if (counter >= Ts) {
+	counter = 0;
+}
+/*End code section*/"
+                    output_terminals_dimensions = "inherit"
+                    output_terminals_feedthrough = "True"
+                    output_terminals_show_labels = "True"
+                }
+                [
+                    position = 8424, 8928
+                    hide_name = True
+                    size = 48, 128
+                ]
+
+                component "core/Unit Delay" "Unit Delay9" {
+                }
+                [
+                    position = 8056, 9024
+                    hide_name = True
+                ]
+
+                component "core/Unit Delay" "Unit Delay10" {
+                }
+                [
+                    position = 8160, 9056
+                    hide_name = True
+                ]
+
+                component "core/Constant" Constant21 {
+                    execution_rate = "Tfst"
+                    value = "execution_rate"
+                }
+                [
+                    position = 8312, 9048
+                    rotation = left
+                    hide_name = True
+                ]
+
+                component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass2" {
+                    bypass_flag = "True"
+                    execution_rate = "Tfst"
+                }
+                [
+                    position = 8208, 8992
+                    rotation = left
+                    hide_name = True
+                    size = 48, 48
+                ]
+
+                component "OpenDSS/Rate Transition with Bypass" "Rate Transition with Bypass3" {
+                    bypass_flag = "True"
+                    execution_rate = "Tfst"
+                }
+                [
+                    position = 8272, 8992
+                    rotation = left
+                    hide_name = True
+                    size = 48, 48
+                ]
+
+                component "core/Signal switch" "Signal switch28" {
+                }
+                [
+                    position = 8624, 9056
+                    hide_name = True
+                    scale = 1, -1
+                ]
+
+                component "core/Signal switch" "Signal switch29" {
+                }
+                [
+                    position = 8720, 9016
+                    hide_name = True
+                    scale = 1, -1
+                ]
+
+                component "core/Constant" Constant23 {
+                    execution_rate = "Tfst"
+                    value = "Tfast_en"
+                }
+                [
+                    position = 8672, 9096
+                    hide_name = True
+                ]
+
+                component "core/Capacitor" C1 {
+                    capacitance = "1/(1*Rsnb*2*np.pi*Freq)"
+                }
+                [
+                    position = 7328, 8864
+                ]
+
+                component "core/Constant" Constant28 {
+                    execution_rate = "Tfst"
+                    value = "Tfst"
+                }
+                [
+                    position = 8336, 9088
+                    rotation = left
+                    hide_name = True
+                ]
+
+                component "core/Kalman Filter Sync" "Kalman Filter Sync1" {
+                    q_gain = "q_gain_k"
+                    r_gain = "r_gain_k"
+                    normalize = "False"
+                }
+                [
+                    position = 8072, 8192
+                    size = 96, 168
+                ]
+
+                component "core/Product" Product28 {
+                }
+                [
+                    position = 8472, 8136
+                    hide_name = True
+                ]
+
+                component "core/Product" Product29 {
+                }
+                [
+                    position = 8472, 8200
+                    hide_name = True
+                ]
+
+                component "core/Sum" Sum18 {
+                    signs = "++"
+                }
+                [
+                    position = 8568, 8168
+                    hide_name = True
+                ]
+
+                component "core/Product" Product30 {
+                    signs = "*/"
+                }
+                [
+                    position = 8136, 8464
+                    hide_name = True
+                ]
+
+                component "core/Product" Product31 {
+                }
+                [
+                    position = 8576, 8432
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain29 {
+                    gain = "1/(Rsnb/15)"
+                }
+                [
+                    position = 8608, 8480
+                    hide_name = True
+                ]
+
+                component "core/Sum" Sum19 {
+                    signs = "+-"
+                }
+                [
+                    position = 8688, 8440
+                    hide_name = True
+                ]
+
+                component "core/Signal switch" "Signal switch31" {
+                    criterion = "ctrl >= threshold"
+                }
+                [
+                    position = 8400, 8424
+                    hide_name = True
+                ]
+
+                component "core/Comparator" Comparator5 {
+                }
+                [
+                    position = 8352, 8368
+                    hide_name = True
+                ]
+
+                component "core/Abs" Abs4 {
+                }
+                [
+                    position = 8256, 8464
+                    hide_name = True
+                ]
+
+                component "core/Abs" Abs5 {
+                }
+                [
+                    position = 8256, 8376
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain30 {
+                    gain = "CPL_curr/(1000*kVLL*kVLL)"
+                }
+                [
+                    position = 8136, 8408
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain31 {
+                    gain = "0.5"
+                }
+                [
+                    position = 8664, 8168
+                    hide_name = True
+                ]
+
+                component "core/Limit" Limit2 {
+                    lower_limit = "1"
+                }
+                [
+                    position = 8728, 8168
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain32 {
+                    gain = "0.001"
+                }
+                [
+                    position = 8016, 8472
+                    hide_name = True
+                ]
+
+                component "core/Sum" Sum21 {
+                    signs = "++"
+                }
+                [
+                    position = 8896, 8904
+                    hide_name = True
+                ]
+
+                component "core/Product" Product33 {
+                    signs = "*/"
+                }
+                [
+                    position = 8408, 8672
+                    hide_name = True
+                ]
+
+                component "core/Product" Product34 {
+                }
+                [
+                    position = 8856, 8632
+                    hide_name = True
+                ]
+
+                component "core/Signal switch" "Signal switch32" {
+                    criterion = "ctrl >= threshold"
+                }
+                [
+                    position = 8704, 8624
+                    hide_name = True
+                ]
+
+                component "core/Comparator" Comparator6 {
+                }
+                [
+                    position = 8648, 8568
+                    hide_name = True
+                ]
+
+                component "core/Abs" Abs6 {
+                }
+                [
+                    position = 8552, 8672
+                    hide_name = True
+                ]
+
+                component "core/Abs" Abs7 {
+                }
+                [
+                    position = 8552, 8576
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain35 {
+                    gain = "CPL_curr/(1000*kVLL*kVLL)"
+                }
+                [
+                    position = 8408, 8608
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain36 {
+                    gain = "0.001"
+                }
+                [
+                    position = 8304, 8680
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain37 {
+                    gain = "-1"
+                }
+                [
+                    position = 8288, 8608
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain39 {
+                    gain = "2*np.pi"
+                }
+                [
+                    position = 8224, 8304
+                    hide_name = True
+                ]
+
+                component "core/Sum" Sum24 {
+                    signs = "++"
+                }
+                [
+                    position = 8200, 8608
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain40 {
+                    gain = "1/(1*Rsnb*2*np.pi*Freq)"
+                }
+                [
+                    position = 7952, 8648
+                    hide_name = True
+                ]
+
+                component "core/Product" Product37 {
+                }
+                [
+                    position = 8032, 8616
+                    hide_name = True
+                ]
+
+                component "core/Gain" Gain41 {
+                    gain = "0.001"
+                }
+                [
+                    position = 8112, 8616
+                    hide_name = True
+                ]
+
+                component "core/Constant" Constant29 {
+                    execution_rate = "Tfst"
+                    value = "execution_rate"
+                }
+                [
+                    position = 8464, 9112
+                    hide_name = True
+                ]
+
+                component "core/Relational operator" "Relational operator1" {
+                }
+                [
+                    position = 8584, 9120
+                    hide_name = True
+                ]
+
+                component "core/Constant" Constant30 {
+                    execution_rate = "Tfst"
+                    value = "Tfst"
+                }
+                [
+                    position = 8464, 9152
+                    hide_name = True
+                ]
+
+                component "core/Unit Delay" "Unit Delay11" {
+                }
+                [
+                    position = 8576, 8928
+                    hide_name = True
+                ]
+
+                component "core/Sum" Sum26 {
+                    signs = "+-"
+                }
+                [
+                    position = 8800, 8896
+                    hide_name = True
+                ]
+
+                component "core/Unit Delay" "Unit Delay12" {
+                }
+                [
+                    position = 8640, 8928
+                    hide_name = True
+                ]
+
+                component "core/Probe" iph_active {
+                }
+                [
+                    position = 8784, 8384
+                ]
+
+                component "core/Probe" iph_reactive {
+                }
+                [
+                    position = 8968, 8568
+                ]
+
+                component "core/Probe" iq {
+                }
+                [
+                    position = 8816, 8568
+                ]
+
+                component "core/Rate Transition" "rate transition" {
+                    execution_rate = "execution_rate"
+                    init_value = "0"
+                }
+                [
+                    position = 7952, 8192
+                    hide_name = True
+                    size = 32, 32
+                ]
+
+                port P2 {
+                    position = right:2
+                    kind = pe
+                }
+                [
+                    position = 7664, 8664
+                    rotation = down
+                    hide_name = True
+                ]
+
+                port P3 {
+                    position = left:1
+                    kind = pe
+                }
+                [
+                    position = 7112, 8664
+                    hide_name = True
+                ]
+
+                port P {
+                    position = top:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7112, 8304
+                ]
+
+                port Q {
+                    position = top:2
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7112, 8368
+                ]
+
+                tag Goto2 {
+                    value = "kP"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 7192, 8304
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto3 {
+                    value = "kQ"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 7192, 8368
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto4 {
+                    value = "Va"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 7368, 8944
+                    rotation = down
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto6 {
+                    value = "Va_rms_squared"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8864, 8168
+                    hide_name = True
+                    size = 100, 20
+                ]
+
+                tag Goto8 {
+                    value = "Ia_load"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8984, 8904
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From20 {
+                    value = "Ia_load"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7112, 8608
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From21 {
+                    value = "Va"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7872, 8192
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From22 {
+                    value = "kP"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7976, 8432
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From23 {
+                    value = "Va_rms_squared"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7888, 8472
+                    hide_name = True
+                    size = 97, 20
+                ]
+
+                tag Goto9 {
+                    value = "sinwt"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8224, 8128
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto10 {
+                    value = "coswt"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8224, 8192
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From25 {
+                    value = "sinwt"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 8320, 8128
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From26 {
+                    value = "coswt"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 8320, 8192
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From27 {
+                    value = "sinwt"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 8464, 8440
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto11 {
+                    value = "iph_active"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8792, 8440
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From28 {
+                    value = "iph_active"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7872, 8760
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From29 {
+                    value = "kQ"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 8104, 8568
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From30 {
+                    value = "Va_rms_squared"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 8176, 8680
+                    hide_name = True
+                    size = 97, 20
+                ]
+
+                tag From31 {
+                    value = "coswt"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 8768, 8640
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto12 {
+                    value = "iph_reactive"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8944, 8632
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From32 {
+                    value = "iph_reactive"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7872, 8792
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto13 {
+                    value = "freqHz"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8224, 8256
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Goto14 {
+                    value = "omega"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8320, 8304
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From34 {
+                    value = "Va_rms_squared"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7888, 8608
+                    hide_name = True
+                    size = 97, 20
+                ]
+
+                tag From35 {
+                    value = "omega"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7872, 8648
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                junction Junction2 pe
+                [
+                    position = 7432, 8664
+                ]
+
+                junction Junction300 pe
+                [
+                    position = 7632, 8664
+                ]
+
+                junction Junction97 pe
+                [
+                    position = 7208, 8664
+                ]
+
+                junction Junction102 sp
+                [
+                    position = 7968, 8904
+                ]
+
+                junction Junction109 sp
+                [
+                    position = 8120, 9024
+                ]
+
+                junction Junction130 pe
+                [
+                    position = 7208, 8768
+                ]
+
+                junction Junction131 pe
+                [
+                    position = 7432, 8768
+                ]
+
+                junction Junction138 pe
+                [
+                    position = 7208, 8864
+                ]
+
+                junction Junction175 sp
+                [
+                    position = 8416, 8192
+                ]
+
+                junction Junction176 sp
+                [
+                    position = 8424, 8128
+                ]
+
+                junction Junction177 sp
+                [
+                    position = 8520, 8440
+                ]
+
+                junction Junction178 sp
+                [
+                    position = 8112, 8904
+                ]
+
+                junction Junction179 sp
+                [
+                    position = 8376, 8904
+                ]
+
+                junction Junction185 sp
+                [
+                    position = 8480, 8672
+                ]
+
+                junction Junction187 sp
+                [
+                    position = 8200, 8464
+                ]
+
+                junction Junction189 sp
+                [
+                    position = 8072, 8432
+                ]
+
+                junction Junction209 sp
+                [
+                    position = 8200, 8408
+                ]
+
+                junction Junction211 sp
+                [
+                    position = 8480, 8608
+                ]
+
+                junction Junction190 sp
+                [
+                    position = 8336, 8608
+                ]
+
+                junction Junction192 sp
+                [
+                    position = 8160, 8256
+                ]
+
+                junction Junction193 sp
+                [
+                    position = 8424, 9000
+                ]
+
+                junction Junction194 sp
+                [
+                    position = 8496, 8928
+                ]
+
+                junction Junction195 sp
+                [
+                    position = 8496, 8928
+                ]
+
+                junction Junction301 sp
+                [
+                    position = 8736, 8440
+                ]
+
+                junction Junction302 sp
+                [
+                    position = 8896, 8632
+                ]
+
+                junction Junction303 sp
+                [
+                    position = 8752, 8624
+                ]
+
+                connect P Goto2 as Connection532
+                [
+                    position = 0, 0
+                    hide_name = True
+                ]
+                connect Q Goto3 as Connection533
+                [
+                    position = 0, 0
+                    hide_name = True
+                ]
+                connect "Rate Transition with Bypass3.In" "Unit Delay10.out" as Connection615
+                connect "Rate Transition with Bypass2.Out" "C function1.zi" as Connection616
+                [
+                    position = 0, 0
+                ]
+                connect "Rate Transition with Bypass3.Out" "C function1.zii" as Connection617
+                [
+                    position = 0, 0
+                ]
+                connect "Rate Transition with Bypass1.In" Junction102 as Connection622
+                [
+                    position = 0, 0
+                ]
+                connect Sum5.out Junction102 as Connection649
+                [
+                    position = 0, 0
+                ]
+                connect Constant23.out "Signal switch29.in2" as Connection653
+                connect "Signal switch28.out" "Signal switch29.in" as Connection660
+                [
+                    position = 0, 0
+                ]
+                connect Isp1.p_node Junction2 as Connection670
+                [
+                    position = 0, 0
+                ]
+                connect Isp1.n_node Junction97 as Connection669
+                [
+                    position = 0, 0
+                ]
+                connect "Rate Transition with Bypass2.In" Junction109 as Connection684
+                connect "Unit Delay10.in" Junction109 as Connection686
+                connect Constant28.out "C function1.Ts_fast" as Connection837
+                [
+                    position = 0, 0
+                ]
+                connect R1.p_node Junction130 as Connection838
+                connect Junction130 Junction97 as Connection839
+                [
+                    position = 0, 0
+                ]
+                connect Junction131 Junction2 as Connection842
+                [
+                    position = 0, 0
+                ]
+                connect R1.n_node Junction131 as Connection843
+                connect C1.p_node Junction138 as Connection900
+                connect Junction138 Junction130 as Connection901
+                connect P2 Junction300 as Connection903
+                connect P3 Junction97 as Connection907
+                connect Goto4 Va.out as Connection914
+                connect From20 Product38.in1 as Connection966
+                connect Comparator7.out Product38.in as Connection967
+                connect Clock1.out Comparator7.in1 as Connection968
+                connect Constant1.out Comparator7.in2 as Connection969
+                connect Product38.out Isp1.in as Connection970
+                connect Sum18.in Product28.out as Connection976
+                connect Product29.out Sum18.in1 as Connection977
+                connect Junction138 Va.p_node as Connection992
+                connect Va.n_node Junction300 as Connection993
+                connect Product31.out Sum19.in as Connection994
+                connect Gain29.out Sum19.in1 as Connection995
+                connect Gain30.out Junction209 as Connection1008
+                connect Product31.in "Signal switch31.out" as Connection1021
+                connect Gain31.in Sum18.out as Connection1035
+                connect From23 Gain32.in as Connection1043
+                connect From26 Junction175 as Connection1112
+                connect Junction175 Product29.in as Connection1113
+                connect Product29.in1 Junction175 as Connection1114
+                connect Product28.in Junction176 as Connection1117
+                connect Junction176 Product28.in1 as Connection1118
+                [
+                    position = 0, 0
+                ]
+                connect From25 Junction176 as Connection1119
+                connect Goto9 "Kalman Filter Sync1.sin(wt)" as Connection1124
+                connect "Kalman Filter Sync1.cos(wt)" Goto10 as Connection1125
+                connect From27 Junction177 as Connection1127
+                connect Junction177 Product31.in1 as Connection1128
+                connect "Rate Transition with Bypass1.Out" Junction178 as Connection1132
+                [
+                    position = 0, 0
+                ]
+                connect "Edge Detection1.In1" Junction178 as Connection1134
+                connect "C function1.z" Junction179 as Connection1140
+                connect Junction179 Junction178 as Connection1141
+                [
+                    position = 0, 0
+                ]
+                connect Constant21.out "C function1.Ts" as Connection1146
+                [
+                    position = 0, 0
+                ]
+                connect Gain35.out Junction211 as Connection1153
+                connect From30 Gain36.in as Connection1163
+                connect From32 Sum5.in1 as Connection1180
+                connect Gain31.out Limit2.in as Connection1182
+                connect Limit2.out Goto6 as Connection2202
+                connect Gain29.in Junction177 as Connection1183
+                [
+                    position = 0, 0
+                ]
+                connect Sum21.out Goto8 as Connection1186
+                [
+                    position = 0, 0
+                ]
+                connect Comparator6.out "Signal switch32.in2" as Connection1195
+                connect Abs6.out Comparator6.in1 as Connection1196
+                connect Abs7.out Comparator6.in2 as Connection1197
+                connect Product33.out Junction185 as Connection1199
+                [
+                    position = 0, 0
+                ]
+                connect Junction185 Abs6.in as Connection1200
+                [
+                    position = 0, 0
+                ]
+                connect "Signal switch32.in1" Junction185 as Connection1201
+                connect Abs7.in Junction211 as Connection1202
+                connect "Signal switch32.in" Junction211 as Connection1204
+                connect Comparator5.out "Signal switch31.in2" as Connection1209
+                connect Comparator5.in1 Abs4.out as Connection1210
+                [
+                    position = 0, 0
+                ]
+                connect Product30.out Junction187 as Connection1211
+                connect Junction187 Abs4.in as Connection1212
+                [
+                    position = 0, 0
+                ]
+                connect "Signal switch31.in1" Junction187 as Connection1213
+                connect Abs5.in Junction209 as Connection1215
+                connect "Signal switch31.in" Junction209 as Connection1217
+                connect Abs5.out Comparator5.in2 as Connection1218
+                connect From28 Sum5.in as Connection1219
+                connect Product30.in Junction189 as Connection1221
+                [
+                    position = 0, 0
+                ]
+                connect Junction189 From22 as Connection1222
+                connect Gain30.in Junction189 as Connection1223
+                connect Product33.in Junction190 as Connection1224
+                [
+                    position = 0, 0
+                ]
+                connect Junction190 Gain37.out as Connection1225
+                connect Gain35.in Junction190 as Connection1226
+                connect "Kalman Filter Sync1.f (Hz)" Junction192 as Connection1234
+                connect Junction192 Goto13 as Connection1235
+                connect Gain39.in Junction192 as Connection1236
+                connect Gain39.out Goto14 as Connection1237
+                connect From29 Sum24.in as Connection1244
+                connect Sum24.out Gain37.in as Connection1245
+                connect From35 Gain40.in as Connection1246
+                connect Gain40.out Product37.in1 as Connection1247
+                connect Product37.in From34 as Connection1248
+                connect Product34.in1 From31 as Connection1250
+                [
+                    position = 0, 0
+                ]
+                connect Product37.out Gain41.in as Connection1252
+                connect Gain41.out Sum24.in1 as Connection1253
+                connect "Relational operator1.in" Constant29.out as Connection1273
+                connect Constant30.out "Relational operator1.in1" as Connection1274
+                connect "Relational operator1.out" "Signal switch28.in2" as Connection1275
+                connect Junction193 Junction179 as Connection1278
+                [
+                    position = 0, 0
+                ]
+                connect "Signal switch28.in" Junction193 as Connection1279
+                connect "Signal switch29.in1" Junction193 as Connection1280
+                [
+                    position = 0, 0
+                ]
+                connect "Unit Delay9.in" Junction102 as Connection1284
+                [
+                    position = 0, 0
+                ]
+                connect "Unit Delay9.out" Junction109 as Connection1285
+                [
+                    position = 0, 0
+                ]
+                connect "Unit Delay12.in" "Unit Delay11.out" as Connection1301
+                connect "Unit Delay12.out" Sum26.in1 as Connection1302
+                connect Sum21.in1 "Signal switch29.out" as Connection1304
+                [
+                    position = 0, 0
+                ]
+                connect "C function1.out" Junction194 as Connection1305
+                [
+                    position = 0, 0
+                ]
+                connect Junction194 "Signal switch28.in1" as Connection1306
+                [
+                    position = 0, 0
+                ]
+                connect "Unit Delay11.in" Junction195 as Connection1308
+                connect Junction195 Junction194 as Connection1309
+                connect Sum26.in Junction195 as Connection1310
+                connect Sum26.out Sum21.in as Connection1311
+                connect Product30.in1 Gain32.out as Connection2204
+                connect Junction131 C1.n_node as Connection2203
+                connect Gain36.out Product33.in1 as Connection2205
+                connect "Edge Detection1.Out1" "C function1.sync" as Connection2206
+                connect Junction2 Junction300 as Connection2218
+                connect Goto11 Junction301 as Connection2220
+                connect Junction301 Sum19.out as Connection2221
+                connect iph_active.in Junction301 as Connection2222
+                connect Goto12 Junction302 as Connection2223
+                connect Junction302 Product34.out as Connection2224
+                connect iph_reactive.in Junction302 as Connection2225
+                connect Product34.in Junction303 as Connection2226
+                connect Junction303 "Signal switch32.out" as Connection2227
+                connect iq.in Junction303 as Connection2228
+                connect From21 "rate transition.in" as Connection2229
+                connect "rate transition.out" "Kalman Filter Sync1.Vgrid" as Connection2230
 
                 mask {
                     description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
@@ -8223,14 +8321,14 @@ library "OpenDSS" {
                         nonvisible
                     }
 
-                    Ts {
+                    execution_rate {
                         label = "Execution Rate"
+                        previous_names = "Ts"
                         widget = edit
                         type = generic
-                        default_value = "Ts"
+                        default_value = "execution_rate"
                         unit = "s"
                         group = "Execution rate:2"
-
                     }
 
                     Fast_con {
@@ -8246,9 +8344,9 @@ library "OpenDSS" {
                             rate_trans1 = mdl.get_item("Rate Transition with Bypass1", parent=comp_handle, item_type="component")
                             rate_trans2 = mdl.get_item("Rate Transition with Bypass2", parent=comp_handle, item_type="component")
                             rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
-                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Ts"))
+                            Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
                             Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
-
+                            
                             if new_value and not Ts_mask == Tfst_mask:
                                 mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
                                 mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
@@ -8257,7 +8355,6 @@ library "OpenDSS" {
                                 mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "True")
                                 mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "True")
                                 mdl.set_property_value(mdl.prop(rate_trans3, "bypass_flag"), "True")
-
                         ENDCODE
                     }
 
@@ -8265,97 +8362,12 @@ library "OpenDSS" {
                         label = "Fast execution rate"
                         widget = edit
                         type = generic
-                        default_value = "Tfast"
+                        default_value = "Tfst"
                         unit = "s"
                         group = "Execution rate"
-
                     }
 
                     Tfast_en {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_P {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    pQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    nQc_Q {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_pQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T_nQ {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Pc_T {
-                        widget = edit
-                        type = generic
-                        default_value = "0"
-                        nonvisible
-                    }
-
-                    Fc {
                         widget = edit
                         type = generic
                         default_value = "0"
@@ -8403,16 +8415,71 @@ library "OpenDSS" {
                         group = "Load Parameters"
                     }
 
+                    zero_seq_remove {
+                        label = "Remove zero sequence"
+                        widget = checkbox
+                        type = bool
+                        default_value = "False"
+                        group = "Load Parameters"
+                        no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_sub_level_handle(container_handle)
+                            j2 = mdl.get_item("Junction2", parent=comp_handle, item_type="junction")
+                            j300 = mdl.get_item("Junction300", parent=comp_handle, item_type="junction")
+                            v0_source = mdl.get_item("v0s", parent=comp_handle, item_type="component")
+                            v0_port = mdl.get_item("v0", parent=comp_handle, item_type="port")
+                            vph_port = mdl.get_item("vph_port", parent=comp_handle, item_type="port")
+                            vph_tag = mdl.get_item("vph_tag", parent=comp_handle, item_type="tag")
+                        
+                            if new_value:
+                                if len(mdl.find_connections(j2, j300)) > 0:
+                                    for conn in mdl.find_connections(j2, j300):
+                                        mdl.delete_item(conn)
+                                if not v0_port:
+                                    v0_port = mdl.create_port(name="v0", parent=comp_handle, label="v0", kind="sp",
+                                                              direction="in", terminal_position=("bottom", "1"),
+                                                              position=(7487, 8613))
+                                if not v0_source:
+                                    v0_source = mdl.create_component("Signal Controlled Voltage Source",
+                                                                     parent=comp_handle, name="v0s",
+                                                                     position=(7530,8663))
+                                mdl.create_connection(mdl.term(v0_source, "in"), v0_port)
+                                mdl.create_connection(mdl.term(v0_source, "n_node"), j300)
+                                mdl.create_connection(mdl.term(v0_source, "p_node"), j2)
+                                if not vph_port:
+                                    vph_port = mdl.create_port(name="vph_port", parent=comp_handle, label="vph",
+                                                               kind="sp", direction="out", terminal_position=("bottom", "2"),
+                                                               position=(7613, 8288))
+                                if not vph_tag:
+                                    vph_tag = mdl.create_tag("Va", name="vph_tag", parent=comp_handle, scope="local",
+                                                             kind="sp", direction="out", position=(7480, 8288))
+                                if len(mdl.find_connections(vph_port, vph_tag)) == 0:
+                                    mdl.create_connection(vph_port, vph_tag)
+                            else:
+                                if v0_source:
+                                    mdl.delete_item(v0_source)
+                                if len(mdl.find_connections(j2, j300)) == 0:
+                                    mdl.create_connection(j2, j300)
+                                if v0_port:
+                                    mdl.delete_item(v0_port)
+                                if vph_port:
+                                    mdl.delete_item(vph_port)
+                                if vph_tag:
+                                    mdl.delete_item(vph_tag)
+                        ENDCODE
+                    }
+
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-
+                    
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
                             current_diagram=current_diagram
                         )
                         dialog.exec_()
-
+                        
                     ENDCODE
 
                     CODE pre_compile
@@ -8428,22 +8495,11 @@ library "OpenDSS" {
                         kQ_tot = mdl.get_property_value(mdl.prop(item_handle, "kQ_tot"))
                         kQ = mdl.get_property_value(mdl.prop(item_handle, "kQ"))
                         Q = mdl.get_property_value(mdl.prop(item_handle, "Q"))
-                        Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                        execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                         Fast_con = mdl.get_property_value(mdl.prop(item_handle, "Fast_con"))
                         Tfst = mdl.get_property_value(mdl.prop(item_handle, "Tfst"))
+                        zero_seq_remove = mdl.get_property_value(mdl.prop(item_handle, "zero_seq_remove"))
                         Tfast_en = mdl.get_property_value(mdl.prop(item_handle, "Tfast_en"))
-                        pQc_P = mdl.get_property_value(mdl.prop(item_handle, "pQc_P"))
-                        nQc_P = mdl.get_property_value(mdl.prop(item_handle, "nQc_P"))
-                        pQc_T = mdl.get_property_value(mdl.prop(item_handle, "pQc_T"))
-                        nQc_T = mdl.get_property_value(mdl.prop(item_handle, "nQc_T"))
-                        pQc_Q = mdl.get_property_value(mdl.prop(item_handle, "pQc_Q"))
-                        nQc_Q = mdl.get_property_value(mdl.prop(item_handle, "nQc_Q"))
-                        Pc_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_pQ"))
-                        Pc_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_nQ"))
-                        Pc_T_pQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_pQ"))
-                        Pc_T_nQ = mdl.get_property_value(mdl.prop(item_handle, "Pc_T_nQ"))
-                        Pc_T = mdl.get_property_value(mdl.prop(item_handle, "Pc_T"))
-                        Fc = mdl.get_property_value(mdl.prop(item_handle, "Fc"))
                         Freq = mdl.get_property_value(mdl.prop(item_handle, "Freq"))
                         inv_ph = mdl.get_property_value(mdl.prop(item_handle, "inv_ph"))
                         CPL_curr = mdl.get_property_value(mdl.prop(item_handle, "CPL_curr"))
@@ -8453,7 +8509,7 @@ library "OpenDSS" {
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
                         import math
-
+                        
                         kVLL = kVLine/(3**0.5)
                         VLL = kVLL * 1000
                         kP = kP_tot / 3
@@ -8461,36 +8517,18 @@ library "OpenDSS" {
                         P = kP * 1000
                         Q = kQ * 1000
                         SS = (P*P + Q*Q)**0.5
-
+                        
                         if SS==0:
                             Rsnb = 100000
                         else:
                             Rsnb = 30 * (VLL*VLL/(1.66*SS))
-
+                        
                         if Fast_con:
                             Tfast_en = 1
                         else:
                             Tfast_en = 0
-
-                        pQc_P = -1/9.7
-                        nQc_P = -0.097
-
-                        pQc_T = -0.015*(Ts-600e-6)/Ts
-                        nQc_T = -0.012*(Ts-600e-6)/Ts
-
-                        pQc_Q = 0.0266
-                        nQc_Q = 0.014
-
-                        Pc_pQ = 0.095
-                        Pc_nQ = 0.0933
-
-                        Pc_T = 0.005*(Ts-600e-6)/Ts
-
-                        Pc_T_pQ = 0.0075*(Ts-600e-6)/Ts
-                        Pc_T_nQ = 0.01*(Ts-600e-6)/Ts
-
-                        Fc = -0*1/15
-
+                        
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "kVLine"), kVLine)
                         mdl.set_property_value(mdl.prop(item_handle, "kVLL"), kVLL)
                         mdl.set_property_value(mdl.prop(item_handle, "kP"), kP)
@@ -8499,35 +8537,18 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "Rsnb"), Rsnb)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ"), kQ)
                         mdl.set_property_value(mdl.prop(item_handle, "Q"), Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
+                        mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                         mdl.set_property_value(mdl.prop(item_handle, "kP_tot"), kP_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ_tot"), kQ_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfast_en"), Tfast_en)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_P"), pQc_P)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_P"), nQc_P)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_T"), pQc_T)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_T"), nQc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "pQc_Q"), pQc_Q)
-                        mdl.set_property_value(mdl.prop(item_handle, "nQc_Q"), nQc_Q)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_pQ"), Pc_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_nQ"), Pc_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T"), Pc_T)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_pQ"), Pc_T_pQ)
-                        mdl.set_property_value(mdl.prop(item_handle, "Pc_T_nQ"), Pc_T_nQ)
-
-                        mdl.set_property_value(mdl.prop(item_handle, "Fc"), Fc)
+                        
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "inv_ph"), inv_ph)
-
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "Freq"), Freq)
                         mdl.set_property_value(mdl.prop(item_handle, "SS"), SS)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
-
+                        
                         mdl.set_property_value(mdl.prop(item_handle, "CPL_curr"), CPL_curr)
                         mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
                         mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
@@ -8544,684 +8565,12 @@ library "OpenDSS" {
             size = 48, 48
         ]
 
-        comment Comment1 START Consider using the Category component to better organize your library items in the tree. ENDCOMMENT
+        comment Comment1 START Consider using the Category component to better organize your library items in the tree. ENDCOMMENT 
         [
             position = 4584, 3792
         ]
     }
 
-    logically_deleted {
-        "VSConverter.TS_module"
-        "VSConverter.T_switch"
-        "VSConverter.Constant102"
-        "VSConverter.Connection3"
-        "VSConverter.Connection5658"
-        "Generator.TS_module"
-        "Generator.T_switch"
-        "Generator.Constant102"
-        "Generator.Connection3"
-        "Generator.Connection5116"
-    }
-
     default {
-        "core/1D look-up table" {
-            in_vec_x = "np.arange(-5,6)"
-            out_vec_f_x = "np.arange(-5,6)**2"
-            table_impl = "Equidistant"
-            ext_mode = "Clip"
-            execution_rate = "inherit"
-        }
-
-        "core/Abs" {
-            execution_rate = "inherit"
-        }
-
-        "core/Bus Join" {
-            inputs = "2"
-            execution_rate = "inherit"
-        }
-
-        "core/Bus Split" {
-            outputs = "2"
-            execution_rate = "inherit"
-        }
-
-        "core/C function" {
-            input_terminals = "real in;"
-            input_terminals_show_labels = "False;"
-            input_terminals_feedthrough = "True;"
-            input_terminals_dimensions = "inherit;"
-            output_terminals = "real out;"
-            output_terminals_show_labels = "False;"
-            output_terminals_feedthrough = "True;"
-            output_terminals_dimensions = "inherit;"
-            output_fnc = ""
-            update_fnc = ""
-            init_fnc = ""
-            global_variables = ""
-            parameters = ""
-            execution_rate = "inherit"
-        }
-
-        "core/Capacitor" {
-            capacitance = "1e-6"
-            initial_voltage = "0"
-            pole_shift_ignore = "False"
-            visible = "True"
-        }
-
-        "core/Clock" {
-            enb_reset = "False"
-            reset_at = "1.0"
-            execution_rate = "100e-6"
-        }
-
-        "core/Comparator" {
-            execution_rate = "inherit"
-        }
-
-        "core/Constant" {
-            value = "1"
-            signal_type = "real"
-            execution_rate = "100e-6"
-            _tunable = "False"
-        }
-
-        "core/Current Source" {
-            sig_input = "False"
-            type = "signal generator"
-            param_set = "1phase"
-            parent_label = ""
-            addr = "0"
-            spc_nb = "0"
-            execution_rate = "100e-6"
-            cpd_visible = "True"
-            enable_snb = "False"
-            snb_type = "R1"
-            R1 = "inf"
-            C1 = "1e-06"
-            override_signal_name = "False"
-            signal_name = ""
-            init_source_nature = "Constant"
-            init_const_value = "0.0"
-            init_rms_value = "0.0"
-            init_frequency = "50.0"
-            init_phase = "0.0"
-        }
-
-        "core/Data Type Conversion" {
-            output_type = "real"
-            execution_rate = "inherit"
-        }
-
-        "core/Discrete Transfer Function" {
-            domain = "Z-domain"
-            method = "Zero-order hold"
-            b_coeff = "[1,1]"
-            a_coeff = "[1,1]"
-            signal_out_type = "inherit"
-            execution_rate = "inherit"
-        }
-
-        "core/Gain" {
-            gain = "1"
-            multiplication = "Element-wise(K.*u)"
-            _tunable = "False"
-            execution_rate = "inherit"
-        }
-
-        "core/Inductor" {
-            inductance = "1e-3"
-            initial_current = "0.0"
-            pole_shift_ignore = "False"
-            visible = "True"
-        }
-
-        "core/Integrator" {
-            show_reset = "none"
-            reset_type = "asynchronous"
-            show_init_condition = "internal"
-            init_value = "0"
-            limit_output = "False"
-            limit_upper = "inf"
-            limit_lower = "-inf"
-            show_state = "False"
-            state_port_type = "inherit"
-            execution_rate = "inherit"
-        }
-
-        "core/Limit" {
-            upper_limit = "[\'inf\']"
-            lower_limit = "[\'-inf\']"
-            execution_rate = "inherit"
-        }
-
-        "core/Logical operator" {
-            operator = "AND"
-            inputs = "2"
-            execution_rate = "inherit"
-        }
-
-        "core/Mathematical function" {
-            mathematical_fn = "exponential"
-            execution_rate = "inherit"
-        }
-
-        "core/Multiport signal switch" {
-            number_of_input_terminals = "2"
-            execution_rate = "inherit"
-        }
-
-        "core/Open Circuit" {
-            circuit_connector = "false"
-            pesb_flag = "false"
-            type = "none"
-        }
-
-        "core/Probe" {
-            signal_access = "inherit"
-            addr = "0"
-            override_signal_name = "False"
-            signal_name = ""
-            signal_type = "generic"
-            streaming_en = "False"
-            streaming_er_idx = "0"
-            execution_rate = "inherit"
-        }
-
-        "core/Product" {
-            signs = "2"
-            execution_rate = "inherit"
-        }
-
-        "core/Rate Limiter" {
-            rising_limit = "1"
-            falling_limit = "-1"
-            execution_rate = "inherit"
-        }
-
-        "core/Relational operator" {
-            relational_op = "=="
-            execution_rate = "inherit"
-        }
-
-        "core/Resistor" {
-            resistance = "1"
-            param_set = ""
-        }
-
-        "core/Round" {
-            round_fn = "floor"
-            execution_rate = "inherit"
-        }
-
-        "core/Short Circuit" {
-            circuit_connector = "false"
-            pesb_flag = "false"
-            type = "none"
-            r_calc_msr = ""
-        }
-
-        "core/Signal switch" {
-            criterion = "ctrl > threshold"
-            threshold = "0.5"
-            execution_rate = "inherit"
-        }
-
-        "core/Sinusoidal Source" {
-            amplitude = "1"
-            dc_offset = "0"
-            frequency = "50"
-            phase = "0"
-            execution_rate = "100e-6"
-            _tunable = "False"
-        }
-
-        "core/Step" {
-            step_time = "1"
-            initial_value = "0"
-            final_value = "1"
-            signal_type = "real"
-            execution_rate = "100e-6"
-        }
-
-        "core/Sum" {
-            signs = "2"
-            execution_rate = "inherit"
-        }
-
-        "core/Termination" {
-            execution_rate = "inherit"
-        }
-
-        "core/Trigonometric function" {
-            trigonometric_fn = "sin"
-            angle = "Radians"
-            execution_rate = "inherit"
-        }
-
-        "core/Unit Delay" {
-            init_value = "0"
-            signal_out_type = "inherit"
-            execution_rate = "inherit"
-        }
-
-        "core/Voltage Source" {
-            sig_input = "False"
-            type = "signal generator"
-            param_set = "1phase"
-            parent_label = ""
-            addr = "0"
-            spc_nb = "0"
-            execution_rate = "100e-6"
-            cpd_visible = "True"
-            enable_snb = "False"
-            snb_type = "R2"
-            R2 = "0.0"
-            L1 = "0.1"
-            override_signal_name = "False"
-            signal_name = ""
-            init_source_nature = "Constant"
-            init_const_value = "0.0"
-            init_rms_value = "0.0"
-            init_frequency = "50.0"
-            init_phase = "0.0"
-        }
-
-        "OpenDSS/CIL" {
-            fn = "fn"
-            conn_type = "Y"
-            ground_connected = "False"
-            set_balanced = "True"
-            Vn_3ph = "Vn_3ph_CPL"
-            Sn_3ph = "Sn_3ph"
-            pf_mode_3ph = "Lag"
-            pf_3ph = "pf_3ph_set"
-            VAn = "0*1000/(3**0.5)"
-            VAB = "0*1000"
-            SAn = "3500*1000/3"
-            SAB = "3500*1000/3"
-            pf_modeA = "Lag"
-            pfA = "0"
-            VBn = "0*1000/(3**0.5)"
-            VBC = "0*1000"
-            SBn = "3500*1000/3"
-            SBC = "3500*1000/3"
-            pf_modeB = "Lag"
-            pfB = "0"
-            VCn = "0*1000/(3**0.5)"
-            VCA = "0*1000"
-            SCn = "3500*1000/3"
-            SCA = "3500*1000/3"
-            pf_modeC = "Lag"
-            pfC = "0"
-            kV = "0"
-            model = "2"
-            phases = "3"
-            phs = "0"
-            ph_num = "0"
-            pf = "0"
-            conn = "0"
-            kVA = "0"
-            basefreq = "0"
-            dss_mod = "Constant Impedance"
-        }
-
-        "core/Current Measurement" {
-            signal_access = "inherit"
-            bw_limit = "False"
-            frequency = "10e3"
-            comparator_enable = "False"
-            operator = "greater"
-            threshold = "0"
-            cmp_abs_value = "False"
-            feed_forward = "false"
-            sig_output = "False"
-            sig_output_filt_and_full_bw = "False"
-            execution_rate = "100e-6"
-            addr = "0"
-            nd_msr_estimation = "false"
-            dev_cpl_msr = "false"
-            host_device = "0"
-            output_to_device = "0"
-            dev_cpl_index = "0"
-            dev_cpl_var_nb = "0"
-            visible = "True"
-            override_signal_name = "False"
-            signal_name = ""
-        }
-
-        "core/Grid Fault" {
-            resistance = "0.0"
-            fault_type = "A-GND"
-        }
-
-        "core/Meter Split" {
-            van = "True"
-            vbn = "True"
-            vcn = "True"
-            van_rms = "False"
-            vbn_rms = "False"
-            vcn_rms = "False"
-            vln_rms = "False"
-            vn = "False"
-            vn_rms = "False"
-            vab = "False"
-            vbc = "False"
-            vca = "False"
-            vab_rms = "False"
-            vbc_rms = "False"
-            vca_rms = "False"
-            vll_rms = "False"
-            ia = "False"
-            ib = "False"
-            ic = "False"
-            ia_rms = "False"
-            ib_rms = "False"
-            ic_rms = "False"
-            i_rms = "False"
-            ineutral = "False"
-            in_rms = "False"
-            freq = "False"
-            power_p = "False"
-            power_q = "False"
-            power_s = "False"
-            power_pf = "False"
-            enable_extra_in = "No"
-            power_pa = "False"
-            power_pb = "False"
-            power_pc = "False"
-            power_qa = "False"
-            power_qb = "False"
-            power_qc = "False"
-            power_sa = "False"
-            power_sb = "False"
-            power_sc = "False"
-            power_pfa = "False"
-            power_pfb = "False"
-            power_pfc = "False"
-        }
-
-        "core/Rate Transition" {
-            init_value = "0.0"
-            execution_rate = "100e-6"
-        }
-
-        "core/Signal Controlled Current Source" {
-            execution_rate = "inherit"
-        }
-
-        "core/Signal Controlled Voltage Source" {
-            execution_rate = "inherit"
-        }
-
-        "core/Simple Battery inverter (Average)" {
-            Sn = "1.6e6"
-            powerRate = "1"
-            Ts = "200e-6"
-            R = "1e-5"
-            L = "100e-6"
-            Rf = "150e-3"
-            Cf = "1.013e-3"
-            Kp = "0.0001"
-            Ki = "0.05"
-        }
-
-        "core/Single Phase Multi-Winding Transformer" {
-            input = "SI"
-            num_of_windings = "2"
-            Sn = "10e3"
-            f = "50.0"
-            n_prim = "100.0"
-            n_sec = "[100.0]"
-            R_prim = "0.1"
-            L_prim = "0.001"
-            I_prim = "0.0"
-            R_sec = "[0.1]"
-            L_sec = "[0.001]"
-            I_sec = "[0.0]"
-            r_prim = ".1"
-            l_prim = ".314159265359"
-            i_prim = "0.0"
-            r_sec = "[.1]"
-            l_sec = "[.314159265359]"
-            i_sec = "[0.0]"
-            core_model = "Linear"
-            Rm = "1e5"
-            Lm = "5.0"
-            flux_vals_SI = "[0.001, 0.005]"
-            current_vals_SI = "[1.0, 2.0]"
-            rm = "100000.0"
-            lm = "1570.79632679"
-            flux_vals_pu = "[0.001, 0.005]"
-            current_vals_pu = "[1.0, 2.0]"
-            import_from_pu = "Import from PU"
-            import_from_si = "Import from SI"
-            embedded_cpl_12 = "None"
-            ratio_type_12 = "Automatic"
-            ratio_12 = "0.1"
-            embedded_cpl_13 = "None"
-            ratio_type_13 = "Automatic"
-            ratio_13 = "0.1"
-            embedded_cpl_14 = "None"
-            ratio_type_14 = "Automatic"
-            ratio_14 = "0.1"
-            embedded_cpl_15 = "None"
-            ratio_type_15 = "Automatic"
-            ratio_15 = "0.1"
-            embedded_cpl_16 = "None"
-            ratio_type_16 = "Automatic"
-            ratio_16 = "0.1"
-            embedded_cpl_17 = "None"
-            ratio_type_17 = "Automatic"
-            ratio_17 = "0.1"
-            embedded_cpl_18 = "None"
-            ratio_type_18 = "Automatic"
-            ratio_18 = "0.1"
-            embedded_cpl_19 = "None"
-            ratio_type_19 = "Automatic"
-            ratio_19 = "0.1"
-            embedded_cpl_110 = "None"
-            ratio_type_110 = "Automatic"
-            ratio_110 = "0.1"
-        }
-
-        "core/Three Phase Two Winding Transformer" {
-            input = "SC and OC tests"
-            Sn = "160000.0"
-            f = "50.0"
-            V1 = "10000.0"
-            V2 = "400.0"
-            usc1 = "4.0"
-            Psc1 = "2350.0"
-            R1 = "4.58984375"
-            L1 = ".0370093710364"
-            R2 = ".00734375"
-            L2 = "5.92149936583e-05"
-            r1 = ".00734375"
-            l1 = ".0186029389059"
-            r2 = ".00734375"
-            l2 = ".0186029389059"
-            core_model = "Linear"
-            ioc1 = "0.7"
-            Poc1 = "460.0"
-            Rm = "217391.304348"
-            Lm = "311.709196788"
-            flux_vals_SI = "[1910.3, 2419.7]"
-            current_vals_SI = "[0.66653, 277.72]"
-            rm = "347.826086957"
-            lm = "156.68213163"
-            flux_vals_pu = "[1.2, 1.52]"
-            current_vals_pu = "[0.0024, 1]"
-            flux_vals_SCOC = "[1.2, 1.52]"
-            current_vals_SCOC = "[0.0024, 1]"
-            import_from_SI2SCOC = "Import from SI"
-            import_from_pu2SCOC = "Import from PU"
-            import_from_SCOC2SI = "Import from SC OC"
-            import_from_pu2SI = "Import from PU"
-            import_from_SCOC2pu = "Import from SC OC"
-            import_from_SI2pu = "Import from SI"
-            winding_1_connection = "Y"
-            winding_2_connection = "Y"
-            clock_number = "0"
-            embedded_cpl = "None"
-            coupling_type = "core"
-            ratio_type = "Automatic"
-            ratio = "0.1"
-            Rshunt = "inf"
-        }
-
-        "core/Three-phase Meter" {
-            R = "1e5"
-            n_cycles = "1"
-            Ts = "100e-6"
-            enable_probes = "True"
-            enable_out = "True"
-            remove_snubber = "False"
-            enable_bandwidth = "False"
-            bandwidth = "10e3"
-            VAn = "True"
-            VBn = "True"
-            VCn = "True"
-            VAB = "False"
-            VBC = "False"
-            VCA = "False"
-            VN = "False"
-            IA = "True"
-            IB = "True"
-            IC = "True"
-            IN = "False"
-            freq = "False"
-            VLn_rms = "False"
-            VLL_rms = "False"
-            VLn_avg_rms = "False"
-            VLL_avg_rms = "False"
-            VN_rms = "False"
-            I_rms = "False"
-            I_avg_rms = "False"
-            IN_rms = "False"
-            P_method = "alpha-beta"
-            enable_extra_out = "False"
-            P_meas = "False"
-        }
-
-        "core/Transmission Line" {
-            model = "RL coupled"
-            num_of_phases = "3"
-            model_def = "Geometry"
-            unit_sys = "imperial"
-            unit_sys_edited_flag = "0"
-            Length_metric = "100.0"
-            Length_miles = "62.1371"
-            Frequency = "60.0"
-            Earth_resistivity = "100"
-            X_axis_1_metric = "-1.0668"
-            Y_axis_1_metric = "8.5344"
-            GMR_1_metric = "0.00743712"
-            RD_1_metric = "0.009156192"
-            Rs_1_metric = "0.19013958482462417"
-            X_axis_1_imperial = "-3.5"
-            Y_axis_1_imperial = "28.0"
-            GMR_1_imperial = "0.0244"
-            RD_1_imperial = "0.03004"
-            Rs_1_imperial = "0.306"
-            X_axis_2_metric = "-0.3048"
-            Y_axis_2_metric = "8.5344"
-            GMR_2_metric = "0.00743712"
-            RD_2_metric = "0.009156192"
-            Rs_2_metric = "0.19013958482462417"
-            X_axis_2_imperial = "-1.0"
-            Y_axis_2_imperial = "28.0"
-            GMR_2_imperial = "0.0244"
-            RD_2_imperial = "0.03004"
-            Rs_2_imperial = "0.306"
-            X_axis_3_metric = "1.0668"
-            Y_axis_3_metric = "8.5344"
-            GMR_3_metric = "0.00743712"
-            RD_3_metric = "0.009156192"
-            Rs_3_metric = "0.19013958482462417"
-            X_axis_3_imperial = "3.5"
-            Y_axis_3_imperial = "28.0"
-            GMR_3_imperial = "0.0244"
-            RD_3_imperial = "0.03004"
-            Rs_3_imperial = "0.306"
-            X_axis_4_metric = "0.1524"
-            Y_axis_4_metric = "7.3152"
-            GMR_4_metric = "0.00248"
-            RD_4_metric = "0.00714"
-            Rs_4_metric = "0.3678"
-            X_axis_4_imperial = "0.5"
-            Y_axis_4_imperial = "24.0"
-            GMR_4_imperial = "0.00814"
-            RD_4_imperial = "0.02345"
-            Rs_4_imperial = "0.592"
-            R_metric = "[[0.2481, 0.0579, 0.0579], [0.0579, 0.2481, 0.0579], [0.0579, 0.0579, 0.2481]]"
-            R_imperial = "[[0.4, 0.093, 0.093], [0.093, 0.4, 0.093], [0.093, 0.093, 0.4]]"
-            L_metric = "[[0.00233, 0.00140, 0.00140], [0.00140, 0.00233, 0.00140], [0.00140, 0.00140, 0.00233]]"
-            L_imperial = "[[0.00374, 0.0022, 0.0022], [0.0022, 0.00374, 0.0022], [0.0022, 0.0022, 0.00374]]"
-            C_metric = "[[8.546e-9, 0, 0], [0, 8.546e-9, 0], [0, 0, 8.546e-9]]"
-            C_imperial = "[[1.471e-8, 0, 0], [0, 1.530e-8, 0], [0, 0, 1.375e-8]]"
-            R_sequence_metric = "[[0.3864, 0, 0],[0, 0.01273, 0], [0, 0, 0.01273]]"
-            L_sequence_metric = "[[4.1264e-3, 0, 0],[0, 0.9337e-3, 0], [0, 0, 0.9337e-3]]"
-            C_sequence_metric = "[[7.751e-9, 0, 0],[0, 12.74e-9, 0], [0, 0, 12.74e-9]]"
-            R_sequence_imperial = "[[0.6218, 0, 0],[0, 0.0204, 0], [0, 0, 0.0204]]"
-            L_sequence_imperial = "[[0.00664, 0, 0],[0, 0.00150, 0], [0, 0, 0.00150]]"
-            C_sequence_imperial = "[[1.247e-8, 0, 0],[0, 2.0503e-8, 0], [0, 0, 2.0503e-8]]"
-            import_from_geometry = "Import from Geometry"
-            import_from_RLC = "Import from RLC"
-        }
-
-        "core/Triple Pole Single Throw Contactor" {
-            signal_access = "inherit"
-            ctrl_src = "Digital input"
-            Sa = "1"
-            Sa_logic = "active high"
-            enable_fb_out = "False"
-            fb_out_type = "real"
-            execution_rate = "inherit"
-            initial_state = "off"
-            on_delay = "0"
-            off_delay = "0"
-        }
-
-        "core/Voltage Measurement" {
-            signal_access = "inherit"
-            bw_limit = "False"
-            frequency = "10e3"
-            comparator_enable = "False"
-            operator = "greater"
-            threshold = "0"
-            cmp_abs_value = "False"
-            feed_forward = "false"
-            sig_output = "False"
-            sig_output_filt_and_full_bw = "False"
-            execution_rate = "100e-6"
-            addr = "0"
-            nd_msr_estimation = "false"
-            dev_cpl_msr = "false"
-            host_device = "0"
-            output_to_device = "0"
-            dev_cpl_index = "0"
-            dev_cpl_var_nb = "0"
-            visible = "True"
-            override_signal_name = "False"
-            signal_name = ""
-        }
-
-        "core/abc to dq" {
-            power_form = "variant - Clarke\'s original"
-            alignment = "-pi/2"
-            disable_filter = "True"
-            initial_filter_output = "0"
-            wn_LPFdq = "1000"
-            execution_rate = "inherit"
-            _tunable = "False"
-        }
-
-        "core/dq to abc" {
-            power_form = "variant - Clarke\'s original"
-            alignment = "-pi/2"
-            execution_rate = "0"
-        }
     }
 }

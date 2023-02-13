@@ -372,7 +372,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.validate_execution_rate(mdl, container_handle)
+                        comp_script.exec_changed_slow(mdl, container_handle, new_value)
 
                     ENDCODE
                 }
@@ -388,7 +388,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.validate_execution_rate(mdl, container_handle)
+                        comp_script.exec_changed_fast(mdl, container_handle, new_value)
 
                     ENDCODE
                 }
@@ -401,6 +401,20 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "CPL Parameters"
                     disabled
+                }
+
+                zero_seq_remove {
+                    label = "Remove zero sequence"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "CPL Parameters"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.zero_seq_removal(mdl, container_handle, new_value)
+                    ENDCODE
                 }
 
                 q_gain_k {

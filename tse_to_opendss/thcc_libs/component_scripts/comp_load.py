@@ -210,9 +210,12 @@ def phase_value_edited_fnc(mdl, container_handle, new_value):
         else:
             mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
             mdl.disable_property(mdl.prop(container_handle, "conn_type"))
+            mdl.enable_property(mdl.prop(container_handle, "zero_seq_remove"))
     else:
         mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
+        mdl.set_property_disp_value(mdl.prop(container_handle, 'zero_seq_remove'), False)
         mdl.disable_property(mdl.prop(container_handle, "conn_type"))
+        mdl.disable_property(mdl.prop(container_handle, "zero_seq_remove"))
         mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
 
 
@@ -1221,6 +1224,8 @@ def set_load_model(mdl, mask_handle, new_value):
     connt = mdl.get_property_disp_value(mdl.prop(mask_handle, "conn_type"))
     comp_handle = mdl.get_sub_level_handle(mask_handle)
     phss = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
+    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "execution_rate"))
+    t_fast = mdl.get_property_value(mdl.prop(mask_handle, "Tfast"))
     pf_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_mode_3ph"))
 
     if new_value == "Constant Impedance":
@@ -1291,6 +1296,11 @@ def set_load_model(mdl, mask_handle, new_value):
             mdl.set_property_value(mdl.prop(cpl1, "phases"), "3")
             mdl.set_property_value(mdl.prop(cpl1, "phases"), "1")
 
+        if t_slow == t_fast:
+            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
+        else:
+            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
+
         tag_a = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
         if tag_a:
             mdl.delete_item(tag_a)
@@ -1320,6 +1330,38 @@ def set_load_model(mdl, mask_handle, new_value):
             tag_c = mdl.create_tag("C1", name="TagC2", parent=comp_handle, scope="local",
                                    kind="pe", rotation="right", position=(7984, 8088))
             mdl.create_connection(mdl.term(cpl1, "C1"), tag_c)
+
+
+def exec_changed_slow(mdl, mask_handle, new_value):
+    comp_handle = mdl.get_sub_level_handle(mask_handle)
+    t_fast = mdl.get_property_value(mdl.prop(mask_handle, "Tfast"))
+    cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
+
+    if cpl1:
+        if new_value == t_fast:
+            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
+        else:
+            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
+
+
+def exec_changed_fast(mdl, mask_handle, new_value):
+    comp_handle = mdl.get_sub_level_handle(mask_handle)
+    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "execution_rate"))
+    cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
+
+    if cpl1:
+        if new_value == t_slow:
+            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
+        else:
+            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
+
+
+def zero_seq_removal(mdl, mask_handle, new_value):
+    comp_handle = mdl.get_sub_level_handle(mask_handle)
+    cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
+
+    if cpl1:
+        mdl.set_property_value(mdl.prop(cpl1, "zero_seq_remove"), new_value)
 
 
 def set_pf_mode(mdl, mask_handle, new_value):

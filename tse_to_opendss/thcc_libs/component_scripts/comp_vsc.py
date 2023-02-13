@@ -161,7 +161,7 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             ts_switch = mdl.create_component("Constant", parent=comp_handle,
                                              name="Ts_switch", position=(ref_pos[0], ref_pos[1]))
             mdl.set_property_value(mdl.prop(ts_switch, "value"), "Ts_switch")
-            mdl.set_property_value(mdl.prop(ts_switch, "execution_rate"), "Ts")
+            mdl.set_property_value(mdl.prop(ts_switch, "execution_rate"), "execution_rate")
 
         port_t = mdl.get_item("T", parent=comp_handle, item_type="port")
         if not port_t:
@@ -196,7 +196,7 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             ts_module = mdl.create_component("OpenDSS/TS_module", parent=comp_handle,
                                              name="TS_module", position=(ref_pos[0] + 456, ref_pos[1] + 48),
                                              rotation="left")
-            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "Ts")
+            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "execution_rate")
             mdl.set_property_value(mdl.prop(ts_module, "P_nom"), "Sinv")
             mdl.set_property_value(mdl.prop(ts_module, "Q_nom"), "Qinv")
 
