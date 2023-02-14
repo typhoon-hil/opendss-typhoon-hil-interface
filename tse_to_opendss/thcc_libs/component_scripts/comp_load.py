@@ -1332,30 +1332,6 @@ def set_load_model(mdl, mask_handle, new_value):
             mdl.create_connection(mdl.term(cpl1, "C1"), tag_c)
 
 
-def exec_changed_slow(mdl, mask_handle, new_value):
-    comp_handle = mdl.get_sub_level_handle(mask_handle)
-    t_fast = mdl.get_property_value(mdl.prop(mask_handle, "Tfast"))
-    cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
-
-    if cpl1:
-        if new_value == t_fast:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
-        else:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
-
-
-def exec_changed_fast(mdl, mask_handle, new_value):
-    comp_handle = mdl.get_sub_level_handle(mask_handle)
-    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "execution_rate"))
-    cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
-
-    if cpl1:
-        if new_value == t_slow:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
-        else:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
-
-
 def zero_seq_removal(mdl, mask_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(mask_handle)
     cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1379,3 +1355,144 @@ def set_pf_mode(mdl, mask_handle, new_value):
         elif new_value == "Lag":
             cil1 = mdl.get_item("CIL", parent=comp_handle, item_type=ITEM_COMPONENT)
             mdl.set_property_value(mdl.prop(cil1, "pf_mode_3ph"), "Lag")
+
+
+def load_pre_compile_function(mdl, item_handle, prop_dict):
+    """
+
+    Args:
+        mdl: schematic editor API handle
+        item_handle: component's mask handle
+        prop_dict: dictionary of property values
+
+    Returns:
+
+    """
+
+    basefreq = prop_dict["fn"]
+    kva = prop_dict["Sn_3ph"]
+
+    if prop_dict["conn_type"] == 'Δ':
+        conn = "delta"
+    else:
+        conn = "wye"
+
+    if prop_dict["pf_mode_3ph"] == "Unit":
+        pf = 1.0
+        p_cpl = prop_dict["Sn_3ph"]
+        q_cpl = 0
+        pf_3ph_set = 0.99
+    elif prop_dict["pf_mode_3ph"] == "Lag":
+        pf = prop_dict["pf_3ph"]
+        p_cpl = prop_dict["Sn_3ph"] * pf
+        q_cpl = prop_dict["Sn_3ph"] * ((1 - pf * pf) ** 0.5)
+        pf_3ph_set = prop_dict["pf_3ph"]
+    else:
+        pf = -1 * prop_dict["pf_3ph"]
+        p_cpl = prop_dict["Sn_3ph"] * pf
+        q_cpl = -prop_dict["Sn_3ph"] * ((1 - pf * pf) ** 0.5)
+        pf_3ph_set = prop_dict["pf_3ph"]
+
+    if prop_dict["phases"] == "1":
+        if prop_dict["ground_connected"]:
+            kv = (prop_dict["Vn_3ph"] / 1) / 1
+            vn_3ph_cpl = kv / (3 ** 0.5)
+        else:
+            kv = prop_dict["Vn_3ph"]
+            vn_3ph_cpl = kv
+    else:
+        kv = prop_dict["Vn_3ph"]
+        vn_3ph_cpl = kv
+
+    dssnpts = len(prop_dict["S_Ts"])
+
+    if prop_dict["load_model"] == "Constant Power":
+        model = 1
+    else:
+        model = 2
+
+    s_ts = prop_dict["loadshape"]
+    dsst = prop_dict["loadshape_int"]
+    slen = len(s_ts)
+
+    if prop_dict["T_mode"] == "Time":
+        t_ts_internal = [0] * slen
+        s_vec1 = [0] * slen
+        idxs = 0
+        for t_val in prop_dict["T_Ts"]:
+            t_ts_internal[idxs] = t_val
+            idxs += 1
+        t_lim_low = prop_dict["T_Ts"][0]
+        t_lim_high = prop_dict["T_Ts"][len(prop_dict["T_Ts"]) - 1]
+    else:
+        t_ts_internal = [0] * slen
+        s_vec1 = [0] * slen
+        idxs = 0
+        for S_val in s_vec1:
+            t_ts_internal[idxs] = idxs
+            idxs += 1
+        t_lim_low = t_ts_internal[0]
+        t_lim_high = t_ts_internal[slen - 1]
+
+    if prop_dict["T_mode"] == "Time":
+        ts_switch = 1
+    else:
+        ts_switch = 0
+
+    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+    mdl.set_property_value(mdl.prop(item_handle, "kVA"), kva)
+    mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"), vn_3ph_cpl)
+    mdl.set_property_value(mdl.prop(item_handle, "P_CPL"), p_cpl)
+    mdl.set_property_value(mdl.prop(item_handle, "Q_CPL"), q_cpl)
+    mdl.set_property_value(mdl.prop(item_handle, "conn"), conn)
+    mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
+    mdl.set_property_value(mdl.prop(item_handle, "pf_3ph_set"), pf_3ph_set)
+    mdl.set_property_value(mdl.prop(item_handle, "kV"), kv)
+    mdl.set_property_value(mdl.prop(item_handle, "model"), model)
+
+    mdl.set_property_value(mdl.prop(item_handle, "dssT"), dsst)
+    mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), s_ts)
+    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), t_ts_internal)
+    mdl.set_property_value(mdl.prop(item_handle, "Slen"), slen)
+    mdl.set_property_value(mdl.prop(item_handle, "dssnpts"), dssnpts)
+    mdl.set_property_value(mdl.prop(item_handle, "T_lim_low"), t_lim_low)
+    mdl.set_property_value(mdl.prop(item_handle, "T_lim_high"), t_lim_high)
+    mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), ts_switch)
+
+
+def pf_mode_3ph_value_edited(mdl, container_handle, new_value):
+    if new_value == "Unit":
+        mdl.disable_property(mdl.prop(container_handle, "pf_3ph"))
+    else:
+        mdl.enable_property(mdl.prop(container_handle, "pf_3ph"))
+
+
+def validate_execution_rate(mdl, container_handle):
+    comp_handle = mdl.get_sub_level_handle(container_handle)
+    tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
+    ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
+    cpl_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+    if cpl_comp:
+        if ts_mask == tfst_mask:
+            mdl.set_property_value(mdl.prop(cpl_comp, "Fast_con"), "False")
+        else:
+            mdl.set_property_value(mdl.prop(cpl_comp, "Fast_con"), "True")
+
+
+def t_mode_value_edited(mdl, container_handle, new_value):
+    if new_value == "Time":
+        mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
+    else:
+        mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+
+
+def s_ts_mode_value_edited(mdl, container_handle, new_value):
+    if new_value == "Manual input":
+        mdl.disable_property(mdl.prop(container_handle, "T_Ts_max"))
+        mdl.disable_property(mdl.prop(container_handle, "del_Ts"))
+        mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
+    else:
+        mdl.enable_property(mdl.prop(container_handle, "T_Ts_max"))
+        mdl.enable_property(mdl.prop(container_handle, "del_Ts"))
+        mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
