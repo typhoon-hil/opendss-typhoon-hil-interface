@@ -223,10 +223,14 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
     conn_type_prop = mdl.prop(container_handle, "conn_type")
     conn_type = mdl.get_property_disp_value(conn_type_prop)
 
+    zip_vector_prop = mdl.prop(container_handle, "zip_vector")
+    zip_vector = mdl.get_property_disp_value(zip_vector_prop)
+
     phases_prop = mdl.prop(container_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
     if new_value == "Constant Impedance":
+        mdl.hide_property(zip_vector_prop)
         mdl.set_property_disp_value(mdl.prop(container_handle, 'Pow_ref_s'), "Fixed")
         mdl.disable_property(mdl.prop(container_handle, "Pow_ref_s"))
         mdl.disable_property(mdl.prop(container_handle, "execution_rate"))
@@ -241,6 +245,11 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         if conn_type == "Y":
             mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
     else:
+        if new_value == "Constant Power":
+            mdl.hide_property(zip_vector_prop)
+            mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_vector'), "[0,0,1]")
+        elif new_value == "Constant Z,I,P":
+            mdl.show_property(zip_vector_prop)
         mdl.enable_property(mdl.prop(container_handle, "Pow_ref_s"))
         mdl.enable_property(mdl.prop(container_handle, "execution_rate"))
         mdl.enable_property(mdl.prop(container_handle, "Tfast"))
