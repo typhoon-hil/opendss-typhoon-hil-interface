@@ -1332,30 +1332,6 @@ def set_load_model(mdl, mask_handle, new_value):
             mdl.create_connection(mdl.term(cpl1, "C1"), tag_c)
 
 
-def exec_changed_slow(mdl, mask_handle, new_value):
-    comp_handle = mdl.get_sub_level_handle(mask_handle)
-    t_fast = mdl.get_property_value(mdl.prop(mask_handle, "Tfast"))
-    cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
-
-    if cpl1:
-        if new_value == t_fast:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
-        else:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
-
-
-def exec_changed_fast(mdl, mask_handle, new_value):
-    comp_handle = mdl.get_sub_level_handle(mask_handle)
-    t_slow = mdl.get_property_value(mdl.prop(mask_handle, "execution_rate"))
-    cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
-
-    if cpl1:
-        if new_value == t_slow:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
-        else:
-            mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
-
-
 def zero_seq_removal(mdl, mask_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(mask_handle)
     cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)

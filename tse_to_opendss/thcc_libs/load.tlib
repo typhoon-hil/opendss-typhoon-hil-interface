@@ -372,7 +372,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.exec_changed_slow(mdl, container_handle, new_value)
+                        comp_script.validate_execution_rate(mdl, container_handle)
 
                     ENDCODE
                 }
@@ -388,7 +388,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.exec_changed_fast(mdl, container_handle, new_value)
+                        comp_script.validate_execution_rate(mdl, container_handle)
 
                     ENDCODE
                 }
