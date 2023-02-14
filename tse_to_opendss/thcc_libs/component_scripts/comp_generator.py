@@ -332,3 +332,148 @@ def update_frequency_property(mdl, mask_handle, init=False):
 
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, 'images/mchn_wrsync_generic2.svg')
+
+
+def generator_pre_compile_function(mdl, item_handle, prop_dict):
+    import numpy
+
+    pp = 60 * prop_dict["basefreq"] / prop_dict["nom_rpm"]
+
+    if prop_dict["Init_En"] is True:
+        init_switch = 1
+    else:
+        init_switch = 0
+
+    phases = 3
+
+    if prop_dict["gen_ts_en"]:
+        gen_ts_en_bit = 1
+    else:
+        gen_ts_en_bit = 0
+
+    dssnpts = len(prop_dict["S_Ts"])
+
+    s_ts = prop_dict["loadshape"]
+    dss_t = prop_dict["loadshape_int"]
+    s_len = len(s_ts)
+
+    if prop_dict["T_mode"] == "Time":
+        t_ts_internal = [t_val for t_val in prop_dict["T_Ts"]]
+    else:
+        t_ts_internal = [x for x in range(s_len)]
+
+    t_lim_low = t_ts_internal[0]
+    t_lim_high = t_ts_internal[-1]
+
+    if prop_dict["T_mode"] == "Time":
+        ts_switch = 1
+    else:
+        ts_switch = 0
+
+    if prop_dict["G_mod"] == "Constant kW":
+        model = 1
+    elif prop_dict["G_mod"] == "Constant admittance":
+        model = 2
+    elif prop_dict["G_mod"] == "Constant kW, Constant kV":
+        model = 3
+    elif prop_dict["G_mod"] == "Constant kW, Fixed Q":
+        model = 4
+    elif prop_dict["G_mod"] == "Constant kW, Fixed Q (constant reactance)":
+        model = 5
+    else:
+        model = 3
+
+    kw = prop_dict["pf"] * prop_dict["kVA"]
+    kvar = prop_dict["kVA"] * ((1 - prop_dict["pf"] ** 2) ** 0.5)
+
+    ws = prop_dict["basefreq"] * 2 * numpy.pi
+    ws_inv = 1 / ws
+    z_base = 1000 * (prop_dict["kv"] ** 2) / prop_dict["kVA"]
+
+    rs = 0.01 * z_base
+    lmd = prop_dict["Xd"] * z_base / ws
+    lmq = lmd
+    lls = 0.05 * lmd
+    llfd = (((prop_dict["Xdp"] * z_base / ws) - lls) * lmd) / (lmd - ((prop_dict["Xdp"] * z_base / ws) - lls))
+    llkd = (((prop_dict["Xdpp"] * z_base / ws) - lls) * llfd) / (llfd - ((prop_dict["Xdpp"] * z_base / ws) - lls))
+
+    rfd = (prop_dict["Xdp"] * z_base) / prop_dict["XRdp"]
+    rkd = (prop_dict["Xdpp"] * z_base) / prop_dict["XRdp"]
+
+    llkq = llkd
+    llkq2 = llkq
+    rkq = rkd
+    rkq2 = rkq
+
+    moment_of_inertia = prop_dict["H"] * 1000 * prop_dict["kVA"] / (0.5 * (ws / pp) * (ws / pp))
+
+    w_base = ws / 2
+    trq_base = 1000 * prop_dict["kVA"] / w_base
+
+    lmzq = 1 / (1 / lmq + 1 / llkq + 1 / llkq2)
+    lmzd = 1 / (1 / lmd + 1 / llkd + 1 / llfd)
+
+    a_matrix = [[(rkq / llkq) * ((lmzq / llkq) - 1), rkq * lmzq / (llkq * llkq2), 0, 0],
+                [rkq2 * lmzq / (llkq * llkq2), (rkq2 / llkq2) * ((lmzq / llkq2) - 1), 0, 0],
+                [0, 0, (rkd / llkd) * ((lmzd / llkd) - 1), rkd * lmzd / (llkd * llfd)],
+                [0, 0, rfd * lmzd / (llkd * llfd), (rfd / llfd) * ((lmzd / llfd) - 1)]]
+    b_matrix = [[rkq * lmzq / llkq, 0, 0],
+                [rkq2 * lmzq / llkq2, 0, 0],
+                [0, rkd * lmzd / llkd, 0],
+                [0, rfd * lmzd / llfd, 1]]
+
+    a_matrix = numpy.matrix(a_matrix)
+    b_matrix = numpy.matrix(b_matrix)
+
+    d_a_matrix = numpy.linalg.inv((numpy.eye(4) -
+                                   (0.5 * prop_dict["execution_rate"]) *
+                                   a_matrix)) * (numpy.eye(4) + (0.5 * prop_dict["execution_rate"]) * a_matrix)
+    d_b_matrix = numpy.linalg.inv((numpy.eye(4) -
+                                   (0.5 * prop_dict["execution_rate"])
+                                   * a_matrix)) * (prop_dict["execution_rate"] * b_matrix)
+    for row in range(d_a_matrix.shape[0]):
+        for column in range(d_a_matrix.shape[1]):
+            mdl.set_property_value(mdl.prop(item_handle, f"dA{row + 1}{column + 1}"), d_a_matrix[row, column])
+
+    for row in range(d_b_matrix.shape[0]):
+        for column in range(d_b_matrix.shape[1]):
+            mdl.set_property_value(mdl.prop(item_handle, f"dB{row + 1}{column + 1}"), d_b_matrix[row, column])
+
+    mdl.set_property_value(mdl.prop(item_handle, "ws"), ws)
+    mdl.set_property_value(mdl.prop(item_handle, "ws_inv"), ws_inv)
+    mdl.set_property_value(mdl.prop(item_handle, "Z_base"), z_base)
+    mdl.set_property_value(mdl.prop(item_handle, "rs"), rs)
+    mdl.set_property_value(mdl.prop(item_handle, "Lmd"), lmd)
+    mdl.set_property_value(mdl.prop(item_handle, "Lmq"), lmq)
+    mdl.set_property_value(mdl.prop(item_handle, "Lmzd"), lmzd)
+    mdl.set_property_value(mdl.prop(item_handle, "Lmzq"), lmzq)
+    mdl.set_property_value(mdl.prop(item_handle, "Lls"), lls)
+    mdl.set_property_value(mdl.prop(item_handle, "Llfd"), llfd)
+    mdl.set_property_value(mdl.prop(item_handle, "Llkd"), llkd)
+    mdl.set_property_value(mdl.prop(item_handle, "Llkq"), llkq)
+    mdl.set_property_value(mdl.prop(item_handle, "Llkq2"), llkq2)
+    mdl.set_property_value(mdl.prop(item_handle, "rfd"), rfd)
+    mdl.set_property_value(mdl.prop(item_handle, "rkd"), rkd)
+    mdl.set_property_value(mdl.prop(item_handle, "rkq"), rkq)
+    mdl.set_property_value(mdl.prop(item_handle, "rkq2"), rkq2)
+    mdl.set_property_value(mdl.prop(item_handle, "J"), moment_of_inertia)
+    mdl.set_property_value(mdl.prop(item_handle, "kw"), kw)
+    mdl.set_property_value(mdl.prop(item_handle, "w_base"), w_base)
+    mdl.set_property_value(mdl.prop(item_handle, "T_base"), trq_base)
+    mdl.set_property_value(mdl.prop(item_handle, "phases"), phases)
+    mdl.set_property_value(mdl.prop(item_handle, "PP"), pp)
+    mdl.set_property_value(mdl.prop(item_handle, "model"), model)
+    mdl.set_property_value(mdl.prop(item_handle, "kvar"), kvar)
+
+    mdl.set_property_value(mdl.prop(item_handle, "Init_switch"), init_switch)
+
+    mdl.set_property_value(mdl.prop(item_handle, "gen_ts_en_bit"), gen_ts_en_bit)
+    mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), s_ts)
+    mdl.set_property_value(mdl.prop(item_handle, "dssT"), dss_t)
+    mdl.set_property_value(mdl.prop(item_handle, "dssnpts"), dssnpts)
+
+    mdl.set_property_value(mdl.prop(item_handle, "T_lim_low"), t_lim_low)
+    mdl.set_property_value(mdl.prop(item_handle, "T_lim_high"), t_lim_high)
+    mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), ts_switch)
+    mdl.set_property_value(mdl.prop(item_handle, "Slen"), s_len)
+    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), t_ts_internal)
