@@ -855,7 +855,7 @@ library "OpenDSS" {
                                  "T_Ts": T_Ts
                                  }
                     comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.generator_pre_compile_function(mdl, item_handle, prop_dict)
+                    comp_script.load_pre_compile_function(mdl, item_handle, prop_dict)
                 ENDCODE
 
                 CODE define_icon

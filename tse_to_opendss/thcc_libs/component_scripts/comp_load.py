@@ -1381,7 +1381,7 @@ def set_pf_mode(mdl, mask_handle, new_value):
             mdl.set_property_value(mdl.prop(cil1, "pf_mode_3ph"), "Lag")
 
 
-def generator_pre_compile_function(mdl, item_handle, prop_dict):
+def load_pre_compile_function(mdl, item_handle, prop_dict):
     """
 
     Args:
