@@ -17,11 +17,13 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         else:
             mdl.hide_property(fb_out_type)
 
+
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     comp_handle = mdl.get_parent(mask_handle)
     deleted_ports = []
     created_ports = {}
 
+    ctrl_input_port = mdl.get_item("ctrl", parent=comp_handle, item_type="port")
     enable_fb_prop = mdl.prop(comp_handle, "enable_fb_out")
     enable_fb_terminal = True if mdl.get_property_value(enable_fb_prop) == "True" else False
     fb_conn = mdl.get_item("fb", parent=comp_handle, item_type="port")
@@ -35,13 +37,16 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 parent=comp_handle,
                 terminal_position=("top", "right"),
                 rotation="left",
-                position=(7786, 7800)
+                position=(7786, 7800),
+                hide_name=True
             )
             created_ports.update({"fb": fb_conn})
+            mdl.set_port_properties(ctrl_input_port, terminal_position=("top", "left"))
     else:
         if fb_conn:
             deleted_ports.append(mdl.get_name(fb_conn))
             mdl.delete_item(fb_conn)
+            mdl.set_port_properties(ctrl_input_port, terminal_position=("top", "center"))
 
     # Container workaround
     mdl.refresh_icon(comp_handle)
@@ -49,6 +54,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     mdl.set_port_properties(C2, terminal_position=("right", "bottom"))
 
     return created_ports, deleted_ports
+
 
 def update_fb_connection(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
