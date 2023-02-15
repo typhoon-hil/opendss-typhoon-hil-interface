@@ -30,6 +30,7 @@ library "OpenDSS" {
             [
                 position = 7688, 7800
                 rotation = right
+                hide_name = True
             ]
 
             port A1 {
@@ -40,6 +41,7 @@ library "OpenDSS" {
             }
             [
                 position = 7600, 7856
+                hide_name = True
             ]
 
             port B1 {
@@ -50,6 +52,7 @@ library "OpenDSS" {
             }
             [
                 position = 7600, 7952
+                hide_name = True
             ]
 
             port C1 {
@@ -60,6 +63,7 @@ library "OpenDSS" {
             }
             [
                 position = 7600, 8048
+                hide_name = True
             ]
 
             port A2 {
@@ -71,6 +75,7 @@ library "OpenDSS" {
             [
                 position = 7872, 7856
                 scale = -1, 1
+                hide_name = True
             ]
 
             port B2 {
@@ -82,6 +87,7 @@ library "OpenDSS" {
             [
                 position = 7872, 7952
                 scale = -1, 1
+                hide_name = True
             ]
 
             port C2 {
@@ -93,6 +99,7 @@ library "OpenDSS" {
             [
                 position = 7872, 8048
                 scale = -1, 1
+                hide_name = True
             ]
 
             connect A1 S.a_in as Connection1
