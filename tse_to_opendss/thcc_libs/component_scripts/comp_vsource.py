@@ -1,4 +1,6 @@
 import numpy as np
+from math import log10, floor
+
 
 x0, y0 = (8192, 8192)
 
@@ -164,7 +166,61 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
-    toggle_frequency_prop(mdl, mask_handle, init=False)
+    old_value = None
+    new_value = None
+    prop_name = None
+    if caller_prop_handle:
+        old_value = mdl.get_property_value(caller_prop_handle)
+        new_value = mdl.get_property_disp_value(caller_prop_handle)
+        prop_name = mdl.get_name(caller_prop_handle)
+
+    # Property Routines:
+    # ------------------------------------------------------------------------------------------------------------------
+    # Global Base Frequency
+    # ------------------------------------------------------------------------------------------------------------------
+    if prop_name == "global_basefreq":
+        toggle_frequency_prop(mdl, mask_handle, init=False)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # Global Base Frequency
+    # ------------------------------------------------------------------------------------------------------------------
+    elif prop_name == "input_method":
+
+        si_names = ["r1", "r0", "x1", "x0"]
+        si_props = [mdl.prop(mask_handle, name) for name in si_names]
+        pu_names = ["r1_pu", "r0_pu", "x1_pu", "x0_pu"]
+        pu_props = [mdl.prop(mask_handle, name) for name in pu_names]
+        mvasc_names = ["mva_sc3", "mva_sc1"]
+        mvasc_props = [mdl.prop(mask_handle, name) for name in mvasc_names]
+        isc_names = ["i_sc3", "i_sc1"]
+        isc_props = [mdl.prop(mask_handle, name) for name in isc_names]
+        xr_names = ["x1r1", "x0r0"]
+        xr_props = [mdl.prop(mask_handle, name) for name in xr_names]
+
+        v_base = float(mdl.get_property_disp_value(mdl.prop(mask_handle, "basekv")))*1e3
+        s_base = float(mdl.get_property_disp_value(mdl.prop(mask_handle, "baseMVA")))*1e6
+        z_base = v_base*v_base/s_base
+        si_values = [float(mdl.get_property_disp_value(prop)) for prop in si_props]
+
+        if new_value == "Z":
+            # Hide/Show properties
+            [mdl.show_property(prop) for prop in si_props]
+            [mdl.hide_property(prop) for prop in pu_props + mvasc_props + isc_props + xr_props]
+        elif new_value == "Zpu":
+            # Hide/Show properties
+            [mdl.show_property(prop) for prop in pu_props]
+            [mdl.hide_property(prop) for prop in si_props + mvasc_props + isc_props + xr_props]
+        elif new_value == "MVAsc":
+            # Hide/Show properties
+            [mdl.show_property(prop) for prop in mvasc_props + xr_props]
+            [mdl.hide_property(prop) for prop in si_props + pu_props + isc_props]
+        elif new_value == "Isc":
+            # Hide/Show properties
+            [mdl.show_property(prop) for prop in isc_props + xr_props]
+            [mdl.hide_property(prop) for prop in si_props + pu_props + mvasc_props]
+
+        # Update values from Z props
+        #[mdl.set_property_disp_value(prop, sc_notation(value/z_base)) for prop, value in zip(pu_props, si_values)]
 
 
 def define_icon(mdl, mask_handle):
@@ -173,3 +229,15 @@ def define_icon(mdl, mask_handle):
         mdl.set_component_icon_image(mask_handle, 'images/vsource_gnd.svg')
     else:
         mdl.set_component_icon_image(mask_handle, 'images/vsource.svg')
+
+
+def sc_notation(val, num_decimals=2, exponent_pad=2):
+    exponent_template = "{:0>%d}" % exponent_pad
+    mantissa_template = "{:.%df}" % num_decimals
+
+    order_of_magnitude = floor(log10(abs(val)))
+    nearest_lower_third = 3 * (order_of_magnitude // 3)
+    adjusted_mantissa = val * 10 ** (-nearest_lower_third)
+    adjusted_mantissa_string = mantissa_template.format(adjusted_mantissa)
+    adjusted_exponent_string = "+-"[nearest_lower_third < 0] + exponent_template.format(abs(nearest_lower_third))
+    return adjusted_mantissa_string + "e" + f"{int(adjusted_exponent_string)}"

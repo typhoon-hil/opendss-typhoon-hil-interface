@@ -101,12 +101,16 @@ library "OpenDSS" {
                 help_file = "help/OpenDSSManual.pdf#page=166"
 
                 basekv {
-                    label = "Base Voltage [kV]"
+                    label = "Base Voltage"
+                    description = "base or rated Line-to-Line kV"
+                    unit = "kV"
                     widget = edit
                     type = generic
                     default_value = "115.0"
+                    group = "General:1"
 
                     CODE property_value_changed
+                        # TODO: Evaluate if is necessary to run it on value changed (we can run on compile)
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.update_source_values(mdl, container_handle)
                     ENDCODE
@@ -114,193 +118,34 @@ library "OpenDSS" {
 
                 baseMVA {
 
-                	label = "Base Power [MVA]"
+                	label = "Base Power"
+                	description = "Base Power for impedance specifications"
                 	widget = edit
                 	type = generic
                 	default_value = "100.0"
-                	keepline
+                	unit = "MVA"
+                	group = "General"
 
                 }
 
                 BaseFreq {
-                    label = "Base Freq [Hz]"
+                    label = "Base Freq"
+                    description = "Base Frequency for impedance specifications"
                     widget = edit
                     type = generic
                     default_value = "60"
-                    keepline
-                }
-
-                pu {
-                    label = "Voltage [pu]"
-                    widget = edit
-                    type = generic
-                    default_value = "1.0"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                Angle {
-                    label = "Phase [°]"
-                    widget = edit
-                    type = generic
-                    default_value = "0"
-                    keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                Frequency {
-                    label = "Frequency [Hz]"
-                    widget = edit
-                    type = generic
-                    default_value = "60"
-                    keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-
-                }
-
-                input_method {
-                	label = "Input Parameterization"
-                	widget = combo
-						combo_values = "Z", "MVA (SC)", "I (SC)", "Z (pu)"
-                	type = string
-                	default_value = "Z"
-                	no_evaluate
-                }
-
-                r1 {
-                    label = "R1 [Ω]"
-                    widget = edit
-                    type = generic
-                    default_value = "1.65"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                x1 {
-                    label = "X1 [Ω]"
-                    widget = edit
-                    type = generic
-                    default_value = "6.6"
-                    keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                r0 {
-                    label = "R0 [Ω]"
-                    widget = edit
-                    type = generic
-                    default_value = "1.9"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                x0 {
-                    label = "X0 [Ω]"
-                    widget = edit
-                    type = generic
-                    default_value = "5.7"
-                    keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                r1_pu {
-                    label = "R1 [pu]"
-                    widget = edit
-                    type = generic
-                    default_value = "1.65"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                x1_pu {
-                    label = "X1 [pu]"
-                    widget = edit
-                    type = generic
-                    default_value = "6.6"
-                    keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                r0_pu {
-                    label = "R0 [pu]"
-                    widget = edit
-                    type = generic
-                    default_value = "1.9"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                x0_pu {
-                    label = "X0 [pu]"
-                    widget = edit
-                    type = generic
-                    default_value = "5.7"
-                    keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-                }
-
-                ground_connected {
-                    label = "Ground-connected"
-                    widget = checkbox
-                    type = bool
-                    default_value = "True"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        if not new_value == old_value:
-                            ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                            comp_script.update_connections(mdl, container_handle, ports)
-                        mdl.refresh_icon(container_handle)
-                    ENDCODE
+                    unit = "Hz"
+                    group = "General"
                 }
 
                 global_basefreq {
                     label = "Global base freq"
+                    description = "Uses the Global Base Frequency"
                     widget = checkbox
                     type = bool
                     default_value = "False"
                     no_evaluate
-                    keepline
+                    group = "General"
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
@@ -316,12 +161,280 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
+                ground_connected {
+                    label = "Ground-connected"
+                    description = "Create a second terminal connection to Bus.0.0.0"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+                    group = "General"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if not new_value == old_value:
+                            ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                            comp_script.update_connections(mdl, container_handle, ports)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                pu {
+                    label = "Voltage [pu]"
+                    description = "Actual per unit at which the source is operating. Assumed balanced for all phases"
+                    widget = edit
+                    type = generic
+                    default_value = "1.0"
+                    group = "Parameters:2"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Angle {
+                    label = "Phase [°]"
+                    description = "Base angle of the first phase"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Parameters"
+                    keepline
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Frequency {
+                    label = "Frequency [Hz]"
+                    description = "Frequency of the source"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    group = "Parameters"
+                    keepline
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+
+                }
+
+                input_method {
+                	label = "Input Method"
+                	description = "Method to define the input parameterization. Either impedance or short-circuit based"
+                	widget = combo
+						combo_values = "Z", "Zpu", "MVAsc", "Isc"
+                	type = string
+                	default_value = "Z"
+                	group = "Parameters"
+                	no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                r1 {
+                    label = "R1"
+                    description = "Positive-sequence resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1.65"
+                    unit = "Ω"
+                    group = "Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                x1 {
+                    label = "X1"
+                    description = "Positive-sequence reactance"
+                    widget = edit
+                    type = generic
+                    default_value = "6.6"
+                    unit = "Ω"
+                    group = "Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                r0 {
+                    label = "R0"
+                    description = "Zero-sequence resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1.9"
+                    unit = "Ω"
+                    group = "Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                x0 {
+                    label = "X0"
+                    description = "Zero-sequence reactance"
+                    widget = edit
+                    type = generic
+                    default_value = "5.7"
+                    unit = "Ω"
+                    group = "Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                r1_pu {
+                    label = "R1"
+                    description = "Per-unit positive-sequence resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1.65"
+                    unit = "pu"
+                    group = "Parameters"
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                x1_pu {
+                    label = "X1"
+                    description = "Per-unit positive-sequence reactance"
+                    widget = edit
+                    type = generic
+                    default_value = "6.6"
+                    unit = "pu"
+                    group = "Parameters"
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                r0_pu {
+                    label = "R0"
+                    description = "Per-unity zero-sequence resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1.9"
+                    unit = "pu"
+                    group = "Parameters"
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                x0_pu {
+                    label = "X0"
+                    description = "Per-unity zero-sequence reactance"
+                    widget = edit
+                    type = generic
+                    default_value = "5.7"
+                    unit = "pu"
+                    group = "Parameters"
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+
+                mva_sc3 {
+                    label = "3ph Short Circuit Power"
+                    description = "Three-phase Short Circuit Power Ratio"
+                    widget = edit
+                    type = generic
+                    default_value = 2000
+                    unit = "MVA"
+                    group = "Parameters"
+                    nonvisible
+                }
+
+                mva_sc1 {
+                    label = "1ph Short Circuit Power"
+                    description = "Single-phase Short Circuit Power Ratio"
+                    widget = edit
+                    type = generic
+                    default_value = 2100
+                    unit = "MVA"
+                    group = "Parameters"
+                    nonvisible
+                }
+
+                i_sc3 {
+                    label = "3ph Short Circuit Current"
+                    description = "Three-phase Short Circuit Current Ratio"
+                    widget = edit
+                    type = generic
+                    default_value = 2000
+                    unit = "A"
+                    group = "Parameters"
+                    nonvisible
+                }
+
+                i_sc1 {
+                    label = "1ph Short Circuit Current"
+                    description = "Single-phase Short Circuit Current Ratio"
+                    widget = edit
+                    type = generic
+                    default_value = 2100
+                    unit = "A"
+                    group = "Parameters"
+                    nonvisible
+                }
+
+                x1r1 {
+                    label = "X1/R1"
+                    description = "Ratio of X1/R1"
+                    widget = edit
+                    type = generic
+                    default_value = 4.0
+                    group = "Parameters"
+                    nonvisible
+                }
+
+                x0r0 {
+                    label = "X0/R0"
+                    description = "Ratio of X0/R0"
+                    widget = edit
+                    type = generic
+                    default_value = 3.0
+                    group = "Parameters"
+                    nonvisible
+                }
+
                 enable_monitoring {
                     label = "Enable monitoring"
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    group = "Monitoring"
+                    group = "Monitoring:3"
                     no_evaluate
                 }
 
