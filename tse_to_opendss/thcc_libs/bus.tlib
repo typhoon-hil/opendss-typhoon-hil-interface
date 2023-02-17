@@ -10,7 +10,7 @@ library "OpenDSS" {
 				IA = "False"
 				IB = "False"
 				IC = "False"
-				Ts = "ts"
+				Ts = "execution_rate"
 				VAn = "False"
 				VBn = "False"
 				VCn = "False"
@@ -360,8 +360,9 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                ts {
+                execution_rate {
                     label = "Execution Rate"
+                    previous_names = "ts"
                     widget = edit
                     type = generic
                     default_value = "100e-6"
