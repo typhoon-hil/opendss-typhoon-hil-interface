@@ -167,7 +167,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.change_number_phases_switch(mdl, container_handle, new_value)
                         comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.change_number_phases_conn(mdl, container_handle, new_value)
                     ENDCODE
                     }
 

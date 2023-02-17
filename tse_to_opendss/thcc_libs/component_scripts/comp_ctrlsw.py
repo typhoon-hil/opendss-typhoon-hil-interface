@@ -47,9 +47,10 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             mdl.delete_item(fb_conn)
             mdl.set_port_properties(ctrl_input_port, terminal_position=("top", "center"))
 
-    new_created_ports, new_deleted_ports = change_number_phases(mdl,
-                                                                mask_handle,
-                                                                mdl.get_property_value(mdl.prop(comp_handle, "phases")))
+    new_created_ports, new_deleted_ports = change_number_phases_port(mdl,
+                                                                     mask_handle,
+                                                                     mdl.get_property_value(mdl.prop(comp_handle,
+                                                                                                     "phases")))
 
     created_ports.update(new_created_ports)
     for port_name in new_deleted_ports:
@@ -84,7 +85,7 @@ def define_icon(mdl, mask_handle):
         mdl.set_component_icon_image(mask_handle, 'images/switch_open.svg')
 
 
-def change_number_phases(mdl, container_handle, new_value):
+def change_number_phases_port(mdl, container_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(container_handle)
     phase_num = int(new_value)
 
@@ -104,31 +105,6 @@ def change_number_phases(mdl, container_handle, new_value):
     if phase_num == 2:
         port_dict["B1"] = port_dict["C1"]
         port_dict["B2"] = port_dict["C2"]
-
-    switch_dict = {"3": {"type_name": "Triple Pole Single Throw Contactor",
-                         "position": (7736, 7952)},
-                   "2": {"type_name": "Double Pole Single Throw Contactor",
-                         "position": (7736, 7952)},
-                   "1": {"type_name": "Single Pole Single Throw Contactor",
-                         "position": (7736, 7856)}}
-
-    switch = mdl.get_item("S", parent=comp_handle, item_type="component")
-    if mdl.get_component_type_name(switch) != switch_dict[new_value]["type_name"]:
-        mdl.delete_item(switch)
-        switch = mdl.create_component(switch_dict[new_value]["type_name"],
-                                      parent=comp_handle,
-                                      name="S",
-                                      position=switch_dict[new_value]["position"])
-        mdl.set_property_value(mdl.prop(switch, "ctrl_src"), "Model")
-        mdl.set_property_value(mdl.prop(switch, "initial_state"), "on")
-
-        ctrl_port = mdl.get_item("ctrl", parent=comp_handle, item_type="port")
-        mdl.create_connection(ctrl_port, mdl.term(switch, "ctrl_in"))
-
-        fb_port = mdl.get_item("fb", parent=comp_handle, item_type="port")
-        if fb_port:
-            mdl.set_property_value(mdl.prop(switch, "enable_fb_out"), True)
-            mdl.create_connection(mdl.term(switch, "feedback_out"), fb_port)
 
     phase_list = ["A", "B", "C"]
     used_phase_list = phase_list[0:phase_num]
@@ -167,10 +143,6 @@ def change_number_phases(mdl, container_handle, new_value):
                 mdl.set_port_properties(port2,
                                         terminal_position=port_dict[f"{phase}2"]["terminal_position"])
                 mdl.set_position(port2, port_dict[f"{phase}2"]["position"])
-        if len(mdl.find_connections(port1, mdl.term(switch, f"{phase.lower()}_in"))) == 0:
-            mdl.create_connection(port1, mdl.term(switch, f"{phase.lower()}_in"))
-        if len(mdl.find_connections(mdl.term(switch, f"{phase.lower()}_out"), port2)) == 0:
-            mdl.create_connection(mdl.term(switch, f"{phase.lower()}_out"), port2)
 
     for phase in unused_phase_list:
         port1 = mdl.get_item(f"{phase}1", parent=comp_handle, item_type="port")
@@ -183,3 +155,50 @@ def change_number_phases(mdl, container_handle, new_value):
             mdl.delete_item(port2)
 
     return created_ports, deleted_ports
+
+
+def change_number_phases_switch(mdl, container_handle, new_value):
+    comp_handle = mdl.get_sub_level_handle(container_handle)
+
+    switch_dict = {"3": {"type_name": "Triple Pole Single Throw Contactor",
+                         "position": (7736, 7952)},
+                   "2": {"type_name": "Double Pole Single Throw Contactor",
+                         "position": (7736, 7952)},
+                   "1": {"type_name": "Single Pole Single Throw Contactor",
+                         "position": (7736, 7856)}}
+
+    switch = mdl.get_item("S", parent=comp_handle, item_type="component")
+    if mdl.get_component_type_name(switch) != switch_dict[new_value]["type_name"]:
+        mdl.delete_item(switch)
+        switch = mdl.create_component(switch_dict[new_value]["type_name"],
+                                      parent=comp_handle,
+                                      name="S",
+                                      position=switch_dict[new_value]["position"])
+        mdl.set_property_value(mdl.prop(switch, "ctrl_src"), "Model")
+        mdl.set_property_value(mdl.prop(switch, "initial_state"), "on")
+
+        ctrl_port = mdl.get_item("ctrl", parent=comp_handle, item_type="port")
+        mdl.create_connection(ctrl_port, mdl.term(switch, "ctrl_in"))
+
+        fb_port = mdl.get_item("fb", parent=comp_handle, item_type="port")
+        if fb_port:
+            mdl.set_property_value(mdl.prop(switch, "enable_fb_out"), True)
+            mdl.create_connection(mdl.term(switch, "feedback_out"), fb_port)
+
+
+def change_number_phases_conn(mdl, container_handle, new_value):
+    comp_handle = mdl.get_sub_level_handle(container_handle)
+    phase_num = int(new_value)
+
+    phase_list = ["A", "B", "C"]
+    used_phase_list = phase_list[0:phase_num]
+
+    switch = mdl.get_item("S", parent=comp_handle, item_type="component")
+
+    for phase in used_phase_list:
+        port1 = mdl.get_item(f"{phase}1", parent=comp_handle, item_type="port")
+        port2 = mdl.get_item(f"{phase}2", parent=comp_handle, item_type="port")
+        if len(mdl.find_connections(port1, mdl.term(switch, f"{phase.lower()}_in"))) == 0:
+            mdl.create_connection(port1, mdl.term(switch, f"{phase.lower()}_in"))
+        if len(mdl.find_connections(mdl.term(switch, f"{phase.lower()}_out"), port2)) == 0:
+            mdl.create_connection(mdl.term(switch, f"{phase.lower()}_out"), port2)
