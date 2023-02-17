@@ -43,6 +43,6 @@ def update_inner_structure(mdl, mask_handle, new_value):
 def define_icon(mdl, mask_handle):
     switch_is_closed = mdl.get_property_value(mdl.prop(mask_handle, "switch_status"))
     if switch_is_closed:
-        mdl.set_component_icon_image(mask_handle, 'images/switch_closed.svg')
+        mdl.set_component_icon_image(mask_handle, 'images/switch_closed_3ph.svg')
     else:
-        mdl.set_component_icon_image(mask_handle, 'images/switch_open.svg')
+        mdl.set_component_icon_image(mask_handle, 'images/switch_open_3ph.svg')

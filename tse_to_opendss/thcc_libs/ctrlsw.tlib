@@ -35,7 +35,7 @@ library "OpenDSS" {
 
             port A1 {
                 label = "A1"
-                position = left top
+                position = -32, -32
                 kind = pe
                 direction =  in
             }
@@ -46,7 +46,7 @@ library "OpenDSS" {
 
             port B1 {
                 label = "B1"
-                position = left center
+                position = -32, 0
                 kind = pe
                 direction =  in
             }
@@ -57,7 +57,7 @@ library "OpenDSS" {
 
             port C1 {
                 label = "C1"
-                position = left bottom
+                position = -32, 32
                 kind = pe
                 direction =  in
             }
@@ -68,7 +68,7 @@ library "OpenDSS" {
 
             port A2 {
                 label = "A2"
-                position = right top
+                position = 32, -32
                 kind = pe
                 direction =  in
             }
@@ -80,7 +80,7 @@ library "OpenDSS" {
 
             port B2 {
                 label = "B2"
-                position = right center
+                position = 32, 0
                 kind = pe
                 direction =  in
             }
@@ -92,7 +92,7 @@ library "OpenDSS" {
 
             port C2 {
                 label = "C2"
-                position = right bottom
+                position = 32, 32
                 kind = pe
                 direction =  in
             }
@@ -131,10 +131,11 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.define_icon(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
                         comp_script.port_dynamics(mdl, container_handle)
                         comp_script.update_inner_property(mdl, container_handle, "enable_fb_out", new_value)
                         comp_script.update_fb_connection(mdl, container_handle)
-                        mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
 
@@ -155,6 +156,23 @@ library "OpenDSS" {
                         comp_script.update_inner_property(mdl, container_handle, "fb_out_type", new_value)
                     ENDCODE
                 }
+
+                phases {
+                    label = "Phases"
+                    widget = combo
+                    combo_values = "1", "2", "3"
+                    type = string
+                    default_value = "3"
+                    no_evaluate
+                    group = "General"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.change_number_phases_switch(mdl, container_handle, new_value)
+                        comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.change_number_phases_conn(mdl, container_handle, new_value)
+                    ENDCODE
+                    }
 
                 execution_rate {
                     label = "Execution rate"

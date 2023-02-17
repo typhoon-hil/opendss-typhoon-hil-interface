@@ -373,9 +373,9 @@ def update_properties(mdl, _VSConverter_mask):
         tab_name="Inverter Parameters",
         unit="H"
     )
-    _VSConverter_mask_Ts = mdl.create_property(
+    _VSConverter_mask_execution_rate = mdl.create_property(
         item_handle=_VSConverter_mask,
-        name="Ts",
+        name="execution_rate",
         label="Execution rate",
         widget="edit",
         combo_values=[],
@@ -611,6 +611,54 @@ def update_properties(mdl, _VSConverter_mask):
         evaluate=False,
         enabled=True,
         visible=True,
+        tab_name="Time Series",
+        unit=""
+    )
+    _VSConverter_mask_loadshape_from_file = mdl.create_property(
+        item_handle=_VSConverter_mask,
+        name="loadshape_from_file",
+        label="From CSV file",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="Time Series",
+        unit=""
+    )
+    _VSConverter_mask_loadshape_from_file_path = mdl.create_property(
+        item_handle=_VSConverter_mask,
+        name="loadshape_from_file_path",
+        label="LoadShape from file - path",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="Time Series",
+        unit=""
+    )
+    _VSConverter_mask_loadshape_from_file_column = mdl.create_property(
+        item_handle=_VSConverter_mask,
+        name="loadshape_from_file_column",
+        label="LoadShape from file - column",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="Time Series",
+        unit=""
+    )
+    _VSConverter_mask_loadshape_from_file_header = mdl.create_property(
+        item_handle=_VSConverter_mask,
+        name="loadshape_from_file_header",
+        label="LoadShape from file - header",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
         tab_name="Time Series",
         unit=""
     )
@@ -877,7 +925,7 @@ def update_properties(mdl, _VSConverter_mask):
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "Qinv"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "Rac"), "0.01")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "Lac"), "3e-5")
-    mdl.set_property_value(mdl.prop(_VSConverter_mask, "Ts"), "100e-6")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "execution_rate"), "100e-6")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "cont_t"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "dss_ctrl"), "Fixed")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "Phases"), "0")
@@ -897,6 +945,10 @@ def update_properties(mdl, _VSConverter_mask):
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "gen_ts_en"), "False")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "load_loadshape"), "Choose")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_name"), "0")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_from_file"), "False")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_from_file_path"), "")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_from_file_column"), "1")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_from_file_header"), "True")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "useactual"), "False")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "loadshape_int"), "0")
@@ -927,10 +979,8 @@ def update_properties(mdl, _VSConverter_mask):
     """
     mdl.set_handler_code(_VSConverter_mask_ctrl_mode_str, "property_value_edited", _VSConverter_mask_ctrl_mode_str_property_value_edited)
     _VSConverter_mask_dc_cap_en_property_value_edited = """
-    if new_value == False:
-        mdl.disable_property(mdl.prop(container_handle, "dc_cap"))
-    elif new_value == True:
-        mdl.enable_property(mdl.prop(container_handle, "dc_cap"))
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.dc_link_cap_value_edited(mdl, container_handle, new_value)
     
     """
     mdl.set_handler_code(_VSConverter_mask_dc_cap_en, "property_value_edited", _VSConverter_mask_dc_cap_en_property_value_edited)
@@ -941,10 +991,8 @@ def update_properties(mdl, _VSConverter_mask):
     """
     mdl.set_handler_code(_VSConverter_mask_global_basefreq, "property_value_edited", _VSConverter_mask_global_basefreq_property_value_edited)
     _VSConverter_mask_gen_ts_en_property_value_edited = """
-    if new_value:
-        mdl.set_property_value(mdl.prop(container_handle, 'ctrl_mode_str'), "PQ")
-        mdl.set_property_value(mdl.prop(container_handle, 'P_ref_str'), "Converter nominal")
-        mdl.set_property_value(mdl.prop(container_handle, 'Q_ref_str'), "Converter nominal")
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.enable_time_series_value_edited(mdl, container_handle, new_value)
     
     """
     mdl.set_handler_code(_VSConverter_mask_gen_ts_en, "property_value_edited", _VSConverter_mask_gen_ts_en_property_value_edited)
@@ -954,6 +1002,12 @@ def update_properties(mdl, _VSConverter_mask):
     
     """
     mdl.set_handler_code(_VSConverter_mask_loadshape_name, "property_value_edited", _VSConverter_mask_loadshape_name_property_value_edited)
+    _VSConverter_mask_loadshape_from_file_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_VSConverter_mask_loadshape_from_file, "property_value_edited", _VSConverter_mask_loadshape_from_file_property_value_edited)
     _VSConverter_mask_loadshape_property_value_edited = """
     old_value = mdl.get_property_value(prop_handle)
     mdl.set_property_value(prop_handle, old_value)

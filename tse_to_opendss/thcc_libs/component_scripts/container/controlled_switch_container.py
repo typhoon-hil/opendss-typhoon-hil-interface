@@ -25,6 +25,18 @@ def update_properties(mdl, _Controlled_Switch_mask):
         tab_name="General:1",
         unit=""
     )
+    _Controlled_Switch_mask_phases = mdl.create_property(
+        item_handle=_Controlled_Switch_mask,
+        name="phases",
+        label="Phases",
+        widget="combo",
+        combo_values=['1', '2', '3'],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="General",
+        unit=""
+    )
     _Controlled_Switch_mask_execution_rate = mdl.create_property(
         item_handle=_Controlled_Switch_mask,
         name="execution_rate",
@@ -79,6 +91,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
 
     mdl.set_property_value(mdl.prop(_Controlled_Switch_mask, "enable_fb_out"), "False")
     mdl.set_property_value(mdl.prop(_Controlled_Switch_mask, "fb_out_type"), "real")
+    mdl.set_property_value(mdl.prop(_Controlled_Switch_mask, "phases"), "3")
     mdl.set_property_value(mdl.prop(_Controlled_Switch_mask, "execution_rate"), "inherit")
     mdl.set_property_value(mdl.prop(_Controlled_Switch_mask, "initial_state"), "on")
     mdl.set_property_value(mdl.prop(_Controlled_Switch_mask, "on_delay"), "0")
@@ -108,6 +121,14 @@ def update_properties(mdl, _Controlled_Switch_mask):
     mdl.set_handler_code(_Controlled_Switch_mask_enable_fb_out, "property_value_changed",
                          _Controlled_Switch_mask_enable_fb_out_property_value_changed)
 
+    _Controlled_Switch_mask_phases_property_value_changed = """
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+    mdl.refresh_icon(container_handle)
+    """
+    mdl.set_handler_code(_Controlled_Switch_mask_phases, "property_value_changed",
+                         _Controlled_Switch_mask_phases_property_value_changed)
+
     _Controlled_Switch_mask_initial_state_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
     mdl.refresh_icon(container_handle)
@@ -128,10 +149,10 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="sp",
         direction="in",
         dimension=(1,),
-        terminal_position=('top', 'center'),
+        terminal_position=(0, -48),
         rotation="right",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7688, 7800)
     )
     _Controlled_Switch_A1 = mdl.create_port(
@@ -141,10 +162,10 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=('left', 'top'),
+        terminal_position=(-32, -32),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7600, 7856)
     )
     _Controlled_Switch_B1 = mdl.create_port(
@@ -154,10 +175,10 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=('left', 'center'),
+        terminal_position=(-32, 0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7600, 7952)
     )
     _Controlled_Switch_C1 = mdl.create_port(
@@ -167,10 +188,10 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=('left', 'bottom'),
+        terminal_position=(-32, 32),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7600, 8048)
     )
     _Controlled_Switch_A2 = mdl.create_port(
@@ -180,10 +201,10 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=('right', 'top'),
+        terminal_position=(32, -32),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(7872, 7856)
     )
     _Controlled_Switch_B2 = mdl.create_port(
@@ -193,10 +214,10 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=('right', 'center'),
+        terminal_position=(32, 0),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(7872, 7952)
     )
     _Controlled_Switch_C2 = mdl.create_port(
@@ -206,9 +227,9 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=('right', 'bottom'),
+        terminal_position=(32, 36),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(7872, 8048)
     )

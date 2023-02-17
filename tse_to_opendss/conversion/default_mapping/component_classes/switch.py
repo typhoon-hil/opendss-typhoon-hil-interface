@@ -46,7 +46,9 @@ class Switch(TwoTerminal):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        num_phases = 3
+        phases = int(tse_properties.get('phases'))
+
+        num_phases = phases if phases else 3
 
         return num_phases
 
