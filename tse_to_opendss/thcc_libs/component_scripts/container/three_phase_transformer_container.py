@@ -33,7 +33,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling",
         unit=""
     )
@@ -45,7 +45,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling",
         unit=""
     )
@@ -57,7 +57,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling",
         unit=""
     )
@@ -225,7 +225,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['Y', 'Δ'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Winding connections",
         unit=""
     )
@@ -237,7 +237,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Winding connections",
         unit=""
     )
@@ -249,7 +249,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['Y', 'Δ'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Winding connections",
         unit=""
     )
@@ -261,7 +261,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Winding connections",
         unit=""
     )

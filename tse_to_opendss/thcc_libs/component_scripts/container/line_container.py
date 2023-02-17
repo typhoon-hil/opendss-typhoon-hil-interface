@@ -501,7 +501,7 @@ def ports_initialization(mdl, _Line_mask):
         terminal_position=(-32, -32),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7512, 7976)
     )
     _Line_B1 = mdl.create_port(
@@ -513,7 +513,7 @@ def ports_initialization(mdl, _Line_mask):
         terminal_position=(-32, 0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7512, 8032)
     )
     _Line_C1 = mdl.create_port(
@@ -525,7 +525,7 @@ def ports_initialization(mdl, _Line_mask):
         terminal_position=(-32, 32),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7512, 8088)
     )
     _Line_A2 = mdl.create_port(
@@ -537,7 +537,7 @@ def ports_initialization(mdl, _Line_mask):
         terminal_position=(32, -32),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8008, 7936)
     )
     _Line_B2 = mdl.create_port(
@@ -549,7 +549,7 @@ def ports_initialization(mdl, _Line_mask):
         terminal_position=(32, 0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8008, 8032)
     )
     _Line_C2 = mdl.create_port(
@@ -561,7 +561,7 @@ def ports_initialization(mdl, _Line_mask):
         terminal_position=(32, 32),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8008, 8128)
     )
     _Line_N = mdl.create_port(

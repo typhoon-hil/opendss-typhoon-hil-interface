@@ -2,7 +2,7 @@ def update_inner_property(mdl, mask_handle, prop_name, new_value):
     comp_handle = mdl.get_parent(mask_handle)
     inner_contactor = mdl.get_item("S", parent=comp_handle, item_type="component")
     inner_prop = mdl.prop(inner_contactor, prop_name)
-    mdl.set_property_value(inner_prop,  True if new_value == "True" else False)
+    mdl.set_property_value(inner_prop, new_value)
 
 
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
@@ -23,6 +23,14 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     deleted_ports = []
     created_ports = {}
 
+    num_phases = mdl.get_property_value(mdl.prop(comp_handle, "phases"))
+    if num_phases == "1":
+        y_pos = -16
+    elif num_phases == "2":
+        y_pos = -32
+    else:
+        y_pos = -48
+
     ctrl_input_port = mdl.get_item("ctrl", parent=comp_handle, item_type="port")
     enable_fb_prop = mdl.prop(comp_handle, "enable_fb_out")
     enable_fb_terminal = True if mdl.get_property_value(enable_fb_prop) == "True" else False
@@ -34,23 +42,22 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 kind="sp",
                 direction="out",
                 parent=comp_handle,
-                terminal_position=("top", "right"),
+                terminal_position=(16, y_pos),
                 rotation="left",
                 position=(7786, 7800),
                 hide_name=True
             )
             created_ports.update({"fb": fb_conn})
-            mdl.set_port_properties(ctrl_input_port, terminal_position=("top", "left"))
+        else:
+            mdl.set_port_properties(fb_conn, terminal_position=(16, y_pos))
+        mdl.set_port_properties(ctrl_input_port, terminal_position=(-16, y_pos))
     else:
         if fb_conn:
             deleted_ports.append(mdl.get_name(fb_conn))
             mdl.delete_item(fb_conn)
-            mdl.set_port_properties(ctrl_input_port, terminal_position=("top", "center"))
+        mdl.set_port_properties(ctrl_input_port, terminal_position=(0, y_pos))
 
-    new_created_ports, new_deleted_ports = change_number_phases_port(mdl,
-                                                                     mask_handle,
-                                                                     mdl.get_property_value(mdl.prop(comp_handle,
-                                                                                                     "phases")))
+    new_created_ports, new_deleted_ports = change_number_phases_port(mdl, mask_handle, num_phases)
 
     created_ports.update(new_created_ports)
     for port_name in new_deleted_ports:
@@ -60,7 +67,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     mdl.refresh_icon(comp_handle)
     c2 = mdl.get_item("C2", parent=comp_handle, item_type="port")
     if c2:
-        mdl.set_port_properties(c2, terminal_position=("right", "bottom"))
+        mdl.set_port_properties(c2, terminal_position=(32, 36))
 
     return created_ports, deleted_ports
 
@@ -79,10 +86,11 @@ def update_fb_connection(mdl, mask_handle):
 
 def define_icon(mdl, mask_handle):
     initial_state = mdl.get_property_value(mdl.prop(mask_handle, "initial_state"))
+    phase_num = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
     if initial_state == "on":
-        mdl.set_component_icon_image(mask_handle, 'images/switch_closed.svg')
+        mdl.set_component_icon_image(mask_handle, f'images/switch_closed_{phase_num}ph.svg')
     else:
-        mdl.set_component_icon_image(mask_handle, 'images/switch_open.svg')
+        mdl.set_component_icon_image(mask_handle, f'images/switch_open_{phase_num}ph.svg')
 
 
 def change_number_phases_port(mdl, container_handle, new_value):
@@ -92,19 +100,30 @@ def change_number_phases_port(mdl, container_handle, new_value):
     deleted_ports = []
     created_ports = {}
 
-    port_dict = {"B1": {"terminal_position": ("left", "center"),
+    port_dict = {"A1": {"terminal_position": (-32, -32),
+                        "position": (7600, 7856)},
+                 "A2": {"terminal_position": (32, -32),
+                        "position": (7872, 7856)},
+                 "B1": {"terminal_position": (-32, 0),
                         "position": (7600, 7952)},
-                 "B2": {"terminal_position": ("right", "center"),
+                 "B2": {"terminal_position": (32, 0),
                         "position": (7872, 7952)},
-                 "C1": {"terminal_position": ("left", "bottom"),
+                 "C1": {"terminal_position": (-32, 32),
                         "position": (7600, 8048)},
-                 "C2": {"terminal_position": ("right", "bottom"),
+                 "C2": {"terminal_position": (32, 32),
                         "position": (7872, 8048)},
                  }
 
     if phase_num == 2:
-        port_dict["B1"] = port_dict["C1"]
-        port_dict["B2"] = port_dict["C2"]
+        port_dict["A1"]["terminal_position"] = (-32, -16)
+        port_dict["A2"]["terminal_position"] = (32, -16)
+        port_dict["B1"]["position"] = port_dict["C1"]["position"]
+        port_dict["B1"]["terminal_position"] = (-32, 16)
+        port_dict["B2"]["position"] = port_dict["C2"]["position"]
+        port_dict["B2"]["terminal_position"] = (32, 16)
+    elif phase_num == 1:
+        port_dict["A1"]["terminal_position"] = (-32, 0)
+        port_dict["A2"]["terminal_position"] = (32, 0)
 
     phase_list = ["A", "B", "C"]
     used_phase_list = phase_list[0:phase_num]
@@ -124,9 +143,9 @@ def change_number_phases_port(mdl, container_handle, new_value):
                                         )
                 created_ports.update({f"{phase}1": port1})
             else:
-                mdl.set_port_properties(port1,
-                                        terminal_position=port_dict[f"{phase}1"]["terminal_position"])
                 mdl.set_position(port1, port_dict[f"{phase}1"]["position"])
+        mdl.set_port_properties(port1, terminal_position=port_dict[f"{phase}1"]["terminal_position"])
+
         port2 = mdl.get_item(f"{phase}2", parent=comp_handle, item_type="port")
         if phase in ["B", "C"]:
             if not port2:
@@ -140,9 +159,8 @@ def change_number_phases_port(mdl, container_handle, new_value):
                                         )
                 created_ports.update({f"{phase}2": port2})
             else:
-                mdl.set_port_properties(port2,
-                                        terminal_position=port_dict[f"{phase}2"]["terminal_position"])
                 mdl.set_position(port2, port_dict[f"{phase}2"]["position"])
+        mdl.set_port_properties(port2, terminal_position=port_dict[f"{phase}2"]["terminal_position"])
 
     for phase in unused_phase_list:
         port1 = mdl.get_item(f"{phase}1", parent=comp_handle, item_type="port")
