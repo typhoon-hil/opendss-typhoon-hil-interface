@@ -45,12 +45,12 @@ class Switch(TwoTerminal):
     @staticmethod
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
+        try:
+            phases = int(tse_properties.get('phases'))
+        except:
+            phases = 3
 
-        phases = int(tse_properties.get('phases'))
-
-        num_phases = phases if phases else 3
-
-        return num_phases
+        return phases
 
     @staticmethod
     def define_number_of_buses(self, tse_properties, tse_component):
