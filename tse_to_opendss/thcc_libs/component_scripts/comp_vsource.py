@@ -94,7 +94,7 @@ def update_connections(mdl, mask_handle, ports):
     vc = mdl.get_item("Vc", parent=comp_handle)
 
     ground_connected = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
-    if ground_connected:
+    if ground_connected == "Grounded":
         gnd = mdl.create_component(
             "core/Ground",
             name="gnd1",
@@ -105,6 +105,14 @@ def update_connections(mdl, mask_handle, ports):
         mdl.create_connection(mdl.term(gnd, "node"), mdl.term(va, 'n_node'))
         mdl.create_connection(mdl.term(gnd, "node"), mdl.term(vb, 'n_node'))
         mdl.create_connection(mdl.term(gnd, "node"), mdl.term(vc, 'n_node'))
+    elif ground_connected == "Neutral point accessible":
+        gnd = mdl.get_item("gnd1", parent=comp_handle)
+        if gnd:
+            mdl.delete_item(gnd)
+
+        mdl.create_connection(ports.get("N1"), mdl.term(va, 'n_node'))
+        mdl.create_connection(ports.get("N1"), mdl.term(vb, 'n_node'))
+        mdl.create_connection(ports.get("N1"), mdl.term(vc, 'n_node'))
     else:
         # Ground handle
         gnd = mdl.get_item("gnd1", parent=comp_handle)
@@ -121,13 +129,28 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     created_ports = {}
 
     ground_connected = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
-    if ground_connected:
+    if ground_connected in ["Grounded", "Neutral point accessible"]:
         # Delete A2-C2 ports
         a2 = mdl.get_item("A2", parent=comp_handle, item_type="port")
         b2 = mdl.get_item("B2", parent=comp_handle, item_type="port")
         c2 = mdl.get_item("C2", parent=comp_handle, item_type="port")
 
-        for port in [a2, b2, c2]:
+        deleted_ports_list = [a2, b2, c2]
+
+        if ground_connected == "Neutral point accessible":
+            n1 = mdl.create_port(
+                                 name="N1",
+                                 parent=comp_handle,
+                                 terminal_position=[32, 64],
+                                 position=(x0 + 300, y0 + 200),
+                                 rotation="down"
+                                 )
+            created_ports.update({"N1": n1})
+        else:
+            n1 = mdl.get_item("N1", parent=comp_handle, item_type="port")
+            deleted_ports_list.append(n1)
+
+        for port in deleted_ports_list:
             if port:
                 deleted_ports.append(mdl.get_name(port))
                 mdl.delete_item(port)
@@ -158,6 +181,11 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             "B2": b2,
             "C2": c2
         })
+
+        n1 = mdl.get_item("N1", parent=comp_handle, item_type="port")
+        if n1:
+            deleted_ports.append(mdl.get_name(n1))
+            mdl.delete_item(n1)
 
     return created_ports, deleted_ports
 

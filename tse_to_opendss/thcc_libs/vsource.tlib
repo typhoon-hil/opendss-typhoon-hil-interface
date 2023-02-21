@@ -101,10 +101,11 @@ library "OpenDSS" {
                 help_file = "help/OpenDSSManual.pdf#page=166"
 
                 ground_connected {
-                    label = "Ground-connected"
-                    widget = checkbox
-                    type = bool
-                    default_value = "True"
+                    label = "Connection method"
+                    widget = combo
+                    combo_values = "Grounded", "Neutral point accessible", "In series"
+                    type = string
+                    default_value = "Grounded"
                     no_evaluate
 
                     CODE property_value_changed
@@ -295,6 +296,13 @@ library "OpenDSS" {
 
                     comp_script.define_icon(mdl, item_handle)
                     comp_script.update_source_values(mdl, item_handle)
+
+                    prop_handle = mdl.prop(item_handle, "ground_connected")
+                    ground_connected = mdl.get_property_value(prop_handle)
+                    if ground_connected == "True":
+                        mdl.set_property_value(prop_handle, "Grounded")
+                    elif ground_connected == "False":
+                        mdl.set_property_value(prop_handle, "In series")
                 ENDCODE
 
                 CODE pre_compile
