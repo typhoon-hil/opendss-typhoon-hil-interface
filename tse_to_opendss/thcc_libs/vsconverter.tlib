@@ -3,7 +3,6 @@
 library "OpenDSS" {
 
     component Subsystem Root {
-
         component Subsystem VSConverter {
             layout = static
             label = "VSC"
@@ -16,7 +15,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant3 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -117,7 +116,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant4 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -187,7 +186,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant5 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -246,7 +245,7 @@ library "OpenDSS" {
             ]
 
             component "core/Constant" Constant9 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "ext_mode"
             }
             [
@@ -396,7 +395,7 @@ else {
             ]
 
             component "core/Constant" Constant13 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "ctrl_mode_int"
             }
             [
@@ -464,7 +463,7 @@ else {
             ]
 
             component "core/Constant" Constant14 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
             }
             [
                 position = 6688, 9200
@@ -548,7 +547,7 @@ else {
             ]
 
             component "core/Current Measurement" Ia {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -557,7 +556,7 @@ else {
             ]
 
             component "core/Current Measurement" Ib {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -566,7 +565,7 @@ else {
             ]
 
             component "core/Current Measurement" Ic {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -575,7 +574,7 @@ else {
             ]
 
             component "core/Voltage Measurement" Va {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -585,7 +584,7 @@ else {
             ]
 
             component "core/Voltage Measurement" Vb {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -595,7 +594,7 @@ else {
             ]
 
             component "core/Voltage Measurement" Vc {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -707,7 +706,7 @@ else {
                 ]
 
                 component "core/Constant" Constant5 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -741,7 +740,7 @@ else {
                 ]
 
                 component "core/Constant" Constant6 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0.001"
                 }
                 [
@@ -750,7 +749,7 @@ else {
                 ]
 
                 component "core/Constant" Constant7 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -783,7 +782,7 @@ else {
                 ]
 
                 component "core/Constant" Constant8 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "np.pi"
                 }
                 [
@@ -816,7 +815,7 @@ else {
                 ]
 
                 component "core/Constant" Constant9 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "-np.pi"
                 }
                 [
@@ -825,7 +824,7 @@ else {
                 ]
 
                 component "core/Constant" Constant10 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1031,7 +1030,7 @@ else {
             ]
 
             component "core/Clock" Clock1 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
             }
             [
                 position = 8080, 8256
@@ -1039,7 +1038,7 @@ else {
             ]
 
             component "core/Constant" Constant21 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "cont_t"
             }
             [
@@ -1048,7 +1047,7 @@ else {
             ]
 
             component "core/Constant" Constant22 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "Sinv"
             }
             [
@@ -1057,7 +1056,7 @@ else {
             ]
 
             component "core/Constant" Constant23 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "Qinv"
             }
             [
@@ -1066,7 +1065,7 @@ else {
             ]
 
             component "core/Constant" Constant24 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "Fs"
             }
             [
@@ -1075,7 +1074,7 @@ else {
             ]
 
             component "core/Constant" Constant25 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "vac_set"
             }
             [
@@ -1092,7 +1091,7 @@ else {
             ]
 
             component "core/Constant" Constant27 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -1110,7 +1109,7 @@ else {
             ]
 
             component "core/Constant" Constant28 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "2*np.pi"
             }
             [
@@ -1147,8 +1146,8 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant30 {
-                execution_rate = "Ts"
-                value = "Ts"
+                execution_rate = "execution_rate"
+                value = "execution_rate"
             }
             [
                 position = 7056, 8360
@@ -1165,8 +1164,8 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant31 {
-                execution_rate = "Ts"
-                value = "Ts*Fs*2*np.pi"
+                execution_rate = "execution_rate"
+                value = "execution_rate*Fs*2*np.pi"
             }
             [
                 position = 8664, 8960
@@ -1224,7 +1223,7 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant38 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -1251,7 +1250,7 @@ out_mem = out;
             ]
 
             component "core/Constant" Constant39 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -1459,7 +1458,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Voltage Measurement" Va1 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 sig_output = "True"
             }
             [
@@ -1540,7 +1539,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant5 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1574,7 +1573,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant6 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0.001"
                 }
                 [
@@ -1583,7 +1582,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant7 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1616,7 +1615,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant8 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "np.pi"
                 }
                 [
@@ -1649,7 +1648,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant9 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "-np.pi"
                 }
                 [
@@ -1658,7 +1657,7 @@ if (Vdc<-2) {
                 ]
 
                 component "core/Constant" Constant10 {
-                    execution_rate = "Ts"
+                    execution_rate = "execution_rate"
                     value = "0"
                 }
                 [
@@ -1949,7 +1948,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant43 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
             }
             [
                 position = 9688, 8952
@@ -1988,7 +1987,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant44 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "vdc_set"
             }
             [
@@ -2046,7 +2045,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant45 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "0"
             }
             [
@@ -2124,7 +2123,7 @@ if (Vdc<-2) {
             ]
 
             component "core/Constant" Constant47 {
-                execution_rate = "Ts"
+                execution_rate = "execution_rate"
                 value = "vac_set"
             }
             [
@@ -2154,6 +2153,14 @@ if (Vdc<-2) {
             }
             [
                 position = 7848, 8536
+                hide_name = True
+            ]
+
+            component "core/Open Circuit" "Open Circuit1" {
+                circuit_connector = "true"
+            }
+            [
+                position = 8128, 9760
                 hide_name = True
             ]
 
@@ -3680,6 +3687,16 @@ if (Vdc<-2) {
                 position = 7696, 8400
             ]
 
+            junction Junction128 pe
+            [
+                position = 8304, 9760
+            ]
+
+            junction Junction129 pe
+            [
+                position = 7976, 9608
+            ]
+
             connect Integrator3.out Sum8.in1 as Connection136
             connect From5 "Signal switch3.in2" as Connection142
             connect Junction13 "Signal switch3.in1" as Connection146
@@ -3817,7 +3834,6 @@ if (Vdc<-2) {
             connect Junction89 Junction88 as Connection5365
             connect Gain27.in Junction89 as Connection5366
             connect Isp1.n_node Junction94 as Connection5381
-            connect Va1.n_node Junction94 as Connection5383
             connect Isp1.p_node Junction95 as Connection5384
             connect Va1.p_node Junction95 as Connection5386
             connect From67 "C function3.Eb" as Connection5390
@@ -3936,7 +3952,6 @@ if (Vdc<-2) {
             connect Gain22.out Junction115 as Connection5587
             connect Junction115 Q_gen.in as Connection5588
             connect Goto6 Junction115 as Connection5589
-            connect Junction35 Vinv_a.n_node as Connection5591
             connect Vc.n_node Junction116 as Connection5597
             connect Junction116 Vb.n_node as Connection5598
             connect Va.n_node Junction117 as Connection5600
@@ -3975,8 +3990,6 @@ if (Vdc<-2) {
             connect Junction127 Sum28.in as Connection5655
             connect "Signal switch24.in1" Junction127 as Connection5656
             connect "Signal switch24.out" Sum23.in as Connection5657
-
-
             connect Gain32.in From25 as connmode
             connect Sum9.in From11 as connP
             connect Sum7.in From10 as connQ
@@ -3984,6 +3997,13 @@ if (Vdc<-2) {
             connect Gain30.in From22 as connw
             connect Gain33.in From44 as connfs
             connect Constant22.out Goto10 as connPint
+            connect Constant23.out Goto11 as Connection5658
+            connect Junction35 Junction128 as Connection5659
+            connect Junction128 Vinv_a.n_node as Connection5660
+            connect "Open Circuit1.n_node" Junction128 as Connection5661
+            connect Va1.n_node Junction129 as Connection5662
+            connect Junction129 Junction94 as Connection5663
+            connect "Open Circuit1.p_node" Junction129 as Connection5664
 
             loadshape_int = "1"
 
@@ -4220,17 +4240,12 @@ if (Vdc<-2) {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.place_internal_dc_capacitor(mdl, container_handle, new_value)
 
-                        if new_value == False:
-                            mdl.disable_property(mdl.prop(container_handle, "dc_cap"))
-                        elif new_value == True:
-                            mdl.enable_property(mdl.prop(container_handle, "dc_cap"))
+                        comp_script.dc_link_cap_value_edited(mdl, container_handle, new_value)
                     ENDCODE
 
                     CODE property_value_edited
-                        if new_value == False:
-                            mdl.disable_property(mdl.prop(container_handle, "dc_cap"))
-                        elif new_value == True:
-                            mdl.enable_property(mdl.prop(container_handle, "dc_cap"))
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.dc_link_cap_value_edited(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -4329,8 +4344,9 @@ if (Vdc<-2) {
                     group = "Inverter Parameters"
                 }
 
-                Ts {
+                execution_rate {
                     label = "Execution rate"
+                    previous_names = "Ts"
                     widget = edit
                     type = generic
                     default_value = "100e-6"
@@ -4641,7 +4657,7 @@ if (Vdc<-2) {
                 timespan {
                     label = "Loadshape time span"
                     widget = combo
-                    combo_values =  "Daily", "Yearly"
+                    combo_values = "Daily", "Yearly"
                     type = string
                     default_value = "Daily"
                     group = "Time Series Settings"
@@ -4777,7 +4793,7 @@ if (Vdc<-2) {
                     Qinv = mdl.get_property_value(mdl.prop(item_handle, "Qinv"))
                     Rac = mdl.get_property_value(mdl.prop(item_handle, "Rac"))
                     Lac = mdl.get_property_value(mdl.prop(item_handle, "Lac"))
-                    Ts = mdl.get_property_value(mdl.prop(item_handle, "Ts"))
+                    execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                     cont_t = mdl.get_property_value(mdl.prop(item_handle, "cont_t"))
                     dss_ctrl = mdl.get_property_value(mdl.prop(item_handle, "dss_ctrl"))
                     Phases = mdl.get_property_value(mdl.prop(item_handle, "Phases"))
@@ -4814,157 +4830,19 @@ if (Vdc<-2) {
                     T_lim_high = mdl.get_property_value(mdl.prop(item_handle, "T_lim_high"))
                     Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
                     # HEADER STOP
-                    from typhoon.api.schematic_editor.const import ITEM_COMPONENT
-                    import numpy
-                    import math
+                    prop_dict = {"vac_set": vac_set,
+                                 "Sinv": Sinv,
+                                 "Fs": Fs,
+                                 "Qinv": Qinv,
+                                 "ctrl_mode_str": ctrl_mode_str,
+                                 "loadshape": loadshape,
+                                 "loadshape_int": loadshape_int,
+                                 "T_mode": T_mode,
+                                 "T_Ts": T_Ts,
+                                 }
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.vsc_pre_compile_function(mdl, item_handle, prop_dict)
 
-                    pu = 1
-                    Angle = 0
-                    r0 = 0.001
-                    r1 = 0.001
-                    x0 = 0.001
-                    x1 = 0.001
-
-                    Phases = 3
-                    kv = vac_set
-                    kw = Sinv
-                    basefreq = Fs
-                    Frequency = Fs
-                    basekv = kv
-
-                    if Qinv >= 0:
-                        pf = Sinv/((Sinv*Sinv+Qinv*Qinv)**0.5)
-                    else:
-                        pf = -Sinv/((Sinv*Sinv+Qinv*Qinv)**0.5)
-
-                    if ctrl_mode_str == "PQ":
-                        ctrl_mode_int = 1
-                        ext_mode = 0
-                        model = 1
-                    elif ctrl_mode_str == "PV":
-                        ctrl_mode_int = 0
-                        ext_mode = 0
-                        model = 3
-                    elif ctrl_mode_str == "Vdc-Vac":
-                        ctrl_mode_int = 2
-                        ext_mode = 0
-                        model = 3
-                    elif ctrl_mode_str == "Vdc-Q":
-                        ctrl_mode_int = 3
-                        ext_mode = 0
-                        model = 1
-                    elif ctrl_mode_str == "Grid Forming":
-                        ctrl_mode_int = 4
-                        ext_mode = 0
-                        model = 2
-                    elif ctrl_mode_str == "External Control":
-                        ctrl_mode_int = -1
-                        ext_mode = 1
-                        model = 1
-                    else:
-                        ctrl_mode_int = 0
-                        ext_mode = 0
-                        model = 1
-
-
-                    S_Ts = loadshape
-                    dssT = loadshape_int
-                    Slen = len(S_Ts)
-
-                    dssnpts = len(S_Ts)
-
-                    if T_mode == "Loadshape index":
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for S_val in S_vec1:
-                            T_Ts_internal[idxS] = idxS
-                            idxS += 1
-                        T_lim_low = T_Ts_internal[0]
-                        T_lim_high = T_Ts_internal[Slen-1]
-                    elif T_mode == "Time":
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for T_val in T_Ts:
-                            T_Ts_internal[idxS] = T_val
-                            idxS += 1
-                        T_lim_low = T_Ts[0]
-                        T_lim_high = T_Ts[len(T_Ts)-1]
-                    else:
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for S_val in S_vec1:
-                            T_Ts_internal[idxS] = idxS
-                            idxS += 1
-                        T_lim_low = T_Ts_internal[0]
-                        T_lim_high = T_Ts_internal[Slen-1]
-
-
-                    if T_mode == "Loadshape index":
-                        Ts_switch = 0
-                    elif T_mode == "Time":
-                        Ts_switch = 1
-                    else:
-                        Ts_switch = 0
-
-
-                    mdl.set_property_value(mdl.prop(item_handle, "P_kp"), P_kp)
-                    mdl.set_property_value(mdl.prop(item_handle, "P_ki"), P_ki)
-                    mdl.set_property_value(mdl.prop(item_handle, "Q_kp"), Q_kp)
-                    mdl.set_property_value(mdl.prop(item_handle, "Q_ki"), Q_ki)
-                    mdl.set_property_value(mdl.prop(item_handle, "V_kp"), V_kp)
-                    mdl.set_property_value(mdl.prop(item_handle, "V_ki"), V_ki)
-                    mdl.set_property_value(mdl.prop(item_handle, "P_sel"), P_sel)
-                    mdl.set_property_value(mdl.prop(item_handle, "Q_sel"), Q_sel)
-                    mdl.set_property_value(mdl.prop(item_handle, "V_sel"), V_sel)
-                    mdl.set_property_value(mdl.prop(item_handle, "ctrl_mode_int"), ctrl_mode_int)
-                    mdl.set_property_value(mdl.prop(item_handle, "ext_mode"), ext_mode)
-                    mdl.set_property_value(mdl.prop(item_handle, "Ts"), Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "cont_t"), cont_t)
-                    mdl.set_property_value(mdl.prop(item_handle, "Sinv"), Sinv)
-                    mdl.set_property_value(mdl.prop(item_handle, "Qinv"), Qinv)
-                    mdl.set_property_value(mdl.prop(item_handle, "Fs"), Fs)
-                    mdl.set_property_value(mdl.prop(item_handle, "vdc_set"), vdc_set)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "Rac"), Rac)
-                    mdl.set_property_value(mdl.prop(item_handle, "Lac"), Lac)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "Phases"), Phases)
-                    mdl.set_property_value(mdl.prop(item_handle, "kv"), kv)
-                    mdl.set_property_value(mdl.prop(item_handle, "kw"), kw)
-                    mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
-                    mdl.set_property_value(mdl.prop(item_handle, "model"), model)
-                    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "r0"), r0)
-                    mdl.set_property_value(mdl.prop(item_handle, "r1"), r1)
-                    mdl.set_property_value(mdl.prop(item_handle, "x0"), x0)
-                    mdl.set_property_value(mdl.prop(item_handle, "x1"), x1)
-                    mdl.set_property_value(mdl.prop(item_handle, "Frequency"), Frequency)
-                    mdl.set_property_value(mdl.prop(item_handle, "basekv"), basekv)
-                    mdl.set_property_value(mdl.prop(item_handle, "Angle"), Angle)
-                    mdl.set_property_value(mdl.prop(item_handle, "pu"), pu)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "gen_ts_en"), gen_ts_en)
-                    mdl.set_property_value(mdl.prop(item_handle, "gen_ts_en_bit"), gen_ts_en_bit)
-                    mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), S_Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "Q_Ts"), Q_Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts"), T_Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "dssT"), dssT)
-                    mdl.set_property_value(mdl.prop(item_handle, "dssnpts"), dssnpts)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_max"), T_Ts_max)
-                    mdl.set_property_value(mdl.prop(item_handle, "del_Ts"), del_Ts)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "loadshape"), loadshape)
-                    mdl.set_property_value(mdl.prop(item_handle, "loadshape_int"), loadshape_int)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_low"), T_lim_low)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_high"), T_lim_high)
-                    mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), Ts_switch)
-                    mdl.set_property_value(mdl.prop(item_handle, "Slen"), Slen)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), T_Ts_internal)
                 ENDCODE
 
                 CODE define_icon
@@ -4999,7 +4877,6 @@ if (Vdc<-2) {
             position = 5408, 4064
             size = 220, 175
         ]
-
     }
 
 }

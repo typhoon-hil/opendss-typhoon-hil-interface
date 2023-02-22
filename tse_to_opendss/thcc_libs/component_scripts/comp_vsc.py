@@ -1,108 +1,48 @@
 def inv_control_mode_value_edited(mdl, container_handle, new_value):
     if new_value == "PQ":
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'V_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'vdc_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'fs_ref_str'), "Converter nominal")
-        mdl.disable_property(mdl.prop(container_handle, "V_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "V_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "V_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "fs_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "P_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "P_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "P_ki"))
+        prop_nominal_list = ['V_ref_str', 'vdc_ref_str', 'fs_ref_str']
+        prop_external_list = []
+        prop_disable_list = ["V_ref_str", "V_kp", "V_ki", "vdc_ref_str", "vdc_kp", "vdc_ki", "fs_ref_str"]
+        prop_enable_list = ["Q_ref_str", "Q_kp", "Q_ki", "P_ref_str", "P_kp", "P_ki"]
     elif new_value == "PV":
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'Q_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'vdc_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'fs_ref_str'), "Converter nominal")
-        mdl.disable_property(mdl.prop(container_handle, "Q_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "fs_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "V_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "P_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "P_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "P_ki"))
+        prop_nominal_list = ['Q_ref_str', 'vdc_ref_str', 'fs_ref_str']
+        prop_external_list = []
+        prop_disable_list = ["Q_ref_str", "Q_kp", "Q_ki", "vdc_ref_str", "vdc_kp", "vdc_ki", "fs_ref_str"]
+        prop_enable_list = ["V_ref_str", "V_kp", "V_ki", "P_ref_str", "P_kp", "P_ki"]
     elif new_value == "Vdc-Vac":
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'P_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'Q_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'fs_ref_str'), "Converter nominal")
-        mdl.disable_property(mdl.prop(container_handle, "P_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "P_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "P_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "fs_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "V_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_ki"))
+        prop_nominal_list = ['P_ref_str', 'Q_ref_str', 'fs_ref_str']
+        prop_external_list = []
+        prop_disable_list = ["P_ref_str", "P_kp", "P_ki", "Q_ref_str", "Q_kp", "Q_ki", "fs_ref_str"]
+        prop_enable_list = ["V_ref_str", "V_kp", "V_ki", "vdc_ref_str", "vdc_kp", "vdc_ki"]
     elif new_value == "Vdc-Q":
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'P_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'V_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'fs_ref_str'), "Converter nominal")
-        mdl.disable_property(mdl.prop(container_handle, "P_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "P_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "P_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "V_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "V_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "V_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "fs_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_ki"))
+        prop_nominal_list = ['P_ref_str', 'V_ref_str', 'fs_ref_str']
+        prop_external_list = []
+        prop_disable_list = ["P_ref_str", "P_kp", "P_ki", "V_ref_str", "V_kp", "V_ki", "fs_ref_str"]
+        prop_enable_list = ["Q_ref_str", "Q_kp", "Q_ki", "vdc_ref_str", "vdc_kp", "vdc_ki"]
     elif new_value == "Grid Forming":
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'P_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'Q_ref_str'), "Converter nominal")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'vdc_ref_str'), "Converter nominal")
-        mdl.disable_property(mdl.prop(container_handle, "P_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "P_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "P_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "Q_ki"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_ref_str"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_kp"))
-        mdl.disable_property(mdl.prop(container_handle, "vdc_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "V_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "fs_ref_str"))
-    elif new_value == "External Control":
-        mdl.enable_property(mdl.prop(container_handle, "P_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "P_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "P_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "Q_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "fs_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "V_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "V_ki"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_ref_str"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_kp"))
-        mdl.enable_property(mdl.prop(container_handle, "vdc_ki"))
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'P_ref_str'), "External input")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'Q_ref_str'), "External input")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'V_ref_str'), "External input")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'vdc_ref_str'), "External input")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'fs_ref_str'), "External input")
+        prop_nominal_list = ['P_ref_str', 'Q_ref_str', 'vdc_ref_str']
+        prop_external_list = []
+        prop_disable_list = ["P_ref_str", "P_kp", "P_ki", "Q_ref_str", "Q_kp", "Q_ki",
+                             "vdc_ref_str", "vdc_kp", "vdc_ki"]
+        prop_enable_list = ["V_ref_str", "V_kp", "V_ki", "fs_ref_str"]
+    else:  # if new_value == "External Control":
+        prop_nominal_list = []
+        prop_external_list = ['P_ref_str', 'Q_ref_str', 'V_ref_str', 'vdc_ref_str', 'fs_ref_str']
+        prop_disable_list = []
+        prop_enable_list = ["P_ref_str", "P_kp", "P_ki", "Q_ref_str", "Q_kp", "Q_ki", "fs_ref_str", "V_ref_str",
+                            "V_kp", "V_ki", "vdc_ref_str", "vdc_kp", "vdc_ki"]
+
+    for prop in prop_nominal_list:
+        mdl.set_property_disp_value(mdl.prop(container_handle, prop), "Converter nominal")
+
+    for prop in prop_external_list:
+        mdl.set_property_disp_value(mdl.prop(container_handle, prop), "External input")
+
+    for prop in prop_disable_list:
+        mdl.disable_property(mdl.prop(container_handle, prop))
+
+    for prop in prop_enable_list:
+        mdl.enable_property(mdl.prop(container_handle, prop))
 
 
 def define_icon(mdl, mask_handle):
@@ -161,7 +101,7 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             ts_switch = mdl.create_component("Constant", parent=comp_handle,
                                              name="Ts_switch", position=(ref_pos[0], ref_pos[1]))
             mdl.set_property_value(mdl.prop(ts_switch, "value"), "Ts_switch")
-            mdl.set_property_value(mdl.prop(ts_switch, "execution_rate"), "Ts")
+            mdl.set_property_value(mdl.prop(ts_switch, "execution_rate"), "execution_rate")
 
         port_t = mdl.get_item("T", parent=comp_handle, item_type="port")
         if not port_t:
@@ -196,7 +136,7 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             ts_module = mdl.create_component("OpenDSS/TS_module", parent=comp_handle,
                                              name="TS_module", position=(ref_pos[0] + 456, ref_pos[1] + 48),
                                              rotation="left")
-            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "Ts")
+            mdl.set_property_value(mdl.prop(ts_module, "Texec"), "execution_rate")
             mdl.set_property_value(mdl.prop(ts_module, "P_nom"), "Sinv")
             mdl.set_property_value(mdl.prop(ts_module, "Q_nom"), "Qinv")
 
@@ -468,3 +408,104 @@ def enable_time_series_value_edited(mdl, container_handle, new_value):
         for prop_name in prop_list:
             if prop_name in ["ctrl_mode_str", "P_ref_str", "Q_ref_str"]:
                 mdl.enable_property(mdl.prop(container_handle, prop_name))
+
+
+def dc_link_cap_value_edited(mdl, container_handle, new_value):
+    if new_value is False:
+        mdl.disable_property(mdl.prop(container_handle, "dc_cap"))
+    elif new_value is True:
+        mdl.enable_property(mdl.prop(container_handle, "dc_cap"))
+
+
+def vsc_pre_compile_function(mdl, item_handle, prop_dict):
+
+    pu = 1
+    angle = 0
+    r0 = 0.001
+    r1 = 0.001
+    x0 = 0.001
+    x1 = 0.001
+
+    phases = 3
+    kv = prop_dict["vac_set"]
+    kw = prop_dict["Sinv"]
+    basefreq = prop_dict["Fs"]
+    frequency = prop_dict["Fs"]
+    basekv = kv
+
+    if prop_dict["Qinv"] >= 0:
+        pf = prop_dict["Sinv"] / ((prop_dict["Sinv"] ** 2 + prop_dict["Qinv"] ** 2) ** 0.5)
+    else:
+        pf = -prop_dict["Sinv"] / ((prop_dict["Sinv"] ** 2 + prop_dict["Qinv"] ** 2) ** 0.5)
+
+    if prop_dict["ctrl_mode_str"] == "PQ":
+        ctrl_mode_int = 1
+        ext_mode = 0
+        model = 1
+    elif prop_dict["ctrl_mode_str"] == "PV":
+        ctrl_mode_int = 0
+        ext_mode = 0
+        model = 3
+    elif prop_dict["ctrl_mode_str"] == "Vdc-Vac":
+        ctrl_mode_int = 2
+        ext_mode = 0
+        model = 3
+    elif prop_dict["ctrl_mode_str"] == "Vdc-Q":
+        ctrl_mode_int = 3
+        ext_mode = 0
+        model = 1
+    elif prop_dict["ctrl_mode_str"] == "Grid Forming":
+        ctrl_mode_int = 4
+        ext_mode = 0
+        model = 2
+    elif prop_dict["ctrl_mode_str"] == "External Control":
+        ctrl_mode_int = -1
+        ext_mode = 1
+        model = 1
+    else:
+        ctrl_mode_int = 0
+        ext_mode = 0
+        model = 1
+
+    s_ts = prop_dict["loadshape"]
+    dss_t = prop_dict["loadshape_int"]
+    slen = len(s_ts)
+
+    dssnpts = len(s_ts)
+
+    if prop_dict["T_mode"] == "Time":
+        t_ts_internal = [t_val for t_val in prop_dict["T_Ts"]]
+        ts_switch = 1
+    else:  # if prop_dict["T_mode"] == "Loadshape index":
+        t_ts_internal = [x for x in range(slen)]
+        ts_switch = 0
+
+    t_lim_low = t_ts_internal[0]
+    t_lim_high = t_ts_internal[- 1]
+
+    mdl.set_property_value(mdl.prop(item_handle, "ctrl_mode_int"), ctrl_mode_int)
+    mdl.set_property_value(mdl.prop(item_handle, "ext_mode"), ext_mode)
+
+    mdl.set_property_value(mdl.prop(item_handle, "Phases"), phases)
+    mdl.set_property_value(mdl.prop(item_handle, "kv"), kv)
+    mdl.set_property_value(mdl.prop(item_handle, "kw"), kw)
+    mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
+    mdl.set_property_value(mdl.prop(item_handle, "model"), model)
+    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+
+    mdl.set_property_value(mdl.prop(item_handle, "r0"), r0)
+    mdl.set_property_value(mdl.prop(item_handle, "r1"), r1)
+    mdl.set_property_value(mdl.prop(item_handle, "x0"), x0)
+    mdl.set_property_value(mdl.prop(item_handle, "x1"), x1)
+    mdl.set_property_value(mdl.prop(item_handle, "Frequency"), frequency)
+    mdl.set_property_value(mdl.prop(item_handle, "basekv"), basekv)
+    mdl.set_property_value(mdl.prop(item_handle, "Angle"), angle)
+    mdl.set_property_value(mdl.prop(item_handle, "pu"), pu)
+
+    mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), s_ts)
+
+    mdl.set_property_value(mdl.prop(item_handle, "T_lim_low"), t_lim_low)
+    mdl.set_property_value(mdl.prop(item_handle, "T_lim_high"), t_lim_high)
+    mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), ts_switch)
+    mdl.set_property_value(mdl.prop(item_handle, "Slen"), slen)
+    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), t_ts_internal)

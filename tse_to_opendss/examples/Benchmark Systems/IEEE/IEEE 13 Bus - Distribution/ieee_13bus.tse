@@ -72,7 +72,6 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_Reg {
-            conf = "on both sides"
         }
         [
             position = 8456, 8224
@@ -81,7 +80,6 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_650 {
-            conf = "on both sides"
         }
         [
             position = 8456, 8008
@@ -107,7 +105,6 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_633 {
-            conf = "on both sides"
         }
         [
             position = 8856, 8520
@@ -115,8 +112,8 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_634 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 9248, 8520
@@ -124,9 +121,9 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_645 {
-            conf = "on both sides"
-            type = "BC"
-            v_meas = "True"
+            type_prop = "BC"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8080, 8536
@@ -135,9 +132,9 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_646 {
-            conf = "on both sides"
-            type = "BC"
-            v_meas = "True"
+            type_prop = "BC"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7688, 8536
@@ -214,7 +211,6 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_671 {
-            conf = "on both sides"
         }
         [
             position = 8456, 8808
@@ -240,8 +236,8 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_692 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8856, 8936
@@ -249,8 +245,8 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_675 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 9248, 8936
@@ -265,8 +261,7 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_684 {
-            conf = "on both sides"
-            type = "AC"
+            type_prop = "AC"
         }
         [
             position = 8080, 8920
@@ -275,9 +270,9 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_611 {
-            conf = "on both sides"
-            type = "C"
-            v_meas = "True"
+            type_prop = "C"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7688, 8936
@@ -342,6 +337,7 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_680 {
+            conf = "on one side"
         }
         [
             position = 8456, 9176
@@ -369,9 +365,9 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_652 {
-            conf = "on both sides"
-            type = "A"
-            v_meas = "True"
+            type_prop = "A"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7984, 9184
@@ -411,7 +407,6 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_632 {
-            conf = "on both sides"
         }
         [
             position = 8456, 8424
@@ -2347,11 +2342,19 @@ model "ieee_13bus" {
 
     default {
         "OpenDSS/Bus" {
-            type = "ABC"
-            ground = "False"
-            i_meas = "False"
-            v_meas = "False"
-            conf = "on one side"
+            type_prop = "ABC"
+            ground_prop = "False"
+            conf = "on both sides"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            execution_rate = "100e-6"
+            enable_output = "False"
         }
 
         "OpenDSS/Capacitor Bank" {
@@ -2414,9 +2417,12 @@ model "ieee_13bus" {
             load_model = "Constant Impedance"
             model = "2"
             Pow_ref_s = "Fixed"
-            Ts = "300e-6"
+            execution_rate = "300e-6"
             Tfast = "100e-6"
             CPL_LMT = "2"
+            zero_seq_remove = "False"
+            q_gain_k = "0.5"
+            r_gain_k = "20"
             Vn_3ph_CPL = "0"
             P_CPL = "0"
             Q_CPL = "0"
