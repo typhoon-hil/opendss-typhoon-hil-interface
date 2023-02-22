@@ -182,7 +182,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         toggle_frequency_prop(mdl, mask_handle, init=False)
 
     # ------------------------------------------------------------------------------------------------------------------
-    # Global Base Frequency
+    # Input Method Frequency
     # ------------------------------------------------------------------------------------------------------------------
     elif prop_name == "input_method":
 
@@ -201,6 +201,9 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         s_base = float(mdl.get_property_disp_value(mdl.prop(mask_handle, "baseMVA")))*1e6
         z_base = v_base*v_base/s_base
         si_values = [float(mdl.get_property_disp_value(prop)) for prop in si_props]
+        z1 = si_values[0] + si_values[2]*1j
+        z0 = si_values[1] + si_values[3]*1j
+        zp = z0/3 + (2/3)*z1
 
         if new_value == "Z":
             # Hide/Show properties
@@ -218,9 +221,6 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             # Hide/Show properties
             [mdl.show_property(prop) for prop in isc_props + xr_props]
             [mdl.hide_property(prop) for prop in si_props + pu_props + mvasc_props]
-
-        # Update values from Z props
-        #[mdl.set_property_disp_value(prop, sc_notation(value/z_base)) for prop, value in zip(pu_props, si_values)]
 
 
 def define_icon(mdl, mask_handle):
@@ -241,3 +241,59 @@ def sc_notation(val, num_decimals=2, exponent_pad=2):
     adjusted_mantissa_string = mantissa_template.format(adjusted_mantissa)
     adjusted_exponent_string = "+-"[nearest_lower_third < 0] + exponent_template.format(abs(nearest_lower_third))
     return adjusted_mantissa_string + "e" + f"{int(adjusted_exponent_string)}"
+
+
+def get_r_l_matrices(mdl, mask_handle):
+
+    z_si_names = ["r1", "x1", "r0", "x0"]
+    z_si_props = [mdl.prop(mask_handle, prop_name) for prop_name in z_si_names]
+    z_pu_names = ["r1_pu", "x1_pu", "r0_pu", "x0_pu"]
+    z_pu_props = [mdl.prop(mask_handle, prop_name) for prop_name in z_pu_names]
+    basekv = mdl.get_property_value(mdl.prop(mask_handle, "basekv"))
+    basemva = mdl.get_property_value(mdl.prop(mask_handle, "baseMVA"))
+    z_base = basekv*basekv/basemva
+    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "BaseFreq"))
+
+    input_method = mdl.get_property_value(mdl.prop(mask_handle, "input_method"))
+    if input_method == "Z":
+        r1, x1, r0, x0 = [mdl.get_property_value(prop) for prop in z_si_props]
+    elif input_method == "Zpu":
+        r1, x1, r0, x0 = [mdl.get_property_value(prop)*z_base for prop in z_si_props]
+    elif input_method == "MVAsc":
+        mva_sc3 = mdl.get_property_value(mdl.prop(mask_handle, "mva_sc3"))
+        mva_sc1 = mdl.get_property_value(mdl.prop(mask_handle, "mva_sc1"))
+        x1r1 = mdl.get_property_value(mdl.prop(mask_handle, "x1r1"))
+        x0r0 = mdl.get_property_value(mdl.prop(mask_handle, "x0r0"))
+        z1 = basekv*basekv/mva_sc3
+        r1 = np.cos(np.arctan(x1r1))*z1
+        x1 = r1*x1r1
+        i_sc1 = mva_sc1*1e3/(np.sqrt(3)*basekv)
+        # from the DSS Source Code
+        proots = np.roots([1+x0r0*x0r0, 4*(r1+x1*x0r0), 4*(r1*r1 + x1*x1)-np.power(1e3*basekv*3/(np.sqrt(3)*i_sc1), 2)])
+        r0 = proots.max()
+        x0 = r0 * x0r0
+    elif input_method == "Isc":
+        i_sc3 = mdl.get_property_value(mdl.prop(mask_handle, "i_sc3"))
+        i_sc1 = mdl.get_property_value(mdl.prop(mask_handle, "i_sc1"))
+        x1r1 = mdl.get_property_value(mdl.prop(mask_handle, "x1r1"))
+        x0r0 = mdl.get_property_value(mdl.prop(mask_handle, "x0r0"))
+        z1 = 1e3*basekv/i_sc3
+        r1 = np.cos(np.arctan(x1r1))*z1
+        x1 = r1*x1r1
+        # from the DSS Source Code
+        proots = np.roots([1+x0r0*x0r0, 4*(r1+x1*x0r0), 4*(r1*r1 + x1*x1)-np.power(1e3*basekv*3/(np.sqrt(3)*i_sc1), 2)])
+        r0 = proots.max()
+        x0 = r0 * x0r0
+
+    rs = (2*r1 + r0)/3
+    xs = (2*x1 + x0)/3
+    ls = xs/(2*np.pi*basefreq)
+    rm = (r0 - r1)/3
+    xm = (x0 - x1)/3
+    lm = xm/(2*np.pi*basefreq)
+
+    rmatrix = [[rs, rm, rm], [rm, rs, rs], [rm, rm, rs]]
+    lmatrix = [[ls, lm, lm], [lm, ls, ls], [lm, lm, ls]]
+
+    return rmatrix, lmatrix
+

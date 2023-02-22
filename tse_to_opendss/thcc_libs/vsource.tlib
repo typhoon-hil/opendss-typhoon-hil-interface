@@ -48,11 +48,12 @@ library "OpenDSS" {
 
             component "core/Transmission Line" TL1 {
                 Frequency = "60"
-                L_sequence_metric = "[[x0 / 2 / np.pi / Frequency, 0, 0], [0, x1 / 2 / np.pi / Frequency, 0], [0, 0, x1 / 2 / np.pi / Frequency]]"
+                L_metric = "l_matrix"
                 Length_metric = "1"
-                R_sequence_metric = "[[r0, 0, 0], [0, r1, 0], [0, 0, r1]]"
-                model_def = "Sequence"
+                R_metric = "r_matrix"
+                model_def = "RLC"
                 unit_sys = "metric"
+                num_of_phases = "3"
             }
             [
                 position = 8304, 8192
@@ -305,7 +306,7 @@ library "OpenDSS" {
                     description = "Per-unit positive-sequence resistance"
                     widget = edit
                     type = generic
-                    default_value = "1.65"
+                    default_value = "0.0121"
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
@@ -321,7 +322,7 @@ library "OpenDSS" {
                     description = "Per-unit positive-sequence reactance"
                     widget = edit
                     type = generic
-                    default_value = "6.6"
+                    default_value = "0.0485"
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
@@ -337,7 +338,7 @@ library "OpenDSS" {
                     description = "Per-unity zero-sequence resistance"
                     widget = edit
                     type = generic
-                    default_value = "1.9"
+                    default_value = "0.0136"
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
@@ -353,7 +354,7 @@ library "OpenDSS" {
                     description = "Per-unity zero-sequence reactance"
                     widget = edit
                     type = generic
-                    default_value = "5.7"
+                    default_value = "0.0407"
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
@@ -392,7 +393,7 @@ library "OpenDSS" {
                     description = "Three-phase Short Circuit Current Ratio"
                     widget = edit
                     type = generic
-                    default_value = 2000
+                    default_value = 10000
                     unit = "A"
                     group = "Parameters"
                     nonvisible
@@ -403,7 +404,7 @@ library "OpenDSS" {
                     description = "Single-phase Short Circuit Current Ratio"
                     widget = edit
                     type = generic
-                    default_value = 2100
+                    default_value = 10500
                     unit = "A"
                     group = "Parameters"
                     nonvisible
@@ -478,7 +479,8 @@ library "OpenDSS" {
 
                 CODE pre_compile
                     comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.update_source_values(mdl, item_handle)
+                    #comp_script.update_source_values(mdl, item_handle)
+                    r_matrix, l_matrix = comp_script.get_r_l_matrices(mdl, item_handle)
                 ENDCODE
             }
         }
