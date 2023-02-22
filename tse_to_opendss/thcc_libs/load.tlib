@@ -343,17 +343,70 @@ library "OpenDSS" {
                 }
 
                 zip_vector {
-                    label = "Z,I,P Weight vector"
+                    label = "Active Z,I,P Weight vector"
                     widget = edit
                     type = generic
                     default_value = "[0,0,1]"
                     group = "Load Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.zip_change_fnc(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                zip_vector_Q {
+                    label = "Reactive Z,I,P Weight vector"
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    group = "Load Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.zip_change_fnc(mdl, container_handle, new_value)
+                    ENDCODE
                 }
 
                 zip_internal {
                     widget = edit
                     type = generic
                     default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                zip_internal_Q {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                zip_internal_n {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                zip_internal_n_Q {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                ZIPV {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1,0,0,1,0]"
+                    nonvisible
+                }
+
+                Vminpu {
+                    widget = edit
+                    type = generic
+                    default_value = "0.7"
                     nonvisible
                 }
 
@@ -834,6 +887,9 @@ library "OpenDSS" {
                     pf_3ph_set = mdl.get_property_value(mdl.prop(item_handle, "pf_3ph_set"))
                     load_model = mdl.get_property_value(mdl.prop(item_handle, "load_model"))
                     zip_vector = mdl.get_property_value(mdl.prop(item_handle, "zip_vector"))
+                    zip_vector_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_Q"))
+                    zip_internal = mdl.get_property_value(mdl.prop(item_handle, "zip_internal"))
+                    zip_internal_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_Q"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
                     Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
                     execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
@@ -921,6 +977,8 @@ library "OpenDSS" {
                         model = 2
                     elif load_model == "Constant Power":
                         model = 1
+                    elif load_model == "Constant Z,I,P":
+                        model = 8
                     else:
                         model = 2
 
@@ -984,6 +1042,9 @@ library "OpenDSS" {
                     mdl.set_property_value(mdl.prop(item_handle, "kV"), kV)
                     mdl.set_property_value(mdl.prop(item_handle, "load_model"), load_model)
                     mdl.set_property_value(mdl.prop(item_handle, "zip_vector"), zip_vector)
+                    mdl.set_property_value(mdl.prop(item_handle, "zip_vector_Q"), zip_vector_Q)
+                    mdl.set_property_value(mdl.prop(item_handle, "zip_internal"), zip_internal)
+                    mdl.set_property_value(mdl.prop(item_handle, "zip_internal_Q"), zip_internal_Q)
                     mdl.set_property_value(mdl.prop(item_handle, "model"), model)
                     mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                     mdl.set_property_value(mdl.prop(item_handle, "Sn_3ph"), Sn_3ph)

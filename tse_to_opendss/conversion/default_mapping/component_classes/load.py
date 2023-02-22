@@ -39,7 +39,11 @@ class Load(TwoTerminal):
     def create_new_format_properties_dict(self, tse_properties, tse_component):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
-        filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA"]
+        if tse_properties['model'] == "8":
+            filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu", "ZIPV"]
+        else:
+            filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu"]
+
         new_format_properties = {k: v for k, v in tse_properties.items() if k in filtered_list}
 
         # Specify the base frequency if not inheriting the global value

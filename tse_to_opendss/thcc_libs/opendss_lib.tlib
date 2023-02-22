@@ -1925,10 +1925,18 @@ library "OpenDSS" {
                     }
 
                     zip_vector_cpl {
-                        label = "Z,I,P Weight vector"
+                        label = "Active Z,I,P Weight vector"
                         widget = edit
                         type = generic
-                        default_value = "zip_vector"
+                        default_value = "zip_internal"
+                        group = "Load Parameters"
+                    }
+
+                    zip_vector_cpl_Q {
+                        label = "Reactive Z,I,P Weight vector"
+                        widget = edit
+                        type = generic
+                        default_value = "zip_internal_Q"
                         group = "Load Parameters"
                     }
 
@@ -2123,6 +2131,7 @@ library "OpenDSS" {
                         q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
                         r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                         zip_vector_cpl = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_cpl"))
+                        zip_vector_cpl_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_cpl_Q"))
                         # HEADER STOP
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
@@ -2176,6 +2185,7 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
                         mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
                         mdl.set_property_value(mdl.prop(item_handle, "zip_vector_cpl"), zip_vector_cpl)
+                        mdl.set_property_value(mdl.prop(item_handle, "zip_vector_cpl_Q"), zip_vector_cpl_Q)
                     ENDCODE
                 }
             }
@@ -7561,7 +7571,7 @@ library "OpenDSS" {
                 ]
 
                 component "core/Gain" Gain48 {
-                    gain = "zip[1]"
+                    gain = "zip_Q[1]"
                 }
                 [
                     position = 8496, 8776
@@ -7577,7 +7587,7 @@ library "OpenDSS" {
                 ]
 
                 component "core/Gain" Gain50 {
-                    gain = "zip[0]"
+                    gain = "zip_Q[0]"
                 }
                 [
                     position = 8576, 8832
@@ -7593,7 +7603,7 @@ library "OpenDSS" {
                 ]
 
                 component "core/Gain" Gain52 {
-                    gain = "zip[2]"
+                    gain = "zip_Q[2]"
                 }
                 [
                     position = 7968, 8688
@@ -8593,10 +8603,18 @@ library "OpenDSS" {
                     }
 
                     zip {
-                        label = "Z,I,P Weight vector"
+                        label = "Active Z,I,P Weight vector"
                         widget = edit
                         type = generic
                         default_value = "zip_vector_cpl"
+                        group = "Load Parameters"
+                    }
+
+                    zip_Q {
+                        label = "Reactive Z,I,P Weight vector"
+                        widget = edit
+                        type = generic
+                        default_value = "zip_vector_cpl_Q"
                         group = "Load Parameters"
                     }
 
@@ -8691,6 +8709,7 @@ library "OpenDSS" {
                         q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
                         r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                         zip = mdl.get_property_value(mdl.prop(item_handle, "zip"))
+                        zip_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_Q"))
                         # HEADER STOP
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
@@ -8735,6 +8754,7 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "SS"), SS)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
                         mdl.set_property_value(mdl.prop(item_handle, "zip"), zip)
+                        mdl.set_property_value(mdl.prop(item_handle, "zip_Q"), zip_Q)
                         mdl.set_property_value(mdl.prop(item_handle, "CPL_curr"), CPL_curr)
                         mdl.set_property_value(mdl.prop(item_handle, "q_gain_k"), q_gain_k)
                         mdl.set_property_value(mdl.prop(item_handle, "r_gain_k"), r_gain_k)
