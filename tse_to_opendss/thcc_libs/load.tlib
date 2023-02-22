@@ -498,6 +498,20 @@ library "OpenDSS" {
                     nonvisible
                 }
 
+                gen_ts_en {
+                    label = "Enable time series (forces CPL)"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "Time Series Settings:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
                 load_loadshape {
                     label = "LoadShape object"
                     widget = button
@@ -533,6 +547,7 @@ library "OpenDSS" {
                     default_value = "False"
                     group = "Time Series Settings:4"
                     no_evaluate
+                    disabled
 
                     CODE property_value_edited
                         old_value = mdl.get_property_value(prop_handle)
@@ -541,12 +556,13 @@ library "OpenDSS" {
                 }
 
                 useactual {
-                    label = "Actual load value"
+                    label = "Actual value"
                     widget = checkbox
                     type = generic
                     default_value = "False"
                     group = "Time Series Settings:4"
                     no_evaluate
+                    disabled
 
                     CODE property_value_edited
                         old_value = mdl.get_property_value(prop_handle)
@@ -633,7 +649,7 @@ library "OpenDSS" {
                 }
 
                 T_mode {
-                    label = "Loadshape input mode"
+                    label = "LoadShape input mode"
                     widget = combo
                     combo_values = "Loadshape index", "Time"
                     type = string
@@ -678,13 +694,12 @@ library "OpenDSS" {
                 }
 
                 T_Ts {
-                    label = "Loadshape time range"
+                    label = "LoadShape time range"
                     widget = edit
                     type = generic
-                    default_value = "[0, 6, 12, 18, 24]"
+                    default_value = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
                     unit = "h"
                     group = "Time Series Settings"
-                    disabled
                 }
 
                 timespan {

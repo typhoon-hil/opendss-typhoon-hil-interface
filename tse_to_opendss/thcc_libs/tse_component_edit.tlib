@@ -1,7 +1,6 @@
-// Replace the Placeholder component with the code of the component you want to edit,
-// and open the tlib file with the Schematic Editor.
-// When finished, paste the generated code into the respective component tlib file.
-// Always rollback this file before committing.
+//
+// Saved by sw version: 2023.1
+//
 
 library "OpenDSS" {
     configuration {
@@ -57,20 +56,2600 @@ library "OpenDSS" {
     }
 
     component Subsystem Root {
-
-            // Replace
-            component Subsystem Placeholder {
-                layout = dynamic
-                visible = "dev"
+        component Subsystem Storage {
+            layout = static
+            component "core/Constant" chtrigger {
+                execution_rate = "execution_rate"
+                value = "chargetrigger"
             }
             [
-                position = 8192, 8192
-                size = 64, 64
+                position = 8128, 7440
             ]
-            // Replace
 
+            component "core/Constant" dchtrigger {
+                execution_rate = "execution_rate"
+                value = "dischargetrigger"
+            }
+            [
+                position = 8200, 7392
+            ]
+
+            component "core/C function" "Dispatch kW Reference Calculation" {
+                input_terminals = "real loadshape_point;inherit kwrated;real dchtrigger;real chtrigger;int dispatch_mode;real pct_charge;real pct_discharge;"
+                input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit;inherit"
+                input_terminals_feedthrough = "True;True;True;True;True;True;True"
+                input_terminals_show_labels = "True;True;True;True;True;True;True"
+                output_fnc = "/*Begin code section*/
+if (dispatch_mode == 1 || dispatch_mode == 2 || dispatch_mode == 3){
+    // Discharge mode
+    if (loadshape_point > dchtrigger)
+        {
+            close_contactor = 1;
+            kwref = kwrated*1000*pct_discharge/100;
+        }
+    // Charge mode
+    else if (loadshape_point < chtrigger)
+        {
+            close_contactor = 1;
+            kwref = -kwrated*1000*pct_charge/100;
+        }
+    // Idle mode
+    else
+        {
+            close_contactor = 0;
+            kwref = 0;
+        }
+}
+else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
+    // Idle mode
+    if (loadshape_point == 0)
+        {
+            close_contactor = 0;
+            kwref = 0;
+        }
+    else
+        {
+            close_contactor = 1;
+            kwref = loadshape_point*kwrated*1000;
+        }
+}
+/*End code section*/"
+                output_terminals = "real close_contactor;real kwref;"
+                output_terminals_dimensions = "inherit;inherit"
+                output_terminals_feedthrough = "True;True"
+                output_terminals_show_labels = "True;True"
+            }
+            [
+                position = 8392, 7440
+                size = 280, 368
+            ]
+
+            component "core/Probe" "Enable Inverter" {
+            }
+            [
+                position = 8632, 7344
+            ]
+
+            component "core/Simple Battery inverter (Average)" "Simple Battery inverter (Average)1" {
+                Cf = "inv_cf"
+                Ki = "inv_ki"
+                Kp = "inv_kp"
+                L = "inv_l"
+                R = "inv_r"
+                Rf = "inv_rf"
+                Sn = "4*kva*1000"
+                Ts = "execution_rate"
+            }
+            [
+                position = 7768, 8312
+                scale = -1, 1
+                size = 288, 239
+            ]
+
+            component Subsystem "Inverter Power Reference" {
+                layout = dynamic
+                component Subsystem "kvar calculation" {
+                    layout = dynamic
+                    component "core/Multiport signal switch" kVAr {
+                        number_of_input_terminals = "6"
+                    }
+                    [
+                        position = 8872, 8240
+                    ]
+
+                    component "core/Constant" "unit pf" {
+                        execution_rate = "execution_rate"
+                        value = "0"
+                    }
+                    [
+                        position = 8664, 8208
+                    ]
+
+                    component "core/Constant" kvar_kvar {
+                        execution_rate = "execution_rate"
+                        value = "kvar*1000"
+                    }
+                    [
+                        position = 8664, 8352
+                    ]
+
+                    component "core/Gain" Gain1 {
+                        gain = "np.sqrt(1/(pf*pf)-1)"
+                    }
+                    [
+                        position = 8752, 8272
+                    ]
+
+                    component "core/Constant" kwrated {
+                        execution_rate = "execution_rate"
+                        value = "kwrated*1000"
+                    }
+                    [
+                        position = 8664, 8272
+                    ]
+
+                    port dispatch_int {
+                        position = left:2
+                        kind = sp
+                        direction =  out
+                        sp_type {
+                            default = auto
+                            readonly = True
+                        }
+                    }
+                    [
+                        position = 8824, 8152
+                        rotation = right
+                    ]
+
+                    port kvar_out {
+                        position = right:1
+                        kind = sp
+                        direction =  in
+                        sp_type {
+                            default = inherit
+                            readonly = True
+                        }
+                    }
+                    [
+                        position = 8952, 8240
+                    ]
+
+                    junction Junction1 sp
+                    [
+                        position = 8808, 8208
+                    ]
+
+                    junction Junction2 sp
+                    [
+                        position = 8832, 8272
+                    ]
+
+                    junction Junction3 sp
+                    [
+                        position = 8800, 8288
+                    ]
+
+                    connect kvar_out kVAr.out as Connection47
+                    connect dispatch_int kVAr.ctrl as Connection74
+                    connect kwrated.out Gain1.in as Connection101
+                    connect kVAr.in Junction1 as Connection103
+                    connect Junction1 "unit pf.out" as Connection104
+                    connect kVAr.in3 Junction1 as Connection105
+                    connect Gain1.out Junction2 as Connection107
+                    connect Junction2 kVAr.in1 as Connection108
+                    connect kVAr.in4 Junction2 as Connection109
+                    connect kvar_kvar.out Junction3 as Connection111
+                    [
+                        position = 0, 0
+                        breakpoints = 8800, 8352
+                    ]
+                    connect Junction3 kVAr.in2 as Connection112
+                    [
+                        position = 0, 0
+                        breakpoints = 8800, 8240
+                    ]
+                    connect kVAr.in5 Junction3 as Connection113
+                }
+                [
+                    position = 7440, 8120
+                    size = 120, 80
+                ]
+
+                component "core/Product" Product16 {
+                    signs = "/*"
+                }
+                [
+                    position = 7176, 7760
+                ]
+
+                component "core/Constant" vmax {
+                    execution_rate = "execution_rate"
+                    value = "kv*1000*vmaxpu"
+                }
+                [
+                    position = 6928, 7648
+                ]
+
+                component "core/Constant" vmin {
+                    execution_rate = "execution_rate"
+                    value = "kv*1000*vminpu"
+                }
+                [
+                    position = 6928, 7712
+                ]
+
+                component "core/Signal switch" "Signal switch4" {
+                    threshold = "kv*1000"
+                }
+                [
+                    position = 7024, 7680
+                ]
+
+                component "core/Product" Product20 {
+                }
+                [
+                    position = 7672, 7912
+                ]
+
+                component "core/Product" Product21 {
+                }
+                [
+                    position = 7672, 8112
+                ]
+
+                component "core/Signal switch" "Signal switch2" {
+                    threshold = "0.1"
+                }
+                [
+                    position = 7448, 7776
+                ]
+
+                component Subsystem "Constant Z mode check" {
+                    layout = dynamic
+                    component "core/Constant" vmaxpu {
+                        execution_rate = "execution_rate"
+                        value = "vmaxpu*kv*1000"
+                    }
+                    [
+                        position = 8088, 8152
+                    ]
+
+                    component "core/Constant" vminpu {
+                        execution_rate = "execution_rate"
+                        value = "vminpu*kv*1000"
+                    }
+                    [
+                        position = 8088, 8248
+                    ]
+
+                    component "core/Relational operator" "Relational operator1" {
+                        relational_op = ">"
+                    }
+                    [
+                        position = 8184, 8144
+                    ]
+
+                    component "core/Relational operator" "Relational operator2" {
+                        relational_op = "<"
+                    }
+                    [
+                        position = 8184, 8240
+                    ]
+
+                    component "core/Logical operator" "Logical operator1" {
+                        operator = "OR"
+                    }
+                    [
+                        position = 8296, 8192
+                    ]
+
+                    port v_line {
+                        position = left:1
+                        kind = sp
+                        direction =  out
+                        sp_type {
+                            default = auto
+                            readonly = True
+                        }
+                    }
+                    [
+                        position = 8088, 8080
+                    ]
+
+                    port constant_z_mode {
+                        position = right:1
+                        kind = sp
+                        direction =  in
+                        sp_type {
+                            default = inherit
+                            readonly = True
+                        }
+                    }
+                    [
+                        position = 8408, 8192
+                    ]
+
+                    junction Junction560 sp
+                    [
+                        position = 8120, 8136
+                    ]
+
+                    connect Junction560 v_line as Connection2884
+                    connect "Logical operator1.out" constant_z_mode as Connection2885
+                    connect vmaxpu.out "Relational operator1.in1" as Connection2877
+                    connect vminpu.out "Relational operator2.in1" as Connection2878
+                    connect "Relational operator1.in" Junction560 as Connection2879
+                    connect "Relational operator2.in" Junction560 as Connection2881
+                    connect "Logical operator1.in" "Relational operator1.out" as Connection2882
+                    connect "Relational operator2.out" "Logical operator1.in1" as Connection2883
+                    [
+                        position = 0, 0
+                        breakpoints = 8216, 8240; 8216, 8200
+                    ]
+                }
+                [
+                    position = 7032, 7520
+                    size = 152, 88
+                ]
+
+                component "core/Probe" ctZ {
+                }
+                [
+                    position = 7496, 7520
+                ]
+
+                component "core/Constant" const_p_mult {
+                    execution_rate = "execution_rate"
+                }
+                [
+                    position = 7344, 7840
+                ]
+
+                component "core/Probe" ctz_multiplier {
+                }
+                [
+                    position = 7392, 7696
+                ]
+
+                component "core/Data Type Conversion" "Data Type Conversion1" {
+                }
+                [
+                    position = 7784, 8112
+                ]
+
+                component "core/Bus Join" "Bus Join1" {
+                    inputs = "3"
+                }
+                [
+                    position = 8544, 7984
+                ]
+
+                component "core/Probe" "Inverter P Reference" {
+                }
+                [
+                    position = 8384, 7896
+                    rotation = left
+                ]
+
+                component "core/Constant" enable_inverter {
+                    execution_rate = "execution_rate"
+                }
+                [
+                    position = 8632, 7912
+                    rotation = down
+                    scale = 1, -1
+                ]
+
+                component "core/Probe" "Inverter Q Reference" {
+                }
+                [
+                    position = 8384, 8184
+                    rotation = right
+                ]
+
+                component "core/Gain" idle_gain {
+                    gain = "pct_idlingkw/100"
+                }
+                [
+                    position = 7944, 7992
+                ]
+
+                component "core/Sum" Sum2 {
+                    signs = "3"
+                }
+                [
+                    position = 8096, 7920
+                ]
+
+                component "core/Gain" Gain1 {
+                    gain = "1/(pct_effcharge + 1e-7)"
+                }
+                [
+                    position = 7952, 7920
+                ]
+
+                component "core/Signal switch" "Signal switch5" {
+                    criterion = "ctrl >= threshold"
+                    threshold = "0"
+                }
+                [
+                    position = 8208, 7800
+                ]
+
+                component "core/Product" Product22 {
+                }
+                [
+                    position = 7848, 7696
+                ]
+
+                component "core/Product" Product23 {
+                }
+                [
+                    position = 7272, 7760
+                ]
+
+                port dispatch_mode_int {
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7288, 8120
+                ]
+
+                port v_line {
+                    position = left:2
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 6720, 7872
+                ]
+
+                port active_status {
+                    position = left:4
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7776, 7768
+                ]
+
+                port inv_inputs {
+                    position = auto:auto
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8632, 7984
+                ]
+
+                port dss_kw {
+                    position = left:3
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7440, 7920
+                ]
+
+                port ctz_p_mult {
+                    position = auto:auto
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7592, 7704
+                ]
+
+                junction Junction562 sp
+                [
+                    position = 7448, 7520
+                ]
+
+                junction Junction563 sp
+                [
+                    position = 6800, 7616
+                ]
+
+                junction Junction564 sp
+                [
+                    position = 7536, 7904
+                ]
+
+                junction Junction568 sp
+                [
+                    position = 8384, 8112
+                ]
+
+                junction Junction576 sp
+                [
+                    position = 8176, 7752
+                ]
+
+                junction Junction577 sp
+                [
+                    position = 7920, 7696
+                ]
+
+                junction Junction578 sp
+                [
+                    position = 7920, 7832
+                ]
+
+                junction Junction580 sp
+                [
+                    position = 7536, 7776
+                ]
+
+                junction Junction581 sp
+                [
+                    position = 7736, 7912
+                ]
+
+                junction Junction582 sp
+                [
+                    position = 8384, 7976
+                ]
+
+                junction Junction583 sp
+                [
+                    position = 6800, 7872
+                ]
+
+                junction Junction584 sp
+                [
+                    position = 7344, 7760
+                ]
+
+                junction Junction585 sp
+                [
+                    position = 7224, 7760
+                ]
+
+                comment Comment8 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Multiplier</p></body></html> ENDCOMMENT 
+                [
+                    position = 7552, 7656
+                ]
+
+                comment Comment10 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">if charging, provide the charging power losses </p></body></html> ENDCOMMENT 
+                [
+                    position = 7800, 7848
+                ]
+
+                connect dispatch_mode_int "kvar calculation.dispatch_int" as Connection3112
+                connect vmax.out "Signal switch4.in" as Connection3155
+                connect vmin.out "Signal switch4.in1" as Connection3156
+                connect Product21.in1 "kvar calculation.kvar_out" as Connection3178
+                connect "Constant Z mode check.constant_z_mode" Junction562 as Connection2900
+                [
+                    position = 0, 0
+                ]
+                connect Junction562 "Signal switch2.in2" as Connection2901
+                connect ctZ.in Junction562 as Connection2902
+                connect "Signal switch4.in2" Junction563 as Connection3183
+                [
+                    position = 0, 0
+                    breakpoints = 7024, 7616
+                ]
+                connect "Constant Z mode check.v_line" Junction563 as Connection3185
+                connect const_p_mult.out "Signal switch2.in1" as Connection3188
+                connect Product20.in Junction564 as Connection3189
+                connect Junction564 Product21.in as Connection3190
+                [
+                    position = 0, 0
+                ]
+                connect "Data Type Conversion1.in" Product21.out as Connection3208
+                connect "Bus Join1.in2" Junction568 as Connection3374
+                [
+                    position = 0, 0
+                ]
+                connect Junction568 "Inverter Q Reference.in" as Connection3375
+                [
+                    position = 0, 0
+                ]
+                connect "Data Type Conversion1.out" Junction568 as Connection3376
+                connect "Bus Join1.out" inv_inputs as Connection3377
+                connect "Bus Join1.in" enable_inverter.out as Connection3382
+                [
+                    position = 0, 0
+                ]
+                connect dss_kw Product20.in1 as Connection3391
+                connect Gain1.out Sum2.in1 as Connection3427
+                connect active_status Product22.in1 as Connection3471
+                connect "Signal switch5.in" Junction576 as Connection3474
+                connect Junction576 "Signal switch5.in2" as Connection3475
+                connect Product22.out Junction577 as Connection3481
+                connect Junction577 Junction576 as Connection3482
+                connect Junction578 Junction577 as Connection3485
+                connect Sum2.in Junction578 as Connection3486
+                [
+                    position = 0, 0
+                    breakpoints = 8056, 7904; 8056, 7832
+                ]
+                connect Sum2.out "Signal switch5.in1" as Connection3487
+                connect "Signal switch2.out" Junction580 as Connection3492
+                connect Junction580 Junction564 as Connection3493
+                connect ctz_p_mult Junction580 as Connection3494
+                connect Gain1.in Junction578 as Connection3499
+                [
+                    position = 0, 0
+                ]
+                connect Product22.in Junction581 as Connection3500
+                [
+                    position = 0, 0
+                ]
+                connect Junction581 Product20.out as Connection3501
+                [
+                    position = 0, 0
+                ]
+                connect idle_gain.in Junction581 as Connection3502
+                connect idle_gain.out Sum2.in2 as Connection3503
+                connect "Inverter P Reference.in" Junction582 as Connection3505
+                [
+                    position = 0, 0
+                ]
+                connect Junction582 "Bus Join1.in1" as Connection3506
+                [
+                    position = 0, 0
+                ]
+                connect "Signal switch5.out" Junction582 as Connection3507
+                [
+                    position = 0, 0
+                    breakpoints = 8328, 7800; 8328, 7976
+                ]
+                connect v_line Junction583 as Connection3512
+                connect Junction583 Junction563 as Connection3513
+                [
+                    position = 0, 0
+                    breakpoints = 6800, 7872; 6800, 7872; 6800, 7872; 6800, 7872; 6800, 7832; 6800, 7712; 6800, 7688
+                ]
+                connect Product16.in1 Junction583 as Connection3514
+                [
+                    position = 0, 0
+                    breakpoints = 7136, 7872; 6800, 7872
+                ]
+                connect Product16.in "Signal switch4.out" as Connection3515
+                [
+                    position = 0, 0
+                    breakpoints = 7136, 7744; 7136, 7680
+                ]
+                connect ctz_multiplier.in Junction584 as Connection3517
+                connect Junction584 "Signal switch2.in" as Connection3518
+                [
+                    position = 0, 0
+                    breakpoints = 7344, 7760
+                ]
+                connect Product23.out Junction584 as Connection3519
+                connect Product16.out Junction585 as Connection3521
+                connect Junction585 Product23.in1 as Connection3522
+                connect Product23.in Junction585 as Connection3523
+            }
+            [
+                position = 7728, 7952
+                size = 144, 176
+            ]
+
+            component "core/Probe" Vline {
+            }
+            [
+                position = 7480, 7872
+                rotation = left
+            ]
+
+            component "core/Probe" "DSS kW Reference" {
+            }
+            [
+                position = 8632, 7528
+            ]
+
+            component Subsystem "Active status" {
+                layout = dynamic
+                component "core/Data Type Conversion" bool_to_real {
+                }
+                [
+                    position = 8296, 8192
+                ]
+
+                component "core/Logical operator" "Logical operator1" {
+                }
+                [
+                    position = 8192, 8192
+                ]
+
+                port In2 {
+                    position = left:2
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8072, 8240
+                ]
+
+                port In1 {
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8072, 8144
+                ]
+
+                port Out3 {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8384, 8192
+                ]
+
+                connect "Logical operator1.in" In1 as Connection2
+                connect "Logical operator1.in1" In2 as Connection1
+                connect "Logical operator1.out" bool_to_real.in as Connection3
+                connect bool_to_real.out Out3 as Connection4
+            }
+            [
+                position = 7696, 7696
+                size = 104, 96
+            ]
+
+            component "core/Probe" "Battery Active" {
+            }
+            [
+                position = 7864, 7632
+            ]
+
+            component "core/Three-phase Meter" "Three-phase Meter1" {
+                P_meas = "True"
+                Ts = "execution_rate"
+                VAB = "True"
+                VBC = "True"
+                VCA = "True"
+                VLL_avg_rms = "True"
+                VLL_rms = "True"
+                freq = "True"
+            }
+            [
+                position = 7296, 8312
+                scale = -1, 1
+                size = 56, 240
+            ]
+
+            component "core/Meter Split" "Meter Split1" {
+                power_p = "True"
+                power_pf = "True"
+                power_q = "True"
+                van = "False"
+                vbn = "False"
+                vcn = "False"
+                vll_rms = "True"
+            }
+            [
+                position = 7384, 8008
+                size = 88, 200
+            ]
+
+            component "core/Probe" P {
+            }
+            [
+                position = 7464, 7984
+            ]
+
+            component "core/Probe" Q {
+            }
+            [
+                position = 7488, 8032
+            ]
+
+            component "core/Probe" pf {
+            }
+            [
+                position = 7520, 8080
+            ]
+
+            component Subsystem "Dispatch Mode Integer" {
+                layout = dynamic
+                component "core/Constant" kw_mode {
+                    execution_rate = "execution_rate"
+                    signal_type = "int"
+                    value = "dispatch_mode_int"
+                }
+                [
+                    position = 8352, 8168
+                ]
+
+                port dispatch_mode_int {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8440, 8168
+                ]
+
+                connect dispatch_mode_int kw_mode.out as Connection95
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                    dispatch_mode_int {
+                        label = "Dispatch Mode"
+                        widget = edit
+                        type = generic
+                        default_value = "1"
+                    }
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+                    
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+                    
+                    ENDCODE
+
+                    CODE init
+                    ENDCODE
+
+                    CODE pre_compile
+                    ENDCODE
+                }
+            }
+            [
+                position = 7944, 7488
+                size = 152, 56
+            ]
+
+            component "core/Constant" pct_charge {
+                execution_rate = "execution_rate"
+                value = "pct_charge"
+            }
+            [
+                position = 8128, 7536
+            ]
+
+            component "core/Constant" pct_discharge {
+                execution_rate = "execution_rate"
+                value = "pct_discharge"
+            }
+            [
+                position = 8200, 7584
+            ]
+
+            component "core/Constant" kwrated {
+                execution_rate = "execution_rate"
+                value = "kwrated"
+            }
+            [
+                position = 8128, 7344
+            ]
+
+            component Subsystem "Battery Energy" {
+                layout = dynamic
+                component "core/Integrator" Energy {
+                    init_value = "pct_stored/100*kwhrated*1000"
+                    limit_lower = "kwhrated*1000*pct_reserve/100"
+                    limit_output = "True"
+                    limit_upper = "kwhrated*1000"
+                }
+                [
+                    position = 8584, 8288
+                ]
+
+                component "core/Probe" SOC {
+                }
+                [
+                    position = 8776, 8224
+                ]
+
+                component "core/Gain" Gain3 {
+                    gain = "100/(kwhrated*1000)"
+                }
+                [
+                    position = 8696, 8224
+                ]
+
+                component "core/Signal switch" "Signal switch6" {
+                    criterion = "ctrl >= threshold"
+                    threshold = "0"
+                }
+                [
+                    position = 8088, 8296
+                ]
+
+                component "core/Gain" discharge_gain {
+                    gain = "1/(pct_effdischarge/100 + 1e-7)"
+                }
+                [
+                    position = 7968, 8136
+                ]
+
+                component "core/Gain" Gain4 {
+                    gain = "-1"
+                }
+                [
+                    position = 8456, 8288
+                ]
+
+                component "core/Gain" discharge_idle {
+                    gain = "pct_idlingkw/100"
+                }
+                [
+                    position = 7776, 8208
+                ]
+
+                component "core/Gain" charge_gain {
+                    gain = "pct_effcharge/100"
+                }
+                [
+                    position = 7968, 8408
+                ]
+
+                component "core/Sum" Sum4 {
+                    signs = "+-"
+                }
+                [
+                    position = 7880, 8408
+                ]
+
+                component "core/Sum" Sum5 {
+                }
+                [
+                    position = 7872, 8136
+                ]
+
+                component "core/Product" Product1 {
+                }
+                [
+                    position = 7464, 8128
+                ]
+
+                component "core/Gain" inv_eff {
+                }
+                [
+                    position = 7592, 8128
+                ]
+
+                component "core/Gain" charge_idle {
+                    gain = "pct_idlingkw/100"
+                }
+                [
+                    position = 7640, 8416
+                ]
+
+                component "core/Product" Product2 {
+                }
+                [
+                    position = 8296, 8288
+                ]
+
+                component "core/Step" Step1 {
+                    execution_rate = "execution_rate"
+                    step_time = "0.3"
+                }
+                [
+                    position = 8216, 8240
+                ]
+
+                port "Battery Energy" {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8776, 8288
+                ]
+
+                port kwref {
+                    position = left:3
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7216, 8064
+                ]
+
+                port ctz_p_mult {
+                    position = left:3
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7216, 8136
+                ]
+
+                junction Junction627 sp
+                [
+                    position = 8648, 8288
+                ]
+
+                junction Junction646 sp
+                [
+                    position = 7696, 8128
+                ]
+
+                junction Junction648 sp
+                [
+                    position = 7360, 8064
+                ]
+
+                junction Junction649 sp
+                [
+                    position = 7360, 8120
+                ]
+
+                junction Junction650 sp
+                [
+                    position = 7360, 8208
+                ]
+
+                comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">charge total power</p></body></html> ENDCOMMENT 
+                [
+                    position = 7896, 8320
+                ]
+
+                comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Not implemented</p></body></html> ENDCOMMENT 
+                [
+                    position = 7552, 8072
+                ]
+
+                comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">discharge total power</p></body></html> ENDCOMMENT 
+                [
+                    position = 7880, 8240
+                ]
+
+                comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">do not integrate simulation start transients</p></body></html> ENDCOMMENT 
+                [
+                    position = 8128, 8184
+                ]
+
+                connect Junction627 "Battery Energy" as Connection3412
+                connect SOC.in Gain3.out as Connection2733
+                connect Energy.out Junction627 as Connection3402
+                connect Gain3.in Junction627 as Connection3404
+                connect Sum4.out charge_gain.in as Connection3541
+                connect charge_gain.out "Signal switch6.in1" as Connection3542
+                connect discharge_gain.in Sum5.out as Connection3565
+                connect discharge_gain.out "Signal switch6.in" as Connection3566
+                connect ctz_p_mult Product1.in1 as Connection3607
+                connect Sum5.in Junction646 as Connection3623
+                [
+                    position = 0, 0
+                    breakpoints = 7696, 8128
+                ]
+                connect Junction646 Sum4.in as Connection3624
+                [
+                    position = 0, 0
+                    breakpoints = 7696, 8136; 7696, 8128; 7696, 8128; 7696, 8128; 7696, 8128; 7696, 8128; 7696, 8128; 7696, 8128; 7696, 8176; 7696, 8400
+                ]
+                connect inv_eff.out Junction646 as Connection3629
+                connect Sum5.in1 discharge_idle.out as Connection3643
+                [
+                    position = 0, 0
+                    breakpoints = 7832, 8208
+                ]
+                connect charge_idle.out Sum4.in1 as Connection3644
+                connect kwref Junction648 as Connection3655
+                connect Junction648 "Signal switch6.in2" as Connection3656
+                [
+                    position = 0, 0
+                ]
+                connect Junction648 Junction649 as Connection3670
+                [
+                    position = 0, 0
+                ]
+                connect Junction649 Product1.in as Connection3671
+                [
+                    position = 0, 0
+                ]
+                connect Gain4.out Energy.in as Connection3677
+                connect inv_eff.in Product1.out as Connection3690
+                [
+                    position = 0, 0
+                    breakpoints = 7544, 8128; 7528, 8128
+                ]
+                connect discharge_idle.in Junction650 as Connection3691
+                connect Junction650 Junction649 as Connection3692
+                [
+                    position = 0, 0
+                ]
+                connect charge_idle.in Junction650 as Connection3693
+                connect Product2.out Gain4.in as Connection3694
+                connect Product2.in1 "Signal switch6.out" as Connection3695
+                connect Step1.out Product2.in as Connection3696
+            }
+            [
+                position = 8304, 8312
+                size = 128, 168
+            ]
+
+            component "core/C function" "Disconnect if on reserve or charged" {
+                input_terminals = "real energy;inherit kwhrated;inherit pct_reserve;inherit kwref;inherit active_inverter;"
+                input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit"
+                input_terminals_feedthrough = "True;True;True;True;True"
+                input_terminals_show_labels = "True;True;True;True;True"
+                output_fnc = "/*Begin code section*/
+if (active_inverter){
+    if (energy >= kwhrated*1000){
+        if (kwref >= 0){
+            connect_battery = 1;
+        }
+        else{
+            connect_battery = 0;
+        }
+    }
+    else if (energy <= kwhrated*1000*pct_reserve/100){
+            if (kwref < 0){
+                connect_battery = 1;
+            }
+            else{
+                connect_battery = 0;
+            }
+        }
+    else {
+            connect_battery = 1;
+        }
+}
+else{
+    connect_battery = 0;
+}
+/*End code section*/"
+                output_terminals = "real connect_battery;"
+                output_terminals_dimensions = "inherit"
+                output_terminals_feedthrough = "True"
+                output_terminals_show_labels = "True"
+            }
+            [
+                position = 7552, 7400
+                size = 216, 280
+            ]
+
+            component "core/Constant" kwhrated {
+                execution_rate = "execution_rate"
+                value = "kwhrated"
+            }
+            [
+                position = 7352, 7344
+            ]
+
+            component "core/Constant" pct_reserve {
+                execution_rate = "execution_rate"
+                value = "pct_reserve"
+            }
+            [
+                position = 7352, 7400
+            ]
+
+            component "core/Termination" Termination2 {
+            }
+            [
+                position = 7656, 8160
+                rotation = left
+            ]
+
+            component Subsystem "Loadshape Point Calculator" {
+                layout = dynamic
+                component "core/Constant" loadshape {
+                    execution_rate = "execution_rate"
+                    value = "loadshape"
+                }
+                [
+                    position = 8112, 8136
+                ]
+
+                component "core/C function" Calculator {
+                    global_variables = "real out_value;real slope2;int start_index2;int end_index2;int idx;"
+                    init_fnc = "/*Begin code section*/
+start_index = 0;
+end_index = 1;
+slope = 1;
+/*End code section*/"
+                    input_terminals = "real loadshape_array;inherit time_array;int input_mode;int input_idx;real input_time;"
+                    input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit"
+                    input_terminals_feedthrough = "True;True;True;True;True"
+                    input_terminals_show_labels = "True;True;True;True;True"
+                    output_fnc = "/*Begin code section*/
+if (input_mode == 0){
+    // Loadshape index mode
+    // input is the index
+
+    // Limit the index values
+    if (input_idx > loadshape_n_points - 1) {
+        input_idx = loadshape_n_points - 1;
+    }
+    else if (input_idx < 0) {
+        input_idx = 0;
     }
 
+    out_value = loadshape_array[input_idx];
+}
+else if (input_mode == 1){
+    // Time mode
+    // input is the time
+
+    if (input_time > time_array[loadshape_n_points - 1]){
+        out_value = loadshape_array[loadshape_n_points - 1];
+        slope = 10;
+    }
+    else if (input_time <= time_array[0]){
+        out_value = loadshape_array[0];
+        slope = 20;
+    }
+    else{
+        // Iterate over all elements of the time array
+        for (idx = 0; idx < loadshape_n_points; idx++){
+            if (input_time < time_array[idx]){
+                // Previous element is the starting point
+                start_index = idx - 1;
+                end_index = idx ;
+                // Calculate the slope
+                slope = (loadshape_array[end_index] - loadshape_array[start_index])/(time_array[end_index] - time_array[start_index]);
+                break;
+            }
+        }
+        // Calculate the output value
+        out_value = loadshape_array[start_index] + slope * (input_time - time_array[start_index]);
+    }
 }
 
+// Saturation
+if (out_value > 1) {
+    out_value = 1;
+}
+else if (out_value < -1) {
+    out_value = -1;
+}
 
+ls_n_points = loadshape_n_points;
+out = out_value;
+/*End code section*/"
+                    output_terminals = "real out;real slope;int start_index;int end_index;real ls_n_points;"
+                    output_terminals_dimensions = "1;1;1;1;1"
+                    output_terminals_feedthrough = "False;True;True;True;True"
+                    output_terminals_show_labels = "True;True;True;True;True"
+                    parameters = "int loadshape_n_points;"
+                }
+                [
+                    position = 8328, 8216
+                    size = 144, 224
+                ]
+
+                component "core/Probe" "Loadshape Value" {
+                }
+                [
+                    position = 8528, 8024
+                ]
+
+                component "core/Constant" time {
+                    execution_rate = "execution_rate"
+                    value = "T_Ts"
+                }
+                [
+                    position = 8200, 8176
+                ]
+
+                component "core/Constant" mode_int {
+                    execution_rate = "execution_rate"
+                    value = "0"
+                }
+                [
+                    position = 8048, 8216
+                ]
+
+                component "core/Data Type Conversion" toint {
+                    output_type = "int"
+                }
+                [
+                    position = 8200, 8256
+                ]
+
+                component "core/Probe" slope {
+                }
+                [
+                    position = 8536, 8200
+                ]
+
+                component "core/Probe" "start index" {
+                }
+                [
+                    position = 8544, 8272
+                ]
+
+                component "core/Probe" end_index {
+                }
+                [
+                    position = 8544, 8344
+                ]
+
+                component "core/Probe" lsn {
+                }
+                [
+                    position = 8480, 8352
+                ]
+
+                port loadshape_point {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8528, 8136
+                ]
+
+                port input {
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8112, 8256
+                ]
+
+                junction Junction1 sp
+                [
+                    position = 8464, 8136
+                ]
+
+                junction Junction2 sp
+                [
+                    position = 8152, 8256
+                ]
+
+                connect loadshape.out Calculator.loadshape_array as Connection1
+                connect Calculator.out Junction1 as Connection14
+                connect Junction1 "Loadshape Value.in" as Connection15
+                [
+                    position = 0, 0
+                    breakpoints = 8464, 8136
+                ]
+                connect loadshape_point Junction1 as Connection16
+                connect time.out Calculator.time_array as Connection17
+                connect mode_int.out Calculator.input_mode as Connection28
+                connect toint.out Calculator.input_idx as Connection29
+                connect input Junction2 as Connection30
+                connect Junction2 toint.in as Connection31
+                [
+                    position = 0, 0
+                    breakpoints = 8160, 8256
+                ]
+                connect Calculator.input_time Junction2 as Connection32
+                connect Calculator.slope slope.in as Connection33
+                connect Calculator.start_index "start index.in" as Connection34
+                connect Calculator.end_index end_index.in as Connection35
+                connect lsn.in Calculator.ls_n_points as Connection36
+            }
+            [
+                position = 7944, 7296
+                size = 144, 80
+            ]
+
+            component "core/Probe" "Battery Active1" {
+            }
+            [
+                position = 7776, 7472
+            ]
+
+            component "core/Probe" "Battery Active2" {
+            }
+            [
+                position = 7776, 7584
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 7296, 8504
+            ]
+
+            component "core/Voltage Source" Vs1 {
+                init_const_value = "2*kv*1000*vmaxpu"
+            }
+            [
+                position = 8072, 8312
+                rotation = right
+            ]
+
+            port A1 {
+                position = -32.0, -32.0
+                kind = pe
+            }
+            [
+                position = 7160, 8216
+            ]
+
+            port B1 {
+                position = -32.0, 0.0
+                kind = pe
+            }
+            [
+                position = 7160, 8312
+            ]
+
+            port C1 {
+                position = -32.0, 32.0
+                kind = pe
+            }
+            [
+                position = 7160, 8408
+            ]
+
+            port "Load point" {
+                label = "t"
+                position = -8.0, -44.0
+                kind = sp
+                direction =  out
+                sp_type {
+                    default = auto
+                    readonly = True
+                }
+            }
+            [
+                position = 7816, 7296
+            ]
+
+            tag Goto5 {
+                value = "kwref"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8632, 7600
+                size = 60, 20
+            ]
+
+            tag From4 {
+                value = "dispatch_int"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7584, 7888
+                size = 68, 20
+            ]
+
+            tag Goto8 {
+                value = "active_inverter"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8632, 7280
+                size = 60, 20
+            ]
+
+            tag From7 {
+                value = "active_inverter"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 7664
+                size = 69, 20
+            ]
+
+            tag From12 {
+                value = "active_battery"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 7728
+                size = 60, 20
+            ]
+
+            tag Goto9 {
+                value = "active_status"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7864, 7696
+                size = 60, 20
+            ]
+
+            tag Goto10 {
+                value = "dispatch_int"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8064, 7552
+                rotation = right
+                size = 60, 20
+            ]
+
+            tag From21 {
+                value = "active_status"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7584, 8016
+                size = 46, 20
+            ]
+
+            tag From22 {
+                value = "kwref"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7584, 7968
+                size = 46, 20
+            ]
+
+            tag Goto11 {
+                value = "bat_energy"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8496, 8312
+                size = 60, 20
+            ]
+
+            tag From24 {
+                value = "bat_energy"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7352, 7288
+                size = 60, 20
+            ]
+
+            tag Goto4 {
+                value = "active_battery"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7728, 7400
+                size = 60, 20
+            ]
+
+            tag From3 {
+                value = "kwref"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7352, 7456
+                size = 46, 20
+            ]
+
+            tag From20 {
+                value = "active_inverter"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7352, 7512
+                size = 46, 20
+            ]
+
+            tag From25 {
+                value = "kwref"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8168, 8248
+                size = 46, 20
+            ]
+
+            tag Tag11 {
+                value = "(Inverter Power Reference)(ctz_p_mult)"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7936, 8016
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag12 {
+                value = "(Inverter Power Reference)(ctz_p_mult)"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8168, 8376
+                hide_name = True
+                size = 60, 20
+            ]
+
+            junction Junction581 sp
+            [
+                position = 7784, 7696
+            ]
+
+            junction Junction617 sp
+            [
+                position = 8568, 7600
+            ]
+
+            junction Junction619 sp
+            [
+                position = 8568, 7280
+            ]
+
+            junction Junction622 sp
+            [
+                position = 8064, 7488
+            ]
+
+            junction Junction635 sp
+            [
+                position = 7680, 7400
+            ]
+
+            junction Junction636 sp
+            [
+                position = 7632, 7664
+            ]
+
+            junction Junction638 sp
+            [
+                position = 7480, 7936
+            ]
+
+            connect dchtrigger.out "Dispatch kW Reference Calculation.dchtrigger" as Connection26
+            connect chtrigger.out "Dispatch kW Reference Calculation.chtrigger" as Connection27
+            connect From12 "Active status.In2" as Connection2953
+            connect "Active status.Out3" Junction581 as Connection3009
+            connect Junction581 Goto9 as Connection3010
+            connect "Battery Active.in" Junction581 as Connection3011
+            connect "Three-phase Meter1.A+" "Simple Battery inverter (Average)1.A" as Connection3266
+            connect "Simple Battery inverter (Average)1.B" "Three-phase Meter1.B+" as Connection3267
+            connect "Simple Battery inverter (Average)1.C" "Three-phase Meter1.C+" as Connection3269
+            connect "Meter Split1.Input" "Three-phase Meter1.Out" as Connection3271
+            connect A1 "Three-phase Meter1.A-" as Connection3278
+            connect C1 "Three-phase Meter1.C-" as Connection3281
+            connect B1 "Three-phase Meter1.B-" as Connection3280
+            connect Q.in "Meter Split1.POWER_Q" as Connection3282
+            connect pf.in "Meter Split1.POWER_PF" as Connection3283
+            connect P.in "Meter Split1.POWER_P" as Connection3284
+            connect pct_charge.out "Dispatch kW Reference Calculation.pct_charge" as Connection3295
+            connect "Dispatch kW Reference Calculation.pct_discharge" pct_discharge.out as Connection3296
+            connect kwrated.out "Dispatch kW Reference Calculation.kwrated" as Connection3297
+            connect "DSS kW Reference.in" Junction617 as Connection3299
+            [
+                position = 0, 0
+            ]
+            connect Junction617 Goto5 as Connection3300
+            connect "Dispatch kW Reference Calculation.kwref" Junction617 as Connection3301
+            connect "Enable Inverter.in" Junction619 as Connection3316
+            connect Junction619 Goto8 as Connection3317
+            [
+                position = 0, 0
+            ]
+            connect "Dispatch kW Reference Calculation.close_contactor" Junction619 as Connection3318
+            connect "Dispatch Mode Integer.dispatch_mode_int" Junction622 as Connection3341
+            connect Goto10 Junction622 as Connection3343
+            connect From4 "Inverter Power Reference.dispatch_mode_int" as Connection3357
+            connect From21 "Inverter Power Reference.active_status" as Connection3369
+            connect kwhrated.out "Disconnect if on reserve or charged.kwhrated" as Connection2716
+            connect pct_reserve.out "Disconnect if on reserve or charged.pct_reserve" as Connection2717
+            connect From3 "Disconnect if on reserve or charged.kwref" as Connection3137
+            connect From20 "Disconnect if on reserve or charged.active_inverter" as Connection3229
+            connect From24 "Disconnect if on reserve or charged.energy" as Connection3448
+            connect "Dispatch kW Reference Calculation.dispatch_mode" Junction622 as Connection3450
+            [
+                position = 0, 0
+                breakpoints = 8096, 7488
+            ]
+            connect Termination2.in "Simple Battery inverter (Average)1.Outputs" as Connection3451
+            connect "Load point" "Loadshape Point Calculator.input" as Connection3453
+            connect "Loadshape Point Calculator.loadshape_point" "Dispatch kW Reference Calculation.loadshape_point" as Connection3455
+            connect "Disconnect if on reserve or charged.connect_battery" Junction635 as Connection3456
+            connect Junction635 Goto4 as Connection3457
+            [
+                position = 0, 0
+                breakpoints = 7664, 7400
+            ]
+            connect "Battery Active1.in" Junction635 as Connection3458
+            connect From7 Junction636 as Connection3459
+            connect Junction636 "Active status.In1" as Connection3460
+            connect "Battery Active2.in" Junction636 as Connection3461
+            connect gnd1.node "Three-phase Meter1.GND" as Connection3462
+            connect Goto11 "Battery Energy.Battery Energy" as Connection3472
+            [
+                position = 0, 0
+                breakpoints = 8440, 8312; 8384, 8312
+            ]
+            connect "Simple Battery inverter (Average)1.DC-" Vs1.n_node as Connection3530
+            [
+                position = 0, 0
+                breakpoints = 8072, 8408
+            ]
+            connect From22 "Inverter Power Reference.dss_kw" as Connection3531
+            connect "Simple Battery inverter (Average)1.DC+" Vs1.p_node as Connection3535
+            connect From25 "Battery Energy.kwref" as Connection3536
+            connect "Meter Split1.VLL_RMS" Junction638 as Connection3537
+            connect "Inverter Power Reference.v_line" Junction638 as Connection3539
+            connect "Inverter Power Reference.ctz_p_mult" Tag11 as "(Inverter Power Reference)(ctz_p_mult)--1"
+            connect Vline.in Junction638 as Connection3543
+            connect Tag12 "Battery Energy.ctz_p_mult" as Connection3544
+            connect "Inverter Power Reference.inv_inputs" "Simple Battery inverter (Average)1.Inputs" as Connection3545
+            [
+                breakpoints = 7880, 7952
+            ]
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p>A detailed explanation of the OpenDSS Storage model can be found by clicking on the help button.</p><p>The Storage component time-domain model is comprised of an ideal battery and a Simple Battery inverter (average) from the Microgrid library.</p></body></html>"
+                help_file = "help/Storage.pdf"
+
+                dispatch_p {
+                    label = "Dispatch P"
+                    widget = combo
+                    combo_values = "Default", "Follow"
+                    type = string
+                    default_value = "Default"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_dispatch_mode(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                dispatch_q {
+                    label = "Dispatch Q"
+                    widget = combo
+                    combo_values = "Unit PF", "Constant PF", "Constant kVAr"
+                    type = string
+                    default_value = "Unit PF"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_dispatch_mode(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_dispatch_mode(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                snap_status {
+                    label = "Snap solve status"
+                    widget = combo
+                    combo_values = "Charging", "Discharging", "Idling"
+                    type = string
+                    default_value = "Charging"
+                    no_evaluate
+                }
+
+                kv {
+                    label = "Nominal voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "115"
+                    unit = "kV"
+                    group = "Ratings:3"
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "Ratings:3"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_frequency_prop(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if old_value == new_value:
+                            comp_script.update_frequency_property(mdl, container_handle, init=True)
+                        else:
+                            comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+                }
+
+                basefreq {
+                    label = "Base frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                kwrated {
+                    label = "Rated kW"
+                    widget = edit
+                    type = generic
+                    default_value = "25"
+                    unit = "kW"
+                    group = "Ratings:3"
+                }
+
+                kwhrated {
+                    label = "Rated kWh"
+                    widget = edit
+                    type = generic
+                    default_value = "50"
+                    unit = "kWh"
+                    group = "Ratings:3"
+                }
+
+                chargetrigger {
+                    label = "ChargeTrigger"
+                    widget = edit
+                    type = generic
+                    default_value = "0.2"
+                }
+
+                dischargetrigger {
+                    label = "DischargeTrigger"
+                    widget = edit
+                    type = generic
+                    default_value = "0.6"
+                }
+
+                pct_charge {
+                    label = "%Charge"
+                    widget = edit
+                    type = generic
+                    default_value = "100"
+                    unit = "%"
+                }
+
+                pct_discharge {
+                    label = "%Discharge"
+                    widget = edit
+                    type = generic
+                    default_value = "100"
+                    unit = "%"
+                }
+
+                pct_effcharge {
+                    label = "Charge efficiency"
+                    widget = edit
+                    type = generic
+                    default_value = "90"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                pct_effdischarge {
+                    label = "Discharge efficiency"
+                    widget = edit
+                    type = generic
+                    default_value = "90"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                kvar {
+                    label = "Reactive power"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "kVAr"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                pf {
+                    label = "Power factor"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                pct_idlingkvar {
+                    label = "%IdlingkVAr"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                pct_idlingkw {
+                    label = "Idling losses"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                pct_reserve {
+                    label = "Reserve mode SOC"
+                    widget = edit
+                    type = generic
+                    default_value = "20"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                load_loadshape {
+                    label = "LoadShape object"
+                    widget = button
+                    type = generic
+                    default_value = "Choose"
+                    group = "Time Series Settings:2"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_loadshape(mdl, container_handle)
+                    ENDCODE
+                }
+
+                loadshape_name {
+                    label = "LoadShape name"
+                    widget = edit
+                    type = generic
+                    default_value = "Default"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file {
+                    label = "From CSV file"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "Time Series Settings"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                useactual {
+                    label = "Actual value"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "Time Series Settings"
+                    nonvisible
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file_path {
+                    label = "LoadShape from file - path"
+                    widget = edit
+                    type = generic
+                    default_value = ""
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_column {
+                    label = "LoadShape from file - column"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_header {
+                    label = "LoadShape from file - header"
+                    widget = checkbox
+                    type = generic
+                    default_value = "True"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape {
+                    label = "LoadShape points"
+                    widget = edit
+                    type = generic
+                    default_value = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+                    unit = "pu"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_int {
+                    label = "LoadShape interval"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                timespan {
+                    label = "Loadshape time span"
+                    widget = combo
+                    combo_values = "Daily", "Yearly"
+                    type = string
+                    default_value = "Daily"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                T_mode {
+                    label = "LoadShape input mode"
+                    widget = combo
+                    combo_values = "Loadshape index", "Time"
+                    type = string
+                    default_value = "Time"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        if new_value == "Time":
+                            mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
+                        else:
+                            mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+                    ENDCODE
+                }
+
+                T_Ts {
+                    label = "LoadShape time range"
+                    widget = edit
+                    type = generic
+                    default_value = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+                    unit = "h"
+                    group = "Time Series Settings"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.verify_time_loadshape_sizes(mdl, container_handle)
+                    ENDCODE
+                }
+
+                pct_stored {
+                    label = "Initial SOC"
+                    widget = edit
+                    type = generic
+                    default_value = "100"
+                    unit = "%"
+                }
+
+                execution_rate {
+                    label = "Execution rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                }
+
+                vmaxpu {
+                    label = "vmaxpu"
+                    widget = edit
+                    type = generic
+                    default_value = "1.1"
+                    nonvisible
+                }
+
+                vminpu {
+                    label = "vminpu"
+                    widget = edit
+                    type = generic
+                    default_value = "0.9"
+                    nonvisible
+                }
+
+                kva {
+                    label = "kva"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                inv_r {
+                    label = "AC-side resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1e-5"
+                    unit = "Ω"
+                    group = "Inverter:4"
+                }
+
+                inv_l {
+                    label = "AC-side inductance"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                    unit = "H"
+                    group = "Inverter:4"
+                }
+
+                inv_rf {
+                    label = "Filter resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-3"
+                    unit = "Ω"
+                    group = "Inverter:4"
+                }
+
+                inv_cf {
+                    label = "Filter capacitance"
+                    widget = edit
+                    type = generic
+                    default_value = "1.013e-3"
+                    unit = "F"
+                    group = "Inverter:4"
+                }
+
+                inv_kp {
+                    label = "Controller Kp"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0001"
+                    group = "Inverter:4"
+                }
+
+                inv_ki {
+                    label = "Controller Ki"
+                    widget = edit
+                    type = generic
+                    default_value = "0.03"
+                    group = "Inverter:4"
+                }
+
+                loadshape_n_points {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring:5"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+                
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+                    
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_frequency_property(mdl, item_handle)
+                    comp_script.restore_all_storages_points(mdl, item_handle)
+                    # HEADER START
+                    dispatch_p = mdl.get_property_value(mdl.prop(item_handle, "dispatch_p"))
+                    dispatch_q = mdl.get_property_value(mdl.prop(item_handle, "dispatch_q"))
+                    snap_status = mdl.get_property_value(mdl.prop(item_handle, "snap_status"))
+                    kv = mdl.get_property_value(mdl.prop(item_handle, "kv"))
+                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    kwrated = mdl.get_property_value(mdl.prop(item_handle, "kwrated"))
+                    kwhrated = mdl.get_property_value(mdl.prop(item_handle, "kwhrated"))
+                    chargetrigger = mdl.get_property_value(mdl.prop(item_handle, "chargetrigger"))
+                    dischargetrigger = mdl.get_property_value(mdl.prop(item_handle, "dischargetrigger"))
+                    pct_charge = mdl.get_property_value(mdl.prop(item_handle, "pct_charge"))
+                    pct_discharge = mdl.get_property_value(mdl.prop(item_handle, "pct_discharge"))
+                    pct_effcharge = mdl.get_property_value(mdl.prop(item_handle, "pct_effcharge"))
+                    pct_effdischarge = mdl.get_property_value(mdl.prop(item_handle, "pct_effdischarge"))
+                    kvar = mdl.get_property_value(mdl.prop(item_handle, "kvar"))
+                    pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
+                    pct_idlingkvar = mdl.get_property_value(mdl.prop(item_handle, "pct_idlingkvar"))
+                    pct_idlingkw = mdl.get_property_value(mdl.prop(item_handle, "pct_idlingkw"))
+                    pct_reserve = mdl.get_property_value(mdl.prop(item_handle, "pct_reserve"))
+                    loadshape = mdl.get_property_value(mdl.prop(item_handle, "loadshape"))
+                    pct_stored = mdl.get_property_value(mdl.prop(item_handle, "pct_stored"))
+                    execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
+                    vmaxpu = mdl.get_property_value(mdl.prop(item_handle, "vmaxpu"))
+                    vminpu = mdl.get_property_value(mdl.prop(item_handle, "vminpu"))
+                    kva = mdl.get_property_value(mdl.prop(item_handle, "kva"))
+                    inv_r = mdl.get_property_value(mdl.prop(item_handle, "inv_r"))
+                    inv_l = mdl.get_property_value(mdl.prop(item_handle, "inv_l"))
+                    inv_rf = mdl.get_property_value(mdl.prop(item_handle, "inv_rf"))
+                    inv_cf = mdl.get_property_value(mdl.prop(item_handle, "inv_cf"))
+                    inv_kp = mdl.get_property_value(mdl.prop(item_handle, "inv_kp"))
+                    inv_ki = mdl.get_property_value(mdl.prop(item_handle, "inv_ki"))
+                
+                    # HEADER STOP
+                
+                    comp_script.update_dispatch_int_comp(mdl, item_handle)
+                    comp_script.update_mode_int_comp(mdl, item_handle)
+                    comp_script.time_loadshape_preprocessing(mdl, item_handle)
+                
+                    comp_name = mdl.get_name(mdl.get_parent(item_handle))
+                
+                    try:
+                        pf_value = mdl.get_property_value(mdl.prop(item_handle, "pf"))
+                        float(pf_value) # test
+                    except:
+                        raise Exception(f"Invalid power factor value for component {comp_name}")
+                
+                    comp_script.calculate_kva(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+                
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+                    gui_scripts_path = os.path.join(os.path.realpath(lib_path), "gui_scripts")
+                
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+                    if not gui_scripts_path in sys.path:
+                        sys.path.append(gui_scripts_path)
+                
+                    import comp_storage as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+                
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 5168, 4256
+            size = 64, 96
+        ]
+    }
+
+    default {
+        "core/Bus Join" {
+            inputs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/C function" {
+            input_terminals = "real in;"
+            input_terminals_show_labels = "False;"
+            input_terminals_feedthrough = "True;"
+            input_terminals_dimensions = "inherit;"
+            output_terminals = "real out;"
+            output_terminals_show_labels = "False;"
+            output_terminals_feedthrough = "True;"
+            output_terminals_dimensions = "inherit;"
+            output_fnc = ""
+            update_fnc = ""
+            init_fnc = ""
+            global_variables = ""
+            parameters = ""
+            execution_rate = "inherit"
+        }
+
+        "core/Constant" {
+            value = "1"
+            signal_type = "real"
+            execution_rate = "100e-6"
+            _tunable = "False"
+        }
+
+        "core/Data Type Conversion" {
+            output_type = "real"
+            execution_rate = "inherit"
+        }
+
+        "core/Gain" {
+            gain = "1"
+            multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
+            execution_rate = "inherit"
+        }
+
+        "core/Integrator" {
+            show_reset = "none"
+            reset_type = "asynchronous"
+            show_init_condition = "internal"
+            init_value = "0"
+            limit_output = "False"
+            limit_upper = "inf"
+            limit_lower = "-inf"
+            show_state = "False"
+            state_port_type = "inherit"
+            execution_rate = "inherit"
+        }
+
+        "core/Logical operator" {
+            operator = "AND"
+            inputs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Multiport signal switch" {
+            number_of_input_terminals = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Probe" {
+            signal_access = "inherit"
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        "core/Product" {
+            signs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Relational operator" {
+            relational_op = "=="
+            execution_rate = "inherit"
+        }
+
+        "core/Signal switch" {
+            criterion = "ctrl > threshold"
+            threshold = "0.5"
+            execution_rate = "inherit"
+        }
+
+        "core/Step" {
+            step_time = "1"
+            initial_value = "0"
+            final_value = "1"
+            signal_type = "real"
+            execution_rate = "100e-6"
+        }
+
+        "core/Sum" {
+            signs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Termination" {
+            execution_rate = "inherit"
+        }
+
+        "core/Voltage Source" {
+            sig_input = "False"
+            type = "signal generator"
+            param_set = "1phase"
+            parent_label = ""
+            addr = "0"
+            spc_nb = "0"
+            execution_rate = "100e-6"
+            cpd_visible = "True"
+            enable_snb = "False"
+            snb_type = "R2"
+            R2 = "0.0"
+            L1 = "0.1"
+            override_signal_name = "False"
+            signal_name = ""
+            init_source_nature = "Constant"
+            init_const_value = "0.0"
+            init_rms_value = "0.0"
+            init_frequency = "50.0"
+            init_phase = "0.0"
+        }
+
+        "core/Meter Split" {
+            van = "True"
+            vbn = "True"
+            vcn = "True"
+            van_rms = "False"
+            vbn_rms = "False"
+            vcn_rms = "False"
+            vln_rms = "False"
+            vn = "False"
+            vn_rms = "False"
+            vab = "False"
+            vbc = "False"
+            vca = "False"
+            vab_rms = "False"
+            vbc_rms = "False"
+            vca_rms = "False"
+            vll_rms = "False"
+            ia = "False"
+            ib = "False"
+            ic = "False"
+            ia_rms = "False"
+            ib_rms = "False"
+            ic_rms = "False"
+            i_rms = "False"
+            ineutral = "False"
+            in_rms = "False"
+            freq = "False"
+            power_p = "False"
+            power_q = "False"
+            power_s = "False"
+            power_pf = "False"
+            enable_extra_in = "No"
+            power_pa = "False"
+            power_pb = "False"
+            power_pc = "False"
+            power_qa = "False"
+            power_qb = "False"
+            power_qc = "False"
+            power_sa = "False"
+            power_sb = "False"
+            power_sc = "False"
+            power_pfa = "False"
+            power_pfb = "False"
+            power_pfc = "False"
+        }
+
+        "core/Simple Battery inverter (Average)" {
+            Sn = "1.6e6"
+            powerRate = "1"
+            Ts = "200e-6"
+            R = "1e-5"
+            L = "100e-6"
+            Rf = "150e-3"
+            Cf = "1.013e-3"
+            Kp = "0.0001"
+            Ki = "0.05"
+        }
+
+        "core/Three-phase Meter" {
+            R = "1e5"
+            n_cycles = "1"
+            Ts = "100e-6"
+            enable_probes = "True"
+            enable_out = "True"
+            remove_snubber = "False"
+            enable_bandwidth = "False"
+            bandwidth = "10e3"
+            VAn = "True"
+            VBn = "True"
+            VCn = "True"
+            VAB = "False"
+            VBC = "False"
+            VCA = "False"
+            VN = "False"
+            IA = "True"
+            IB = "True"
+            IC = "True"
+            IN = "False"
+            freq = "False"
+            VLn_rms = "False"
+            VLL_rms = "False"
+            VLn_avg_rms = "False"
+            VLL_avg_rms = "False"
+            VN_rms = "False"
+            I_rms = "False"
+            I_avg_rms = "False"
+            IN_rms = "False"
+            P_method = "alpha-beta"
+            enable_extra_out = "False"
+            P_meas = "False"
+        }
+    }
+}
