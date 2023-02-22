@@ -11533,6 +11533,59 @@ _VSConverter_Subsystem8 = mdl.create_component(
 )
 
 
+# Component: VSConverter.Subsystem8.Product5
+_VSConverter_Subsystem8_Product5 = mdl.create_component(
+    type_name="core/Product",
+    parent=_VSConverter_Subsystem8,
+    name="Product5",
+    rotation="up",
+    flip="flip_none",
+    position=(8080, 7888),
+    hide_name=True,
+    size=(0, 0)
+)
+
+
+# Component: VSConverter.Subsystem8.Sum16
+_VSConverter_Subsystem8_Sum16 = mdl.create_component(
+    type_name="core/Sum",
+    parent=_VSConverter_Subsystem8,
+    name="Sum16",
+    rotation="up",
+    flip="flip_none",
+    position=(8160, 7920),
+    hide_name=True,
+    size=(0, 0)
+)
+
+
+# Component: VSConverter.Subsystem8.Mathematical function2
+_VSConverter_Subsystem8_Mathematical_function2 = mdl.create_component(
+    type_name="core/Mathematical function",
+    parent=_VSConverter_Subsystem8,
+    name="Mathematical function2",
+    rotation="up",
+    flip="flip_none",
+    position=(8264, 7920),
+    hide_name=True,
+    size=(0, 0)
+)
+mdl.set_property_value(mdl.prop(_VSConverter_Subsystem8_Mathematical_function2, "mathematical_fn"), "sqrt")
+
+
+# Component: VSConverter.Subsystem8.Product4
+_VSConverter_Subsystem8_Product4 = mdl.create_component(
+    type_name="core/Product",
+    parent=_VSConverter_Subsystem8,
+    name="Product4",
+    rotation="up",
+    flip="flip_none",
+    position=(8080, 7968),
+    hide_name=True,
+    size=(0, 0)
+)
+
+
 # Component: VSConverter.Subsystem8.Trigonometric function4
 _VSConverter_Subsystem8_Trigonometric_function4 = mdl.create_component(
     type_name="core/Trigonometric function",
@@ -11787,59 +11840,6 @@ mdl.set_property_value(mdl.prop(_VSConverter_Subsystem8_Constant10, "execution_r
 mdl.set_property_value(mdl.prop(_VSConverter_Subsystem8_Constant10, "value"), "0")
 
 
-# Component: VSConverter.Subsystem8.Product5
-_VSConverter_Subsystem8_Product5 = mdl.create_component(
-    type_name="core/Product",
-    parent=_VSConverter_Subsystem8,
-    name="Product5",
-    rotation="up",
-    flip="flip_none",
-    position=(8080, 7888),
-    hide_name=True,
-    size=(0, 0)
-)
-
-
-# Component: VSConverter.Subsystem8.Sum16
-_VSConverter_Subsystem8_Sum16 = mdl.create_component(
-    type_name="core/Sum",
-    parent=_VSConverter_Subsystem8,
-    name="Sum16",
-    rotation="up",
-    flip="flip_none",
-    position=(8160, 7920),
-    hide_name=True,
-    size=(0, 0)
-)
-
-
-# Component: VSConverter.Subsystem8.Mathematical function2
-_VSConverter_Subsystem8_Mathematical_function2 = mdl.create_component(
-    type_name="core/Mathematical function",
-    parent=_VSConverter_Subsystem8,
-    name="Mathematical function2",
-    rotation="up",
-    flip="flip_none",
-    position=(8264, 7920),
-    hide_name=True,
-    size=(0, 0)
-)
-mdl.set_property_value(mdl.prop(_VSConverter_Subsystem8_Mathematical_function2, "mathematical_fn"), "sqrt")
-
-
-# Component: VSConverter.Subsystem8.Product4
-_VSConverter_Subsystem8_Product4 = mdl.create_component(
-    type_name="core/Product",
-    parent=_VSConverter_Subsystem8,
-    name="Product4",
-    rotation="up",
-    flip="flip_none",
-    position=(8080, 7968),
-    hide_name=True,
-    size=(0, 0)
-)
-
-
 # Port: VSConverter.Subsystem8.mag
 _VSConverter_Subsystem8_mag = mdl.create_port(
     name="mag",
@@ -11898,22 +11898,6 @@ _VSConverter_Subsystem8_Angle = mdl.create_port(
     flip="flip_none",
     hide_name=False,
     position=(9072, 8208)
-)
-
-# Junction: VSConverter.Subsystem8.Junction45
-_VSConverter_Subsystem8_Junction45 = mdl.create_junction(
-    name="Junction45",
-    parent=_VSConverter_Subsystem8,
-    kind="sp",
-    position=(8816, 8368)
-)
-
-# Junction: VSConverter.Subsystem8.Junction46
-_VSConverter_Subsystem8_Junction46 = mdl.create_junction(
-    name="Junction46",
-    parent=_VSConverter_Subsystem8,
-    kind="sp",
-    position=(7792, 7872)
 )
 
 # Junction: VSConverter.Subsystem8.Junction24
@@ -11994,6 +11978,22 @@ _VSConverter_Subsystem8_Junction44 = mdl.create_junction(
     parent=_VSConverter_Subsystem8,
     kind="sp",
     position=(8816, 8304)
+)
+
+# Junction: VSConverter.Subsystem8.Junction45
+_VSConverter_Subsystem8_Junction45 = mdl.create_junction(
+    name="Junction45",
+    parent=_VSConverter_Subsystem8,
+    kind="sp",
+    position=(8816, 8368)
+)
+
+# Junction: VSConverter.Subsystem8.Junction46
+_VSConverter_Subsystem8_Junction46 = mdl.create_junction(
+    name="Junction46",
+    parent=_VSConverter_Subsystem8,
+    kind="sp",
+    position=(7792, 7872)
 )
 
 # Component: VSConverter.Comparator1
@@ -12649,21 +12649,6 @@ _VSConverter_Subsystem9 = mdl.create_component(
 )
 
 
-# Component: VSConverter.Subsystem9.Constant10
-_VSConverter_Subsystem9_Constant10 = mdl.create_component(
-    type_name="core/Constant",
-    parent=_VSConverter_Subsystem9,
-    name="Constant10",
-    rotation="up",
-    flip="flip_none",
-    position=(8944, 8328),
-    hide_name=True,
-    size=(None, None)
-)
-mdl.set_property_value(mdl.prop(_VSConverter_Subsystem9_Constant10, "execution_rate"), "execution_rate")
-mdl.set_property_value(mdl.prop(_VSConverter_Subsystem9_Constant10, "value"), "0")
-
-
 # Component: VSConverter.Subsystem9.Product5
 _VSConverter_Subsystem9_Product5 = mdl.create_component(
     type_name="core/Product",
@@ -12954,6 +12939,21 @@ _VSConverter_Subsystem9_Constant9 = mdl.create_component(
 )
 mdl.set_property_value(mdl.prop(_VSConverter_Subsystem9_Constant9, "execution_rate"), "execution_rate")
 mdl.set_property_value(mdl.prop(_VSConverter_Subsystem9_Constant9, "value"), "-np.pi")
+
+
+# Component: VSConverter.Subsystem9.Constant10
+_VSConverter_Subsystem9_Constant10 = mdl.create_component(
+    type_name="core/Constant",
+    parent=_VSConverter_Subsystem9,
+    name="Constant10",
+    rotation="up",
+    flip="flip_none",
+    position=(8944, 8328),
+    hide_name=True,
+    size=(None, None)
+)
+mdl.set_property_value(mdl.prop(_VSConverter_Subsystem9_Constant10, "execution_rate"), "execution_rate")
+mdl.set_property_value(mdl.prop(_VSConverter_Subsystem9_Constant10, "value"), "0")
 
 
 # Port: VSConverter.Subsystem9.mag
@@ -15428,9 +15428,9 @@ _Vsource_mask = mdl.create_mask(_Vsource)
 _Vsource_mask_ground_connected = mdl.create_property(
     item_handle=_Vsource_mask,
     name="ground_connected",
-    label="Ground-connected",
-    widget="checkbox",
-    combo_values=[],
+    label="Connection method",
+    widget="combo",
+    combo_values=['Grounded', 'Neutral point accessible', 'In series'],
     evaluate=False,
     enabled=True,
     visible=True,
@@ -15701,6 +15701,13 @@ def return_comp_script(mdl, item_handle):
 
 comp_script.define_icon(mdl, item_handle)
 comp_script.update_source_values(mdl, item_handle)
+
+prop_handle = mdl.prop(item_handle, "ground_connected")
+ground_connected = mdl.get_property_value(prop_handle)
+if ground_connected == "True":
+    mdl.set_property_value(prop_handle, "Grounded")
+elif ground_connected == "False":
+    mdl.set_property_value(prop_handle, "In series")
 
 """
 mdl.set_handler_code(_Vsource_mask, "init", _Vsource_mask_init)
@@ -16892,6 +16899,35 @@ _Storage_Inverter_Power_Reference_kvar_calculation = mdl.create_component(
 )
 
 
+# Component: Storage.Inverter Power Reference.kvar calculation.Gain1
+_Storage_Inverter_Power_Reference_kvar_calculation_Gain1 = mdl.create_component(
+    type_name="core/Gain",
+    parent=_Storage_Inverter_Power_Reference_kvar_calculation,
+    name="Gain1",
+    rotation="up",
+    flip="flip_none",
+    position=(8752, 8272),
+    hide_name=False,
+    size=(None, None)
+)
+mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_Gain1, "gain"), "np.sqrt(1/(pf*pf)-1)")
+
+
+# Component: Storage.Inverter Power Reference.kvar calculation.kwrated
+_Storage_Inverter_Power_Reference_kvar_calculation_kwrated = mdl.create_component(
+    type_name="core/Constant",
+    parent=_Storage_Inverter_Power_Reference_kvar_calculation,
+    name="kwrated",
+    rotation="up",
+    flip="flip_none",
+    position=(8664, 8272),
+    hide_name=False,
+    size=(None, None)
+)
+mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_kwrated, "execution_rate"), "execution_rate")
+mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_kwrated, "value"), "kwrated*1000")
+
+
 # Component: Storage.Inverter Power Reference.kvar calculation.kVAr
 _Storage_Inverter_Power_Reference_kvar_calculation_kVAr = mdl.create_component(
     type_name="core/Multiport signal switch",
@@ -16934,35 +16970,6 @@ _Storage_Inverter_Power_Reference_kvar_calculation_kvar_kvar = mdl.create_compon
 )
 mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_kvar_kvar, "execution_rate"), "execution_rate")
 mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_kvar_kvar, "value"), "kvar*1000")
-
-
-# Component: Storage.Inverter Power Reference.kvar calculation.Gain1
-_Storage_Inverter_Power_Reference_kvar_calculation_Gain1 = mdl.create_component(
-    type_name="core/Gain",
-    parent=_Storage_Inverter_Power_Reference_kvar_calculation,
-    name="Gain1",
-    rotation="up",
-    flip="flip_none",
-    position=(8752, 8272),
-    hide_name=False,
-    size=(None, None)
-)
-mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_Gain1, "gain"), "np.sqrt(1/(pf*pf)-1)")
-
-
-# Component: Storage.Inverter Power Reference.kvar calculation.kwrated
-_Storage_Inverter_Power_Reference_kvar_calculation_kwrated = mdl.create_component(
-    type_name="core/Constant",
-    parent=_Storage_Inverter_Power_Reference_kvar_calculation,
-    name="kwrated",
-    rotation="up",
-    flip="flip_none",
-    position=(8664, 8272),
-    hide_name=False,
-    size=(None, None)
-)
-mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_kwrated, "execution_rate"), "execution_rate")
-mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_kvar_calculation_kwrated, "value"), "kwrated*1000")
 
 
 # Port: Storage.Inverter Power Reference.kvar calculation.dispatch_int
@@ -17156,20 +17163,6 @@ _Storage_Inverter_Power_Reference_Constant_Z_mode_check = mdl.create_component(
 )
 
 
-# Component: Storage.Inverter Power Reference.Constant Z mode check.Relational operator2
-_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator2 = mdl.create_component(
-    type_name="core/Relational operator",
-    parent=_Storage_Inverter_Power_Reference_Constant_Z_mode_check,
-    name="Relational operator2",
-    rotation="up",
-    flip="flip_none",
-    position=(8184, 8240),
-    hide_name=False,
-    size=(None, None)
-)
-mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator2, "relational_op"), "<")
-
-
 # Component: Storage.Inverter Power Reference.Constant Z mode check.vmaxpu
 _Storage_Inverter_Power_Reference_Constant_Z_mode_check_vmaxpu = mdl.create_component(
     type_name="core/Constant",
@@ -17226,6 +17219,20 @@ _Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator1 = m
     size=(None, None)
 )
 mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator1, "relational_op"), ">")
+
+
+# Component: Storage.Inverter Power Reference.Constant Z mode check.Relational operator2
+_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator2 = mdl.create_component(
+    type_name="core/Relational operator",
+    parent=_Storage_Inverter_Power_Reference_Constant_Z_mode_check,
+    name="Relational operator2",
+    rotation="up",
+    flip="flip_none",
+    position=(8184, 8240),
+    hide_name=False,
+    size=(None, None)
+)
+mdl.set_property_value(mdl.prop(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator2, "relational_op"), "<")
 
 
 # Port: Storage.Inverter Power Reference.Constant Z mode check.v_line
@@ -17513,21 +17520,6 @@ _Storage_Active_status_Logical_operator1 = mdl.create_component(
 )
 
 
-# Port: Storage.Active status.Out3
-_Storage_Active_status_Out3 = mdl.create_port(
-    name="Out3",
-    parent=_Storage_Active_status,
-    label="",
-    kind="sp",
-    direction="out",
-    dimension=(1,),
-    terminal_position=('right', 1),
-    rotation="up",
-    flip="flip_none",
-    hide_name=False,
-    position=(8384, 8192)
-)
-
 # Port: Storage.Active status.In2
 _Storage_Active_status_In2 = mdl.create_port(
     name="In2",
@@ -17556,6 +17548,21 @@ _Storage_Active_status_In1 = mdl.create_port(
     flip="flip_none",
     hide_name=False,
     position=(8072, 8144)
+)
+
+# Port: Storage.Active status.Out3
+_Storage_Active_status_Out3 = mdl.create_port(
+    name="Out3",
+    parent=_Storage_Active_status,
+    label="",
+    kind="sp",
+    direction="out",
+    dimension=(1,),
+    terminal_position=('right', 1),
+    rotation="up",
+    flip="flip_none",
+    hide_name=False,
+    position=(8384, 8192)
 )
 
 # Component: Storage.Battery Active
@@ -18001,36 +18008,6 @@ _Storage_Battery_Energy = mdl.create_component(
 )
 
 
-# Component: Storage.Battery Energy.Energy
-_Storage_Battery_Energy_Energy = mdl.create_component(
-    type_name="core/Integrator",
-    parent=_Storage_Battery_Energy,
-    name="Energy",
-    rotation="up",
-    flip="flip_none",
-    position=(8312, 8248),
-    hide_name=False,
-    size=(0, 0)
-)
-mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "init_value"), "pct_stored/100*kwhrated*1000")
-mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "limit_lower"), "kwhrated*1000*pct_reserve/100")
-mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "limit_output"), "True")
-mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "limit_upper"), "kwhrated*1000")
-
-
-# Component: Storage.Battery Energy.SOC
-_Storage_Battery_Energy_SOC = mdl.create_component(
-    type_name="core/Probe",
-    parent=_Storage_Battery_Energy,
-    name="SOC",
-    rotation="up",
-    flip="flip_none",
-    position=(8504, 8184),
-    hide_name=False,
-    size=(None, None)
-)
-
-
 # Component: Storage.Battery Energy.Power
 _Storage_Battery_Energy_Power = mdl.create_component(
     type_name="core/Product",
@@ -18139,6 +18116,36 @@ _Storage_Battery_Energy_Gain4 = mdl.create_component(
     size=(None, None)
 )
 mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Gain4, "gain"), "1/3600")
+
+
+# Component: Storage.Battery Energy.Energy
+_Storage_Battery_Energy_Energy = mdl.create_component(
+    type_name="core/Integrator",
+    parent=_Storage_Battery_Energy,
+    name="Energy",
+    rotation="up",
+    flip="flip_none",
+    position=(8312, 8248),
+    hide_name=False,
+    size=(0, 0)
+)
+mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "init_value"), "pct_stored/100*kwhrated*1000")
+mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "limit_lower"), "kwhrated*1000*pct_reserve/100")
+mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "limit_output"), "True")
+mdl.set_property_value(mdl.prop(_Storage_Battery_Energy_Energy, "limit_upper"), "kwhrated*1000")
+
+
+# Component: Storage.Battery Energy.SOC
+_Storage_Battery_Energy_SOC = mdl.create_component(
+    type_name="core/Probe",
+    parent=_Storage_Battery_Energy,
+    name="SOC",
+    rotation="up",
+    flip="flip_none",
+    position=(8504, 8184),
+    hide_name=False,
+    size=(None, None)
+)
 
 
 # Port: Storage.Battery Energy.Ibat
@@ -20376,66 +20383,6 @@ _Three_Phase_Transformer_N2n2 = mdl.create_connection(
     name="N2n2",
     breakpoints=[],
 )
-_VSConverter_Subsystem8_Connection222 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem8_Product4, "in1"),
-    end=_VSConverter_Subsystem8_Junction29,
-    name="Connection222",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection224 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem8_Product4, "in"),
-    end=_VSConverter_Subsystem8_Junction29,
-    name="Connection224",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection236 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem8_Product4, "out"),
-    end=mdl.term(_VSConverter_Subsystem8_Sum16, "in1"),
-    name="Connection236",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection228 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem8_Product5, "in1"),
-    end=_VSConverter_Subsystem8_Junction24,
-    name="Connection228",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection235 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem8_Product5, "in"),
-    end=_VSConverter_Subsystem8_Junction24,
-    name="Connection235",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection238 = mdl.create_connection(
-    start=_VSConverter_Subsystem8_Junction33,
-    end=_VSConverter_Subsystem8_d,
-    name="Connection238",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection234 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem8_Mathematical_function2, "in"),
-    end=mdl.term(_VSConverter_Subsystem8_Sum16, "out"),
-    name="Connection234",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection231 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem8_Sum16, "in"),
-    end=mdl.term(_VSConverter_Subsystem8_Product5, "out"),
-    name="Connection231",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection252 = mdl.create_connection(
-    start=_VSConverter_Subsystem8_mag,
-    end=_VSConverter_Subsystem8_Junction35,
-    name="Connection252",
-    breakpoints=[],
-)
-_VSConverter_Subsystem8_Connection253 = mdl.create_connection(
-    start=_VSConverter_Subsystem8_Junction35,
-    end=mdl.term(_VSConverter_Subsystem8_Mathematical_function2, "out"),
-    name="Connection253",
-    breakpoints=[],
-)
 _VSConverter_Subsystem8_Connection255 = mdl.create_connection(
     start=mdl.term(_VSConverter_Subsystem8_Constant5, "out"),
     end=mdl.term(_VSConverter_Subsystem8_Relational_operator2, "in1"),
@@ -20664,64 +20611,64 @@ _VSConverter_Subsystem8_Connection316 = mdl.create_connection(
     name="Connection316",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection302 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem9_Sum21, "in1"),
-    end=_VSConverter_Subsystem9_Junction45,
-    name="Connection302",
+_VSConverter_Subsystem8_Connection222 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem8_Product4, "in1"),
+    end=_VSConverter_Subsystem8_Junction29,
+    name="Connection222",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection303 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem9_Sum20, "out"),
-    end=mdl.term(_VSConverter_Subsystem9_Signal_switch14, "in"),
-    name="Connection303",
+_VSConverter_Subsystem8_Connection224 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem8_Product4, "in"),
+    end=_VSConverter_Subsystem8_Junction29,
+    name="Connection224",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection304 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem9_Sum21, "out"),
-    end=mdl.term(_VSConverter_Subsystem9_Signal_switch14, "in1"),
-    name="Connection304",
+_VSConverter_Subsystem8_Connection236 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem8_Product4, "out"),
+    end=mdl.term(_VSConverter_Subsystem8_Sum16, "in1"),
+    name="Connection236",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection305 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem9_Constant10, "out"),
-    end=mdl.term(_VSConverter_Subsystem9_Comparator5, "in2"),
-    name="Connection305",
+_VSConverter_Subsystem8_Connection228 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem8_Product5, "in1"),
+    end=_VSConverter_Subsystem8_Junction24,
+    name="Connection228",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection306 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem9_Signal_switch14, "out"),
-    end=mdl.term(_VSConverter_Subsystem9_Signal_switch13, "in1"),
-    name="Connection306",
+_VSConverter_Subsystem8_Connection235 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem8_Product5, "in"),
+    end=_VSConverter_Subsystem8_Junction24,
+    name="Connection235",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection307 = mdl.create_connection(
-    start=_VSConverter_Subsystem9_Angle,
-    end=mdl.term(_VSConverter_Subsystem9_Signal_switch13, "out"),
-    name="Connection307",
+_VSConverter_Subsystem8_Connection238 = mdl.create_connection(
+    start=_VSConverter_Subsystem8_Junction33,
+    end=_VSConverter_Subsystem8_d,
+    name="Connection238",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection312 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem9_Comparator4, "in1"),
-    end=_VSConverter_Subsystem9_Junction33,
-    name="Connection312",
+_VSConverter_Subsystem8_Connection234 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem8_Mathematical_function2, "in"),
+    end=mdl.term(_VSConverter_Subsystem8_Sum16, "out"),
+    name="Connection234",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection314 = mdl.create_connection(
-    start=mdl.term(_VSConverter_Subsystem9_Product7, "in"),
-    end=_VSConverter_Subsystem9_Junction46,
-    name="Connection314",
+_VSConverter_Subsystem8_Connection231 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem8_Sum16, "in"),
+    end=mdl.term(_VSConverter_Subsystem8_Product5, "out"),
+    name="Connection231",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection315 = mdl.create_connection(
-    start=_VSConverter_Subsystem9_Junction46,
-    end=_VSConverter_Subsystem9_Junction24,
-    name="Connection315",
+_VSConverter_Subsystem8_Connection252 = mdl.create_connection(
+    start=_VSConverter_Subsystem8_mag,
+    end=_VSConverter_Subsystem8_Junction35,
+    name="Connection252",
     breakpoints=[],
 )
-_VSConverter_Subsystem9_Connection316 = mdl.create_connection(
-    start=_VSConverter_Subsystem9_q,
-    end=_VSConverter_Subsystem9_Junction46,
-    name="Connection316",
+_VSConverter_Subsystem8_Connection253 = mdl.create_connection(
+    start=_VSConverter_Subsystem8_Junction35,
+    end=mdl.term(_VSConverter_Subsystem8_Mathematical_function2, "out"),
+    name="Connection253",
     breakpoints=[],
 )
 _VSConverter_Subsystem9_Connection222 = mdl.create_connection(
@@ -20950,6 +20897,66 @@ _VSConverter_Subsystem9_Connection301 = mdl.create_connection(
     start=_VSConverter_Subsystem9_Junction45,
     end=_VSConverter_Subsystem9_Junction44,
     name="Connection301",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection302 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem9_Sum21, "in1"),
+    end=_VSConverter_Subsystem9_Junction45,
+    name="Connection302",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection303 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem9_Sum20, "out"),
+    end=mdl.term(_VSConverter_Subsystem9_Signal_switch14, "in"),
+    name="Connection303",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection304 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem9_Sum21, "out"),
+    end=mdl.term(_VSConverter_Subsystem9_Signal_switch14, "in1"),
+    name="Connection304",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection305 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem9_Constant10, "out"),
+    end=mdl.term(_VSConverter_Subsystem9_Comparator5, "in2"),
+    name="Connection305",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection306 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem9_Signal_switch14, "out"),
+    end=mdl.term(_VSConverter_Subsystem9_Signal_switch13, "in1"),
+    name="Connection306",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection307 = mdl.create_connection(
+    start=_VSConverter_Subsystem9_Angle,
+    end=mdl.term(_VSConverter_Subsystem9_Signal_switch13, "out"),
+    name="Connection307",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection312 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem9_Comparator4, "in1"),
+    end=_VSConverter_Subsystem9_Junction33,
+    name="Connection312",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection314 = mdl.create_connection(
+    start=mdl.term(_VSConverter_Subsystem9_Product7, "in"),
+    end=_VSConverter_Subsystem9_Junction46,
+    name="Connection314",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection315 = mdl.create_connection(
+    start=_VSConverter_Subsystem9_Junction46,
+    end=_VSConverter_Subsystem9_Junction24,
+    name="Connection315",
+    breakpoints=[],
+)
+_VSConverter_Subsystem9_Connection316 = mdl.create_connection(
+    start=_VSConverter_Subsystem9_q,
+    end=_VSConverter_Subsystem9_Junction46,
+    name="Connection316",
     breakpoints=[],
 )
 _VSConverter_Connection136 = mdl.create_connection(
@@ -22758,18 +22765,6 @@ _Vsource_Connection33 = mdl.create_connection(
     name="Connection33",
     breakpoints=[],
 )
-_Storage_Inverter_Power_Reference_kvar_calculation_Connection112 = mdl.create_connection(
-    start=_Storage_Inverter_Power_Reference_kvar_calculation_Junction3,
-    end=mdl.term(_Storage_Inverter_Power_Reference_kvar_calculation_kVAr, "in2"),
-    name="Connection112",
-    breakpoints=[(8800, 8240)],
-)
-_Storage_Inverter_Power_Reference_kvar_calculation_Connection113 = mdl.create_connection(
-    start=mdl.term(_Storage_Inverter_Power_Reference_kvar_calculation_kVAr, "in5"),
-    end=_Storage_Inverter_Power_Reference_kvar_calculation_Junction3,
-    name="Connection113",
-    breakpoints=[],
-)
 _Storage_Inverter_Power_Reference_kvar_calculation_Connection47 = mdl.create_connection(
     start=_Storage_Inverter_Power_Reference_kvar_calculation_kvar_out,
     end=mdl.term(_Storage_Inverter_Power_Reference_kvar_calculation_kVAr, "out"),
@@ -22830,10 +22825,22 @@ _Storage_Inverter_Power_Reference_kvar_calculation_Connection111 = mdl.create_co
     name="Connection111",
     breakpoints=[(8800, 8352)],
 )
-_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2882 = mdl.create_connection(
-    start=mdl.term(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Logical_operator1, "in"),
-    end=mdl.term(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator1, "out"),
-    name="Connection2882",
+_Storage_Inverter_Power_Reference_kvar_calculation_Connection112 = mdl.create_connection(
+    start=_Storage_Inverter_Power_Reference_kvar_calculation_Junction3,
+    end=mdl.term(_Storage_Inverter_Power_Reference_kvar_calculation_kVAr, "in2"),
+    name="Connection112",
+    breakpoints=[(8800, 8240)],
+)
+_Storage_Inverter_Power_Reference_kvar_calculation_Connection113 = mdl.create_connection(
+    start=mdl.term(_Storage_Inverter_Power_Reference_kvar_calculation_kVAr, "in5"),
+    end=_Storage_Inverter_Power_Reference_kvar_calculation_Junction3,
+    name="Connection113",
+    breakpoints=[],
+)
+_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2884 = mdl.create_connection(
+    start=_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Junction560,
+    end=_Storage_Inverter_Power_Reference_Constant_Z_mode_check_v_line,
+    name="Connection2884",
     breakpoints=[],
 )
 _Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2883 = mdl.create_connection(
@@ -22841,12 +22848,6 @@ _Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2883 = mdl.cre
     end=mdl.term(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Logical_operator1, "in1"),
     name="Connection2883",
     breakpoints=[(8216, 8240), (8216, 8200)],
-)
-_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2884 = mdl.create_connection(
-    start=_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Junction560,
-    end=_Storage_Inverter_Power_Reference_Constant_Z_mode_check_v_line,
-    name="Connection2884",
-    breakpoints=[],
 )
 _Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2885 = mdl.create_connection(
     start=mdl.term(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Logical_operator1, "out"),
@@ -22876,6 +22877,18 @@ _Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2881 = mdl.cre
     start=mdl.term(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator2, "in"),
     end=_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Junction560,
     name="Connection2881",
+    breakpoints=[],
+)
+_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Connection2882 = mdl.create_connection(
+    start=mdl.term(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Logical_operator1, "in"),
+    end=mdl.term(_Storage_Inverter_Power_Reference_Constant_Z_mode_check_Relational_operator1, "out"),
+    name="Connection2882",
+    breakpoints=[],
+)
+_Storage_Inverter_Power_Reference_Connection3112 = mdl.create_connection(
+    start=_Storage_Inverter_Power_Reference_dispatch_mode_int,
+    end=mdl.term(_Storage_Inverter_Power_Reference_kvar_calculation, "dispatch_int"),
+    name="Connection3112",
     breakpoints=[],
 )
 _Storage_Inverter_Power_Reference_Connection3148 = mdl.create_connection(
@@ -23112,12 +23125,6 @@ _Storage_Inverter_Power_Reference_Connection3377 = mdl.create_connection(
     name="Connection3377",
     breakpoints=[],
 )
-_Storage_Inverter_Power_Reference_Connection3112 = mdl.create_connection(
-    start=_Storage_Inverter_Power_Reference_dispatch_mode_int,
-    end=mdl.term(_Storage_Inverter_Power_Reference_kvar_calculation, "dispatch_int"),
-    name="Connection3112",
-    breakpoints=[],
-)
 _Storage_Active_status_Connection2 = mdl.create_connection(
     start=mdl.term(_Storage_Active_status_Logical_operator1, "in"),
     end=_Storage_Active_status_In1,
@@ -23140,6 +23147,30 @@ _Storage_Active_status_Connection4 = mdl.create_connection(
     start=mdl.term(_Storage_Active_status_bool_to_real, "out"),
     end=_Storage_Active_status_Out3,
     name="Connection4",
+    breakpoints=[],
+)
+_Storage_Ch___Dch_Losses_Current_Calc_Connection3269 = mdl.create_connection(
+    start=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Power1, "out"),
+    end=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Signal_switch4, "in"),
+    name="Connection3269",
+    breakpoints=[],
+)
+_Storage_Ch___Dch_Losses_Current_Calc_Connection3280 = mdl.create_connection(
+    start=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Signal_switch3, "in2"),
+    end=_Storage_Ch___Dch_Losses_Current_Calc_Junction1,
+    name="Connection3280",
+    breakpoints=[(8240, 8064), (8240, 8064)],
+)
+_Storage_Ch___Dch_Losses_Current_Calc_Connection3281 = mdl.create_connection(
+    start=_Storage_Ch___Dch_Losses_Current_Calc_Junction1,
+    end=_Storage_Ch___Dch_Losses_Current_Calc_i_minus_idle,
+    name="Connection3281",
+    breakpoints=[(7960, 8064), (7944, 8064), (7944, 8064), (7944, 8064)],
+)
+_Storage_Ch___Dch_Losses_Current_Calc_Connection3282 = mdl.create_connection(
+    start=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Abs1, "in"),
+    end=_Storage_Ch___Dch_Losses_Current_Calc_Junction1,
+    name="Connection3282",
     breakpoints=[],
 )
 _Storage_Ch___Dch_Losses_Current_Calc_Connection3193 = mdl.create_connection(
@@ -23184,70 +23215,10 @@ _Storage_Ch___Dch_Losses_Current_Calc_Connection3249 = mdl.create_connection(
     name="Connection3249",
     breakpoints=[(8360, 8400), (8360, 8208)],
 )
-_Storage_Ch___Dch_Losses_Current_Calc_Connection3269 = mdl.create_connection(
-    start=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Power1, "out"),
-    end=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Signal_switch4, "in"),
-    name="Connection3269",
-    breakpoints=[],
-)
-_Storage_Ch___Dch_Losses_Current_Calc_Connection3280 = mdl.create_connection(
-    start=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Signal_switch3, "in2"),
-    end=_Storage_Ch___Dch_Losses_Current_Calc_Junction1,
-    name="Connection3280",
-    breakpoints=[(8240, 8064), (8240, 8064)],
-)
-_Storage_Ch___Dch_Losses_Current_Calc_Connection3281 = mdl.create_connection(
-    start=_Storage_Ch___Dch_Losses_Current_Calc_Junction1,
-    end=_Storage_Ch___Dch_Losses_Current_Calc_i_minus_idle,
-    name="Connection3281",
-    breakpoints=[(7960, 8064), (7944, 8064), (7944, 8064), (7944, 8064)],
-)
-_Storage_Ch___Dch_Losses_Current_Calc_Connection3282 = mdl.create_connection(
-    start=mdl.term(_Storage_Ch___Dch_Losses_Current_Calc_Abs1, "in"),
-    end=_Storage_Ch___Dch_Losses_Current_Calc_Junction1,
-    name="Connection3282",
-    breakpoints=[],
-)
 _Storage_Dispatch_Mode_Integer_Connection95 = mdl.create_connection(
     start=_Storage_Dispatch_Mode_Integer_dispatch_mode_int,
     end=mdl.term(_Storage_Dispatch_Mode_Integer_kw_mode, "out"),
     name="Connection95",
-    breakpoints=[],
-)
-_Storage_Battery_Energy_Connection3412 = mdl.create_connection(
-    start=_Storage_Battery_Energy_Junction627,
-    end=_Storage_Battery_Energy_Battery_Energy,
-    name="Connection3412",
-    breakpoints=[],
-)
-_Storage_Battery_Energy_Connection3411 = mdl.create_connection(
-    start=mdl.term(_Storage_Battery_Energy_Signal_switch3, "in2"),
-    end=_Storage_Battery_Energy_In3,
-    name="Connection3411",
-    breakpoints=[],
-)
-_Storage_Battery_Energy_Connection3413 = mdl.create_connection(
-    start=mdl.term(_Storage_Battery_Energy_Power, "in"),
-    end=_Storage_Battery_Energy_Vbat,
-    name="Connection3413",
-    breakpoints=[],
-)
-_Storage_Battery_Energy_Connection3410 = mdl.create_connection(
-    start=mdl.term(_Storage_Battery_Energy_Power, "in1"),
-    end=_Storage_Battery_Energy_Ibat,
-    name="Connection3410",
-    breakpoints=[],
-)
-_Storage_Battery_Energy_Connection3414 = mdl.create_connection(
-    start=mdl.term(_Storage_Battery_Energy_Energy, "in"),
-    end=mdl.term(_Storage_Battery_Energy_Gain4, "out"),
-    name="Connection3414",
-    breakpoints=[(8248, 8248)],
-)
-_Storage_Battery_Energy_Connection2733 = mdl.create_connection(
-    start=mdl.term(_Storage_Battery_Energy_SOC, "in"),
-    end=mdl.term(_Storage_Battery_Energy_Gain3, "out"),
-    name="Connection2733",
     breakpoints=[],
 )
 _Storage_Battery_Energy_Connection3223 = mdl.create_connection(
@@ -23302,6 +23273,42 @@ _Storage_Battery_Energy_Connection3405 = mdl.create_connection(
     start=mdl.term(_Storage_Battery_Energy_E_meas_sw, "out"),
     end=mdl.term(_Storage_Battery_Energy_Gain4, "in"),
     name="Connection3405",
+    breakpoints=[],
+)
+_Storage_Battery_Energy_Connection3412 = mdl.create_connection(
+    start=_Storage_Battery_Energy_Junction627,
+    end=_Storage_Battery_Energy_Battery_Energy,
+    name="Connection3412",
+    breakpoints=[],
+)
+_Storage_Battery_Energy_Connection3411 = mdl.create_connection(
+    start=mdl.term(_Storage_Battery_Energy_Signal_switch3, "in2"),
+    end=_Storage_Battery_Energy_In3,
+    name="Connection3411",
+    breakpoints=[],
+)
+_Storage_Battery_Energy_Connection3413 = mdl.create_connection(
+    start=mdl.term(_Storage_Battery_Energy_Power, "in"),
+    end=_Storage_Battery_Energy_Vbat,
+    name="Connection3413",
+    breakpoints=[],
+)
+_Storage_Battery_Energy_Connection3410 = mdl.create_connection(
+    start=mdl.term(_Storage_Battery_Energy_Power, "in1"),
+    end=_Storage_Battery_Energy_Ibat,
+    name="Connection3410",
+    breakpoints=[],
+)
+_Storage_Battery_Energy_Connection3414 = mdl.create_connection(
+    start=mdl.term(_Storage_Battery_Energy_Energy, "in"),
+    end=mdl.term(_Storage_Battery_Energy_Gain4, "out"),
+    name="Connection3414",
+    breakpoints=[(8248, 8248)],
+)
+_Storage_Battery_Energy_Connection2733 = mdl.create_connection(
+    start=mdl.term(_Storage_Battery_Energy_SOC, "in"),
+    end=mdl.term(_Storage_Battery_Energy_Gain3, "out"),
+    name="Connection2733",
     breakpoints=[],
 )
 _Storage_Loadshape_Point_Selector_Connection1 = mdl.create_connection(

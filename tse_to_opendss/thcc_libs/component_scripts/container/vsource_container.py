@@ -4,9 +4,9 @@ def update_properties(mdl, _Vsource_mask):
     _Vsource_mask_ground_connected = mdl.create_property(
         item_handle=_Vsource_mask,
         name="ground_connected",
-        label="Ground-connected",
-        widget="checkbox",
-        combo_values=[],
+        label="Connection method",
+        widget="combo",
+        combo_values=['Grounded', 'Neutral point accessible', 'In series'],
         evaluate=False,
         enabled=True,
         visible=True,
@@ -149,7 +149,7 @@ def update_properties(mdl, _Vsource_mask):
 
     ## SET PROPERTIES TO DEFAULT VALUES
 
-    mdl.set_property_value(mdl.prop(_Vsource_mask, "ground_connected"), "True")
+    mdl.set_property_value(mdl.prop(_Vsource_mask, "ground_connected"), "Grounded")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "basekv"), "115")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "pu"), "1")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "Angle"), "0")

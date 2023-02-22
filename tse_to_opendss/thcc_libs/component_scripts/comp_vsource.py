@@ -116,7 +116,8 @@ def update_connections(mdl, mask_handle, ports):
     else:
         # Ground handle
         gnd = mdl.get_item("gnd1", parent=comp_handle)
-        mdl.delete_item(gnd)
+        if gnd:
+            mdl.delete_item(gnd)
 
         mdl.create_connection(ports.get("A2"), mdl.term(va, 'n_node'))
         mdl.create_connection(ports.get("B2"), mdl.term(vb, 'n_node'))
@@ -141,7 +142,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             n1 = mdl.create_port(
                                  name="N1",
                                  parent=comp_handle,
-                                 terminal_position=[32, 64],
+                                 terminal_position=[32, 48],
                                  position=(x0 + 300, y0 + 200),
                                  rotation="down"
                                  )
@@ -187,6 +188,21 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             deleted_ports.append(mdl.get_name(n1))
             mdl.delete_item(n1)
 
+    a1 = mdl.get_item("A1", parent=comp_handle, item_type="port")
+    b1 = mdl.get_item("B1", parent=comp_handle, item_type="port")
+    c1 = mdl.get_item("C1", parent=comp_handle, item_type="port")
+    if ground_connected == "Neutral point accessible":
+        mdl.set_port_properties(a1, terminal_position=(32, -48))
+        mdl.set_port_properties(b1, terminal_position=(32, -16))
+        mdl.set_port_properties(c1, terminal_position=(32, 16))
+    else:
+        mdl.set_port_properties(a1, terminal_position=(32, -32))
+        mdl.set_port_properties(b1, terminal_position=(32, 0))
+        mdl.set_port_properties(c1, terminal_position=(32, 32))
+
+
+
+
     return created_ports, deleted_ports
 
 
@@ -197,7 +213,9 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
 def define_icon(mdl, mask_handle):
     ground_connected = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
-    if ground_connected:
+    if ground_connected == "Grounded":
         mdl.set_component_icon_image(mask_handle, 'images/vsource_gnd.svg')
+    elif ground_connected == "Neutral point accessible":
+        mdl.set_component_icon_image(mask_handle, 'images/vsource_neutral.svg')
     else:
         mdl.set_component_icon_image(mask_handle, 'images/vsource.svg')
