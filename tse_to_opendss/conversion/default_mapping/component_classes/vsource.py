@@ -39,13 +39,36 @@ class Vsource(TwoTerminal):
     def create_new_format_properties_dict(self, tse_properties, tse_component):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
-        new_format_properties = dict(tse_properties)
+        new_format_properties = dict()
 
-        if new_format_properties['global_basefreq'] == "False":
-            new_format_properties['BaseFreq'] = tse_properties.get('BaseFreq')
+        tse_si_prop_names = ["r1", "x1", "r0", "x0"]
+        dss_si_prop_names = ["R1", "X1", "R0", "X0"]
+        tse_pu_prop_names = ["r1_pu", "x1_pu", "r0_pu", "x0_pu"]
+        dss_pu_prop_names = ["puZ1", "puZ0", "puZ2"]
+        tse_mva_prop_names = ["mva_sc3", "mva_sc1", "x1r1", "x0r0"]
+        dss_mva_prop_names = ["MVAsc3", "MVAsc1", "x1r1", "x0r0"]
+        tse_i_prop_names = ["i_sc3", "i_sc1", "x1r1", "x0r0"]
+        dss_i_prop_names = ["Isc3", "Isc1", "x1r1", "x0r0"]
+        tse_general_prop_names = ["BaseFreq", "basekv", "baseMVA", "pu", "Angle", "Frequency"]
+        dss_general_prop_names = ["BaseFreq", "basekv", "baseMVA", "pu", "Angle", "Frequency"]
 
-        new_format_properties.pop('global_basefreq')
-        new_format_properties.pop('enable_monitoring')
+        if tse_properties['input_method'] == "Z":
+            tse_values = [tse_properties.get(key) for key in tse_si_prop_names]
+            new_format_properties = {key: value for key, value in zip(dss_si_prop_names, tse_values)}
+        elif tse_properties['input_method'] == "Zpu":
+            tse_values = [tse_properties.get(key) for key in tse_pu_prop_names]
+            for count, value in enumerate(dss_pu_prop_names[0:2]):
+                new_format_properties[value] = f"[{tse_values[2*count]}, {tse_values[2*count+1]}]"
+            new_format_properties["puZ2"] = new_format_properties.get("puZ1")
+        elif tse_properties['input_method'] == "MVAsc":
+            tse_values = [tse_properties.get(key) for key in tse_mva_prop_names]
+            new_format_properties = {key: value for key, value in zip(dss_mva_prop_names, tse_values)}
+        elif tse_properties['input_method'] == "Isc":
+            tse_values = [tse_properties.get(key) for key in tse_i_prop_names]
+            new_format_properties = {key: value for key, value in zip(dss_i_prop_names, tse_values)}
+
+        for count, value in enumerate(dss_general_prop_names):
+            new_format_properties[value] = tse_properties.get(tse_general_prop_names[count])
 
         return new_format_properties
 
