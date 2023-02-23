@@ -211,7 +211,7 @@ def get_r_l_matrices(mdl, container_handle):
         i_sc1 = mdl.get_property_value(mdl.prop(container_handle, "i_sc1"))
         x1r1 = mdl.get_property_value(mdl.prop(container_handle, "x1r1"))
         x0r0 = mdl.get_property_value(mdl.prop(container_handle, "x0r0"))
-        z1 = 1e3*basekv/i_sc3
+        z1 = 1e3*basekv/(np.sqrt(3)*i_sc3)
         r1 = np.cos(np.arctan(x1r1))*z1
         x1 = r1*x1r1
         # from the DSS Source Code
