@@ -8,9 +8,9 @@ library "OpenDSS" {
             layout = static
             label = "V"
             component "core/Voltage Source" Va {
-                init_frequency = "Frequency"
-                init_phase = "Angle - 0"
-                init_rms_value = "round(basekv * 1000 * pu/ np.sqrt(3), 8)"
+                init_frequency = "freq"
+                init_phase = "phase - 0"
+                init_rms_value = "vrms"
                 init_source_nature = "Sine"
             }
             [
@@ -19,9 +19,9 @@ library "OpenDSS" {
             ]
 
             component "core/Voltage Source" Vb {
-                init_frequency = "Frequency"
-                init_phase = "Angle - 120"
-                init_rms_value = "round(basekv * 1000 * pu/ np.sqrt(3), 8)"
+                init_frequency = "freq"
+                init_phase = "phase - 120"
+                init_rms_value = "vrms"
                 init_source_nature = "Sine"
             }
             [
@@ -30,9 +30,9 @@ library "OpenDSS" {
             ]
 
             component "core/Voltage Source" Vc {
-                init_frequency = "Frequency"
-                init_phase = "Angle - 240"
-                init_rms_value = "round(basekv * 1000 * pu/ np.sqrt(3), 8)"
+                init_frequency = "freq"
+                init_phase = "phase - 240"
+                init_rms_value = "vrms"
                 init_source_nature = "Sine"
             }
             [
@@ -109,12 +109,6 @@ library "OpenDSS" {
                     type = generic
                     default_value = "115.0"
                     group = "General:1"
-
-                    CODE property_value_changed
-                        # TODO: Evaluate if is necessary to run it on value changed (we can run on compile)
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 baseMVA {
@@ -126,7 +120,6 @@ library "OpenDSS" {
                 	default_value = "100.0"
                 	unit = "MVA"
                 	group = "General"
-
                 }
 
                 BaseFreq {
@@ -150,15 +143,12 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        #comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        #if old_value == new_value:
-                            #comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        #else:
-                            #comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 
@@ -187,11 +177,6 @@ library "OpenDSS" {
                     type = generic
                     default_value = "1.0"
                     group = "Parameters:2"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 Angle {
@@ -202,11 +187,6 @@ library "OpenDSS" {
                     default_value = "0"
                     group = "Parameters"
                     keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 Frequency {
@@ -217,12 +197,6 @@ library "OpenDSS" {
                     default_value = "60"
                     group = "Parameters"
                     keepline
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
-
                 }
 
                 input_method {
@@ -239,6 +213,11 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
                 }
 
                 r1 {
@@ -249,11 +228,6 @@ library "OpenDSS" {
                     default_value = "1.65"
                     unit = "Ω"
                     group = "Parameters"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 x1 {
@@ -264,11 +238,6 @@ library "OpenDSS" {
                     default_value = "6.6"
                     unit = "Ω"
                     group = "Parameters"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 r0 {
@@ -279,11 +248,6 @@ library "OpenDSS" {
                     default_value = "1.9"
                     unit = "Ω"
                     group = "Parameters"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 x0 {
@@ -294,11 +258,6 @@ library "OpenDSS" {
                     default_value = "5.7"
                     unit = "Ω"
                     group = "Parameters"
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 r1_pu {
@@ -310,11 +269,6 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 x1_pu {
@@ -326,11 +280,6 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 r0_pu {
@@ -342,11 +291,6 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
                 x0_pu {
@@ -358,11 +302,6 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "Parameters"
                     nonvisible
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.update_source_values(mdl, container_handle)
-                    ENDCODE
                 }
 
 
@@ -474,13 +413,13 @@ library "OpenDSS" {
                         return comp_script
 
                     comp_script.define_icon(mdl, item_handle)
-                    comp_script.update_source_values(mdl, item_handle)
                 ENDCODE
 
                 CODE pre_compile
                     comp_script = return_comp_script(mdl, item_handle)
                     #comp_script.update_source_values(mdl, item_handle)
                     r_matrix, l_matrix = comp_script.get_r_l_matrices(mdl, item_handle)
+                    vrms, phase, freq = comp_script.get_source_values(mdl, item_handle)
                 ENDCODE
             }
         }

@@ -5,55 +5,6 @@ from math import log10, floor
 x0, y0 = (8192, 8192)
 
 
-def update_source_values(mdl, mask_handle):
-    comp_handle = mdl.get_parent(mask_handle)
-
-    # Property handles
-    basekv_prop = mdl.prop(comp_handle, "basekv")
-    frequency_prop = mdl.prop(comp_handle, "Frequency")
-    angle_prop = mdl.prop(comp_handle, "Angle")
-    pu_prop = mdl.prop(comp_handle, "pu")
-
-    r1_prop = mdl.prop(comp_handle, "r1")
-    x1_prop = mdl.prop(comp_handle, "x1")
-    r0_prop = mdl.prop(comp_handle, "r0")
-    x0_prop = mdl.prop(comp_handle, "x0")
-
-    r1 = mdl.get_property_value(r1_prop)
-    x1 = mdl.get_property_value(x1_prop)
-    r0 = mdl.get_property_value(r0_prop)
-    x0 = mdl.get_property_value(x0_prop)
-
-    # Inner TL
-    tl_comp = mdl.get_item("TL1", parent=comp_handle)
-    tl_f_prop = mdl.prop(tl_comp, "Frequency")
-    freq = mdl.get_property_value(frequency_prop)
-    mdl.set_property_value(tl_f_prop, freq)
-
-    rseq = '[[r0, 0, 0], [0, r1, 0], [0, 0, r1]]'
-    lseq = ('[[x0 / 2 / np.pi / Frequency, 0, 0], '
-            '[0, x1 / 2 / np.pi / Frequency, 0], '
-            '[0, 0, x1 / 2 / np.pi / Frequency]]')
-
-    r_seq_prop = mdl.prop(tl_comp, "R_sequence_metric")
-    l_seq_prop = mdl.prop(tl_comp, "L_sequence_metric")
-    mdl.set_property_value(r_seq_prop, rseq)
-    mdl.set_property_value(l_seq_prop, lseq)
-
-    for idx, letter in enumerate(["a", "b", "c"]):
-        # Source handles
-        vsource = mdl.get_item("V" + letter, parent=comp_handle)
-
-        rms_prop = mdl.prop(vsource, "init_rms_value")
-        f_prop = mdl.prop(vsource, "init_frequency")
-        ph_prop = mdl.prop(vsource, "init_phase")
-
-        mdl.set_property_value(f_prop, "Frequency")
-
-        mdl.set_property_value(rms_prop, "round(basekv * 1000 * pu/ np.sqrt(3), 8)")
-        mdl.set_property_value(ph_prop, f"Angle - {120 * idx}")
-
-
 def toggle_frequency_prop(mdl, mask_handle, init=False):
     frequency_prop = mdl.prop(mask_handle, "BaseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
@@ -61,30 +12,13 @@ def toggle_frequency_prop(mdl, mask_handle, init=False):
 
     if use_global:
         if "simdss_basefreq" in mdl.get_ns_vars():
-            mdl.set_property_value(frequency_prop, mdl.get_ns_var("simdss_basefreq"))
+            mdl.set_property_disp_value(frequency_prop, mdl.get_ns_var("simdss_basefreq"))
             mdl.hide_property(frequency_prop)
         else:
             mdl.set_property_disp_value(global_frequency_prop, False)
             mdl.info("Add a SimDSS component to define the global frequency value.")
     else:
         mdl.show_property(frequency_prop)
-
-
-def update_frequency_property(mdl, mask_handle, init=False):
-
-    frequency_prop = mdl.prop(mask_handle, "BaseFreq")
-    global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
-    use_global = mdl.get_property_value(global_frequency_prop)
-
-    if init:
-        mdl.hide_property(frequency_prop)
-    else:
-        if use_global:
-            if "simdss_basefreq" in mdl.get_ns_vars():
-                mdl.set_property_value(frequency_prop, mdl.get_ns_var("simdss_basefreq"))
-            else:
-                mdl.set_property_value(global_frequency_prop, False)
-        toggle_frequency_prop(mdl, mask_handle, init)
 
 
 def update_connections(mdl, mask_handle, ports):
@@ -297,3 +231,16 @@ def get_r_l_matrices(mdl, mask_handle):
 
     return rmatrix, lmatrix
 
+
+def get_source_values(mdl, mask_handle):
+
+    basekv = mdl.get_property_value(mdl.prop(mask_handle, "basekv"))
+    pu = mdl.get_property_value(mdl.prop(mask_handle, "pu"))
+    Angle = mdl.get_property_value(mdl.prop(mask_handle, "Angle"))
+    Frequency = mdl.get_property_value(mdl.prop(mask_handle, "Frequency"))
+
+    source_voltage = 1e3*basekv*pu/np.sqrt(3)
+    source_phase = Angle
+    source_frequency = Frequency
+
+    return source_voltage, source_phase, source_frequency
