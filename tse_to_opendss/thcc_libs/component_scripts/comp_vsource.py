@@ -5,9 +5,9 @@ from math import log10, floor
 x0, y0 = (8192, 8192)
 
 
-def toggle_frequency_prop(mdl, mask_handle, init=False):
-    frequency_prop = mdl.prop(mask_handle, "BaseFreq")
-    global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
+def toggle_frequency_prop(mdl, container_handle, init=False):
+    frequency_prop = mdl.prop(container_handle, "BaseFreq")
+    global_frequency_prop = mdl.prop(container_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
     if use_global:
@@ -21,15 +21,15 @@ def toggle_frequency_prop(mdl, mask_handle, init=False):
         mdl.show_property(frequency_prop)
 
 
-def update_connections(mdl, mask_handle, ports):
-    comp_handle = mdl.get_parent(mask_handle)
+def update_connections(mdl, container_handle, ports):
+    comp_handle = mdl.get_parent(container_handle)
 
     # Source handles
     va = mdl.get_item("Va", parent=comp_handle)
     vb = mdl.get_item("Vb", parent=comp_handle)
     vc = mdl.get_item("Vc", parent=comp_handle)
 
-    ground_connected = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
+    ground_connected = mdl.get_property_value(mdl.prop(container_handle, "ground_connected"))
     if ground_connected:
         gnd = mdl.create_component(
             "core/Ground",
@@ -51,12 +51,12 @@ def update_connections(mdl, mask_handle, ports):
         mdl.create_connection(ports.get("C2"), mdl.term(vc, 'n_node'))
 
 
-def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
-    comp_handle = mdl.get_parent(mask_handle)
+def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
+    comp_handle = mdl.get_parent(container_handle)
     deleted_ports = []
     created_ports = {}
 
-    ground_connected = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
+    ground_connected = mdl.get_property_value(mdl.prop(container_handle, "ground_connected"))
     if ground_connected:
         # Delete A2-C2 ports
         a2 = mdl.get_item("A2", parent=comp_handle, item_type="port")
@@ -98,7 +98,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     return created_ports, deleted_ports
 
 
-def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
+def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
 
     old_value = None
     new_value = None
@@ -113,7 +113,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     # Global Base Frequency
     # ------------------------------------------------------------------------------------------------------------------
     if prop_name == "global_basefreq":
-        toggle_frequency_prop(mdl, mask_handle)
+        toggle_frequency_prop(mdl, container_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
     # Input Method Frequency
@@ -121,18 +121,18 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     elif prop_name == "input_method":
 
         si_names = ["r1", "r0", "x1", "x0"]
-        si_props = [mdl.prop(mask_handle, name) for name in si_names]
+        si_props = [mdl.prop(container_handle, name) for name in si_names]
         pu_names = ["r1_pu", "r0_pu", "x1_pu", "x0_pu"]
-        pu_props = [mdl.prop(mask_handle, name) for name in pu_names]
+        pu_props = [mdl.prop(container_handle, name) for name in pu_names]
         mvasc_names = ["mva_sc3", "mva_sc1"]
-        mvasc_props = [mdl.prop(mask_handle, name) for name in mvasc_names]
+        mvasc_props = [mdl.prop(container_handle, name) for name in mvasc_names]
         isc_names = ["i_sc3", "i_sc1"]
-        isc_props = [mdl.prop(mask_handle, name) for name in isc_names]
+        isc_props = [mdl.prop(container_handle, name) for name in isc_names]
         xr_names = ["x1r1", "x0r0"]
-        xr_props = [mdl.prop(mask_handle, name) for name in xr_names]
+        xr_props = [mdl.prop(container_handle, name) for name in xr_names]
 
-        v_base = float(mdl.get_property_disp_value(mdl.prop(mask_handle, "basekv")))*1e3
-        s_base = float(mdl.get_property_disp_value(mdl.prop(mask_handle, "baseMVA")))*1e6
+        v_base = float(mdl.get_property_disp_value(mdl.prop(container_handle, "basekv"))) * 1e3
+        s_base = float(mdl.get_property_disp_value(mdl.prop(container_handle, "baseMVA"))) * 1e6
         z_base = v_base*v_base/s_base
         si_values = [float(mdl.get_property_disp_value(prop)) for prop in si_props]
         z1 = si_values[0] + si_values[2]*1j
@@ -157,12 +157,12 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             [mdl.hide_property(prop) for prop in si_props + pu_props + mvasc_props]
 
 
-def define_icon(mdl, mask_handle):
-    ground_connected = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
+def define_icon(mdl, container_handle):
+    ground_connected = mdl.get_property_value(mdl.prop(container_handle, "ground_connected"))
     if ground_connected:
-        mdl.set_component_icon_image(mask_handle, 'images/vsource_gnd.svg')
+        mdl.set_component_icon_image(container_handle, 'images/vsource_gnd.svg')
     else:
-        mdl.set_component_icon_image(mask_handle, 'images/vsource.svg')
+        mdl.set_component_icon_image(container_handle, 'images/vsource.svg')
 
 
 def sc_notation(val, num_decimals=2, exponent_pad=2):
@@ -177,27 +177,27 @@ def sc_notation(val, num_decimals=2, exponent_pad=2):
     return adjusted_mantissa_string + "e" + f"{int(adjusted_exponent_string)}"
 
 
-def get_r_l_matrices(mdl, mask_handle):
+def get_r_l_matrices(mdl, container_handle):
 
     z_si_names = ["r1", "x1", "r0", "x0"]
-    z_si_props = [mdl.prop(mask_handle, prop_name) for prop_name in z_si_names]
+    z_si_props = [mdl.prop(container_handle, prop_name) for prop_name in z_si_names]
     z_pu_names = ["r1_pu", "x1_pu", "r0_pu", "x0_pu"]
-    z_pu_props = [mdl.prop(mask_handle, prop_name) for prop_name in z_pu_names]
-    basekv = mdl.get_property_value(mdl.prop(mask_handle, "basekv"))
-    basemva = mdl.get_property_value(mdl.prop(mask_handle, "baseMVA"))
+    z_pu_props = [mdl.prop(container_handle, prop_name) for prop_name in z_pu_names]
+    basekv = mdl.get_property_value(mdl.prop(container_handle, "basekv"))
+    basemva = mdl.get_property_value(mdl.prop(container_handle, "baseMVA"))
     z_base = basekv*basekv/basemva
-    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "BaseFreq"))
+    basefreq = mdl.get_property_value(mdl.prop(container_handle, "BaseFreq"))
 
-    input_method = mdl.get_property_value(mdl.prop(mask_handle, "input_method"))
+    input_method = mdl.get_property_value(mdl.prop(container_handle, "input_method"))
     if input_method == "Z":
         r1, x1, r0, x0 = [mdl.get_property_value(prop) for prop in z_si_props]
     elif input_method == "Zpu":
         r1, x1, r0, x0 = [mdl.get_property_value(prop)*z_base for prop in z_si_props]
     elif input_method == "MVAsc":
-        mva_sc3 = mdl.get_property_value(mdl.prop(mask_handle, "mva_sc3"))
-        mva_sc1 = mdl.get_property_value(mdl.prop(mask_handle, "mva_sc1"))
-        x1r1 = mdl.get_property_value(mdl.prop(mask_handle, "x1r1"))
-        x0r0 = mdl.get_property_value(mdl.prop(mask_handle, "x0r0"))
+        mva_sc3 = mdl.get_property_value(mdl.prop(container_handle, "mva_sc3"))
+        mva_sc1 = mdl.get_property_value(mdl.prop(container_handle, "mva_sc1"))
+        x1r1 = mdl.get_property_value(mdl.prop(container_handle, "x1r1"))
+        x0r0 = mdl.get_property_value(mdl.prop(container_handle, "x0r0"))
         z1 = basekv*basekv/mva_sc3
         r1 = np.cos(np.arctan(x1r1))*z1
         x1 = r1*x1r1
@@ -207,10 +207,10 @@ def get_r_l_matrices(mdl, mask_handle):
         r0 = proots.max()
         x0 = r0 * x0r0
     elif input_method == "Isc":
-        i_sc3 = mdl.get_property_value(mdl.prop(mask_handle, "i_sc3"))
-        i_sc1 = mdl.get_property_value(mdl.prop(mask_handle, "i_sc1"))
-        x1r1 = mdl.get_property_value(mdl.prop(mask_handle, "x1r1"))
-        x0r0 = mdl.get_property_value(mdl.prop(mask_handle, "x0r0"))
+        i_sc3 = mdl.get_property_value(mdl.prop(container_handle, "i_sc3"))
+        i_sc1 = mdl.get_property_value(mdl.prop(container_handle, "i_sc1"))
+        x1r1 = mdl.get_property_value(mdl.prop(container_handle, "x1r1"))
+        x0r0 = mdl.get_property_value(mdl.prop(container_handle, "x0r0"))
         z1 = 1e3*basekv/i_sc3
         r1 = np.cos(np.arctan(x1r1))*z1
         x1 = r1*x1r1
@@ -233,12 +233,12 @@ def get_r_l_matrices(mdl, mask_handle):
     return rmatrix, lmatrix
 
 
-def get_source_values(mdl, mask_handle):
+def get_source_values(mdl, container_handle):
 
-    basekv = mdl.get_property_value(mdl.prop(mask_handle, "basekv"))
-    pu = mdl.get_property_value(mdl.prop(mask_handle, "pu"))
-    Angle = mdl.get_property_value(mdl.prop(mask_handle, "Angle"))
-    Frequency = mdl.get_property_value(mdl.prop(mask_handle, "Frequency"))
+    basekv = mdl.get_property_value(mdl.prop(container_handle, "basekv"))
+    pu = mdl.get_property_value(mdl.prop(container_handle, "pu"))
+    Angle = mdl.get_property_value(mdl.prop(container_handle, "Angle"))
+    Frequency = mdl.get_property_value(mdl.prop(container_handle, "Frequency"))
 
     source_voltage = 1e3*basekv*pu/np.sqrt(3)
     source_phase = Angle
