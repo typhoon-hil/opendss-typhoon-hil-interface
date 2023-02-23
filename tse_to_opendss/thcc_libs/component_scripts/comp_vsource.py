@@ -113,7 +113,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     # Global Base Frequency
     # ------------------------------------------------------------------------------------------------------------------
     if prop_name == "global_basefreq":
-        toggle_frequency_prop(mdl, mask_handle, init=False)
+        toggle_frequency_prop(mdl, mask_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
     # Input Method Frequency
@@ -226,8 +226,9 @@ def get_r_l_matrices(mdl, mask_handle):
     xm = (x0 - x1)/3
     lm = xm/(2*np.pi*basefreq)
 
-    rmatrix = [[rs, rm, rm], [rm, rs, rs], [rm, rm, rs]]
-    lmatrix = [[ls, lm, lm], [lm, ls, ls], [lm, lm, ls]]
+    rmatrix = [[rs, rm, rm], [rm, rs, rm], [rm, rm, rs]]
+    lmatrix = [[ls, lm, lm], [lm, ls, lm], [lm, lm, ls]]
+    # For two-phase systems, we can use just the 2x2 matrix from that
 
     return rmatrix, lmatrix
 
