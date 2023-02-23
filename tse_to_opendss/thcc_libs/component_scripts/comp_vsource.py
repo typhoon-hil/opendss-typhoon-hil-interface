@@ -179,6 +179,7 @@ def sc_notation(val, num_decimals=2, exponent_pad=2):
 
 def get_r_l_matrices(mdl, container_handle):
 
+    comp_handle = mdl.get_parent(container_handle)
     z_si_names = ["r1", "x1", "r0", "x0"]
     z_si_props = [mdl.prop(container_handle, prop_name) for prop_name in z_si_names]
     z_pu_names = ["r1_pu", "x1_pu", "r0_pu", "x0_pu"]
@@ -218,6 +219,15 @@ def get_r_l_matrices(mdl, container_handle):
         proots = np.roots([1+x0r0*x0r0, 4*(r1+x1*x0r0), 4*(r1*r1 + x1*x1)-np.power(1e3*basekv*3/(np.sqrt(3)*i_sc1), 2)])
         r0 = proots.max()
         x0 = r0 * x0r0
+
+    if r0 <= 0 or x0 <= 0:
+        msg = "R0 or X0 is negative."
+        mdl.error(msg, kind='Bad input arguments', context=comp_handle)
+    elif r0 < r1 or x0 < x1:
+        msg = "Zero Sequence impedance is lower than positive sequence. " \
+              "The source have negative mutual impedances."
+        mdl.warning(msg, kind='Bad input arguments', context=comp_handle)
+
 
     rs = (2*r1 + r0)/3
     xs = (2*x1 + x0)/3
