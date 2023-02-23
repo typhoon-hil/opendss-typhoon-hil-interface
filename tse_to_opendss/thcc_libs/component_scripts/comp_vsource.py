@@ -94,30 +94,48 @@ def update_connections(mdl, mask_handle, ports):
     vc = mdl.get_item("Vc", parent=comp_handle)
 
     ground_connected = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
-    if ground_connected == "Grounded":
-        gnd = mdl.create_component(
-            "core/Ground",
-            name="gnd1",
-            parent=comp_handle,
-            position=(8000, 8400)
-        )
 
-        mdl.create_connection(mdl.term(gnd, "node"), mdl.term(va, 'n_node'))
-        mdl.create_connection(mdl.term(gnd, "node"), mdl.term(vb, 'n_node'))
-        mdl.create_connection(mdl.term(gnd, "node"), mdl.term(vc, 'n_node'))
-    elif ground_connected == "Neutral point accessible":
-        gnd = mdl.get_item("gnd1", parent=comp_handle)
-        if gnd:
-            mdl.delete_item(gnd)
+    if ground_connected in ["Grounded", "Neutral point accessible"]:
+        jun = mdl.get_item("junction_abc", parent=comp_handle, item_type="junction")
+        if not jun:
+            jun = mdl.create_junction(
+                name="junction_abc",
+                parent=comp_handle,
+                position=(x0 - 200, y0 - 0)
+            )
+        if len(mdl.find_connections(mdl.term(va, 'n_node'), jun)) == 0:
+            mdl.create_connection(mdl.term(va, 'n_node'), jun)
+        if len(mdl.find_connections(mdl.term(vb, 'n_node'), jun)) == 0:
+            mdl.create_connection(mdl.term(vb, 'n_node'), jun)
+        if len(mdl.find_connections(mdl.term(vc, 'n_node'), jun)) == 0:
+            mdl.create_connection(mdl.term(vc, 'n_node'), jun)
 
-        mdl.create_connection(ports.get("N1"), mdl.term(va, 'n_node'))
-        mdl.create_connection(ports.get("N1"), mdl.term(vb, 'n_node'))
-        mdl.create_connection(ports.get("N1"), mdl.term(vc, 'n_node'))
+        if ground_connected == "Grounded":
+            gnd = mdl.create_component(
+                "core/Ground",
+                name="gnd1",
+                parent=comp_handle,
+                position=(x0 - 300, y0 - 0),
+                rotation="right"
+            )
+            if len(mdl.find_connections(mdl.term(gnd, "node"), jun)) == 0:
+                mdl.create_connection(mdl.term(gnd, "node"), jun)
+        else:  # ground_connected == "Neutral point accessible"
+            gnd = mdl.get_item("gnd1", parent=comp_handle)
+            if gnd:
+                mdl.delete_item(gnd)
+            if len(mdl.find_connections(ports.get("N1"), jun)) == 0:
+                mdl.create_connection(ports.get("N1"), jun)
+
     else:
         # Ground handle
         gnd = mdl.get_item("gnd1", parent=comp_handle)
         if gnd:
             mdl.delete_item(gnd)
+
+        jun = mdl.get_item("junction_abc", parent=comp_handle)
+        if jun:
+            mdl.delete_item(jun)
 
         mdl.create_connection(ports.get("A2"), mdl.term(va, 'n_node'))
         mdl.create_connection(ports.get("B2"), mdl.term(vb, 'n_node'))
@@ -143,8 +161,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                                  name="N1",
                                  parent=comp_handle,
                                  terminal_position=[32, 48],
-                                 position=(x0 + 300, y0 + 200),
-                                 rotation="down"
+                                 position=(x0 - 300, y0 - 0),
+                                 rotation="up"
                                  )
             created_ports.update({"N1": n1})
         else:

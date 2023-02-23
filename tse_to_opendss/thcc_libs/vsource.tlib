@@ -43,7 +43,8 @@ library "OpenDSS" {
             component "core/Ground" gnd1 {
             }
             [
-                position = 8000, 8400
+                position = 7892, 8192
+                rotation = right
             ]
 
             component "core/Transmission Line" TL1 {
@@ -86,15 +87,21 @@ library "OpenDSS" {
                 rotation = down
             ]
 
+            junction junction_abc pe
+            [
+                position = 7992, 8192
+            ]
+
             connect Vb.p_node TL1.b_in as Connection25
             connect Va.p_node TL1.a_in as Connection26
             connect Vc.p_node TL1.c_in as Connection27
             connect TL1.a_out A1 as Connection28
             connect B1 TL1.b_out as Connection29
             connect TL1.c_out C1 as Connection30
-            connect gnd1.node Va.n_node as Connection31
-            connect Vc.n_node gnd1.node as Connection32
-            connect Vb.n_node gnd1.node as Connection33
+            connect gnd1.node junction_abc as Connection31
+            connect Vc.n_node junction_abc as Connection32
+            connect Vb.n_node junction_abc as Connection33
+            connect Va.n_node junction_abc as Connection34
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A Vsource object is a voltage source behind an impedance. The most common way to use a voltage source object is with the first terminal connected to one bus with the second terminal connected to ground or neutral point. </p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> It is possible to connect it to two different buses by selecting “In series” on the connection method property.</p></body></html>"
