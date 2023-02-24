@@ -1,5 +1,6 @@
 from .constants import *
 
+
 def map_component(comp_type):
     """ Translate from TSE comp_type to corresponding component(s) in the output format """
 
@@ -18,7 +19,8 @@ def map_component(comp_type):
         DSS_GENERATOR: ["GENERATOR"],
         DSS_VSCONVERTER: ["VSCONVERTER"],
         DSS_STORAGE: ["STORAGE"],
-        DSS_CONTAINER: ["CONTAINER"]
+        DSS_CONTAINER: ["CONTAINER"],
+        DSS_PVSYSTEM: ["PVSYSTEM"]
     }
 
     if comp_type in mappings.keys():

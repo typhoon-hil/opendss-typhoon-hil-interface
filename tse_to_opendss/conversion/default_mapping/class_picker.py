@@ -1,5 +1,6 @@
 from ..default_mapping.component_classes import *
 
+
 def create_comp_instance(converted_comp_type, comp_data):
     """Instantiates the appropriate class depending on converted_comp_type."""
 
@@ -37,3 +38,5 @@ def create_comp_instance(converted_comp_type, comp_data):
         return RegControl(converted_comp_type, **comp_data)
     elif converted_comp_type == "CONTAINER":
         return Container(converted_comp_type, **comp_data)
+    elif converted_comp_type == "PVSYSTEM":
+        return PVSystem(converted_comp_type, **comp_data)
