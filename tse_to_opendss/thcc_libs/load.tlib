@@ -347,6 +347,7 @@ library "OpenDSS" {
                     widget = edit
                     type = generic
                     default_value = "[0,0,1]"
+                    unit = "Auto-Normalized"
                     group = "Load Parameters"
 
                     CODE property_value_changed
@@ -360,6 +361,7 @@ library "OpenDSS" {
                     widget = edit
                     type = generic
                     default_value = "[0,0,1]"
+                    unit = "Auto-Normalized"
                     group = "Load Parameters"
 
                     CODE property_value_changed
@@ -403,10 +405,27 @@ library "OpenDSS" {
                     nonvisible
                 }
 
+                v_min_max {
+                    label = "Transition to CIL cutoff voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "[0.95,1.05]"
+                    unit = "[Vmin,Vmax] pu"
+                    group = "Load Parameters"
+
+                }
+
+                Vmaxpu {
+                    widget = edit
+                    type = generic
+                    default_value = "1.05"
+                    nonvisible
+                }
+
                 Vminpu {
                     widget = edit
                     type = generic
-                    default_value = "0.7"
+                    default_value = "0.95"
                     nonvisible
                 }
 
@@ -890,6 +909,9 @@ library "OpenDSS" {
                     zip_vector_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_Q"))
                     zip_internal = mdl.get_property_value(mdl.prop(item_handle, "zip_internal"))
                     zip_internal_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_Q"))
+                    v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
+                    Vminpu = mdl.get_property_value(mdl.prop(item_handle, "Vminpu"))
+                    Vmaxpu = mdl.get_property_value(mdl.prop(item_handle, "Vmaxpu"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
                     Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
                     execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
@@ -937,6 +959,9 @@ library "OpenDSS" {
                     else:
                         conn = "wye"
 
+
+                    Vminpu = v_min_max[0]
+                    Vmaxpu = v_min_max[1]
 
                     if pf_mode_3ph == "Unit":
                         pf = 1.0
@@ -1045,6 +1070,9 @@ library "OpenDSS" {
                     mdl.set_property_value(mdl.prop(item_handle, "zip_vector_Q"), zip_vector_Q)
                     mdl.set_property_value(mdl.prop(item_handle, "zip_internal"), zip_internal)
                     mdl.set_property_value(mdl.prop(item_handle, "zip_internal_Q"), zip_internal_Q)
+                    mdl.set_property_value(mdl.prop(item_handle, "v_min_max"), v_min_max)
+                    mdl.set_property_value(mdl.prop(item_handle, "Vminpu"), Vminpu)
+                    mdl.set_property_value(mdl.prop(item_handle, "Vmaxpu"), Vmaxpu)
                     mdl.set_property_value(mdl.prop(item_handle, "model"), model)
                     mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
                     mdl.set_property_value(mdl.prop(item_handle, "Sn_3ph"), Sn_3ph)

@@ -40,9 +40,9 @@ class Load(TwoTerminal):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
         if tse_properties['model'] == "8":
-            filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu", "ZIPV"]
+            filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu", "Vmaxpu", "ZIPV"]
         else:
-            filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu"]
+            filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu", "Vmaxpu"]
 
         new_format_properties = {k: v for k, v in tse_properties.items() if k in filtered_list}
 
