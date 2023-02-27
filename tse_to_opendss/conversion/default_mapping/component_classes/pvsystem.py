@@ -40,7 +40,23 @@ class PVSystem(TwoTerminal):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
         new_format_properties = dict()
-        new_format_properties["teste"] = "foi"
+        tse_inverter_names = ["power", "voltage", "freq", "phases"]
+        dss_inverter_names = ["kVA", "kV", "basefreq", "phases"]
+        tse_pv_names = ["pmpp", "irrad", "temp"]
+        dss_pv_names = ["Pmpp", "irradiance", "Temperature"]
+        tse_curve_names = ["xycurve_name_eff", "xycurve_name_cf"]
+        dss_curve_names = ["EffCurve", "P-TCurve"]
+
+        tse_convert_props = tse_inverter_names + tse_pv_names
+        dss_convert_props = dss_inverter_names + dss_pv_names
+        for index, prop in enumerate(tse_convert_props):
+            new_format_properties[dss_convert_props[index]] = tse_properties.get(prop)
+
+        # Include component name to the curves
+        tse_convert_props = tse_curve_names
+        dss_convert_props = dss_curve_names
+        for index, prop in enumerate(tse_convert_props):
+            new_format_properties[dss_convert_props[index]] = f"\"{self.name}_{tse_properties.get(prop)}\""
 
         return new_format_properties
 
@@ -70,7 +86,36 @@ class PVSystem(TwoTerminal):
     def extra_conversion_steps(self, tse_properties, tse_component):
         """ Applies extra necessary conversion steps. """
 
-        pass
+
+        xycurve_eff_props = {"npts": tse_properties.get("xycurve_npts_eff"),
+                             "xarray": tse_properties.get("xycurve_xarray_eff"),
+                             "yarray": tse_properties.get("xycurve_yarray_eff")
+                             }
+
+        xycurve_cf_props = {"npts": tse_properties.get("xycurve_npts_cf"),
+                            "xarray": tse_properties.get("xycurve_xarray_cf"),
+                            "yarray": tse_properties.get("xycurve_yarray_cf")
+                            }
+
+        xycurve_eff_exists = False  # TODO: GUI option
+        xycurve_cf_exists = False   # TODO: GUI option
+
+        from .xycurve import XYCurve
+        if not xycurve_eff_exists:
+            new_xycurve = XYCurve(converted_comp_type="XYCURVE",
+                                  name=self.name + "_" + tse_properties["xycurve_name_eff"].upper(),
+                                  circuit=self.circuit,
+                                  tse_properties=xycurve_eff_props,
+                                  tse_component=None)
+            self.created_instances_list.append(new_xycurve)
+
+        if not xycurve_cf_exists:
+            new_xycurve = XYCurve(converted_comp_type="XYCURVE",
+                                  name=self.name + "_" + tse_properties["xycurve_name_cf"].upper(),
+                                  circuit=self.circuit,
+                                  tse_properties=xycurve_cf_props,
+                                  tse_component=None)
+            self.created_instances_list.append(new_xycurve)
 
     def output_line(self):
         """ Overrides parent output_line method. """
