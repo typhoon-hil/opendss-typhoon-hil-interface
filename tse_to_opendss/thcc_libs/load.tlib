@@ -405,16 +405,6 @@ library "OpenDSS" {
                     nonvisible
                 }
 
-                v_min_max {
-                    label = "Transition to CIL cutoff voltage"
-                    widget = edit
-                    type = generic
-                    default_value = "[0.95,1.05]"
-                    unit = "[Vmin,Vmax] pu"
-                    group = "Load Parameters"
-
-                }
-
                 Vmaxpu {
                     widget = edit
                     type = generic
@@ -494,6 +484,16 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "CPL Parameters"
                     disabled
+                }
+
+                v_min_max {
+                    label = "Transition to CIL cutoff voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "[0.95,1.05]"
+                    unit = "[Vmin,Vmax] pu"
+                    group = "CPL Parameters"
+
                 }
 
                 zero_seq_remove {
