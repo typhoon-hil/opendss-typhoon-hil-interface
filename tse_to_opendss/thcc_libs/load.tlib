@@ -496,6 +496,16 @@ library "OpenDSS" {
 
                 }
 
+                rate_lmt {
+                    label = "Reference power rate limit"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "Cycles to reach zero to nominal"
+                    group = "CPL Parameters"
+
+                }
+
                 zero_seq_remove {
                     label = "Remove zero sequence"
                     widget = checkbox
@@ -910,6 +920,7 @@ library "OpenDSS" {
                     zip_internal = mdl.get_property_value(mdl.prop(item_handle, "zip_internal"))
                     zip_internal_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_Q"))
                     v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
+                    rate_lmt = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt"))
                     Vminpu = mdl.get_property_value(mdl.prop(item_handle, "Vminpu"))
                     Vmaxpu = mdl.get_property_value(mdl.prop(item_handle, "Vmaxpu"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
@@ -1071,6 +1082,7 @@ library "OpenDSS" {
                     mdl.set_property_value(mdl.prop(item_handle, "zip_internal"), zip_internal)
                     mdl.set_property_value(mdl.prop(item_handle, "zip_internal_Q"), zip_internal_Q)
                     mdl.set_property_value(mdl.prop(item_handle, "v_min_max"), v_min_max)
+                    mdl.set_property_value(mdl.prop(item_handle, "rate_lmt"), rate_lmt)
                     mdl.set_property_value(mdl.prop(item_handle, "Vminpu"), Vminpu)
                     mdl.set_property_value(mdl.prop(item_handle, "Vmaxpu"), Vmaxpu)
                     mdl.set_property_value(mdl.prop(item_handle, "model"), model)

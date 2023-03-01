@@ -1304,8 +1304,8 @@ library "OpenDSS" {
                 ]
 
                 component "core/Rate Limiter" "Rate Limiter1" {
-                    falling_limit = "-SS/Freq"
-                    rising_limit = "SS/Freq"
+                    falling_limit = "rate_lmt_dwn"
+                    rising_limit = "rate_lmt_up"
                 }
                 [
                     position = 7880, 7496
@@ -1313,8 +1313,8 @@ library "OpenDSS" {
                 ]
 
                 component "core/Rate Limiter" "Rate Limiter2" {
-                    falling_limit = "-SS/Freq"
-                    rising_limit = "SS/Freq"
+                    falling_limit = "rate_lmt_dwn"
+                    rising_limit = "rate_lmt_up"
                 }
                 [
                     position = 7880, 7584
@@ -1949,6 +1949,29 @@ library "OpenDSS" {
                         group = "Load Parameters"
                     }
 
+                    rate_lmt {
+                        label = "Reference power rate limit"
+                        widget = edit
+                        type = generic
+                        default_value = "rate_lmt"
+                        unit = "Cycles to Nominal"
+                        group = "Load Parameters"
+                    }
+
+                    rate_lmt_up {
+                        widget = edit
+                        type = generic
+                        default_value = "['inf']"
+                        nonvisible
+                    }
+
+                    rate_lmt_dwn {
+                        widget = edit
+                        type = generic
+                        default_value = "['-inf']"
+                        nonvisible
+                    }
+
                     zero_seq_remove {
                         label = "Remove zero sequence"
                         widget = checkbox
@@ -2142,6 +2165,9 @@ library "OpenDSS" {
                         zip_vector_cpl = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_cpl"))
                         zip_vector_cpl_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_cpl_Q"))
                         v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
+                        rate_lmt = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt"))
+                        rate_lmt_up = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt_up"))
+                        rate_lmt_dwn = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt_dwn"))
                         # HEADER STOP
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
@@ -2170,8 +2196,15 @@ library "OpenDSS" {
                             inv_ph = 1/3
                         else:
                             inv_ph = 1
-                        
-                        
+
+                        if rate_lmt > 0:
+                            rate_lmt_up = Freq * (SS/1000) / rate_lmt
+                            rate_lmt_dwn = -Freq * (SS/1000) / rate_lmt
+                        else:
+                            rate_lmt_up = 10/Tfst
+                            rate_lmt_dwn = -10/Tfst
+
+
                         mdl.set_property_value(mdl.prop(item_handle, "kVLine"), kVLine)
                         mdl.set_property_value(mdl.prop(item_handle, "kVLL"), kVLL)
                         mdl.set_property_value(mdl.prop(item_handle, "kP"), kP)
@@ -2197,6 +2230,9 @@ library "OpenDSS" {
                         mdl.set_property_value(mdl.prop(item_handle, "zip_vector_cpl"), zip_vector_cpl)
                         mdl.set_property_value(mdl.prop(item_handle, "zip_vector_cpl_Q"), zip_vector_cpl_Q)
                         mdl.set_property_value(mdl.prop(item_handle, "v_min_max"), v_min_max)
+                        mdl.set_property_value(mdl.prop(item_handle, "rate_lmt"), rate_lmt)
+                        mdl.set_property_value(mdl.prop(item_handle, "rate_lmt_up"), rate_lmt_up)
+                        mdl.set_property_value(mdl.prop(item_handle, "rate_lmt_dwn"), rate_lmt_dwn)
                     ENDCODE
                 }
             }
@@ -7070,7 +7106,7 @@ library "OpenDSS" {
 
 				component "core/Constant" Constant1 {
 					execution_rate = "Tfst"
-					value = "5/Freq"
+					value = "execution_rate"
 				}
 				[
 					position = 6992, 8624
