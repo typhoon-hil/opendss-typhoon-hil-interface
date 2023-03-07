@@ -69,7 +69,7 @@ def update_properties(mdl, _Generator_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="General",
         unit="Hz"
     )
@@ -445,9 +445,9 @@ def update_properties(mdl, _Generator_mask):
         tab_name="OpenDSS model setting:3",
         unit=""
     )
-    _Generator_mask_Ts = mdl.create_property(
+    _Generator_mask_execution_rate = mdl.create_property(
         item_handle=_Generator_mask,
-        name="Ts",
+        name="execution_rate",
         label="Execution rate",
         widget="edit",
         combo_values=[],
@@ -926,6 +926,66 @@ def update_properties(mdl, _Generator_mask):
         tab_name="OpenDSS model setting",
         unit=""
     )
+    _Generator_mask_loadshape_from_file = mdl.create_property(
+        item_handle=_Generator_mask,
+        name="loadshape_from_file",
+        label="From CSV file",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="OpenDSS model setting",
+        unit=""
+    )
+    _Generator_mask_loadshape_from_file_path = mdl.create_property(
+        item_handle=_Generator_mask,
+        name="loadshape_from_file_path",
+        label="LoadShape from file - path",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="OpenDSS model setting",
+        unit=""
+    )
+    _Generator_mask_loadshape_from_file_header = mdl.create_property(
+        item_handle=_Generator_mask,
+        name="loadshape_from_file_header",
+        label="LoadShape from file - header",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="OpenDSS model setting",
+        unit=""
+    )
+    _Generator_mask_loadshape_from_file_column = mdl.create_property(
+        item_handle=_Generator_mask,
+        name="loadshape_from_file_column",
+        label="LoadShape from file - column",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="Time Series Settings:4",
+        unit=""
+    )
+    _Generator_mask_useactual = mdl.create_property(
+        item_handle=_Generator_mask,
+        name="useactual",
+        label="Actual gen value",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="OpenDSS model setting",
+        unit=""
+    )
     _Generator_mask_loadshape = mdl.create_property(
         item_handle=_Generator_mask,
         name="loadshape",
@@ -936,7 +996,7 @@ def update_properties(mdl, _Generator_mask):
         enabled=True,
         visible=True,
         tab_name="OpenDSS model setting",
-        unit="pu"
+        unit=""
     )
     _Generator_mask_loadshape_int = mdl.create_property(
         item_handle=_Generator_mask,
@@ -1195,7 +1255,7 @@ def update_properties(mdl, _Generator_mask):
     mdl.set_property_value(mdl.prop(_Generator_mask, "ws_inv"), "0")
     mdl.set_property_value(mdl.prop(_Generator_mask, "Z_base"), "0")
     mdl.set_property_value(mdl.prop(_Generator_mask, "G_mod"), "Constant kW, Fixed Q")
-    mdl.set_property_value(mdl.prop(_Generator_mask, "Ts"), "100e-6")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "execution_rate"), "100e-6")
     mdl.set_property_value(mdl.prop(_Generator_mask, "dA"), "0")
     mdl.set_property_value(mdl.prop(_Generator_mask, "dB"), "0")
     mdl.set_property_value(mdl.prop(_Generator_mask, "dA11"), "0")
@@ -1235,6 +1295,11 @@ def update_properties(mdl, _Generator_mask):
     mdl.set_property_value(mdl.prop(_Generator_mask, "gen_ts_en"), "True")
     mdl.set_property_value(mdl.prop(_Generator_mask, "load_loadshape"), "Choose")
     mdl.set_property_value(mdl.prop(_Generator_mask, "loadshape_name"), "gen1")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "loadshape_from_file"), "False")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "loadshape_from_file_path"), "")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "loadshape_from_file_header"), "True")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "loadshape_from_file_column"), "1")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "useactual"), "False")
     mdl.set_property_value(mdl.prop(_Generator_mask, "loadshape"), "[0.5, 0.8, 1, 0.4, 0.5]")
     mdl.set_property_value(mdl.prop(_Generator_mask, "loadshape_int"), "1")
     mdl.set_property_value(mdl.prop(_Generator_mask, "gen_ts_en_bit"), "0")
@@ -1264,12 +1329,30 @@ def update_properties(mdl, _Generator_mask):
     
     """
     mdl.set_handler_code(_Generator_mask_global_basefreq, "property_value_edited", _Generator_mask_global_basefreq_property_value_edited)
+    _Generator_mask_gen_ts_en_property_value_edited = """
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+    
+    """
+    mdl.set_handler_code(_Generator_mask_gen_ts_en, "property_value_edited", _Generator_mask_gen_ts_en_property_value_edited)
     _Generator_mask_loadshape_name_property_value_edited = """
     old_value = mdl.get_property_value(prop_handle)
     mdl.set_property_value(prop_handle, old_value)
     
     """
     mdl.set_handler_code(_Generator_mask_loadshape_name, "property_value_edited", _Generator_mask_loadshape_name_property_value_edited)
+    _Generator_mask_loadshape_from_file_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_Generator_mask_loadshape_from_file, "property_value_edited", _Generator_mask_loadshape_from_file_property_value_edited)
+    _Generator_mask_useactual_property_value_edited = """
+    old_value = mdl.get_property_value(prop_handle)
+    mdl.set_property_value(prop_handle, old_value)
+    
+    """
+    mdl.set_handler_code(_Generator_mask_useactual, "property_value_edited", _Generator_mask_useactual_property_value_edited)
     _Generator_mask_loadshape_property_value_edited = """
     old_value = mdl.get_property_value(prop_handle)
     mdl.set_property_value(prop_handle, old_value)

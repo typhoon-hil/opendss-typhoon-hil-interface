@@ -21,7 +21,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="General:1",
         unit="Hz"
     )
@@ -157,9 +157,9 @@ def update_properties(mdl, _Load_mask):
         tab_name="CPL Parameters:3",
         unit=""
     )
-    _Load_mask_Ts = mdl.create_property(
+    _Load_mask_execution_rate = mdl.create_property(
         item_handle=_Load_mask,
-        name="Ts",
+        name="execution_rate",
         label="CPL Execution rate",
         widget="edit",
         combo_values=[],
@@ -192,6 +192,42 @@ def update_properties(mdl, _Load_mask):
         visible=True,
         tab_name="CPL Parameters",
         unit="pu"
+    )
+    _Load_mask_zero_seq_remove = mdl.create_property(
+        item_handle=_Load_mask,
+        name="zero_seq_remove",
+        label="Remove zero sequence",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="CPL Parameters",
+        unit=""
+    )
+    _Load_mask_q_gain_k = mdl.create_property(
+        item_handle=_Load_mask,
+        name="q_gain_k",
+        label="CPL Kalman Filter state matrix gain Q",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=False,
+        visible=True,
+        tab_name="CPL Parameters",
+        unit=""
+    )
+    _Load_mask_r_gain_k = mdl.create_property(
+        item_handle=_Load_mask,
+        name="r_gain_k",
+        label="CPL Kalman Filter measurement gain R",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=False,
+        visible=True,
+        tab_name="CPL Parameters",
+        unit=""
     )
     _Load_mask_Vn_3ph_CPL = mdl.create_property(
         item_handle=_Load_mask,
@@ -607,9 +643,12 @@ def update_properties(mdl, _Load_mask):
     mdl.set_property_value(mdl.prop(_Load_mask, "load_model"), "Constant Impedance")
     mdl.set_property_value(mdl.prop(_Load_mask, "model"), "2")
     mdl.set_property_value(mdl.prop(_Load_mask, "Pow_ref_s"), "Fixed")
-    mdl.set_property_value(mdl.prop(_Load_mask, "Ts"), "300e-6")
+    mdl.set_property_value(mdl.prop(_Load_mask, "execution_rate"), "300e-6")
     mdl.set_property_value(mdl.prop(_Load_mask, "Tfast"), "100e-6")
     mdl.set_property_value(mdl.prop(_Load_mask, "CPL_LMT"), "2")
+    mdl.set_property_value(mdl.prop(_Load_mask, "zero_seq_remove"), "False")
+    mdl.set_property_value(mdl.prop(_Load_mask, "q_gain_k"), "0.5")
+    mdl.set_property_value(mdl.prop(_Load_mask, "r_gain_k"), "20")
     mdl.set_property_value(mdl.prop(_Load_mask, "Vn_3ph_CPL"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "P_CPL"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "Q_CPL"), "0")
@@ -666,10 +705,8 @@ def update_properties(mdl, _Load_mask):
     """
     mdl.set_handler_code(_Load_mask_phases, "property_value_edited", _Load_mask_phases_property_value_edited)
     _Load_mask_pf_mode_3ph_property_value_edited = """
-    if new_value == "Unit":
-        mdl.disable_property(mdl.prop(container_handle, "pf_3ph"))
-    else:
-        mdl.enable_property(mdl.prop(container_handle, "pf_3ph"))
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
     
     """
     mdl.set_handler_code(_Load_mask_pf_mode_3ph, "property_value_edited", _Load_mask_pf_mode_3ph_property_value_edited)
@@ -710,22 +747,14 @@ def update_properties(mdl, _Load_mask):
     """
     mdl.set_handler_code(_Load_mask_loadshape_int, "property_value_edited", _Load_mask_loadshape_int_property_value_edited)
     _Load_mask_T_mode_property_value_edited = """
-    if new_value == "Time":
-        mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
-    else:
-        mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.t_mode_value_edited(mdl, container_handle, new_value)
     
     """
     mdl.set_handler_code(_Load_mask_T_mode, "property_value_edited", _Load_mask_T_mode_property_value_edited)
     _Load_mask_S_Ts_mode_property_value_edited = """
-    if new_value == "Manual input":
-        mdl.disable_property(mdl.prop(container_handle, "T_Ts_max"))
-        mdl.disable_property(mdl.prop(container_handle, "del_Ts"))
-        mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
-    else:
-        mdl.enable_property(mdl.prop(container_handle, "T_Ts_max"))
-        mdl.enable_property(mdl.prop(container_handle, "del_Ts"))
-        mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.s_ts_mode_value_edited(mdl, container_handle, new_value)
     
     """
     mdl.set_handler_code(_Load_mask_S_Ts_mode, "property_value_edited", _Load_mask_S_Ts_mode_property_value_edited)

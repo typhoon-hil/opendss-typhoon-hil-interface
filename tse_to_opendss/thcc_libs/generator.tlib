@@ -3086,239 +3086,28 @@ Te_mem = Te;
                     T_lim_high = mdl.get_property_value(mdl.prop(item_handle, "T_lim_high"))
                     Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
                     # HEADER STOP
-                    from typhoon.api.schematic_editor.const import ITEM_COMPONENT
-                    import numpy
-                    import math
-
-                    PP = 60*basefreq/nom_rpm
-
-                    if Init_En == True:
-                        Init_switch = 1
-                    else:
-                        Init_switch = 0
-
-                    phases = 3
-
-                    if gen_ts_en:
-                        gen_ts_en_bit = 1
-                    else:
-                        gen_ts_en_bit = 0
-
-                    dssnpts = len(S_Ts)
-
-                    S_Ts = loadshape
-                    dssT = loadshape_int
-                    Slen = len(S_Ts)
-
-                    if T_mode == "Loadshape index":
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for S_val in S_vec1:
-                            T_Ts_internal[idxS] = idxS
-                            idxS += 1
-                        T_lim_low = T_Ts_internal[0]
-                        T_lim_high = T_Ts_internal[Slen-1]
-                    elif T_mode == "Time":
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for T_val in T_Ts:
-                            T_Ts_internal[idxS] = T_val
-                            idxS += 1
-                        T_lim_low = T_Ts[0]
-                        T_lim_high = T_Ts[len(T_Ts)-1]
-                    else:
-                        T_Ts_internal = [0] * Slen
-                        S_vec1 = [0] * Slen
-                        idxS = 0
-                        for S_val in S_vec1:
-                            T_Ts_internal[idxS] = idxS
-                            idxS += 1
-                        T_lim_low = T_Ts_internal[0]
-                        T_lim_high = T_Ts_internal[Slen-1]
-
-
-
-                    if T_mode == "Loadshape index":
-                        Ts_switch = 0
-                    elif T_mode == "Time":
-                        Ts_switch = 1
-                    else:
-                        Ts_switch = 0
-
-
-
-                    if G_mod == "Constant kW":
-                        model = 1
-                    elif G_mod == "Constant admittance":
-                        model = 2
-                    elif G_mod == "Constant kW, Constant kV":
-                        model = 3
-                    elif G_mod == "Constant kW, Fixed Q":
-                        model = 4
-                    elif G_mod == "Constant kW, Fixed Q (constant reactance)":
-                        model = 5
-                    else:
-                        model = 3
-
-                    kw = pf * kVA
-                    kvar = kVA * ((1-pf**2)**0.5)
-
-                    ws = basefreq * 2 * numpy.pi
-                    ws_inv = 1/ws
-                    Z_base = (1000*kv)*(1000*kv)/(1000*kVA)
-
-                    rs = 0.01 * Z_base
-                    Lmd = Xd * Z_base / ws
-                    Lmq = Lmd
-                    Lls = 0.05 * Lmd
-                    Llfd = (((Xdp * Z_base / ws)-Lls)*Lmd)/(Lmd-((Xdp * Z_base / ws)-Lls))
-                    Llkd = (((Xdpp * Z_base / ws)-Lls)*Llfd)/(Llfd-((Xdpp * Z_base / ws)-Lls))
-
-                    rfd = (Xdp * Z_base)/XRdp
-                    rkd = (Xdpp * Z_base)/(XRdp)
-
-                    Llkq = Llkd
-                    Llkq2 = Llkq
-                    rkq = rkd
-                    rkq2 = rkq
-
-                    J = H * 1000 * kVA / (0.5*(ws / PP)*(ws / PP))
-
-                    w_base = ws / 2
-                    T_base = 1000 * kVA / w_base
-
-                    Lmzq = 1/(1/Lmq + 1/Llkq + 1/Llkq2)
-                    Lmzd = 1/(1/Lmd + 1/Llkd + 1/Llfd)
-
-                    A = [[(rkq/Llkq)*((Lmzq/Llkq)-1), rkq*Lmzq/(Llkq*Llkq2), 0, 0],[rkq2*Lmzq/(Llkq*Llkq2), (rkq2/Llkq2)*((Lmzq/Llkq2)-1), 0, 0],[0, 0, (rkd/Llkd)*((Lmzd/Llkd)-1), rkd*Lmzd/(Llkd*Llfd)],[0, 0, rfd*Lmzd/(Llkd*Llfd), (rfd/Llfd)*((Lmzd/Llfd)-1)]]
-                    B = [[rkq*Lmzq/Llkq, 0, 0],[rkq2*Lmzq/Llkq2, 0, 0],[0, rkd*Lmzd/Llkd, 0],[0, rfd*Lmzd/Llfd, 1]]
-
-                    A = numpy.matrix(A)
-                    B = numpy.matrix(B)
-
-                    dA = numpy.linalg.inv((numpy.eye(4)-(0.5*execution_rate)*A)) * ((numpy.eye(4)+(0.5*execution_rate)*A))
-                    dB = numpy.linalg.inv((numpy.eye(4)-(0.5*execution_rate)*A)) * (execution_rate*B)
-
-                    dA11=dA[0, 0]
-                    dA12=dA[0, 1]
-                    dA13=dA[0, 2]
-                    dA14=dA[0, 3]
-                    dA21=dA[1, 0]
-                    dA22=dA[1, 1]
-                    dA23=dA[1, 2]
-                    dA24=dA[1, 3]
-                    dA31=dA[2, 0]
-                    dA32=dA[2, 1]
-                    dA33=dA[2, 2]
-                    dA34=dA[2, 3]
-                    dA41=dA[3, 0]
-                    dA42=dA[3, 1]
-                    dA43=dA[3, 2]
-                    dA44=dA[3, 3]
-
-                    dB11=dB[0, 0]
-                    dB12=dB[0, 1]
-                    dB13=dB[0, 2]
-                    dB21=dB[1, 0]
-                    dB22=dB[1, 1]
-                    dB23=dB[1, 2]
-                    dB31=dB[2, 0]
-                    dB32=dB[2, 1]
-                    dB33=dB[2, 2]
-                    dB41=dB[3, 0]
-                    dB42=dB[3, 1]
-                    dB43=dB[3, 2]
-
-
-
-
-                    mdl.set_property_value(mdl.prop(item_handle, "dA11"), dA11)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA12"), dA12)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA13"), dA13)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA14"), dA14)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA21"), dA21)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA22"), dA22)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA23"), dA23)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA24"), dA24)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA31"), dA31)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA32"), dA32)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA33"), dA33)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA34"), dA34)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA41"), dA41)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA42"), dA42)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA43"), dA43)
-                    mdl.set_property_value(mdl.prop(item_handle, "dA44"), dA44)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "dB11"), dB11)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB12"), dB12)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB13"), dB13)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB21"), dB21)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB22"), dB22)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB23"), dB23)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB31"), dB31)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB32"), dB32)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB33"), dB33)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB41"), dB41)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB42"), dB42)
-                    mdl.set_property_value(mdl.prop(item_handle, "dB43"), dB43)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "execution_rate"), execution_rate)
-                    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
-                    mdl.set_property_value(mdl.prop(item_handle, "ws"), ws)
-                    mdl.set_property_value(mdl.prop(item_handle, "ws_inv"), ws_inv)
-                    mdl.set_property_value(mdl.prop(item_handle, "Z_base"), Z_base)
-                    mdl.set_property_value(mdl.prop(item_handle, "rs"), rs)
-                    mdl.set_property_value(mdl.prop(item_handle, "Lmd"), Lmd)
-                    mdl.set_property_value(mdl.prop(item_handle, "Lmq"), Lmq)
-                    mdl.set_property_value(mdl.prop(item_handle, "Lmzd"), Lmzd)
-                    mdl.set_property_value(mdl.prop(item_handle, "Lmzq"), Lmzq)
-                    mdl.set_property_value(mdl.prop(item_handle, "Lls"), Lls)
-                    mdl.set_property_value(mdl.prop(item_handle, "Llfd"), Llfd)
-                    mdl.set_property_value(mdl.prop(item_handle, "Llkd"), Llkd)
-                    mdl.set_property_value(mdl.prop(item_handle, "Llkq"), Llkq)
-                    mdl.set_property_value(mdl.prop(item_handle, "Llkq2"), Llkq2)
-                    mdl.set_property_value(mdl.prop(item_handle, "rfd"), rfd)
-                    mdl.set_property_value(mdl.prop(item_handle, "rkd"), rkd)
-                    mdl.set_property_value(mdl.prop(item_handle, "rkq"), rkq)
-                    mdl.set_property_value(mdl.prop(item_handle, "rkq2"), rkq2)
-                    mdl.set_property_value(mdl.prop(item_handle, "J"), J)
-                    mdl.set_property_value(mdl.prop(item_handle, "kw"), kw)
-                    mdl.set_property_value(mdl.prop(item_handle, "w_base"), w_base)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_base"), T_base)
-                    mdl.set_property_value(mdl.prop(item_handle, "phases"), phases)
-                    mdl.set_property_value(mdl.prop(item_handle, "PP"), PP)
-                    mdl.set_property_value(mdl.prop(item_handle, "model"), model)
-                    mdl.set_property_value(mdl.prop(item_handle, "G_mod"), G_mod)
-                    mdl.set_property_value(mdl.prop(item_handle, "kvar"), kvar)
-                    mdl.set_property_value(mdl.prop(item_handle, "kv"), kv)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "Init_switch"), Init_switch)
-                    mdl.set_property_value(mdl.prop(item_handle, "V_ph_init"), V_ph_init)
-                    mdl.set_property_value(mdl.prop(item_handle, "thet_ph_init"), thet_ph_init)
-                    mdl.set_property_value(mdl.prop(item_handle, "V2M_t"), V2M_t)
-                    mdl.set_property_value(mdl.prop(item_handle, "Mech_En"), Mech_En)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "gen_ts_en"), gen_ts_en)
-                    mdl.set_property_value(mdl.prop(item_handle, "gen_ts_en_bit"), gen_ts_en_bit)
-                    mdl.set_property_value(mdl.prop(item_handle, "S_Ts"), S_Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "Q_Ts"), Q_Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "S_Ts_mode"), S_Ts_mode)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts"), T_Ts)
-                    mdl.set_property_value(mdl.prop(item_handle, "dssT"), dssT)
-                    mdl.set_property_value(mdl.prop(item_handle, "dssnpts"), dssnpts)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_max"), T_Ts_max)
-                    mdl.set_property_value(mdl.prop(item_handle, "del_Ts"), del_Ts)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "loadshape"), loadshape)
-                    mdl.set_property_value(mdl.prop(item_handle, "loadshape_int"), loadshape_int)
-
-                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_low"), T_lim_low)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_lim_high"), T_lim_high)
-                    mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), Ts_switch)
-                    mdl.set_property_value(mdl.prop(item_handle, "Slen"), Slen)
-                    mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), T_Ts_internal)
+                    prop_dict = {"basefreq": basefreq,
+                                 "nom_rpm": nom_rpm,
+                                 "Init_En": Init_En,
+                                 "gen_ts_en": gen_ts_en,
+                                 "S_Ts": S_Ts,
+                                 "loadshape": loadshape,
+                                 "loadshape_int": loadshape_int,
+                                 "T_mode": T_mode,
+                                 "T_Ts": T_Ts,
+                                 "G_mod": G_mod,
+                                 "pf": pf,
+                                 "kVA": kVA,
+                                 "kv": kv,
+                                 "Xd": Xd,
+                                 "Xdp": Xdp,
+                                 "Xdpp": Xdpp,
+                                 "XRdp": XRdp,
+                                 "H": H,
+                                 "execution_rate": execution_rate,
+                                 }
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.generator_pre_compile_function(mdl, item_handle, prop_dict)
                 ENDCODE
 
                 CODE define_icon
