@@ -313,14 +313,14 @@ library "OpenDSS" {
                 load_model {
                     label = "Load Model"
                     widget = combo
-                    combo_values = "Constant Impedance", "Constant Power"
+                    combo_values = "Constant Impedance", "Constant Power", "Constant Z,I,P"
                     type = string
                     default_value = "Constant Impedance"
                     group = "Load Parameters"
                     no_evaluate
 
                     CODE property_value_changed
-                        if new_value == "Constant Power":
+                        if new_value == "Constant Power" or new_value == "Constant Z,I,P":
                             mdl.info("Warning: Load Constant Power mode demands grounding for correct HIL simulation.")
 
                         comp_script = return_comp_script(mdl, container_handle)
@@ -334,6 +334,83 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
                     ENDCODE
+                }
+
+                zip_vector {
+                    label = "Active Z,I,P Weight vector"
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    unit = "Auto-Normalized"
+                    group = "Load Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.zip_change_fnc(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                zip_vector_Q {
+                    label = "Reactive Z,I,P Weight vector"
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    unit = "Auto-Normalized"
+                    group = "Load Parameters"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.zip_change_fnc(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                zip_internal {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                zip_internal_Q {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                zip_internal_n {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                zip_internal_n_Q {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1]"
+                    nonvisible
+                }
+
+                ZIPV {
+                    widget = edit
+                    type = generic
+                    default_value = "[0,0,1,0,0,1,0]"
+                    nonvisible
+                }
+
+                Vmaxpu {
+                    widget = edit
+                    type = generic
+                    default_value = "1.05"
+                    nonvisible
+                }
+
+                Vminpu {
+                    widget = edit
+                    type = generic
+                    default_value = "0.95"
+                    nonvisible
                 }
 
                 model {
@@ -401,6 +478,26 @@ library "OpenDSS" {
                     unit = "pu"
                     group = "CPL Parameters"
                     disabled
+                }
+
+                v_min_max {
+                    label = "Transition to CIL cutoff voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "[0.95,1.05]"
+                    unit = "[Vmin,Vmax] pu"
+                    group = "CPL Parameters"
+
+                }
+
+                rate_lmt {
+                    label = "Reference power rate limit"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "Cycles to reach zero to nominal"
+                    group = "CPL Parameters"
+
                 }
 
                 zero_seq_remove {
@@ -804,6 +901,14 @@ library "OpenDSS" {
                     pf_3ph = mdl.get_property_value(mdl.prop(item_handle, "pf_3ph"))
                     pf_3ph_set = mdl.get_property_value(mdl.prop(item_handle, "pf_3ph_set"))
                     load_model = mdl.get_property_value(mdl.prop(item_handle, "load_model"))
+                    zip_vector = mdl.get_property_value(mdl.prop(item_handle, "zip_vector"))
+                    zip_vector_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_Q"))
+                    zip_internal = mdl.get_property_value(mdl.prop(item_handle, "zip_internal"))
+                    zip_internal_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_Q"))
+                    v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
+                    rate_lmt = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt"))
+                    Vminpu = mdl.get_property_value(mdl.prop(item_handle, "Vminpu"))
+                    Vmaxpu = mdl.get_property_value(mdl.prop(item_handle, "Vmaxpu"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
                     Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
                     execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))

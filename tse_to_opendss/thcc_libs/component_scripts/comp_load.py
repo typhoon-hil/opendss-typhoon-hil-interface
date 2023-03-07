@@ -219,19 +219,142 @@ def phase_value_edited_fnc(mdl, container_handle, new_value):
         mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
 
 
+def zip_normalize_fnc(mdl, container_handle, new_value):
+    no_bracket = new_value.strip("[]")
+    zip_list = [float(s) for s in no_bracket.split(',')]
+    zip_len = len(zip_list)
+    zip_norm = [0, 0, 0]
+
+    if zip_len == 3:
+        zip_total = zip_list[0]+zip_list[1]+zip_list[2]
+        if not zip_total == 0:
+            zip_norm = [value / zip_total for value in zip_list]
+    elif zip_len > 3:
+        zip_total = zip_list[0] + zip_list[1] + zip_list[2]
+        if not zip_total == 0:
+            zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], zip_list[2]]]
+    elif zip_len == 2:
+        zip_total = zip_list[0] + zip_list[1]
+        if not zip_total == 0:
+            zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], 0]]
+    else:
+        if not zip_list[0] == 0:
+            zip_norm = [1, 0, 0]
+
+    idx = 0
+    for elem in zip_norm:
+        zip_norm[idx] = round(elem, 3)
+        idx = idx + 1
+
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+
+
+def zip_change_fnc(mdl, container_handle, new_value):
+    zip_internal_n_prop = mdl.prop(container_handle, "zip_internal_n")
+    zip_internal_n = mdl.get_property_value(zip_internal_n_prop)
+    zip_vector_prop = mdl.prop(container_handle, "zip_vector")
+    zip_vector = mdl.get_property_disp_value(zip_vector_prop)
+
+    zip_internal_n_Q_prop = mdl.prop(container_handle, "zip_internal_n_Q")
+    zip_internal_n_Q = mdl.get_property_value(zip_internal_n_Q_prop)
+    zip_vector_Q_prop = mdl.prop(container_handle, "zip_vector_Q")
+    zip_vector_Q = mdl.get_property_disp_value(zip_vector_Q_prop)
+
+    no_bracket = zip_vector.strip("[]")
+    no_bracket_Q = zip_vector_Q.strip("[]")
+    zip_list = [float(s) for s in no_bracket.split(',')]
+    zip_list_Q = [float(s) for s in no_bracket_Q.split(',')]
+    zip_len = len(zip_list)
+    zip_len_Q = len(zip_list_Q)
+    zip_norm = [0, 0, 0]
+    zip_norm_Q = [0, 0, 0]
+
+    if zip_len == 3:
+        zip_total = zip_list[0] + zip_list[1] + zip_list[2]
+        if not zip_total == 0:
+            zip_norm = [value / zip_total for value in zip_list]
+    elif zip_len > 3:
+        zip_total = zip_list[0] + zip_list[1] + zip_list[2]
+        if not zip_total == 0:
+            zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], zip_list[2]]]
+    elif zip_len == 2:
+        zip_total = zip_list[0] + zip_list[1]
+        if not zip_total == 0:
+            zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], 0]]
+    else:
+        if not zip_list[0] == 0:
+            zip_norm = [1, 0, 0]
+
+    if zip_len_Q == 3:
+        zip_total_Q = zip_list_Q[0] + zip_list_Q[1] + zip_list_Q[2]
+        if not zip_total_Q == 0:
+            zip_norm_Q = [value / zip_total_Q for value in zip_list_Q]
+    elif zip_len_Q > 3:
+        zip_total_Q = zip_list_Q[0] + zip_list_Q[1] + zip_list_Q[2]
+        if not zip_total_Q == 0:
+            zip_norm_Q = [value / zip_total_Q for value in [zip_list_Q[0], zip_list_Q[1], zip_list_Q[2]]]
+    elif zip_len_Q == 2:
+        zip_total_Q = zip_list_Q[0] + zip_list_Q[1]
+        if not zip_total_Q == 0:
+            zip_norm_Q = [value / zip_total_Q for value in [zip_list_Q[0], zip_list_Q[1], 0]]
+    else:
+        if not zip_list_Q[0] == 0:
+            zip_norm_Q = [1, 0, 0]
+
+    idx = 0
+    for elem in zip_norm:
+        zip_norm[idx] = round(elem, 3)
+        idx = idx + 1
+
+    idx_Q = 0
+    for elem in zip_norm_Q:
+        zip_norm_Q[idx_Q] = round(elem, 3)
+        idx_Q = idx_Q + 1
+
+    zipv_dss = [zip_norm[0], zip_norm[1], zip_norm[2], zip_norm_Q[0], zip_norm_Q[1], zip_norm_Q[2], 0]
+
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal'), str(zip_norm))
+    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'), str(zip_norm))
+
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n_Q'), str(zip_norm_Q))
+    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n_Q'), str(zip_norm_Q))
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_Q'), str(zip_norm_Q))
+    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'), str(zip_norm_Q))
+
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'ZIPV'), str(zipv_dss))
+    mdl.set_property_value(mdl.prop(container_handle, 'ZIPV'), str(zipv_dss))
+
+
 def load_model_value_edited_fnc(mdl, container_handle, new_value):
     conn_type_prop = mdl.prop(container_handle, "conn_type")
     conn_type = mdl.get_property_disp_value(conn_type_prop)
+
+    zip_vector_prop = mdl.prop(container_handle, "zip_vector")
+    zip_vector = mdl.get_property_disp_value(zip_vector_prop)
+    zip_vector_Q_prop = mdl.prop(container_handle, "zip_vector_Q")
+    zip_vector_Q = mdl.get_property_disp_value(zip_vector_Q_prop)
+
+    zip_internal_n_prop = mdl.prop(container_handle, "zip_internal_n")
+    zip_internal_n = mdl.get_property_disp_value(zip_internal_n_prop)
+    zip_internal_n_Q_prop = mdl.prop(container_handle, "zip_internal_n_Q")
+    zip_internal_n_Q = mdl.get_property_disp_value(zip_internal_n_Q_prop)
 
     phases_prop = mdl.prop(container_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
     if new_value == "Constant Impedance":
+        mdl.hide_property(zip_vector_prop)
+        mdl.hide_property(zip_vector_Q_prop)
         mdl.set_property_disp_value(mdl.prop(container_handle, 'Pow_ref_s'), "Fixed")
         mdl.disable_property(mdl.prop(container_handle, "Pow_ref_s"))
         mdl.disable_property(mdl.prop(container_handle, "execution_rate"))
         mdl.disable_property(mdl.prop(container_handle, "Tfast"))
         mdl.disable_property(mdl.prop(container_handle, "CPL_LMT"))
+        mdl.disable_property(mdl.prop(container_handle, "v_min_max"))
+        mdl.disable_property(mdl.prop(container_handle, "rate_lmt"))
         mdl.disable_property(mdl.prop(container_handle, "q_gain_k"))
         mdl.disable_property(mdl.prop(container_handle, "r_gain_k"))
         if phases == "1":
@@ -241,10 +364,22 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         if conn_type == "Y":
             mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
     else:
+        if new_value == "Constant Power":
+            mdl.hide_property(zip_vector_prop)
+            mdl.hide_property(zip_vector_Q_prop)
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'), "[0,0,1]")
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'), "[0,0,1]")
+        elif new_value == "Constant Z,I,P":
+            mdl.show_property(zip_vector_prop)
+            mdl.show_property(zip_vector_Q_prop)
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'), zip_internal_n)
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'), zip_internal_n_Q)
         mdl.enable_property(mdl.prop(container_handle, "Pow_ref_s"))
         mdl.enable_property(mdl.prop(container_handle, "execution_rate"))
         mdl.enable_property(mdl.prop(container_handle, "Tfast"))
         mdl.enable_property(mdl.prop(container_handle, "CPL_LMT"))
+        mdl.enable_property(mdl.prop(container_handle, "v_min_max"))
+        mdl.enable_property(mdl.prop(container_handle, "rate_lmt"))
         mdl.enable_property(mdl.prop(container_handle, "q_gain_k"))
         mdl.enable_property(mdl.prop(container_handle, "r_gain_k"))
         mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
@@ -650,7 +785,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             mdl.delete_item(port_n)
             created_ports.pop("portN", None)
 
-    if load_model == "Constant Power":
+    if load_model == "Constant Power" or load_model == "Constant Z,I,P":
         if pow_ref_s == "Fixed":
 
             p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
@@ -976,7 +1111,7 @@ def connections_ts_mode_dynamics(mdl, mask_handle, created_ports):
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
     pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
-    if load_model == "Constant Power":
+    if load_model == "Constant Power" or load_model == "Constant Z,I,P":
         if pow_ref_s == "Time Series":
             ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
             conn_ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type="connection")
