@@ -227,33 +227,6 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                global_basefreq {
-                    label = "Global base frequency"
-                    widget = checkbox
-                    type = bool
-                    default_value = "True"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
-                    ENDCODE
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
-                    ENDCODE
-                }
-
-                BaseFreq {
-                    label = "Base frequency"
-                    widget = edit
-                    type = generic
-                    default_value = "60"
-                    unit = "Hz"
-                    nonvisible
-                }
-
                 r1 {
                     label = "R1"
                     description = "Positive-sequence resistance"
