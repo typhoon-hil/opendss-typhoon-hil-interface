@@ -98,7 +98,7 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
         if len(c1_conn_list) == 0:
             mdl.create_connection(c1, mdl.term(cap_c, "p_node"))
 
-    elif tp_connection == "Y" or tp_connection == "Y-grounded":
+    elif tp_connection == "Y - Neutral point accessible" or tp_connection == "Y - Grounded":
         if delta_conn_1:
             mdl.delete_item(delta_conn_1)
         if delta_conn_2:
@@ -116,21 +116,17 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
             mdl.create_connection(b1, mdl.term(cap_b, "p_node"), name="b1_conn")
             mdl.create_connection(c1, mdl.term(cap_c, "p_node"), name="c1_conn")
 
-    if phases == "1":
-        if tp_connection == "Y-grounded":
+    if phases != "2":
+        if tp_connection == "Y - Grounded":
             gndc = mdl.get_item("gndc", parent=comp_handle)
             if not gndc:
                 gndc = mdl.create_component("src_ground", parent=comp_handle, name="gndc", position=(7923, 8265))
-            gndc_conn = mdl.get_item('gndc_conn', parent=comp_handle, item_type="connection")
-            if not gndc_conn:
-                mdl.create_connection(junc, mdl.term(gndc, "node"), name="gndc_conn")
-        elif tp_connection == "Y":
-            gnd = mdl.get_item('N1', parent=comp_handle, item_type="port")
-            mdl.create_connection(junc, gnd)
-    elif phases == "3":
-        if tp_connection == "Y-grounded":
-            gnd = mdl.get_item('N1', parent=comp_handle, item_type="port")
-            mdl.create_connection(junc, gnd)
+            if len(mdl.find_connections(junc, mdl.term(gndc, "node"))) == 0:
+                mdl.create_connection(junc, mdl.term(gndc, "node"))
+        elif tp_connection == "Y - Neutral point accessible":
+            n1 = mdl.get_item('N1', parent=comp_handle, item_type="port")
+            if len(mdl.find_connections(junc, n1)) == 0:
+                mdl.create_connection(junc, n1)
 
 
 def redo_connections(mdl, mask_handle):
@@ -156,7 +152,7 @@ def redo_connections(mdl, mask_handle):
     # redo_ports_primary(mdl, comp_handle)
     recreate_capacitors(mdl, comp_handle)
 
-    if tp_connection == "Series":
+    if tp_connection == "In series":
 
         delta_conn_1 = mdl.get_item('delta_conn_1', parent=comp_handle, item_type="connection")
         delta_conn_2 = mdl.get_item('delta_conn_2', parent=comp_handle, item_type="connection")
@@ -243,34 +239,41 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     deleted_ports = []
     created_ports = {}
 
+    phases_prop = mdl.prop(comp_handle, "phases")
+    phases = int(mdl.get_property_disp_value(phases_prop))
+
+    tp_connection_prop = mdl.prop(comp_handle, "tp_connection")
+    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
+
     # Delete ports
 
     a2 = mdl.get_item('A2', parent=comp_handle, item_type="port")
     b2 = mdl.get_item('B2', parent=comp_handle, item_type="port")
     c2 = mdl.get_item('C2', parent=comp_handle, item_type="port")
-    gnd = mdl.get_item('N1', parent=comp_handle, item_type="port")
+    n1 = mdl.get_item('N1', parent=comp_handle, item_type="port")
 
-    if a2:
-        deleted_ports.append(mdl.get_name(a2))
-        mdl.delete_item(a2)
-    if b2:
-        deleted_ports.append(mdl.get_name(b2))
-        mdl.delete_item(b2)
-    if c2:
-        deleted_ports.append(mdl.get_name(c2))
-        mdl.delete_item(c2)
-    if gnd:
-        deleted_ports.append(mdl.get_name(gnd))
-        mdl.delete_item(gnd)
+    if not (tp_connection == "In Series" and phases == 3):
+        if c2:
+            deleted_ports.append(mdl.get_name(c2))
+            mdl.delete_item(c2)
+    if not (tp_connection == "In Series" and phases >= 2):
+        if b2:
+            deleted_ports.append(mdl.get_name(b2))
+            mdl.delete_item(b2)
+    if tp_connection != "In Series":
+        if a2:
+            deleted_ports.append(mdl.get_name(a2))
+            mdl.delete_item(a2)
+    if tp_connection != "Y - Neutral point accessible":
+        if n1:
+            deleted_ports.append(mdl.get_name(n1))
+            mdl.delete_item(n1)
 
     # Redo ports primary
-
-    phases_prop = mdl.prop(comp_handle, "phases")
-    phases = mdl.get_property_disp_value(phases_prop)
     b1 = mdl.get_item('B1', parent=comp_handle, item_type="port")
     c1 = mdl.get_item('C1', parent=comp_handle, item_type="port")
 
-    if phases == "3":
+    if phases >= 2:
         if not b1:
             b1 = mdl.create_port(
                 name="B1",
@@ -281,6 +284,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 rotation="down"
             )
             created_ports.update({"B1": b1})
+    if phases >= 3:
         if not c1:
             c1 = mdl.create_port(
                 name="C1",
@@ -291,44 +295,28 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 rotation="down"
             )
             created_ports.update({"C1": c1})
-    elif phases == "2":
-        if not b1:
-            b1 = mdl.create_port(
-                name="B1",
-                parent=comp_handle,
-                kind="pe",
-                terminal_position=("top", "center"),
-                position=(x0 + 200, y0),
-                rotation="down"
-            )
-            created_ports.update({"B1": b1})
+
+    if phases < 3:
         if c1:
             deleted_ports.append(mdl.get_name(c1))
             mdl.delete_item(c1)
-    elif phases == "1":
+    if phases < 2:
         if b1:
             deleted_ports.append(mdl.get_name(b1))
             mdl.delete_item(b1)
-        if c1:
-            deleted_ports.append(mdl.get_name(c1))
-            mdl.delete_item(c1)
 
-    tp_connection_prop = mdl.prop(comp_handle, "tp_connection")
-    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
-
-    if (tp_connection == "Y" and phases == "1") or (tp_connection == "Y-grounded" and phases == "3"):
-        gnd = mdl.create_port(
-            name="N1",
-            parent=comp_handle,
-            kind="pe",
-            terminal_position=("bottom", "center"),
-            position=(x0 - 300, y0),
-            rotation="up"
-        )
-        created_ports.update({"N1": gnd})
-    elif tp_connection == "Series":  # Create bottom ports
-        phases_prop = mdl.prop(comp_handle, "phases")
-        phase_num = mdl.get_property_disp_value(phases_prop)
+    if tp_connection == "Y - Neutral point accessible":
+        if not n1:
+            n1 = mdl.create_port(
+                name="N1",
+                parent=comp_handle,
+                kind="pe",
+                terminal_position=("bottom", "center"),
+                position=(x0 - 300, y0),
+                rotation="up"
+            )
+            created_ports.update({"N1": n1})
+    elif tp_connection == "In series":  # Create bottom ports
 
         a2 = mdl.create_port(
             name="A2",
@@ -339,7 +327,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             rotation="up"
         )
         created_ports.update({"A2": a2})
-        if phase_num == "3":
+
+        if phases >= 2:
             b2 = mdl.create_port(
                 name="B2",
                 parent=comp_handle,
@@ -349,6 +338,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 rotation="up"
             )
             created_ports.update({"B2": b2})
+        if phases >= 3:
             c2 = mdl.create_port(
                 name="C2",
                 parent=comp_handle,
@@ -359,56 +349,34 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             )
             created_ports.update({"C2": c2})
 
-        elif phase_num == "2":
-            b2 = mdl.create_port(
-                name="B2",
-                parent=comp_handle,
-                kind="pe",
-                terminal_position=("bottom", "center"),
-                position=(x0 - 200, y0),
-                rotation="up"
-            )
-            created_ports.update({"B2": b2})
-
-    a1 = mdl.get_item('A1', parent=comp_handle, item_type="port")
-    b1 = mdl.get_item('B1', parent=comp_handle, item_type="port")
-    c1 = mdl.get_item('C1', parent=comp_handle, item_type="port")
-    a2 = mdl.get_item('A2', parent=comp_handle, item_type="port")
-    b2 = mdl.get_item('B2', parent=comp_handle, item_type="port")
-    c2 = mdl.get_item('C2', parent=comp_handle, item_type="port")
-    gnd = mdl.get_item('N1', parent=comp_handle, item_type="port")
-
-    if phases == "1":
-        if a1:
-            mdl.set_port_properties(a1, terminal_position=(0, -32))
-        if a2:
-            mdl.set_port_properties(a2, terminal_position=(0, 32))
-        if gnd:
-            mdl.set_port_properties(gnd, terminal_position=(0, 32))
-    elif phases == "2":
-        if a1:
-            mdl.set_port_properties(a1, terminal_position=(-16, -32))
-        if a2:
-            mdl.set_port_properties(a2, terminal_position=(-16, 32))
-        if b1:
-            mdl.set_port_properties(b1, terminal_position=(16, -32))
-        if b2:
-            mdl.set_port_properties(b2, terminal_position=(16, 32))
+    if phases == 1:
+        ports_dict = {"A1": (0, -32),
+                      "A2": (0, 32),
+                      "N1": (0, 32)}
+    elif phases == 2:
+        mdl.info("got here")
+        ports_dict = {"A1": (-16, -32),
+                      "A2": (-16, 32),
+                      "B1": (16, 32),
+                      "B2": (16, -32)}
     else:
-        if a1:
-            mdl.set_port_properties(a1, terminal_position=(-32, -32))
-        if a2:
-            mdl.set_port_properties(a2, terminal_position=(-32, 32))
-        if b1:
-            mdl.set_port_properties(b1, terminal_position=(0, -32))
-        if b2:
-            mdl.set_port_properties(b2, terminal_position=(0, 32))
-        if c1:
-            mdl.set_port_properties(c1, terminal_position=(32, -32))
-        if c2:
-            mdl.set_port_properties(c2, terminal_position=(32, 32))
-        if gnd:
-            mdl.set_port_properties(gnd, terminal_position=(0, 32))
+        if tp_connection == "Y - Neutral point accessible":
+            ports_dict = {"A1": (-48, -32),
+                          "B1": (-16, -32),
+                          "C1": (16, -32),
+                          "N1": (48, -32)}
+        else:
+            ports_dict = {"A1": (-32, -32),
+                          "A2": (-32, 32),
+                          "B1": (0, -32),
+                          "B2": (0, 32),
+                          "C1": (32, -32),
+                          "C2": (32, 32)}
+
+    for port in ports_dict.keys():
+        port_handle = mdl.get_item(port, parent=comp_handle, item_type="port")
+        if port_handle:
+            mdl.set_port_properties(port_handle, terminal_position=ports_dict[port])
 
     return created_ports, deleted_ports
 
@@ -421,7 +389,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
         if mdl.get_name(caller_prop_handle) == "phases":
             if new_value == "2":
-                mdl.set_property_disp_value(mdl.prop(mask_handle, 'tp_connection'), "Series")
+                mdl.set_property_disp_value(mdl.prop(mask_handle, 'tp_connection'), "In series")
         elif mdl.get_name(caller_prop_handle) == "global_basefreq":
             toggle_frequency_prop(mdl, mask_handle)
         elif mdl.get_name(caller_prop_handle) == "tp_connection":
@@ -434,7 +402,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             phases_num = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
 
             if phases_num == "2":
-                if not new_value == "Series":
+                if not new_value == "In series":
                     mdl.set_property_disp_value(mdl.prop(mask_handle, 'phases'), "3")
 
 
@@ -445,9 +413,24 @@ def define_icon(mdl, mask_handle):
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
-    filenames = {"1": {"Series": "cap_1S", "Y-grounded": "cap_1Yg", "Y": "cap_1S"},
-                 "2": {"Series": "cap_2S"},
-                 "3": {"Series": "cap_3S", "Y-grounded": "cap_3Yg", "Y": "cap_3Y", "Δ": "cap_3D"},
+    filenames = {"1": {"In series": "cap_1S",
+                       "Y - Grounded": "cap_1Yg",
+                       "Y - Neutral point accessible": "cap_1S"},
+                 "2": {"In series": "cap_2S"},
+                 "3": {"In series": "cap_3S",
+                       "Y - Grounded": "cap_3Yg",
+                       "Y - Neutral point accessible": "cap_3Y",
+                       "Δ": "cap_3D"},
                  }
 
     mdl.set_component_icon_image(mask_handle, f'images/{filenames[phases][tp_connection]}.svg')
+
+
+def ensure_forward_compatibility(mdl, container_handle):
+    map_dict = {"Y": "Y - Neutral point accessible",
+                "Y-grounded": "Y - Grounded",
+                "Series": "In series",
+                "Δ": "Δ"}
+    tp_connection = mdl.get_property_disp_value(mdl.prop(container_handle, "tp_connection"))
+    if tp_connection in map_dict.keys():
+        mdl.set_property_value(mdl.prop(container_handle, "tp_connection"), map_dict[tp_connection])

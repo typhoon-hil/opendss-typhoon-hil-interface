@@ -77,7 +77,7 @@ library "OpenDSS" {
                 tp_connection {
                     label = "Connection"
                     widget = combo
-                    combo_values = "Y", "Y-grounded", "Δ", "Series"
+                    combo_values = "Y - Neutral point accessible", "Y - Grounded", "Δ", "In series"
                     type = string
                     default_value = "Y"
                     no_evaluate
@@ -209,6 +209,8 @@ library "OpenDSS" {
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
+
+                    comp_script.ensure_forward_compatibility(mdl, item_handle)
 
                     comp_script.define_icon(mdl, item_handle)
 

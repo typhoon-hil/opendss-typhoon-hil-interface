@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 96 64"
-   version="1.1"
-   id="svg36"
-   sodipodi:docname="cap_3Y.svg"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   width="96"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 128 64"
+   version="1.1"
+   id="svg38"
+   sodipodi:docname="cap_3Y.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   width="128"
    height="64">
   <sodipodi:namedview
-     id="namedview38"
+     id="namedview40"
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
@@ -23,125 +23,180 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="11.020833"
-     inkscape:cx="47.954631"
-     inkscape:cy="31.984877"
+     inkscape:zoom="5.5104165"
+     inkscape:cx="74.648994"
+     inkscape:cy="38.764259"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
+     inkscape:window-height="1057"
+     inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg36" />
+     inkscape:current-layer="svg38"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-midpoints="false"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-center="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:bbox-nodes="false"
+     inkscape:bbox-paths="false"
+     inkscape:object-nodes="true"
+     inkscape:object-paths="true" />
   <defs
      id="defs4">
     <style
        id="style2">.a,.b,.c{fill:none;stroke:#000;}.a,.c{stroke-linecap:round;}.a,.b{stroke-miterlimit:10;}.c{stroke-linejoin:round;stroke-width:0.95px;}</style>
   </defs>
   <title
-     id="title6">cap_3Y</title>
-  <line
-     class="a"
-     x1="80.05"
-     y1="59.1"
-     x2="67.92"
-     y2="52.06"
-     id="line8" />
-  <line
-     class="b"
-     x1="47.97"
-     y1="40.58"
-     x2="48.03"
-     y2="22.94"
-     id="line10" />
-  <line
-     class="b"
-     x1="63.18"
-     y1="49.41"
-     x2="48"
-     y2="40.58"
-     id="line12" />
-  <line
-     class="b"
-     x1="47.97"
-     y1="17.52"
-     x2="48.03"
-     y2="0.14"
-     id="line14" />
-  <line
-     class="a"
-     x1="79.94"
-     x2="80.06"
-     y2="59.1"
-     id="line16" />
-  <line
-     class="a"
-     x1="15.95"
-     y1="59.1"
-     x2="28.15"
-     y2="52.02"
-     id="line18" />
-  <line
-     class="b"
-     x1="33.08"
-     y1="49.26"
-     x2="48"
-     y2="40.58"
-     id="line20" />
-  <line
-     class="a"
-     x1="16.06"
-     x2="15.94"
-     y2="59.1"
-     id="line22" />
-  <line
-     class="c"
-     x1="54.9"
-     y1="22.94"
-     x2="40.99"
-     y2="22.94"
-     id="line24" />
-  <line
-     class="c"
-     x1="55.01"
-     y1="17.52"
-     x2="41.1"
-     y2="17.52"
-     id="line26" />
-  <line
-     class="c"
-     x1="31.6"
-     y1="57.99"
-     x2="24.65"
-     y2="45.94"
-     id="line28" />
-  <line
-     class="c"
-     x1="36.35"
-     y1="55.38"
-     x2="29.4"
-     y2="43.33"
-     id="line30" />
-  <line
-     class="c"
-     x1="59.7"
-     y1="55.28"
-     x2="66.66"
-     y2="43.23"
-     id="line32" />
-  <line
-     class="c"
-     x1="64.34"
-     y1="58.09"
-     x2="71.3"
-     y2="46.04"
-     id="line34" />
+     id="title6">cap_3Yg</title>
   <metadata
-     id="metadata40">
+     id="metadata42">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
-        <dc:title>cap_3Y</dc:title>
+        <dc:title>cap_3Yg</dc:title>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <line
+     class="b"
+     x1="48.003929"
+     y1="35.267128"
+     x2="48.064484"
+     y2="22.942457"
+     id="line10"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="b"
+     x1="48.039207"
+     y1="17.52"
+     x2="48.099205"
+     y2="0.14"
+     id="line14"
+     style="fill:none;stroke:#000000;stroke-linecap:butt;stroke-miterlimit:10" />
+  <line
+     class="a"
+     x1="16.019201"
+     y1="53.655766"
+     x2="32.605614"
+     y2="44.08313"
+     id="line18"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="a"
+     x1="16.129202"
+     x2="16.009203"
+     y2="53.714813"
+     id="line22"
+     y1="0"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="c"
+     x1="54.989204"
+     y1="22.940001"
+     x2="41.079201"
+     y2="22.940001"
+     id="line24"
+     style="fill:none;stroke:#000000;stroke-width:0.94999999px;stroke-linecap:round;stroke-linejoin:round" />
+  <line
+     class="c"
+     x1="55.099205"
+     y1="17.52"
+     x2="41.189201"
+     y2="17.52"
+     id="line26"
+     style="fill:none;stroke:#000000;stroke-width:0.94999999px;stroke-linecap:round;stroke-linejoin:round" />
+  <line
+     class="c"
+     x1="36.080612"
+     y1="50.108131"
+     x2="29.13061"
+     y2="38.058128"
+     id="line28"
+     style="fill:none;stroke:#000000;stroke-width:0.94999999px;stroke-linecap:round;stroke-linejoin:round" />
+  <line
+     class="c"
+     x1="40.830612"
+     y1="47.498131"
+     x2="33.880615"
+     y2="35.448132"
+     id="line30"
+     style="fill:none;stroke:#000000;stroke-width:0.94999999px;stroke-linecap:round;stroke-linejoin:round" />
+  <line
+     class="b"
+     x1="37.355614"
+     y1="41.473129"
+     x2="48.003929"
+     y2="35.267128"
+     id="line10-9"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="a"
+     x1="79.988655"
+     y1="53.655766"
+     x2="63.402245"
+     y2="44.08313"
+     id="line18-6"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="a"
+     x1="79.878654"
+     x2="79.998642"
+     y2="53.714813"
+     id="line22-8"
+     y1="-1.4305115e-06"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="c"
+     x1="59.927238"
+     y1="50.108131"
+     x2="66.877243"
+     y2="38.058128"
+     id="line28-1"
+     style="fill:none;stroke:#000000;stroke-width:0.94999999px;stroke-linecap:round;stroke-linejoin:round" />
+  <line
+     class="c"
+     x1="55.177246"
+     y1="47.498131"
+     x2="62.127243"
+     y2="35.448132"
+     id="line30-9"
+     style="fill:none;stroke:#000000;stroke-width:0.94999999px;stroke-linecap:round;stroke-linejoin:round" />
+  <line
+     class="b"
+     x1="58.652245"
+     y1="41.473129"
+     x2="48.003929"
+     y2="35.267128"
+     id="line10-9-7"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="a"
+     x1="111.9908"
+     x2="111.8708"
+     y2="60.629414"
+     id="line22-0"
+     y1="-0.02511932"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="b"
+     x1="47.94426"
+     y1="60.572231"
+     x2="48.003044"
+     y2="35.247204"
+     id="line10-4"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  <line
+     class="b"
+     x1="47.94426"
+     y1="60.572231"
+     x2="111.8708"
+     y2="60.629414"
+     id="line10-4-4"
+     style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
 </svg>
