@@ -413,6 +413,14 @@ def define_icon(mdl, mask_handle):
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
+    map_dict = {"Y": "Y - Neutral point accessible",
+                "Y-grounded": "Y - Grounded",
+                "Series": "In series",
+                "Δ": "Δ"}
+
+    if tp_connection in map_dict.keys():
+        tp_connection = map_dict[tp_connection]
+
     filenames = {"1": {"In series": "cap_1S",
                        "Y - Grounded": "cap_1Yg",
                        "Y - Neutral point accessible": "cap_1S"},
