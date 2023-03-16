@@ -81,21 +81,12 @@ library "OpenDSS" {
                 hide_name = True
             ]
 
-            port N {
-                position = bottom left
-                kind = pe
-            }
-            [
-                position = 7728, 8144
-            ]
-
             connect A1 TL.a_in as Connection1
             connect B1 TL.b_in as Connection2
             connect C1 TL.c_in as Connection3
             connect A2 TL.a_out as Connection4
             connect B2 TL.b_out as Connection5
             connect C2 TL.c_out as Connection6
-            connect TL.gnd N as Connection7
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Line component.</p></body></html>"
@@ -206,7 +197,7 @@ library "OpenDSS" {
                 phases {
                     label = "Phases"
                     widget = combo
-                    combo_values = "3", "2", "1"
+                    combo_values = "4", "3", "2", "1"
                     type = string
                     default_value = "3"
                     group = "Line Parameters"
@@ -217,7 +208,7 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         created_ports, _ = comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                         comp_script.toggle_coupling(mdl, container_handle, created_ports)
-                        comp_script.show_hide_param_phases(mdl, container_handle, new_value)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
 
@@ -461,7 +452,7 @@ library "OpenDSS" {
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
                     comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.show_hide_param_inputs(mdl, item_handle, mdl.get_property_value(mdl.prop(item_handle, "input_type")))
+                    comp_script.mask_dialog_dynamics(mdl, item_handle)
 
                     dialog = RegularComponentPropertiesDialog(
                         component=component,
