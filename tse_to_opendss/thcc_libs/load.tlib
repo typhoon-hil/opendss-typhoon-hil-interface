@@ -144,7 +144,6 @@ library "OpenDSS" {
             connect CIL.C1 TagC2 as Connection3
 
             Sn_3ph = "3500"
-            T_mode = "Loadshape index"
             Vn_3ph = "4.16"
             pf_mode_3ph = "Lag"
 

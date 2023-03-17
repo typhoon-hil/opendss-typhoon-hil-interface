@@ -4617,7 +4617,7 @@ if (Vdc<-2) {
                     widget = combo
                     combo_values = "Loadshape index", "Time"
                     type = string
-                    default_value = "Loadshape index"
+                    default_value = "Time"
                     group = "Time Series Settings"
                     no_evaluate
 
@@ -4750,6 +4750,9 @@ if (Vdc<-2) {
 
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    comp_script_load = return_comp_script_load()
+                    comp_script_load.read_loadshape_from_json(mdl, item_handle)
 
                     dialog = RegularComponentPropertiesDialog(
                         component=component,

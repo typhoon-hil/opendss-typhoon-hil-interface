@@ -25,7 +25,7 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
 
     # List of characters according to the number of Phases: 1->A, 2->B, 3->C, 4->D, etc.
     # The component terminals in TSE must follow the same naming scheme
-    phase_letters = [chr(65 + n) for n in range(num_phases)]
+    phase_letters = [chr(65 + n) for n in range(num_phases)] + ["N"]
 
     # Terminal groups are numbered from 1 to n_buses
     n_groups = range(1, num_buses + 1)
@@ -38,8 +38,11 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
         for p in phase_letters:
             terminal_list.append(f"{p}{n}")
 
+    print(tse_component)
+    print(terminal_groups_dict)
     # Find the Bus components that are connected to the current component
     connected_buses = tse_fns.connected_components(tse_component, comp_type=constants.DSS_BUS)
+
     conn = tse_fns.connected_components(tse_component)
     # Raise error if more than the expect number of buses are connected
     if len(connected_buses) > num_buses:
@@ -63,8 +66,10 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
                             if bus_terminals[0] not in sequence:  # Do not repeat the letter
                                 sequence.extend(bus_terminals[0])
 
-                terminal_order = [str(ord(ph[0]) - 64) if ph in ['A', 'B', 'C'] else '0' for ph in sequence]
+                print(sequence)
+                terminal_order = [str(ord(ph[0]) - 64) if ph in ['A', 'B', 'C', 'G'] else '0' for ph in sequence]
                 terminal_order = '.'.join(terminal_order)
+                print(terminal_order)
                 bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
 
     if floating_neutral:

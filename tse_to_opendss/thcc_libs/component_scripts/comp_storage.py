@@ -99,10 +99,8 @@ def update_mode_int_comp(mdl, mask_handle):
     # Save new value
     if mode == "Loadshape index":
         mdl.set_property_value(mode_int_value_prop, "0")
-        mdl.info("setting to 0")
     elif mode == "Time":
         mdl.set_property_value(mode_int_value_prop, "1")
-        mdl.info("setting to 1")
 
 
 def load_loadshape(mdl, container_handle):
@@ -156,7 +154,8 @@ def load_loadshape(mdl, container_handle):
 
         # Property handles
         loadshape_prop = mdl.prop(container_handle, "loadshape")
-        loadshape_prop_int = mdl.prop(container_handle, "loadshape_n_points")
+        loadshape_prop_int = mdl.prop(container_handle, "loadshape_int")
+        loadshape_time_range_prop = mdl.prop(container_handle, "T_Ts")
         useactual_prop = mdl.prop(container_handle, "useactual")
         loadshape_from_file_prop = mdl.prop(container_handle, "loadshape_from_file")
         loadshape_from_file_path_prop = mdl.prop(container_handle, "loadshape_from_file_path")
@@ -202,19 +201,20 @@ def load_loadshape(mdl, container_handle):
                 loadshape = loadshape[:npts]
 
             mdl.set_property_disp_value(loadshape_prop, str(loadshape))
-            mdl.set_property_value(loadshape_prop, str(loadshape))
 
         mdl.set_property_disp_value(loadshape_name_prop, str(loadshape_name))
         mdl.set_property_disp_value(loadshape_prop_int, str(interval))
         mdl.set_property_disp_value(loadshape_from_file_prop, str(loadshape_from_file))
         mdl.set_property_disp_value(useactual_prop, useactual)
-        mdl.set_property_value(useactual_prop, useactual)
-        mdl.set_property_value(loadshape_name_prop, str(loadshape_name))
-        mdl.set_property_value(loadshape_prop_int, str(interval))
-        mdl.set_property_value(loadshape_from_file_prop, str(loadshape_from_file))
-        mdl.set_property_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
-        mdl.set_property_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
-        mdl.set_property_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
+        if interval == 0:
+            if hour:
+                mdl.set_property_disp_value(loadshape_time_range_prop, str(hour))
+        else:
+            time_range_str = f"[{', '.join(str(interval * n) for n in range(1, len(loadshape) + 1))}]"
+            mdl.set_property_disp_value(loadshape_time_range_prop, time_range_str)
+        mdl.set_property_disp_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
+        mdl.set_property_disp_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
+        mdl.set_property_disp_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
 
 
 def get_all_circuit_storages(mdl, mask_handle, parent_comp=None):
@@ -247,12 +247,12 @@ def verify_time_loadshape_sizes(mdl, mask_handle, caller=None):
     time_prop = mdl.prop(mask_handle, "T_Ts")
     loadshape = mdl.get_property_value(loadshape_prop)
 
-    time_list = mdl.get_property_value(time_prop)
+    time_list = ast.literal_eval(mdl.get_property_value(time_prop))
     ls_list = ast.literal_eval(loadshape)
 
     # Verify matching sizes
     mode = mdl.get_property_value(mdl.prop(mask_handle, "T_mode"))
-    if mode == "Time":
+    if mode == "Time" and time_list and ls_list:
         # The time vector and the loadshape must be the same size
         if not len(ls_list) == len(time_list):
             mdl.info(f"Component {comp_name}: The number of points on the time range "

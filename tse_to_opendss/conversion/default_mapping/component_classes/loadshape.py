@@ -37,6 +37,10 @@ class LoadShape(GeneralObject):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
         new_format_properties = dict(tse_properties)
+        hour = new_format_properties.pop("hour", "")
+        if hour:
+            if new_format_properties.get("interval") == "0":
+                new_format_properties["hour"] = hour
 
         return new_format_properties
 
