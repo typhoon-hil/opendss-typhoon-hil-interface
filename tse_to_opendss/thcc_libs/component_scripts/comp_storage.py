@@ -216,7 +216,6 @@ def load_loadshape(mdl, container_handle):
         mdl.set_property_disp_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
         mdl.set_property_disp_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
 
-
 def get_all_circuit_storages(mdl, mask_handle, parent_comp=None):
     component_list = []
     if parent_comp:  # Component inside a subsystem (recursive function)

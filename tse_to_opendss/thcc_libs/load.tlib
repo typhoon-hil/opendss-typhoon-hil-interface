@@ -640,6 +640,15 @@ library "OpenDSS" {
                     nonvisible
                 }
 
+                T_Ts {
+                    label = "LoadShape time range"
+                    widget = edit
+                    type = generic
+                    default_value = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+                    unit = "h"
+                    group = "Time Series Settings"
+                }
+
                 T_mode {
                     label = "LoadShape input mode"
                     widget = combo
@@ -675,15 +684,6 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.s_ts_mode_value_edited(mdl, container_handle, new_value)
                     ENDCODE
-                }
-
-                T_Ts {
-                    label = "LoadShape time range"
-                    widget = edit
-                    type = generic
-                    default_value = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
-                    unit = "h"
-                    group = "Time Series Settings"
                 }
 
                 timespan {

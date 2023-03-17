@@ -2791,6 +2791,9 @@ out = out_value;
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.read_loadshape_from_json(mdl, item_handle)
+
                     dialog = RegularComponentPropertiesDialog(
                         component=component,
                         property_container=component.masks[-1],
