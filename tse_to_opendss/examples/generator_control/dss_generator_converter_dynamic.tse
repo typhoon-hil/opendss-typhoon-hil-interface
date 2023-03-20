@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2022.3
+// Saved by sw version: 2023.1
 //
 
 model "dss_generator_converter_dynamic" {
@@ -34,7 +34,7 @@ model "dss_generator_converter_dynamic" {
         matrix_based_reduction = True
         cpl_dynamics_analysis = False
         export_ss_to_pickle = False
-        ground_scope_core = False
+        ground_scope_core = True
         dss_num_tol = 1e-15
         cce_platform = "generic"
         cce_use_relative_names = False
@@ -50,6 +50,7 @@ model "dss_generator_converter_dynamic" {
         sig_stim = "off"
         export_resource_list = ""
         export_dependency_list = ""
+        excluded_resource_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
@@ -70,8 +71,8 @@ model "dss_generator_converter_dynamic" {
         ]
 
         component "OpenDSS/Bus" Bus2 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7992, 7928
@@ -79,8 +80,8 @@ model "dss_generator_converter_dynamic" {
         ]
 
         component "OpenDSS/Bus" Bus3 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8448, 7928
@@ -100,7 +101,7 @@ model "dss_generator_converter_dynamic" {
             size = 64, 96
         ]
 
-        component src_scada_input PG1_set {
+        component "core/SCADA Input" PG1_set {
             def_value = "960"
             unit = ""
         }
@@ -109,7 +110,7 @@ model "dss_generator_converter_dynamic" {
             rotation = right
         ]
 
-        component src_scada_input QG1_set {
+        component "core/SCADA Input" QG1_set {
             def_value = "280"
             unit = ""
         }
@@ -149,7 +150,7 @@ model "dss_generator_converter_dynamic" {
             size = 96, 48
         ]
 
-        component gen_gain Gain20 {
+        component "core/Gain" Gain20 {
             gain = "0.001"
         }
         [
@@ -157,7 +158,7 @@ model "dss_generator_converter_dynamic" {
             hide_name = True
         ]
 
-        component gen_gain Gain21 {
+        component "core/Gain" Gain21 {
             gain = "0.001"
         }
         [
@@ -165,21 +166,21 @@ model "dss_generator_converter_dynamic" {
             hide_name = True
         ]
 
-        component gen_probe Pg {
+        component "core/Probe" Pg {
             streaming_en = "True"
         }
         [
             position = 9040, 7760
         ]
 
-        component gen_probe Qg {
+        component "core/Probe" Qg {
             streaming_en = "True"
         }
         [
             position = 9040, 7816
         ]
 
-        component src_scada_input VG1_set {
+        component "core/SCADA Input" VG1_set {
             def_value = "1000"
             unit = ""
         }
@@ -188,7 +189,7 @@ model "dss_generator_converter_dynamic" {
             rotation = left
         ]
 
-        component src_scada_input FG1_set {
+        component "core/SCADA Input" FG1_set {
             def_value = "60"
             unit = ""
         }
@@ -197,7 +198,7 @@ model "dss_generator_converter_dynamic" {
             rotation = left
         ]
 
-        component src_scada_input modeG1_set {
+        component "core/SCADA Input" modeG1_set {
             def_value = "1"
             unit = ""
         }
@@ -206,7 +207,7 @@ model "dss_generator_converter_dynamic" {
             rotation = left
         ]
 
-        component gen_probe TmG1 {
+        component "core/Probe" TmG1 {
             signal_name = "P"
             signal_type = "torque"
             streaming_en = "True"
@@ -233,15 +234,15 @@ model "dss_generator_converter_dynamic" {
         ]
 
         component "OpenDSS/Bus" Bus4 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8688, 7928
             size = 16, 96
         ]
 
-        component gen_probe VfdG1 {
+        component "core/Probe" VfdG1 {
             signal_name = "P"
             signal_type = "torque"
             streaming_en = "True"
@@ -267,7 +268,7 @@ model "dss_generator_converter_dynamic" {
             size = 64, 112
         ]
 
-        component gen_gain Gain22 {
+        component "core/Gain" Gain22 {
             gain = "0.001"
         }
         [
@@ -276,7 +277,7 @@ model "dss_generator_converter_dynamic" {
             hide_name = True
         ]
 
-        component gen_sum Sum1 {
+        component "core/Sum" Sum1 {
         }
         [
             position = 7640, 7976
@@ -294,7 +295,7 @@ model "dss_generator_converter_dynamic" {
             size = 96, 64
         ]
 
-        component gen_sum Sum2 {
+        component "core/Sum" Sum2 {
         }
         [
             position = 7688, 7672
@@ -315,7 +316,7 @@ model "dss_generator_converter_dynamic" {
             size = 96, 48
         ]
 
-        component gen_gain Gain23 {
+        component "core/Gain" Gain23 {
             gain = "0.001"
         }
         [
@@ -324,7 +325,7 @@ model "dss_generator_converter_dynamic" {
             hide_name = True
         ]
 
-        component gen_gain Gain24 {
+        component "core/Gain" Gain24 {
             gain = "0.001"
         }
         [
@@ -333,7 +334,7 @@ model "dss_generator_converter_dynamic" {
             hide_name = True
         ]
 
-        component gen_probe PL1 {
+        component "core/Probe" PL1 {
             streaming_en = "True"
         }
         [
@@ -341,7 +342,7 @@ model "dss_generator_converter_dynamic" {
             scale = -1, -1
         ]
 
-        component gen_probe QL1 {
+        component "core/Probe" QL1 {
             streaming_en = "True"
         }
         [
@@ -373,7 +374,7 @@ model "dss_generator_converter_dynamic" {
             size = 120, 96
         ]
 
-        component src_scada_input PINV1_set {
+        component "core/SCADA Input" PINV1_set {
             def_value = "600"
             unit = ""
         }
@@ -381,7 +382,7 @@ model "dss_generator_converter_dynamic" {
             position = 7640, 8312
         ]
 
-        component src_scada_input QINV1_set {
+        component "core/SCADA Input" QINV1_set {
             unit = ""
         }
         [
@@ -403,7 +404,7 @@ model "dss_generator_converter_dynamic" {
             size = 220, 175
         ]
 
-        component src_voltage Vs1 {
+        component "core/Voltage Source" Vs1 {
             init_const_value = "2000"
         }
         [
@@ -411,7 +412,7 @@ model "dss_generator_converter_dynamic" {
             rotation = right
         ]
 
-        component pas_resistor R1 {
+        component "core/Resistor" R1 {
             resistance = "0.01"
         }
         [
@@ -419,8 +420,8 @@ model "dss_generator_converter_dynamic" {
         ]
 
         component "OpenDSS/Bus" Bus5 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7976, 8440
@@ -581,19 +582,16 @@ model "dss_generator_converter_dynamic" {
         connect Bus5.C2 Line4.C1 as Connection1141
     }
 
-    logically_deleted {
-
-    }
-
     default {
-        gen_gain {
+        "core/Gain" {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
             _tunable = "False"
             execution_rate = "inherit"
         }
 
-        gen_probe {
+        "core/Probe" {
+            signal_access = "inherit"
             addr = "0"
             override_signal_name = "False"
             signal_name = ""
@@ -603,17 +601,12 @@ model "dss_generator_converter_dynamic" {
             execution_rate = "inherit"
         }
 
-        gen_sum {
-            signs = "2"
-            execution_rate = "inherit"
-        }
-
-        pas_resistor {
+        "core/Resistor" {
             resistance = "1"
             param_set = ""
         }
 
-        src_scada_input {
+        "core/SCADA Input" {
             addr = "0"
             format = "real"
             override_signal_name = "False"
@@ -626,7 +619,12 @@ model "dss_generator_converter_dynamic" {
             execution_rate = "100e-6"
         }
 
-        src_voltage {
+        "core/Sum" {
+            signs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Voltage Source" {
             sig_input = "False"
             type = "signal generator"
             param_set = "1phase"
@@ -649,11 +647,19 @@ model "dss_generator_converter_dynamic" {
         }
 
         "OpenDSS/Bus" {
-            type = "ABC"
-            ground = "False"
-            i_meas = "False"
-            v_meas = "False"
-            conf = "on one side"
+            type_prop = "ABC"
+            ground_prop = "False"
+            conf = "on both sides"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            execution_rate = "100e-6"
+            enable_output = "False"
         }
 
         "OpenDSS/Generator" {
@@ -694,7 +700,7 @@ model "dss_generator_converter_dynamic" {
             ws_inv = "0"
             Z_base = "0"
             G_mod = "Constant kW, Fixed Q"
-            Ts = "100e-6"
+            execution_rate = "100e-6"
             dA = "0"
             dB = "0"
             dA11 = "0"
@@ -734,6 +740,11 @@ model "dss_generator_converter_dynamic" {
             gen_ts_en = "True"
             load_loadshape = "Choose"
             loadshape_name = "gen1"
+            loadshape_from_file = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_header = "True"
+            loadshape_from_file_column = "1"
+            useactual = "False"
             loadshape = "[0.5, 0.8, 1, 0.4, 0.5]"
             loadshape_int = "1"
             gen_ts_en_bit = "0"
@@ -827,9 +838,12 @@ model "dss_generator_converter_dynamic" {
             load_model = "Constant Impedance"
             model = "2"
             Pow_ref_s = "Fixed"
-            Ts = "300e-6"
+            execution_rate = "300e-6"
             Tfast = "100e-6"
             CPL_LMT = "2"
+            zero_seq_remove = "False"
+            q_gain_k = "0.5"
+            r_gain_k = "20"
             Vn_3ph_CPL = "0"
             P_CPL = "0"
             Q_CPL = "0"
@@ -873,6 +887,8 @@ model "dss_generator_converter_dynamic" {
             vbn_rms = "False"
             vcn_rms = "False"
             vln_rms = "False"
+            vn = "False"
+            vn_rms = "False"
             vab = "False"
             vbc = "False"
             vca = "False"
@@ -887,6 +903,8 @@ model "dss_generator_converter_dynamic" {
             ib_rms = "False"
             ic_rms = "False"
             i_rms = "False"
+            ineutral = "False"
+            in_rms = "False"
             freq = "False"
             power_p = "False"
             power_q = "False"
@@ -942,22 +960,28 @@ model "dss_generator_converter_dynamic" {
             enable_probes = "True"
             enable_out = "True"
             remove_snubber = "False"
+            enable_bandwidth = "False"
+            bandwidth = "10e3"
             VAn = "True"
             VBn = "True"
             VCn = "True"
             VAB = "False"
             VBC = "False"
             VCA = "False"
+            VN = "False"
             IA = "True"
             IB = "True"
             IC = "True"
+            IN = "False"
             freq = "False"
             VLn_rms = "False"
             VLL_rms = "False"
             VLn_avg_rms = "False"
             VLL_avg_rms = "False"
+            VN_rms = "False"
             I_rms = "False"
             I_avg_rms = "False"
+            IN_rms = "False"
             P_method = "alpha-beta"
             enable_extra_out = "False"
             P_meas = "False"
@@ -995,7 +1019,7 @@ model "dss_generator_converter_dynamic" {
             Qinv = "0"
             Rac = "0.01"
             Lac = "3e-5"
-            Ts = "100e-6"
+            execution_rate = "100e-6"
             cont_t = "0"
             dss_ctrl = "Fixed"
             Phases = "0"
@@ -1015,6 +1039,10 @@ model "dss_generator_converter_dynamic" {
             gen_ts_en = "False"
             load_loadshape = "Choose"
             loadshape_name = "0"
+            loadshape_from_file = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
             loadshape = "0"
             useactual = "False"
             loadshape_int = "0"

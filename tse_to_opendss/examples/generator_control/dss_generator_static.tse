@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2022.3
+// Saved by sw version: 2023.1
 //
 
 model "dss_generator_static" {
@@ -34,7 +34,7 @@ model "dss_generator_static" {
         matrix_based_reduction = True
         cpl_dynamics_analysis = False
         export_ss_to_pickle = False
-        ground_scope_core = False
+        ground_scope_core = True
         dss_num_tol = 1e-15
         cce_platform = "generic"
         cce_use_relative_names = False
@@ -50,6 +50,7 @@ model "dss_generator_static" {
         sig_stim = "off"
         export_resource_list = ""
         export_dependency_list = ""
+        excluded_resource_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
@@ -70,8 +71,8 @@ model "dss_generator_static" {
         ]
 
         component "OpenDSS/Bus" Bus2 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7888, 7944
@@ -79,8 +80,8 @@ model "dss_generator_static" {
         ]
 
         component "OpenDSS/Bus" Bus3 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8160, 7944
@@ -131,7 +132,7 @@ model "dss_generator_static" {
             size = 96, 48
         ]
 
-        component gen_gain Gain20 {
+        component "core/Gain" Gain20 {
             gain = "0.001"
         }
         [
@@ -139,7 +140,7 @@ model "dss_generator_static" {
             hide_name = True
         ]
 
-        component gen_gain Gain21 {
+        component "core/Gain" Gain21 {
             gain = "0.001"
         }
         [
@@ -147,21 +148,21 @@ model "dss_generator_static" {
             hide_name = True
         ]
 
-        component gen_probe Pg {
+        component "core/Probe" Pg {
             streaming_en = "True"
         }
         [
             position = 8712, 7792
         ]
 
-        component gen_probe Qg {
+        component "core/Probe" Qg {
             streaming_en = "True"
         }
         [
             position = 8712, 7848
         ]
 
-        component gen_probe TmG1 {
+        component "core/Probe" TmG1 {
             signal_name = "P"
             signal_type = "torque"
             streaming_en = "True"
@@ -187,15 +188,15 @@ model "dss_generator_static" {
         ]
 
         component "OpenDSS/Bus" Bus4 {
-            conf = "on both sides"
-            v_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8368, 7944
             size = 16, 96
         ]
 
-        component gen_probe VfdG1 {
+        component "core/Probe" VfdG1 {
             signal_name = "P"
             signal_type = "torque"
             streaming_en = "True"
@@ -221,7 +222,7 @@ model "dss_generator_static" {
             size = 64, 112
         ]
 
-        component gen_sum Sum1 {
+        component "core/Sum" Sum1 {
         }
         [
             position = 7528, 7992
@@ -240,13 +241,13 @@ model "dss_generator_static" {
             size = 96, 64
         ]
 
-        component src_ground gnd2 {
+        component "core/Ground" gnd2 {
         }
         [
             position = 8264, 8056
         ]
 
-        component gen_sum Sum2 {
+        component "core/Sum" Sum2 {
         }
         [
             position = 7552, 7760
@@ -266,7 +267,7 @@ model "dss_generator_static" {
             size = 96, 48
         ]
 
-        component gen_gain Gain23 {
+        component "core/Gain" Gain23 {
             gain = "0.001"
         }
         [
@@ -274,7 +275,7 @@ model "dss_generator_static" {
             hide_name = True
         ]
 
-        component gen_gain Gain24 {
+        component "core/Gain" Gain24 {
             gain = "0.001"
         }
         [
@@ -282,14 +283,14 @@ model "dss_generator_static" {
             hide_name = True
         ]
 
-        component gen_probe PL1 {
+        component "core/Probe" PL1 {
             streaming_en = "True"
         }
         [
             position = 8392, 8120
         ]
 
-        component gen_probe QL1 {
+        component "core/Probe" QL1 {
             streaming_en = "True"
         }
         [
@@ -409,19 +410,16 @@ model "dss_generator_static" {
         connect "Generator Control1.del_Tm" Junction38 as Connection1092
     }
 
-    logically_deleted {
-
-    }
-
     default {
-        gen_gain {
+        "core/Gain" {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
             _tunable = "False"
             execution_rate = "inherit"
         }
 
-        gen_probe {
+        "core/Probe" {
+            signal_access = "inherit"
             addr = "0"
             override_signal_name = "False"
             signal_name = ""
@@ -431,17 +429,25 @@ model "dss_generator_static" {
             execution_rate = "inherit"
         }
 
-        gen_sum {
+        "core/Sum" {
             signs = "2"
             execution_rate = "inherit"
         }
 
         "OpenDSS/Bus" {
-            type = "ABC"
-            ground = "False"
-            i_meas = "False"
-            v_meas = "False"
-            conf = "on one side"
+            type_prop = "ABC"
+            ground_prop = "False"
+            conf = "on both sides"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            execution_rate = "100e-6"
+            enable_output = "False"
         }
 
         "OpenDSS/Generator" {
@@ -482,7 +488,7 @@ model "dss_generator_static" {
             ws_inv = "0"
             Z_base = "0"
             G_mod = "Constant kW, Fixed Q"
-            Ts = "100e-6"
+            execution_rate = "100e-6"
             dA = "0"
             dB = "0"
             dA11 = "0"
@@ -522,6 +528,11 @@ model "dss_generator_static" {
             gen_ts_en = "True"
             load_loadshape = "Choose"
             loadshape_name = "gen1"
+            loadshape_from_file = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_header = "True"
+            loadshape_from_file_column = "1"
+            useactual = "False"
             loadshape = "[0.5, 0.8, 1, 0.4, 0.5]"
             loadshape_int = "1"
             gen_ts_en_bit = "0"
@@ -615,9 +626,12 @@ model "dss_generator_static" {
             load_model = "Constant Impedance"
             model = "2"
             Pow_ref_s = "Fixed"
-            Ts = "300e-6"
+            execution_rate = "300e-6"
             Tfast = "100e-6"
             CPL_LMT = "2"
+            zero_seq_remove = "False"
+            q_gain_k = "0.5"
+            r_gain_k = "20"
             Vn_3ph_CPL = "0"
             P_CPL = "0"
             Q_CPL = "0"
@@ -661,6 +675,8 @@ model "dss_generator_static" {
             vbn_rms = "False"
             vcn_rms = "False"
             vln_rms = "False"
+            vn = "False"
+            vn_rms = "False"
             vab = "False"
             vbc = "False"
             vca = "False"
@@ -675,6 +691,8 @@ model "dss_generator_static" {
             ib_rms = "False"
             ic_rms = "False"
             i_rms = "False"
+            ineutral = "False"
+            in_rms = "False"
             freq = "False"
             power_p = "False"
             power_q = "False"
@@ -730,22 +748,28 @@ model "dss_generator_static" {
             enable_probes = "True"
             enable_out = "True"
             remove_snubber = "False"
+            enable_bandwidth = "False"
+            bandwidth = "10e3"
             VAn = "True"
             VBn = "True"
             VCn = "True"
             VAB = "False"
             VBC = "False"
             VCA = "False"
+            VN = "False"
             IA = "True"
             IB = "True"
             IC = "True"
+            IN = "False"
             freq = "False"
             VLn_rms = "False"
             VLL_rms = "False"
             VLn_avg_rms = "False"
             VLL_avg_rms = "False"
+            VN_rms = "False"
             I_rms = "False"
             I_avg_rms = "False"
+            IN_rms = "False"
             P_method = "alpha-beta"
             enable_extra_out = "False"
             P_meas = "False"

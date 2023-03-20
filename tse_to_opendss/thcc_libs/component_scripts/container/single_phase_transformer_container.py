@@ -33,7 +33,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )
@@ -45,7 +45,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )
@@ -57,7 +57,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )
@@ -69,7 +69,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )
@@ -81,7 +81,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )
@@ -93,7 +93,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )
@@ -105,7 +105,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )
@@ -117,7 +117,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Core coupling:3",
         unit=""
     )

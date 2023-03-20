@@ -1,0 +1,287 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Controlled Switch" {
+            layout = static
+            label = "SW"
+            component "core/Triple Pole Single Throw Contactor" S {
+                ctrl_src = "Model"
+                initial_state = "on"
+                off_delay = "0.0"
+                on_delay = "0.0"
+            }
+            [
+                position = 7736, 7952
+                size = 64, 256
+            ]
+
+            port ctrl {
+                label = "ctrl"
+                position = top center
+                kind = sp
+                direction =  out
+                sp_type {
+                    default = auto
+                }
+            }
+            [
+                position = 7688, 7800
+                rotation = right
+                hide_name = True
+            ]
+
+            port A1 {
+                label = "A1"
+                position = -32, -32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 7856
+                hide_name = True
+            ]
+
+            port B1 {
+                label = "B1"
+                position = -32, 0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 7952
+                hide_name = True
+            ]
+
+            port C1 {
+                label = "C1"
+                position = -32, 32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 8048
+                hide_name = True
+            ]
+
+            port A2 {
+                label = "A2"
+                position = 32, -32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 7856
+                scale = -1, 1
+                hide_name = True
+            ]
+
+            port B2 {
+                label = "B2"
+                position = 32, 0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 7952
+                scale = -1, 1
+                hide_name = True
+            ]
+
+            port C2 {
+                label = "C2"
+                position = 32, 32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 8048
+                scale = -1, 1
+                hide_name = True
+            ]
+
+            connect A1 S.a_in as Connection1
+            connect B1 S.b_in as Connection2
+            connect C1 S.c_in as Connection3
+            connect A2 S.a_out as Connection4
+            connect B2 S.b_out as Connection5
+            connect C2 S.c_out as Connection6
+            connect ctrl S.ctrl_in as Connection7
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The controlled switch is represented by a Line component in OpenDSS and by a Triple Pole Single Throw Contactor component in the Schematic Editor.<br><br>When simulating in the time domain within Typhoon’s environment, the control signal must be provided by signal processing elements or digital inputs.<br><br>If external control is not needed, a Manual Switch component can be used to allow fast double-click state toggling.</p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=173"
+
+                enable_fb_out {
+                    label = "Feedback output"
+                    description = "Enable contactor feedback output"
+                    widget = combo
+                    combo_values = "True", "False"
+                    type = string
+                    default_value = "False"
+                    group = "General:1"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.define_icon(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                        comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_inner_property(mdl, container_handle, "enable_fb_out", new_value)
+                        comp_script.update_fb_connection(mdl, container_handle)
+                    ENDCODE
+                }
+
+                fb_out_type {
+                    label = "Signal type"
+                    description = "Feedback signal type"
+                    widget = combo
+                    combo_values = "real", "int", "uint"
+                    type = string
+                    default_value = "real"
+                    group = "General:1"
+                    nonvisible
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_inner_property(mdl, container_handle, "fb_out_type", new_value)
+                    ENDCODE
+                }
+
+                phases {
+                    label = "Phases"
+                    widget = combo
+                    combo_values = "1", "2", "3"
+                    type = string
+                    default_value = "3"
+                    no_evaluate
+                    group = "General"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.change_number_phases_switch(mdl, container_handle, new_value)
+                        comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.change_number_phases_conn(mdl, container_handle, new_value)
+                    ENDCODE
+                    }
+
+                execution_rate {
+                    label = "Execution rate"
+                    description = "Signal processing execution rate"
+                    widget = edit
+                    type = real
+                    default_value = "inherit"
+                    min_value = .5e-6
+                    group = "General"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_inner_property(mdl, container_handle, "execution_rate", new_value)
+                    ENDCODE
+                }
+
+                initial_state {
+                    label = "Initial state"
+                    description = "Initial state of the contactor"
+                    widget = combo
+                    combo_values = "off", "on"
+                    type = string
+                    default_value = "on"
+                    group = "Initial state:2"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_inner_property(mdl, container_handle, "initial_state", new_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                on_delay {
+                    label = "On delay"
+                    description = "Turn on delay"
+                    widget = edit
+                    type = real
+                    default_value = "0"
+                    unit = "s"
+                    min_value = 0
+                    max_value = 0.5
+                    group = "Timing:3"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_inner_property(mdl, container_handle, "on_delay", new_value)
+                    ENDCODE
+                }
+
+                off_delay {
+                    label = "Off delay"
+                    description = "Turn off delay"
+                    widget = edit
+                    type = real
+                    default_value = "0"
+                    unit = "s"
+                    min_value = 0
+                    max_value = 0.5
+                    group = "Timing"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_inner_property(mdl, container_handle, "off_delay", new_value)
+                    ENDCODE
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import os
+                    import sys
+                    import importlib
+
+                    lib_path = mdl.get_library_resource_dir_path(item_handle)
+                    comp_scripts_path = os.path.join(os.path.realpath(lib_path), "component_scripts")
+
+                    if not comp_scripts_path in sys.path:
+                        sys.path.append(comp_scripts_path)
+
+                    import comp_ctrlsw as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+            }
+        }
+        [
+            position = 4768, 4200
+            size = 64, 96
+        ]
+
+    }
+
+}
