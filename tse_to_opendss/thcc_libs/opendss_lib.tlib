@@ -7295,28 +7295,6 @@ library "OpenDSS" {
 					size = 96, 168
 				]
 
-				component "core/Product" Product28 {
-				}
-				[
-					position = 8472, 8136
-					hide_name = True
-				]
-
-				component "core/Product" Product29 {
-				}
-				[
-					position = 8472, 8200
-					hide_name = True
-				]
-
-				component "core/Sum" Sum18 {
-					signs = "++"
-				}
-				[
-					position = 8568, 8168
-					hide_name = True
-				]
-
 				component "core/Product" Product30 {
 					signs = "*/"
 				}
@@ -7398,22 +7376,22 @@ library "OpenDSS" {
 					gain = "0.5"
 				}
 				[
-					position = 8760, 8168
+					position = 8376, 8306
 					hide_name = True
 				]
 
-				component "core/Mathematical function" "Mathematical function1" {
-					mathematical_fn = "sqrt"
+				component "core/Product" Product29 {
 				}
 				[
-					position = 8760, 8224
+					position = 8306, 8306
+					hide_name = True
 				]
 
 				component "core/Limit" Limit2 {
-					lower_limit = "1"
+					lower_limit = "0.1"
 				}
 				[
-					position = 8664, 8168
+					position = 8226, 8256
 					hide_name = True
 				]
 
@@ -7505,7 +7483,7 @@ library "OpenDSS" {
 					gain = "2*np.pi"
 				}
 				[
-					position = 8224, 8304
+					position = 8316, 8226
 					hide_name = True
 				]
 
@@ -7971,7 +7949,7 @@ library "OpenDSS" {
 					direction = in
 				}
 				[
-					position = 8864, 8168
+					position = 8476, 8306
 					hide_name = True
 					size = 100, 20
 				]
@@ -7995,7 +7973,7 @@ library "OpenDSS" {
 					direction = in
 				}
 				[
-					position = 8864, 8224
+					position = 8346, 8256
 					hide_name = True
 					size = 100, 20
 				]
@@ -8067,31 +8045,7 @@ library "OpenDSS" {
 					direction = in
 				}
 				[
-					position = 8224, 8192
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From25 {
-					value = "sinwt"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 8320, 8128
-					hide_name = True
-					size = 60, 20
-				]
-
-				tag From26 {
-					value = "coswt"
-					scope = local
-					kind = sp
-					direction = out
-				}
-				[
-					position = 8320, 8192
+					position = 8224, 8172
 					hide_name = True
 					size = 60, 20
 				]
@@ -8187,7 +8141,7 @@ library "OpenDSS" {
 					direction = in
 				}
 				[
-					position = 8224, 8256
+					position = 8224, 8206
 					hide_name = True
 					size = 60, 20
 				]
@@ -8199,7 +8153,7 @@ library "OpenDSS" {
 					direction = in
 				}
 				[
-					position = 8320, 8304
+					position = 8446, 8226
 					hide_name = True
 					size = 60, 20
 				]
@@ -8388,16 +8342,6 @@ library "OpenDSS" {
 					position = 7208, 8864
 				]
 
-				junction Junction175 sp
-				[
-					position = 8416, 8192
-				]
-
-				junction Junction176 sp
-				[
-					position = 8424, 8128
-				]
-
 				junction Junction178 sp
 				[
 					position = 8136, 9312
@@ -8440,7 +8384,7 @@ library "OpenDSS" {
 
 				junction Junction192 sp
 				[
-					position = 8160, 8256
+					position = 8160, 8206
 				]
 
 				junction Junction193 sp
@@ -8460,7 +8404,7 @@ library "OpenDSS" {
 
 				junction Junction801 sp
 				[
-					position = 8704, 8168
+					position = 8266, 8256
 				]
 
 				junction Junction802 sp
@@ -8589,25 +8533,16 @@ library "OpenDSS" {
 				connect Clock1.out Comparator7.in1 as Connection968
 				connect Constant1.out Comparator7.in2 as Connection969
 				connect Product38.out Isp1.in as Connection970
-				connect Sum18.in Product28.out as Connection976
-				connect Product29.out Sum18.in1 as Connection977
 				connect Junction138 Va.p_node as Connection992
 				connect Va.n_node Junction300 as Connection993
 				connect Gain30.out Junction209 as Connection1008
-				connect Sum18.out Limit2.in as Connection1035
+				connect "Kalman Filter Sync1.Amplitude" Limit2.in as Connection1035
 				connect Limit2.out Junction801 as Connection2035
-				connect "Mathematical function1.in" Junction801 as Connection2036
-				connect Goto15 "Mathematical function1.out" as Connection2208
+				connect Goto15 Junction801 as Connection2208
 				connect From23 Gain32.in as Connection1043
-				connect From26 Junction175 as Connection1112
-				connect Junction175 Product29.in as Connection1113
-				connect Product29.in1 Junction175 as Connection1114
-				connect Product28.in Junction176 as Connection1117
-				connect Junction176 Product28.in1 as Connection1118
 				[
 					position = 0, 0
 				]
-				connect From25 Junction176 as Connection1119
 				connect Goto9 "Kalman Filter Sync1.sin(wt)" as Connection1124
 				connect "Kalman Filter Sync1.cos(wt)" Goto10 as Connection1125
 				connect "Rate Transition with Bypass1.Out" Junction178 as Connection1132
@@ -8627,7 +8562,9 @@ library "OpenDSS" {
 				connect Gain35.out Junction211 as Connection1153
 				connect From30 Gain36.in as Connection1163
 				connect From32 Sum5.in1 as Connection1180
-				connect Gain31.in Junction801 as Connection1182
+				connect Gain31.in Product29.out as Connection1182
+				connect Product29.in Junction801 as Connection1183
+				connect Product29.in1 Junction801 as Connection1184
 				connect Gain31.out Goto6 as Connection2202
 				connect Sum21.out Goto8 as Connection1186
 				[

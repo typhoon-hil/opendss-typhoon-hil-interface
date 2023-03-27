@@ -485,23 +485,20 @@ def load_loadshape(mdl, container_handle):
                 loadshape = loadshape[:npts]
 
             mdl.set_property_disp_value(loadshape_prop, str(loadshape))
-            mdl.set_property_value(loadshape_prop, str(loadshape))
 
         mdl.set_property_disp_value(loadshape_name_prop, str(loadshape_name))
         mdl.set_property_disp_value(loadshape_prop_int, str(interval))
         mdl.set_property_disp_value(loadshape_from_file_prop, str(loadshape_from_file))
         mdl.set_property_disp_value(useactual_prop, useactual)
-        mdl.set_property_value(useactual_prop, useactual)
-        mdl.set_property_value(loadshape_name_prop, str(loadshape_name))
-        mdl.set_property_value(loadshape_prop_int, str(interval))
-        mdl.set_property_value(loadshape_from_file_prop, str(loadshape_from_file))
-        mdl.set_property_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
-        mdl.set_property_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
-        mdl.set_property_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
-
         if interval == 0:
-            mdl.set_property_disp_value(loadshape_prop_time, str(hour))
-            mdl.set_property_value(loadshape_prop_time, str(hour))
+            if hour:
+                mdl.set_property_disp_value(loadshape_prop_time, str(hour))
+        else:
+            time_range_str = f"[{', '.join(str(interval * n) for n in range(1, len(loadshape) + 1))}]"
+            mdl.set_property_disp_value(loadshape_prop_time, time_range_str)
+        mdl.set_property_disp_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
+        mdl.set_property_disp_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
+        mdl.set_property_disp_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):

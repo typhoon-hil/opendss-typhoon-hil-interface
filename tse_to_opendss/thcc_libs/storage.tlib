@@ -11,7 +11,7 @@ library "OpenDSS" {
                 value = "chargetrigger"
             }
             [
-                position = 8128, 7440
+                position = 8200, 7416
             ]
 
             component "core/Constant" dchtrigger {
@@ -19,73 +19,70 @@ library "OpenDSS" {
                 value = "dischargetrigger"
             }
             [
-                position = 8200, 7392
+                position = 8272, 7368
             ]
 
             component "core/C function" "Dispatch kW Reference Calculation" {
-                input_terminals = "real loadshape_point;inherit kwrated;real dchtrigger;real chtrigger;int dispatch_mode;real pct_charge;real pct_discharge;"
+                input_terminals = "real loadshape_value;inherit kwrated;real dchtrigger;real chtrigger;int dispatch_mode;real pct_charge;real pct_discharge;"
                 input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit;inherit"
                 input_terminals_feedthrough = "True;True;True;True;True;True;True"
                 input_terminals_show_labels = "True;True;True;True;True;True;True"
                 output_fnc = "/*Begin code section*/
 if (dispatch_mode == 1 || dispatch_mode == 2 || dispatch_mode == 3){
     // Discharge mode
-    if (loadshape_point > dchtrigger)
+    if (loadshape_value > dchtrigger)
         {
             close_contactor = 1;
-            kwref = kwrated*1000*pct_discharge/100;
+            p_inv = kwrated*1000*pct_discharge/100;
+            //p_bat = kwrated*1000*pct_discharge/100;
         }
     // Charge mode
-    else if (loadshape_point < chtrigger)
+    else if (loadshape_value < chtrigger)
         {
             close_contactor = 1;
-            kwref = -kwrated*1000*pct_charge/100;
+            p_inv = -kwrated*1000*pct_charge/100;
+            //p_bat = -kwrated*1000*pct_charge/100;
         }
     // Idle mode
     else
         {
             close_contactor = 0;
-            kwref = 0;
+            p_inv = -kwrated*1000*pct_idlingkw/100;
+            //p_bat = 0;
         }
 }
 else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
     // Idle mode
-    if (loadshape_point == 0)
+    if (loadshape_value == -pct_idlingkw/100)
         {
             close_contactor = 0;
-            kwref = 0;
+           // p_inv = -kwrated*1000*pct_idlingkw/100;
+            //p_bat = 0;
         }
     else
         {
             close_contactor = 1;
-            kwref = loadshape_point*kwrated*1000;
+            //p_inv = loadshape_value*kwrated*1000;
+            //p_bat = loadshape_value*kwrated*1000;
         }
+    p_inv = loadshape_value*kwrated*1000;
 }
 /*End code section*/"
-                output_terminals = "real close_contactor;real kwref;"
+                output_terminals = "real close_contactor;real p_inv;"
                 output_terminals_dimensions = "inherit;inherit"
                 output_terminals_feedthrough = "True;True"
                 output_terminals_show_labels = "True;True"
+                parameters = "real pct_idlingkw;"
             }
             [
-                position = 8392, 7440
-                size = 280, 368
+                position = 8464, 7416
+                size = 272, 360
             ]
 
             component "core/Probe" "Enable Inverter" {
             }
             [
-                position = 8632, 7344
-            ]
-
-            component "core/Voltage Measurement" Vbat {
-                execution_rate = "execution_rate"
-                sig_output = "True"
-            }
-            [
-                position = 8592, 8304
-                rotation = right
-                size = 64, 32
+                position = 8704, 7320
             ]
 
             component "core/Simple Battery inverter (Average)" "Simple Battery inverter (Average)1" {
@@ -210,7 +207,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     connect kVAr.in5 Junction3 as Connection113
                 }
                 [
-                    position = 7440, 8048
+                    position = 7448, 8224
                     size = 120, 80
                 ]
 
@@ -218,19 +215,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     signs = "/*"
                 }
                 [
-                    position = 7280, 7760
-                ]
-
-                component "core/Product" Product18 {
-                }
-                [
-                    position = 6976, 7864
-                ]
-
-                component "core/Product" Product19 {
-                }
-                [
-                    position = 7168, 7680
+                    position = 7176, 7760
                 ]
 
                 component "core/Constant" vmax {
@@ -259,13 +244,13 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 component "core/Product" Product20 {
                 }
                 [
-                    position = 7672, 7912
+                    position = 7616, 7912
                 ]
 
                 component "core/Product" Product21 {
                 }
                 [
-                    position = 7672, 8040
+                    position = 7680, 8216
                 ]
 
                 component "core/Signal switch" "Signal switch2" {
@@ -376,21 +361,6 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     position = 7344, 7840
                 ]
 
-                component "core/Signal switch" "Signal switch3" {
-                    threshold = "0.1"
-                }
-                [
-                    position = 7880, 7928
-                ]
-
-                component "core/Constant" Constant1 {
-                    execution_rate = "execution_rate"
-                    value = "-pct_idlingkw/100*kwrated*1000"
-                }
-                [
-                    position = 7776, 7944
-                ]
-
                 component "core/Probe" ctz_multiplier {
                 }
                 [
@@ -400,45 +370,34 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 component "core/Data Type Conversion" "Data Type Conversion1" {
                 }
                 [
-                    position = 7784, 8040
-                ]
-
-                component "core/Limit" Limit1 {
-                    lower_limit = "[-4*kwrated*1000]"
-                    upper_limit = "[4*kwrated*1000]"
-                }
-                [
-                    position = 7968, 7928
-                ]
-
-                component "core/Bus Join" "Bus Join1" {
-                    inputs = "3"
-                }
-                [
-                    position = 8216, 7984
+                    position = 7792, 8216
                 ]
 
                 component "core/Probe" "Inverter P Reference" {
                 }
                 [
-                    position = 8056, 7888
+                    position = 7712, 7832
                     rotation = left
-                ]
-
-                component "core/Constant" enable_inverter {
-                    execution_rate = "execution_rate"
-                }
-                [
-                    position = 8280, 7912
-                    rotation = down
-                    scale = 1, -1
                 ]
 
                 component "core/Probe" "Inverter Q Reference" {
                 }
                 [
-                    position = 8056, 8112
+                    position = 8392, 8288
                     rotation = right
+                ]
+
+                component "core/Product" Product23 {
+                }
+                [
+                    position = 7272, 7760
+                ]
+
+                component "core/Gain" Gain3 {
+                    gain = "-1"
+                }
+                [
+                    position = 8112, 8216
                 ]
 
                 port dispatch_mode_int {
@@ -451,7 +410,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     }
                 }
                 [
-                    position = 7288, 8048
+                    position = 7296, 8224
                 ]
 
                 port v_line {
@@ -467,19 +426,6 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     position = 6720, 7872
                 ]
 
-                port active_status {
-                    position = left:4
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 7776, 7840
-                ]
-
                 port dss_kw {
                     position = left:3
                     kind = sp
@@ -490,10 +436,10 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     }
                 }
                 [
-                    position = 7288, 7920
+                    position = 7464, 7920
                 ]
 
-                port inv_inputs {
+                port ctz_p_mult {
                     position = auto:auto
                     kind = sp
                     direction =  in
@@ -503,22 +449,33 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     }
                 }
                 [
-                    position = 8304, 7984
+                    position = 7592, 7704
                 ]
 
-                junction Junction18 sp
+                port inv_p {
+                    position = auto:auto
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
                 [
-                    position = 6928, 7872
+                    position = 7760, 7912
                 ]
 
-                junction Junction20 sp
+                port inv_q {
+                    position = auto:auto
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
                 [
-                    position = 6800, 7872
-                ]
-
-                junction Junction21 sp
-                [
-                    position = 7120, 7680
+                    position = 8448, 8216
                 ]
 
                 junction Junction562 sp
@@ -536,135 +493,131 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     position = 7536, 7904
                 ]
 
-                junction Junction566 sp
+                junction Junction580 sp
+                [
+                    position = 7536, 7776
+                ]
+
+                junction Junction583 sp
+                [
+                    position = 6800, 7872
+                ]
+
+                junction Junction584 sp
                 [
                     position = 7344, 7760
                 ]
 
-                junction Junction567 sp
+                junction Junction585 sp
                 [
-                    position = 8056, 7928
+                    position = 7224, 7760
                 ]
 
-                junction Junction568 sp
+                junction Junction587 sp
                 [
-                    position = 8056, 8040
+                    position = 8392, 8216
+                ]
+
+                junction Junction588 sp
+                [
+                    position = 7712, 7912
                 ]
 
                 comment Comment8 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Multiplier</p></body></html> ENDCOMMENT
                 [
-                    position = 7544, 7776
+                    position = 7552, 7656
                 ]
 
                 connect dispatch_mode_int "kvar calculation.dispatch_int" as Connection3112
-                connect Product18.in1 Junction18 as Connection3148
-                connect Product18.in Junction18 as Connection3150
                 connect vmax.out "Signal switch4.in" as Connection3155
                 connect vmin.out "Signal switch4.in1" as Connection3156
-                connect Junction18 Junction20 as Connection3157
-                connect Product19.in Junction21 as Connection3161
-                connect Junction21 "Signal switch4.out" as Connection3162
-                connect Product19.in1 Junction21 as Connection3163
-                connect Product18.out Product16.in1 as Connection3173
-                [
-                    position = 0, 0
-                    breakpoints = 7208, 7864; 7208, 7768
-                ]
-                connect v_line Junction20 as Connection3174
-                [
-                    position = 0, 0
-                    breakpoints = 6800, 7872; 6800, 7872; 6800, 7872
-                ]
                 connect Product21.in1 "kvar calculation.kvar_out" as Connection3178
                 connect "Constant Z mode check.constant_z_mode" Junction562 as Connection2900
                 [
                     position = 0, 0
                 ]
-                connect Junction562 "Signal switch2.in2" as Connection2901
                 connect ctZ.in Junction562 as Connection2902
                 connect "Signal switch4.in2" Junction563 as Connection3183
                 [
                     position = 0, 0
                     breakpoints = 7024, 7616
                 ]
-                connect Junction563 Junction20 as Connection3184
-                [
-                    position = 0, 0
-                    breakpoints = 6800, 7688; 6800, 7712; 6800, 7832
-                ]
                 connect "Constant Z mode check.v_line" Junction563 as Connection3185
                 connect const_p_mult.out "Signal switch2.in1" as Connection3188
                 connect Product20.in Junction564 as Connection3189
-                connect Junction564 Product21.in as Connection3190
-                [
-                    position = 0, 0
-                    breakpoints = 7536, 7904
-                ]
-                connect "Signal switch2.out" Junction564 as Connection3191
-                connect active_status "Signal switch3.in2" as Connection3193
-                connect Constant1.out "Signal switch3.in1" as Connection3194
-                connect "Signal switch3.in" Product20.out as Connection3195
-                connect Product19.out Product16.in as Connection3203
-                [
-                    position = 0, 0
-                    breakpoints = 7208, 7688
-                ]
-                connect Product16.out Junction566 as Connection3204
-                connect Junction566 "Signal switch2.in" as Connection3205
-                connect ctz_multiplier.in Junction566 as Connection3206
                 connect "Data Type Conversion1.in" Product21.out as Connection3208
-                connect Limit1.in "Signal switch3.out" as Connection3210
-                connect enable_inverter.out "Bus Join1.in" as Connection3216
-                connect dss_kw Product20.in1 as Connection3368
+                connect "Signal switch2.out" Junction580 as Connection3492
+                connect Junction580 Junction564 as Connection3493
+                connect v_line Junction583 as Connection3512
+                connect Junction583 Junction563 as Connection3513
                 [
                     position = 0, 0
-                    breakpoints = 7360, 7920
+                    breakpoints = 6800, 7872; 6800, 7872; 6800, 7872; 6800, 7872; 6800, 7832; 6800, 7712; 6800, 7688
                 ]
-                connect "Inverter P Reference.in" Junction567 as Connection3371
-                connect Junction567 "Bus Join1.in1" as Connection3372
+                connect Product16.in1 Junction583 as Connection3514
                 [
                     position = 0, 0
-                    breakpoints = 8056, 7936
+                    breakpoints = 7136, 7872; 6800, 7872
                 ]
-                connect Limit1.out Junction567 as Connection3373
-                connect "Bus Join1.in2" Junction568 as Connection3374
+                connect Product16.in "Signal switch4.out" as Connection3515
                 [
                     position = 0, 0
-                    breakpoints = 8056, 8000
+                    breakpoints = 7136, 7744; 7136, 7680
                 ]
-                connect Junction568 "Inverter Q Reference.in" as Connection3375
+                connect ctz_multiplier.in Junction584 as Connection3517
+                connect Junction584 "Signal switch2.in" as Connection3518
                 [
                     position = 0, 0
-                    breakpoints = 8056, 8064; 8056, 8064
+                    breakpoints = 7344, 7760
                 ]
-                connect "Data Type Conversion1.out" Junction568 as Connection3376
-                connect "Bus Join1.out" inv_inputs as Connection3377
+                connect Product23.out Junction584 as Connection3519
+                connect Product16.out Junction585 as Connection3521
+                connect Junction585 Product23.in1 as Connection3522
+                connect Product23.in Junction585 as Connection3523
+                connect "Inverter Q Reference.in" Junction587 as Connection3529
+                connect inv_q Junction587 as Connection3531
+                connect Junction580 ctz_p_mult as Connection3552
+                [
+                    position = 0, 0
+                    breakpoints = 7536, 7776; 7536, 7704
+                ]
+                connect Junction587 Gain3.out as Connection3577
+                connect Gain3.in "Data Type Conversion1.out" as Connection3578
+                connect "Signal switch2.in2" Junction562 as Connection3579
+                [
+                    position = 0, 0
+                    breakpoints = 7448, 7584
+                ]
+                connect dss_kw Product20.in1 as Connection3600
+                connect Product21.in Junction564 as Connection3623
+                [
+                    position = 0, 0
+                    breakpoints = 7536, 8072; 7536, 8056; 7536, 8032
+                ]
+                connect "Inverter P Reference.in" Junction588 as Connection3854
+                connect Junction588 inv_p as Connection3855
+                [
+                    position = 0, 0
+                    breakpoints = 7712, 7912; 7712, 7912; 7712, 7912; 7712, 7912; 7712, 7912; 7712, 7912; 7712, 7912
+                ]
+                connect Product20.out Junction588 as Connection3856
             }
             [
-                position = 7728, 7952
+                position = 7704, 7952
                 size = 144, 176
             ]
 
             component "core/Probe" Vline {
             }
             [
-                position = 7472, 7872
+                position = 7424, 7872
                 rotation = left
             ]
 
-            component "core/Probe" "DSS kW Reference" {
+            component "core/Probe" dss_inv_ref {
             }
             [
-                position = 8632, 7528
-            ]
-
-            component "core/Current Measurement" Ibat {
-                execution_rate = "execution_rate"
-                sig_output = "True"
-            }
-            [
-                position = 8416, 8216
-                size = 64, 32
+                position = 8736, 7576
             ]
 
             component Subsystem "Active status" {
@@ -736,145 +689,6 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 position = 7864, 7632
             ]
 
-            component "core/Signal Controlled Current Source" i_ch_dch_losses {
-            }
-            [
-                position = 8272, 8320
-                rotation = left
-                scale = -1, 1
-                size = 64, 32
-            ]
-
-            component Subsystem "Ch | Dch Losses Current Calc" {
-                layout = dynamic
-                component "core/Signal switch" "Signal switch3" {
-                    threshold = "0"
-                }
-                [
-                    position = 8240, 8192
-                ]
-
-                component "core/Constant" charge_losses {
-                    execution_rate = "execution_rate"
-                    value = "1-pct_effcharge/100"
-                }
-                [
-                    position = 8056, 8120
-                ]
-
-                component "core/Constant" discharge_losses {
-                    execution_rate = "execution_rate"
-                    value = "1-pct_effdischarge/100"
-                }
-                [
-                    position = 8064, 8264
-                ]
-
-                component "core/Product" Power1 {
-                }
-                [
-                    position = 8488, 8208
-                ]
-
-                component "core/Abs" Abs1 {
-                }
-                [
-                    position = 8064, 8400
-                ]
-
-                component "core/Signal switch" "Signal switch4" {
-                    criterion = "ctrl > threshold"
-                    threshold = "0.5"
-                }
-                [
-                    position = 8904, 8240
-                ]
-
-                component "core/Constant" Constant1 {
-                    execution_rate = "execution_rate"
-                    value = "0"
-                }
-                [
-                    position = 8832, 8368
-                ]
-
-                port i_minus_idle {
-                    position = left:1
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 7888, 8064
-                ]
-
-                port "i_ch|dch_losses" {
-                    position = right:1
-                    kind = sp
-                    direction =  in
-                    sp_type {
-                        default = inherit
-                        readonly = True
-                    }
-                }
-                [
-                    position = 9000, 8240
-                ]
-
-                port active_bat {
-                    position = left:2
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
-                }
-                [
-                    position = 8848, 8128
-                ]
-
-                junction Junction1 sp
-                [
-                    position = 7952, 8064
-                ]
-
-                connect "Signal switch3.out" Power1.in as Connection3193
-                connect "i_ch|dch_losses" "Signal switch4.out" as Connection3214
-                connect active_bat "Signal switch4.in2" as Connection3215
-                connect Constant1.out "Signal switch4.in1" as Connection3216
-                [
-                    position = 0, 0
-                    breakpoints = 8864, 8320; 8864, 8256
-                ]
-                connect charge_losses.out "Signal switch3.in" as Connection3228
-                connect discharge_losses.out "Signal switch3.in1" as Connection3229
-                connect Abs1.out Power1.in1 as Connection3249
-                [
-                    position = 0, 0
-                    breakpoints = 8360, 8400; 8360, 8208
-                ]
-                connect Power1.out "Signal switch4.in" as Connection3269
-                connect "Signal switch3.in2" Junction1 as Connection3280
-                [
-                    position = 0, 0
-                    breakpoints = 8240, 8064; 8240, 8064
-                ]
-                connect Junction1 i_minus_idle as Connection3281
-                [
-                    position = 0, 0
-                    breakpoints = 7960, 8064; 7944, 8064; 7944, 8064; 7944, 8064
-                ]
-                connect Abs1.in Junction1 as Connection3282
-            }
-            [
-                position = 8240, 8112
-                size = 160, 104
-            ]
-
             component "core/Three-phase Meter" "Three-phase Meter1" {
                 P_meas = "True"
                 Ts = "execution_rate"
@@ -886,7 +700,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 freq = "True"
             }
             [
-                position = 7296, 8312
+                position = 7240, 8312
                 scale = -1, 1
                 size = 56, 240
             ]
@@ -901,26 +715,26 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 vll_rms = "True"
             }
             [
-                position = 7384, 8008
+                position = 7320, 8008
                 size = 88, 200
             ]
 
             component "core/Probe" P {
             }
             [
-                position = 7464, 7984
+                position = 7432, 7984
             ]
 
             component "core/Probe" Q {
             }
             [
-                position = 7488, 8032
+                position = 7456, 8032
             ]
 
             component "core/Probe" pf {
             }
             [
-                position = 7520, 8080
+                position = 7488, 8080
             ]
 
             component Subsystem "Dispatch Mode Integer" {
@@ -962,6 +776,9 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
+                        comp_script = return_comp_script(mdl, item_handle)
+                        comp_script.read_loadshape_from_json(mdl, item_handle)
+
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
@@ -979,7 +796,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 }
             }
             [
-                position = 7944, 7488
+                position = 7944, 7464
                 size = 152, 56
             ]
 
@@ -988,7 +805,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 value = "pct_charge"
             }
             [
-                position = 8128, 7536
+                position = 8200, 7512
             ]
 
             component "core/Constant" pct_discharge {
@@ -996,7 +813,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 value = "pct_discharge"
             }
             [
-                position = 8200, 7584
+                position = 8272, 7560
             ]
 
             component "core/Constant" kwrated {
@@ -1004,32 +821,7 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                 value = "kwrated"
             }
             [
-                position = 8128, 7344
-            ]
-
-            component "core/Signal Controlled Voltage Source" "Ideal Bat" {
-            }
-            [
-                position = 8488, 8304
-                rotation = right
-                size = 64, 32
-            ]
-
-            component "core/Constant" Vdc {
-                execution_rate = "execution_rate"
-                value = "4*kv*1000*vmaxpu"
-            }
-            [
-                position = 8584, 8304
-                scale = -1, 1
-            ]
-
-            component "core/Resistor" R1 {
-                resistance = "(4*kv*1000*vmaxpu)**2/(pct_idlingkw/100*kwrated*1000 + 1e-6)"
-            }
-            [
-                position = 8112, 8344
-                rotation = right
+                position = 8200, 7320
             ]
 
             component Subsystem "Battery Energy" {
@@ -1041,97 +833,210 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     limit_upper = "kwhrated*1000"
                 }
                 [
-                    position = 8312, 8248
+                    position = 8656, 8288
                 ]
 
                 component "core/Probe" SOC {
                 }
                 [
-                    position = 8504, 8184
-                ]
-
-                component "core/Product" Power {
-                }
-                [
-                    position = 7888, 8224
+                    position = 9024, 8224
                 ]
 
                 component "core/Gain" Gain3 {
                     gain = "100/(kwhrated*1000)"
                 }
                 [
-                    position = 8424, 8184
+                    position = 8864, 8224
                 ]
 
-                component "core/Probe" "Battery Power" {
+                component "core/Signal switch" "Signal switch6" {
+                    criterion = "ctrl >= threshold"
+                    threshold = "0"
                 }
                 [
-                    position = 8016, 8048
+                    position = 8088, 8296
                 ]
 
-                component "core/Signal switch" "Signal switch3" {
+                component "core/Gain" Gain4 {
+                    gain = "-1"
                 }
                 [
-                    position = 8016, 8240
+                    position = 8560, 8288
                 ]
 
-                component "core/Constant" Constant1 {
-                    execution_rate = "execution_rate"
-                    value = "0"
+                component "core/Product" Product1 {
                 }
                 [
-                    position = 7920, 8288
+                    position = 7464, 8128
+                ]
+
+                component "core/Gain" inv_eff {
+                }
+                [
+                    position = 7576, 8128
+                ]
+
+                component "core/Product" Product2 {
+                }
+                [
+                    position = 8464, 8288
                 ]
 
                 component "core/Step" Step1 {
                     execution_rate = "execution_rate"
-                    step_time = "0.5"
                 }
                 [
-                    position = 8032, 8336
+                    position = 8384, 8240
                 ]
 
-                component "core/Product" "E meas sw" {
+                component "core/C function" "C function1" {
+                    global_variables = "int old_point;"
+                    init_fnc = "/*Begin code section*/
+kw = p_in;
+/*End code section*/"
+                    input_terminals = "int load_point;inherit p_in;int idle_signal;int mode_int;"
+                    input_terminals_dimensions = "inherit;inherit;inherit;inherit"
+                    input_terminals_feedthrough = "True;True;True;True"
+                    input_terminals_show_labels = "False;False;False;False"
+                    output_fnc = "/*Begin code section*/
+if (mode_int == 1){
+    // Loadshape time mode
+    // input is the time
+    if (load_point < 1){kw = 0;}
+    else{
+        if (load_point != old_point){
+            kw = p_in;
+            old_point = load_point;
+            //kw = p_in*kwrated*1000;
+        }
+    }
+}
+else{
+    // Loadshape index mode
+    // input is the index
+    kw = p_in;
+}
+
+
+kw = kw * idle_signal;
+/*End code section*/"
+                    output_terminals = "real kw;"
+                    output_terminals_dimensions = "1"
+                    output_terminals_feedthrough = "True"
+                    output_terminals_show_labels = "False"
+                    parameters = "real kwrated;"
                 }
                 [
-                    position = 8136, 8248
+                    position = 7080, 8056
+                    size = 120, 168
                 ]
 
-                component "core/Gain" Gain4 {
-                    gain = "1/3600"
+                component "core/Constant" idle_losses {
+                    execution_rate = "execution_rate"
+                    value = "kwrated*1000*pct_idlingkw/100"
                 }
                 [
-                    position = 8216, 8248
+                    position = 7392, 8392
                 ]
 
-                port Ibat {
-                    position = left:2
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
+                component "core/Product" Product3 {
                 }
                 [
-                    position = 7808, 8280
+                    position = 7528, 8440
                 ]
 
-                port In3 {
-                    position = top:1
-                    kind = sp
-                    direction =  out
-                    sp_type {
-                        default = auto
-                        readonly = True
-                    }
+                component "core/Probe" p_ch_dch {
                 }
                 [
-                    position = 8016, 8160
-                    rotation = right
+                    position = 8272, 8208
                 ]
 
-                port "Battery Energy" {
+                component "core/Probe" p_idl_losses {
+                }
+                [
+                    position = 7712, 8440
+                ]
+
+                component "core/Probe" pmult {
+                }
+                [
+                    position = 7464, 8216
+                ]
+
+                component "core/Relational operator" "Relational operator1" {
+                    relational_op = "<"
+                }
+                [
+                    position = 8944, 8640
+                ]
+
+                component "core/Constant" reserve {
+                    execution_rate = "execution_rate"
+                    value = "pct_reserve/100"
+                }
+                [
+                    position = 8752, 8504
+                ]
+
+                component "core/Relational operator" "Relational operator2" {
+                    relational_op = "!="
+                }
+                [
+                    position = 8896, 8752
+                ]
+
+                component "core/Constant" zero {
+                    execution_rate = "execution_rate"
+                    value = "0"
+                }
+                [
+                    position = 8752, 8760
+                ]
+
+                component "core/Sum" Sum7 {
+                    signs = "++"
+                }
+                [
+                    position = 7736, 8248
+                ]
+
+                component "core/Constant" reserve1 {
+                    execution_rate = "execution_rate"
+                    value = "100"
+                }
+                [
+                    position = 8752, 8648
+                ]
+
+                component "core/Relational operator" "Relational operator3" {
+                    relational_op = ">"
+                }
+                [
+                    position = 8944, 8496
+                ]
+
+                component "core/Logical operator" "Logical operator1" {
+                    inputs = "3"
+                }
+                [
+                    position = 9056, 8576
+                ]
+
+                component "core/Gain" charge_gain {
+                    gain = "pct_effcharge/100"
+                }
+                [
+                    position = 7952, 8360
+                ]
+
+                component "core/Gain" discharge_gain {
+                    gain = "1/(pct_effdischarge/100 + 1e-7)"
+                }
+                [
+                    position = 7944, 8136
+                ]
+
+                port bat_energy {
                     position = right:1
                     kind = sp
                     direction =  in
@@ -1141,10 +1046,23 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     }
                 }
                 [
-                    position = 8504, 8248
+                    position = 8944, 8288
                 ]
 
-                port Vbat {
+                port ctz_p_mult {
+                    position = left:3
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7216, 8136
+                ]
+
+                port p_in {
                     position = left:1
                     kind = sp
                     direction =  out
@@ -1154,77 +1072,281 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
                     }
                 }
                 [
-                    position = 7808, 8184
+                    position = 6872, 8040
                 ]
 
-                junction Junction611 sp
+                port bat_active {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
                 [
-                    position = 7936, 8224
+                    position = 9184, 8576
                 ]
 
-                junction Junction627 sp
+                port bat_soc {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
                 [
-                    position = 8376, 8248
+                    position = 8960, 8168
                 ]
 
-                connect Junction627 "Battery Energy" as Connection3412
-                connect "Signal switch3.in2" In3 as Connection3411
-                connect Power.in Vbat as Connection3413
-                connect Power.in1 Ibat as Connection3410
-                connect Energy.in Gain4.out as Connection3414
+                port load_point {
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 6920, 7992
+                ]
+
+                port idle_signal {
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 6928, 8072
+                ]
+
+                port mode {
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 6864, 8120
+                ]
+
+                tag Tag1 {
+                    value = "bat_active"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 9184, 8712
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Tag3 {
+                    value = "bat_active"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7384, 8480
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Tag4 {
+                    value = "(C function1)(kw)"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 8808, 8744
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag Tag7 {
+                    value = "(C function1)(kw)"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 7512, 8024
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                junction Junction656 sp
+                [
+                    position = 7384, 8136
+                ]
+
+                junction Junction657 sp
+                [
+                    position = 8176, 8296
+                ]
+
+                junction Junction663 sp
+                [
+                    position = 7648, 8440
+                ]
+
+                junction Junction666 sp
+                [
+                    position = 8896, 8224
+                ]
+
+                junction Junction667 sp
+                [
+                    position = 8896, 8488
+                ]
+
+                junction Junction668 sp
+                [
+                    position = 9120, 8576
+                ]
+
+                junction Junction673 sp
+                [
+                    position = 8816, 8288
+                ]
+
+                junction Junction680 sp
+                [
+                    position = 7872, 8136
+                ]
+
+                junction Junction681 sp
+                [
+                    position = 7872, 8248
+                ]
+
+                junction Junction682 sp
+                [
+                    position = 7296, 8056
+                ]
+
+                comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Not implemented</p></body></html> ENDCOMMENT
+                [
+                    position = 7520, 8072
+                ]
+
+                connect Gain4.out Energy.in as Connection3677
+                connect inv_eff.in Product1.out as Connection3690
                 [
                     position = 0, 0
-                    breakpoints = 8248, 8248
+                    breakpoints = 7544, 8128; 7528, 8128
                 ]
-                connect SOC.in Gain3.out as Connection2733
-                connect Power.out Junction611 as Connection3223
-                connect Junction611 "Battery Power.in" as Connection3224
+                connect Step1.out Product2.in as Connection3696
+                connect Product2.out Gain4.in as Connection3721
                 [
                     position = 0, 0
-                    breakpoints = 7936, 8224; 7936, 8224; 7936, 8128
                 ]
-                connect "Signal switch3.in" Junction611 as Connection3225
-                connect Constant1.out "Signal switch3.in1" as Connection3227
-                connect "E meas sw.in" "Signal switch3.out" as Connection3389
-                connect "E meas sw.in1" Step1.out as Connection3390
+                connect Junction656 Product1.in1 as Connection3774
+                connect pmult.in Junction656 as Connection3775
+                connect "Signal switch6.out" Junction657 as Connection3777
+                connect Junction657 p_ch_dch.in as Connection3778
                 [
                     position = 0, 0
-                    breakpoints = 8080, 8256; 8080, 8336
+                    breakpoints = 8176, 8296
                 ]
-                connect Energy.out Junction627 as Connection3402
-                connect Gain3.in Junction627 as Connection3404
-                connect "E meas sw.out" Gain4.in as Connection3405
+                connect Product2.in1 Junction657 as Connection3779
+                connect zero.out "Relational operator2.in1" as Connection3831
+                connect p_idl_losses.in Junction663 as Connection3843
+                connect Junction663 Product3.out as Connection3844
+                [
+                    position = 0, 0
+                    breakpoints = 7640, 8440; 7640, 8440
+                ]
+                connect Gain3.out Junction666 as Connection3864
+                connect Junction666 SOC.in as Connection3865
+                [
+                    position = 0, 0
+                    breakpoints = 8896, 8224
+                ]
+                connect reserve.out "Relational operator3.in1" as Connection3867
+                connect "Relational operator3.in" Junction667 as Connection3868
+                connect Junction667 Junction666 as Connection3869
+                connect "Relational operator1.in" Junction667 as Connection3870
+                connect reserve1.out "Relational operator1.in1" as Connection3871
+                connect "Relational operator3.out" "Logical operator1.in" as Connection3873
+                connect "Relational operator1.out" "Logical operator1.in1" as Connection3874
+                [
+                    position = 0, 0
+                    breakpoints = 8992, 8640; 8992, 8576
+                ]
+                connect "Logical operator1.out" Junction668 as Connection3875
+                connect Junction668 Tag1 as Connection3876
+                connect bat_active Junction668 as Connection3877
+                connect Tag3 Product3.in1 as Connection3878
+                connect "Relational operator2.out" "Logical operator1.in2" as Connection3880
+                connect "Relational operator2.in" Tag4 as "(C function1)(kw)--1"
+                connect "C function1.p_in" p_in as Connection3895
+                connect "C function1.load_point" load_point as Connection3899
+                connect "C function1.mode_int" mode as Connection3901
+                connect Junction656 ctz_p_mult as Connection3906
+                [
+                    position = 0, 0
+                    breakpoints = 7384, 8136; 7304, 8136
+                ]
+                connect Junction666 bat_soc as Connection3916
+                [
+                    position = 0, 0
+                    breakpoints = 8896, 8224; 8896, 8168
+                ]
+                connect bat_energy Junction673 as Connection3919
+                [
+                    position = 0, 0
+                    breakpoints = 8864, 8288
+                ]
+                connect Junction673 Gain3.in as Connection3920
+                [
+                    position = 0, 0
+                    breakpoints = 8816, 8288
+                ]
+                connect Energy.out Junction673 as Connection3921
+                connect charge_gain.out "Signal switch6.in1" as Connection3930
+                connect discharge_gain.out "Signal switch6.in" as Connection3936
+                connect Sum7.in inv_eff.out as Connection3952
+                connect Sum7.in1 Junction663 as Connection3950
+                connect Junction680 discharge_gain.in as Connection3960
+                [
+                    breakpoints = 7872, 8136
+                ]
+                connect Sum7.out Junction681 as Connection3961
+                connect Junction681 charge_gain.in as Connection3962
+                connect Junction680 Junction681 as Connection3963
+                connect "Signal switch6.in2" Junction680 as Connection3964
+                [
+                    breakpoints = 8088, 8080; 8088, 8080; 8088, 8080; 7872, 8136; 7872, 8136; 7872, 8136
+                ]
+                connect "C function1.kw" Junction682 as Connection3965
+                connect Junction682 Product1.in as Connection3966
+                [
+                    breakpoints = 7296, 8056; 7296, 8056; 7296, 8056
+                ]
+                connect Tag7 Junction682 as Connection3967
+                connect idle_signal "C function1.idle_signal" as Connection3968
+                [
+                    breakpoints = 6976, 8072
+                ]
+                connect idle_losses.out Product3.in as Connection3969
             }
             [
-                position = 8760, 8240
-                size = 120, 160
-            ]
-
-            component "core/Current Measurement" Idc {
-                execution_rate = "execution_rate"
-                sig_output = "True"
-            }
-            [
-                position = 7984, 8216
-                size = 64, 32
-            ]
-
-            component "core/Current Measurement" I_idl_losses {
-                execution_rate = "execution_rate"
-                sig_output = "True"
-            }
-            [
-                position = 8112, 8264
-                rotation = left
-                scale = 1, -1
-                size = 64, 32
-            ]
-
-            component "core/Sum" Sum1 {
-                signs = "+-"
-            }
-            [
-                position = 8088, 8080
+                position = 8528, 8304
+                size = 184, 216
             ]
 
             component "core/C function" "Disconnect if on reserve or charged" {
@@ -1291,29 +1413,204 @@ else{
                 rotation = left
             ]
 
-            component Subsystem "Loadshape Point Selector" {
+            component Subsystem "Loadshape Point Calculator" {
                 layout = dynamic
                 component "core/Constant" loadshape {
                     execution_rate = "execution_rate"
                     value = "loadshape"
                 }
                 [
-                    position = 8200, 8144
+                    position = 8136, 8136
                 ]
 
-                component "core/C function" Selector {
-                    global_variables = "real out_value;"
-                    input_terminals = "real loadshape;int point;"
-                    input_terminals_dimensions = "inherit;inherit"
-                    input_terminals_feedthrough = "True;True"
-                    input_terminals_show_labels = "True;True"
+                component "core/Probe" "Loadshape Value" {
+                }
+                [
+                    position = 8520, 8032
+                ]
+
+                component "core/Constant" time {
+                    execution_rate = "execution_rate"
+                    value = "T_Ts"
+                }
+                [
+                    position = 8216, 8168
+                ]
+
+                component "core/Constant" mode_int {
+                    execution_rate = "execution_rate"
+                    value = "0"
+                }
+                [
+                    position = 7992, 8216
+                ]
+
+                component "core/Data Type Conversion" toint {
+                    output_type = "int"
+                }
+                [
+                    position = 8216, 8248
+                ]
+
+                component "core/Probe" slope {
+                }
+                [
+                    position = 8664, 8184
+                ]
+
+                component "core/Probe" "start index" {
+                }
+                [
+                    position = 8600, 8232
+                ]
+
+                component "core/Probe" end_index {
+                }
+                [
+                    position = 8472, 8280
+                ]
+
+                component "core/Advanced C function" "Advanced C function1" {
+                    arb_defs = "/*Begin code section*/
+double slopes[loadshape_n_points] = {0};
+/*End code section*/"
+                    global_variables = "real out_value;real ls_interval;int idx;real end_point;real bat_full;real bat_on_reserve;real saved_point;int old_index;"
+                    init_fnc = "/*Begin code section*/
+start_index = 0;
+old_index = start_index;
+end_index = 1;
+idle_signal = 0;
+/*End code section*/"
+                    input_terminals = "real loadshape_array;inherit time_array;int input_mode;int input_idx;real input_time;real bat_soc;"
+                    input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit"
+                    input_terminals_feedthrough = "True;True;True;True;True;True"
+                    input_terminals_show_labels = "True;True;True;True;True;True"
                     output_fnc = "/*Begin code section*/
-if (point > loadshape_n_points - 1) {
-    point = loadshape_n_points - 1;
+if (bat_soc <= 1.001*pct_reserve){
+    bat_full = 0;
+    bat_on_reserve = 1;
+    }
+else if (bat_soc >= 99.999){
+    bat_full = 1;
+    bat_on_reserve = 0;
+    }
+else {
+    bat_full = 0;
+    bat_on_reserve = 0;
+    }
+
+if (input_mode == 0){
+    // Loadshape index mode
+    // input is the index
+
+    // Limit the index values
+    if (input_idx > loadshape_n_points - 1) {
+        input_idx = loadshape_n_points - 1;
+    }
+    else if (input_idx < 0) {
+        input_idx = 0;
+    }
+
+    out_value = loadshape_array[input_idx];
+}
+else if (input_mode == 1){
+    // Time mode
+    // input is the time
+
+    if (input_time < 1) {
+        // Preset value for the first step
+        out_value = 0;
+        saved_point = loadshape_array[0];
+        }
+
+    else{
+        idle_signal = 1;
+
+        if (loadshape_int == 0){
+            // Variable time interval
+            if (input_time >= (time_array[loadshape_n_points - 1])){
+                start_index = loadshape_n_points - 1;
+                end_index = 0;
+                input_time = fmod(input_time, time_array[loadshape_n_points - 1]);
+            }
+            else{
+                start_index = 0;
+                end_index = 1;
+                input_time = input_time;
+            }
+            for (idx = 0; idx < loadshape_n_points; idx++){
+                if (input_time >= time_array[idx]){
+                    start_index = idx;
+                    end_index = start_index + 1;
+                }
+            }
+
+            // If last index, next index should be 0
+            if (start_index == (loadshape_n_points - 1)){
+                end_index = 0;
+                ls_interval = 1;
+            }
+            else{
+                ls_interval = time_array[end_index] - time_array[start_index];
+            }
+        }
+        else{
+            // Fixed time interval
+            input_time = fmod(input_time - 1, loadshape_int*loadshape_n_points);
+            start_index = input_time / loadshape_int;
+            end_index = start_index + 1;
+
+            ls_interval = loadshape_int;
+            if (start_index == (loadshape_n_points - 1)){
+                end_index = 0;
+            }
+        }
+
+        start_point = loadshape_array[start_index];
+        if (start_point == 0){
+            start_point = -pct_idlingkw/100;
+            idle_signal = 0;
+        }
+        end_point = loadshape_array[end_index];
+        if (end_point == 0){
+            end_point = -pct_idlingkw/100;
+        }
+
+        slope = (end_point - start_point)/ls_interval;
+
+        if (old_index != start_index){
+            saved_point = out_value;
+            old_index = start_index;
+        }
+
+         // If the battery will be full / on reserve on the next step, power reference becomes just the idle power
+        if (((end_point >= -pct_idlingkw/100) & (bat_on_reserve == 1)) | ((end_point <= -pct_idlingkw/100) & (bat_full == 1))){
+            end_point = -pct_idlingkw/100;
+            //idle_signal = 0;
+            //end_point = 0;
+            //slope = (end_point - saved_point)/ls_interval;;
+            //start_point = saved_point;
+        }
+        //else{
+        slope = (end_point - saved_point)/ls_interval;
+        start_point = saved_point;
+        //}
+
+        if (loadshape_int == 0){
+            if (start_index == (loadshape_n_points - 1)){
+                out_value = start_point + slope * input_time;
+            }
+            else{
+                out_value = start_point + slope * (input_time - time_array[start_index]);
+            }
+        }
+        else{
+            out_value = start_point + slope * (input_time - ls_interval * start_index);
+        }
+    }
 }
 
-out_value = loadshape[point];
-
+// Saturation
 if (out_value > 1) {
     out_value = 1;
 }
@@ -1323,23 +1620,30 @@ else if (out_value < -1) {
 
 out = out_value;
 /*End code section*/"
-                    output_terminals_dimensions = "1"
-                    output_terminals_feedthrough = "False"
-                    output_terminals_show_labels = "True"
-                    parameters = "real loadshape_n_points;"
+                    output_terminals = "real out;real slope;int start_index;int end_index;int idle_signal;real start_point;"
+                    output_terminals_dimensions = "1;1;1;1;1;1"
+                    output_terminals_feedthrough = "True;True;True;True;True;True"
+                    output_terminals_show_labels = "True;True;True;True;True;True"
+                    parameters = "int loadshape_n_points;int loadshape_int;real pct_idlingkw;real pct_reserve;"
                 }
                 [
-                    position = 8336, 8208
-                    size = 168, 168
+                    position = 8336, 8232
+                    size = 144, 240
                 ]
 
-                component "core/Probe" "Loadshape Value" {
+                component "core/Probe" idle {
                 }
                 [
-                    position = 8528, 8096
+                    position = 8536, 8416
                 ]
 
-                port loadshape_point {
+                component "core/Probe" end_point {
+                }
+                [
+                    position = 8504, 8504
+                ]
+
+                port loadshape_value {
                     position = right:1
                     kind = sp
                     direction =  in
@@ -1349,10 +1653,10 @@ out = out_value;
                     }
                 }
                 [
-                    position = 8528, 8208
+                    position = 8520, 8136
                 ]
 
-                port point {
+                port input {
                     position = left:1
                     kind = sp
                     direction =  out
@@ -1362,27 +1666,176 @@ out = out_value;
                     }
                 }
                 [
-                    position = 8200, 8272
+                    position = 8136, 8248
+                ]
+
+                port end_point_to_bat {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8624, 8480
+                ]
+
+                port bat_soc {
+                    position = left:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8112, 8328
+                ]
+
+                port mode {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8080, 8184
+                ]
+
+                port idle_signal {
+                    position = right:1
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 8536, 8328
                 ]
 
                 junction Junction1 sp
                 [
-                    position = 8464, 8208
+                    position = 8168, 8248
                 ]
 
-                connect loadshape.out Selector.loadshape as Connection1
-                connect point Selector.point as Connection2
-                connect Selector.out Junction1 as Connection14
-                connect Junction1 "Loadshape Value.in" as Connection15
+                junction Junction2 sp
+                [
+                    position = 8472, 8136
+                ]
+
+                junction Junction4 sp
+                [
+                    position = 8048, 8216
+                ]
+
+                junction Junction5 sp
+                [
+                    position = 8456, 8328
+                ]
+
+                junction Junction6 sp
+                [
+                    position = 8424, 8480
+                ]
+
+                connect "Advanced C function1.loadshape_array" loadshape.out as Connection39
+                connect "Advanced C function1.time_array" time.out as Connection40
+                connect "Advanced C function1.input_idx" toint.out as Connection42
+                connect input Junction1 as Connection43
+                connect Junction1 toint.in as Connection44
                 [
                     position = 0, 0
-                    breakpoints = 8464, 8208
+                    breakpoints = 8168, 8248; 8184, 8248
                 ]
-                connect loadshape_point Junction1 as Connection16
+                connect "Advanced C function1.input_time" Junction1 as Connection45
+                connect loadshape_value Junction2 as Connection46
+                connect Junction2 "Loadshape Value.in" as Connection47
+                [
+                    position = 0, 0
+                    breakpoints = 8472, 8136; 8472, 8032
+                ]
+                connect "Advanced C function1.out" Junction2 as Connection48
+                connect "Advanced C function1.slope" slope.in as Connection49
+                connect end_index.in "Advanced C function1.end_index" as Connection55
+                connect "Advanced C function1.input_mode" Junction4 as Connection60
+                connect Junction4 mode_int.out as Connection61
+                connect mode Junction4 as Connection62
+                connect "Advanced C function1.idle_signal" Junction5 as Connection64
+                connect Junction5 idle_signal as Connection65
+                connect idle.in Junction5 as Connection66
+                connect "Advanced C function1.bat_soc" bat_soc as Connection71
+                [
+                    position = 0, 0
+                    breakpoints = 8168, 8328
+                ]
+                connect "start index.in" "Advanced C function1.start_index" as Connection73
+                [
+                    breakpoints = 8504, 8232
+                ]
+                connect end_point.in Junction6 as Connection74
+                connect Junction6 "Advanced C function1.start_point" as Connection75
+                connect end_point_to_bat Junction6 as Connection76
             }
             [
-                position = 7944, 7296
-                size = 144, 80
+                position = 7928, 7320
+                size = 152, 136
+            ]
+
+            component "core/Probe" "Battery Active1" {
+            }
+            [
+                position = 7776, 7472
+            ]
+
+            component "core/Probe" "Battery Active2" {
+            }
+            [
+                position = 7776, 7584
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 7240, 8504
+            ]
+
+            component "core/Voltage Source" Vs1 {
+                init_const_value = "2*kv*1000*vmaxpu"
+            }
+            [
+                position = 8264, 8312
+                rotation = right
+            ]
+
+            component "core/Bus Join" "Bus Join1" {
+                inputs = "3"
+            }
+            [
+                position = 7840, 7952
+            ]
+
+            component "core/Constant" enable_inverter {
+                execution_rate = "execution_rate"
+            }
+            [
+                position = 8032, 7912
+                rotation = down
+                scale = 1, -1
+            ]
+
+            component "core/Current Measurement" iDC {
+            }
+            [
+                position = 8080, 8216
+                size = 64, 32
             ]
 
             port A1 {
@@ -1390,7 +1843,7 @@ out = out_value;
                 kind = pe
             }
             [
-                position = 7160, 8216
+                position = 7104, 8216
             ]
 
             port B1 {
@@ -1398,7 +1851,7 @@ out = out_value;
                 kind = pe
             }
             [
-                position = 7160, 8312
+                position = 7104, 8312
             ]
 
             port C1 {
@@ -1406,10 +1859,11 @@ out = out_value;
                 kind = pe
             }
             [
-                position = 7160, 8408
+                position = 7104, 8408
             ]
 
             port "Load point" {
+                label = "t"
                 position = -8.0, -44.0
                 kind = sp
                 direction =  out
@@ -1419,18 +1873,17 @@ out = out_value;
                 }
             }
             [
-                position = 7816, 7296
-                hide_name = True
+                position = 7792, 7272
             ]
 
             tag Goto5 {
-                value = "kwref"
+                value = "dss_p_inv"
                 scope = local
                 kind = sp
                 direction = in
             }
             [
-                position = 8632, 7600
+                position = 8752, 7656
                 size = 60, 20
             ]
 
@@ -1441,7 +1894,7 @@ out = out_value;
                 direction = out
             }
             [
-                position = 7584, 7888
+                position = 7552, 7888
                 size = 68, 20
             ]
 
@@ -1452,7 +1905,7 @@ out = out_value;
                 direction = in
             }
             [
-                position = 8632, 7280
+                position = 8704, 7256
                 size = 60, 20
             ]
 
@@ -1489,17 +1942,6 @@ out = out_value;
                 size = 60, 20
             ]
 
-            tag From19 {
-                value = "active_battery"
-                scope = local
-                kind = sp
-                direction = out
-            }
-            [
-                position = 8104, 8144
-                size = 60, 20
-            ]
-
             tag Goto10 {
                 value = "dispatch_int"
                 scope = local
@@ -1507,42 +1949,20 @@ out = out_value;
                 direction = in
             }
             [
-                position = 8064, 7552
+                position = 8064, 7528
                 rotation = right
                 size = 60, 20
             ]
 
-            tag From21 {
-                value = "active_status"
-                scope = local
-                kind = sp
-                direction = out
-            }
-            [
-                position = 7584, 8016
-                size = 46, 20
-            ]
-
             tag From22 {
-                value = "kwref"
+                value = "dss_p_inv"
                 scope = local
                 kind = sp
                 direction = out
             }
             [
-                position = 7584, 7968
+                position = 7552, 8016
                 size = 46, 20
-            ]
-
-            tag From23 {
-                value = "active_battery"
-                scope = local
-                kind = sp
-                direction = out
-            }
-            [
-                position = 8704, 8120
-                size = 60, 20
             ]
 
             tag Goto11 {
@@ -1552,7 +1972,7 @@ out = out_value;
                 direction = in
             }
             [
-                position = 8896, 8240
+                position = 8720, 8216
                 size = 60, 20
             ]
 
@@ -1579,7 +1999,7 @@ out = out_value;
             ]
 
             tag From3 {
-                value = "kwref"
+                value = "dss_p_inv"
                 scope = local
                 kind = sp
                 direction = out
@@ -1600,75 +2020,206 @@ out = out_value;
                 size = 46, 20
             ]
 
+            tag Tag11 {
+                value = "(Inverter Power Reference)(ctz_p_mult)"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7888, 7888
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag12 {
+                value = "(Inverter Power Reference)(ctz_p_mult)"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8368, 8384
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto13 {
+                value = "load_p"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7872, 7216
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto14 {
+                value = "end_point"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8072, 7304
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag13 {
+                value = "bat_active"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8720, 8304
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag14 {
+                value = "bat_next_soc"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7768, 7368
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto15 {
+                value = "bat_next_soc"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8720, 8392
+                size = 60, 20
+            ]
+
+            tag From30 {
+                value = "load_p"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8368, 8264
+                size = 60, 20
+            ]
+
+            tag Tag17 {
+                value = "(Loadshape Point Calculator)(idle_signal)"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8368, 8304
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag18 {
+                value = "(Loadshape Point Calculator)(idle_signal)"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8072, 7368
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag19 {
+                value = "(Loadshape Point Calculator)(mode)"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8072, 7336
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag20 {
+                value = "(Loadshape Point Calculator)(mode)"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8368, 8344
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Tag24 {
+                value = "dss_p_inv"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8368, 8224
+                hide_name = True
+                size = 60, 20
+            ]
+
             junction Junction581 sp
             [
                 position = 7784, 7696
             ]
 
-            junction Junction603 pe
-            [
-                position = 8272, 8408
-            ]
-
-            junction Junction616 sp
-            [
-                position = 7472, 7936
-            ]
-
-            junction Junction617 sp
-            [
-                position = 8568, 7600
-            ]
-
             junction Junction619 sp
             [
-                position = 8568, 7280
+                position = 8640, 7256
             ]
 
             junction Junction622 sp
             [
-                position = 8064, 7488
+                position = 8064, 7464
             ]
 
-            junction Junction626 pe
+            junction Junction635 sp
             [
-                position = 8112, 8408
+                position = 7680, 7400
             ]
 
-            junction Junction631 pe
+            junction Junction636 sp
             [
-                position = 8488, 8216
+                position = 7632, 7664
             ]
 
-            junction Junction632 pe
+            junction Junction638 sp
             [
-                position = 8488, 8408
+                position = 7424, 7936
             ]
 
-            junction Junction633 pe
+            junction Junction640 sp
             [
-                position = 8112, 8216
+                position = 7824, 7272
             ]
 
-            junction Junction634 pe
+            junction Junction641 sp
             [
-                position = 8272, 8216
+                position = 8640, 7576
             ]
 
             connect dchtrigger.out "Dispatch kW Reference Calculation.dchtrigger" as Connection26
             connect chtrigger.out "Dispatch kW Reference Calculation.chtrigger" as Connection27
-            connect From7 "Active status.In1" as Connection2952
             connect From12 "Active status.In2" as Connection2953
             connect "Active status.Out3" Junction581 as Connection3009
             connect Junction581 Goto9 as Connection3010
             connect "Battery Active.in" Junction581 as Connection3011
-            connect i_ch_dch_losses.p_node Junction603 as Connection3178
-            connect "Ch | Dch Losses Current Calc.i_ch|dch_losses" i_ch_dch_losses.in as Connection3189
-            [
-                position = 0, 0
-                breakpoints = 8344, 8192; 8344, 8304
-            ]
-            connect From19 "Ch | Dch Losses Current Calc.active_bat" as Connection3228
             connect "Three-phase Meter1.A+" "Simple Battery inverter (Average)1.A" as Connection3266
             connect "Simple Battery inverter (Average)1.B" "Three-phase Meter1.B+" as Connection3267
             connect "Simple Battery inverter (Average)1.C" "Three-phase Meter1.C+" as Connection3269
@@ -1678,18 +2229,9 @@ out = out_value;
             connect B1 "Three-phase Meter1.B-" as Connection3280
             connect Q.in "Meter Split1.POWER_Q" as Connection3282
             connect pf.in "Meter Split1.POWER_PF" as Connection3283
-            connect P.in "Meter Split1.POWER_P" as Connection3284
-            connect Junction616 "Meter Split1.VLL_RMS" as Connection3291
-            connect Vline.in Junction616 as Connection3292
             connect pct_charge.out "Dispatch kW Reference Calculation.pct_charge" as Connection3295
             connect "Dispatch kW Reference Calculation.pct_discharge" pct_discharge.out as Connection3296
             connect kwrated.out "Dispatch kW Reference Calculation.kwrated" as Connection3297
-            connect "DSS kW Reference.in" Junction617 as Connection3299
-            [
-                position = 0, 0
-            ]
-            connect Junction617 Goto5 as Connection3300
-            connect "Dispatch kW Reference Calculation.kwref" Junction617 as Connection3301
             connect "Enable Inverter.in" Junction619 as Connection3316
             connect Junction619 Goto8 as Connection3317
             [
@@ -1698,62 +2240,82 @@ out = out_value;
             connect "Dispatch kW Reference Calculation.close_contactor" Junction619 as Connection3318
             connect "Dispatch Mode Integer.dispatch_mode_int" Junction622 as Connection3341
             connect Goto10 Junction622 as Connection3343
-            connect "Inverter Power Reference.v_line" Junction616 as Connection3356
-            [
-                position = 0, 0
-            ]
             connect From4 "Inverter Power Reference.dispatch_mode_int" as Connection3357
-            connect From21 "Inverter Power Reference.active_status" as Connection3369
-            connect From22 "Inverter Power Reference.dss_kw" as Connection3370
-            connect Junction603 Junction626 as Connection3393
-            [
-                position = 0, 0
-            ]
-            connect Junction626 "Simple Battery inverter (Average)1.DC-" as Connection3394
-            [
-                position = 0, 0
-            ]
-            connect R1.n_node Junction626 as Connection3395
-            connect Vdc.out "Ideal Bat.in" as Connection_batt
-            connect Vbat.out "Battery Energy.Vbat" as Connection3421
-            connect Ibat.out "Battery Energy.Ibat" as Connection3418
-            connect "Ideal Bat.p_node" Junction631 as Connection3424
-            connect Junction631 Ibat.n_node as Connection3425
-            connect Vbat.p_node Junction631 as Connection3426
-            connect Junction603 Junction632 as Connection3427
-            connect Junction632 "Ideal Bat.n_node" as Connection3428
-            connect Vbat.n_node Junction632 as Connection3429
-            connect From23 "Battery Energy.In3" as Connection3435
-            connect "Simple Battery inverter (Average)1.DC+" Idc.p_node as Connection3437
-            connect I_idl_losses.n_node R1.p_node as Connection3439
-            connect Sum1.out "Ch | Dch Losses Current Calc.i_minus_idle" as Connection3440
-            connect Idc.n_node Junction633 as Connection3441
-            connect Junction633 I_idl_losses.p_node as Connection3442
-            connect Ibat.p_node Junction634 as Connection3443
-            connect Junction634 i_ch_dch_losses.n_node as Connection3444
-            connect Junction633 Junction634 as Connection3445
-            connect Sum1.in1 I_idl_losses.out as Connection3446
-            connect Sum1.in Idc.out as Connection3447
             connect kwhrated.out "Disconnect if on reserve or charged.kwhrated" as Connection2716
             connect pct_reserve.out "Disconnect if on reserve or charged.pct_reserve" as Connection2717
             connect From3 "Disconnect if on reserve or charged.kwref" as Connection3137
             connect From20 "Disconnect if on reserve or charged.active_inverter" as Connection3229
-            connect "Disconnect if on reserve or charged.connect_battery" Goto4 as Connection3434
+            connect From24 "Disconnect if on reserve or charged.energy" as Connection3448
+            connect "Dispatch kW Reference Calculation.dispatch_mode" Junction622 as Connection3450
+            [
+                position = 0, 0
+            ]
+            connect Termination2.in "Simple Battery inverter (Average)1.Outputs" as Connection3451
+            connect "Loadshape Point Calculator.loadshape_value" "Dispatch kW Reference Calculation.loadshape_value" as Connection3455
+            connect "Disconnect if on reserve or charged.connect_battery" Junction635 as Connection3456
+            connect Junction635 Goto4 as Connection3457
             [
                 position = 0, 0
                 breakpoints = 7664, 7400
             ]
-            connect From24 "Disconnect if on reserve or charged.energy" as Connection3448
-            connect Goto11 "Battery Energy.Battery Energy" as Connection3449
-            connect "Dispatch kW Reference Calculation.dispatch_mode" Junction622 as Connection3450
+            connect "Battery Active1.in" Junction635 as Connection3458
+            connect From7 Junction636 as Connection3459
+            connect Junction636 "Active status.In1" as Connection3460
+            connect "Battery Active2.in" Junction636 as Connection3461
+            connect gnd1.node "Three-phase Meter1.GND" as Connection3462
+            connect Goto11 "Battery Energy.bat_energy" as Connection3472
             [
                 position = 0, 0
-                breakpoints = 8096, 7488
             ]
-            connect Termination2.in "Simple Battery inverter (Average)1.Outputs" as Connection3451
-            connect "Dispatch kW Reference Calculation.loadshape_point" "Loadshape Point Selector.loadshape_point" as Connection3452
-            connect "Load point" "Loadshape Point Selector.point" as Connection3453
-            connect "Inverter Power Reference.inv_inputs" "Simple Battery inverter (Average)1.Inputs" as Connection3454
+            connect "Simple Battery inverter (Average)1.DC-" Vs1.n_node as Connection3530
+            [
+                position = 0, 0
+                breakpoints = 8072, 8408; 8264, 8408
+            ]
+            connect From22 "Inverter Power Reference.dss_kw" as Connection3531
+            connect "Meter Split1.VLL_RMS" Junction638 as Connection3537
+            connect "Inverter Power Reference.v_line" Junction638 as Connection3539
+            connect "Inverter Power Reference.ctz_p_mult" Tag11 as "(Inverter Power Reference)(ctz_p_mult)--1"
+            connect Vline.in Junction638 as Connection3543
+            connect Tag12 "Battery Energy.ctz_p_mult" as Connection3544
+            connect "Load point" Junction640 as Connection3550
+            connect Junction640 "Loadshape Point Calculator.input" as Connection3551
+            connect Goto13 Junction640 as Connection3552
+            connect P.in "Meter Split1.POWER_P" as Connection3553
+            [
+                position = 0, 0
+                breakpoints = 7384, 7984
+            ]
+            connect "Bus Join1.in" enable_inverter.out as Connection3382
+            [
+                position = 0, 0
+            ]
+            connect "Bus Join1.in1" "Inverter Power Reference.inv_p" as Connection3554
+            connect "Inverter Power Reference.inv_q" "Bus Join1.in2" as Connection3555
+            connect "Simple Battery inverter (Average)1.Inputs" "Bus Join1.out" as Connection3560
+            [
+                position = 0, 0
+                breakpoints = 7880, 8112
+            ]
+            connect "Simple Battery inverter (Average)1.DC+" iDC.p_node as Connection3565
+            connect iDC.n_node Vs1.p_node as Connection3566
+            connect "Loadshape Point Calculator.end_point_to_bat" Goto14 as Connection3568
+            connect "Battery Energy.bat_active" Tag13 as "(Battery Energy)(bat_on_reserve)--1"
+            connect Tag14 "Loadshape Point Calculator.bat_soc" as Connection3570
+            connect Goto15 "Battery Energy.bat_soc" as Connection3571
+            connect From30 "Battery Energy.load_point" as Connection3573
+            connect "Battery Energy.idle_signal" Tag17 as "(Loadshape Point Calculator)(idle_signal)--1"
+            connect "Loadshape Point Calculator.idle_signal" Tag18 as "(Loadshape Point Calculator)(idle_signal)--2"
+            connect "Loadshape Point Calculator.mode" Tag19 as "(Loadshape Point Calculator)(mode)--1"
+            connect "Battery Energy.mode" Tag20 as "(Loadshape Point Calculator)(mode)--2"
+            connect dss_inv_ref.in Junction641 as Connection3590
+            connect Junction641 Goto5 as Connection3591
+            [
+                position = 0, 0
+                breakpoints = 8640, 7576; 8640, 7576
+            ]
+            connect "Dispatch kW Reference Calculation.p_inv" Junction641 as Connection3592
+            connect Tag24 "Battery Energy.p_in" as Connection3593
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p>A detailed explanation of the OpenDSS Storage model can be found by clicking on the help button.</p><p>The Storage component time-domain model is comprised of an ideal battery and a Simple Battery inverter (average) from the Microgrid library.</p></body></html>"
@@ -1810,7 +2372,7 @@ out = out_value;
                     type = generic
                     default_value = "115"
                     unit = "kV"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                 }
 
                 global_basefreq {
@@ -1818,7 +2380,7 @@ out = out_value;
                     widget = checkbox
                     type = bool
                     default_value = "True"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                     no_evaluate
 
                     CODE property_value_edited
@@ -1841,7 +2403,7 @@ out = out_value;
                     type = generic
                     default_value = "60"
                     unit = "Hz"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                     nonvisible
                 }
 
@@ -1851,7 +2413,7 @@ out = out_value;
                     type = generic
                     default_value = "25"
                     unit = "kW"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                 }
 
                 kwhrated {
@@ -1860,7 +2422,7 @@ out = out_value;
                     type = generic
                     default_value = "50"
                     unit = "kWh"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                 }
 
                 chargetrigger {
@@ -1899,7 +2461,7 @@ out = out_value;
                     type = generic
                     default_value = "90"
                     unit = "%"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                 }
 
                 pct_effdischarge {
@@ -1908,7 +2470,7 @@ out = out_value;
                     type = generic
                     default_value = "90"
                     unit = "%"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                 }
 
                 kvar {
@@ -1917,7 +2479,7 @@ out = out_value;
                     type = generic
                     default_value = "0"
                     unit = "kVAr"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                     nonvisible
                 }
 
@@ -1926,7 +2488,7 @@ out = out_value;
                     widget = edit
                     type = generic
                     default_value = "1"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                     nonvisible
                 }
 
@@ -1936,7 +2498,7 @@ out = out_value;
                     type = generic
                     default_value = "0"
                     unit = "%"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                     nonvisible
                 }
 
@@ -1946,7 +2508,7 @@ out = out_value;
                     type = generic
                     default_value = "1"
                     unit = "%"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                 }
 
                 pct_reserve {
@@ -1955,7 +2517,7 @@ out = out_value;
                     type = generic
                     default_value = "20"
                     unit = "%"
-                    group = "Ratings:2"
+                    group = "Ratings:3"
                 }
 
                 load_loadshape {
@@ -1963,6 +2525,7 @@ out = out_value;
                     widget = button
                     type = generic
                     default_value = "Choose"
+                    group = "Time Series Settings:2"
                     no_evaluate
 
                     CODE button_clicked
@@ -1975,7 +2538,8 @@ out = out_value;
                     label = "LoadShape name"
                     widget = edit
                     type = generic
-                    default_value = ""
+                    default_value = "Default"
+                    group = "Time Series Settings"
                     no_evaluate
 
                     CODE property_value_edited
@@ -1989,6 +2553,8 @@ out = out_value;
                     widget = checkbox
                     type = generic
                     default_value = "False"
+                    group = "Time Series Settings"
+                    disabled
                     no_evaluate
 
                     CODE property_value_edited
@@ -1998,10 +2564,13 @@ out = out_value;
                 }
 
                 useactual {
-                    label = "Actual load value"
+                    label = "Actual value"
                     widget = checkbox
                     type = generic
                     default_value = "False"
+                    group = "Time Series Settings"
+                    nonvisible
+                    disabled
                     no_evaluate
 
                     CODE property_value_edited
@@ -2015,6 +2584,7 @@ out = out_value;
                     widget = edit
                     type = generic
                     default_value = ""
+                    group = "Time Series Settings"
                     nonvisible
                     no_evaluate
                 }
@@ -2024,6 +2594,7 @@ out = out_value;
                     widget = edit
                     type = generic
                     default_value = "1"
+                    group = "Time Series Settings"
                     nonvisible
                     no_evaluate
                 }
@@ -2033,6 +2604,7 @@ out = out_value;
                     widget = checkbox
                     type = generic
                     default_value = "True"
+                    group = "Time Series Settings"
                     nonvisible
                     no_evaluate
                 }
@@ -2041,7 +2613,9 @@ out = out_value;
                     label = "LoadShape points"
                     widget = edit
                     type = generic
-                    default_value = ""
+                    default_value = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+                    unit = "pu"
+                    group = "Time Series Settings"
                     no_evaluate
 
                     CODE property_value_edited
@@ -2055,6 +2629,7 @@ out = out_value;
                     widget = edit
                     type = generic
                     default_value = "1"
+                    group = "Time Series Settings"
                     no_evaluate
 
                     CODE property_value_edited
@@ -2066,11 +2641,44 @@ out = out_value;
                 timespan {
                     label = "Loadshape time span"
                     widget = combo
-                    combo_values =  "Daily", "Yearly"
+                    combo_values = "Daily", "Yearly"
                     type = string
                     default_value = "Daily"
+                    group = "Time Series Settings"
                     nonvisible
                     no_evaluate
+                }
+
+                T_Ts {
+                    label = "LoadShape time range"
+                    widget = edit
+                    type = generic
+                    default_value = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+                    unit = "h"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.verify_time_loadshape_sizes(mdl, container_handle)
+                    ENDCODE
+                }
+
+                T_mode {
+                    label = "LoadShape input mode"
+                    widget = combo
+                    combo_values = "Loadshape index", "Time"
+                    type = string
+                    default_value = "Time"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        if new_value == "Time":
+                            mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
+                        else:
+                            mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+                    ENDCODE
                 }
 
                 pct_stored {
@@ -2118,7 +2726,7 @@ out = out_value;
                     type = generic
                     default_value = "1e-5"
                     unit = "Ω"
-                    group = "Inverter:3"
+                    group = "Inverter:4"
                 }
 
                 inv_l {
@@ -2127,7 +2735,7 @@ out = out_value;
                     type = generic
                     default_value = "100e-6"
                     unit = "H"
-                    group = "Inverter:3"
+                    group = "Inverter:4"
                 }
 
                 inv_rf {
@@ -2136,7 +2744,7 @@ out = out_value;
                     type = generic
                     default_value = "100e-3"
                     unit = "Ω"
-                    group = "Inverter:3"
+                    group = "Inverter:4"
                 }
 
                 inv_cf {
@@ -2145,7 +2753,7 @@ out = out_value;
                     type = generic
                     default_value = "1.013e-3"
                     unit = "F"
-                    group = "Inverter:3"
+                    group = "Inverter:4"
                 }
 
                 inv_kp {
@@ -2153,7 +2761,7 @@ out = out_value;
                     widget = edit
                     type = generic
                     default_value = "0.0001"
-                    group = "Inverter:3"
+                    group = "Inverter:4"
                 }
 
                 inv_ki {
@@ -2161,7 +2769,7 @@ out = out_value;
                     widget = edit
                     type = generic
                     default_value = "0.03"
-                    group = "Inverter:3"
+                    group = "Inverter:4"
                 }
 
                 loadshape_n_points {
@@ -2170,15 +2778,15 @@ out = out_value;
                     default_value = "0"
                     nonvisible
                 }
+
                 enable_monitoring {
                     label = "Enable monitoring"
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    group = "Monitoring"
+                    group = "Monitoring:5"
                     no_evaluate
                 }
-
 
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
@@ -2230,18 +2838,14 @@ out = out_value;
                     inv_cf = mdl.get_property_value(mdl.prop(item_handle, "inv_cf"))
                     inv_kp = mdl.get_property_value(mdl.prop(item_handle, "inv_kp"))
                     inv_ki = mdl.get_property_value(mdl.prop(item_handle, "inv_ki"))
-                    #loadshape_n_points = mdl.get_property_value(mdl.prop(item_handle, "loadshape_n_points"))
+
                     # HEADER STOP
 
                     comp_script.update_dispatch_int_comp(mdl, item_handle)
+                    comp_script.update_mode_int_comp(mdl, item_handle)
+                    comp_script.time_loadshape_preprocessing(mdl, item_handle)
 
                     comp_name = mdl.get_name(mdl.get_parent(item_handle))
-
-                    loadshape = mdl.get_property_value(mdl.prop(item_handle, "loadshape"))
-                    if not loadshape:
-                        mdl.error(f"Select a LoadShape for component {comp_name}")
-                    #mdl.set_property_value(mdl.prop(item_handle, "loadshape_n_points"), len(loadshape))
-                    #loadshape_n_points = mdl.get_property_value(mdl.prop(item_handle, "loadshape_n_points"))
 
                     try:
                         pf_value = mdl.get_property_value(mdl.prop(item_handle, "pf"))
@@ -2281,7 +2885,7 @@ out = out_value;
             }
         }
         [
-            position = 5176, 4256
+            position = 5168, 4256
             size = 64, 96
         ]
 

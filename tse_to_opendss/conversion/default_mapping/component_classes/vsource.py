@@ -93,7 +93,10 @@ class Vsource(TwoTerminal):
     def is_neutral_floating(self, tse_properties, tse_component):
         """ Floating neutrals connect to an unused bus node """
 
-        return False
+        if tse_properties.get("Neutral point accessible"):
+            return True
+        else:
+            return False
 
     @staticmethod
     def extra_conversion_steps(self, tse_properties, tse_component):
