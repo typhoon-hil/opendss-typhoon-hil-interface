@@ -59,6 +59,8 @@ model "banshee" {
 
     component Subsystem Root {
         component "OpenDSS/Bus" Bus101 {
+            i_inst_meas = "True"
+            i_rms_meas = "True"
         }
         [
             position = 7864, 7792
@@ -69,7 +71,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus102 {
         }
         [
-            position = 7024, 8360
+            position = 7024, 8352
             rotation = right
             size = 16, 96
         ]
@@ -77,7 +79,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus103 {
         }
         [
-            position = 8792, 8416
+            position = 8792, 8352
             rotation = right
             size = 16, 96
         ]
@@ -88,8 +90,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -118,6 +120,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus102x3 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 6904, 8784
@@ -131,6 +135,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -159,6 +164,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus104 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7144, 8984
@@ -172,8 +179,8 @@ model "banshee" {
             R1 = "0.1668"
             X0 = "0.9830"
             X1 = "0.1286"
-            dC0 = "254.45"
-            dC1 = "254.45"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -182,7 +189,7 @@ model "banshee" {
             selected_object = "c11_4_0AWG-CU-15kV"
         }
         [
-            position = 8792, 8328
+            position = 8792, 8264
             rotation = right
             size = 64, 112
         ]
@@ -217,6 +224,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -235,8 +243,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -311,6 +319,7 @@ model "banshee" {
             Vn_3ph = "0.208"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -324,6 +333,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus105x6 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7864, 8792
@@ -365,6 +376,12 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus101x1 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 7024, 8096
@@ -373,6 +390,12 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus101x2 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 7864, 8088
@@ -381,6 +404,12 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus101x3 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 8592, 8096
@@ -540,6 +569,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -553,6 +583,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus106x3 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7824, 9400
@@ -569,7 +601,7 @@ model "banshee" {
         ]
 
         component "OpenDSS/Load" Load_M1 {
-            Sn_3ph = "3500"
+            Sn_3ph = "0.001"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
@@ -592,6 +624,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -605,6 +638,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus107x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7768, 9800
@@ -626,8 +661,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -636,7 +671,7 @@ model "banshee" {
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
-            position = 8416, 8328
+            position = 8416, 8264
             rotation = right
             size = 64, 112
         ]
@@ -659,7 +694,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus101x4 {
         }
         [
-            position = 8416, 8416
+            position = 8416, 8352
             rotation = right
             size = 16, 96
         ]
@@ -706,6 +741,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus103x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8792, 8592
@@ -714,7 +751,7 @@ model "banshee" {
         ]
 
         component "OpenDSS/Load" Diesel {
-            Sn_3ph = "3500"
+            Sn_3ph = "0.001"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
@@ -740,11 +777,14 @@ model "banshee" {
         ]
 
         component "OpenDSS/SimDSS" SimDSS1 {
-            sim_counter = "5"
-            sim_status = "Sim5 complete"
+            powers = "kVA Elem"
+            sim_counter = "14"
+            sim_status = "Sim14 complete"
+            voltagebases = "[13.8, 0.48, 0.208]"
+            voltages = "LL Nodes"
         }
         [
-            position = 10432, 7064
+            position = 10416, 7328
             size = 96, 96
         ]
 
@@ -754,8 +794,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -778,6 +818,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus201 {
+            i_inst_meas = "True"
+            i_rms_meas = "True"
         }
         [
             position = 10424, 7800
@@ -788,7 +830,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus204 {
         }
         [
-            position = 9536, 8360
+            position = 9592, 8360
             rotation = right
             size = 16, 96
         ]
@@ -799,9 +841,8 @@ model "banshee" {
             R1 = "0.1668"
             X0 = "0.9830"
             X1 = "0.1286"
-            coupling = "Core coupling"
-            dC0 = "254.45"
-            dC1 = "254.45"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -810,7 +851,7 @@ model "banshee" {
             selected_object = "c11_4_0AWG-CU-15kV"
         }
         [
-            position = 9536, 8216
+            position = 9592, 8216
             rotation = right
             size = 64, 112
         ]
@@ -824,15 +865,17 @@ model "banshee" {
             prim_conn = "Δ"
         }
         [
-            position = 9416, 8696
+            position = 9328, 8696
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus204x2 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
-            position = 9416, 8784
+            position = 9328, 8784
             rotation = right
             size = 16, 96
         ]
@@ -843,6 +886,7 @@ model "banshee" {
             Vn_3ph = "0.208"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -850,7 +894,7 @@ model "banshee" {
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9416, 8872
+            position = 9328, 8872
             scale = -1, 1
             size = 96, 64
         ]
@@ -859,12 +903,13 @@ model "banshee" {
             KVAs = "[3750, 3750]"
             KVs = "[13.8, 4.16]"
             XArray = "[2.36591, 2.36591]"
+            embedded_cpl = "TLM"
             percentNoloadloss = "0"
             percentRs = "[0.20754, 0.20754]"
             prim_conn = "Δ"
         }
         [
-            position = 9656, 8696
+            position = 9592, 8696
             rotation = right
             size = 64, 96
         ]
@@ -872,7 +917,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus205 {
         }
         [
-            position = 9656, 8984
+            position = 9592, 8984
             rotation = right
             size = 16, 96
         ]
@@ -891,6 +936,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -898,7 +944,7 @@ model "banshee" {
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9792, 9488
+            position = 9768, 9488
             scale = -1, 1
             size = 96, 64
         ]
@@ -909,9 +955,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -928,12 +973,13 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T210 {
             KVs = "[13.8, 0.48]"
             XArray = "[2.79717, 2.79717]"
+            embedded_cpl = "TLM"
             percentNoloadloss = "0"
             percentRs = "[0.66441, 0.66441]"
             prim_conn = "Δ"
         }
         [
-            position = 10424, 8704
+            position = 10424, 8696
             rotation = right
             size = 64, 96
         ]
@@ -947,7 +993,6 @@ model "banshee" {
         ]
 
         component "OpenDSS/Manual Switch" CB211 {
-            switch_status = "False"
         }
         [
             position = 10720, 8536
@@ -958,7 +1003,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB201 {
         }
         [
-            position = 9536, 8016
+            position = 9592, 8016
             rotation = right
             size = 64, 96
         ]
@@ -980,14 +1025,26 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus201x1 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
-            position = 9536, 8096
+            position = 9592, 8096
             rotation = right
             size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus201x2 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 10424, 8096
@@ -995,7 +1052,13 @@ model "banshee" {
             size = 16, 96
         ]
 
-        component "OpenDSS/Bus" Bus101x9 {
+        component "OpenDSS/Bus" Bus201x3 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 11280, 8112
@@ -1006,7 +1069,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB206 {
         }
         [
-            position = 9416, 8528
+            position = 9328, 8528
             rotation = right
             size = 64, 96
         ]
@@ -1014,7 +1077,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus204x1 {
         }
         [
-            position = 9416, 8608
+            position = 9328, 8608
             rotation = right
             size = 16, 96
         ]
@@ -1022,7 +1085,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB207 {
         }
         [
-            position = 9656, 8528
+            position = 9592, 8528
             rotation = right
             size = 64, 96
         ]
@@ -1030,7 +1093,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus204x3 {
         }
         [
-            position = 9656, 8608
+            position = 9592, 8608
             rotation = right
             size = 16, 96
         ]
@@ -1038,7 +1101,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB222 {
         }
         [
-            position = 9656, 8872
+            position = 9592, 8872
             rotation = right
             size = 64, 96
         ]
@@ -1046,16 +1109,15 @@ model "banshee" {
         component "OpenDSS/Bus" Bus204x4 {
         }
         [
-            position = 9656, 8784
+            position = 9592, 8784
             rotation = right
             size = 16, 96
         ]
 
         component "OpenDSS/Manual Switch" CB208 {
-            switch_status = "False"
         }
         [
-            position = 9512, 9160
+            position = 9424, 9160
             rotation = right
             size = 64, 96
         ]
@@ -1101,7 +1163,6 @@ model "banshee" {
         ]
 
         component "OpenDSS/Manual Switch" CB219 {
-            switch_status = "False"
         }
         [
             position = 9984, 9248
@@ -1110,6 +1171,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus206x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 9984, 9320
@@ -1123,6 +1186,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1138,7 +1202,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus205x1 {
         }
         [
-            position = 9512, 9248
+            position = 9424, 9248
             rotation = right
             size = 16, 96
         ]
@@ -1147,12 +1211,13 @@ model "banshee" {
             KVAs = "[2000, 2000]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.81205, 2.81205]"
+            embedded_cpl = "TLM"
             percentNoloadloss = "0"
             percentRs = "[0.59831, 0.59830]"
             prim_conn = "Δ"
         }
         [
-            position = 11080, 8736
+            position = 11080, 8704
             rotation = right
             size = 64, 96
         ]
@@ -1160,7 +1225,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB214 {
         }
         [
-            position = 11080, 8544
+            position = 11080, 8536
             rotation = right
             size = 64, 96
         ]
@@ -1168,32 +1233,15 @@ model "banshee" {
         component "OpenDSS/Bus" Bus208x1 {
         }
         [
-            position = 11080, 8632
+            position = 11080, 8608
             rotation = right
             size = 16, 96
-        ]
-
-        component "OpenDSS/Bus" Bus208x3 {
-        }
-        [
-            position = 11080, 8840
-            rotation = right
-            size = 16, 96
-        ]
-
-        component "OpenDSS/Manual Switch" CB220 {
-            switch_status = "False"
-        }
-        [
-            position = 11080, 8928
-            rotation = right
-            size = 64, 96
         ]
 
         component "OpenDSS/Manual Switch" CB215 {
         }
         [
-            position = 11480, 8544
+            position = 11480, 8536
             rotation = right
             size = 64, 96
         ]
@@ -1201,7 +1249,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus208x2 {
         }
         [
-            position = 11480, 8632
+            position = 11480, 8608
             rotation = right
             size = 16, 96
         ]
@@ -1212,6 +1260,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1249,10 +1298,9 @@ model "banshee" {
         ]
 
         component "OpenDSS/Manual Switch" CB204 {
-            switch_status = "False"
         }
         [
-            position = 9792, 9160
+            position = 9768, 9160
             rotation = right
             size = 64, 96
         ]
@@ -1260,7 +1308,7 @@ model "banshee" {
         component "OpenDSS/Bus" Bus205x3 {
         }
         [
-            position = 9792, 9248
+            position = 9768, 9248
             rotation = right
             size = 16, 96
         ]
@@ -1272,15 +1320,17 @@ model "banshee" {
             percentRs = "[0.66441, 0.66441]"
         }
         [
-            position = 9512, 9328
+            position = 9424, 9328
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus205x2 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
-            position = 9512, 9408
+            position = 9424, 9408
             rotation = right
             size = 16, 96
         ]
@@ -1290,6 +1340,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1297,7 +1348,7 @@ model "banshee" {
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9512, 9496
+            position = 9424, 9496
             scale = -1, 1
             size = 96, 64
         ]
@@ -1310,15 +1361,17 @@ model "banshee" {
             percentRs = "[0.55953, 0.55953]"
         }
         [
-            position = 9792, 9328
+            position = 9768, 9328
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus205x4 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
-            position = 9792, 9400
+            position = 9768, 9400
             rotation = right
             size = 16, 96
         ]
@@ -1346,6 +1399,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus202 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 9872, 8784
@@ -1355,7 +1410,7 @@ model "banshee" {
 
         component Subsystem BESS {
             layout = dynamic
-            component "OpenDSS/Load" Load_C3 {
+            component "OpenDSS/Load" BESS {
                 Sn_3ph = "0.001"
                 T_mode = "Loadshape index"
                 Vn_3ph = "0.48"
@@ -1397,9 +1452,9 @@ model "banshee" {
                 position = 7768, 8160
             ]
 
-            connect Load_C3.A1 A as Connection1
-            connect Load_C3.B1 B as Connection2
-            connect C Load_C3.C1 as Connection3
+            connect BESS.A1 A as Connection1
+            connect BESS.B1 B as Connection2
+            connect C BESS.C1 as Connection3
         }
         [
             position = 9776, 8936
@@ -1412,6 +1467,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1428,6 +1484,7 @@ model "banshee" {
             KVAs = "[2500, 2500]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.84256, 2.84256]"
+            embedded_cpl = "TLM"
             percentNoloadloss = "0"
             percentRs = "[0.43069, 0.43069]"
             prim_conn = "Δ"
@@ -1439,7 +1496,6 @@ model "banshee" {
         ]
 
         component "OpenDSS/Manual Switch" CB212 {
-            switch_status = "False"
         }
         [
             position = 10312, 8928
@@ -1448,6 +1504,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus207x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 10312, 9000
@@ -1461,6 +1519,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1514,7 +1573,7 @@ model "banshee" {
 
         component Subsystem PV {
             layout = dynamic
-            component "OpenDSS/Load" Load_C3 {
+            component "OpenDSS/Load" PV {
                 Sn_3ph = "0.001"
                 T_mode = "Loadshape index"
                 Vn_3ph = "0.48"
@@ -1556,9 +1615,9 @@ model "banshee" {
                 position = 7768, 8160
             ]
 
-            connect Load_C3.A1 A as Connection1
-            connect B Load_C3.B1 as Connection2
-            connect Load_C3.C1 C as Connection3
+            connect PV.A1 A as Connection1
+            connect B PV.B1 as Connection2
+            connect PV.C1 C as Connection3
         }
         [
             position = 10720, 8928
@@ -1571,9 +1630,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -1595,24 +1653,9 @@ model "banshee" {
             size = 16, 96
         ]
 
-        component "OpenDSS/Bus" Bus208x4 {
-        }
-        [
-            position = 11480, 8840
-            rotation = right
-            size = 16, 96
-        ]
-
-        component "OpenDSS/Manual Switch" CB221 {
-            switch_status = "False"
-        }
-        [
-            position = 11480, 8928
-            rotation = right
-            size = 64, 96
-        ]
-
         component "OpenDSS/Bus" Bus209 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 11080, 9016
@@ -1634,6 +1677,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1664,7 +1708,6 @@ model "banshee" {
         ]
 
         component "OpenDSS/Manual Switch" CB218 {
-            switch_status = "False"
         }
         [
             position = 11368, 9192
@@ -1682,6 +1725,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus210x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 11368, 9280
@@ -1698,6 +1743,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus301 {
+            i_inst_meas = "True"
+            i_rms_meas = "True"
         }
         [
             position = 13208, 7800
@@ -1730,6 +1777,12 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus301x1 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 12320, 8112
@@ -1738,6 +1791,12 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus301x2 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 12896, 8112
@@ -1746,6 +1805,12 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus301x4 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 14064, 8112
@@ -1770,6 +1835,12 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus301x3 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 13536, 8112
@@ -1783,9 +1854,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -1856,6 +1926,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus303 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 12096, 9016
@@ -1869,6 +1941,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1910,6 +1983,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -1931,6 +2005,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus304x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 12672, 9280
@@ -1944,9 +2020,8 @@ model "banshee" {
             R1 = "0.1668"
             X0 = "0.9830"
             X1 = "0.1286"
-            coupling = "Core coupling"
-            dC0 = "254.45"
-            dC1 = "254.45"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -1981,6 +2056,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -2002,6 +2078,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus305x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 13032, 8824
@@ -2015,8 +2093,8 @@ model "banshee" {
             R1 = "0.1668"
             X0 = "0.9830"
             X1 = "0.1286"
-            dC0 = "254.45"
-            dC1 = "254.45"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2039,6 +2117,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus306x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 13392, 8624
@@ -2046,8 +2126,8 @@ model "banshee" {
             size = 16, 96
         ]
 
-        component "OpenDSS/Load" Load_CHP {
-            Sn_3ph = "3500"
+        component "OpenDSS/Load" CHP {
+            Sn_3ph = "0.001"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
@@ -2086,6 +2166,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -2104,8 +2185,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2173,7 +2254,9 @@ model "banshee" {
             size = 64, 96
         ]
 
-        component "OpenDSS/Bus" Bus308 {
+        component "OpenDSS/Bus" Bus307x1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 14064, 8944
@@ -2182,7 +2265,7 @@ model "banshee" {
         ]
 
         component "OpenDSS/Load" Load_M6 {
-            Sn_3ph = "3500"
+            Sn_3ph = "0.001"
             T_mode = "Loadshape index"
             Vn_3ph = "4.16"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
@@ -2205,6 +2288,7 @@ model "banshee" {
             Vn_3ph = "0.48"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             ground_connected = "True"
+            load_model = "Constant Power"
             pf_mode_3ph = "Lag"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
@@ -2217,13 +2301,18 @@ model "banshee" {
             size = 96, 64
         ]
 
-        component "OpenDSS/Vsource" V1 {
-            basekv = "115"
+        component "OpenDSS/Vsource" V2 {
+            basekv = "13.8"
             global_basefreq = "True"
+            i_sc1 = "10240"
+            i_sc3 = "15730"
+            input_method = "Isc"
             pu = "1"
+            x0r0 = "2.6"
+            x1r1 = "7.9"
         }
         [
-            position = 10424, 7168
+            position = 10424, 7504
             rotation = right
             size = 64, 96
         ]
@@ -2234,9 +2323,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2255,9 +2343,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2276,9 +2363,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2297,9 +2383,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2318,9 +2403,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2339,9 +2423,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2360,9 +2443,8 @@ model "banshee" {
             R1 = "0.0749"
             X0 = "0.7559"
             X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
+            dC0 = "0"
+            dC1 = "0"
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
@@ -2375,90 +2457,6 @@ model "banshee" {
             size = 64, 112
         ]
 
-        component "core/Ground" gnd1 {
-        }
-        [
-            position = 6848, 8240
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd2 {
-        }
-        [
-            position = 7672, 8224
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd3 {
-        }
-        [
-            position = 8232, 8360
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd4 {
-        }
-        [
-            position = 8648, 8368
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd6 {
-        }
-        [
-            position = 7496, 8728
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd10 {
-        }
-        [
-            position = 9352, 8248
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd11 {
-        }
-        [
-            position = 10224, 8248
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd12 {
-        }
-        [
-            position = 11088, 8232
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd16 {
-        }
-        [
-            position = 12120, 8272
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd17 {
-        }
-        [
-            position = 12696, 8272
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd18 {
-        }
-        [
-            position = 13416, 8288
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd19 {
-        }
-        [
-            position = 13944, 8288
-            hide_name = True
-        ]
-
         component "OpenDSS/Three-Phase Transformer" T209 {
             KVAs = "[2000, 2000]"
             KVs = "[13.8, 0.48]"
@@ -2469,7 +2467,7 @@ model "banshee" {
             prim_conn = "Δ"
         }
         [
-            position = 11480, 8736
+            position = 11480, 8704
             rotation = right
             size = 64, 96
         ]
@@ -2478,6 +2476,7 @@ model "banshee" {
             KVAs = "[2000, 2000]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.81205, 2.81205]"
+            embedded_cpl = "TLM"
             percentNoloadloss = "0"
             percentRs = "[0.59831, 0.59830]"
             prim_conn = "Δ"
@@ -2492,6 +2491,7 @@ model "banshee" {
             KVAs = "[2000, 2000]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.81205, 2.81205]"
+            embedded_cpl = "TLM"
             percentNoloadloss = "0"
             percentRs = "[0.59831, 0.59830]"
             prim_conn = "Δ"
@@ -2505,6 +2505,7 @@ model "banshee" {
         component "OpenDSS/Three-Phase Transformer" T303 {
             KVs = "[13.8, 0.48]"
             XArray = "[2.79717, 2.79717]"
+            embedded_cpl = "TLM"
             percentNoloadloss = "0"
             percentRs = "[0.66441, 0.66441]"
             prim_conn = "Δ"
@@ -2531,28 +2532,28 @@ model "banshee" {
         component "core/Ground" gnd20 {
         }
         [
-            position = 6776, 8752
+            position = 6832, 8752
             hide_name = True
         ]
 
         component "core/Ground" gnd21 {
         }
         [
-            position = 7032, 8752
+            position = 7072, 8752
             hide_name = True
         ]
 
         component "core/Ground" gnd22 {
         }
         [
-            position = 7520, 8944
+            position = 7576, 8944
             hide_name = True
         ]
 
         component "core/Ground" gnd23 {
         }
         [
-            position = 7752, 8752
+            position = 7768, 8752
             hide_name = True
         ]
 
@@ -2573,112 +2574,112 @@ model "banshee" {
         component "core/Ground" gnd26 {
         }
         [
-            position = 8288, 8768
+            position = 8336, 8760
             hide_name = True
         ]
 
         component "core/Ground" gnd27 {
         }
         [
-            position = 9280, 8760
+            position = 9248, 8752
             hide_name = True
         ]
 
         component "core/Ground" gnd28 {
         }
         [
-            position = 9536, 8760
+            position = 9528, 8752
             hide_name = True
         ]
 
         component "core/Ground" gnd29 {
         }
         [
-            position = 9752, 8760
+            position = 9800, 8760
             hide_name = True
         ]
 
         component "core/Ground" gnd30 {
         }
         [
-            position = 10024, 8760
+            position = 10088, 8752
             hide_name = True
         ]
 
         component "core/Ground" gnd31 {
         }
         [
-            position = 10296, 8760
+            position = 10352, 8752
             hide_name = True
         ]
 
         component "core/Ground" gnd32 {
         }
         [
-            position = 10592, 8760
+            position = 10648, 8752
             hide_name = True
         ]
 
         component "core/Ground" gnd33 {
         }
         [
-            position = 9376, 9376
+            position = 9336, 9376
             hide_name = True
         ]
 
         component "core/Ground" gnd34 {
         }
         [
-            position = 9656, 9376
+            position = 9664, 9376
             hide_name = True
         ]
 
         component "core/Ground" gnd35 {
         }
         [
-            position = 10944, 8800
+            position = 11008, 8760
             hide_name = True
         ]
 
         component "core/Ground" gnd36 {
         }
         [
-            position = 11352, 8800
+            position = 11408, 8760
             hide_name = True
         ]
 
         component "core/Ground" gnd37 {
         }
         [
-            position = 11968, 8800
+            position = 12024, 8792
             hide_name = True
         ]
 
         component "core/Ground" gnd38 {
         }
         [
-            position = 12408, 8800
+            position = 12464, 8792
             hide_name = True
         ]
 
         component "core/Ground" gnd39 {
         }
         [
-            position = 13248, 8592
+            position = 13320, 8592
             hide_name = True
         ]
 
         component "core/Ground" gnd40 {
         }
         [
-            position = 13928, 8512
+            position = 13992, 8512
             hide_name = True
         ]
 
         component "core/Ground" gnd41 {
         }
         [
-            position = 12776, 8504
+            position = 12824, 8504
             hide_name = True
         ]
 
@@ -2690,388 +2691,219 @@ model "banshee" {
             size = 16, 96
         ]
 
+        component "OpenDSS/Bus" Bus3 {
+        }
+        [
+            position = 13208, 7608
+            rotation = right
+            size = 16, 96
+        ]
+
         component "OpenDSS/Bus" Bus1 {
         }
         [
-            position = 10424, 7272
-            rotation = right
-            size = 16, 96
-        ]
-
-        component "OpenDSS/Line" C305 {
-            Length = "1.676"
-            R0 = "1.1405"
-            R1 = "0.0749"
-            X0 = "0.7559"
-            X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
-            d_C = "0.0"
-            d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
-            d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
-            input_type = "LineCode"
-            obj_mode = "symmetrical"
-            selected_object = "c13_500kCMIL-CU-15kV"
-        }
-        [
-            position = 10160, 7368
-            size = 64, 112
-        ]
-
-        component "OpenDSS/Line" C306 {
-            Length = "1.676"
-            R0 = "1.1405"
-            R1 = "0.0749"
-            X0 = "0.7559"
-            X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
-            d_C = "0.0"
-            d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
-            d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
-            input_type = "LineCode"
-            obj_mode = "symmetrical"
-            selected_object = "c13_500kCMIL-CU-15kV"
-        }
-        [
-            position = 10616, 7368
-            size = 64, 112
-        ]
-
-        component "OpenDSS/Line" C307 {
-            Length = "1.676"
-            R0 = "1.1405"
-            R1 = "0.0749"
-            X0 = "0.7559"
-            X1 = "0.1167"
-            coupling = "Core coupling"
-            dC0 = "316.5"
-            dC1 = "316.5"
-            d_C = "0.0"
-            d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
-            d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
-            input_type = "LineCode"
-            obj_mode = "symmetrical"
-            selected_object = "c13_500kCMIL-CU-15kV"
-        }
-        [
-            position = 10424, 7464
-            rotation = right
-            size = 64, 112
-        ]
-
-        component "OpenDSS/Bus" Bus309 {
-        }
-        [
-            position = 10720, 7368
-            size = 16, 96
-        ]
-
-        component "OpenDSS/Bus" Bus310 {
-        }
-        [
-            position = 10072, 7368
+            position = 7864, 7600
+            rotation = left
             scale = -1, 1
             size = 16, 96
         ]
 
-        component "OpenDSS/Bus" Bus311 {
+        component "OpenDSS/Bus" Bus2 {
         }
         [
-            position = 10424, 7520
+            position = 10424, 7608
             rotation = right
             size = 16, 96
         ]
 
-        component "core/Ground" gnd42 {
+        component "OpenDSS/Vsource" V1 {
+            basekv = "13.8"
+            global_basefreq = "True"
+            i_sc1 = "10570"
+            i_sc3 = "14580"
+            input_method = "Isc"
+            pu = "1"
+            x0r0 = "0.9"
+            x1r1 = "4.6"
         }
         [
-            position = 10120, 7472
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd43 {
-        }
-        [
-            position = 10200, 7472
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd44 {
-        }
-        [
-            position = 10288, 7440
+            position = 7864, 7504
             rotation = right
-            hide_name = True
+            size = 64, 96
         ]
 
-        component "core/Ground" gnd45 {
+        component "OpenDSS/Vsource" V3 {
+            basekv = "13.8"
+            global_basefreq = "True"
+            i_sc1 = "10570"
+            i_sc3 = "14580"
+            input_method = "Isc"
+            pu = "1"
+            x0r0 = "0.9"
+            x1r1 = "4.6"
         }
         [
-            position = 10576, 7472
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd46 {
-        }
-        [
-            position = 10664, 7472
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd47 {
-        }
-        [
-            position = 8984, 10168
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd48 {
-        }
-        [
-            position = 9064, 10168
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd49 {
-        }
-        [
-            position = 8984, 10368
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd50 {
-        }
-        [
-            position = 9064, 10368
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd51 {
-        }
-        [
-            position = 8976, 10560
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd52 {
-        }
-        [
-            position = 9072, 10560
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd53 {
-        }
-        [
-            position = 10480, 10856
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd54 {
-        }
-        [
-            position = 10568, 10856
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd55 {
-        }
-        [
-            position = 11768, 10168
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd56 {
-        }
-        [
-            position = 11848, 10168
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd57 {
-        }
-        [
-            position = 11768, 10352
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd58 {
-        }
-        [
-            position = 11848, 10352
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd59 {
-        }
-        [
-            position = 11768, 10544
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd60 {
-        }
-        [
-            position = 11848, 10544
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd61 {
-        }
-        [
-            position = 10288, 7496
+            position = 13208, 7504
             rotation = right
-            hide_name = True
+            size = 64, 96
         ]
 
-        component "core/Ground" gnd62 {
-        }
-        [
-            position = 6912, 8280
-            hide_name = True
-        ]
+        component Subsystem "Coupling C105" {
+            layout = dynamic
+            component "core/Four Phase Core Coupling" "Core Coupling 1" {
+                fixed_snb_i = "true"
+                fixed_snb_u = "true"
+                snb_type_i = "R1-C1"
+            }
+            [
+                position = 7752, 8088
+                size = 12, 352
+            ]
 
-        component "core/Ground" gnd63 {
-        }
-        [
-            position = 7744, 8280
-            hide_name = True
-        ]
+            port A1 {
+                position = left:1
+                kind = pe
+            }
+            [
+                position = 7640, 7944
+            ]
 
-        component "core/Ground" gnd64 {
-        }
-        [
-            position = 8296, 8392
-            hide_name = True
-        ]
+            port B1 {
+                position = left:2
+                kind = pe
+            }
+            [
+                position = 7640, 8040
+            ]
 
-        component "core/Ground" gnd65 {
-        }
-        [
-            position = 9416, 8272
-            hide_name = True
-        ]
+            port C1 {
+                position = left:3
+                kind = pe
+            }
+            [
+                position = 7640, 8136
+            ]
 
-        component "core/Ground" gnd66 {
-        }
-        [
-            position = 10280, 8288
-            hide_name = True
-        ]
+            port N1 {
+                position = bottom:1
+                kind = pe
+            }
+            [
+                position = 7640, 8232
+            ]
 
-        component "core/Ground" gnd67 {
-        }
-        [
-            position = 12192, 8304
-            hide_name = True
-        ]
+            port A2 {
+                position = right:1
+                kind = pe
+            }
+            [
+                position = 7856, 7944
+                scale = -1, 1
+            ]
 
-        component "core/Ground" gnd68 {
-        }
-        [
-            position = 12768, 8304
-            hide_name = True
-        ]
+            port B2 {
+                position = right:2
+                kind = pe
+            }
+            [
+                position = 7856, 8040
+                scale = -1, 1
+            ]
 
-        component "core/Ground" gnd69 {
+            port C2 {
+                position = right:3
+                kind = pe
+            }
+            [
+                position = 7856, 8136
+                scale = -1, 1
+            ]
+
+            port N2 {
+                position = bottom:2
+                kind = pe
+            }
+            [
+                position = 7856, 8232
+                scale = -1, 1
+            ]
+
+            connect A1 "Core Coupling 1.a_in" as Connection1
+            connect "Core Coupling 1.a_out" A2 as Connection2
+            connect B1 "Core Coupling 1.b_in" as Connection3
+            connect "Core Coupling 1.b_out" B2 as Connection4
+            connect C1 "Core Coupling 1.c_in" as Connection5
+            connect "Core Coupling 1.c_out" C2 as Connection6
+            connect N1 "Core Coupling 1.d_in" as Connection7
+            connect "Core Coupling 1.d_out" N2 as Connection8
         }
         [
-            position = 11144, 8288
-            hide_name = True
+            position = 8904, 10064
+            scale = -1, 1
+            size = 64, 112
         ]
 
         component "core/Core Marker" "Core Marker1" {
             marker_id = "id1"
         }
         [
-            position = 10240, 7240
+            position = 8160, 7800
         ]
 
         component "core/Core Marker" "Core Marker2" {
             marker_id = "id2"
         }
         [
-            position = 9944, 7240
+            position = 7032, 8704
         ]
 
         component "core/Core Marker" "Core Marker3" {
             marker_id = "id3"
         }
         [
-            position = 7272, 8712
+            position = 7752, 8928
         ]
 
         component "core/Core Marker" "Core Marker4" {
             marker_id = "id4"
         }
         [
-            position = 7760, 8912
+            position = 8264, 8728
         ]
 
         component "core/Core Marker" "Core Marker5" {
             marker_id = "id5"
         }
         [
-            position = 8520, 8736
+            position = 11168, 8760
         ]
 
         component "core/Core Marker" "Core Marker6" {
             marker_id = "id6"
         }
         [
-            position = 10544, 7568
+            position = 11576, 8760
+        ]
+
+        component "core/Ground" gnd70 {
+        }
+        [
+            position = 8936, 10176
+            hide_name = True
+        ]
+
+        component "core/Ground" gnd71 {
+        }
+        [
+            position = 8856, 10176
+            hide_name = True
         ]
 
         component "core/Core Marker" "Core Marker7" {
             marker_id = "id7"
         }
         [
-            position = 9624, 8288
-        ]
-
-        component "core/Core Marker" "Core Marker8" {
-            marker_id = "id8"
-        }
-        [
-            position = 10536, 8280
-        ]
-
-        component "core/Core Marker" "Core Marker9" {
-            marker_id = "id9"
-        }
-        [
-            position = 11376, 8280
-        ]
-
-        component "core/Core Marker" "Core Marker10" {
-            marker_id = "id10"
-        }
-        [
-            position = 10680, 7256
-        ]
-
-        component "core/Core Marker" "Core Marker11" {
-            marker_id = "id11"
-        }
-        [
-            position = 12440, 8280
-        ]
-
-        component "core/Core Marker" "Core Marker12" {
-            marker_id = "id12"
-        }
-        [
-            position = 13072, 8256
-        ]
-
-        component "core/Core Marker" "Core Marker13" {
-            marker_id = "id13"
-        }
-        [
-            position = 11640, 8760
+            position = 10512, 8792
         ]
 
         tag "Electric Tag1" {
@@ -3183,7 +3015,7 @@ model "banshee" {
         ]
 
         tag "Electric Tag10" {
-            value = "Bus101a_C105"
+            value = "Bus101a_C109"
             scope = local
             kind = pe
         }
@@ -3195,7 +3027,7 @@ model "banshee" {
         ]
 
         tag "Electric Tag11" {
-            value = "Bus101b_C105"
+            value = "Bus101b_C109"
             scope = local
             kind = pe
         }
@@ -3207,7 +3039,7 @@ model "banshee" {
         ]
 
         tag "Electric Tag12" {
-            value = "Bus101c_C105"
+            value = "Bus101c_C109"
             scope = local
             kind = pe
         }
@@ -3224,7 +3056,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9376, 9168
+            position = 9288, 9168
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3236,7 +3068,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9344, 9168
+            position = 9256, 9168
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3248,7 +3080,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9312, 9168
+            position = 9224, 9168
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3332,7 +3164,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9272, 8536
+            position = 9160, 8528
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3344,7 +3176,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9240, 8536
+            position = 9128, 8528
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3356,7 +3188,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 9208, 8536
+            position = 9096, 8528
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3584,7 +3416,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8912, 10032
+            position = 8792, 10032
             hide_name = True
             size = 83, 20
         ]
@@ -3595,7 +3427,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8912, 10064
+            position = 8792, 10064
             hide_name = True
             size = 83, 20
         ]
@@ -3606,7 +3438,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 8912, 10096
+            position = 8792, 10096
             hide_name = True
             size = 83, 20
         ]
@@ -3924,7 +3756,7 @@ model "banshee" {
         ]
 
         tag "Electric Tag76" {
-            value = "Bus101a_C105"
+            value = "Bus101a_C109"
             scope = local
             kind = pe
         }
@@ -3935,7 +3767,7 @@ model "banshee" {
         ]
 
         tag "Electric Tag77" {
-            value = "Bus101b_C105"
+            value = "Bus101b_C109"
             scope = local
             kind = pe
         }
@@ -3946,7 +3778,7 @@ model "banshee" {
         ]
 
         tag "Electric Tag78" {
-            value = "Bus101c_C105"
+            value = "Bus101c_C109"
             scope = local
             kind = pe
         }
@@ -4061,36 +3893,6 @@ model "banshee" {
             size = 83, 20
         ]
 
-        junction Junction10 pe
-        [
-            position = 7896, 7864
-        ]
-
-        junction Junction11 pe
-        [
-            position = 7864, 7896
-        ]
-
-        junction Junction12 pe
-        [
-            position = 7832, 7928
-        ]
-
-        junction Junction13 pe
-        [
-            position = 7896, 7864
-        ]
-
-        junction Junction14 pe
-        [
-            position = 7864, 7896
-        ]
-
-        junction Junction15 pe
-        [
-            position = 7832, 7928
-        ]
-
         junction Junction16 pe
         [
             position = 6992, 8472
@@ -4183,17 +3985,17 @@ model "banshee" {
 
         junction Junction43 pe
         [
-            position = 8560, 8272
+            position = 8560, 8208
         ]
 
         junction Junction44 pe
         [
-            position = 8592, 8248
+            position = 8592, 8184
         ]
 
         junction Junction45 pe
         [
-            position = 8624, 8224
+            position = 8624, 8160
         ]
 
         junction Junction46 pe
@@ -4256,79 +4058,44 @@ model "banshee" {
             position = 10456, 8424
         ]
 
-        junction Junction80 pe
-        [
-            position = 9624, 8472
-        ]
-
-        junction Junction82 pe
-        [
-            position = 9656, 8448
-        ]
-
-        junction Junction84 pe
-        [
-            position = 9688, 8424
-        ]
-
-        junction Junction85 pe
-        [
-            position = 9504, 8472
-        ]
-
         junction Junction86 pe
         [
-            position = 9536, 8448
+            position = 9592, 8448
         ]
 
         junction Junction87 pe
         [
-            position = 9568, 8424
+            position = 9624, 8424
         ]
 
         junction Junction88 pe
         [
-            position = 9448, 8424
+            position = 9360, 8424
         ]
 
         junction Junction89 pe
         [
-            position = 9416, 8448
+            position = 9328, 8448
         ]
 
         junction Junction90 pe
         [
-            position = 9384, 8472
-        ]
-
-        junction Junction91 pe
-        [
-            position = 9688, 9056
-        ]
-
-        junction Junction92 pe
-        [
-            position = 9656, 9080
-        ]
-
-        junction Junction93 pe
-        [
-            position = 9624, 9104
+            position = 9296, 8472
         ]
 
         junction Junction94 pe
         [
-            position = 9544, 9056
+            position = 9456, 9056
         ]
 
         junction Junction95 pe
         [
-            position = 9512, 9080
+            position = 9424, 9080
         ]
 
         junction Junction96 pe
         [
-            position = 9480, 9104
+            position = 9392, 9104
         ]
 
         junction Junction97 pe
@@ -4598,107 +4365,112 @@ model "banshee" {
 
         junction Junction156 pe
         [
-            position = 9376, 9352
+            position = 9344, 9328
         ]
 
         junction Junction157 pe
         [
-            position = 9656, 9352
-        ]
-
-        junction Junction158 pe
-        [
-            position = 10456, 7336
-        ]
-
-        junction Junction159 pe
-        [
-            position = 10424, 7368
-        ]
-
-        junction Junction160 pe
-        [
-            position = 10392, 7400
-        ]
-
-        junction Junction161 pe
-        [
-            position = 10456, 7336
-        ]
-
-        junction Junction162 pe
-        [
-            position = 10424, 7368
-        ]
-
-        junction Junction163 pe
-        [
-            position = 10392, 7400
+            position = 9680, 9328
         ]
 
         junction Junction164 pe
         [
-            position = 10240, 7336
+            position = 7896, 7864
         ]
 
         junction Junction165 pe
         [
-            position = 9944, 7336
+            position = 7864, 7888
         ]
 
         junction Junction166 pe
         [
-            position = 7176, 8752
+            position = 7832, 7912
         ]
 
         junction Junction167 pe
         [
-            position = 7680, 8952
+            position = 7896, 7864
         ]
 
         junction Junction168 pe
         [
-            position = 8448, 8760
+            position = 7864, 7888
         ]
 
         junction Junction169 pe
         [
-            position = 10456, 7608
+            position = 7832, 7912
         ]
 
         junction Junction170 pe
         [
-            position = 9568, 8312
-        ]
-
-        junction Junction171 pe
-        [
-            position = 10456, 8304
-        ]
-
-        junction Junction172 pe
-        [
-            position = 11312, 8312
+            position = 8160, 7864
         ]
 
         junction Junction173 pe
         [
-            position = 10680, 7336
+            position = 7680, 9024
         ]
 
         junction Junction174 pe
         [
-            position = 12352, 8304
+            position = 8384, 8824
         ]
 
         junction Junction175 pe
         [
-            position = 12928, 8304
+            position = 7112, 8824
         ]
 
         junction Junction176 pe
         [
-            position = 11512, 8800
+            position = 9560, 8472
+        ]
+
+        junction Junction177 pe
+        [
+            position = 9560, 9104
+        ]
+
+        junction Junction178 pe
+        [
+            position = 9592, 9080
+        ]
+
+        junction Junction179 pe
+        [
+            position = 9624, 9056
+        ]
+
+        junction Junction180 pe
+        [
+            position = 9560, 8472
+        ]
+
+        junction Junction181 pe
+        [
+            position = 9592, 8448
+        ]
+
+        junction Junction182 pe
+        [
+            position = 9624, 8424
+        ]
+
+        junction Junction183 pe
+        [
+            position = 10512, 8832
+        ]
+
+        junction Junction184 pe
+        [
+            position = 11112, 8808
+        ]
+
+        junction Junction185 pe
+        [
+            position = 11512, 8808
         ]
 
         comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html> ENDCOMMENT 
@@ -4713,7 +4485,7 @@ model "banshee" {
 
         comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:26pt;">Feeder 2</span></p></body></html> ENDCOMMENT 
         [
-            position = 10496, 7680
+            position = 10488, 7688
         ]
 
         comment Comment5 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:26pt;">Feeder 3</span></p></body></html> ENDCOMMENT 
@@ -4741,44 +4513,204 @@ model "banshee" {
             position = 10352, 10584
         ]
 
-        comment Comment10 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment10 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
-            position = 7480, 8872
+            position = 7712, 8872
         ]
 
-        comment Comment11 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment11 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
-            position = 6984, 8680
+            position = 7016, 8656
         ]
 
-        comment Comment12 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment12 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
             position = 8248, 8680
         ]
 
-        comment Comment13 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment17 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
-            position = 10496, 8208
+            position = 11536, 8712
         ]
 
-        comment Comment14 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment18 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
-            position = 9600, 8200
+            position = 10464, 8752
         ]
 
-        comment Comment15 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment19 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
-            position = 11352, 8216
+            position = 10192, 8752
         ]
 
-        comment Comment16 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment20 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
-            position = 10480, 7496
+            position = 11136, 8712
         ]
 
-        comment Comment17 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Coupling </p></body></html> ENDCOMMENT 
+        comment Comment21 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
         [
-            position = 11544, 8720
+            position = 9632, 8744
+        ]
+
+        comment Comment22 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
+        [
+            position = 12136, 8784
+        ]
+
+        comment Comment23 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
+        [
+            position = 12576, 8784
+        ]
+
+        comment Comment24 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
+        [
+            position = 12936, 8432
+        ]
+
+        comment Comment25 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">      T101      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5%. X/R=4.9 </p></body></html> ENDCOMMENT 
+        [
+            position = 6720, 8648
+        ]
+
+        comment Comment26 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">        T102      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">     2500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=6.6</p></body></html> ENDCOMMENT 
+        [
+            position = 7200, 8648
+        ]
+
+        comment Comment27 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">        T103      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">     3750 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   13.8/4.16 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">4.75%. X/R=11.4</p></body></html> ENDCOMMENT 
+        [
+            position = 7440, 8832
+        ]
+
+        comment Comment28 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">      T106      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">13.8/0.208 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"> 5%. X/R=4.9</p></body></html> ENDCOMMENT 
+        [
+            position = 7920, 8656
+        ]
+
+        comment Comment29 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">   T104-T105      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">     2000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   4.16/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.7   </p></body></html> ENDCOMMENT 
+        [
+            position = 7888, 9280
+        ]
+
+        comment Comment30 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T107      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=6.6</p></body></html> ENDCOMMENT 
+        [
+            position = 8480, 8656
+        ]
+
+        comment Comment31 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T201      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.56%. X/R=5.52</p></body></html> ENDCOMMENT 
+        [
+            position = 9656, 8648
+        ]
+
+        comment Comment32 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">      T202      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">13.8/0.208 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"> 5%. X/R=4.9  </p></body></html> ENDCOMMENT 
+        [
+            position = 9128, 8648
+        ]
+
+        comment Comment33 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T203      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    3750 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/4.16 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">4.75%.X/R=11.4</p></body></html> ENDCOMMENT 
+        [
+            position = 9384, 8648
+        ]
+
+        comment Comment34 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">         T204      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">      1000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   4.16/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%.X/R=4.21</p></body></html> ENDCOMMENT 
+        [
+            position = 9200, 9272
+        ]
+
+        comment Comment35 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">         T205      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">      1500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   4.16/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%.X/R=5.04</p></body></html> ENDCOMMENT 
+        [
+            position = 9536, 9272
+        ]
+
+        comment Comment36 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T206      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=6.6</p></body></html> ENDCOMMENT 
+        [
+            position = 9960, 8648
+        ]
+
+        comment Comment37 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T210      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    1000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.21</p></body></html> ENDCOMMENT 
+        [
+            position = 10216, 8648
+        ]
+
+        comment Comment38 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">     T207      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  5000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5%. X/R=5.44</p></body></html> ENDCOMMENT 
+        [
+            position = 10528, 8648
+        ]
+
+        comment Comment39 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T208      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.7</p></body></html> ENDCOMMENT 
+        [
+            position = 10880, 8656
+        ]
+
+        comment Comment40 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T209      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.7</p></body></html> ENDCOMMENT 
+        [
+            position = 11280, 8656
+        ]
+
+        comment Comment41 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T301      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.7</p></body></html> ENDCOMMENT 
+        [
+            position = 11896, 8688
+        ]
+
+        comment Comment42 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T302      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.7</p></body></html> ENDCOMMENT 
+        [
+            position = 12336, 8688
+        ]
+
+        comment Comment43 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T303      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    1000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%.X/R=4.21</p></body></html> ENDCOMMENT 
+        [
+            position = 12696, 8408
+        ]
+
+        comment Comment44 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T304      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    1000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%.X/R=4.21</p></body></html> ENDCOMMENT 
+        [
+            position = 13184, 8488
+        ]
+
+        comment Comment45 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T305      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%.X/R=6.6</p></body></html> ENDCOMMENT 
+        [
+            position = 13864, 8408
+        ]
+
+        comment Comment46 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">    C101</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  1800 ft</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">#500 kCMIL</p></body></html> ENDCOMMENT 
+        [
+            position = 7064, 8184
+        ]
+
+        comment Comment47 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">    C102</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  5500 ft</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">#4/0 AWG </p></body></html> ENDCOMMENT 
+        [
+            position = 7904, 8176
+        ]
+
+        comment Comment48 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
+        [
+            position = 8752, 8752
+        ]
+
+        comment Comment49 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
+        [
+            position = 7488, 9944
+        ]
+
+        comment Comment50 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
+        [
+            position = 9736, 8992
+        ]
+
+        comment Comment51 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
+        [
+            position = 10680, 8984
+        ]
+
+        comment Comment52 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
+        [
+            position = 13656, 8760
+        ]
+
+        comment Comment53 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
+        [
+            position = 14192, 9096
         ]
 
         connect C101.C2 Bus102.C1 as Connection4
@@ -4790,7 +4722,6 @@ model "banshee" {
         connect Bus102x3.C2 Load_I1.C1 as Connection13
         connect Bus102x3.B2 Load_I1.B1 as Connection14
         connect Bus102x3.A2 Load_I1.A1 as Connection15
-        connect Bus105.C1 C102.C2 as Connection43
         connect Bus105.B1 C102.B2 as Connection44
         connect Bus105.A1 C102.A2 as Connection45
         connect T106.C2 Bus105x6.C1 as Connection73
@@ -4799,30 +4730,6 @@ model "banshee" {
         connect Bus105x6.C2 Load_I2.C1 as Connection76
         connect Bus105x6.B2 Load_I2.B1 as Connection77
         connect Bus105x6.A2 Load_I2.A1 as Connection78
-        connect CB102.A1 Junction10 as Connection166
-        connect Junction10 Bus101.A2 as Connection167
-        [
-            breakpoints = 7896, 7864
-        ]
-        connect Bus101.B2 Junction11 as Connection169
-        connect Junction11 CB102.B1 as Connection170
-        [
-            breakpoints = 7864, 7888
-        ]
-        connect CB102.C1 Junction12 as Connection172
-        connect Junction12 Bus101.C2 as Connection173
-        [
-            breakpoints = 7832, 7912
-        ]
-        connect CB103.A1 Junction13 as Connection175
-        connect Junction13 Junction10 as Connection176
-        connect CB101.A1 Junction13 as Connection177
-        connect CB103.B1 Junction14 as Connection178
-        connect Junction14 Junction11 as Connection179
-        connect CB101.B1 Junction14 as Connection180
-        connect CB103.C1 Junction15 as Connection181
-        connect Junction15 Junction12 as Connection182
-        connect CB101.C1 Junction15 as Connection183
         connect Bus101x1.C1 CB101.C2 as Connection184
         connect Bus101x1.B1 CB101.B2 as Connection185
         connect Bus101x1.A1 CB101.A2 as Connection186
@@ -4832,7 +4739,6 @@ model "banshee" {
         connect Bus101x2.C1 CB102.C2 as Connection190
         connect Bus101x2.B1 CB102.B2 as Connection191
         connect Bus101x2.A1 CB102.A2 as Connection192
-        connect Bus101x2.C2 C102.C1 as Connection193
         connect Bus101x2.B2 C102.B1 as Connection194
         connect Bus101x2.A2 C102.A1 as Connection195
         connect CB103.C2 Bus101x3.C1 as Connection196
@@ -4884,7 +4790,6 @@ model "banshee" {
         connect Bus105x5.B1 T103.B2 as Connection281
         connect Bus105x5.C2 CB115.C1 as Connection283
         connect Bus105x5.B2 CB115.B1 as Connection284
-        connect Bus105x5.A2 CB115.A1 as Connection285
         connect CB115.C2 Bus106.C1 as Connection286
         connect CB115.B2 Bus106.B1 as Connection287
         connect CB115.A2 Bus106.A1 as Connection288
@@ -4983,7 +4888,6 @@ model "banshee" {
         connect Bus101x5.A2 T107.A1 as Connection395
         connect Bus101x6.C1 T107.C2 as Connection396
         connect Bus101x6.B1 T107.B2 as Connection397
-        connect Bus101x6.C2 CB113.C1 as Connection399
         connect Bus101x6.B2 CB113.B1 as Connection400
         connect Bus101x6.A2 CB113.A1 as Connection401
         connect C103.C2 Bus103.C1 as Connection405
@@ -5006,9 +4910,7 @@ model "banshee" {
         connect Bus102x2.A2 T102.A1 as Connection425
         connect T102.C2 Bus102x4.C1 as Connection426
         connect T102.B2 Bus102x4.B1 as Connection427
-        connect Bus102x4.C2 CB116.C1 as Connection429
         connect Bus102x4.B2 CB116.B1 as Connection430
-        connect Bus102x4.A2 CB116.A1 as Connection431
         connect CB116.C2 Bus104.C1 as Connection432
         connect CB116.B2 Bus104.B1 as Connection433
         connect CB116.A2 Bus104.A1 as Connection434
@@ -5042,7 +4944,6 @@ model "banshee" {
         connect Bus203.B1 C202.B2 as Connection463
         connect T210.C2 Bus207.C1 as Connection465
         connect T210.B2 Bus207.B1 as Connection466
-        connect T210.A2 Bus207.A1 as Connection467
         connect CB202.A1 Junction49 as Connection471
         connect Junction49 Bus201.A2 as Connection472
         [
@@ -5079,9 +4980,9 @@ model "banshee" {
         connect Bus201x2.C2 C202.C1 as Connection495
         connect Bus201x2.B2 C202.B1 as Connection496
         connect Bus201x2.A2 C202.A1 as Connection497
-        connect CB203.C2 Bus101x9.C1 as Connection498
-        connect CB203.B2 Bus101x9.B1 as Connection499
-        connect CB203.A2 Bus101x9.A1 as Connection500
+        connect CB203.C2 Bus201x3.C1 as Connection498
+        connect CB203.B2 Bus201x3.B1 as Connection499
+        connect CB203.A2 Bus201x3.A1 as Connection500
         connect Bus204x1.C1 CB206.C2 as Connection501
         connect Bus204x1.B1 CB206.B2 as Connection502
         connect Bus204x1.A1 CB206.A2 as Connection503
@@ -5120,12 +5021,6 @@ model "banshee" {
         connect Bus208x1.C2 T208.C1 as Connection633
         connect Bus208x1.B2 T208.B1 as Connection634
         connect Bus208x1.A2 T208.A1 as Connection635
-        connect Bus208x3.C1 T208.C2 as Connection636
-        connect Bus208x3.B1 T208.B2 as Connection637
-        connect Bus208x3.A1 T208.A2 as Connection638
-        connect Bus208x3.C2 CB220.C1 as Connection639
-        connect Bus208x3.B2 CB220.B1 as Connection640
-        connect Bus208x3.A2 CB220.A1 as Connection641
         connect Bus208x2.C1 CB215.C2 as Connection651
         connect Bus208x2.B1 CB215.B2 as Connection652
         connect Bus208x2.A1 CB215.A2 as Connection653
@@ -5137,58 +5032,20 @@ model "banshee" {
         connect Bus204x3.A2 T203.A1 as Connection662
         connect T203.C2 Bus204x4.C1 as Connection663
         connect T203.B2 Bus204x4.B1 as Connection664
-        connect T203.A2 Bus204x4.A1 as Connection665
         connect Bus204x4.C2 CB222.C1 as Connection666
         connect Bus204x4.B2 CB222.B1 as Connection667
         connect Bus204x4.A2 CB222.A1 as Connection668
         connect CB222.C2 Bus205.C1 as Connection669
         connect CB222.B2 Bus205.B1 as Connection670
         connect CB222.A2 Bus205.A1 as Connection671
-        connect CB207.C1 Junction80 as Connection696
-        connect CB207.B1 Junction82 as Connection697
-        connect CB207.A1 Junction84 as Connection698
-        connect CB205.C1 Junction80 as Connection702
-        connect CB205.B1 Junction82 as Connection703
-        connect CB205.A1 Junction84 as Connection704
-        connect Junction85 Bus204.C2 as Connection705
-        connect Junction85 Junction80 as Connection707
         connect Junction86 Bus204.B2 as Connection708
-        connect Junction86 Junction82 as Connection710
         connect Junction87 Bus204.A2 as Connection711
-        connect Junction87 Junction84 as Connection713
         connect CB206.A1 Junction88 as Connection717
-        connect Junction88 Junction87 as Connection718
-        [
-            breakpoints = 9448, 8424
-        ]
         connect "Electric Tag25" Junction88 as Connection719
         connect CB206.B1 Junction89 as Connection720
-        connect Junction89 Junction86 as Connection721
-        [
-            breakpoints = 9416, 8448
-        ]
         connect "Electric Tag26" Junction89 as Connection722
         connect CB206.C1 Junction90 as Connection723
-        connect Junction90 Junction85 as Connection724
-        [
-            breakpoints = 9384, 8472
-        ]
         connect "Electric Tag27" Junction90 as Connection725
-        connect Junction91 Bus205.A2 as Connection730
-        [
-            breakpoints = 9688, 9056
-        ]
-        connect CB204.A1 Junction91 as Connection731
-        connect Junction92 Bus205.B2 as Connection733
-        [
-            breakpoints = 9656, 9080
-        ]
-        connect CB204.B1 Junction92 as Connection734
-        connect Junction93 Bus205.C2 as Connection736
-        [
-            breakpoints = 9624, 9104
-        ]
-        connect CB204.C1 Junction93 as Connection737
         connect CB204.C2 Bus205x3.C1 as Connection738
         connect CB204.B2 Bus205x3.B1 as Connection739
         connect CB204.A2 Bus205x3.A1 as Connection740
@@ -5211,13 +5068,10 @@ model "banshee" {
         connect Bus205x4.B2 Load_P3.B1 as Connection757
         connect Bus205x4.A2 Load_P3.A1 as Connection758
         connect CB208.A1 Junction94 as Connection759
-        connect Junction94 Junction91 as Connection760
         connect "Electric Tag13" Junction94 as Connection761
         connect CB208.B1 Junction95 as Connection762
-        connect Junction95 Junction92 as Connection763
         connect "Electric Tag14" Junction95 as Connection764
         connect CB208.C1 Junction96 as Connection765
-        connect Junction96 Junction93 as Connection766
         connect "Electric Tag15" Junction96 as Connection767
         connect Bus204x5.C1 CB205.C2 as Connection768
         connect Bus204x5.B1 CB205.B2 as Connection769
@@ -5242,7 +5096,6 @@ model "banshee" {
         connect Bus203x1.A2 T206.A1 as Connection791
         connect T206.C2 Bus206.C1 as Connection792
         connect T206.B2 Bus206.B1 as Connection793
-        connect T206.A2 Bus206.A1 as Connection794
         connect Bus206x1.C2 Load_P2.C1 as Connection795
         connect Bus206x1.B2 Load_P2.B1 as Connection796
         connect Bus206x1.A2 Load_P2.A1 as Connection797
@@ -5279,7 +5132,6 @@ model "banshee" {
         [
             breakpoints = 10456, 8832
         ]
-        connect CB213.A1 Junction106 as Connection844
         connect CB212.B1 Junction107 as Connection845
         [
             breakpoints = 10312, 8856
@@ -5313,9 +5165,9 @@ model "banshee" {
         connect Bus203x4.C2 PV.C as Connection863
         connect Bus203x4.B2 PV.B as Connection864
         connect Bus203x4.A2 PV.A as Connection865
-        connect Bus101x9.C2 C203.C1 as Connection869
-        connect Bus101x9.B2 C203.B1 as Connection870
-        connect Bus101x9.A2 C203.A1 as Connection871
+        connect Bus201x3.C2 C203.C1 as Connection869
+        connect Bus201x3.B2 C203.B1 as Connection870
+        connect Bus201x3.A2 C203.A1 as Connection871
         connect C203.C2 Bus208.C1 as Connection872
         connect C203.B2 Bus208.B1 as Connection873
         connect Junction109 Bus208.C2 as Connection878
@@ -5327,15 +5179,6 @@ model "banshee" {
         connect Junction111 Bus208.A2 as Connection884
         connect Junction111 CB215.A1 as Connection885
         connect Junction111 CB214.A1 as Connection886
-        connect Bus208x4.C2 CB221.C1 as Connection893
-        connect Bus208x4.B2 CB221.B1 as Connection894
-        connect Bus208x4.A2 CB221.A1 as Connection895
-        connect CB220.C2 Bus209.C1 as Connection896
-        connect CB220.B2 Bus209.B1 as Connection897
-        connect CB220.A2 Bus209.A1 as Connection898
-        connect CB221.C2 Bus210.C1 as Connection899
-        connect CB221.B2 Bus210.B1 as Connection900
-        connect CB221.A2 Bus210.A1 as Connection901
         connect Junction112 Bus209.C2 as Connection905
         connect Junction112 CB217.C1 as Connection906
         connect Junction112 Load_C4.C1 as Connection907
@@ -5499,9 +5342,9 @@ model "banshee" {
         connect Bus306x2.C1 F3GCB.C2 as Connection1132
         connect Bus306x2.B1 F3GCB.B2 as Connection1133
         connect Bus306x2.A1 F3GCB.A2 as Connection1134
-        connect Bus306x2.C2 Load_CHP.C1 as Connection1135
-        connect Bus306x2.B2 Load_CHP.B1 as Connection1136
-        connect Bus306x2.A2 Load_CHP.A1 as Connection1137
+        connect Bus306x2.C2 CHP.C1 as Connection1135
+        connect Bus306x2.B2 CHP.B1 as Connection1136
+        connect Bus306x2.A2 CHP.A1 as Connection1137
         connect Bus306x1.C2 Load_C6.C1 as Connection1150
         connect Bus306x1.B2 Load_C6.B1 as Connection1151
         connect Bus306x1.A2 Load_C6.A1 as Connection1152
@@ -5535,9 +5378,9 @@ model "banshee" {
         connect CB312.C2 Bus307.C1 as Connection1171
         connect CB312.B2 Bus307.B1 as Connection1172
         connect CB312.A2 Bus307.A1 as Connection1173
-        connect CB309.C2 Bus308.C1 as Connection1174
-        connect CB309.B2 Bus308.B1 as Connection1175
-        connect CB309.A2 Bus308.A1 as Connection1176
+        connect CB309.C2 Bus307x1.C1 as Connection1174
+        connect CB309.B2 Bus307x1.B1 as Connection1175
+        connect CB309.A2 Bus307x1.A1 as Connection1176
         connect CB309.B1 Junction145 as Connection1192
         connect Junction145 Bus307.B2 as Connection1193
         [
@@ -5553,9 +5396,9 @@ model "banshee" {
         [
             breakpoints = 14032, 8744
         ]
-        connect Bus308.C2 Load_P6.C1 as Connection1201
-        connect Bus308.B2 Load_P6.B1 as Connection1202
-        connect Bus308.A2 Load_P6.A1 as Connection1203
+        connect Bus307x1.C2 Load_P6.C1 as Connection1201
+        connect Bus307x1.B2 Load_P6.B1 as Connection1202
+        connect Bus307x1.A2 Load_P6.A1 as Connection1203
         connect Load_M6.A1 Junction148 as Connection1204
         connect Junction148 Junction146 as Connection1205
         connect "Electric Tag43" Junction148 as Connection1206
@@ -5565,12 +5408,6 @@ model "banshee" {
         connect Load_M6.C1 Junction150 as Connection1210
         connect Junction150 Junction147 as Connection1211
         connect "Electric Tag45" Junction150 as Connection1212
-        connect "Electric Tag46" C105.A1 as Connection1231
-        connect C105.A2 "Electric Tag49" as Connection1232
-        connect "Electric Tag47" C105.B1 as Connection1233
-        connect C105.B2 "Electric Tag50" as Connection1234
-        connect "Electric Tag48" C105.C1 as Connection1235
-        connect C105.C2 "Electric Tag51" as Connection1236
         connect "Electric Tag52" C107.A1 as Connection1237
         connect C107.A2 "Electric Tag55" as Connection1238
         connect "Electric Tag53" C107.B1 as Connection1239
@@ -5607,23 +5444,9 @@ model "banshee" {
         connect C108.A2 "Electric Tag85" as Connection1270
         connect C108.B2 "Electric Tag86" as Connection1271
         connect C108.C2 "Electric Tag87" as Connection1272
-        connect gnd1.node C101.N as Connection1273
-        connect gnd2.node C102.N as Connection1274
-        connect gnd3.node C104.N as Connection1275
-        connect gnd4.node C103.N as Connection1276
-        connect gnd6.node C106.N as Connection1278
-        connect gnd10.node C201.N as Connection1282
-        connect gnd11.node C202.N as Connection1283
-        connect gnd12.node C203.N as Connection1284
-        connect gnd16.node C301.N as Connection1288
-        connect gnd17.node C304.N as Connection1289
-        connect gnd18.node C302.N as Connection1290
-        connect gnd19.node C303.N as Connection1291
         connect Bus208x2.C2 T209.C1 as Connection1292
         connect Bus208x2.B2 T209.B1 as Connection1293
         connect Bus208x2.A2 T209.A1 as Connection1294
-        connect T209.C2 Bus208x4.C1 as Connection1295
-        connect T209.B2 Bus208x4.B1 as Connection1296
         connect Bus302x1.C2 T301.C1 as Connection1298
         connect Bus302x1.B2 T301.B1 as Connection1299
         connect Bus302x1.A2 T301.A1 as Connection1300
@@ -5702,126 +5525,179 @@ model "banshee" {
         connect Bus101x7.B2 "Electric Tag11" as Connection1368
         connect CB113.C2 Bus101x7.C1 as Connection1369
         connect Bus101x7.C2 "Electric Tag12" as Connection1370
-        connect Bus1.C1 V1.C1 as Connection1417
-        connect Bus1.B1 V1.B1 as Connection1419
-        connect Bus1.A1 V1.A1 as Connection1421
-        connect Junction158 C307.A1 as Connection1429
-        connect Junction159 C305.B2 as Connection1431
-        connect Junction159 C307.B1 as Connection1433
-        connect Junction160 C305.C2 as Connection1434
-        connect Junction160 C307.C1 as Connection1435
-        connect Junction161 C306.A1 as Connection1437
-        connect Junction161 Junction158 as Connection1438
-        connect Junction161 Bus1.A2 as Connection1439
-        connect Junction162 C306.B1 as Connection1440
-        connect Junction162 Junction159 as Connection1441
-        connect Junction162 Bus1.B2 as Connection1442
-        connect Junction163 C306.C1 as Connection1443
-        connect Junction163 Junction160 as Connection1444
-        connect Junction163 Bus1.C2 as Connection1445
-        connect C306.B2 Bus309.B1 as Connection1447
-        connect C306.C2 Bus309.C1 as Connection1448
-        connect Bus310.A1 C305.A1 as Connection1449
-        connect Bus310.B1 C305.B1 as Connection1450
-        connect Bus310.C1 C305.C1 as Connection1451
-        connect C307.B2 Bus311.B1 as Connection1452
-        connect Bus311.B2 CB2.B1 as Connection1453
-        connect Bus311.C1 C307.C2 as Connection1455
-        connect Bus311.A1 C307.A2 as Connection1457
-        connect Bus310.B2 CB1.B1 as Connection1459
-        connect Bus310.C2 CB1.C1 as Connection1460
-        connect CB226.C1 Bus309.C2 as Connection1461
-        connect CB226.B1 Bus309.B2 as Connection1462
-        connect gnd43.node C305.N2 as Connection1464
-        [
-            hide_name = True
-        ]
-        connect gnd42.node C305.N as Connection1465
-        [
-            hide_name = True
-        ]
-        connect gnd44.node C307.N as Connection1466
-        connect gnd46.node C306.N2 as Connection1467
-        connect gnd45.node C306.N as Connection1468
-        connect C105.N gnd47.node as Connection1469
-        connect C105.N2 gnd48.node as Connection1470
-        connect C107.N gnd49.node as Connection1471
-        connect C107.N2 gnd50.node as Connection1472
-        connect C108.N gnd51.node as Connection1473
-        connect C108.N2 gnd52.node as Connection1474
-        connect C109.N gnd53.node as Connection1475
-        connect C109.N2 gnd54.node as Connection1476
-        connect C204.N gnd55.node as Connection1477
-        connect C205.N gnd57.node as Connection1479
-        connect C205.N2 gnd58.node as Connection1480
-        connect C206.N gnd59.node as Connection1481
-        connect C206.N2 gnd60.node as Connection1482
-        connect gnd61.node C307.N2 as Connection1504
-        connect gnd65.node C201.N2 as Connection1511
-        connect gnd66.node C202.N2 as Connection1512
-        connect gnd67.node C301.N2 as Connection1513
-        connect gnd68.node C304.N2 as Connection1514
-        connect gnd69.node C203.N2 as Connection1515
-        connect Bus311.C2 CB2.C1 as Connection1516
+        connect Bus2.B2 CB2.B1 as Connection1453
+        connect Bus2.C2 CB2.C1 as Connection1516
         [
             breakpoints = 10392, 7608
         ]
-        connect CB226.A1 Bus309.A2 as Connection1518
+        connect V2.B1 Bus2.B1 as Connection1567
+        connect V2.A1 Bus2.A1 as Connection1568
+        connect CB1.C1 Bus1.C1 as Connection1575
+        connect CB1.B1 Bus1.B1 as Connection1576
+        connect CB1.A1 Bus1.A1 as Connection1577
+        connect V1.B1 Bus1.B2 as Connection1579
+        connect V1.A1 Bus1.A2 as Connection1580
+        connect Bus2.A2 CB2.A1 as Connection1584
         [
-            breakpoints = 10816, 7336; 10824, 7336
+            breakpoints = 10456, 7608
         ]
-        connect C204.N2 gnd56.node as Connection1520
-        connect C305.A2 Junction164 as Connection1521
-        connect Junction164 Junction158 as Connection1522
+        connect Bus3.C2 CB226.C1 as Connection1588
+        connect Bus3.B2 CB226.B1 as Connection1589
+        connect Bus3.A2 CB226.A1 as Connection1590
+        connect V3.B1 Bus3.B1 as Connection1592
+        connect V3.A1 Bus3.A1 as Connection1593
+        connect T208.C2 Bus209.C1 as Connection1604
+        connect T208.B2 Bus209.B1 as Connection1605
+        connect T209.C2 Bus210.C1 as Connection1607
+        connect T209.B2 Bus210.B1 as Connection1608
+        connect C105.A2 "Electric Tag49" as Connection1620
+        connect C203.A2 Bus208.A1 as Connection1629
         [
-            breakpoints = 10240, 7336; 10280, 7336
+            breakpoints = 11312, 8312
         ]
-        connect "Core Marker1.node" Junction164 as Connection1523
-        connect Bus310.A2 Junction165 as Connection1524
+        connect C202.A2 Bus203.A1 as Connection1630
         [
-            breakpoints = 10000, 7336; 9976, 7336
+            breakpoints = 10456, 8304
         ]
-        connect Junction165 CB1.A1 as Connection1525
-        connect "Core Marker2.node" Junction165 as Connection1526
-        connect T102.A2 Junction166 as Connection1527
-        connect Junction166 Bus102x4.A1 as Connection1528
-        connect "Core Marker3.node" Junction166 as Connection1529
-        connect Bus105x5.A1 Junction167 as Connection1530
-        connect Junction167 T103.A2 as Connection1531
-        connect "Core Marker4.node" Junction167 as Connection1532
-        connect Bus101x6.A1 Junction168 as Connection1533
-        connect Junction168 T107.A2 as Connection1534
-        connect "Core Marker5.node" Junction168 as Connection1535
-        connect CB2.A1 Junction169 as Connection1536
-        connect Junction169 Bus311.A2 as Connection1537
-        connect "Core Marker6.node" Junction169 as Connection1538
-        connect C201.A2 Junction170 as Connection1539
-        connect Junction170 Bus204.A1 as Connection1540
-        connect "Core Marker7.node" Junction170 as Connection1541
-        connect Bus203.A1 Junction171 as Connection1542
-        connect Junction171 C202.A2 as Connection1543
-        connect "Core Marker8.node" Junction171 as Connection1544
-        connect C203.A2 Junction172 as Connection1545
-        connect Junction172 Bus208.A1 as Connection1546
-        connect "Core Marker9.node" Junction172 as Connection1547
-        connect C306.A2 Junction173 as Connection1548
-        connect Junction173 Bus309.A1 as Connection1549
-        connect "Core Marker10.node" Junction173 as Connection1550
-        connect C301.A2 Junction174 as Connection1551
-        connect Junction174 Bus302.A1 as Connection1552
-        connect "Core Marker11.node" Junction174 as Connection1553
-        connect Bus301x5.A1 Junction175 as Connection1554
-        connect Junction175 C304.A2 as Connection1555
-        connect "Core Marker12.node" Junction175 as Connection1556
-        connect T209.A2 Junction176 as Connection1557
-        connect Junction176 Bus208x4.A1 as Connection1558
-        connect "Core Marker13.node" Junction176 as Connection1559
-    }
-
-    logically_deleted {
-        "gnd62"
-        "gnd63"
-        "gnd64"
+        connect Bus204.A1 C201.A2 as Connection1631
+        [
+            breakpoints = 9624, 8312
+        ]
+        connect C301.A2 Bus302.A1 as Connection1635
+        [
+            breakpoints = 12352, 8304
+        ]
+        connect Bus301x5.A1 C304.A2 as Connection1636
+        [
+            breakpoints = 12928, 8304
+        ]
+        connect V3.C1 Bus3.C1 as Connection1637
+        [
+            breakpoints = 13176, 7560
+        ]
+        connect V2.C1 Bus2.C1 as Connection1638
+        [
+            breakpoints = 10392, 7552
+        ]
+        connect V1.C1 Bus1.C2 as Connection1639
+        [
+            breakpoints = 7832, 7560
+        ]
+        connect T206.A2 Bus206.A1 as Connection1658
+        [
+            breakpoints = 10192, 8752
+        ]
+        connect T203.A2 Bus204x4.A1 as Connection1659
+        [
+            breakpoints = 9624, 8752
+        ]
+        connect gnd70.node "Coupling C105.N1" as Connection1672
+        connect gnd71.node "Coupling C105.N2" as Connection1673
+        connect "Electric Tag50" C105.B2 as Connection1685
+        connect "Electric Tag51" C105.C2 as Connection1684
+        connect "Coupling C105.A2" "Electric Tag46" as Connection1686
+        connect "Coupling C105.B2" "Electric Tag47" as Connection1687
+        connect "Coupling C105.C2" "Electric Tag48" as Connection1688
+        connect C105.A1 "Coupling C105.A1" as Connection1689
+        connect C105.B1 "Coupling C105.B1" as Connection1690
+        connect C105.C1 "Coupling C105.C1" as Connection1691
+        connect Bus101.A2 Junction164 as Connection1717
+        connect Junction164 CB102.A1 as Connection1718
+        [
+            breakpoints = 7896, 7864
+        ]
+        connect CB102.B1 Junction165 as Connection1720
+        connect Junction165 Bus101.B2 as Connection1721
+        [
+            breakpoints = 7864, 7888
+        ]
+        connect CB102.C1 Junction166 as Connection1723
+        connect Junction166 Bus101.C2 as Connection1724
+        [
+            breakpoints = 7832, 7912
+        ]
+        connect CB101.A1 Junction167 as Connection1726
+        connect Junction167 Junction164 as Connection1727
+        connect CB101.B1 Junction168 as Connection1729
+        connect Junction168 Junction165 as Connection1730
+        connect CB103.B1 Junction168 as Connection1731
+        connect CB101.C1 Junction169 as Connection1732
+        connect Junction169 Junction166 as Connection1733
+        connect CB103.C1 Junction169 as Connection1734
+        connect Junction170 "Core Marker1.node" as Connection1743
+        connect Junction170 CB103.A1 as Connection1744
+        connect Junction170 Junction167 as Connection1745
+        connect Bus101x2.C2 C102.C1 as Connection1762
+        connect C102.C2 Bus105.C1 as Connection1763
+        connect T102.A2 Bus102x4.A1 as Connection1767
+        [
+            breakpoints = 7176, 8752; 7176, 8752
+        ]
+        connect T103.A2 Bus105x5.A1 as Connection1771
+        [
+            breakpoints = 7680, 8944; 7680, 8952
+        ]
+        connect Bus105x5.A2 Junction173 as Connection1772
+        connect Junction173 CB115.A1 as Connection1773
+        connect "Core Marker3.node" Junction173 as Connection1774
+        connect T107.A2 Bus101x6.A1 as Connection1775
+        [
+            breakpoints = 8448, 8760; 8448, 8760
+        ]
+        connect Bus101x6.C2 Junction174 as Connection1776
+        connect Junction174 CB113.C1 as Connection1777
+        connect "Core Marker4.node" Junction174 as Connection1778
+        connect Bus102x4.A2 CB116.A1 as Connection1779
+        [
+            breakpoints = 7176, 8824
+        ]
+        connect Bus102x4.C2 Junction175 as Connection1780
+        connect Junction175 CB116.C1 as Connection1781
+        connect "Core Marker2.node" Junction175 as Connection1782
+        connect CB205.B1 Junction86 as Connection1788
+        [
+            breakpoints = 9656, 8448
+        ]
+        connect CB205.A1 Junction87 as Connection1787
+        [
+            breakpoints = 9688, 8424
+        ]
+        connect Bus204.C2 Junction176 as Connection1789
+        connect CB205.C1 Junction176 as Connection1791
+        connect Junction177 Bus205.C2 as Connection1792
+        connect Junction177 CB204.C1 as Connection1793
+        connect Junction177 Junction96 as Connection1794
+        connect Junction178 Bus205.B2 as Connection1795
+        connect Junction178 Junction95 as Connection1796
+        connect Junction178 CB204.B1 as Connection1797
+        connect Junction179 Bus205.A2 as Connection1798
+        connect Junction179 Junction94 as Connection1799
+        connect Junction179 CB204.A1 as Connection1800
+        connect Junction180 CB207.C1 as Connection1801
+        connect Junction180 Junction176 as Connection1802
+        connect Junction180 Junction90 as Connection1803
+        connect Junction181 CB207.B1 as Connection1804
+        connect Junction181 Junction89 as Connection1805
+        connect Junction181 Junction86 as Connection1806
+        connect Junction182 CB207.A1 as Connection1807
+        connect Junction182 Junction88 as Connection1808
+        connect Junction182 Junction87 as Connection1809
+        connect Bus207.A1 T210.A2 as Connection1810
+        [
+            breakpoints = 10456, 8768; 10456, 8752
+        ]
+        connect CB213.A1 Junction183 as Connection1811
+        connect Junction183 Junction106 as Connection1812
+        connect "Core Marker7.node" Junction183 as Connection1813
+        connect T208.A2 Junction184 as Connection1815
+        [
+            breakpoints = 11112, 8784
+        ]
+        connect Junction184 Bus209.A1 as Connection1816
+        connect "Core Marker5.node" Junction184 as Connection1817
+        connect T209.A2 Junction185 as Connection1819
+        connect Junction185 Bus210.A1 as Connection1820
+        connect "Core Marker6.node" Junction185 as Connection1821
     }
 
     default {
@@ -5843,6 +5719,20 @@ model "banshee" {
             power_meas = "False"
             execution_rate = "100e-6"
             enable_output = "False"
+        }
+
+        "core/Four Phase Core Coupling" {
+            snb_type_i = "none"
+            R1 = "100e3"
+            C1 = "1e-06"
+            C2 = "1e-06"
+            fixed_snb_i = "false"
+            snb_type_u = "none"
+            R2 = "0.1"
+            L1 = "0.1"
+            L2 = "0.1"
+            fixed_snb_u = "false"
+            cpl_connection = "star"
         }
 
         "OpenDSS/Line" {
