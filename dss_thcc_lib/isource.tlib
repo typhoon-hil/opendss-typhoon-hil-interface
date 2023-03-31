@@ -1,0 +1,206 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem Isource {
+            layout = static
+            label = "I"
+            component "core/Current Source" Ia {
+                init_frequency = "Frequency"
+                init_phase = "Angle - 0"
+                init_rms_value = "amps"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8096
+                rotation = down
+            ]
+
+            component "core/Current Source" Ib {
+                init_frequency = "Frequency"
+                init_phase = "Angle - 120"
+                init_rms_value = "amps"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8192
+                rotation = down
+            ]
+
+            component "core/Current Source" Ic {
+                init_frequency = "Frequency"
+                init_phase = "Angle - 240"
+                init_rms_value = "amps"
+                init_source_nature = "Sine"
+            }
+            [
+                position = 8112, 8288
+                rotation = down
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 8000, 8400
+            ]
+
+            port A1 {
+                position = 32.0, -32.0
+                kind = pe
+            }
+            [
+                position = 8496, 8096
+                rotation = down
+            ]
+
+            port B1 {
+                position = 32.0, 0.0
+                kind = pe
+            }
+            [
+                position = 8496, 8192
+                rotation = down
+            ]
+
+            port C1 {
+                position = 32.0, 32.0
+                kind = pe
+            }
+            [
+                position = 8496, 8288
+                rotation = down
+            ]
+
+            connect Ib.p_node B1 as Connection25
+            connect Ia.p_node A1 as Connection26
+            connect Ic.p_node C1 as Connection27
+            connect gnd1.node Ia.n_node as Connection31
+            connect Ic.n_node gnd1.node as Connection32
+            connect Ib.n_node gnd1.node as Connection33
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The most common use of a current source is to represent harmonic sources and to be used in frequency response scans of circuit models.<br>Note that if the device you are trying to model produces or consumes power, it is generally better to model it with a Load or Generator object.</p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=168"
+
+                amps {
+                    label = "Current"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "A"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Angle {
+                    label = "Angle"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "°"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Frequency {
+                    label = "Frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_source_values(mdl, container_handle)
+                    ENDCODE
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if old_value == new_value:
+                            comp_script.update_frequency_property(mdl, container_handle, init=True)
+                        else:
+                            comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+                }
+
+                BaseFreq {
+                    label = "Base frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    nonvisible
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    import component_scripts.comp_isource as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_source_values(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4328, 4192
+            size = 64, 96
+        ]
+
+    }
+
+}

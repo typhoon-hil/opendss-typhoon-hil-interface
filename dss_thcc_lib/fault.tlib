@@ -1,0 +1,170 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem Fault {
+            layout = static
+            component "core/Grid Fault" F1 {
+                fault_type = "A-B-C-GND"
+                resistance = "0.00030000000000000003"
+            }
+            [
+                position = 7736, 7952
+                size = 64, 64
+            ]
+
+            port A1 {
+                label = "A1"
+                position = left top
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 7856
+            ]
+
+            port B1 {
+                label = "B1"
+                position = left center
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 7952
+            ]
+
+            port C1 {
+                label = "C1"
+                position = left bottom
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 8048
+            ]
+
+            port A2 {
+                label = "A2"
+                position = right top
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 7856
+                scale = -1, 1
+            ]
+
+            port B2 {
+                label = "B2"
+                position = right center
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 7952
+                scale = -1, 1
+            ]
+
+            port C2 {
+                label = "C2"
+                position = 32.0, 32.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 8048
+                scale = -1, 1
+            ]
+
+            port gnd {
+                position = bottom center
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7736, 8144
+                rotation = left
+            ]
+
+            connect A1 F1.A1 as Connection1
+            connect B1 F1.B1 as Connection2
+            connect C1 F1.C1 as Connection3
+            connect A2 F1.A2 as Connection4
+            connect B2 F1.B2 as Connection5
+            connect C2 F1.C2 as Connection6
+            connect gnd F1.GND as Connection7
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The OpenDSS Fault object is a resistor network, a two-terminal device in which the second terminal defaults to ground.<br><br>Only one Bus must be connected to either side this component.</p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=169"
+
+                type {
+                    label = "Fault type"
+                    widget = combo
+                    combo_values = "A-B-C-GND", "A-B-GND", "A-C-GND", "B-C-GND", "A-GND", "B-GND", "C-GND", "A-B-C", "A-B", "A-C", "B-C", "None"
+                    type = string
+                    default_value = "A-B-C-GND"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_inner_fault(mdl, container_handle, "fault_type", new_value)
+                        comp_script.update_inner_gnd(mdl, container_handle, created_ports)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                resistance {
+                    label = "Resistance (phase)"
+                    widget = edit
+                    type = string
+                    default_value = "0.0001"
+                    unit = "Ω"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_inner_fault(mdl, container_handle, "resistance", new_value)
+                    ENDCODE
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    import component_scripts.comp_fault as comp_script
+                    importlib.reload(comp_script)
+
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4768, 4320
+            size = 64, 96
+        ]
+
+    }
+
+}

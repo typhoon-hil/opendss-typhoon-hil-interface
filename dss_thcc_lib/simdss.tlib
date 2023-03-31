@@ -1,0 +1,358 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem SimDSS {
+            layout = static
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Use this component to control the simulation and interact with the model.<br><br>Define the solution type and voltage bases in the Simulation tab. You may also append OpenDSS commands or entire .dss files to the generated code.<br><br>You can display the OpenDSS calculation results by selecting the desired output in the Show tab. Alternatively, you can generate an automatic report from the Report tab.<br><br>From the Advanced tab some simulation parameters can be set and OpenDSS text commands can be run.</p></body></html>"
+
+                sim_mode {
+                    label = "Simulation mode"
+                    widget = combo
+                    combo_values = "Snap", "Faultstudy", "Time Series"
+                    type = string
+                    default_value = "Snap"
+                    group = "Simulation:1"
+                    no_evaluate
+                }
+
+                basefrequency {
+                    label = "Base frequency"
+                    widget = edit
+                    type = string
+                    default_value = "60"
+                    unit = "Hz"
+                    group = "Simulation"
+                }
+
+                voltagebases {
+                    label = "Voltage bases"
+                    widget = edit
+                    type = generic
+                    default_value = "[0.480, 12.47]"
+                    unit = "kV"
+                    group = "Simulation"
+                }
+
+                tsstp {
+                    label = "Time Series Step size"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "h"
+                    group = "Simulation"
+                }
+
+                tspoints {
+                    label = "Time Series num. points"
+                    widget = edit
+                    type = generic
+                    default_value = "24"
+                    group = "Simulation"
+                }
+
+                append {
+                    label = "Append DSS commands"
+                    widget = button
+                    type = string
+                    default_value = "Open"
+                    group = "Simulation"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.append_commands(mdl, container_handle)
+                    ENDCODE
+                }
+
+                export_to_dss {
+                    label = "Start the simulation"
+                    widget = button
+                    type = string
+                    default_value = "Run"
+                    group = "Simulation"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.sim_with_opendss(mdl, container_handle)
+                    ENDCODE
+                }
+
+                sim_status {
+                    label = "Last simulation status"
+                    widget = edit
+                    type = string
+                    default_value = "None"
+                    group = "Simulation"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                sim_counter {
+                    label = "sim_counter"
+                    widget = edit
+                    type = string
+                    default_value = "0"
+                    group = "Simulation"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                voltages {
+                    label = "Voltages"
+                    widget = combo
+                    combo_values = "LN", "LL", "LN Nodes", "LN Elements", "LL Nodes"
+                    type = string
+                    default_value = "LN Nodes"
+                    group = "Show:2"
+                    no_evaluate
+                }
+
+                show_v {
+                    widget = button
+                    type = string
+                    default_value = "Show voltages"
+                    group = "Show"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.command_buttons(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                currents {
+                    label = "Currents"
+                    widget = combo
+                    combo_values = "Seq", "Elem", "Elem Resid"
+                    type = string
+                    default_value = "Seq"
+                    group = "Show"
+                    no_evaluate
+                }
+
+                show_c {
+                    widget = button
+                    type = string
+                    default_value = "Show currents"
+                    group = "Show"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.command_buttons(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                powers {
+                    label = "Powers"
+                    widget = combo
+                    combo_values = "kVA", "MVA", "kVA Elem", "MVA Elem"
+                    type = string
+                    default_value = "kVA"
+                    group = "Show"
+                    no_evaluate
+                }
+
+                show_p {
+                    widget = button
+                    type = string
+                    default_value = "Show powers"
+                    group = "Show"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.command_buttons(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                misc {
+                    label = "Misc"
+                    widget = combo
+                    combo_values = "Buses", "Elements", "Generators", "Losses"
+                    type = string
+                    default_value = "Buses"
+                    group = "Show"
+                    no_evaluate
+                }
+
+                show_misc {
+                    widget = button
+                    type = string
+                    default_value = "Show misc"
+                    group = "Show"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.command_buttons(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                report_snap {
+                    label = "Power flow report"
+                    widget = button
+                    type = string
+                    default_value = "Generate"
+                    group = "Report:3"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.report(mdl, container_handle, mode="snap")
+                    ENDCODE
+                }
+
+                report_fault {
+                    label = "Fault study report"
+                    widget = button
+                    type = string
+                    default_value = "Generate"
+                    group = "Report:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.report(mdl, container_handle, mode="fault")
+                    ENDCODE
+                }
+
+                algorithm {
+                    label = "Algorithm"
+                    widget = combo
+                    combo_values = "Normal", "Newton"
+                    type = string
+                    default_value = "Normal"
+                    group = "Advanced:4"
+                    no_evaluate
+                }
+
+                loadmodel {
+                    label = "Load model"
+                    widget = combo
+                    combo_values = "Power flow", "Admittance"
+                    type = string
+                    default_value = "Power flow"
+                    group = "Advanced"
+                    no_evaluate
+                }
+
+                miniterations {
+                    label = "Minimum iterations"
+                    widget = edit
+                    type = generic
+                    default_value = "2"
+                    group = "Advanced"
+                }
+
+                maxiter {
+                    label = "Maximum iterations"
+                    widget = edit
+                    type = generic
+                    default_value = "15"
+                    group = "Advanced"
+                }
+
+                command {
+                    label = "Command"
+                    widget = edit
+                    type = generic
+                    default_value = "show voltages LN"
+                    group = "Advanced"
+                    no_evaluate
+                }
+
+                run {
+                    widget = button
+                    type = string
+                    default_value = "Run"
+                    group = "Advanced"
+                    keepline
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.run_command(mdl, container_handle)
+                    ENDCODE
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.set_basefrequency_ns_var(mdl, item_handle)
+
+                ENDCODE
+
+                CODE init
+                    import importlib
+                    import pathlib
+                    import sys
+
+                    import typhoon.util.path as up
+
+                    # PROGRAM FILES python_portable path
+                    py3_port_path = str(pathlib.Path(up.get_base_python_portable_path()).joinpath("lib", "site-packages"))
+                    if py3_port_path.lower() not in [str(p).lower() for p in sys.path]:
+                        mdl.info(f"adding {py3_port_path}")
+                        sys.path.append(py3_port_path)
+
+                    # APPDATA python_portable path
+                    py3_port_path_appdata = str(pathlib.Path(up.get_python_portable_path()).joinpath("lib", "site-packages"))
+                    if py3_port_path_appdata.lower() not in [str(p).lower() for p in sys.path]:
+                        mdl.info(f"adding {py3_port_path_appdata}")
+                        sys.path.append(py3_port_path_appdata)
+
+                    import component_scripts.comp_simdss as comp_script
+
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+                    comp_script.set_basefrequency_ns_var(mdl, item_handle)
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.add_python_portable_to_path(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE post_copy
+                    mdl.info("You must add a new SimDSS component from the library instead of copying to another model.")
+                ENDCODE
+            }
+        }
+        [
+            position = 4480, 3904
+            size = 96, 96
+        ]
+
+    }
+
+}

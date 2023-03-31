@@ -130,7 +130,7 @@ def generate_output_files(output_circuit):
         solve_mode = "direct"
 
     # Set of component types after conversion
-    converted_component_types = set(comp.type for comp in components)
+    converted_component_types = set(comp.type for comp in components if comp.type)
 
     # Add general objects (may be created by the TSE GUI)
     if dss_data_path.joinpath("linecodes.dss").is_file():
@@ -193,7 +193,7 @@ def generate_output_files(output_circuit):
         f'{simulation_parameter_lines}\n'
 
         f'// Load all components from the files inside the "data" folder\n'
-        f'set Datapath="{str(dss_data_path)}"\n\n'
+        f'set Datapath=data\n\n'
         f'{redirect_paths}\n\n'
 
         f'{"// User-appended commands from TSE before the solution" + chr(10) if append_commands_before else ""}'
