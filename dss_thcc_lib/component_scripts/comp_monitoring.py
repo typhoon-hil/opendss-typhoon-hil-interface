@@ -694,12 +694,6 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
 
             plt.show()
 
-            # with open(csv_file_path, 'r') as csvfile:
-            #    csvread = csv.reader(csvfile)
-            #    for row in csvread:
-            #        print(row)
-            # print(csv_file_path)
-
     def return_updated_dict(self):
         self.accept()
 

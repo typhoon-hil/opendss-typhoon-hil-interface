@@ -38,8 +38,6 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
         for p in phase_letters:
             terminal_list.append(f"{p}{n}")
 
-    print(tse_component)
-    print(terminal_groups_dict)
     # Find the Bus components that are connected to the current component
     connected_buses = tse_fns.connected_components(tse_component, comp_type=constants.DSS_BUS)
 
@@ -69,7 +67,6 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
                 print(sequence)
                 terminal_order = [str(ord(ph[0]) - 64) if ph in ['A', 'B', 'C', 'G'] else '0' for ph in sequence]
                 terminal_order = '.'.join(terminal_order)
-                print(terminal_order)
                 bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
 
     if floating_neutral:
