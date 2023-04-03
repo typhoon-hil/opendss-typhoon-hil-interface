@@ -16,6 +16,7 @@ library "OpenDSS" {
 				VCn = "False"
 				enable_out = "False"
 				P_method = "RMS based"
+				remove_snubber = "True"
 			}
 			[
 				position = 7536, 7952
