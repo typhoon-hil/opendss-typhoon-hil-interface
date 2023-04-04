@@ -170,11 +170,11 @@ def generate_output_files(output_circuit):
     # Appended commands from TSE component
     appended_commands_before_file = 'appended_commands_before.dss'
     appended_commands_after_file = 'appended_commands_after.dss'
-    if dss_folder_path.joinpath(appended_commands_before_file).is_file():
+    if dss_data_path.joinpath(appended_commands_before_file).is_file():
         append_commands_before = f"redirect {appended_commands_before_file}\n\n"
     else:
         append_commands_before = ""
-    if dss_folder_path.joinpath(appended_commands_after_file).is_file():
+    if dss_data_path.joinpath(appended_commands_after_file).is_file():
         append_commands_after = f"redirect {appended_commands_after_file}\n\n"
     else:
         append_commands_after = ""

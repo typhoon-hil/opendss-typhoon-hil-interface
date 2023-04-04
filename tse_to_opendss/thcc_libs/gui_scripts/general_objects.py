@@ -457,7 +457,8 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
         self.list_loadshapes.itemDoubleClicked.connect(self.rename_object_step1)
         self.loadshapes_delegate = self.list_loadshapes.itemDelegate()
-        self.loadshapes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text(), "loadshape"))
+        self.loadshapes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
+        self.loadshapes_delegate.closeEditor.connect(lambda _: self.rename_object_step3("loadshape"))
         self.list_loadshapes.itemSelectionChanged.connect(
             lambda: self.update_parameters_from_dict(self.list_loadshapes))
         self.list_loadshapes.itemSelectionChanged.connect(self.update_csv_parameters)
