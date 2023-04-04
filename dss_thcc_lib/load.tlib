@@ -871,7 +871,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.load_pre_compile_function(mdl, item_handle, prop_dict)
+                        comp_script.load_pre_compile_function(mdl, container_handle, prop_dict)
                     ENDCODE
                 }
 

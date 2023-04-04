@@ -118,7 +118,7 @@ def initialization_function_calls(mdl, mask_handle):
     comp_type = mdl.get_property_value(id_prop)
 
     if comp_type == "Line":
-        import comp_line
+        import component_scripts.comp_line as comp_line
         comp_line.show_hide_param_inputs(mdl, mask_handle, "Symmetrical")
 
 
