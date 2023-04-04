@@ -313,10 +313,10 @@ def command_buttons(mdl, mask_handle, prop_handle):
 def report(mdl, mask_handle, mode="snap"):
     try:
         import tse_to_opendss
-        import extra.auto_report.power_flow_report as pf_rep
-        import extra.auto_report.fault_report as fault_rep
-        import extra.auto_report.comp_data_report as comp_rep
-        import extra.auto_report.time_series_report as ts_rep
+        import dss_thcc_lib.extra.auto_report.power_flow_report as pf_rep
+        import dss_thcc_lib.extra.auto_report.fault_report as fault_rep
+        import dss_thcc_lib.extra.auto_report.comp_data_report as comp_rep
+        import dss_thcc_lib.extra.auto_report.time_series_report as ts_rep
 
         mdlfile = mdl.get_model_file_path()
 
