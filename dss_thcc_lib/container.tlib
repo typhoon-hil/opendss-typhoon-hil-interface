@@ -27,7 +27,7 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE button_clicked
-                        import component_scripts.comp_container as comp_container
+                        import dss_thcc_lib.component_scripts.comp_container as comp_container
                         comp_container.apply_mask_button_handler(mdl, container_handle)
                     ENDCODE
                 }
@@ -66,7 +66,7 @@ library "OpenDSS" {
                 CODE init
                     import importlib
 
-                    import component_scripts.comp_container as comp_container
+                    import dss_thcc_lib.component_scripts.comp_container as comp_container
                     importlib.reload(comp_container)
 
                     comp_container.define_icon(mdl, item_handle)

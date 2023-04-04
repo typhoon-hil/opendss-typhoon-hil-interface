@@ -326,7 +326,7 @@ library "OpenDSS" {
                         mdl.info(f"adding {py3_port_path_appdata}")
                         sys.path.append(py3_port_path_appdata)
 
-                    import component_scripts.comp_simdss as comp_script
+                    import dss_thcc_lib.component_scripts.comp_simdss as comp_script
 
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):

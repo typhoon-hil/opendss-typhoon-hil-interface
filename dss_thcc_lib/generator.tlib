@@ -2974,8 +2974,8 @@ Te_mem = Te;
                 CODE init
                     import importlib
 
-                    import component_scripts.comp_generator as comp_script
-                    import component_scripts.comp_load as comp_script2
+                    import dss_thcc_lib.component_scripts.comp_generator as comp_script
+                    import dss_thcc_lib.component_scripts.comp_load as comp_script2
                     importlib.reload(comp_script)
                     importlib.reload(comp_script2)
 

@@ -105,7 +105,7 @@ class Line(TwoTerminal):
                 linecode_props = {
                     "rmatrix": tse_properties['rmatrix'],
                     "cmatrix": tse_properties['cmatrix'],
-                    "lmatrix": tse_properties['lmatrix']
+                    "xmatrix": tse_properties['xmatrix']
                 }
 
             #############

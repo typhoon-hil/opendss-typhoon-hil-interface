@@ -799,7 +799,7 @@ library "OpenDSS" {
                 CODE init
                     import importlib
 
-                    import component_scripts.comp_tptransf as comp_script
+                    import dss_thcc_lib.component_scripts.comp_tptransf as comp_script
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script

@@ -208,7 +208,7 @@ mdl.set_handler_code(_Capacitor_Bank_mask, "define_icon", _Capacitor_Bank_mask_d
 _Capacitor_Bank_mask_init = """
 import importlib
 
-import component_scripts.comp_capacitor as comp_script
+import dss_thcc_lib.component_scripts.comp_capacitor as comp_script
 
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
@@ -511,7 +511,7 @@ mdl.set_handler_code(_Controlled_Switch_mask, "define_icon", _Controlled_Switch_
 _Controlled_Switch_mask_init = """
 import importlib
 
-import component_scripts.comp_ctrlsw as comp_script
+import dss_thcc_lib.component_scripts.comp_ctrlsw as comp_script
 importlib.reload(comp_script)
 
 def return_comp_script(mdl, item_handle):
@@ -719,7 +719,7 @@ mdl.set_handler_code(_Fault_mask, "define_icon", _Fault_mask_define_icon)
 _Fault_mask_init = """
 import importlib
 
-import component_scripts.comp_fault as comp_script
+import dss_thcc_lib.component_scripts.comp_fault as comp_script
 importlib.reload(comp_script)
 
 def return_comp_script(mdl, item_handle):
@@ -2311,8 +2311,8 @@ mdl.set_handler_code(_Generator_mask, "define_icon", _Generator_mask_define_icon
 _Generator_mask_init = """
 import importlib
 
-import component_scripts.comp_generator as comp_script
-import component_scripts.comp_load as comp_script2
+import dss_thcc_lib.component_scripts.comp_generator as comp_script
+import dss_thcc_lib.component_scripts.comp_load as comp_script2
 importlib.reload(comp_script)
 importlib.reload(comp_script2)
 
@@ -5154,7 +5154,7 @@ mdl.set_handler_code(_Isource_mask, "define_icon", _Isource_mask_define_icon)
 _Isource_mask_init = """
 import importlib
 
-import component_scripts.comp_isource as comp_script
+import dss_thcc_lib.component_scripts.comp_isource as comp_script
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
     return comp_script
@@ -5846,7 +5846,7 @@ mdl.set_handler_code(_Line_mask, "define_icon", _Line_mask_define_icon)
 _Line_mask_init = """
 import importlib
 
-import component_scripts.comp_line as comp_script
+import dss_thcc_lib.component_scripts.comp_line as comp_script
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
     return comp_script
@@ -7146,7 +7146,7 @@ mdl.set_handler_code(_Load_mask, "define_icon", _Load_mask_define_icon)
 _Load_mask_init = """
 import importlib
 
-import component_scripts.comp_load as comp_script
+import dss_thcc_lib.component_scripts.comp_load as comp_script
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
     return comp_script
@@ -8015,7 +8015,7 @@ mdl.set_handler_code(_Single_Phase_Transformer_mask, "define_icon", _Single_Phas
 _Single_Phase_Transformer_mask_init = """
 import importlib
 
-import component_scripts.comp_sptransf as comp_script
+import dss_thcc_lib.component_scripts.comp_sptransf as comp_script
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
     return comp_script
@@ -8983,7 +8983,7 @@ mdl.set_handler_code(_Three_Phase_Transformer_mask, "define_icon", _Three_Phase_
 _Three_Phase_Transformer_mask_init = """
 import importlib
 
-import component_scripts.comp_tptransf as comp_script
+import dss_thcc_lib.component_scripts.comp_tptransf as comp_script
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
     return comp_script
@@ -10493,8 +10493,8 @@ mdl.set_handler_code(_VSConverter_mask, "define_icon", _VSConverter_mask_define_
 _VSConverter_mask_init = """
 import importlib
 
-import component_scripts.comp_vsc as comp_script
-import component_scripts.comp_load as comp_script2
+import dss_thcc_lib.component_scripts.comp_vsc as comp_script
+import dss_thcc_lib.component_scripts.comp_load as comp_script2
 importlib.reload(comp_script)
 importlib.reload(comp_script2)
 
@@ -15914,7 +15914,7 @@ mdl.set_handler_code(_Vsource_mask, "define_icon", _Vsource_mask_define_icon)
 _Vsource_mask_init = """
 import importlib
 
-import component_scripts.comp_vsource as comp_script
+import dss_thcc_lib.component_scripts.comp_vsource as comp_script
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
     return comp_script
@@ -16774,7 +16774,7 @@ mdl.set_handler_code(_Storage_mask, "define_icon", _Storage_mask_define_icon)
 _Storage_mask_init = """
 import importlib
 
-import component_scripts.comp_storage as comp_script
+import dss_thcc_lib.component_scripts.comp_storage as comp_script
 importlib.reload(comp_script)
 def return_comp_script(mdl, item_handle):
     return comp_script
@@ -18754,154 +18754,295 @@ _Storage_Loadshape_Point_Calculator_Advanced_C_function1 = mdl.create_component(
     hide_name=False,
     size=(144, 240)
 )
-mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "arb_defs"), "/*Begin code section*/
-double slopes[loadshape_n_points] = {0};
+mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "arb_defs"), "/*Begin code section*/
+
+double slopes[loadshape_n_points] = {0};
+
 /*End code section*/")
 mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "global_variables"), "real out_value;real ls_interval;int idx;real end_point;real bat_full;real bat_on_reserve;real saved_point;int old_index;")
-mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "init_fnc"), "/*Begin code section*/
-start_index = 0;
-old_index = start_index;
-end_index = 1;
-idle_signal = 0;
+mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "init_fnc"), "/*Begin code section*/
+
+start_index = 0;
+
+old_index = start_index;
+
+end_index = 1;
+
+idle_signal = 0;
+
 /*End code section*/")
 mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "input_terminals"), "real loadshape_array;inherit time_array;int input_mode;int input_idx;real input_time;real bat_soc;")
 mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "input_terminals_dimensions"), "inherit;inherit;inherit;inherit;inherit;inherit")
 mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "input_terminals_feedthrough"), "True;True;True;True;True;True")
 mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "input_terminals_show_labels"), "True;True;True;True;True;True")
-mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "output_fnc"), "/*Begin code section*/
-if (bat_soc <= 1.001*pct_reserve){
-    bat_full = 0;
-    bat_on_reserve = 1;
-    }
-else if (bat_soc >= 99.999){
-    bat_full = 1;
-    bat_on_reserve = 0;
-    }
-else {
-    bat_full = 0;
-    bat_on_reserve = 0;
-    }
-
-if (input_mode == 0){
-    // Loadshape index mode
-    // input is the index
-
-    // Limit the index values
-    if (input_idx > loadshape_n_points - 1) {
-        input_idx = loadshape_n_points - 1;
-    }
-    else if (input_idx < 0) {
-        input_idx = 0;
-    }
-
-    out_value = loadshape_array[input_idx];
-}
-else if (input_mode == 1){
-    // Time mode
-    // input is the time
-
-    if (input_time < 1) {
-        // Preset value for the first step
-        out_value = 0;
-        saved_point = loadshape_array[0];
-        }
-
-    else{
-        idle_signal = 1;
-
-        if (loadshape_int == 0){
-            // Variable time interval
-            if (input_time >= (time_array[loadshape_n_points - 1])){
-                start_index = loadshape_n_points - 1;
-                end_index = 0;
-                input_time = fmod(input_time, time_array[loadshape_n_points - 1]);
-            }
-            else{
-                start_index = 0;
-                end_index = 1;
-                input_time = input_time;
-            }
-            for (idx = 0; idx < loadshape_n_points; idx++){
-                if (input_time >= time_array[idx]){
-                    start_index = idx;
-                    end_index = start_index + 1;
-                }
-            }
-
-            // If last index, next index should be 0
-            if (start_index == (loadshape_n_points - 1)){
-                end_index = 0;
-                ls_interval = 1;
-            }
-            else{
-                ls_interval = time_array[end_index] - time_array[start_index];
-            }
-        }
-        else{
-            // Fixed time interval
-            input_time = fmod(input_time - 1, loadshape_int*loadshape_n_points);
-            start_index = input_time / loadshape_int;
-            end_index = start_index + 1;
-
-            ls_interval = loadshape_int;
-            if (start_index == (loadshape_n_points - 1)){
-                end_index = 0;
-            }
-        }
-
-        start_point = loadshape_array[start_index];
-        if (start_point == 0){
-            start_point = -pct_idlingkw/100;
-            idle_signal = 0;
-        }
-        end_point = loadshape_array[end_index];
-        if (end_point == 0){
-            end_point = -pct_idlingkw/100;
-        }
-
-        slope = (end_point - start_point)/ls_interval;
-
-        if (old_index != start_index){
-            saved_point = out_value;
-            old_index = start_index;
-        }
-
-         // If the battery will be full / on reserve on the next step, power reference becomes just the idle power
-        if (((end_point >= -pct_idlingkw/100) & (bat_on_reserve == 1)) | ((end_point <= -pct_idlingkw/100) & (bat_full == 1))){
-            end_point = -pct_idlingkw/100;
-            //idle_signal = 0;
-            //end_point = 0;
-            //slope = (end_point - saved_point)/ls_interval;;
-            //start_point = saved_point;
-        }
-        //else{
-        slope = (end_point - saved_point)/ls_interval;
-        start_point = saved_point;
-        //}
-
-        if (loadshape_int == 0){
-            if (start_index == (loadshape_n_points - 1)){
-                out_value = start_point + slope * input_time;
-            }
-            else{
-                out_value = start_point + slope * (input_time - time_array[start_index]);
-            }
-        }
-        else{
-            out_value = start_point + slope * (input_time - ls_interval * start_index);
-        }
-    }
-}
-
-// Saturation
-if (out_value > 1) {
-    out_value = 1;
-}
-else if (out_value < -1) {
-    out_value = -1;
-}
-
-out = out_value;
+mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "output_fnc"), "/*Begin code section*/
+
+if (bat_soc <= 1.001*pct_reserve){
+
+    bat_full = 0;
+
+    bat_on_reserve = 1;
+
+    }
+
+else if (bat_soc >= 99.999){
+
+    bat_full = 1;
+
+    bat_on_reserve = 0;
+
+    }
+
+else {
+
+    bat_full = 0;
+
+    bat_on_reserve = 0;
+
+    }
+
+
+
+if (input_mode == 0){
+
+    // Loadshape index mode
+
+    // input is the index
+
+
+
+    // Limit the index values
+
+    if (input_idx > loadshape_n_points - 1) {
+
+        input_idx = loadshape_n_points - 1;
+
+    }
+
+    else if (input_idx < 0) {
+
+        input_idx = 0;
+
+    }
+
+
+
+    out_value = loadshape_array[input_idx];
+
+}
+
+else if (input_mode == 1){
+
+    // Time mode
+
+    // input is the time
+
+
+
+    if (input_time < 1) {
+
+        // Preset value for the first step
+
+        out_value = 0;
+
+        saved_point = loadshape_array[0];
+
+        }
+
+
+
+    else{
+
+        idle_signal = 1;
+
+
+
+        if (loadshape_int == 0){
+
+            // Variable time interval
+
+            if (input_time >= (time_array[loadshape_n_points - 1])){
+
+                start_index = loadshape_n_points - 1;
+
+                end_index = 0;
+
+                input_time = fmod(input_time, time_array[loadshape_n_points - 1]);
+
+            }
+
+            else{
+
+                start_index = 0;
+
+                end_index = 1;
+
+                input_time = input_time;
+
+            }
+
+            for (idx = 0; idx < loadshape_n_points; idx++){
+
+                if (input_time >= time_array[idx]){
+
+                    start_index = idx;
+
+                    end_index = start_index + 1;
+
+                }
+
+            }
+
+
+
+            // If last index, next index should be 0
+
+            if (start_index == (loadshape_n_points - 1)){
+
+                end_index = 0;
+
+                ls_interval = 1;
+
+            }
+
+            else{
+
+                ls_interval = time_array[end_index] - time_array[start_index];
+
+            }
+
+        }
+
+        else{
+
+            // Fixed time interval
+
+            input_time = fmod(input_time - 1, loadshape_int*loadshape_n_points);
+
+            start_index = input_time / loadshape_int;
+
+            end_index = start_index + 1;
+
+
+
+            ls_interval = loadshape_int;
+
+            if (start_index == (loadshape_n_points - 1)){
+
+                end_index = 0;
+
+            }
+
+        }
+
+
+
+        start_point = loadshape_array[start_index];
+
+        if (start_point == 0){
+
+            start_point = -pct_idlingkw/100;
+
+            idle_signal = 0;
+
+        }
+
+        end_point = loadshape_array[end_index];
+
+        if (end_point == 0){
+
+            end_point = -pct_idlingkw/100;
+
+        }
+
+
+
+        slope = (end_point - start_point)/ls_interval;
+
+
+
+        if (old_index != start_index){
+
+            saved_point = out_value;
+
+            old_index = start_index;
+
+        }
+
+
+
+         // If the battery will be full / on reserve on the next step, power reference becomes just the idle power
+
+        if (((end_point >= -pct_idlingkw/100) & (bat_on_reserve == 1)) | ((end_point <= -pct_idlingkw/100) & (bat_full == 1))){
+
+            end_point = -pct_idlingkw/100;
+
+            //idle_signal = 0;
+
+            //end_point = 0;
+
+            //slope = (end_point - saved_point)/ls_interval;;
+
+            //start_point = saved_point;
+
+        }
+
+        //else{
+
+        slope = (end_point - saved_point)/ls_interval;
+
+        start_point = saved_point;
+
+        //}
+
+
+
+        if (loadshape_int == 0){
+
+            if (start_index == (loadshape_n_points - 1)){
+
+                out_value = start_point + slope * input_time;
+
+            }
+
+            else{
+
+                out_value = start_point + slope * (input_time - time_array[start_index]);
+
+            }
+
+        }
+
+        else{
+
+            out_value = start_point + slope * (input_time - ls_interval * start_index);
+
+        }
+
+    }
+
+}
+
+
+
+// Saturation
+
+if (out_value > 1) {
+
+    out_value = 1;
+
+}
+
+else if (out_value < -1) {
+
+    out_value = -1;
+
+}
+
+
+
+out = out_value;
+
 /*End code section*/")
 mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "output_terminals"), "real out;real slope;int start_index;int end_index;int idle_signal;real start_point;")
 mdl.set_property_value(mdl.prop(_Storage_Loadshape_Point_Calculator_Advanced_C_function1, "output_terminals_dimensions"), "1;1;1;1;1;1")

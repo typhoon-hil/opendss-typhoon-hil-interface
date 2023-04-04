@@ -130,7 +130,7 @@ library "OpenDSS" {
                 }
 
                 CODE open
-                    import gui_scripts.cosim as cosim
+                    import dss_thcc_lib.gui_scripts.cosim as cosim
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.open_mask(mdl, item_handle, cosim)
 
@@ -152,7 +152,7 @@ library "OpenDSS" {
                             if type_name == "Co-simulation Interface":
                                 mdl.info("Only one Co-simulation component is supported.")
 
-                    import component_scripts.comp_cosim as comp_script
+                    import dss_thcc_lib.component_scripts.comp_cosim as comp_script
                     importlib.reload(comp_script)
 
                     def return_comp_script(mdl, item_handle):

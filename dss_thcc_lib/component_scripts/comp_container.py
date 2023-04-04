@@ -12,29 +12,29 @@ def pick_comp_script(mdl, mask_handle, caller):
         identifier = mdl.get_property_disp_value(id_prop)
 
     if identifier == "Vsource":
-        import component_scripts.comp_vsource as comp_script
+        import dss_thcc_lib.component_scripts.comp_vsource as comp_script
     elif identifier == "Line":
-        import component_scripts.comp_line as comp_script
+        import dss_thcc_lib.component_scripts.comp_line as comp_script
     elif identifier == "Load":
-        import component_scripts.comp_load as comp_script
+        import dss_thcc_lib.component_scripts.comp_load as comp_script
     elif identifier == "Capacitor Bank":
-        import component_scripts.comp_capacitor as comp_script
+        import dss_thcc_lib.component_scripts.comp_capacitor as comp_script
     elif identifier == "Controlled Switch":
-        import component_scripts.comp_ctrlsw as comp_script
+        import dss_thcc_lib.component_scripts.comp_ctrlsw as comp_script
     elif identifier == "Fault":
-        import component_scripts.comp_fault as comp_script
+        import dss_thcc_lib.component_scripts.comp_fault as comp_script
     elif identifier == "Isource":
-        import component_scripts.comp_isource as comp_script
+        import dss_thcc_lib.component_scripts.comp_isource as comp_script
     elif identifier == "Three-Phase Transformer":
-        import component_scripts.comp_tptransf as comp_script
+        import dss_thcc_lib.component_scripts.comp_tptransf as comp_script
     elif identifier == "Single-Phase Transformer":
-        import component_scripts.comp_sptransf as comp_script
+        import dss_thcc_lib.component_scripts.comp_sptransf as comp_script
     elif identifier == "Generator":
-        import component_scripts.comp_generator as comp_script
+        import dss_thcc_lib.component_scripts.comp_generator as comp_script
     elif identifier == "Storage":
-        import component_scripts.comp_storage as comp_script
+        import dss_thcc_lib.component_scripts.comp_storage as comp_script
     elif identifier == "VSConverter":
-        import component_scripts.comp_vsc as comp_script
+        import dss_thcc_lib.component_scripts.comp_vsc as comp_script
 
     return comp_script
 
@@ -43,29 +43,29 @@ def pick_contained_comp_calls(mdl, mask_handle):
     identifier = mdl.get_property_value(id_prop)
 
     if identifier == "Load":
-        import component_scripts.container.load_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.load_container as contained_comp_calls
     elif identifier == "Vsource":
-        import component_scripts.container.vsource_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.vsource_container as contained_comp_calls
     elif identifier == "Line":
-        import component_scripts.container.line_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.line_container as contained_comp_calls
     elif identifier == "Capacitor Bank":
-        import component_scripts.container.capacitor_bank_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.capacitor_bank_container as contained_comp_calls
     elif identifier == "Controlled Switch":
-        import component_scripts.container.controlled_switch_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.controlled_switch_container as contained_comp_calls
     elif identifier == "Fault":
-        import component_scripts.container.fault_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.fault_container as contained_comp_calls
     elif identifier == "Isource":
-        import component_scripts.container.isource_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.isource_container as contained_comp_calls
     elif identifier == "Three-Phase Transformer":
-        import component_scripts.container.three_phase_transformer_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.three_phase_transformer_container as contained_comp_calls
     elif identifier == "Single-Phase Transformer":
-        import component_scripts.container.single_phase_transformer_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.single_phase_transformer_container as contained_comp_calls
     elif identifier == "Generator":
-        import component_scripts.container.generator_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.generator_container as contained_comp_calls
     elif identifier == "Storage":
-        import component_scripts.container.storage_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.storage_container as contained_comp_calls
     elif identifier == "VSConverter":
-        import component_scripts.container.vsconverter_container as contained_comp_calls
+        import dss_thcc_lib.component_scripts.container.vsconverter_container as contained_comp_calls
 
     importlib.reload(contained_comp_calls)
     return contained_comp_calls
@@ -118,7 +118,7 @@ def initialization_function_calls(mdl, mask_handle):
     comp_type = mdl.get_property_value(id_prop)
 
     if comp_type == "Line":
-        import component_scripts.comp_line as comp_line
+        import dss_thcc_lib.component_scripts.comp_line as comp_line
         comp_line.show_hide_param_inputs(mdl, mask_handle, "Symmetrical")
 
 
