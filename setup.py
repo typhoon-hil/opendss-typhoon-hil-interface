@@ -4,7 +4,7 @@ setup(
     name='tse_to_opendss',
     version='0.4.0',
     packages=find_packages(exclude=['tests', 'dss_thcc_lib', 'importer']),
-    install_requires=["typhoon-hil-api", "opendssdirect.py==0.8.0", "dss-python==0.13.0"],
+    install_requires=["opendssdirect.py==0.8.0", "dss-python==0.13.0"],
     url='https://www.typhoon-hil.com/',
     include_package_data=True,
     license='MIT',

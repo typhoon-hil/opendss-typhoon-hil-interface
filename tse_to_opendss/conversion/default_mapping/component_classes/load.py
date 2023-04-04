@@ -115,28 +115,28 @@ class Load(TwoTerminal):
 
         loadshape_exists = False
         obj_json_file = self.circuit.simulation_parameters.get("dss_data_path").joinpath("general_objects.json")
-        if obj_json_file.is_file():
-            with open(obj_json_file, 'r') as f:
-                general_objects = json.loads(f.read())
-                saved_loadshapes = general_objects.get("loadshapes")
-                # Make dict search case insensitive
-                for key in list(saved_loadshapes.keys()):
-                    saved_loadshapes[key.upper()] = saved_loadshapes.pop(key)
-                if saved_loadshapes.get(tse_properties["loadshape_name"].upper()):
-                    loadshape_exists = True
 
+
+        if not obj_json_file.is_file():
+            with open(obj_json_file, 'w') as f:
+                f.write(json.dumps({"loadshapes": {}, "linecodes": {}}, indent=4))
+        with open(obj_json_file, 'r') as f:
+            general_objects = json.load(f)
+
+        saved_loadshapes = general_objects.get("loadshapes")
+
+        # Make dict search case insensitive
+        if saved_loadshapes:
+            for key in list(saved_loadshapes.keys()):
+                saved_loadshapes[key.upper()] = saved_loadshapes.pop(key)
+
+            if saved_loadshapes.get(tse_properties["loadshape_name"].upper()):
+                loadshape_exists = True
 
         time_series_mode = tse_properties["Pow_ref_s"] == "Time Series"
 
         if time_series_mode and not loadshape_exists:
 
-            # loadshape_props = {
-            #     "npts": str(tse_properties.get("dssnpts")),
-            #     "interval": str(tse_properties.get("dssT")),
-            #     "mult": str(tse_properties.get("S_Ts"))
-            # }
-            # if tse_properties.get("dssT") == "0":
-            #     loadshape_props.update({"mult": str(self.loadshape.get("T_Ts"))})
             from .loadshape import LoadShape
 
             new_loadshape = LoadShape(converted_comp_type="LOADSHAPE",
@@ -148,6 +148,13 @@ class Load(TwoTerminal):
             self.created_instances_list.append(new_loadshape)
 
             self.new_format_properties.update({"daily": str(self.name + "_PROFILE")})
+
+            if not saved_loadshapes:
+                general_objects['loadshapes'] = {}
+            general_objects['loadshapes'].update({tse_properties[self.name + "_PROFILE"]: loadshape_props})
+
+            with open(obj_json_file, 'w') as f:
+                f.write(general_objects, indent=4)
 
     def output_line(self):
         """ Overrides parent output_line method. """
