@@ -504,8 +504,8 @@ model "cigre_european_mv" {
         component "OpenDSS/SimDSS" SimDSS {
             basefrequency = "50"
             powers = "kVA Elem"
-            sim_counter = "25"
-            sim_status = "Sim25 complete"
+            sim_counter = "0"
+            sim_status = ""
             voltagebases = "[110, 20]"
         }
         [

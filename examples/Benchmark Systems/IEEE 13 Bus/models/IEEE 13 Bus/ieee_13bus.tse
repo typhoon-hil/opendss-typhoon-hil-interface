@@ -183,8 +183,8 @@ model "ieee_13bus" {
         component "OpenDSS/SimDSS" SimDSS {
             misc = "Losses"
             powers = "kVA Elem"
-            sim_counter = "83"
-            sim_status = "Sim83 complete"
+            sim_counter = "0"
+            sim_status = ""
             voltagebases = "[115, 4.16, 0.48]"
         }
         [

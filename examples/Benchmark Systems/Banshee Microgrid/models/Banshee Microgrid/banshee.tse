@@ -779,7 +779,7 @@ model "banshee" {
         component "OpenDSS/SimDSS" SimDSS1 {
             powers = "kVA Elem"
             sim_counter = "14"
-            sim_status = "Sim14 complete"
+            sim_status = ""
             voltagebases = "[13.8, 0.48, 0.208]"
             voltages = "LL Nodes"
         }
