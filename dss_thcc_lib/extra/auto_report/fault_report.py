@@ -190,7 +190,7 @@ def generate_report(mdlfile):
                 if row_list and "Total:" not in row_list:
                     try:
                         rating = float(row_list[5]) if row_list[5] else 0
-                        if rating:
+                        if not rating == 0:
                             ratio = float(row_list[4].split("∠")[0]) / rating
                             if ratio > 1.10:
                                 colored.append(('TEXTCOLOR', (4, row), (4, row), (1, 0, 0)))

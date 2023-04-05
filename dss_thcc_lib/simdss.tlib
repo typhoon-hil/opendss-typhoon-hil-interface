@@ -312,20 +312,6 @@ library "OpenDSS" {
                     import pathlib
                     import sys
 
-                    import typhoon.util.path as up
-
-                    # PROGRAM FILES python_portable path
-                    py3_port_path = str(pathlib.Path(up.get_base_python_portable_path()).joinpath("lib", "site-packages"))
-                    if py3_port_path.lower() not in [str(p).lower() for p in sys.path]:
-                        mdl.info(f"adding {py3_port_path}")
-                        sys.path.append(py3_port_path)
-
-                    # APPDATA python_portable path
-                    py3_port_path_appdata = str(pathlib.Path(up.get_python_portable_path()).joinpath("lib", "site-packages"))
-                    if py3_port_path_appdata.lower() not in [str(p).lower() for p in sys.path]:
-                        mdl.info(f"adding {py3_port_path_appdata}")
-                        sys.path.append(py3_port_path_appdata)
-
                     import dss_thcc_lib.component_scripts.comp_simdss as comp_script
 
                     importlib.reload(comp_script)

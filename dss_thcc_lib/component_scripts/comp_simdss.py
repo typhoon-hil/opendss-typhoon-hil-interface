@@ -2,7 +2,6 @@ import os, pathlib
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 
-
 # Append commands dialog
 class Ui_Dialog(object):
     def setupUi(self, Dialog):

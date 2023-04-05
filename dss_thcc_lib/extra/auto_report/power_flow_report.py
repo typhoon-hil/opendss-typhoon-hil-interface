@@ -410,7 +410,7 @@ def generate_report(mdlfile):
 
             for phase in range(data.get("phases")):
                 proc_line = []
-                basekV = data.get('basekV')
+                basekV = data.get('basekV', VIRTUAL_ZERO)
                 if phase == 0:
                     # Name
                     proc_line.append(limit_name_chars(obj_name))
@@ -512,7 +512,7 @@ def generate_report(mdlfile):
                 proc_line.extend([v1])
 
                 # Base kV
-                basekv = data.get('basekV') / np.sqrt(3)
+                basekv = data.get('basekV', VIRTUAL_ZERO) / np.sqrt(3)
                 proc_line.append(round_mod(basekv, 3))
 
                 # Voltage drop
@@ -572,7 +572,7 @@ def generate_report(mdlfile):
                 proc_line.extend([v1])
 
                 # Base kV
-                basekv = data.get('basekV') / np.sqrt(3)
+                basekv = data.get('basekV', VIRTUAL_ZERO) / np.sqrt(3)
                 proc_line.append(round_mod(basekv, 3))
 
                 # Voltage drop
@@ -654,7 +654,7 @@ def generate_report(mdlfile):
                     if bus_idx == 0:
                         v1 = data.get('voltages')[2 * phase]
                         v2 = data.get('voltages')[2 * phase + num_phases * 2]
-                        vdrop = abs(round_mod((v1 - v2) / v1 * 100, 1))
+                        vdrop = abs(round_mod((v1 - v2) / (v1 + VIRTUAL_ZERO) * 100, 1))
                         proc_line.append(f"{vdrop} %")
 
                 if num_phases > 1:
@@ -716,7 +716,7 @@ def generate_report(mdlfile):
 
                 # Power Factor
                 if kva:
-                    pf = float(kw / kva)
+                    pf = float(kw / (kva + VIRTUAL_ZERO))
                     proc_line.append(f"{round_mod(pf, 2)}")
                 else:
                     proc_line.append("0")
@@ -731,7 +731,7 @@ def generate_report(mdlfile):
             total_kva = (total_kvar ** 2 + total_kw ** 2) ** 0.5
 
             # Power Factor
-            pf = float(total_kw / total_kva)
+            pf = float(total_kw / (total_kva  + VIRTUAL_ZERO))
             last_line.extend(["", "", "", "Total:", f"{round_mod(total_kw, 3)}",
                               f"{round_mod(total_kvar, 3)}",
                               f"{round_mod(total_kva, 2)}", f"{round_mod(pf, 2)}"])
