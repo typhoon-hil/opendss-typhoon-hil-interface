@@ -590,10 +590,11 @@ library "OpenDSS" {
                     default_value = "True"
                     group = "Time Series Settings:4"
                     no_evaluate
+                    nonvisible
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                        # comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 
