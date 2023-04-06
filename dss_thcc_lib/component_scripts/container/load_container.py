@@ -465,7 +465,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Time Series Settings:4",
         unit=""
     )
@@ -874,7 +874,7 @@ def update_properties(mdl, _Load_mask):
     mdl.set_handler_code(_Load_mask_load_model, "property_value_edited", _Load_mask_load_model_property_value_edited)
     _Load_mask_gen_ts_en_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+    # comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
     
     """
     mdl.set_handler_code(_Load_mask_gen_ts_en, "property_value_edited", _Load_mask_gen_ts_en_property_value_edited)
@@ -994,7 +994,7 @@ def ports_initialization(mdl, _Load_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(-30, -32),
+        terminal_position=(-30.0, -32.0),
         rotation="right",
         flip="flip_none",
         hide_name=False,
@@ -1007,7 +1007,7 @@ def ports_initialization(mdl, _Load_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(0.0, -32),
+        terminal_position=(0.0, -32.0),
         rotation="right",
         flip="flip_none",
         hide_name=False,
