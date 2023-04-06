@@ -64,7 +64,7 @@ def compile_dss_model(dss_file_path):
 
 
 def import_dss_model(dss_file_path):
-    import tse_to_opendss.importer.scripts.modules as dsm
+    import importer.scripts.modules as dsm
 
     dss_file_name = pathlib.Path(dss_file_path).stem
     save_dir = pathlib.Path(dss_file_path).parent.joinpath("importer_output")
