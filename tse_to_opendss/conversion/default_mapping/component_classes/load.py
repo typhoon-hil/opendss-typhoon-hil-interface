@@ -39,12 +39,57 @@ class Load(TwoTerminal):
     def create_new_format_properties_dict(self, tse_properties, tse_component):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
+        # Workaround for load container - pre_compile functions doesnt run in Container.
+        # Let's convert the properties here instead in pre_compile function
+        """
         if tse_properties['model'] == "8":
             filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu", "Vmaxpu", "ZIPV"]
         else:
             filtered_list = ["phases", "kV", "pf", "model", "conn", "kVA", "Vminpu", "Vmaxpu"]
 
         new_format_properties = {k: v for k, v in tse_properties.items() if k in filtered_list}
+        """
+
+        new_format_properties = dict()
+        # Phase Property
+        new_format_properties["phases"] = tse_properties["phases"]
+        # kV property
+        if tse_properties["phases"] == 1:
+            if tse_properties["ground_connected"]:
+                kv = (tse_properties["Vn_3ph"] / 1) / 1
+            else:
+                kv = tse_properties["Vn_3ph"]
+        else:
+            kv = tse_properties["Vn_3ph"]
+        new_format_properties["kV"] = kv
+        # PF Property
+        if tse_properties["pf_mode_3ph"] == "Unit":
+            pf = 1.0
+        elif tse_properties["pf_mode_3ph"] == "Lag":
+            pf = tse_properties["pf_3ph"]
+        else:
+            pf = -1 * float(tse_properties["pf_3ph"])
+        new_format_properties["pf"] = str(pf)
+        # Model Property (Pre_Compile Function has not ZIP evaluation)
+        if tse_properties["load_model"] == "Constant Power":
+            model = 1
+        else:
+            model = 2
+        new_format_properties["model"] = model
+        # Conn Property
+        if tse_properties["conn_type"] == 'Δ':
+            conn = "delta"
+        else:
+            conn = "wye"
+        new_format_properties["conn"] = conn
+        # kVA Property
+        new_format_properties["kVA"] = tse_properties["Sn_3ph"]
+        # Vminpu and Vmaxpu Properties
+        new_format_properties["Vminpu"] = tse_properties["Vminpu"]
+        new_format_properties["Vmaxpu"] = tse_properties["Vmaxpu"]
+        # ZIPV Property
+        if model == "8":
+            new_format_properties["ZIPV"] = str(tse_properties["ZIPV"])
 
         # Specify the base frequency if not inheriting the global value
         if tse_properties['global_basefreq'] == "False":
@@ -115,7 +160,6 @@ class Load(TwoTerminal):
 
         loadshape_exists = False
         obj_json_file = self.circuit.simulation_parameters.get("dss_data_path").joinpath("general_objects.json")
-
 
         if not obj_json_file.is_file():
             with open(obj_json_file, 'w') as f:
