@@ -669,45 +669,6 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         hide_name=False,
         position=(8056, 8232)
     )
-    _Three_Phase_Transformer_A2 = mdl.create_port(
-        name="A2",
-        parent=_Three_Phase_Transformer,
-        label="",
-        kind="pe",
-        direction="out",
-        dimension=(1,),
-        terminal_position=(32, -32),
-        rotation="up",
-        flip="flip_horizontal",
-        hide_name=False,
-        position=(9376, 8144)
-    )
-    _Three_Phase_Transformer_B2 = mdl.create_port(
-        name="B2",
-        parent=_Three_Phase_Transformer,
-        label="",
-        kind="pe",
-        direction="out",
-        dimension=(1,),
-        terminal_position=(32, 0),
-        rotation="up",
-        flip="flip_horizontal",
-        hide_name=False,
-        position=(9376, 8240)
-    )
-    _Three_Phase_Transformer_C2 = mdl.create_port(
-        name="C2",
-        parent=_Three_Phase_Transformer,
-        label="",
-        kind="pe",
-        direction="out",
-        dimension=(1,),
-        terminal_position=(32, 32),
-        rotation="up",
-        flip="flip_horizontal",
-        hide_name=False,
-        position=(9376, 8336)
-    )
     _Three_Phase_Transformer_N1 = mdl.create_port(
         name="N1",
         parent=_Three_Phase_Transformer,
@@ -715,7 +676,7 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(-24, 48),
+        terminal_position=(-24.0, 48.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,
@@ -728,9 +689,48 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(24, 48),
+        terminal_position=(24.0, 48.0),
         rotation="up",
         flip="flip_horizontal",
         hide_name=False,
         position=(8496, 8496)
+    )
+    _Three_Phase_Transformer_A2 = mdl.create_port(
+        name="A2",
+        parent=_Three_Phase_Transformer,
+        label="",
+        kind="pe",
+        direction="out",
+        dimension=(1,),
+        terminal_position=(32.0, -32.0),
+        rotation="up",
+        flip="flip_horizontal",
+        hide_name=False,
+        position=(9376, 8144)
+    )
+    _Three_Phase_Transformer_B2 = mdl.create_port(
+        name="B2",
+        parent=_Three_Phase_Transformer,
+        label="",
+        kind="pe",
+        direction="out",
+        dimension=(1,),
+        terminal_position=(32.0, 0.0),
+        rotation="up",
+        flip="flip_horizontal",
+        hide_name=False,
+        position=(9376, 8240)
+    )
+    _Three_Phase_Transformer_C2 = mdl.create_port(
+        name="C2",
+        parent=_Three_Phase_Transformer,
+        label="",
+        kind="pe",
+        direction="out",
+        dimension=(1,),
+        terminal_position=(32.0, 32.0),
+        rotation="up",
+        flip="flip_horizontal",
+        hide_name=False,
+        position=(9376, 8336)
     )
