@@ -1,0 +1,653 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Single-Phase Transformer" {
+            layout = static
+            label = "T"
+            component "core/Single Phase Multi-Winding Transformer" T1 {
+                I_prim = "0"
+                I_sec = "[0]"
+                L_prim = "0.004124789481706419"
+                L_sec = "[0.004124789481706419]"
+                Lm = "inf"
+                R_prim = "1.5550090000000003"
+                R_sec = "[1.5550090000000003]"
+                Rm = "7775.045"
+                Sn = "1000000"
+                f = "60"
+                n_prim = "12470.0"
+                n_sec = "[12470.0]"
+            }
+            [
+                position = 8400, 8200
+                size = 124, 256
+            ]
+
+            port A1 {
+                position = -32.0, -16.0
+                kind = pe
+            }
+            [
+                position = 7992, 8104
+            ]
+
+            port B1 {
+                position = -32.0, 16.0
+                kind = pe
+            }
+            [
+                position = 7992, 8296
+            ]
+
+            port A2 {
+                position = 32, -16
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 9376, 8192
+                scale = -1, 1
+            ]
+
+            port B2 {
+                position = 32, 16
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 9376, 8288
+                scale = -1, 1
+            ]
+
+            tag TagA1 {
+                value = "TA_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8104, 8104
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+            tag TagB1 {
+                value = "TB_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8096, 8296
+                scale = -1, 1
+                size = 59, 20
+            ]
+
+            tag TagTA1 {
+                value = "TA_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8240, 8104
+                size = 60, 20
+            ]
+
+            tag TagTB1 {
+                value = "TB_1"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8240, 8296
+                size = 60, 20
+            ]
+
+            tag TagTA2 {
+                value = "TA_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8560, 8160
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+            tag TagTB2 {
+                value = "TB_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8560, 8240
+                scale = -1, 1
+                size = 60, 20
+            ]
+
+             tag TagA2 {
+                value = "TA_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 9272, 8192
+                size = 60, 20
+            ]
+
+            tag TagB2 {
+                value = "TB_2"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 9272, 8288
+                size = 60, 20
+            ]
+
+            connect A1 TagA1 as Connection91
+            connect TagB1 B1 as Connection92
+            connect T1.prm_1 TagTA1 as Connection93
+            connect T1.prm_2 TagTB1 as Connection94
+            connect T1.sec_1 TagTA2 as Connection95
+            connect T1.sec_2 TagTB2 as Connection96
+            connect TagA2 A2 as Connection97
+            connect TagB2 B2 as Connection98
+
+
+            KVAs = "[1000, 1000]"
+            KVs = "[12.47, 12.47]"
+            XscArray = "[2.0, 2.0]"
+            percentNoloadloss = "2"
+            percentRs = "[1, 1]"
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The Single-Phase Transfomer is implemented as a multi-terminal power delivery element and consists of two or more windings.<br></br><br></br>Note that contrary to OpenDSS, individual reactances are defined in the mask. Reactances between windings will be calculated.</p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=179"
+
+                num_windings {
+                    label = "Number of windings"
+                    widget = combo
+                    combo_values = "2", "3", "4", "5", "6", "7", "8", "9", "10"
+                    type = string
+                    default_value = "2"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_subsystem_components(mdl, container_handle, created_ports)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.show_hide_couplings(mdl, container_handle)
+                        comp_script.update_regctrl_combo(mdl, container_handle)
+                    ENDCODE
+                }
+
+                embedded_cpl_12 {
+                    label = "Embedded coupling 1-2"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_13 {
+                    label = "Embedded coupling 1-3"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_14 {
+                    label = "Embedded coupling 1-4"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_15 {
+                    label = "Embedded coupling 1-5"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_16 {
+                    label = "Embedded coupling 1-6"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_17 {
+                    label = "Embedded coupling 1-7"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_18 {
+                    label = "Embedded coupling 1-8"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_19 {
+                    label = "Embedded coupling 1-9"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                embedded_cpl_110 {
+                    label = "Embedded coupling 1-10"
+                    widget = combo
+                    combo_values = "None", "Ideal Transformer", "TLM"
+                    type = string
+                    default_value = "None"
+                    group = "Core coupling:3"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        T_handle = mdl.get_item("T1", parent=mdl.get_parent(container_handle))
+                        prop_name = mdl.get_name(prop_handle)
+                        inner_prop_handle = mdl.prop(T_handle, prop_name)
+                        mdl.set_property_value(inner_prop_handle, new_value)
+                    ENDCODE
+                }
+
+                KVs {
+                    label = "Array of rated winding phase voltages"
+                    widget = edit
+                    type = generic
+                    default_value = "[12.47e3, 12.47e3]"
+                    unit = "kV"
+                }
+
+                KVAs {
+                    label = "Array of winding kVA ratings"
+                    widget = edit
+                    type = generic
+                    default_value = "[12e6, 6e6]"
+                    unit = "kVA"
+                }
+
+                percentRs {
+                    label = "Array of winding percent resistances"
+                    widget = edit
+                    type = generic
+                    default_value = "[2, 2]"
+                    unit = "%"
+                }
+
+                XArray {
+                    label = "Winding reactances"
+                    widget = edit
+                    type = generic
+                    default_value = "[1, 1]"
+                    unit = "%"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.convert_all_properties(mdl, container_handle)
+                    ENDCODE
+                }
+
+                XscArray {
+                    label = "Array of short-circuit reactances"
+                    widget = edit
+                    type = generic
+                    default_value = "[1]"
+                    unit = "%"
+                    nonvisible
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_frequency_prop(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if old_value == new_value:
+                            comp_script.update_frequency_property(mdl, container_handle, init=True)
+                        else:
+                            comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Basefreq {
+                    label = "Base frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    nonvisible
+                }
+
+                percentNoloadloss {
+                    label = "No-load losses"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "%"
+                }
+
+                percentimag {
+                    label = "Magnetizing current"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                }
+
+                regcontrol_on {
+                    label = "Activate RegControl"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "RegControl:4"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_regcontrol_props(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_regcontrol_props(mdl, container_handle)
+                        comp_script.vreg_connection(mdl, container_handle)
+                    ENDCODE
+                }
+
+                maxtap {
+                    label = "Maximum tap voltage"
+                    widget = edit
+                    type = string
+                    default_value = "1.1"
+                    unit = "pu"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                mintap {
+                    label = "Minimum tap voltage"
+                    widget = edit
+                    type = string
+                    default_value = "0.9"
+                    unit = "pu"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                numtaps {
+                    label = "Number of taps"
+                    widget = edit
+                    type = string
+                    default_value = "32"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                ctrl_winding {
+                    label = "Monitored winding"
+                    widget = combo
+                    combo_values = "Winding 1", "Winding 2"
+                    type = string
+                    default_value = "Winding 1"
+                    group = "RegControl:4"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.vreg_connection(mdl, container_handle)
+                        comp_script.update_regctrl_combo(mdl, container_handle)
+                    ENDCODE
+                }
+
+                vreg {
+                    label = "Vreg"
+                    widget = edit
+                    type = string
+                    default_value = "207.84"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.calculate_winding_voltage(mdl, container_handle)
+                    ENDCODE
+                }
+
+                ptratio {
+                    label = "PT ratio"
+                    widget = edit
+                    type = string
+                    default_value = "60"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                winding_voltage {
+                    label = "Voltage result"
+                    widget = edit
+                    type = string
+                    default_value = "12470"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                band {
+                    label = "Bandwidth"
+                    widget = edit
+                    type = string
+                    default_value = "3"
+                    unit = "V"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                delay {
+                    label = "Delay"
+                    widget = edit
+                    type = string
+                    default_value = "15"
+                    unit = "s"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                execution_rate {
+                    label = "Execution rate"
+                    widget = edit
+                    type = string
+                    default_value = "100e-6"
+                    unit = "s"
+                    group = "RegControl:4"
+                    disabled
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring:5"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.show_hide_couplings(mdl, item_handle)
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    import dss_thcc_lib.component_scripts.comp_sptransf as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_frequency_property(mdl, item_handle)
+                    # HEADER START
+                    num_windings = mdl.get_property_value(mdl.prop(item_handle, "num_windings"))
+                    KVs = mdl.get_property_value(mdl.prop(item_handle, "KVs"))
+                    KVAs = mdl.get_property_value(mdl.prop(item_handle, "KVAs"))
+                    percentRs = mdl.get_property_value(mdl.prop(item_handle, "percentRs"))
+                    XscArray = mdl.get_property_value(mdl.prop(item_handle, "XscArray"))
+                    Basefreq = mdl.get_property_value(mdl.prop(item_handle, "Basefreq"))
+                    percentNoloadloss = mdl.get_property_value(mdl.prop(item_handle, "percentNoloadloss"))
+                    percentimag = mdl.get_property_value(mdl.prop(item_handle, "percentimag"))
+                    # HEADER STOP
+                    comp_script.validate_properties(mdl, item_handle)
+                    comp_script.convert_all_properties(mdl, item_handle)
+
+                ENDCODE
+            }
+        }
+        [
+            position = 4616, 4192
+            size = 64, 64
+        ]
+
+    }
+
+}

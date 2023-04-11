@@ -1,5 +1,6 @@
 from .base import *
 from ...output_functions import *
+import json
 
 class Line(TwoTerminal):
     """ Converted component class. """
@@ -88,7 +89,64 @@ class Line(TwoTerminal):
     def extra_conversion_steps(self, tse_properties, tse_component):
         """ Applies extra necessary conversion steps. """
 
-        pass
+        # Check the if the provided linecode (selected_object) exists. If not, create a new linecode object.
+        if tse_properties['input_type'] == "LineCode":
+
+            if tse_properties['obj_mode'] == "symmetrical":
+                linecode_props = {
+                    "r1": tse_properties['R1'],
+                    "r0": tse_properties['R0'],
+                    "x1": tse_properties['X1'],
+                    "x0": tse_properties['X0'],
+                    "c1": tse_properties['dC1'],
+                    "c0": tse_properties['dC0']
+                }
+            else:
+                linecode_props = {
+                    "rmatrix": tse_properties['rmatrix'],
+                    "cmatrix": tse_properties['cmatrix'],
+                    "xmatrix": tse_properties['xmatrix']
+                }
+
+            #############
+
+            linecode_exists = False
+            obj_json_file = self.circuit.simulation_parameters.get("dss_data_path").joinpath("general_objects.json")
+
+            if not obj_json_file.is_file():
+                with open(obj_json_file, 'w') as f:
+                    f.write(json.dumps({"loadshapes": {}, "linecodes": {}}, indent=4))
+            with open(obj_json_file, 'r') as f:
+                general_objects = json.load(f)
+
+            saved_linecodes = general_objects.get("linecodes")
+
+            # Make dict search case insensitive
+            if saved_linecodes:
+                for key in list(saved_linecodes.keys()):
+                    saved_linecodes[key.upper()] = saved_linecodes.pop(key)
+
+                if saved_linecodes.get(tse_properties["selected_object"].upper()):
+                    linecode_exists = True
+
+            if not linecode_exists:
+
+                from .linecode import LineCode
+
+                new_linecode = LineCode(converted_comp_type="LINECODE",
+                                          name=tse_properties["selected_object"],
+                                          circuit=self.circuit,
+                                          tse_properties=linecode_props,
+                                          tse_component=None)
+
+                self.created_instances_list.append(new_linecode)
+
+                if not saved_linecodes:
+                    general_objects['linecodes'] = {}
+                general_objects['linecodes'].update({tse_properties["selected_object"]: linecode_props})
+
+                with open(obj_json_file, 'w') as f:
+                    f.write(json.dumps(general_objects, indent=4))
 
     def output_line(self):
         """ Overrides parent output_line method. """

@@ -1,0 +1,1 @@
+{"title": "IEEE 13 BUS", "description": "IEEE 13 Bus Feeder from IEEE PES AMPS Distribution System Analysis Subcommittee", "model": "ieee_13bus.tse", "images": ["tse_ieee_13bus.png"], "tags": [], "app_note": "IEEE 13 Bus.pdf", "tests": []}
