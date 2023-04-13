@@ -92,6 +92,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                     mdl.create_connection(mdl.term(leg_handle, "mod"), mod_handles[cnt])
                     mdl.create_connection(mdl.term(leg_handle, "Imeas"), imeas_handles[cnt])
                     mdl.create_connection(mdl.term(leg_handle, "Vmeas"), vmeas_handles[cnt])
+                    # saving progress
         else:
             # inv_legs
             for cnt, leg_handle in enumerate(inv_leg_handles):
