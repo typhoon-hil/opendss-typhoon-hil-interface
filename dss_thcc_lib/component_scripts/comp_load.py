@@ -219,35 +219,35 @@ def phase_value_edited_fnc(mdl, container_handle, new_value):
         mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
 
 
-def zip_normalize_fnc(mdl, container_handle, new_value):
-    no_bracket = new_value.strip("[]")
-    zip_list = [float(s) for s in no_bracket.split(',')]
-    zip_len = len(zip_list)
-    zip_norm = [0, 0, 0]
-
-    if zip_len == 3:
-        zip_total = zip_list[0]+zip_list[1]+zip_list[2]
-        if not zip_total == 0:
-            zip_norm = [value / zip_total for value in zip_list]
-    elif zip_len > 3:
-        zip_total = zip_list[0] + zip_list[1] + zip_list[2]
-        if not zip_total == 0:
-            zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], zip_list[2]]]
-    elif zip_len == 2:
-        zip_total = zip_list[0] + zip_list[1]
-        if not zip_total == 0:
-            zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], 0]]
-    else:
-        if not zip_list[0] == 0:
-            zip_norm = [1, 0, 0]
-
-    idx = 0
-    for elem in zip_norm:
-        zip_norm[idx] = round(elem, 3)
-        idx = idx + 1
-
-    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
-    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+# def zip_normalize_fnc(mdl, container_handle, new_value):
+#     no_bracket = new_value.strip("[]")
+#     zip_list = [float(s) for s in no_bracket.split(',')]
+#     zip_len = len(zip_list)
+#     zip_norm = [0, 0, 0]
+#
+#     if zip_len == 3:
+#         zip_total = zip_list[0]+zip_list[1]+zip_list[2]
+#         if not zip_total == 0:
+#             zip_norm = [value / zip_total for value in zip_list]
+#     elif zip_len > 3:
+#         zip_total = zip_list[0] + zip_list[1] + zip_list[2]
+#         if not zip_total == 0:
+#             zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], zip_list[2]]]
+#     elif zip_len == 2:
+#         zip_total = zip_list[0] + zip_list[1]
+#         if not zip_total == 0:
+#             zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], 0]]
+#     else:
+#         if not zip_list[0] == 0:
+#             zip_norm = [1, 0, 0]
+#
+#     idx = 0
+#     for elem in zip_norm:
+#         zip_norm[idx] = round(elem, 3)
+#         idx = idx + 1
+#
+#     mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+#     mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
 
 
 def zip_change_fnc(mdl, container_handle, new_value):
@@ -1504,6 +1504,9 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
     else:
         conn = "wye"
 
+    vminpu = prop_dict["v_min_max"][0]
+    vmaxpu = prop_dict["v_min_max"][1]
+
     if prop_dict["pf_mode_3ph"] == "Unit":
         pf = 1.0
         p_cpl = prop_dict["Sn_3ph"]
@@ -1535,6 +1538,8 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
 
     if prop_dict["load_model"] == "Constant Power":
         model = 1
+    elif prop_dict["load_model"] == "Constant Z,I,P":
+        model = 8
     else:
         model = 2
 
@@ -1575,6 +1580,8 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
     mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
     mdl.set_property_value(mdl.prop(item_handle, "pf_3ph_set"), pf_3ph_set)
     mdl.set_property_value(mdl.prop(item_handle, "kV"), kv)
+    mdl.set_property_value(mdl.prop(item_handle, "Vminpu"), vminpu)
+    mdl.set_property_value(mdl.prop(item_handle, "Vmaxpu"), vmaxpu)
     mdl.set_property_value(mdl.prop(item_handle, "model"), model)
 
     mdl.set_property_value(mdl.prop(item_handle, "dssT"), dsst)

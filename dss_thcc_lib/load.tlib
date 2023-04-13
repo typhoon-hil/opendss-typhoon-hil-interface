@@ -968,7 +968,8 @@ library "OpenDSS" {
                                  "loadshape": loadshape,
                                  "loadshape_int": loadshape_int,
                                  "T_mode": T_mode,
-                                 "T_Ts": T_Ts
+                                 "T_Ts": T_Ts,
+                                 "v_min_max": v_min_max
                                  }
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.load_pre_compile_function(mdl, item_handle, prop_dict)
