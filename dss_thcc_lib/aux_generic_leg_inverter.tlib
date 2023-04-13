@@ -1,0 +1,385 @@
+//
+// Saved by sw version: 2023.3 DEV
+//
+
+library "OpenDSS" {
+    configuration {
+        hil_device = "HIL402"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+    }
+
+    component Subsystem Root {
+        component Category Auxiliary {
+            layout = dynamic
+            component Subsystem "Generic Leg Inverter (avg)" {
+                layout = dynamic
+                component "core/Signal Controlled Voltage Source" Vsrc {
+                }
+                [
+                    position = 7304, 8104
+                    rotation = right
+                    scale = -1, 1
+                    size = 64, 32
+                ]
+
+                component "core/Current Measurement" Iout {
+                    execution_rate = "ts"
+                    sig_output = "True"
+                    signal_access = "Inherit"
+                }
+                [
+                    position = 7400, 7960
+                    size = 64, 32
+                ]
+
+                component "core/Series RLC Branch" RL1 {
+                    num_phases = "Single-Phase"
+                    branch_type = "RL"
+                    resistance = "rl1_resistance"
+                    inductance = "rl1_inductance"
+                }
+                [
+                    position = 7584, 7960
+                    size = 128, 100
+                ]
+
+                component "core/Series RLC Branch" RC {
+                    num_phases = "Single-Phase"
+                    branch_type = "RC"
+                    resistance = "rc_resistance"
+                    capacitance = "rc_capacitance"
+                }
+                [
+                    position = 7728, 8104
+                    rotation = right
+                    size = 128, 100
+                ]
+
+                component "core/Series RLC Branch" RL2 {
+                    num_phases = "Single-Phase"
+                    branch_type = "RL"
+                    resistance = "rl2_resistance"
+                    inductance = "rl2_inductance"
+                }
+                [
+                    position = 7880, 7960
+                    size = 128, 100
+                ]
+
+                component "core/Voltage Measurement" Vout {
+                    execution_rate = "ts"
+                    sig_output = "True"
+                    signal_access = "Inherit"
+                }
+                [
+                    position = 8048, 8104
+                    rotation = right
+                    size = 64, 32
+                ]
+
+                port L {
+                    position = right:1
+                    kind = pe
+                }
+                [
+                    position = 8240, 7960
+                    scale = -1, 1
+                ]
+
+                port N {
+                    position = left:1
+                    kind = pe
+                }
+                [
+                    position = 7728, 8288
+                    rotation = left
+                    scale = -1, 1
+                ]
+
+                port mod {
+                    position = top:1
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7680, 7712
+                ]
+
+                port Imeas {
+                    position = top:2
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7800, 7768
+                ]
+
+                port Vmeas {
+                    position = top:3
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7800, 7816
+                ]
+
+                tag Goto1 {
+                    value = "mod"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 7800, 7712
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag mod_L1 {
+                    value = "mod"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7152, 8104
+                    size = 60, 20
+                ]
+
+                tag Iout_goto {
+                    value = "Iout"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 7472, 7896
+                    size = 60, 20
+                ]
+
+                tag Vout_goto {
+                    value = "Vout"
+                    scope = local
+                    kind = sp
+                    direction = in
+                }
+                [
+                    position = 8128, 8104
+                    size = 60, 20
+                ]
+
+                tag From1 {
+                    value = "Iout"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7680, 7768
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                tag From4 {
+                    value = "Vout"
+                    scope = local
+                    kind = sp
+                    direction = out
+                }
+                [
+                    position = 7680, 7816
+                    hide_name = True
+                    size = 60, 20
+                ]
+
+                connect Iout.p_node Vsrc.p_node as Connection1
+                connect Iout.n_node RL1.P1_pos as Connection2
+                connect RL1.P1_neg RC.P1_pos as Connection3
+                connect RL1.P1_neg RL2.P1_pos as Connection4
+                connect RL2.P1_neg Vout.p_node as Connection5
+                connect RL2.P1_neg L as Connection6
+                connect Vsrc.n_node N as Connection7
+                connect Vout.n_node N as Connection8
+                connect RC.P1_neg N as Connection9
+
+                connect mod Goto1 as Connection100
+                connect From1 Imeas as Connection101
+                connect Vmeas From4 as Connection102
+                connect Vsrc.in mod_L1 as Connection103
+                connect Iout.out Iout_goto as Connection104
+                connect Vout_goto Vout.out as Connection105
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                    filter_type {
+                        label = "Filter Type"
+                        widget = combo
+                        combo_values = "L", "LC", "LCL"
+                        type = string
+                        default_value = "L"
+                        no_evaluate
+
+                        CODE property_value_changed
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                            comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        ENDCODE
+
+                        CODE property_value_edited
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        ENDCODE
+                    }
+
+                    rl1_resistance {
+                        label = "Resistance RL1 Branch"
+                        widget = edit
+                        type = generic
+                        default_value = "1e-3"
+                        unit = "Ω"
+                    }
+
+                    rl1_inductance {
+                        label = "Inductance RL1 Branch"
+                        widget = edit
+                        type = generic
+                        default_value = "1e-3"
+                        unit = "H"
+                    }
+
+                    rc_resistance {
+                        label = "Resistance RC Branch"
+                        widget = edit
+                        type = generic
+                        default_value = "1e-3"
+                        unit = "Ω"
+                    }
+
+                    rc_capacitance {
+                        label = "Capacitance RC Branch"
+                        widget = edit
+                        type = generic
+                        default_value = "100e-6"
+                        unit = "F"
+                    }
+
+                    rl2_resistance {
+                        label = "Resistance RL2 Branch"
+                        widget = edit
+                        type = generic
+                        default_value = "1e-3"
+                        unit = "Ω"
+                    }
+
+                    rl2_inductance {
+                        label = "Inductance RL2 Branch"
+                        widget = edit
+                        type = generic
+                        default_value = "1e-3"
+                        unit = "H"
+                    }
+
+                    ts {
+                        label = "Execution Rate"
+                        widget = edit
+                        type = generic
+                        default_value = "100e-6"
+                    }
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+                    
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+                        
+                    ENDCODE
+
+                    CODE init
+                        import importlib
+                        
+                        import dss_thcc_lib.component_scripts.comp_inv_leg as comp_script
+                        
+                        importlib.reload(comp_script)
+                        def return_comp_script(mdl, item_handle):
+                            return comp_script
+                    ENDCODE
+                }
+            }
+            [
+                position = 7696, 8024
+                size = 128, 56
+            ]
+        }
+        [
+            position = 4528, 4208
+            size = 176, 104
+        ]
+    }
+
+    default {
+    }
+}
