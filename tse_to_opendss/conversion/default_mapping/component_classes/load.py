@@ -1,3 +1,5 @@
+import ast
+
 from .base import *
 from ...output_functions import *
 
@@ -39,7 +41,7 @@ class Load(TwoTerminal):
     def create_new_format_properties_dict(self, tse_properties, tse_component):
         """ Filters unused TSE properties and creates new ones. Returns a dictionary with the new properties. """
 
-        # Workaround for load container - pre_compile functions doesnt run in Container.
+        # Workaround for load container - pre_compile functions don't run in Container.
         # Let's convert the properties here instead in pre_compile function
         """
         if tse_properties['model'] == "8":
@@ -73,6 +75,8 @@ class Load(TwoTerminal):
         # Model Property (Pre_Compile Function has not ZIP evaluation)
         if tse_properties["load_model"] == "Constant Power":
             model = 1
+        elif tse_properties["load_model"] == "Constant Z,I,P":
+            model = 8
         else:
             model = 2
         new_format_properties["model"] = model
@@ -85,11 +89,16 @@ class Load(TwoTerminal):
         # kVA Property
         new_format_properties["kVA"] = tse_properties["Sn_3ph"]
         # Vminpu and Vmaxpu Properties
-        new_format_properties["Vminpu"] = tse_properties["Vminpu"]
-        new_format_properties["Vmaxpu"] = tse_properties["Vmaxpu"]
+        v_min_max = ast.literal_eval(tse_properties["v_min_max"])
+        new_format_properties["Vminpu"] = str(v_min_max[0])
+        new_format_properties["Vmaxpu"] = str(v_min_max[1])
         # ZIPV Property
-        if model == "8":
-            new_format_properties["ZIPV"] = str(tse_properties["ZIPV"])
+        if model == 8:
+            # zipv_p = ast.literal_eval(tse_properties["zip_vector"])
+            # zipv_q = ast.literal_eval(tse_properties["zip_vector_Q"])
+            # voltage_cutoff = 0.5  # power is zero below the threshold. Voltage in p.u.
+            # zipv = (zipv_p + zipv_q).append(voltage_cutoff)
+            new_format_properties["ZIPV"] = tse_properties['ZIPV']
 
         # Specify the base frequency if not inheriting the global value
         if tse_properties['global_basefreq'] == "False":

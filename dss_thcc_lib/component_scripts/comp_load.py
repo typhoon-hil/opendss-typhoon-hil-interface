@@ -1504,6 +1504,9 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
     else:
         conn = "wye"
 
+    vminpu = prop_dict["v_min_max"][0]
+    vmaxpu = prop_dict["v_min_max"][1]
+
     if prop_dict["pf_mode_3ph"] == "Unit":
         pf = 1.0
         p_cpl = prop_dict["Sn_3ph"]
@@ -1535,6 +1538,8 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
 
     if prop_dict["load_model"] == "Constant Power":
         model = 1
+    elif prop_dict["load_model"] == "Constant Z,I,P":
+        model = 8
     else:
         model = 2
 
@@ -1575,6 +1580,8 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
     mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
     mdl.set_property_value(mdl.prop(item_handle, "pf_3ph_set"), pf_3ph_set)
     mdl.set_property_value(mdl.prop(item_handle, "kV"), kv)
+    mdl.set_property_value(mdl.prop(item_handle, "Vminpu"), vminpu)
+    mdl.set_property_value(mdl.prop(item_handle, "Vmaxpu"), vmaxpu)
     mdl.set_property_value(mdl.prop(item_handle, "model"), model)
 
     mdl.set_property_value(mdl.prop(item_handle, "dssT"), dsst)
