@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.1
+// Saved by sw version: 2023.3 DEV
 //
 
 model "cigre_european_mv" {
@@ -59,6 +59,8 @@ model "cigre_european_mv" {
 
     component Subsystem Root {
         component "OpenDSS/Bus" Bus1 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8552, 8104
@@ -117,6 +119,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus3 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8552, 8712
@@ -146,6 +150,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus4 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8136, 9104
@@ -175,6 +181,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus5 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 7928, 9512
@@ -191,6 +199,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus6 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8968, 10680
@@ -199,6 +209,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus7 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8968, 10208
@@ -207,6 +219,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus8 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8968, 9752
@@ -215,6 +229,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus9 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8624, 9952
@@ -222,6 +238,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus10 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8344, 9752
@@ -230,6 +248,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus11 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 8344, 9512
@@ -280,6 +300,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus13 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 9696, 8728
@@ -386,6 +408,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus14 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 9696, 9528
@@ -435,6 +459,8 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus12 {
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
         }
         [
             position = 9696, 8104
@@ -494,6 +520,14 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus0 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
             position = 9096, 7616
@@ -504,7 +538,6 @@ model "cigre_european_mv" {
         component "OpenDSS/SimDSS" SimDSS {
             basefrequency = "50"
             powers = "kVA Elem"
-            sim_counter = "0"
             sim_status = ""
             voltagebases = "[110, 20]"
         }
@@ -686,6 +719,7 @@ model "cigre_european_mv" {
         component "OpenDSS/Vsource" Grid {
             Frequency = "50"
             basekv = "110"
+            global_basefreq = "True"
             pu = "1.01"
             r0 = "2.41"
             r1 = "2.41"
@@ -693,38 +727,26 @@ model "cigre_european_mv" {
             x1 = "0.24"
         }
         [
-            position = 9096, 7448
+            position = 9096, 7536
             rotation = right
             size = 64, 96
         ]
 
         component Subsystem Load_1 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "15300"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.98"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -734,11 +756,16 @@ model "cigre_european_mv" {
 
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "5100"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.95"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -770,18 +797,9 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
             junction Junction1 pe
             [
-                position = 8128, 8128
+                position = 8064, 8192
             ]
 
             junction Junction2 pe
@@ -791,70 +809,56 @@ model "cigre_european_mv" {
 
             junction Junction3 pe
             [
-                position = 8064, 8192
+                position = 8128, 8128
             ]
 
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect GND Meter.GND as Connection17
-            connect Meter.A- Junction1 as Connection32
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect Junction1 Commercial_Industrial.A1 as Connection33
-            connect Residential.A1 Junction1 as Connection34
-            connect Commercial_Industrial.B1 Junction2 as Connection35
-            connect Junction2 Meter.B- as Connection36
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect Residential.B1 Junction2 as Connection37
-            connect Commercial_Industrial.C1 Junction3 as Connection38
+            connect Commercial_Industrial.C1 Junction1 as Connection44
             [
                 breakpoints = 8128, 8192
             ]
-            connect Junction3 Meter.C- as Connection39
-            connect Residential.C1 Junction3 as Connection40
+            connect Junction1 Residential.C1 as Connection45
+            [
+                breakpoints = 8064, 8192
+            ]
+            connect C Junction1 as Connection46
+            [
+                breakpoints = 7816, 8192
+            ]
+            connect Commercial_Industrial.B1 Junction2 as Connection47
+            connect Junction2 Residential.B1 as Connection48
+            [
+                breakpoints = 8096, 8160
+            ]
+            connect B Junction2 as Connection49
+            connect Residential.A1 Junction3 as Connection50
+            connect Junction3 Commercial_Industrial.A1 as Connection51
+            [
+                breakpoints = 8128, 8128
+            ]
+            connect A Junction3 as Connection52
+            [
+                breakpoints = 7808, 8128
+            ]
         }
         [
             position = 8704, 8248
             size = 112, 48
         ]
 
-        component "core/Ground" gnd16 {
-        }
-        [
-            position = 8704, 8320
-            hide_name = True
-        ]
-
         component Subsystem Load_3 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "285"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -864,11 +868,16 @@ model "cigre_european_mv" {
 
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "265"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.85"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -900,18 +909,9 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
             junction Junction1 pe
             [
-                position = 8064, 8128
+                position = 8064, 8208
             ]
 
             junction Junction2 pe
@@ -921,61 +921,41 @@ model "cigre_european_mv" {
 
             junction Junction3 pe
             [
-                position = 8128, 8192
+                position = 8128, 8112
             ]
 
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Junction1 Residential.C1 as Connection8
-            connect Junction1 Meter.A- as Connection9
-            connect Junction1 Commercial_Industrial.A1 as Connection10
-            connect Junction2 Residential.B1 as Connection11
-            connect Junction2 Meter.B- as Connection12
-            connect Junction2 Commercial_Industrial.B1 as Connection13
-            connect Junction3 Residential.A1 as Connection14
-            connect Junction3 Meter.C- as Connection15
-            connect Junction3 Commercial_Industrial.C1 as Connection16
-            connect GND Meter.GND as Connection17
+            connect Junction1 Commercial_Industrial.C1 as Connection3
+            connect Junction1 C as Connection4
+            connect Junction1 Residential.C1 as Connection5
+            connect Junction2 Commercial_Industrial.B1 as Connection6
+            connect Junction2 Residential.B1 as Connection7
+            connect Junction2 B as Connection8
+            connect Junction3 Commercial_Industrial.A1 as Connection9
+            [
+                breakpoints = 8128, 8112; 8264, 8112
+            ]
+            connect Junction3 A as Connection10
+            connect Junction3 Residential.A1 as Connection11
         }
         [
             position = 8552, 8944
             size = 112, 48
         ]
 
-        component "core/Ground" gnd17 {
-        }
-        [
-            position = 8552, 9016
-            hide_name = True
-        ]
-
         component Subsystem Load_4 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "445"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1007,70 +987,29 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Residential.A1 as Connection19
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Residential.B1 Meter.B- as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect Residential.C1 Meter.A- as Connection18
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Residential.A1 as Connection1
+            connect Residential.B1 B as Connection2
+            connect C Residential.C1 as Connection3
         }
         [
             position = 8136, 9336
             size = 112, 48
         ]
 
-        component "core/Ground" gnd18 {
-        }
-        [
-            position = 8136, 9408
-            hide_name = True
-        ]
-
         component Subsystem Load_5 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "750"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1102,70 +1041,29 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Residential.A1 as Connection19
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Residential.B1 Meter.B- as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect Residential.C1 Meter.A- as Connection18
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Residential.A1 as Connection1
+            connect Residential.B1 B as Connection2
+            connect C Residential.C1 as Connection3
         }
         [
             position = 8048, 9720
             size = 112, 48
         ]
 
-        component "core/Ground" gnd19 {
-        }
-        [
-            position = 8048, 9792
-            hide_name = True
-        ]
-
         component Subsystem Load_6 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "565"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1197,70 +1095,29 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Residential.A1 as Connection19
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Residential.B1 Meter.B- as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect Residential.C1 Meter.A- as Connection18
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Residential.A1 as Connection1
+            connect Residential.B1 B as Connection2
+            connect C Residential.C1 as Connection3
         }
         [
             position = 8968, 10936
             size = 112, 48
         ]
 
-        component "core/Ground" gnd20 {
-        }
-        [
-            position = 8968, 11000
-            hide_name = True
-        ]
-
         component Subsystem Load_7 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "90"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.85"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -1292,70 +1149,29 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Commercial_Industrial.C1 as Connection19
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Meter.A- Commercial_Industrial.A1 as Connection18
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect Commercial_Industrial.B1 Meter.B- as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Commercial_Industrial.A1 as Connection1
+            connect Commercial_Industrial.B1 B as Connection2
+            connect C Commercial_Industrial.C1 as Connection3
         }
         [
             position = 9136, 10360
             size = 112, 48
         ]
 
-        component "core/Ground" gnd21 {
-        }
-        [
-            position = 9136, 10432
-            hide_name = True
-        ]
-
         component Subsystem Load_8 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "605"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1387,70 +1203,29 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Residential.A1 as Connection19
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Residential.B1 Meter.B- as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect Residential.C1 Meter.A- as Connection18
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Residential.A1 as Connection1
+            connect Residential.B1 B as Connection2
+            connect C Residential.C1 as Connection3
         }
         [
             position = 9112, 10064
             size = 112, 48
         ]
 
-        component "core/Ground" gnd22 {
-        }
-        [
-            position = 9112, 10128
-            hide_name = True
-        ]
-
         component Subsystem Load_9 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "675"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.85"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -1482,70 +1257,29 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Commercial_Industrial.C1 as Connection19
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Meter.A- Commercial_Industrial.A1 as Connection18
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect Commercial_Industrial.B1 Meter.B- as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Commercial_Industrial.A1 as Connection1
+            connect Commercial_Industrial.B1 B as Connection2
+            connect C Commercial_Industrial.C1 as Connection3
         }
         [
             position = 8696, 10056
             size = 112, 48
         ]
 
-        component "core/Ground" gnd23 {
-        }
-        [
-            position = 8696, 10120
-            hide_name = True
-        ]
-
         component Subsystem Load_10 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "490"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1555,11 +1289,16 @@ model "cigre_european_mv" {
 
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "80"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.85"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -1591,18 +1330,9 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
             junction Junction1 pe
             [
-                position = 8064, 8128
+                position = 8064, 8208
             ]
 
             junction Junction2 pe
@@ -1612,61 +1342,41 @@ model "cigre_european_mv" {
 
             junction Junction3 pe
             [
-                position = 8128, 8192
+                position = 8128, 8112
             ]
 
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Junction1 Residential.C1 as Connection8
-            connect Junction1 Meter.A- as Connection9
-            connect Junction1 Commercial_Industrial.A1 as Connection10
-            connect Junction2 Residential.B1 as Connection11
-            connect Junction2 Meter.B- as Connection12
-            connect Junction2 Commercial_Industrial.B1 as Connection13
-            connect Junction3 Residential.A1 as Connection14
-            connect Junction3 Meter.C- as Connection15
-            connect Junction3 Commercial_Industrial.C1 as Connection16
-            connect GND Meter.GND as Connection17
+            connect Junction1 Commercial_Industrial.C1 as Connection3
+            connect Junction1 Residential.C1 as Connection4
+            connect Junction1 C as Connection5
+            connect Junction2 Commercial_Industrial.B1 as Connection6
+            connect Junction2 B as Connection7
+            connect Junction2 Residential.B1 as Connection8
+            connect Junction3 Commercial_Industrial.A1 as Connection9
+            [
+                breakpoints = 8128, 8112; 8264, 8112
+            ]
+            connect Junction3 Residential.A1 as Connection10
+            connect Junction3 A as Connection11
         }
         [
             position = 8344, 10056
             size = 112, 48
         ]
 
-        component "core/Ground" gnd24 {
-        }
-        [
-            position = 8344, 10128
-            hide_name = True
-        ]
-
         component Subsystem Load_11 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "340"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1698,70 +1408,29 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Residential.A1 as Connection19
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Residential.B1 Meter.B- as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect Residential.C1 Meter.A- as Connection18
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Residential.A1 as Connection1
+            connect Residential.B1 B as Connection2
+            connect C Residential.C1 as Connection3
         }
         [
             position = 8480, 9672
             size = 112, 48
         ]
 
-        component "core/Ground" gnd25 {
-        }
-        [
-            position = 8480, 9736
-            hide_name = True
-        ]
-
         component Subsystem Load_12 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "15300"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.98"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1771,11 +1440,16 @@ model "cigre_european_mv" {
 
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "5280"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.95"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -1807,18 +1481,9 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
             junction Junction1 pe
             [
-                position = 8064, 8128
+                position = 8064, 8208
             ]
 
             junction Junction2 pe
@@ -1828,61 +1493,41 @@ model "cigre_european_mv" {
 
             junction Junction3 pe
             [
-                position = 8128, 8192
+                position = 8128, 8112
             ]
 
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Junction1 Residential.C1 as Connection8
-            connect Junction1 Meter.A- as Connection9
-            connect Junction1 Commercial_Industrial.A1 as Connection10
-            connect Junction2 Residential.B1 as Connection11
-            connect Junction2 Meter.B- as Connection12
-            connect Junction2 Commercial_Industrial.B1 as Connection13
-            connect Junction3 Residential.A1 as Connection14
-            connect Junction3 Meter.C- as Connection15
-            connect Junction3 Commercial_Industrial.C1 as Connection16
-            connect GND Meter.GND as Connection17
+            connect Junction1 Commercial_Industrial.C1 as Connection5
+            connect Junction1 Residential.C1 as Connection6
+            connect Junction1 C as Connection7
+            connect Junction2 Commercial_Industrial.B1 as Connection8
+            connect Junction2 Residential.B1 as Connection9
+            connect Junction2 B as Connection10
+            connect Junction3 Commercial_Industrial.A1 as Connection11
+            [
+                breakpoints = 8128, 8112; 8264, 8112
+            ]
+            connect Junction3 A as Connection12
+            connect Junction3 Residential.A1 as Connection13
         }
         [
             position = 9864, 8312
             size = 112, 48
         ]
 
-        component "core/Ground" gnd26 {
-        }
-        [
-            position = 9864, 8384
-            hide_name = True
-        ]
-
         component Subsystem Load_14 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Residential {
                 Sn_3ph = "215"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.97"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8096, 8296
@@ -1892,11 +1537,16 @@ model "cigre_european_mv" {
 
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "390"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.85"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -1928,18 +1578,9 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
             junction Junction1 pe
             [
-                position = 8064, 8128
+                position = 8064, 8208
             ]
 
             junction Junction2 pe
@@ -1949,61 +1590,41 @@ model "cigre_european_mv" {
 
             junction Junction3 pe
             [
-                position = 8128, 8192
+                position = 8128, 8112
             ]
 
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Junction1 Residential.C1 as Connection8
-            connect Junction1 Meter.A- as Connection9
-            connect Junction1 Commercial_Industrial.A1 as Connection10
-            connect Junction2 Residential.B1 as Connection11
-            connect Junction2 Meter.B- as Connection12
-            connect Junction2 Commercial_Industrial.B1 as Connection13
-            connect Junction3 Residential.A1 as Connection14
-            connect Junction3 Meter.C- as Connection15
-            connect Junction3 Commercial_Industrial.C1 as Connection16
-            connect GND Meter.GND as Connection17
+            connect Junction1 Commercial_Industrial.C1 as Connection3
+            connect Junction1 C as Connection4
+            connect Junction1 Residential.C1 as Connection5
+            connect Junction2 Commercial_Industrial.B1 as Connection6
+            connect Junction2 Residential.B1 as Connection7
+            connect Junction2 B as Connection8
+            connect Junction3 Commercial_Industrial.A1 as Connection9
+            [
+                breakpoints = 8128, 8112; 8264, 8112
+            ]
+            connect Junction3 A as Connection10
+            connect Junction3 Residential.A1 as Connection11
         }
         [
             position = 9856, 9688
             size = 112, 48
         ]
 
-        component "core/Ground" gnd27 {
-        }
-        [
-            position = 9856, 9760
-            hide_name = True
-        ]
-
         component Subsystem Load_13 {
             layout = dynamic
-            component "core/Three-phase Meter" Meter {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAB = "True"
-                VBC = "True"
-                VCA = "True"
-                VLL_avg_rms = "True"
-                VLL_rms = "True"
-                enable_out = "False"
-                freq = "True"
-            }
-            [
-                position = 7936, 8160
-                size = 48, 104
-            ]
-
             component "OpenDSS/Load" Commercial_Industrial {
                 Sn_3ph = "40"
+                T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.85"
-                pf_mode_3ph = "Lag"
+                zip_internal = "[0.0, 0.0, 1.0]"
+                zip_internal_Q = "[0.0, 0.0, 1.0]"
+                zip_internal_n = "[0.0, 0.0, 1.0]"
+                zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
                 position = 8232, 8296
@@ -2035,65 +1656,13 @@ model "cigre_european_mv" {
                 position = 7768, 8208
             ]
 
-            port GND {
-                position = bottom:1
-                kind = pe
-            }
-            [
-                position = 7936, 8288
-                rotation = left
-            ]
-
-            connect Meter.A+ A as Connection1
-            connect Meter.B+ B as Connection2
-            connect Meter.C+ C as Connection3
-            connect Meter.C- Commercial_Industrial.C1 as Connection18
-            [
-                breakpoints = 8128, 8192
-            ]
-            connect Meter.B- Commercial_Industrial.B1 as Connection20
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect Commercial_Industrial.A1 Meter.A- as Connection19
-            [
-                breakpoints = 8064, 8128
-            ]
-            connect GND Meter.GND as Connection17
+            connect A Commercial_Industrial.A1 as Connection1
+            connect B Commercial_Industrial.B1 as Connection2
+            connect C Commercial_Industrial.C1 as Connection3
         }
         [
             position = 9864, 8968
             size = 112, 48
-        ]
-
-        component "core/Ground" gnd28 {
-        }
-        [
-            position = 9864, 9040
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd29 {
-        }
-        [
-            position = 8960, 7624
-            hide_name = True
-        ]
-
-        component "core/Three-phase Meter" Grid_Meter {
-            P_meas = "True"
-            VAB = "True"
-            VBC = "True"
-            VCA = "True"
-            VLL_avg_rms = "True"
-            VLL_rms = "True"
-            enable_out = "False"
-            freq = "True"
-        }
-        [
-            position = 9096, 7544
-            rotation = right
-            size = 48, 104
         ]
 
         junction Junction11 pe
@@ -2536,19 +2105,6 @@ model "cigre_european_mv" {
         [
             breakpoints = 8584, 8864; 8584, 8864
         ]
-        connect gnd16.node Load_1.GND as Connection429
-        connect gnd17.node Load_3.GND as Connection430
-        connect gnd18.node Load_4.GND as Connection440
-        connect gnd19.node Load_5.GND as Connection450
-        connect gnd20.node Load_6.GND as Connection496
-        connect gnd21.node Load_7.GND as Connection506
-        connect gnd22.node Load_8.GND as Connection528
-        connect gnd23.node Load_9.GND as Connection538
-        connect gnd24.node Load_10.GND as Connection548
-        connect gnd25.node Load_11.GND as Connection558
-        connect gnd26.node Load_12.GND as Connection580
-        connect gnd27.node Load_14.GND as Connection602
-        connect gnd28.node Load_13.GND as Connection624
         connect Junction31 Load_3.C as Connection688
         connect Junction31 Bus3.C2 as Connection689
         connect Junction31 Junction21 as Connection690
@@ -2720,13 +2276,6 @@ model "cigre_european_mv" {
             breakpoints = 8936, 10864; 8936, 10856
         ]
         connect Load_6.C Junction69 as Connection816
-        connect Grid.C1 Grid_Meter.C+ as Connection817
-        connect Grid.B1 Grid_Meter.B+ as Connection818
-        connect Grid.A1 Grid_Meter.A+ as Connection819
-        connect Grid_Meter.C- Bus0.C1 as Connection820
-        connect Grid_Meter.B- Bus0.B1 as Connection821
-        connect Grid_Meter.A- Bus0.A1 as Connection822
-        connect gnd29.node Grid_Meter.GND as Connection823
         connect Bus13.C1 Line_13.C2 as Connection835
         [
             breakpoints = 9664, 8624
@@ -2739,6 +2288,9 @@ model "cigre_european_mv" {
         [
             breakpoints = 9728, 8560
         ]
+        connect Grid.C1 Bus0.C1 as Connection837
+        connect Grid.B1 Bus0.B1 as Connection838
+        connect Grid.A1 Bus0.A1 as Connection839
     }
 
     default {
@@ -2799,17 +2351,28 @@ model "cigre_european_mv" {
             conn_type = "Y"
             ground_connected = "False"
             phases = "3"
-            Vn_3ph = "1"
-            Sn_3ph = "600"
-            pf_mode_3ph = "Unit"
+            Vn_3ph = "4.16"
+            Sn_3ph = "3500"
+            pf_mode_3ph = "Lag"
             pf_3ph = "0.9"
             pf_3ph_set = "0"
             load_model = "Constant Impedance"
+            zip_vector = "[0,0,1]"
+            zip_vector_Q = "[0,0,1]"
+            zip_internal = "[0,0,1]"
+            zip_internal_Q = "[0,0,1]"
+            zip_internal_n = "[0,0,1]"
+            zip_internal_n_Q = "[0,0,1]"
+            ZIPV = "[0,0,1,0,0,1,0]"
+            Vmaxpu = "1.05"
+            Vminpu = "0.95"
             model = "2"
             Pow_ref_s = "Fixed"
             execution_rate = "300e-6"
             Tfast = "100e-6"
             CPL_LMT = "2"
+            v_min_max = "[0.95,1.05]"
+            rate_lmt = "1"
             zero_seq_remove = "False"
             q_gain_k = "0.5"
             r_gain_k = "20"
@@ -2821,6 +2384,7 @@ model "cigre_european_mv" {
             conn = "0"
             kVA = "0"
             basefreq = "0"
+            gen_ts_en = "True"
             load_loadshape = "Choose"
             loadshape_name = "Default"
             loadshape_from_file = "False"
@@ -2832,9 +2396,9 @@ model "cigre_european_mv" {
             loadshape_int = "1"
             S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
             Q_Ts = "0"
+            T_Ts = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
             T_mode = "Time"
             S_Ts_mode = "Manual input"
-            T_Ts = "[0, 6, 12, 18, 24]"
             timespan = "Daily"
             T_Ts_internal = "0"
             dssT = "1"
@@ -2917,52 +2481,30 @@ model "cigre_european_mv" {
             enable_monitoring = "False"
         }
 
-        "core/Three-phase Meter" {
-            R = "1e5"
-            n_cycles = "1"
-            Ts = "100e-6"
-            enable_probes = "True"
-            enable_out = "True"
-            remove_snubber = "False"
-            enable_bandwidth = "False"
-            bandwidth = "10e3"
-            VAn = "True"
-            VBn = "True"
-            VCn = "True"
-            VAB = "False"
-            VBC = "False"
-            VCA = "False"
-            VN = "False"
-            IA = "True"
-            IB = "True"
-            IC = "True"
-            IN = "False"
-            freq = "False"
-            VLn_rms = "False"
-            VLL_rms = "False"
-            VLn_avg_rms = "False"
-            VLL_avg_rms = "False"
-            VN_rms = "False"
-            I_rms = "False"
-            I_avg_rms = "False"
-            IN_rms = "False"
-            P_method = "alpha-beta"
-            enable_extra_out = "False"
-            P_meas = "False"
-        }
-
         "OpenDSS/Vsource" {
+            basekv = "115.0"
+            baseMVA = "100.0"
+            BaseFreq = "60"
+            global_basefreq = "False"
             ground_connected = "True"
-            basekv = "115"
-            pu = "1"
+            pu = "1.0"
             Angle = "0"
             Frequency = "60"
-            global_basefreq = "True"
-            BaseFreq = "60"
+            input_method = "Z"
             r1 = "1.65"
             x1 = "6.6"
             r0 = "1.9"
             x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
             enable_monitoring = "False"
         }
     }
