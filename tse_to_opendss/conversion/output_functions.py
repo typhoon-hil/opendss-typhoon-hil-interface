@@ -38,8 +38,6 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
         for p in phase_letters:
             terminal_list.append(f"{p}{n}")
 
-    print(tse_component)
-    print(terminal_groups_dict)
     # Find the Bus components that are connected to the current component
     connected_buses = tse_fns.connected_components(tse_component, comp_type=constants.DSS_BUS)
 
@@ -66,10 +64,8 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
                             if bus_terminals[0] not in sequence:  # Do not repeat the letter
                                 sequence.extend(bus_terminals[0])
 
-                print(sequence)
                 terminal_order = [str(ord(ph[0]) - 64) if ph in ['A', 'B', 'C', 'G'] else '0' for ph in sequence]
                 terminal_order = '.'.join(terminal_order)
-                print(terminal_order)
                 bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
 
     if floating_neutral:
@@ -166,10 +162,10 @@ def create_general_objects_from_saved_json(tse_model, output_circuit):
                     # and selected_object properties for the saved object name
                     for comp in tse_model.components:
                         properties_dict = {str(k): str(v.value) for k, v in comp.properties.items()}
-                        if properties_dict.get(converted_comp_type[:-1] + "_name") == obj_name:
+                        if properties_dict.get(converted_comp_type[:-1] + "_name", "").upper() == obj_name.upper():
                             add_obj = True if obj_name not in added_objs else False
                             break
-                        elif properties_dict.get("selected_object") == obj_name:
+                        elif properties_dict.get("selected_object", "").upper() == obj_name.upper():
                             add_obj = True if obj_name not in added_objs else False
                             break
 

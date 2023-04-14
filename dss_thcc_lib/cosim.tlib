@@ -1,0 +1,180 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Co-simulation Interface" {
+            layout = dynamic
+            component "core/Constant" f {
+                execution_rate = "execution_rate"
+                value = "f"
+            }
+            [
+                position = 1504, 9200
+                hide_name = True
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 1224, 9248
+            ]
+
+            component "core/Sinusoidal Source" vref {
+                amplitude = "100"
+                execution_rate = "execution_rate"
+                frequency = "f"
+            }
+            [
+                position = 1312, 9200
+                hide_name = True
+            ]
+
+            tag Goto1 {
+                value = "f"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 1592, 9200
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag gnd_tag {
+                value = "gnd"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 1112, 9200
+                size = 60, 20
+            ]
+
+            tag Goto2 {
+                value = "vref"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 1392, 9200
+                hide_name = True
+                size = 60, 20
+            ]
+
+            connect Goto1 f.out as Connection52
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect gnd_tag gnd1.node as Connection127
+            connect vref.out Goto2 as Connection128
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><p><br></br></p></body></html>"
+
+                model_path {
+                    label = "Model file"
+                    widget = edit
+                    type = generic
+                    default_value = ""
+                    no_evaluate
+                }
+
+                execution_rate {
+                    label = "Execution rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                }
+
+                f {
+                    label = "Frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+                }
+
+                saved_position_dict {
+                    widget = combo
+                    combo_values = "{}"
+                    type = string
+                    default_value = "{}"
+                    nonvisible
+                    no_evaluate
+                }
+
+                saved_selected_interface_points {
+                    widget = combo
+                    combo_values = "[]"
+                    type = string
+                    default_value = "[]"
+                    nonvisible
+                    no_evaluate
+                }
+
+                CODE open
+                    import dss_thcc_lib.gui_scripts.cosim as cosim
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.open_mask(mdl, item_handle, cosim)
+
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.pre_compilation(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    comp_handle = mdl.get_parent(item_handle)
+
+                    for item in mdl.get_items():
+                        if item.item_type == "masked_component" and not item == comp_handle:
+                            type_name = mdl.get_component_type_name(item)
+                            if type_name == "Co-simulation Interface":
+                                mdl.info("Only one Co-simulation component is supported.")
+
+                    import dss_thcc_lib.component_scripts.comp_cosim as comp_script
+                    importlib.reload(comp_script)
+
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    # Create phases when opening a saved TSE file
+                    comp_script.restore_configuration(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 5464, 4272
+            size = 120, 120
+        ]
+
+    }
+
+}
