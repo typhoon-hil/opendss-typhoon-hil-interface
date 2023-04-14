@@ -99,15 +99,14 @@ class Line(TwoTerminal):
                     "x1": tse_properties['X1'],
                     "x0": tse_properties['X0'],
                     "c1": tse_properties['dC1'],
-                    "c0": tse_properties['dC0'],
-                    "mode": "symmetrical"
+                    "c0": tse_properties['dC0']
                 }
             else:
                 linecode_props = {
                     "rmatrix": tse_properties['rmatrix'],
                     "cmatrix": tse_properties['cmatrix'],
                     "xmatrix": tse_properties['xmatrix'],
-                    "mode": "matrix"
+                    "nphases": self.num_phases
                 }
 
             #############
@@ -146,6 +145,8 @@ class Line(TwoTerminal):
                 if not saved_linecodes:
                     general_objects['linecodes'] = {}
                 general_objects['linecodes'].update({tse_properties["selected_object"]: linecode_props})
+
+                linecode_props['mode'] = tse_properties['obj_mode']
 
                 with open(obj_json_file, 'w') as f:
                     f.write(json.dumps(general_objects, indent=4))
