@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.3 DEV
+// Saved by sw version: 2023.2
 //
 
 model "ieee_13bus" {
@@ -1331,7 +1331,7 @@ model "ieee_13bus" {
             voltagebases = "[4.16, 0.48]"
         }
         [
-            position = 7936, 8080
+            position = 7936, 8072
             size = 96, 96
         ]
 

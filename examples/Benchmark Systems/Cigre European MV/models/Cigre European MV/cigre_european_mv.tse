@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.3 DEV
+// Saved by sw version: 2023.2
 //
 
 model "cigre_european_mv" {
