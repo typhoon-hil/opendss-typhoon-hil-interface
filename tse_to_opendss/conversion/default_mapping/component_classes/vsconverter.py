@@ -6,7 +6,7 @@ class VSConverter(TwoTerminal):
     """ Converted component class. """
 
     def __init__(self, converted_comp_type, name, circuit, tse_properties, tse_component):
-        # self.type = converted_comp_type
+        self.type = None
         self.name = name
         self.circuit = circuit
 
