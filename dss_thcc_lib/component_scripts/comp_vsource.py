@@ -131,14 +131,6 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
         xr_names = ["x1r1", "x0r0"]
         xr_props = [mdl.prop(container_handle, name) for name in xr_names]
 
-        v_base = float(mdl.get_property_disp_value(mdl.prop(container_handle, "basekv"))) * 1e3
-        s_base = float(mdl.get_property_disp_value(mdl.prop(container_handle, "baseMVA"))) * 1e6
-        z_base = v_base*v_base/s_base
-        si_values = [float(mdl.get_property_disp_value(prop)) for prop in si_props]
-        z1 = si_values[0] + si_values[2]*1j
-        z0 = si_values[1] + si_values[3]*1j
-        zp = z0/3 + (2/3)*z1
-
         if new_value == "Z":
             # Hide/Show properties
             [mdl.show_property(prop) for prop in si_props]
@@ -223,11 +215,12 @@ def get_r_l_matrices(mdl, container_handle):
     if r0 <= 0 or x0 <= 0:
         msg = "R0 or X0 is negative."
         mdl.error(msg, kind='Bad input arguments', context=comp_handle)
+    """
     elif r0 < r1 or x0 < x1:
         msg = "Zero Sequence impedance is lower than positive sequence. " \
               "The source have negative mutual impedances."
         mdl.warning(msg, kind='Bad input arguments', context=comp_handle)
-
+    """
 
     rs = (2*r1 + r0)/3
     xs = (2*x1 + x0)/3
