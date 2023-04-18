@@ -65,6 +65,16 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
         vmeas_handles = [mdl.get_item(tname, parent=comp_handle, item_type="tag")
                          for tname in ["goto_VB", "goto_VC"]]
         ct_vmeas_handles = [mdl.get_item(cname, parent=comp_handle) for cname in ["ct_VB", "ct_VC"]]
+        # Controller
+        inv_control_handle = mdl.get_item("InvControl", parent=comp_handle)
+        inv_control_pos = mdl.get_position(inv_control_handle)
+        vlist_handle = mdl.get_item("Vlist", parent=comp_handle)
+        vlist_pos = mdl.get_position(vlist_handle)
+        ilist_handle = mdl.get_item("Ilist", parent=comp_handle)
+        ilist_pos = mdl.get_position(ilist_handle)
+        goto_mod_handles = [mdl.get_item(tname, parent=comp_handle, item_type="tag")
+                            for tname in ["mod_vb", "mod_vc"]]
+        bus_mod_handle = mdl.get_item("Bus Split mod", parent=comp_handle)
 
         if new_value == "3":
             # mod_handles
@@ -92,7 +102,21 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                     mdl.create_connection(mdl.term(leg_handle, "mod"), mod_handles[cnt])
                     mdl.create_connection(mdl.term(leg_handle, "Imeas"), imeas_handles[cnt])
                     mdl.create_connection(mdl.term(leg_handle, "Vmeas"), vmeas_handles[cnt])
-                    # saving progress
+            # Control
+            mdl.set_property_value(mdl.prop(inv_control_handle, "phases"), "3")
+            isel_handle = mdl.get_item("ilist_sel", parent=comp_handle)
+            if isel_handle:
+                mdl.delete_item(isel_handle)
+                mdl.create_connection(mdl.term(ilist_handle, "out"), mdl.term(inv_control_handle, "Imeas"))
+            vsel_handle = mdl.get_item("vlist_sel", parent=comp_handle)
+            if vsel_handle:
+                mdl.delete_item(vsel_handle)
+                mdl.create_connection(mdl.term(vlist_handle, "out"), mdl.term(inv_control_handle, "Vmeas"))
+            ct_mod_handle = mdl.get_item("ct_mod", parent=comp_handle)
+            if ct_mod_handle:
+                mdl.delete_item(ct_mod_handle)
+                mdl.set_property_value(mdl.prop(bus_mod_handle, "outputs"), "3")
+                mdl.create_connection(mdl.term(bus_mod_handle, "out2"), goto_mod_handles[1])
         else:
             # inv_legs
             for cnt, leg_handle in enumerate(inv_leg_handles):
@@ -129,6 +153,36 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                     mdl.set_property_value(mdl.prop(const_handle, "value"), 0)
                     mdl.set_property_value(mdl.prop(const_handle, "execution_rate"), "ts")
                     mdl.create_connection(mdl.term(const_handle, "out"), vhandle)
+            # Control
+            mdl.set_property_value(mdl.prop(inv_control_handle, "phases"), "1")
+            vlist_conn = mdl.find_connections(mdl.term(vlist_handle, "out"), mdl.term(inv_control_handle, "Vmeas"))
+            ilist_conn = mdl.find_connections(mdl.term(ilist_handle, "out"), mdl.term(inv_control_handle, "Imeas"))
+            if vlist_conn:
+                mdl.delete_item(vlist_conn[0])
+            if ilist_conn:
+                mdl.delete_item(ilist_conn[0])
+            vsel_handle = mdl.create_component("core/Bus Selector",
+                                               name="vlist_sel",
+                                               parent=comp_handle,
+                                               position=[vlist_pos[0]+64, vlist_pos[1]])
+            mdl.set_property_value(mdl.prop(vsel_handle, "signal_indexes"), "[0]")
+            mdl.create_connection(mdl.term(vlist_handle, "out"), mdl.term(vsel_handle, "in"))
+            mdl.create_connection(mdl.term(vsel_handle, "out"), mdl.term(inv_control_handle, "Vmeas"))
+            isel_handle = mdl.create_component("core/Bus Selector",
+                                               name="ilist_sel",
+                                               parent=comp_handle,
+                                               position=[ilist_pos[0]+64, ilist_pos[1]])
+            mdl.set_property_value(mdl.prop(isel_handle, "signal_indexes"), "[0]")
+            mdl.create_connection(mdl.term(ilist_handle, "out"), mdl.term(isel_handle, "in"))
+            mdl.create_connection(mdl.term(isel_handle, "out"), mdl.term(inv_control_handle, "Imeas"))
+            mdl.set_property_value(mdl.prop(bus_mod_handle, "outputs"), "2")
+            goto_mod_pos = mdl.get_position(goto_mod_handles[1])
+            ct_mod_handle = mdl.create_component("core/Constant",
+                                                 name="ct_mod",
+                                                 parent=comp_handle,
+                                                 position=[goto_mod_pos[0]-128, goto_mod_pos[1]])
+            mdl.set_property_value(mdl.prop(ct_mod_handle, "execution_rate"), "ts")
+            mdl.create_connection(mdl.term(ct_mod_handle, "out"), goto_mod_handles[1])
 
 
 def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
