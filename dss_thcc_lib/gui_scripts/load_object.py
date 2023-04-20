@@ -10,6 +10,9 @@
 
 from PyQt5 import QtCore, QtWidgets
 import dss_thcc_lib.gui_scripts.general_objects as obj
+# Lembrar de Apagar o importlib
+import importlib
+importlib.reload(obj)
 import os, pathlib
 import pandas as pd
 
@@ -108,6 +111,8 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
             getname = "linegeometries"
         elif self.obj_type == "LoadShape":
             getname = "loadshapes"
+        elif self.obj_type == "XYCurve":
+            getname = "xycurves"
 
         if self.obj_dicts.get(getname):
             self.list_object.clear()
@@ -154,6 +159,9 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
         elif self.obj_type == "LoadShape":
             self.getname = "loadshapes"
             self.unit_dict = {"mult": "", "npts": "", "hour": "", "useactual": "", }
+        elif self.obj_type == "XYCurve":
+            self.getname = "xycurves"
+            self.unit_dict = {"mult": "", "npts": "", "hour": ""}
 
 
         if self.list_object.currentItem():
@@ -232,6 +240,8 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
                 dss_fpath = os.path.join(dss_folder_path, 'data', 'linecodes.dss')
             elif self.obj_type == "LoadShape":
                 dss_fpath = os.path.join(dss_folder_path, 'data', 'loadshapes.dss')
+            elif self.obj_type == "XYCurve":
+                dss_fpath = os.path.join(dss_folder_path, 'data', 'xycurves.dss')
 
             self.write_dss_object_file(dss_fpath)
 

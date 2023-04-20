@@ -261,3 +261,177 @@ def get_port_const_attributes(port_name):
                  "N": {"name": "N", "pos": (7984, 8408), "term_pos": (40.0, 48.0), "label": "N"}}
 
     return port_dict[port_name]
+
+
+def load_loadshape(mdl, container_handle):
+    import os
+    import dss_thcc_lib.gui_scripts.load_object as load_obj
+    import pathlib
+    import json
+    import ast
+
+    # Find objects file
+    mdlfile = mdl.get_model_file_path()
+    mdlfile_name = pathlib.Path(mdlfile).stem
+    mdlfile_folder = pathlib.Path(mdlfile).parents[0]
+    mdlfile_target_folder = mdlfile_folder.joinpath(mdlfile_name + ' Target files')
+    dss_folder_path = pathlib.Path(mdlfile_target_folder).joinpath('dss')
+    fname = os.path.join(dss_folder_path, 'data', 'general_objects.json')
+
+    loadshape_name_prop = mdl.prop(container_handle, "loadshape_name")
+    loadshape_name = mdl.get_property_disp_value(loadshape_name_prop)
+    loadshape_name = "" if loadshape_name == "-" else loadshape_name
+
+    obj_type = "LoadShape"
+
+    try:
+        with open(fname, 'r') as f:
+            obj_dicts = json.load(f)
+    except FileNotFoundError:
+        obj_dicts = None
+
+    if obj_dicts:
+        new_load_window = load_obj.LoadObject(mdl, obj_type, obj_dicts=obj_dicts, starting_object=loadshape_name)
+    else:
+        new_load_window = load_obj.LoadObject(mdl, obj_type)
+
+    if new_load_window.exec():
+
+        selected_object = new_load_window.selected_object
+
+        obj_dicts = new_load_window.obj_dicts
+
+        # Property handles
+        loadshape_prop = mdl.prop(container_handle, "loadshape")
+        loadshape_prop_int = mdl.prop(container_handle, "loadshape_int")
+        loadshape_time_range_prop = mdl.prop(container_handle, "T_Ts")
+        useactual_prop = mdl.prop(container_handle, "useactual")
+        loadshape_from_file_prop = mdl.prop(container_handle, "loadshape_from_file")
+        loadshape_from_file_path_prop = mdl.prop(container_handle, "loadshape_from_file_path")
+        loadshape_from_file_header_prop = mdl.prop(container_handle, "loadshape_from_file_header")
+        loadshape_from_file_column_prop = mdl.prop(container_handle, "loadshape_from_file_column")
+
+        selected_obj_dict = obj_dicts.get("loadshapes").get(selected_object)
+        loadshape_name = selected_object
+
+        useactual = selected_obj_dict.get("useactual")
+        loadshape_from_file = selected_obj_dict.get("csv_file") == "True"
+        loadshape_from_file_path = selected_obj_dict.get("csv_path")
+        loadshape_from_file_header = selected_obj_dict.get("headers")
+        loadshape_from_file_column = selected_obj_dict.get("column")
+
+        selected_obj_dict = obj_dicts.get("loadshapes").get(selected_object)
+
+        npts = selected_obj_dict.get("npts")
+        if npts:
+            npts = ast.literal_eval(npts)
+        hour = selected_obj_dict.get("hour")
+        if hour:
+            hour = ast.literal_eval(hour)
+        interval = selected_obj_dict.get("interval")
+        if interval:
+            interval = ast.literal_eval(interval)
+
+        if not loadshape_from_file:
+            loadshape = selected_obj_dict.get("mult")
+        else:
+            selected_obj_dict.update({"loadshape_name": selected_object})
+            loadshape = str(read_loadshape_from_json(mdl, container_handle, reload_dict=selected_obj_dict))
+
+        if loadshape:
+            loadshape = ast.literal_eval(loadshape)
+
+            if interval == 0:  # Check hour points
+                if hour:
+                    loadshape = loadshape[:npts]
+                else:
+                    mdl.info("interval property is zero, but hour property is not defined")
+            else:
+                loadshape = loadshape[:npts]
+
+            mdl.set_property_disp_value(loadshape_prop, str(loadshape))
+
+        mdl.set_property_disp_value(loadshape_name_prop, str(loadshape_name))
+        mdl.set_property_disp_value(loadshape_prop_int, str(interval))
+        mdl.set_property_disp_value(loadshape_from_file_prop, str(loadshape_from_file))
+        mdl.set_property_disp_value(useactual_prop, useactual)
+        if interval == 0:
+            if hour:
+                mdl.set_property_disp_value(loadshape_time_range_prop, str(hour))
+        else:
+            time_range_str = f"[{', '.join(str(interval * n) for n in range(1, len(loadshape) + 1))}]"
+            mdl.set_property_disp_value(loadshape_time_range_prop, time_range_str)
+        mdl.set_property_disp_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
+        mdl.set_property_disp_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
+        mdl.set_property_disp_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
+
+
+def verify_time_loadshape_sizes(mdl, mask_handle, caller=None):
+    import ast
+
+    comp_name = mdl.get_name(mdl.get_parent(mask_handle))
+
+    loadshape_prop = mdl.prop(mask_handle, "loadshape")
+    time_prop = mdl.prop(mask_handle, "T_Ts")
+    loadshape = mdl.get_property_value(loadshape_prop)
+
+    time_list = ast.literal_eval(mdl.get_property_value(time_prop))
+    ls_list = ast.literal_eval(loadshape)
+
+    # Verify matching sizes
+    mode = mdl.get_property_value(mdl.prop(mask_handle, "T_mode"))
+    if mode == "Time" and time_list and ls_list:
+        # The time vector and the loadshape must be the same size
+        if not len(ls_list) == len(time_list):
+            mdl.info(f"Component {comp_name}: The number of points on the time range "
+                     f"({len(time_list)}) and loadshape ({len(ls_list)}) must be equal for correct operation.")
+            min_points = min(len(time_list), len(ls_list))
+            mdl.info(f"HIL simulation will use the first {min_points} points.")
+            if caller == "pre_compile":
+                if len(time_list) > len(ls_list):
+                    mdl.set_property_value(time_prop, time_list[:min_points])
+                elif len(time_list) < len(ls_list):
+                    mdl.set_property_value(loadshape_prop, ls_list[:min_points])
+
+
+def load_xycurve(mdl, container_handle):
+    import os
+    import dss_thcc_lib.gui_scripts.load_object as load_obj
+    # Tirar o importlib depois
+    import importlib
+    importlib.reload(load_obj)
+    import pathlib
+    import json
+    import ast
+
+    # Find objects file
+    mdlfile = mdl.get_model_file_path()
+    mdlfile_name = pathlib.Path(mdlfile).stem
+    mdlfile_folder = pathlib.Path(mdlfile).parents[0]
+    mdlfile_target_folder = mdlfile_folder.joinpath(mdlfile_name + ' Target files')
+    dss_folder_path = pathlib.Path(mdlfile_target_folder).joinpath('dss')
+    fname = os.path.join(dss_folder_path, 'data', 'general_objects.json')
+
+    xycurve_name_prop = mdl.prop(container_handle, "xycurve_name_eff")
+    xycurve_name = mdl.get_property_disp_value(xycurve_name_prop)
+    #xycurve_name = "" if xycurve_name == "-" else xycurve_name
+
+    obj_type = "XYCurve"
+
+    try:
+        with open(fname, 'r') as f:
+            obj_dicts = json.load(f)
+    except FileNotFoundError:
+        obj_dicts = None
+
+    if obj_dicts:
+        new_load_window = load_obj.LoadObject(mdl, obj_type, obj_dicts=obj_dicts, starting_object=xycurve_name)
+    else:
+        new_load_window = load_obj.LoadObject(mdl, obj_type)
+
+    if new_load_window.exec():
+
+        selected_object = new_load_window.selected_object
+
+        obj_dicts = new_load_window.obj_dicts
+

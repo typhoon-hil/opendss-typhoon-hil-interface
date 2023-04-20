@@ -143,6 +143,8 @@ class Ui_objects(object):
         self.tab_linegeometry = QtWidgets.QWidget()
         self.tab_linegeometry.setObjectName("tab_linegeometry")
         self.tabWidget.addTab(self.tab_linegeometry, "")
+
+
         self.tab_loadshape = QtWidgets.QWidget()
         self.tab_loadshape.setObjectName("tab_loadshape")
         self.group_loadshape_parameters = QtWidgets.QGroupBox(self.tab_loadshape)
@@ -244,6 +246,65 @@ class Ui_objects(object):
         self.label_savewarning.setGeometry(QtCore.QRect(60, 490, 481, 16))
         self.label_savewarning.setObjectName("label_savewarning")
 
+
+        self.tab_xycurve = QtWidgets.QWidget()
+        self.tab_xycurve.setObjectName("tab_xycurve")
+
+        self.group_xycurve_parameters = QtWidgets.QGroupBox(self.tab_xycurve)
+        self.group_xycurve_parameters.setGeometry(QtCore.QRect(150, 40, 400, 350))
+        self.group_xycurve_parameters.setObjectName("group_xycurve_parameters")
+
+        self.label_xycurves = QtWidgets.QLabel(self.tab_xycurve)
+        self.label_xycurves.setGeometry(QtCore.QRect(10, 40, 80, 16))
+        self.label_xycurves.setObjectName("label_xycurves")
+
+        self.list_xycurves = QtWidgets.QListWidget(self.tab_xycurve)
+        self.list_xycurves.setGeometry(QtCore.QRect(10, 60, 121, 271))
+        self.list_xycurves.setObjectName("list_xycurves")
+
+        self.button_xycurvesfromdss = QtWidgets.QPushButton(self.tab_xycurve)
+        self.button_xycurvesfromdss.setGeometry(QtCore.QRect(10, 10, 121, 23))
+        self.button_xycurvesfromdss.setObjectName("button_xycurvesfromdss")
+
+        self.button_newxycurve = QtWidgets.QPushButton(self.tab_xycurve)
+        self.button_newxycurve.setGeometry(QtCore.QRect(10, 340, 121, 23))
+        self.button_newxycurve.setObjectName("button_newxycurve")
+
+        self.button_copyxycurve = QtWidgets.QPushButton(self.tab_xycurve)
+        self.button_copyxycurve.setGeometry(QtCore.QRect(10, 370, 121, 23))
+        self.button_copyxycurve.setObjectName("button_copyxycurve")
+
+
+        self.edit_npts_xycurve = QtWidgets.QLineEdit(self.group_xycurve_parameters)
+        self.edit_npts_xycurve.setGeometry(QtCore.QRect(50, 25, 51, 20))
+        self.edit_npts_xycurve.setObjectName("edit_npts_xycurve")
+        self.label_npts_xycurve = QtWidgets.QLabel(self.group_xycurve_parameters)
+        self.label_npts_xycurve.setGeometry(QtCore.QRect(20, 25, 41, 20))
+        self.label_npts_xycurve.setObjectName("label_npts_xycurve")
+
+        self.edit_yarray = QtWidgets.QLineEdit(self.group_xycurve_parameters)
+        self.edit_yarray.setGeometry(QtCore.QRect(50, 50, 261, 20))
+        self.edit_yarray.setObjectName("edit_yarray")
+        self.label_yarray = QtWidgets.QLabel(self.group_xycurve_parameters)
+        self.label_yarray.setGeometry(QtCore.QRect(10, 50, 41, 20))
+        self.label_yarray.setObjectName("label_yarray")
+        self.edit_xarray = QtWidgets.QLineEdit(self.group_xycurve_parameters)
+        self.edit_xarray.setGeometry(QtCore.QRect(50, 75, 261, 20))
+        self.edit_xarray.setObjectName("edit_xarray")
+        self.label_xarray = QtWidgets.QLabel(self.group_xycurve_parameters)
+        self.label_xarray.setGeometry(QtCore.QRect(10, 75, 41, 20))
+        self.label_xarray.setObjectName("label_xarray")
+
+
+        self.xycurve_plot = QtWidgets.QWidget(self.group_xycurve_parameters)
+        self.xycurve_plot.setGeometry(QtCore.QRect(10, 100, 381, 181))
+        self.xycurve_plot.setObjectName("xycurve_plot")
+
+        self.button_xycurve_save = QtWidgets.QPushButton(self.group_xycurve_parameters)
+        self.button_xycurve_save.setGeometry(QtCore.QRect(163, 300, 75, 23))
+        self.button_xycurve_save.setObjectName("button_xycurve_save")
+
+
         self.retranslateUi(objects)
         self.tabWidget.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(objects)
@@ -313,6 +374,17 @@ class Ui_objects(object):
         self.button_cancel.setText(_translate("objects", "Cancel"))
         self.label_savewarning.setText(_translate("objects", "Warning: changes are independent from the schematic model and cannot be restored once saved."))
 
+        # XYCurve Objects
+        self.button_xycurvesfromdss.setText(_translate("objects", "Add from file"))
+        self.button_newxycurve.setText(_translate("objects", "New"))
+        self.button_copyxycurve.setText(_translate("objects", "Copy selected"))
+        self.group_xycurve_parameters.setTitle(_translate("objects", "Parameters"))
+        self.label_yarray.setText(_translate("objects", "Yarray"))
+        self.label_xarray.setText(_translate("objects", "Xarray"))
+        self.button_xycurve_save.setText(_translate("objects", "Save"))
+        self.label_xycurves.setText(_translate("objects", "XYCurve Names"))
+        self.label_npts_xycurve.setText(_translate("objects", "npts"))
+
     def edited(self):
 
         self.linecode_pars = {
@@ -342,6 +414,12 @@ class Ui_objects(object):
             "csv_path": self.edit_external_file_path,
             "headers": self.checkbox_has_headers,
             "column": self.combo_column
+        }
+
+        self.xycurve_pars = {
+            "npts": self.edit_npts_xycurve,
+            "xarray": self.edit_xarray,
+            "yarray": self.edit_yarray
         }
 
         self.double_validator = QtGui.QDoubleValidator()
@@ -391,6 +469,25 @@ class Ui_objects(object):
         self.loadshape_subplot.set_ylim([0, 4])
         self.loadshape_subplot.grid(which="both")
 
+
+    def create_xycurve_plot(self):
+        from matplotlib import rc
+        import matplotlib.figure
+        from matplotlib.backends.backend_qt5agg import FigureCanvas
+
+        # Font
+        rc('font', **{'size': 8})       # XYCurve
+        self.xycurve_plot_grid = QtWidgets.QGridLayout()
+        self.xycurve_plot.setLayout(self.xycurve_plot_grid)
+        self.figure_xycurve = matplotlib.figure.Figure()
+        self.canvas_xycurve = FigureCanvas(self.figure_xycurve)
+        self.xycurve_plot_grid.addWidget(self.canvas_xycurve)
+        self.xycurve_subplot = self.figure_xycurve.add_subplot(111, position=[0.12, 0.2, 0.76, 0.7])
+        self.xycurve_subplot.set_xlim([0, 4])
+        self.xycurve_subplot.set_ylim([0, 4])
+        self.xycurve_subplot.grid(which="both")
+
+
     def return_list_of_floats(self, str_input):
         try:
             import ast
@@ -424,6 +521,7 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.linespacing_dict = {}
         self.wiredata_dict = {}
         self.linegeometry_dict = {}
+        self.xycurve_dict = {}
 
         if self.obj_type == "linecode":
             self.tabWidget.addTab(self.tab_linecode, "LineCode")
@@ -435,6 +533,8 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.tabWidget.addTab(self.tab_linegeometry, "LineGeometry")
         elif self.obj_type == "loadshape":
             self.tabWidget.addTab(self.tab_loadshape, "LoadShape")
+        elif self.obj_type == "xycurve":
+            self.tabWidget.addTab(self.tab_xycurve, "XYCurve")
 
         # Auxiliary vars
         self.old_listitem_name = ""
@@ -461,11 +561,19 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             lambda: self.update_parameters_from_dict(self.list_loadshapes))
         self.list_loadshapes.itemSelectionChanged.connect(self.update_csv_parameters)
 
+        self.list_xycurves.itemDoubleClicked.connect(self.rename_object_step1)
+        self.xycurves_delegate = self.list_xycurves.itemDelegate()
+        self.xycurves_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
+        self.xycurves_delegate.closeEditor.connect(lambda _: self.rename_object_step3("xycurve"))
+        self.list_xycurves.itemSelectionChanged.connect(lambda: self.update_parameters_from_dict(self.list_xycurves))
+
         # Keyboard shortcuts
         if self.obj_type == "linecode":
             del_list_widget = self.list_linecodes
         elif self.obj_type == "loadshape":
             del_list_widget = self.list_loadshapes
+        elif self.obj_type == "xycurve":
+            del_list_widget = self.list_xycurves
         self.delete_shortcut = QtWidgets.QShortcut("Delete", del_list_widget)
         self.delete_shortcut.activated.connect(lambda: self.delete_object(del_list_widget))
 
@@ -479,6 +587,12 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.button_copyloadshape.clicked.connect(lambda: self.copy_object("loadshape"))
         self.button_loadshape_save.clicked.connect(lambda: self.save_parameters("loadshape"))
         self.button_loadshapesfromdss.clicked.connect(lambda: self.add_from_file("loadshape"))
+
+        self.button_newxycurve.clicked.connect(lambda: self.new_object("xycurve"))
+        self.button_copyxycurve.clicked.connect(lambda: self.copy_object("xycurve"))
+        self.button_xycurve_save.clicked.connect(lambda: self.save_parameters("xycurve"))
+        #self.button_xycurvesfromdss.clicked.connect(lambda: self.add_from_file("xycurve"))
+
 
         self.button_ok.clicked.connect(self.return_updated_dict)
         self.button_cancel.clicked.connect(self.reject)
@@ -512,7 +626,11 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             else:
                 widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_loadshapes))
                 widget.textEdited.connect(lambda txt: self.update_plot(self.loadshape_subplot))
-
+        # XYCurve
+        self.edit_npts_xycurve.textEdited.connect(self.npts_validation)
+        for param, widget in self.xycurve_pars.items():
+            widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_xycurves))
+            widget.textEdited.connect(lambda txt: self.update_plot(self.xycurve_subplot))
 
         # Phases limit
         self.edit_phases.textChanged.connect(self.cap_phases)
@@ -528,8 +646,13 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.test_csv_files()
 
         # Plots
-        self.create_loadshape_plot()
-        self.update_plot(self.loadshape_subplot)
+        if self.obj_type == "loadshape":
+            self.create_loadshape_plot()
+            self.update_plot(self.loadshape_subplot)
+        elif self.obj_type == "xycurve":
+            self.create_xycurve_plot()
+            self.update_plot(self.xycurve_subplot)
+
 
     def npts_validation(self):
 
@@ -577,12 +700,27 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
             return loadshape_def
 
+        elif obj_type == "xycurve":
+            xycurve_def = {"npts": "4",
+                           "yarray": "[.86, .9, .93, .97]",
+                           "xarray": "[.1, .2, .4, 1.0]"}
+
+            return xycurve_def
+
     def update_plot(self, plot_object):
 
-        mult_values = self.return_list_of_floats(self.edit_mult.text())
-        hour_values = self.return_list_of_floats(self.edit_hour.text())
-        interval = self.edit_interval.text()
-        npts = self.edit_npts.text()
+        if self.obj_type == "loadshape":
+            canvas_obj = self.canvas_loadshape
+            mult_values = self.return_list_of_floats(self.edit_mult.text())
+            hour_values = self.return_list_of_floats(self.edit_hour.text())
+            interval = self.edit_interval.text()
+            npts = self.edit_npts.text()
+        elif self.obj_type == "xycurve":
+            canvas_obj = self.canvas_xycurve
+            mult_values = self.return_list_of_floats(self.edit_yarray.text())
+            hour_values = self.return_list_of_floats(self.edit_xarray.text())
+            interval = "0"
+            npts = self.edit_npts_xycurve.text()
 
         if npts and not npts == '-' and interval and not interval == '-':
             npts = int(npts)
@@ -603,37 +741,38 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
                 plot_object.cla()
                 if xdata and ydata:
-                    self.loadshape_subplot.set_xlim([min(xdata), max(xdata)])
+                    plot_object.set_xlim([min(xdata), max(xdata)])
                     min_y = math.floor(min(ydata))
                     max_y = math.ceil(max(ydata))
                     y_tick_num = (max_y - min_y) / 4
-                    self.loadshape_subplot.set_ylim([min_y - (y_tick_num * 0.2), max_y + (y_tick_num * 0.2)])
-                    self.loadshape_subplot.set_yticks([min_y + y_tick_num * n for n in range(5)])
+                    plot_object.set_ylim([min_y - (y_tick_num * 0.2), max_y + (y_tick_num * 0.2)])
+                    plot_object.set_yticks([min_y + y_tick_num * n for n in range(5)])
                     min_x = min(xdata)
                     max_x = max(xdata)
                     x_tick_num = (max_x - min_x) / 4
-                    self.loadshape_subplot.set_xticks([min_x + x_tick_num * n for n in range(5)])
+                    plot_object.set_xticks([min_x + x_tick_num * n for n in range(5)])
                     plot_object.plot(xdata, ydata, 'r')
                     plot_object.grid(which="both")
-                self.canvas_loadshape.draw()
+                canvas_obj.draw()
 
             else:
                 plot_object.cla()
-                self.loadshape_subplot.set_xlim([0, 4])
-                self.loadshape_subplot.set_ylim([0, 4])
-                self.loadshape_subplot.grid(which="both")
-                self.canvas_loadshape.draw()
+                plot_object.set_xlim([0, 4])
+                plot_object.set_ylim([0, 4])
+                plot_object.grid(which="both")
+                canvas_obj.draw()
         else:
             plot_object.cla()
-            self.loadshape_subplot.set_xlim([0, 4])
-            self.loadshape_subplot.set_ylim([0, 4])
-            self.loadshape_subplot.grid(which="both")
-            self.canvas_loadshape.draw()
+            plot_object.set_xlim([0, 4])
+            plot_object.set_ylim([0, 4])
+            plot_object.grid(which="both")
+            canvas_obj.draw()
 
     def get_object_dicts(self):
 
         linecode_def = {"Default": self.get_obj_defaults("linecode")}
         loadshape_def = {"Default": self.get_obj_defaults("loadshape")}
+        xycurve_def = {"Default": self.get_obj_defaults("xycurve")}
 
         if self.obj_dicts:
             if self.obj_dicts.get("linecodes"):
@@ -644,9 +783,14 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 self.loadshape_dict.update(self.obj_dicts.get("loadshapes"))
             else:
                 self.loadshape_dict.update(loadshape_def)
+            if self.xycurve_dict.get("xycurves"):
+                self.xycurve_dict.update(self.obj_dicts.get("xycurves"))
+            else:
+                self.xycurve_dict.update(xycurve_def)
         else:
             self.linecodes_dict.update(linecode_def)
             self.loadshape_dict.update(loadshape_def)
+            self.xycurve_dict.update(xycurve_def)
 
     def update_lists_with_names(self, start=False):
 
@@ -677,6 +821,19 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
         if start:
             self.list_loadshapes.setCurrentRow(0)
+
+        # XYCurves
+        self.list_xycurves.clear()
+        xycurve_names = list(self.xycurve_dict.keys())
+
+        if xycurve_names:
+            xycurve_names.sort()
+            self.list_xycurves.addItems(xycurve_names)
+            for idx in range(self.list_xycurves.count()):
+                item = self.list_xycurves.item(idx)
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
+        if start:
+            self.list_xycurves.setCurrentRow(0)
 
     def update_parameters_from_dict(self, obj_list):
 
@@ -772,6 +929,28 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             if hasattr(self, 'loadshape_subplot'):
                 self.update_plot(self.loadshape_subplot)
 
+        elif obj_list == self.list_xycurves:
+
+            if obj_list.currentItem():
+                xycurve_name = obj_list.currentItem().text()
+
+                use_external_file = self.xycurve_dict.get(xycurve_name).get("csv_file") == "True"
+                self.checkbox_has_headers.setEnabled(use_external_file)
+                self.label_external_file_column.setEnabled(use_external_file)
+                self.combo_column.setEnabled(use_external_file)
+                self.checkbox_external_file.setChecked(use_external_file)
+                self.edit_external_file_path.setText("")
+                self.edit_external_file_path.setEnabled(use_external_file)
+                self.edit_mult.setReadOnly(use_external_file)
+
+                # Process xycurve parameters
+                for par in self.xycurve_pars:
+                    par_value = self.xycurve_dict.get(xycurve_name).get(par)
+                    if par_value:
+                        if isinstance(self.xycurve_pars.get(par), QtWidgets.QLineEdit):
+                            self.xycurve_pars.get(par).setText(f"{par_value}")
+                            self.xycurve_pars.get(par).setStyleSheet("color: black;")
+
         self.edit_mult.setCursorPosition(0)
 
     def radio_button_status(self, obj_type):
@@ -852,6 +1031,25 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             else:
                 self.button_loadshape_save.setEnabled(False)
 
+        elif list_widget == self.list_xycurves:
+            pending = []
+            for param, widget in self.xycurve_pars.items():
+                current_value = self.xycurve_dict.get(list_widget.currentItem().text()).get(param)
+                current_text = widget.text()
+
+                if not current_text == current_value:
+                    widget.setStyleSheet("color: red;")
+                    pending.append(True)
+                else:
+                    widget.setStyleSheet("color: black;")
+                    pending.append(False)
+
+            if any(pending):
+                self.button_xycurve_save.setEnabled(True)
+            else:
+                self.button_xycurve_save.setEnabled(False)
+
+
     def new_object(self, obj_type):
 
         for k in range(10000):
@@ -880,6 +1078,17 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     self.list_loadshapes.setCurrentItem(
                         self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchFixedString)[0])
                     break
+            elif obj_type == "xycurve":
+                if self.list_xycurves.findItems(new_name, QtCore.Qt.MatchFixedString):
+                    # If the new name already exists, count k+1
+                    pass
+                else:
+                    self.xycurve_dict.update({new_name: self.get_obj_defaults("xycurve")})
+                    self.update_lists_with_names()
+                    self.list_xycurves.setCurrentItem(
+                        self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[0]
+                    )
+                    break
 
     def copy_object(self, obj_type):
 
@@ -889,6 +1098,10 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         elif obj_type == "loadshape":
             if self.list_loadshapes.currentItem():
                 selected_object = self.list_loadshapes.currentItem()
+        elif obj_type == "xycurve":
+            if self.list_xycurves.currentItem():
+                selected_object = self.list_xycurves.currentItem()
+
         for k in range(10000):
             if k == 0:
                 new_name = selected_object.text() + "_copy"
@@ -914,6 +1127,15 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     self.update_lists_with_names()
                     self.list_loadshapes.setCurrentItem(
                         self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                    break
+            elif obj_type == "xycurve":
+                if self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly):
+                    # If the new name already exists, count k + 1
+                    pass
+                else:
+                    self.xycurve_dict.update({new_name: self.xycurve_dict.get(selected_object.text())})
+                    self.update_lists_with_names()
+                    self.list_xycurves.setCurrentItem(self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[0])
                     break
 
     def rename_object_step1(self, list_item):
@@ -1014,6 +1236,17 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             for param, widget in self.loadshape_pars.items():
                 widget.setStyleSheet("color: black;")
             self.button_loadshape_save.setDisabled(True)
+
+        if obj_type == "xycurve":
+
+            for param_name, param_widget in self.xycurve_pars.items():
+                new_param_values.update({param_name: param_widget.text()})
+
+            self.xycurve_dict.update({self.list_xycurves.currentItem().text(): new_param_values})
+
+            for param, widget in self.xycurve_pars.items():
+                widget.setStyleSheet("color: black;")
+            self.button_xycurve_save.setDisabled(True)
 
     def cap_phases(self):
         _translate = QtCore.QCoreApplication.translate
@@ -1318,6 +1551,6 @@ if __name__ == "__main__":
         "c0": "7.751e-9",
     }}}
 
-    mainwindow = GeneralObjects("loadshape", bla)
+    mainwindow = GeneralObjects("xycurve", bla)
     mainwindow.show()
     app.exec()
