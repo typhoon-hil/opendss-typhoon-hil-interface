@@ -1,0 +1,1444 @@
+<ui_settings>
+    <version>2.8</version>
+    <model_locked>False</model_locked>
+    <canvas_bg_color>#ffffff</canvas_bg_color>
+    <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be
+# available for use in all Macro and Expression scripts.
+# NOTE: This code is always executed prior to simulation start.
+
+# The variable 'SETTINGS_DIR' holds the directory where the loaded Panel .cus file is located.
+# Also you can call the 'get_settings_dir_path()' function in any
+# Macro and Expression script to get the same directory.
+SETTINGS_DIR = get_settings_dir_path()
+
+# The 'add_to_python_path(folder)' function can be used to add a custom folder
+# with Python files and packages to the PYTHONPATH. After a folder is added, all Python 
+# files and Python packages from it can be imported into the SCADA Namespace.
+
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# Numpy module is imported as 'np'
+# Scipy module is imported as 'sp'
+# Schematic Editor model namespace is imported as 'scm'
+# Function for printing to the HIL SCADA Message log is imported as 'printf'.
+
+]]></initialization_code>
+    <components>
+        <component_data>
+                <id>3079040f8b6911ed955acc15312b2fd6</id>
+                <name><![CDATA[Image]]></name>
+                <type>Image</type>
+                <description><![CDATA[]]></description>
+                <image><![CDATA[Single-Line.png]]></image>
+                <image_scaling><![CDATA[Without scaling]]></image_scaling>
+                <widget_settings>
+                    <x>112</x>
+                    <y>56</y>
+                    <width>1032</width>
+                    <height>752</height>
+                    <background_color><![CDATA[#f0f0f0]]></background_color>
+                    <background_type><![CDATA[Transparent]]></background_type>
+                    <is_background>True</is_background>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>b3ba22478b6a11edbc53cc15312b2fd6</id>
+                <name><![CDATA[Load 1]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['38de26298b6d11eda3f4cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus1.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>416</x>
+                    <y>288</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>38de26298b6d11eda3f4cc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>713ab92c8b6d11ed939bcc15312b2fd6</id>
+                <name><![CDATA[Load 3]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['713ab92d8b6d11ed8bfacc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus3.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>624</x>
+                    <y>448</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>713ab92d8b6d11ed8bfacc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>818680e68b6d11ed8458cc15312b2fd6</id>
+                <name><![CDATA[Load 4]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['818680e78b6d11ed8a8ccc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus4.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>312</x>
+                    <y>464</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>818680e78b6d11ed8a8ccc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>8b4c7ebe8b6d11edb782cc15312b2fd6</id>
+                <name><![CDATA[Load 5]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['8b4c7ebf8b6d11edba4ecc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus5.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>312</x>
+                    <y>560</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>8b4c7ebf8b6d11edba4ecc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>974c87338b6d11edb0f8cc15312b2fd6</id>
+                <name><![CDATA[Load 6]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['974c87348b6d11eda6d3cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus6.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>672</x>
+                    <y>736</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>974c87348b6d11eda6d3cc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>9d425d468b6d11edace8cc15312b2fd6</id>
+                <name><![CDATA[Load 7]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['9d425d478b6d11edb34acc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus7.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>688</x>
+                    <y>672</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>9d425d478b6d11edb34acc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>a50e46438b6d11edbc60cc15312b2fd6</id>
+                <name><![CDATA[Load 8]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['a50e46448b6d11edad29cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus8.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>624</x>
+                    <y>552</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>a50e46448b6d11edad29cc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>afd37f368b6d11edafcccc15312b2fd6</id>
+                <name><![CDATA[Load 9]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['afd37f378b6d11ed8ff9cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus9.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>464</x>
+                    <y>688</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>afd37f378b6d11ed8ff9cc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>b5a084828b6d11edb8d2cc15312b2fd6</id>
+                <name><![CDATA[Load 10]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['b5a084838b6d11eda933cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus10.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>432</x>
+                    <y>624</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>b5a084838b6d11eda933cc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>c05c48228b6d11ed8b0fcc15312b2fd6</id>
+                <name><![CDATA[Load 11]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['c05c48238b6d11ed9836cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus11.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>432</x>
+                    <y>560</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>c05c48238b6d11ed9836cc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>e92d87ce8b6d11ed860fcc15312b2fd6</id>
+                <name><![CDATA[Load 12]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['e92d87cf8b6d11ed9fcdcc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus12.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>864</x>
+                    <y>312</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>e92d87cf8b6d11ed9fcdcc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>f03489be8b6d11eda3a4cc15312b2fd6</id>
+                <name><![CDATA[Load 13]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['f03489bf8b6d11ed9c7bcc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus13.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>856</x>
+                    <y>448</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>f03489bf8b6d11ed9c7bcc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>f58aaf018b6d11edb9ebcc15312b2fd6</id>
+                <name><![CDATA[Load 14]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['f58aaf028b6d11edb5bccc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01@\x00\x00\x00\xc3\x00\x00\x02\xcc\x00\x00\x01\xbe']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x01\x8d\x00\x00\x00\xc1\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+meter_path = "Bus14.Measurements"]]></initialization_code>
+                <widget_settings>
+                    <x>840</x>
+                    <y>560</y>
+                    <width>80</width>
+                    <height>64</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>f58aaf028b6d11edb5bccc15312b2fd6</id>
+                <name><![CDATA[Load_VLL]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name=meter_path+'.VAB_RMS')/20e3
+
+
+]]></code>
+                <signal_name><![CDATA[Load_1.Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>48</x>
+                    <y>16</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>cf5befc88b6e11ed91fccc15312b2fd6</id>
+                <name><![CDATA[Grid_Meter_VLL_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name='Bus0.Measurements.VAB_RMS')/110e3
+
+
+]]></code>
+                <signal_name><![CDATA[Grid_Meter.VLL_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>736</x>
+                    <y>128</y>
+                    <width>144</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>18d0479b8b7111edb2decc15312b2fd6</id>
+                <name><![CDATA[Grid_Meter_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name='Bus0.Measurements.POWER_P')/1e6
+
+]]></code>
+                <signal_name><![CDATA[Grid_Meter.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>944</x>
+                    <y>8</y>
+                    <width>200</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>54ff2e5e8b7111ed8cabcc15312b2fd6</id>
+                <name><![CDATA[Grid_Meter_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name="Bus0.Measurements.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Grid_Meter.POWER_Q]]></signal_name>
+                <unit><![CDATA[Mvar]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>944</x>
+                    <y>64</y>
+                    <width>200</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>706eda038b7111ed974acc15312b2fd6</id>
+                <name><![CDATA[Grid_Meter_POWER_S]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal(name="Bus0.Measurements.POWER_S")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Grid_Meter.POWER_S]]></signal_name>
+                <unit><![CDATA[MVA]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>944</x>
+                    <y>120</y>
+                    <width>200</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>8dda6f6c8b7111eda83ecc15312b2fd6</id>
+                <name><![CDATA[Grid_Meter_POWER_PF]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Analog signal</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = 0.0
+
+]]></code>
+                <signal_name><![CDATA[Bus0.Measurements.POWER_PF]]></signal_name>
+                <unit><![CDATA[]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[4]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>944</x>
+                    <y>176</y>
+                    <width>200</width>
+                    <height>56</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        </components>
+</ui_settings>

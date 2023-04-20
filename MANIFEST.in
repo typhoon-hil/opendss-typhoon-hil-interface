@@ -1,4 +1,5 @@
 recursive-include tse_to_opendss *.*
+recursive-include dss_thcc_lib/images *.png *.jpg
 prune tests
 recursive-exclude tse_to_opendss .git
 recursive-exclude tse_to_opendss .gitignore

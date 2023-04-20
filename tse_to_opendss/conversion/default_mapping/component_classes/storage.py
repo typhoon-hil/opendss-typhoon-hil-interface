@@ -41,13 +41,13 @@ class Storage(TwoTerminal):
 
         new_format_properties = {k: v for k, v in tse_properties.items() if
                                       k in ["kv", "kwhrated", "kwrated", "pct_effcharge", "snap_status",
-                                            "pct_effdischarge", "pct_idlingkw", "pct_idlingkvar",
+                                            "pct_effdischarge", "pct_idlingkw",  # "pct_idlingkvar",
                                             "pct_reserve", "pct_stored", "chargetrigger", "dischargetrigger", "kva"]}
 
         new_format_properties["%effcharge"] = new_format_properties.pop('pct_effcharge')
         new_format_properties["%effdischarge"] = new_format_properties.pop('pct_effdischarge')
         new_format_properties["%idlingkw"] = new_format_properties.pop('pct_idlingkw')
-        new_format_properties["%idlingkvar"] = new_format_properties.pop('pct_idlingkvar')
+        # new_format_properties["%idlingkvar"] = new_format_properties.pop('pct_idlingkvar')
         new_format_properties["%reserve"] = new_format_properties.pop('pct_reserve')
         new_format_properties["%stored"] = new_format_properties.pop('pct_stored')
         new_format_properties["state"] = new_format_properties.pop('snap_status')
