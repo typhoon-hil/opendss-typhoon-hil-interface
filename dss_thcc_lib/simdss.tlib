@@ -292,6 +292,15 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
+                stability_analysis {
+                    label = "Enable coupling assistance"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Typhoon HIL:5"
+                    no_evaluate
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 

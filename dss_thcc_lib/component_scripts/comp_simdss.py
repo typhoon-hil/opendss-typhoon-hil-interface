@@ -218,6 +218,9 @@ def sim_with_opendss(mdl, mask_handle):
         if not comp_result:
             mdl.set_property_value(stat_prop, f"Sim{cur_count + 1} complete")
             mdl.info("Done.")
+            if mdl.get_property_value(mdl.prop(mask_handle, "stability_analysis")):
+                run_stability_analysis(mdl, mask_handle, dss_file)
+
         else:
             mdl.set_property_value(stat_prop, f"Sim{cur_count + 1} failed")
             mdl.error(str(comp_result), context=comp_handle)
@@ -338,3 +341,277 @@ def set_basefrequency_ns_var(mdl, mask_handle):
 
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, 'images/dss_logo.svg')
+
+
+def run_stability_analysis(mdl, mask_handle, dss_file):
+    import numpy as np
+    import opendssdirect as dss
+
+    freq = float(mdl.get_property_value(mdl.prop(mask_handle, "basefrequency")))
+
+    # Interface vars
+    dss_circuit = dss.Circuit
+    dss_ckt_element = dss.CktElement
+    dss_bus = dss.Bus
+    dss_lines = dss.Lines
+    dss.run_command(f'Compile "{dss_file}"')
+
+    tse_elements = []
+    dss_elements = []
+    for coupling_handle in get_all_dss_elements(mdl, comp_type="Coupling"):
+        tse_elements.append(coupling_handle)
+        dss_elements.append(f"LINE.{mdl.get_name(coupling_handle)}")
+
+    if dss_elements:
+        mdl.info("OpenDSS Coupling Assistance started...")
+        for idx_el, element in enumerate(dss_elements):
+
+            mdl.info(f"----- {mdl.get_name(tse_elements[idx_el])} Element -----")
+
+            # dss.run_command("CalcV")
+            dss_circuit.SetActiveElement(element)
+            # dss_ckt_element.Name()
+            bus = [bus_name.split(".")[0] for bus_name in dss_ckt_element.BusNames()]
+            dss_ckt_element.Open(0, 0)
+            dss.run_command("Solve Mode=FaultStudy")
+
+            # Thevenin Impedances
+            # Bus1
+            # Current sources ITM uses self impedance
+            bus1 = bus[0]
+            dss_circuit.SetActiveBus(bus1)
+            zsc1 = [float(z) for z in dss_bus.Zsc1()]
+            if zsc1[1] >= 0:
+                r1x = 2e6 * zsc1[1] / (2 * np.pi * freq)
+            else:
+                r1x = 0.5e-6 / (zsc1[1] * 2 * np.pi * freq)
+            r1_pos = zsc1[0] + r1x
+
+            zsc0 = [float(z) for z in dss_bus.Zsc0()]
+            if zsc0[1] >= 0:
+                r1x = 2e6 * zsc0[1] / (2 * np.pi * freq)
+            else:
+                r1x = 0.5e-6 / (zsc0[1] * 2 * np.pi * freq)
+            r1_zero = zsc0[0] + r1x
+            r1 = (2 * r1_pos + r1_zero) / 3
+
+            # Bus2
+            # Current sources ITM uses self - mutual
+            bus2 = bus[1]
+            dss_circuit.SetActiveBus(bus2)
+            zsc1 = [float(z) for z in dss_bus.Zsc1()]
+            if zsc1[1] >= 0:
+                r2x = 2e6 * zsc1[1] / (2 * np.pi * freq)
+            else:
+                r2x = 0.5e-6 / (zsc1[1] * 2 * np.pi * freq)
+            r2_pos = zsc1[0] + r2x
+
+            zsc0 = [float(z) for z in dss_bus.Zsc0()]
+            if zsc0[1] >= 0:
+                r2x = 2e6 * zsc0[1] / (2 * np.pi * freq)
+            else:
+                r2x = 0.5e-6 / (zsc0[1] * 2 * np.pi * freq)
+            r2_zero = zsc0[0] + r2x
+            r2s = (2 * r2_pos + r2_zero) / 3
+            r2m = (r2_zero - r2_pos)/3
+            r2 = r2s - 2*(r2m*r2m)/(r2s+r2m)
+
+            dss_circuit.SetActiveElement(element)
+            dss_ckt_element.Close(0, 0)
+            dss.run_command("Solve Mode=Snap")
+
+            mode = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "auto_mode"))
+            if mode == "Manual":
+                mdl.info("Operational Mode: Manual")
+
+                # Snubbers
+                current_side_snubber = True
+                voltage_side_snubber = True
+                itm_csnb_type = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_type"))
+                itm_vsnb_type = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_type"))
+                if itm_csnb_type == "none":
+                    r1_snb = 1e12
+                    current_side_snubber = False
+                elif itm_csnb_type == "R1":
+                    r1_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_r")))
+                elif itm_csnb_type == "R1-C1":
+                    r1_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_r")))
+                    c1_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_c")))
+                    r1_snb = r1_cc_snb + 0.5e-6*c1_cc_snb
+
+                if itm_vsnb_type == "none":
+                    r2_snb = 0
+                    voltage_side_snubber = False
+                elif itm_vsnb_type == "R2":
+                    r2_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_r")))
+                elif itm_vsnb_type == "R2||L1":
+                    r2_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_r")))
+                    l1_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_l")))
+                    r2_snb = r2_cc_snb + 2e6*l1_cc_snb
+
+                # Check Topological Conflicts
+                topological_status_msg = "No"
+                topological_conflict = False
+                topological_conflict_msg = []
+                # Current Side
+                dss_circuit.SetActiveBus(bus1)
+                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                pde_connected.remove(element.upper())
+                pce_connected = [item.upper() for item in dss_bus.AllPCEatBus()]
+
+                for pde in pde_connected:
+                    if pde.split(".")[0] in ["LINE", "TRANSFORMER"] and not current_side_snubber:
+                        topological_conflict = True
+                        topological_status_msg = "Yes"
+                        aux_element = pde.split(".")[1]
+                        topological_conflict_msg.append(f"  - There are topological conflicts between {mdl.get_name(tse_elements[idx_el])} and {aux_element}."
+                                                        f" Please, considers to use a snubber at the current source side of {mdl.get_name(tse_elements[idx_el])}")
+
+                for pce in pce_connected:
+                    if pce.split(".")[0] in ["VSOURCE"] and not current_side_snubber:
+                        topological_conflict = True
+                        topological_status_msg = "Yes"
+                        aux_element = pce.split(".")[1]
+                        topological_conflict_msg.append(f"  - There are topological conflicts between {mdl.get_name(tse_elements[idx_el])} and {aux_element}."
+                                                        f" Please, considers to use a snubber at the current source side of {mdl.get_name(tse_elements[idx_el])}")
+
+                # Voltage Side
+                dss_circuit.SetActiveBus(bus2)
+                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                pde_connected.remove(element.upper())
+
+                for idx, pde in enumerate(pde_connected):
+                    if pde.split(".")[0] in ["LINE"]:
+                        dss_circuit.SetActiveElement(pde_connected[idx])
+                        if dss_lines.C1() != 0.0 and not voltage_side_snubber:
+                            topological_conflict = True
+                            topological_status_msg = "Yes"
+                            aux_element = pde.split(".")[1]
+                            topological_conflict_msg.append(f"  - There are topological conflicts between {mdl.get_name(tse_elements[idx_el])} and {aux_element}."
+                                                            f" Please, considers to use a snubber at the voltage source side of {mdl.get_name(tse_elements[idx_el])}")
+                    if pde.split(".")[0] in ["CAPACITOR"] and not voltage_side_snubber:
+                        topological_conflict = True
+                        topological_status_msg = "Yes"
+                        aux_element = pde.split(".")[1]
+                        topological_conflict_msg.append(f"  - There are topological conflicts between {mdl.get_name(tse_elements[idx_el])} and {aux_element}."
+                                                        f" Please, considers to use a snubber at the voltage source side of {mdl.get_name(tse_elements[idx_el])}")
+
+                mdl.info(f"Topological Conflicts: {topological_status_msg}")
+
+                if topological_conflict:
+                    for msg in topological_conflict_msg:
+                        mdl.info(msg)
+                        # mdl.warning(msg, kind=f"Coupling Element: {mdl.get_name(coupling_handle)}", context=mask_handle)
+
+                # Stability Check
+                r1_fixed = r1*r1_snb/(r1 + r1_snb)
+                r2_fixed = r2 + r2_snb
+
+                if r1_fixed >= r2_fixed:
+                    mdl.info(f"Stability Info: {mdl.get_name(tse_elements[idx_el])} is unstable.")
+                    # msg = f"Coupling element {mdl.get_name(coupling_handle)} is unstable."
+                    # mdl.warning(msg, kind='General warning', context=coupling_handle)
+                else:
+                    # msg = f"Coupling element {mdl.get_name(coupling_handle)} is stable."
+                    # mdl.info(msg, context=coupling_handle)
+                    mdl.info(f"Stability Info: {mdl.get_name(tse_elements[idx_el])} is stable.")
+
+                # mdl.info(f"{r1=}")
+                # mdl.info(f"{r2=}")
+                # mdl.info(f"{r1_snb=}")
+                # mdl.info(f"{r2_snb=}")
+                mdl.info(f"{r1_fixed=}")
+                mdl.info(f"{r2_fixed=}")
+                mdl.info(f"{r1_pos=}")
+                mdl.info(f"{r1_zero=}")
+                mdl.info(f"{r2_pos=}")
+                mdl.info(f"{r2_zero=}")
+
+            elif mode == "Automatic":
+                mdl.info("Operational Mode: Automatic")
+
+                mdl.info(f"Element Actions:")
+                # Stability Check
+                flip_status = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "flip_status"))
+                if flip_status:
+                    r1, r2 = r2, r1
+                    bus1, bus2 = bus2, bus1
+                if r1 >= r2:
+                    mdl.info(f"  - Horizontal Flip")
+                    mdl.set_property_value(mdl.prop(tse_elements[idx_el], "flip_status"), not flip_status)
+
+                # Current Side
+                dss_circuit.SetActiveBus(bus1)
+                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                pde_connected.remove(element.upper())
+                pce_connected = [item.upper() for item in dss_bus.AllPCEatBus()]
+                topological_conflict = False
+                for pde in pde_connected:
+                    if pde.split(".")[0] in ["LINE", "TRANSFORMER"]:
+                        topological_conflict = True
+                for pce in pce_connected:
+                    if pce.split(".")[0] in ["VSOURCE"]:
+                        topological_conflict = True
+
+                if topological_conflict:
+                    mdl.info(tse_elements[idx_el])
+                    mdl.set_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_type"), "R1")
+                    mdl.set_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_r_auto"), "1e6")
+                    mdl.info(f"  - Added Snubber in Current Source Side: R1 = 1e6 Ω")
+
+                # Voltage Side
+                dss_circuit.SetActiveBus(bus2)
+                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                pde_connected.remove(element.upper())
+                topological_conflict = False
+                for idx, pde in enumerate(pde_connected):
+                    if pde.split(".")[0] in ["LINE"]:
+                        dss_circuit.SetActiveElement(pde_connected[idx])
+                        if dss_lines.C1() != 0.0:
+                            topological_conflict = True
+                    if pde.split(".")[0] in ["CAPACITOR"]:
+                        topological_conflict = True
+
+                if topological_conflict:
+                    mdl.info(tse_elements[idx_el])
+                    mdl.set_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_type"), "R2")
+                    mdl.set_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_r_auto"), "1e-3")
+                    mdl.info(f"  - Added Snubber in Voltage Source Side: R2 = 1e-3 Ω")
+
+        mdl.info("-----")
+        mdl.info("Stability analysis Completed.")
+
+
+def get_all_dss_elements(mdl, comp_type, parent_comp=None):
+
+    component_list = []
+    if parent_comp:  # Component inside a subsystem (recursive function)
+        all_components = mdl.get_items(parent_comp)
+    else:  # Top level call
+        all_components = mdl.get_items()
+
+    for comp in all_components:
+        try:
+            type_name = mdl.get_component_type_name(comp)
+            if type_name and type_name == comp_type and mdl.is_enabled(comp):
+                component_list.append(comp)
+            elif not type_name:  # Component is a subsystem
+                component_list.extend(get_all_dss_elements(mdl, mdl.get_mask(comp), parent_comp=comp))
+        except:
+            # Some components (such as ports and connections) cannot be used with
+            # get_component_type_name
+            pass
+    # Return the list of component handles
+    return component_list
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,7 +18,8 @@ def map_component(comp_type):
         DSS_GENERATOR: ["GENERATOR"],
         DSS_VSCONVERTER: ["VSCONVERTER"],
         DSS_STORAGE: ["STORAGE"],
-        DSS_CONTAINER: ["CONTAINER"]
+        DSS_CONTAINER: ["CONTAINER"],
+        DSS_COUPLING: ["COUPLING"]
     }
 
     if comp_type in mappings.keys():

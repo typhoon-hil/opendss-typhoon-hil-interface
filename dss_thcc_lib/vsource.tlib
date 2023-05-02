@@ -410,6 +410,8 @@ library "OpenDSS" {
                 CODE pre_compile
                     comp_script = return_comp_script(mdl, item_handle)
                     r_matrix, l_matrix = comp_script.get_r_l_matrices(mdl, item_handle)
+                    mdl.info(f"{r_matrix=}")
+                    mdl.info(f"{l_matrix=}")
                     vrms, phase, freq = comp_script.get_source_values(mdl, item_handle)
                 ENDCODE
             }

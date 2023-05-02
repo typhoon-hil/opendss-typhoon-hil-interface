@@ -185,7 +185,7 @@ def get_r_l_matrices(mdl, container_handle):
     if input_method == "Z":
         r1, x1, r0, x0 = [mdl.get_property_value(prop) for prop in z_si_props]
     elif input_method == "Zpu":
-        r1, x1, r0, x0 = [mdl.get_property_value(prop)*z_base for prop in z_si_props]
+        r1, x1, r0, x0 = [mdl.get_property_value(prop)*z_base for prop in z_pu_props]
     elif input_method == "MVAsc":
         mva_sc3 = mdl.get_property_value(mdl.prop(container_handle, "mva_sc3"))
         mva_sc1 = mdl.get_property_value(mdl.prop(container_handle, "mva_sc1"))

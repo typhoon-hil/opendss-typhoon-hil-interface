@@ -1,0 +1,372 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Coupling" {
+            layout = static
+            label = "Coupling"
+
+            port A1 {
+                label = "A1"
+                position = -16, -32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 7856
+                hide_name = True
+            ]
+
+            port B1 {
+                label = "B1"
+                position = -16, 0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 7952
+                hide_name = True
+            ]
+
+            port C1 {
+                label = "C1"
+                position = -16, 32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7600, 8048
+                hide_name = True
+            ]
+
+            port A2 {
+                label = "A2"
+                position = 16, -32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 7856
+                scale = -1, 1
+                hide_name = True
+            ]
+
+            port B2 {
+                label = "B2"
+                position = 16, 0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 7952
+                scale = -1, 1
+                hide_name = True
+            ]
+
+            port C2 {
+                label = "C2"
+                position = 16, 32
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7872, 8048
+                scale = -1, 1
+                hide_name = True
+            ]
+
+            component "core/Ground" gnd1 {
+            }
+            [
+                position = 7600, 8192
+            ]
+
+            component "core/Ground" gnd2 {
+            }
+            [
+                position = 7872, 8192
+            ]
+
+            component "core/Four Phase Core Coupling" "Coupling" {
+                R1 = "itm_csnb_r"
+                C1 = "itm_csnb_c"
+                R2 = "itm_vsnb_r"
+                L1 = "itm_vsnb_l"
+                fixed_snb_i = "true"
+                fixed_snb_u = "true"
+            }
+            [
+                position = 7744, 8000
+                size = 12, 352
+            ]
+
+            connect A1 "Coupling.a_in" as Connection1
+            connect B1 "Coupling.b_in" as Connection2
+            connect C1 "Coupling.c_in" as Connection3
+            connect "Coupling.a_out" A2 as Connection4
+            connect "Coupling.b_out" B2 as Connection5
+            connect "Coupling.c_out" C2 as Connection6
+            connect gnd1.node "Coupling.d_in" as Connection7
+            connect "Coupling.d_out" gnd2.node as Connection8
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The controlled switch is represented by a Line component in OpenDSS and by a Triple Pole Single Throw Contactor component in the Schematic Editor.<br><br>When simulating in the time domain within Typhoon’s environment, the control signal must be provided by signal processing elements or digital inputs.<br><br>If external control is not needed, a Manual Switch component can be used to allow fast double-click state toggling.</p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=173"
+
+                coupling_type {
+                    label = "Coupling Type"
+                    widget = combo
+                    combo_values = "Core", "Device"
+                    type = string
+                    default_value = "Core"
+                    group = "General:1"
+                    no_evaluate
+                }
+
+                n_phases {
+                    label = "Phases"
+                    widget = combo
+                    combo_values = "3", "2", "1"
+                    type = string
+                    default_value = "3"
+                    group = "General"
+                    no_evaluate
+                }
+
+                grounding {
+                    label = "Internal Grounding"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "General"
+                    no_evaluate
+                }
+
+                auto_mode {
+                    label = "Operational Mode"
+                    widget = combo
+                    combo_values = "Manual", "Automatic"
+                    type = string
+                    default_value = "Manual"
+                    group = "General"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                itm_csnb_type {
+                    label = "Snubber Type (CS Side)"
+                    widget = combo
+                    combo_values = "none", "R1", "R1-C1"
+                    type = string
+                    default_value = "none"
+                    group = "Parameterization:2"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                itm_csnb_r {
+                    label = "Resistance R1 (CS Side)"
+                    widget = edit
+                    type = generic
+                    default_value = "100e3"
+                    group = "Parameterization"
+                    unit = "Ω"
+                }
+
+                itm_csnb_c {
+                    label = "Capacitance C1 (CS Side)"
+                    widget = edit
+                    type = generic
+                    default_value = "1e-06"
+                    group = "Parameterization"
+                    unit = "F"
+                }
+
+                itm_csnb_r_auto {
+                    label = "Resistance R1 (CS Side) - AutoMode"
+                    widget = edit
+                    type = generic
+                    default_value = "100e3"
+                    group = "Parameterization"
+                    nonvisible
+                }
+
+                itm_csnb_c_auto {
+                    label = "Capacitance C1 (CS Side) - AutoMode"
+                    widget = edit
+                    type = generic
+                    default_value = "1e-06"
+                    group = "Parameterization"
+                    nonvisible
+                }
+
+                itm_csnb_fixed {
+                    label = "Fixed Snubber (CS Side)"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "Parameterization"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                itm_vsnb_type {
+                    label = "Snubber Type (VS Side)"
+                    widget = combo
+                    combo_values = "none", "R2", "R2||L1"
+                    type = string
+                    default_value = "none"
+                    group = "Parameterization"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                itm_vsnb_r {
+                    label = "Resistance R2 (VS Side)"
+                    widget = edit
+                    type = generic
+                    default_value = "0.1"
+                    group = "Parameterization"
+                    unit = "Ω"
+                }
+
+                itm_vsnb_l {
+                    label = "Inductance L1 (VS Side)"
+                    widget = edit
+                    type = generic
+                    default_value = "0.1"
+                    group = "Parameterization"
+                    unit = "H"
+                }
+
+                itm_vsnb_r_auto {
+                    label = "Resistance R2 (VS Side) - AutoMode"
+                    widget = edit
+                    type = generic
+                    default_value = "0.1"
+                    group = "Parameterization"
+                    nonvisible
+                }
+
+                itm_vsnb_l_auto {
+                    label = "Inductance L1 (VS Side) - AutoMode"
+                    widget = edit
+                    type = generic
+                    default_value = "0.1"
+                    group = "Parameterization"
+                    nonvisible
+                }
+
+                itm_vsnb_fixed {
+                    label = "Fixed Snubber (VS Side)"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "Parameterization"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                switch_status {
+                    label = "Closed switch (Used to Convert to DSS)"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+                    nonvisible
+                }
+
+                flip_status {
+                    label = "Flip (Used in Auto Mode - triggered by SimDSS)"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    import dss_thcc_lib.component_scripts.comp_coupling as comp_script
+                    importlib.reload(comp_script)
+
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+            }
+        }
+        [
+            position = 4768, 4200
+            size = 32, 96
+        ]
+
+    }
+
+}
