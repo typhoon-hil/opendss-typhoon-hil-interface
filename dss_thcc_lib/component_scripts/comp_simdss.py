@@ -1,6 +1,7 @@
 import os, pathlib
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
+import numpy as np
 
 # Append commands dialog
 class Ui_Dialog(object):
@@ -344,10 +345,7 @@ def define_icon(mdl, mask_handle):
 
 
 def run_stability_analysis(mdl, mask_handle, dss_file):
-    import numpy as np
     import opendssdirect as dss
-
-    freq = float(mdl.get_property_value(mdl.prop(mask_handle, "basefrequency")))
 
     # Interface vars
     dss_circuit = dss.Circuit
@@ -355,6 +353,7 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
     dss_bus = dss.Bus
     dss_lines = dss.Lines
     dss.run_command(f'Compile "{dss_file}"')
+    ts = 10e-6  # TODO use get_model_property and find a way to estimate it
 
     tse_elements = []
     dss_elements = []
@@ -368,62 +367,11 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
 
             mdl.info(f"----- {mdl.get_name(tse_elements[idx_el])} Element -----")
 
-            # dss.run_command("CalcV")
-            dss_circuit.SetActiveElement(element)
-            # dss_ckt_element.Name()
-            bus = [bus_name.split(".")[0] for bus_name in dss_ckt_element.BusNames()]
-            dss_ckt_element.Open(0, 0)
-            dss.run_command("Solve Mode=FaultStudy")
-
-            # Thevenin Impedances
-            # Bus1
-            # Current sources ITM uses self impedance
-            bus1 = bus[0]
-            dss_circuit.SetActiveBus(bus1)
-            zsc1 = [float(z) for z in dss_bus.Zsc1()]
-            if zsc1[1] >= 0:
-                r1x = 2e6 * zsc1[1] / (2 * np.pi * freq)
-            else:
-                r1x = 0.5e-6 / (zsc1[1] * 2 * np.pi * freq)
-            r1_pos = zsc1[0] + r1x
-
-            zsc0 = [float(z) for z in dss_bus.Zsc0()]
-            if zsc0[1] >= 0:
-                r1x = 2e6 * zsc0[1] / (2 * np.pi * freq)
-            else:
-                r1x = 0.5e-6 / (zsc0[1] * 2 * np.pi * freq)
-            r1_zero = zsc0[0] + r1x
-            r1 = (2 * r1_pos + r1_zero) / 3
-
-            # Bus2
-            # Current sources ITM uses self - mutual
-            bus2 = bus[1]
-            dss_circuit.SetActiveBus(bus2)
-            zsc1 = [float(z) for z in dss_bus.Zsc1()]
-            if zsc1[1] >= 0:
-                r2x = 2e6 * zsc1[1] / (2 * np.pi * freq)
-            else:
-                r2x = 0.5e-6 / (zsc1[1] * 2 * np.pi * freq)
-            r2_pos = zsc1[0] + r2x
-
-            zsc0 = [float(z) for z in dss_bus.Zsc0()]
-            if zsc0[1] >= 0:
-                r2x = 2e6 * zsc0[1] / (2 * np.pi * freq)
-            else:
-                r2x = 0.5e-6 / (zsc0[1] * 2 * np.pi * freq)
-            r2_zero = zsc0[0] + r2x
-            r2s = (2 * r2_pos + r2_zero) / 3
-            r2m = (r2_zero - r2_pos)/3
-            r2 = r2s - 2*(r2m*r2m)/(r2s+r2m)
-
-            dss_circuit.SetActiveElement(element)
-            dss_ckt_element.Close(0, 0)
-            dss.run_command("Solve Mode=Snap")
+            r1, r2, bus1, bus2 = get_zsc_impedances(mdl,mask_handle, dss, element, "sequence")
 
             mode = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "auto_mode"))
             if mode == "Manual":
                 mdl.info("Operational Mode: Manual")
-
                 # Snubbers
                 current_side_snubber = True
                 voltage_side_snubber = True
@@ -437,7 +385,7 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                 elif itm_csnb_type == "R1-C1":
                     r1_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_r")))
                     c1_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_csnb_c")))
-                    r1_snb = r1_cc_snb + 0.5e-6*c1_cc_snb
+                    r1_snb = r1_cc_snb + ts/c1_cc_snb
 
                 if itm_vsnb_type == "none":
                     r2_snb = 0
@@ -447,7 +395,8 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                 elif itm_vsnb_type == "R2||L1":
                     r2_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_r")))
                     l1_cc_snb = float(mdl.get_property_value(mdl.prop(tse_elements[idx_el], "itm_vsnb_l")))
-                    r2_snb = r2_cc_snb + 2e6*l1_cc_snb
+                    l1_cc_snb_r = (1/ts)*l1_cc_snb
+                    r2_snb = r2_cc_snb*l1_cc_snb_r/(r2_cc_snb+l1_cc_snb_r)
 
                 # Check Topological Conflicts
                 topological_status_msg = "No"
@@ -504,28 +453,22 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                         # mdl.warning(msg, kind=f"Coupling Element: {mdl.get_name(coupling_handle)}", context=mask_handle)
 
                 # Stability Check
-                r1_fixed = r1*r1_snb/(r1 + r1_snb)
-                r2_fixed = r2 + r2_snb
+                r1_fixed = [rdss*r1_snb/(rdss + r1_snb) for rdss in r1]
+                r2_fixed = [rdss + r2_snb for rdss in r2]
 
-                if r1_fixed >= r2_fixed:
-                    mdl.info(f"Stability Info: {mdl.get_name(tse_elements[idx_el])} is unstable.")
-                    # msg = f"Coupling element {mdl.get_name(coupling_handle)} is unstable."
-                    # mdl.warning(msg, kind='General warning', context=coupling_handle)
-                else:
-                    # msg = f"Coupling element {mdl.get_name(coupling_handle)} is stable."
-                    # mdl.info(msg, context=coupling_handle)
-                    mdl.info(f"Stability Info: {mdl.get_name(tse_elements[idx_el])} is stable.")
+                for ph in range(len(r1_fixed)):
+                    mdl.info(f"{[r1_fixed[ph], r2_fixed[ph]]}")
+                    if r1_fixed[ph] >= r2_fixed[ph]:
+                        mdl.info(f"Stability Info: {mdl.get_name(tse_elements[idx_el])}.{ph} is unstable.")
+                        # msg = f"Coupling element {mdl.get_name(coupling_handle)} is unstable."
+                        # mdl.warning(msg, kind='General warning', context=coupling_handle)
+                    else:
+                        # msg = f"Coupling element {mdl.get_name(coupling_handle)} is stable."
+                        # mdl.info(msg, context=coupling_handle)
+                        mdl.info(f"Stability Info: {mdl.get_name(tse_elements[idx_el])}.{ph} is stable.")
 
-                # mdl.info(f"{r1=}")
-                # mdl.info(f"{r2=}")
-                # mdl.info(f"{r1_snb=}")
-                # mdl.info(f"{r2_snb=}")
-                mdl.info(f"{r1_fixed=}")
-                mdl.info(f"{r2_fixed=}")
-                mdl.info(f"{r1_pos=}")
-                mdl.info(f"{r1_zero=}")
-                mdl.info(f"{r2_pos=}")
-                mdl.info(f"{r2_zero=}")
+                #mdl.info(f"{r1_fixed=}")
+                #mdl.info(f"{r2_fixed=}")
 
             elif mode == "Automatic":
                 mdl.info("Operational Mode: Automatic")
@@ -605,7 +548,89 @@ def get_all_dss_elements(mdl, comp_type, parent_comp=None):
     return component_list
 
 
+def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
 
+    freq = float(mdl.get_property_value(mdl.prop(mask_handle, "basefrequency")))
+    dss_circuit = dss.Circuit
+    dss_ckt_element = dss.CktElement
+    dss_bus = dss.Bus
+    dss_lines = dss.Lines
+    ts = 10e-6  # TODO use get_model_property and find a way to estimate it
+
+    if mode=="sequence":
+        # dss.run_command("CalcV")
+        dss_circuit.SetActiveElement(coupling_line)
+        # dss_ckt_element.Name()
+        bus = [bus_name.split(".")[0] for bus_name in dss_ckt_element.BusNames()]
+        dss_ckt_element.Open(0, 0)
+        dss.run_command("Solve Mode=FaultStudy")
+
+        # Thevenin Impedances
+        # Bus1
+        # Current sources ITM uses self impedance
+        bus1 = bus[0]
+        dss_circuit.SetActiveBus(bus1)
+        zsc1 = [float(z) for z in dss_bus.Zsc1()]
+        mdl.info("Current Source Side")
+        mdl.info(f"{zsc1=}")
+        if zsc1[1] >= 0:
+            r1x = (1 / ts) * zsc1[1] / (2 * np.pi * freq)
+        else:
+            r1x = (ts) / (zsc1[1] * 2 * np.pi * freq)
+        r1_pos = zsc1[0] + r1x
+
+        zsc0 = [float(z) for z in dss_bus.Zsc0()]
+        mdl.info(f"{zsc0=}")
+        if zsc0[1] >= 0:
+            r1x = (1 / ts) * zsc0[1] / (2 * np.pi * freq)
+        else:
+            r1x = ts / (zsc0[1] * 2 * np.pi * freq)
+        r1_zero = zsc0[0] + r1x
+        r1 = (2 * r1_pos + r1_zero) / 3
+        r1 = [r1]*3 # TODO: Assuming phases = 3
+
+        # Bus2
+        # Voltage sources ITM uses kron reduction
+        bus2 = bus[1]
+        dss_circuit.SetActiveBus(bus2)
+        zsc1 = [float(z) for z in dss_bus.Zsc1()]
+        mdl.info("Voltage Source Side")
+        mdl.info(f"{zsc1=}")
+        if zsc1[1] >= 0:
+            r2x = (1 / ts) * zsc1[1] / (2 * np.pi * freq)
+        else:
+            r2x = ts / (zsc1[1] * 2 * np.pi * freq)
+        r2_pos = zsc1[0] + r2x
+
+        zsc0 = [float(z) for z in dss_bus.Zsc0()]
+        mdl.info(f"{zsc0=}")
+        if zsc0[1] >= 0:
+            r2x = (1 / ts) * zsc0[1] / (2 * np.pi * freq)
+        else:
+            r2x = ts / (zsc0[1] * 2 * np.pi * freq)
+        r2_zero = zsc0[0] + r2x
+        r2s = (2 * r2_pos + r2_zero) / 3
+        r2m = (r2_zero - r2_pos) / 3
+        r2 = r2s - 2 * (r2m * r2m) / (r2s + r2m)
+        r2 = [r2]*3  # TODO: Assuming phases = 3
+
+        dss_circuit.SetActiveElement(coupling_line)
+        dss_ckt_element.Close(0, 0)
+        dss.run_command("Solve Mode=Snap")
+
+    elif mode == "matrix":
+        pass
+
+    # mdl.info(f"{r1=}")
+    # mdl.info(f"{r2=}")
+    # mdl.info(f"{r1_snb=}")
+    # mdl.info(f"{r2_snb=}")
+    mdl.info(f"{r1_pos=}")
+    mdl.info(f"{r1_zero=}")
+    mdl.info(f"{r2_pos=}")
+    mdl.info(f"{r2_zero=}")
+
+    return r1, r2, bus1, bus2
 
 
 
