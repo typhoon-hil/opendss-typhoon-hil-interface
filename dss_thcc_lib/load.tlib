@@ -137,7 +137,7 @@ library "OpenDSS" {
             connect A1 TagA1 as ConnA1P
             connect B1 TagB1 as ConnB1P
             connect C1 TagC1 as ConnC1P
-            connect JN N1 as Conn_N0
+            connect JN N1 as Conn_N
             connect CIL.A1 TagA2 as Connection1
             connect CIL.N JN as Conn_AN
             connect CIL.B1 TagB2 as Connection2
@@ -146,6 +146,44 @@ library "OpenDSS" {
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Three-phase/Single-phase constant-impedance/constant-power Load component.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=192"
+
+                // https://youtu.be/Gp1JHonRaP4?list=PL9NFe4Eipyfc3eHcT6v4r7C20QX1b-Gy2
+                tp_connection {
+                    label = "Connection type"
+                    widget = combo
+                    combo_values = "Y - Grounded", "Y", "Δ"
+                    type = string
+                    default_value = "Y - Grounded"
+                    group = "General"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        mdl.info("tp_connection changed event************************")
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                Rneut {
+                    label = "Rneut"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "General:1"
+                }
+
+                Xneut {
+                    label = "Xneut"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "General:1"
+                }
 
                 global_basefreq {
                     label = "Global base frequency"
@@ -179,49 +217,6 @@ library "OpenDSS" {
                     nonvisible
                 }
 
-                conn_type {
-                    label = "Connection type"
-                    widget = combo
-                    combo_values = "Y", "Δ"
-                    type = string
-                    default_value = "Y"
-                    group = "General"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_dynamics(mdl, container_handle, ports)
-
-                        mdl.refresh_icon(container_handle)
-
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-                    ENDCODE
-                }
-
-                ground_connected {
-                    label = "Ground-connected"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "General"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        mdl.refresh_icon(container_handle)
-
-                        comp_script = return_comp_script(mdl, container_handle)
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_gnd_dynamics(mdl, container_handle, ports)
-                    ENDCODE
-                }
-
                 phases {
                     label = "Number of Phases"
                     widget = combo
@@ -232,20 +227,12 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
 
-                        comp_script.phase_value_edited_fnc(mdl, container_handle, new_value)
-
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_phases_dynamics(mdl, container_handle, ports)
-
-
-                        mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.phase_value_edited_fnc(mdl, container_handle, new_value)
+                        comp_script.tp_connection_dynamics(mdl, container_handle)
                     ENDCODE
                 }
 
@@ -278,7 +265,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
+                        # comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
                         comp_script.set_pf_mode(mdl, container_handle, new_value)
@@ -288,6 +275,7 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
                     ENDCODE
+
                 }
 
                 pf_3ph {
@@ -317,17 +305,11 @@ library "OpenDSS" {
                     CODE property_value_changed
                         if new_value == "Constant Power" or new_value == "Constant Z,I,P":
                             mdl.info("Warning: Load Constant Power mode demands grounding for correct HIL simulation.")
-
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
-                        comp_script.set_load_model(mdl, container_handle, new_value)
-
-                        mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
+                        comp_script.tp_connection_dynamics(mdl, container_handle)
                     ENDCODE
                 }
 
@@ -987,6 +969,42 @@ library "OpenDSS" {
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE on_dialog_close
+                    if reason == "reason_close_ok":
+                        info("OK")
+
+                        comp_script = return_comp_script(mdl, item_handle)
+
+                        ports = comp_script.port_dynamics(mdl, item_handle)
+                        mdl.info("close Ok: port_dynamics()")
+
+                        comp_script.set_load_model(mdl, item_handle, None)
+                        mdl.info("close Ok: set_load_model()")
+
+                        comp_script.load_dynamics(mdl, item_handle, ports)
+                        mdl.info("close Ok: load_dynamics()")
+
+                        ports = comp_script.port_dynamics(mdl, item_handle)
+                        mdl.info("close Ok: port_dynamics()")
+
+                        comp_script.connections_gnd_dynamics(mdl, item_handle, ports)
+                        mdl.info("close Ok: connections_gnd_dynamics()")
+
+                        comp_script.connections_dynamics(mdl, item_handle, ports)
+                        mdl.info("close Ok: connections_dynamics()")
+
+                        mdl.refresh_icon(item_handle)
+
+                    elif reason == "reason_close_cancel":
+                        info("cancel")
+                        tp_connection_prop = mdl.prop(item_handle, "tp_connection")
+                        mdl.set_property_combo_values(tp_connection_prop, {"Y - Grounded", "Y", "Δ"})
+                        mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
                 ENDCODE
             }
         }
