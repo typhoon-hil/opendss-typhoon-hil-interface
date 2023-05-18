@@ -367,7 +367,8 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
 
             mdl.info(f"----- {mdl.get_name(tse_elements[idx_el])} Element -----")
 
-            r1, r2, bus1, bus2 = get_zsc_impedances(mdl,mask_handle, dss, element, "sequence")
+            #r1, r2, bus1, bus2 = get_zsc_impedances(mdl,mask_handle, dss, element, "sequence")
+            r1, r2, bus1, bus2 = get_zsc_impedances(mdl, mask_handle, dss, element, "matrix")
 
             mode = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "auto_mode"))
             if mode == "Manual":
@@ -558,9 +559,7 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
     ts = 10e-6  # TODO use get_model_property and find a way to estimate it
 
     if mode=="sequence":
-        # dss.run_command("CalcV")
         dss_circuit.SetActiveElement(coupling_line)
-        # dss_ckt_element.Name()
         bus = [bus_name.split(".")[0] for bus_name in dss_ckt_element.BusNames()]
         dss_ckt_element.Open(0, 0)
         dss.run_command("Solve Mode=FaultStudy")
@@ -619,16 +618,76 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         dss.run_command("Solve Mode=Snap")
 
     elif mode == "matrix":
-        pass
+        dss_circuit.SetActiveElement(coupling_line)
+        bus = [bus_name.split(".")[0] for bus_name in dss_ckt_element.BusNames()]
+        dss_ckt_element.Open(0, 0)
+        dss.run_command("Solve Mode=FaultStudy")
 
-    # mdl.info(f"{r1=}")
-    # mdl.info(f"{r2=}")
-    # mdl.info(f"{r1_snb=}")
-    # mdl.info(f"{r2_snb=}")
-    mdl.info(f"{r1_pos=}")
-    mdl.info(f"{r1_zero=}")
-    mdl.info(f"{r2_pos=}")
-    mdl.info(f"{r2_zero=}")
+        # Thevenin Impedances
+        # Bus1
+        # Current sources ITM uses self impedance
+        bus1 = bus[0]
+        dss_circuit.SetActiveBus(bus1)
+        zsc_matrix = dss_bus.ZscMatrix()
+        n_phases = int(np.sqrt(len(zsc_matrix)/2))
+        r1_sc = []
+        x1_sc = []
+        r1 = []
+        rsc_array = np.array(zsc_matrix[0::2])
+        xsc_array = np.array(zsc_matrix[1::2])
+        rsc_matrix = rsc_array.reshape(n_phases, n_phases)
+        xsc_matrix = xsc_array.reshape(n_phases, n_phases)
+        # Current sources ITM uses self impedance
+        for idx in range(n_phases):
+            r1_sc.append(rsc_matrix[idx, idx])
+            x1_sc.append(xsc_matrix[idx, idx])
+        # Resistance seen by the THCC
+        for idx in range(n_phases):
+            if x1_sc[idx] >= 0:
+                r1x = (1 / ts) * x1_sc[idx] / (2 * np.pi * freq)
+            else:
+                r1x = (ts) / (x1_sc[idx] * 2 * np.pi * freq)
+            r_eq = r1_sc[idx] + r1x
+            r1.append(r_eq)
+
+        # Bus2
+        bus2 = bus[1]
+        dss_circuit.SetActiveBus(bus2)
+        zsc_matrix = dss_bus.ZscMatrix()
+        r2_sc = []
+        x2_sc = []
+        r2 = []
+        rsc_array = np.array(zsc_matrix[0::2])
+        xsc_array = np.array(zsc_matrix[1::2])
+        rsc_matrix = rsc_array.reshape(n_phases, n_phases)
+        xsc_matrix = xsc_array.reshape(n_phases, n_phases)
+        # Voltage sources ITM uses kron reduction
+        for idx in range(n_phases):
+            # resistance
+            k = rsc_matrix[idx, idx]
+            l = np.array([rsc_matrix[idx, yvec] for yvec in range(n_phases) if yvec != idx]).reshape(1, n_phases-1)
+            lt = np.array([rsc_matrix[xvec, idx] for xvec in range(n_phases) if xvec != idx]).reshape(n_phases-1, 1)
+            m = np.array([rsc_matrix[xvec, yvec]
+                          for xvec in range(n_phases) if xvec != idx
+                          for yvec in range(n_phases) if yvec != idx]).reshape(n_phases-1, n_phases-1)
+            r2_sc.append(k - np.dot(np.dot(l, np.linalg.inv(m)), lt)[0, 0])
+            # reactance
+            k = xsc_matrix[idx, idx]
+            l = np.array([xsc_matrix[idx, yvec] for yvec in range(n_phases) if yvec != idx]).reshape(1, n_phases-1)
+            lt = np.array([xsc_matrix[xvec, idx] for xvec in range(n_phases) if xvec != idx]).reshape(n_phases-1, 1)
+            m = np.array([xsc_matrix[xvec, yvec]
+                          for xvec in range(n_phases) if xvec != idx
+                          for yvec in range(n_phases) if yvec != idx]).reshape(n_phases-1, n_phases-1)
+            x2_sc.append(k - np.dot(np.dot(l, np.linalg.inv(m)), lt)[0, 0])
+
+        # Resistance seen by the THCC
+        for idx in range(n_phases):
+            if x2_sc[idx] >= 0:
+                r2x = (1 / ts) * x2_sc[idx] / (2 * np.pi * freq)
+            else:
+                r2x = (ts) / (x2_sc[idx] * 2 * np.pi * freq)
+            r_eq = r2_sc[idx] + r2x
+            r2.append(r_eq)
 
     return r1, r2, bus1, bus2
 
