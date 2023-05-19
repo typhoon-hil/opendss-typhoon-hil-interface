@@ -361,13 +361,17 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
         tse_elements.append(coupling_handle)
         dss_elements.append(f"LINE.{mdl.get_name(coupling_handle)}")
 
+    # Constant Power Load Compensation (DSS uses Constant Impedance for loads. We need to change the loads impedances)
+    dss = dss_to_thcc_compensation(mdl, dss, "Load")
+
+    mdl.info(dss.Circuit.AllElementNames())
+
     if dss_elements:
         mdl.info("OpenDSS Coupling Assistance started...")
         for idx_el, element in enumerate(dss_elements):
 
             mdl.info(f"----- {mdl.get_name(tse_elements[idx_el])} Element -----")
 
-            #r1, r2, bus1, bus2 = get_zsc_impedances(mdl,mask_handle, dss, element, "sequence")
             r1, r2, bus1, bus2 = get_zsc_impedances(mdl, mask_handle, dss, element, "matrix")
 
             mode = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "auto_mode"))
@@ -661,6 +665,8 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         xsc_array = np.array(zsc_matrix[1::2])
         rsc_matrix = rsc_array.reshape(n_phases, n_phases)
         xsc_matrix = xsc_array.reshape(n_phases, n_phases)
+        #mdl.info(f"{rsc_matrix=}")
+        #mdl.info(f"{xsc_matrix=}")
         # Voltage sources ITM uses kron reduction
         for idx in range(n_phases):
             # resistance
@@ -670,7 +676,10 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
             m = np.array([rsc_matrix[xvec, yvec]
                           for xvec in range(n_phases) if xvec != idx
                           for yvec in range(n_phases) if yvec != idx]).reshape(n_phases-1, n_phases-1)
-            r2_sc.append(k - np.dot(np.dot(l, np.linalg.inv(m)), lt)[0, 0])
+            try:
+                r2_sc.append(k - np.dot(np.dot(l, np.linalg.inv(m)), lt)[0, 0])
+            except:
+                r2_sc.append(0)
             # reactance
             k = xsc_matrix[idx, idx]
             l = np.array([xsc_matrix[idx, yvec] for yvec in range(n_phases) if yvec != idx]).reshape(1, n_phases-1)
@@ -678,8 +687,12 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
             m = np.array([xsc_matrix[xvec, yvec]
                           for xvec in range(n_phases) if xvec != idx
                           for yvec in range(n_phases) if yvec != idx]).reshape(n_phases-1, n_phases-1)
-            x2_sc.append(k - np.dot(np.dot(l, np.linalg.inv(m)), lt)[0, 0])
-
+            try:
+                x2_sc.append(k - np.dot(np.dot(l, np.linalg.inv(m)), lt)[0, 0])
+            except:
+                x2_sc.append(0)
+        #mdl.info(f"{r2_sc=}")
+        #mdl.info(f"{x2_sc=}")
         # Resistance seen by the THCC
         for idx in range(n_phases):
             if x2_sc[idx] >= 0:
@@ -692,10 +705,71 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
     return r1, r2, bus1, bus2
 
 
+def dss_to_thcc_compensation(mdl, dss, element_type):
 
+    ts = 10e-6
+    if element_type == "Load":
+        for load_handle in get_all_dss_elements(mdl, comp_type="Load"):
+            if mdl.get_property_value(mdl.prop(load_handle, "load_model")) == "Constant Power":
+                # Getting THCC properties
+                voltage = float(mdl.get_property_value(mdl.prop(load_handle, "Vn_3ph")))
+                phases = float(mdl.get_property_value(mdl.prop(load_handle, "phases")))
+                power = float(mdl.get_property_value(mdl.prop(load_handle, "Sn_3ph")))*3/phases
+                freq = float(mdl.get_property_value(mdl.prop(load_handle, "fn")))
+                # Disabling DSS Load and getting its properties
+                dss_load_name = mdl.get_fqn(load_handle).replace(".", "_").upper()
+                dss.Circuit.SetActiveElement(f"LOAD.{dss_load_name}")
+                bus = dss.CktElement.BusNames()[0].split(".")[0]
+                nodes = dss.CktElement.BusNames()[0].split(".")[1:]
+                # dss.CktElement.Enabled = 0
+                dss.run_command(f"Load.{dss_load_name}.enabled=no")
+                # Creating new loads
+                cpl_handle = mdl.get_item("CPL", parent=load_handle)
+                cpl_phase_handle = [mdl.get_item(cname, parent=cpl_handle) for cname in ["CPLA", "CPLB", "CPLC"]]
+                for idx, cpl in enumerate(cpl_phase_handle):
+                    if cpl:
+                        load_p = {}
+                        load_q = {}
+                        load_eq = {}
+                        VLL = 1e3*voltage/np.sqrt(3)
+                        SS = 1e3*power/3
+                        # Navid Equations
+                        rsnb = (30 * (VLL * VLL / (1.66 * SS)))
+                        csnb = 1 / (1 * rsnb * 2 * np.pi * freq)
+                        rsnb = rsnb/15
+                        # Those resistances are in parallel from the THCC viewpoint
+                        req = rsnb*(ts/csnb)/(rsnb+ts/csnb)
+                        mdl.info(f"{req=}")
+                        snubber_p = 1e-3*(VLL*VLL/rsnb)
+                        snubber_q = 1e-3*(VLL*VLL*2*np.pi*freq*csnb)
+                        snubber_eq = 1e-3*(VLL*VLL/req)
+                        mdl.info(f"{snubber_eq=}")
+                        load_p["Bus1"] = bus + f".{nodes[idx]}"
+                        load_p["kW"] = snubber_p
+                        load_p["kvar"] = 0
+                        load_p["model"] = 2
+                        load_p["kV"] = 1e-3*VLL
+                        load_p["phases"] = 1
+                        params = [f'{param}={load_p.get(param)}' for param in load_p]
+                        cmd_string = "new" + f" Load.{dss_load_name}_P{idx+1} " + " ".join(params)
+                        # dss.run_command(cmd_string)
+                        load_q["Bus1"] = bus + f".{nodes[idx]}"
+                        load_q["kW"] = 0
+                        load_q["kvar"] = -1*snubber_q
+                        load_q["model"] = 2
+                        load_q["kV"] = 1e-3*VLL
+                        load_q["phases"] = 1
+                        params = [f'{param}={load_q.get(param)}' for param in load_q]
+                        cmd_string = "new" + f" Load.{dss_load_name}_Q{idx+1} " + " ".join(params)
+                        # dss.run_command(cmd_string)
+                        load_eq["Bus1"] = bus + f".{nodes[idx]}"
+                        load_eq["kW"] = snubber_eq
+                        load_eq["kvar"] = 0
+                        load_eq["model"] = 2
+                        load_eq["kV"] = 1e-3 * VLL
+                        load_eq["phases"] = 1
+                        params = [f'{param}={load_eq.get(param)}' for param in load_eq]
+                        cmd_string = "new" + f" Load.{dss_load_name}_EQ{idx + 1} " + " ".join(params)
+                        dss.run_command(cmd_string)
 
-
-
-
-
-
+    return dss
