@@ -73,11 +73,14 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
         # Change Coupling properties
         comp_handle = mdl.get_parent(container_handle)
         coupling_handle = mdl.get_item("Coupling", parent=comp_handle)
-        prop_names = ["R1", "C1", "R2", "L1"]
+        prop_names = ["R1", "C1", "R2", "L1", "snb_type_i", "snb_type_u"]
+        manual_itm_csnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_csnb_type"))
+        manual_itm_vsnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_vsnb_type"))
+
         if new_value == "Manual":
-            prop_values = ["itm_csnb_r", "itm_csnb_c", "itm_vsnb_r", "itm_vsnb_l"]
+            prop_values = ["itm_csnb_r", "itm_csnb_c", "itm_vsnb_r", "itm_vsnb_l", manual_itm_csnb_type, manual_itm_vsnb_type]
         else:
-            prop_values = ["itm_csnb_r_auto", "itm_csnb_c_auto", "itm_vsnb_r_auto", "itm_vsnb_l_auto"]
+            prop_values = ["itm_csnb_r_auto", "itm_csnb_c_auto", "itm_vsnb_r_auto", "itm_vsnb_l_auto", "none", "none"]
         [mdl.set_property_value(mdl.prop(coupling_handle, pname), value)
          for pname, value in zip(prop_names, prop_values)]
 
