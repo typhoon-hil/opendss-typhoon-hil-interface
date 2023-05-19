@@ -193,7 +193,7 @@ def flip_coupling(mdl, container_handle, flip):
     fixed_csnb = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_csnb_fixed"))
     fixed_vsnb = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_vsnb_fixed"))
     csnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_csnb_type"))
-    vsnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "item_csnb_type"))
+    vsnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_csnb_type"))
 
 
     port1_names = ["A1", "B1", "C1"]
