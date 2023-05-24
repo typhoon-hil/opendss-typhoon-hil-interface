@@ -3,6 +3,40 @@ import numpy as np
 x0, y0 = (8192, 8192)
 
 
+'''*******************************************************************
+This function manages the mask properties 
+If tp_connection == "Y - Grounded", the fields for Rneut and Xneut 
+will be available.
+https://youtu.be/Al3vXVe9WVU
+*******************************************************************'''
+def tp_connection_edited(mdl, mask_handle, new_value):
+    rneut_prop = mdl.prop(mask_handle, "Rneut")
+    xneut_prop = mdl.prop(mask_handle, "Xneut")
+
+    #tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    #tp_connection = mdl.get_property_disp_value(tp_connection_prop)
+
+    if new_value == "Y - Grounded":
+        # Enable user input fields for N to Gnd impedance
+        mdl.enable_property(mdl.prop(mask_handle, "Rneut"))
+        mdl.enable_property(mdl.prop(mask_handle, "Xneut"))
+        # We don't want to modify Rneut and Xneut user values
+        # on the 'on change' event. We put zeros only when
+        # the user commuted from "Y" or "Δ" to "Y - Grounded"
+        if mdl.get_property_disp_value(rneut_prop) == "'inf'":
+            mdl.set_property_value(rneut_prop, "0.0")
+        if mdl.get_property_disp_value(xneut_prop) == "'inf'":
+            mdl.set_property_value(xneut_prop, "0.0")
+    else:
+        # Disable user input fields for N to Gnd impedance
+        # show 'inf' because they are disconnected
+        mdl.set_property_disp_value(rneut_prop, "'inf'")
+        mdl.set_property_disp_value(xneut_prop, "'inf'")
+        mdl.disable_property(mdl.prop(mask_handle, "Rneut"))
+        mdl.disable_property(mdl.prop(mask_handle, "Xneut"))
+
+
+
 def calculate_c(mdl, mask_handle):
     tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
     tp_connection = mdl.get_property_value(tp_connection_prop)
@@ -61,7 +95,6 @@ def recreate_capacitors(mdl, comp_handle):
 
 
 def y_delta_connection(mdl, comp_handle, tp_connection, phases):
-
     cap_a = mdl.get_item('Ca', parent=comp_handle)
     cap_b = mdl.get_item('Cb', parent=comp_handle)
     cap_c = mdl.get_item('Cc', parent=comp_handle)
@@ -70,6 +103,11 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
     b1_conn = mdl.get_item('b1_conn', parent=comp_handle, item_type="connection")
     b1 = mdl.get_item('B1', parent=comp_handle, item_type="port")
     c1 = mdl.get_item('C1', parent=comp_handle, item_type="port")
+    gnd_z = mdl.get_item("Gnd Z", parent=comp_handle, item_type="component")
+
+    if tp_connection != "Y - Grounded" and gnd_z:
+        mdl.delete_item(gnd_z)
+
     if cap_c and c1:
         c1_conn_list = mdl.find_connections(c1, mdl.term(cap_c, "p_node"))
     else:
@@ -98,7 +136,7 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
         if len(c1_conn_list) == 0:
             mdl.create_connection(c1, mdl.term(cap_c, "p_node"))
 
-    elif tp_connection == "Y - Neutral point accessible" or tp_connection == "Y - Grounded":
+    elif tp_connection == "Y" or tp_connection == "Y - Grounded":
         if delta_conn_1:
             mdl.delete_item(delta_conn_1)
         if delta_conn_2:
@@ -117,16 +155,29 @@ def y_delta_connection(mdl, comp_handle, tp_connection, phases):
             mdl.create_connection(c1, mdl.term(cap_c, "p_node"), name="c1_conn")
 
     if phases != "2":
+        n1 = mdl.get_item('N1', parent=comp_handle, item_type="port")
         if tp_connection == "Y - Grounded":
             gndc = mdl.get_item("gndc", parent=comp_handle)
             if not gndc:
-                gndc = mdl.create_component("src_ground", parent=comp_handle, name="gndc", position=(7923, 8265))
-            if len(mdl.find_connections(junc, mdl.term(gndc, "node"))) == 0:
-                mdl.create_connection(junc, mdl.term(gndc, "node"))
-        elif tp_connection == "Y - Neutral point accessible":
-            n1 = mdl.get_item('N1', parent=comp_handle, item_type="port")
+                gndc = mdl.create_component("src_ground", parent=comp_handle, name="gndc", position=(7923, 8350))
+
+            if not gnd_z:
+                gnd_z = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z",
+                                             position=(7923, 8265), rotation="up")
+
+            if len(mdl.find_connections(junc, mdl.term(gnd_z, "N"))) == 0:
+                mdl.create_connection(junc, mdl.term(gnd_z, "N"))
+            if len(mdl.find_connections(mdl.term(gndc, "node"), mdl.term(gnd_z, "G"))) == 0:
+                mdl.create_connection(mdl.term(gnd_z, "G"), mdl.term(gndc, "node"))
+
             if len(mdl.find_connections(junc, n1)) == 0:
                 mdl.create_connection(junc, n1)
+
+        elif tp_connection == "Y": # "Y - Neutral point accessible"
+            if len(mdl.find_connections(junc, n1)) == 0:
+                mdl.create_connection(junc, n1)
+            if gndc:
+                mdl.delete_item(gnd_c)
 
 
 def redo_connections(mdl, mask_handle):
@@ -156,6 +207,10 @@ def redo_connections(mdl, mask_handle):
 
         delta_conn_1 = mdl.get_item('delta_conn_1', parent=comp_handle, item_type="connection")
         delta_conn_2 = mdl.get_item('delta_conn_2', parent=comp_handle, item_type="connection")
+        gnd_z = mdl.get_item("Gnd Z", parent=comp_handle, item_type="component")
+
+        if gnd_z:
+            mdl.delete_item(gnd_z)
 
         if delta_conn_1:
             mdl.delete_item(delta_conn_1)
@@ -264,7 +319,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         if a2:
             deleted_ports.append(mdl.get_name(a2))
             mdl.delete_item(a2)
-    if tp_connection != "Y - Neutral point accessible":
+    if tp_connection != "Y - Grounded" and tp_connection != "Y": #"Y - Neutral point accessible":
         if n1:
             deleted_ports.append(mdl.get_name(n1))
             mdl.delete_item(n1)
@@ -305,17 +360,19 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             deleted_ports.append(mdl.get_name(b1))
             mdl.delete_item(b1)
 
-    if tp_connection == "Y - Neutral point accessible":
+    if tp_connection == "Y" or tp_connection == "Y - Grounded": #"Y - Neutral point accessible":
         if not n1:
             n1 = mdl.create_port(
                 name="N1",
                 parent=comp_handle,
                 kind="pe",
                 terminal_position=("bottom", "center"),
-                position=(x0 - 300, y0),
+                position=(x0 - 400, y0),
                 rotation="up"
             )
             created_ports.update({"N1": n1})
+
+
     elif tp_connection == "In series":  # Create bottom ports
 
         a2 = mdl.create_port(
@@ -360,7 +417,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                       "B1": (16, 32),
                       "B2": (16, -32)}
     else:
-        if tp_connection == "Y - Neutral point accessible":
+        if tp_connection == "Y" or tp_connection == "Y - Grounded": #"Y - Neutral point accessible":
             ports_dict = {"A1": (-48, -32),
                           "B1": (-16, -32),
                           "C1": (16, -32),

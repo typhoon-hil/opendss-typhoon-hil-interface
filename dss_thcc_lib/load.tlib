@@ -158,7 +158,11 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
-                        mdl.info("tp_connection changed event************************")
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
+                        tp_connection_prop = mdl.prop(container_handle, "tp_connection")
+                        combo_values = mdl.get_property_combo_values(tp_connection_prop)
+                        comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -227,7 +231,8 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
-
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -303,8 +308,10 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
                         if new_value == "Constant Power" or new_value == "Constant Z,I,P":
                             mdl.info("Warning: Load Constant Power mode demands grounding for correct HIL simulation.")
+                        comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -862,11 +869,23 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
+                tp_connection_combo_values {
+                    widget = edit
+                    default_value = ""
+                    type = generic
+                    no_evaluate
+                    nonvisible
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.read_loadshape_from_json(mdl, item_handle)
+
+                    tp_connection_prop = mdl.prop(item_handle, "tp_connection")
+                    tp_conn_items = mdl.get_property_combo_values(tp_connection_prop)
+                    mdl.set_property_value(mdl.prop(item_handle, "tp_connection_combo_values"), str(tp_conn_items))
 
                     dialog = RegularComponentPropertiesDialog(
                         component=component,
@@ -967,6 +986,7 @@ library "OpenDSS" {
 
                     import dss_thcc_lib.component_scripts.comp_load as comp_script
                     importlib.reload(comp_script)
+
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
@@ -974,37 +994,10 @@ library "OpenDSS" {
 
                 ENDCODE
 
+
                 CODE on_dialog_close
-                    if reason == "reason_close_ok":
-                        info("OK")
-
-                        comp_script = return_comp_script(mdl, item_handle)
-
-                        ports = comp_script.port_dynamics(mdl, item_handle)
-                        mdl.info("close Ok: port_dynamics()")
-
-                        comp_script.set_load_model(mdl, item_handle, None)
-                        mdl.info("close Ok: set_load_model()")
-
-                        comp_script.load_dynamics(mdl, item_handle, ports)
-                        mdl.info("close Ok: load_dynamics()")
-
-                        ports = comp_script.port_dynamics(mdl, item_handle)
-                        mdl.info("close Ok: port_dynamics()")
-
-                        comp_script.connections_gnd_dynamics(mdl, item_handle, ports)
-                        mdl.info("close Ok: connections_gnd_dynamics()")
-
-                        comp_script.connections_dynamics(mdl, item_handle, ports)
-                        mdl.info("close Ok: connections_dynamics()")
-
-                        mdl.refresh_icon(item_handle)
-
-                    elif reason == "reason_close_cancel":
-                        info("cancel")
-                        tp_connection_prop = mdl.prop(item_handle, "tp_connection")
-                        mdl.set_property_combo_values(tp_connection_prop, {"Y - Grounded", "Y", "Δ"})
-                        mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.dialog_close(mdl, item_handle, reason)
                 ENDCODE
             }
         }

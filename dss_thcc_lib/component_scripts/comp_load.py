@@ -7,9 +7,8 @@ from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, I
 got_loadshape_points_list = []
 
 
-
 def tp_connection_dynamics(mdl, container_handle):
-    mdl.info("phase_value_edited ini")
+
     load_model_prop = mdl.prop(container_handle, "load_model")
     load_model = mdl.get_property_disp_value(load_model_prop)
 
@@ -24,24 +23,20 @@ def tp_connection_dynamics(mdl, container_handle):
     if phases == "3":
 
         if load_model == "Constant Impedance":
-            mdl.set_property_combo_values(tp_connection_prop, {"Y - Grounded", "Y", "Δ"})
+            mdl.set_property_combo_values(tp_connection_prop, ["Y - Grounded", "Y", "Δ"])
             mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
         else:
-            mdl.set_property_combo_values(tp_connection_prop, {"Y - Grounded", "Y"})
+            mdl.set_property_combo_values(tp_connection_prop, ["Y - Grounded", "Y"])
             mdl.enable_property(mdl.prop(container_handle, "zero_seq_remove"))
 
     else:
-        mdl.set_property_combo_values(tp_connection_prop, {"Y - Grounded", "Y"})
+        mdl.set_property_combo_values(tp_connection_prop, ["Y - Grounded", "Y"])
         mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
         mdl.set_property_value(mdl.prop(container_handle, 'zero_seq_remove'), False)
         mdl.disable_property(mdl.prop(container_handle, "zero_seq_remove"))
 
     new_connection = mdl.get_property_value(tp_connection_prop)
     tp_connection_edited(mdl, container_handle, new_connection)
-
-    mdl.info("phase_value_edited end")
-
-    mdl.info(f'The new phases value is: {phases}')
 
 
 def zip_change_fnc(mdl, container_handle, new_value):
@@ -181,11 +176,9 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.enable_property(mdl.prop(container_handle, "q_gain_k"))
         mdl.enable_property(mdl.prop(container_handle, "r_gain_k"))
         mdl.set_property_disp_value(mdl.prop(container_handle, "tp_connection"), "Y - Grounded")
-        #tp_connection_edited(mdl, container_handle, "Y - Grounded")
-        mdl.disable_property(mdl.prop(container_handle, "tp_connection"))
-        #mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
+        tp_connection_edited(mdl, container_handle, "Y - Grounded")
+        #mdl.disable_property(mdl.prop(container_handle, "tp_connection"))
 
-    mdl.info("End of function load_model_value_edited_fnc()")
 
 
 def load_loadshape(mdl, container_handle):
@@ -379,7 +372,6 @@ def define_icon(mdl, mask_handle):
 
 
 def port_dynamics(mdl, mask_handle):
-    mdl.info("port_dynamics ini")
     comp_handle = mdl.get_parent(mask_handle)
     # deleted_ports = []
     created_ports = {}
@@ -476,11 +468,11 @@ def port_dynamics(mdl, mask_handle):
 
         if not port_b:
             port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                     terminal_position=(0, 15),
+                                     terminal_position=(0, 30),
                                      position=(7919, 7862), rotation="right")
             created_ports.update({"portB": port_b})
         else:
-            mdl.set_port_properties(port_b, terminal_position=(0, 15))
+            mdl.set_port_properties(port_b, terminal_position=(0, 30))
             created_ports.update({"portB": port_b})
 
         # In the single-phase system, we don't need the Neutral output
@@ -589,9 +581,6 @@ def port_dynamics(mdl, mask_handle):
             mdl.delete_item(t_ext)
         created_ports.pop("T_ext", None)
 
-
-    mdl.info("Line 668, end of port_dynamics() function")
-
     return created_ports
 
 
@@ -601,8 +590,6 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
 
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
-
-    mdl.info("create tags ... ")
 
     tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
     tp_connection = mdl.get_property_disp_value(tp_connection_prop)
@@ -677,7 +664,6 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
                                       position=tags_dict[f"Tag{phase}3"]["position"])
 
                 jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
-                mdl.info(f"L 764: jun_n: {jun_n}============")
                 if jun_n:
                     mdl.create_connection(tag3, jun_n)
 
@@ -721,8 +707,6 @@ def connections_dynamics(mdl, mask_handle, created_ports):
             mdl.info("Line 718 creating CPL for Constant Z,I,P......")
         '''
 
-    mdl.info(f"***************** Load type: {load}")
-
 
 
     # This loop connects the Load tags to the CIL terminals
@@ -733,20 +717,13 @@ def connections_dynamics(mdl, mask_handle, created_ports):
 
     for phase in phase_list:
         tag = mdl.get_item(f"Tag{phase}2", parent=comp_handle, item_type="tag")
-        mdl.info(f"tag list: {tag} ========")
-        mdl.info(f"load: {load} =======")
         conn_tmp = mdl.find_connections(tag, mdl.term(load, f"{phase}1"))
-        mdl.info(f"conn_tmp = {conn_tmp} =======")
         if len(conn_tmp) == 0:
             mdl.create_connection(tag, mdl.term(load, f"{phase}1"))
 
     #conn_n2port = mdl.get_item("Conn_N", parent=comp_handle, item_type=ITEM_CONNECTION)
     jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
     port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-
-    mdl.info("Line 820 ----------")
-
-    mdl.info(f"Line 822: tp_connection: {tp_connection}")
 
 
     if tp_connection == "Y":
@@ -791,7 +768,7 @@ def connections_dynamics(mdl, mask_handle, created_ports):
 
 
 '''*******************************************************************
-This function manages the mask properties "on edit" 
+This function manages the mask properties 
 If tp_connection == "Y - Grounded", the fields for Rneut and Xneut 
 will be available.
 https://youtu.be/Al3vXVe9WVU
@@ -800,11 +777,14 @@ def tp_connection_edited(mdl, mask_handle, new_value):
     rneut_prop = mdl.prop(mask_handle, "Rneut")
     xneut_prop = mdl.prop(mask_handle, "Xneut")
 
+    #tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    #tp_connection = mdl.get_property_disp_value(tp_connection_prop)
+
     if new_value == "Y - Grounded":
         # Enable user input fields for N to Gnd impedance
         mdl.enable_property(mdl.prop(mask_handle, "Rneut"))
         mdl.enable_property(mdl.prop(mask_handle, "Xneut"))
-        # We don't want to modify Rneut and Xneut values
+        # We don't want to modify Rneut and Xneut user values
         # on the 'on change' event. We put zeros only when
         # the user commuted from "Y" or "Δ" to "Y - Grounded"
         if mdl.get_property_disp_value(rneut_prop) == "'inf'":
@@ -839,8 +819,6 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
-    mdl.info(f'gnd dyn ini phases: {phases}')
-
 
     if phases == "3":
         phase_list = ["A", "B", "C"]
@@ -851,8 +829,6 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
         load_comp = mdl.get_item("CIL", parent=comp_handle, item_type="component")
     else:
         load_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-
-    mdl.info(f"Line 855 load_comp is:     {load_comp}-----------")
 
 
     for phase in phase_list:
@@ -904,7 +880,6 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
 
 
 def load_dynamics(mdl, mask_handle, created_ports):
-    mdl.info("load dynamics() init")
     create_tags_and_connections_to_ports(mdl, mask_handle, created_ports)
 
     comp_handle = mdl.get_parent(mask_handle)
@@ -940,7 +915,6 @@ def load_dynamics(mdl, mask_handle, created_ports):
         if len(mdl.find_connections(tag)) == 0:
             mdl.create_connection(tag, mdl.term(load_comp, f"{phase}1"))
 
-    mdl.info("connections phase dynamics end")
 
 def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
@@ -1271,7 +1245,6 @@ def set_load_model(mdl, mask_handle, new_value):
     pf_mode = mdl.get_property_value(mdl.prop(mask_handle, "pf_mode_3ph"))
     load_model = mdl.get_property_disp_value(mdl.prop(mask_handle, "load_model"))
 
-    mdl.info(f"Line 1331 000 - the new_value is: {load_model}...............")
 
     if load_model == "Constant Impedance":
         mdl.set_property_disp_value(mdl.prop(mask_handle, 'Pow_ref_s'), "Fixed")
@@ -1290,38 +1263,16 @@ def set_load_model(mdl, mask_handle, new_value):
         if tp_connection == "Y" or tp_connection == "Y - Grounded":
             mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Y")
             mdl.set_property_value(mdl.prop(cil1, "ground_connected"), False)
-            mdl.info("Line 1386: CIL set to YPISILONE")
+
         else:
             mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Δ")
             mdl.set_property_value(mdl.prop(cil1, "ground_connected"), False)
-            mdl.info("Line 1389: CIL set to DELTA ............")
 
         if phss == "3":
             mdl.set_property_value(mdl.prop(cil1, "phases"), "3")
-            mdl.info("Line 1338 set cil to 3 phases .........")
+
         else:
             mdl.set_property_value(mdl.prop(cil1, "phases"), "1")
-            mdl.info("Line 1341 set cil to 1 phases .........")
-        '''
-        tag_a = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
-        if len(mdl.find_connections(mdl.term(cil1, "A1"), tag_a)) == 0:
-            mdl.create_connection(mdl.term(cil1, "A1"), tag_a)
-
-        jun_n = mdl.get_item("JN", parent=comp_handle, item_type=ITEM_JUNCTION)
-        conn_n0_cil = mdl.get_item("Conn_AN", parent=comp_handle, item_type=ITEM_CONNECTION)
-        if not conn_n0_cil:
-            if tp_connection == "Y - Grounded" or tp_connection == "Y":
-                mdl.create_connection(mdl.term(cil1, "N"), jun_n, name="Conn_AN")
-
-        if phss == "3":
-            tag_b = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cil1, "B1"), tag_b)) == 0:
-                mdl.create_connection(mdl.term(cil1, "B1"), tag_b)
-
-            tag_c = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cil1, "C1"), tag_c)) == 0:
-                mdl.create_connection(mdl.term(cil1, "C1"), tag_c)
-        '''
 
     else:
         cil1 = mdl.get_item("CIL", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1346,27 +1297,6 @@ def set_load_model(mdl, mask_handle, new_value):
         else:
             mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
 
-    mdl.info("Line 1396 ....")
-
-    '''
-        tag_a = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
-        if len(mdl.find_connections(mdl.term(cpl1, "A1"), tag_a)) == 0:
-            mdl.create_connection(mdl.term(cpl1, "A1"), tag_a)
-
-        jun_n = mdl.get_item("JN", parent=comp_handle, item_type=ITEM_JUNCTION)
-        conn_n0_cpl = mdl.get_item("Conn_AN_CPL", parent=comp_handle, item_type=ITEM_CONNECTION)
-        #if not conn_n0_cpl:
-        #    mdl.create_connection(mdl.term(cpl1, "N"), jun_n, name="Conn_AN_CPL")
-
-        if phss == "3":
-            tag_b = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cpl1, "B1"), tag_b)) == 0:
-                mdl.create_connection(mdl.term(cpl1, "B1"), tag_b)
-
-            tag_c = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cpl1, "C1"), tag_c)) == 0:
-                mdl.create_connection(mdl.term(cpl1, "C1"), tag_c)
-    '''
 
 def zero_seq_removal(mdl, mask_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(mask_handle)
@@ -1541,4 +1471,41 @@ def s_ts_mode_value_edited(mdl, container_handle, new_value):
         mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
 
 
+'''***************************************************************
+This function is called when the user change the configuration
+on the mask
+***************************************************************'''
+def topology_dynamics(mdl, mask_handle):
 
+    ports = port_dynamics(mdl, mask_handle)
+
+    set_load_model(mdl, mask_handle, None)
+
+    load_dynamics(mdl, mask_handle, ports)
+
+    connections_gnd_dynamics(mdl, mask_handle, ports)
+
+    connections_dynamics(mdl, mask_handle, ports)
+
+    mdl.refresh_icon(mask_handle)
+
+
+'''*************************************************************
+Manages the dialog close: If the user Cancels the modifications,
+restore the combo tp_connections initial state.
+*************************************************************'''
+def dialog_close(mdl, mask_handle, reason):
+
+    # Get tp combo values after closing
+    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    new_tp_combo_values = mdl.get_property_combo_values(tp_connection_prop)
+
+    # Get original tp combo values
+    tp_connection_combo_values_prop = mdl.prop(mask_handle, "tp_connection_combo_values")
+    tp_connection_combo_values = mdl.get_property_value(tp_connection_combo_values_prop)
+    old_tp_combo_values = ast.literal_eval(tp_connection_combo_values)
+
+    # Restore to the original if the user cancels
+    if reason == "reason_close_cancel":
+        if not (old_tp_combo_values == new_tp_combo_values):
+            mdl.set_property_combo_values(tp_connection_prop, old_tp_combo_values)

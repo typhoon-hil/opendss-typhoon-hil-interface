@@ -9219,7 +9219,7 @@ if (counter >= Ts) {
                 ]
 
                 mask {
-                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Ground Impedance.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It takes the frequency, resistance and the reactance as parameters. If the reactance is positive, it will be implemented as an inductor. Otherwise, for negative reactances, it will be implemented by a capacitor. The implementation consists of a resistor in series with an inductor or a capacitor.</p></body></html>"
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Ground Impedance.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It takes the frequency, resistance and the reactance as parameters.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The implementation consists of a resistor in series with an inductor or a capacitor.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">If the resistance and/or reactance value is zero, the corresponding element will be replaced by a short-circuit.</p></body></html>"
 
                     f {
                         label = "Frequency"
@@ -9227,7 +9227,6 @@ if (counter >= Ts) {
                         type = generic
                         default_value = "fn"
                         unit = "Hz"
-
                     }
 
                     Rneut {
@@ -9236,7 +9235,6 @@ if (counter >= Ts) {
                         type = generic
                         default_value = "Rneut"
                         unit = "Ω"
-
                     }
 
                     Xneut {
@@ -9270,6 +9268,11 @@ if (counter >= Ts) {
                     ENDCODE
 
                     CODE pre_compile
+                        # HEADER START
+                        f = mdl.get_property_value(mdl.prop(item_handle, "f"))
+                        Rneut = mdl.get_property_value(mdl.prop(item_handle, "Rneut"))
+                        Xneut = mdl.get_property_value(mdl.prop(item_handle, "Xneut"))
+                        # HEADER STOP
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.build_gnd_z(mdl, container_handle)
                     ENDCODE
