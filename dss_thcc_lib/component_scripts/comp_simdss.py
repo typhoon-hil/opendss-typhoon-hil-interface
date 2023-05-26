@@ -2,6 +2,8 @@ import os, pathlib
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 import numpy as np
+import re
+import ast
 
 # Append commands dialog
 class Ui_Dialog(object):
@@ -348,10 +350,10 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
     import opendssdirect as dss
 
     # Interface vars
-    dss_circuit = dss.Circuit
-    dss_ckt_element = dss.CktElement
-    dss_bus = dss.Bus
-    dss_lines = dss.Lines
+    # dss_circuit = dss.Circuit
+    # dss_ckt_element = dss.CktElement
+    # dss_bus = dss.Bus
+    # dss_lines = dss.Lines
     dss.run_command(f'Compile "{dss_file}"')
     ts = 10e-6  # TODO use get_model_property and find a way to estimate it
 
@@ -362,16 +364,20 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
         dss_elements.append(f"LINE.{mdl.get_name(coupling_handle)}")
 
     # Constant Power Load Compensation (DSS uses Constant Impedance for loads. We need to change the loads impedances)
+    dss = dss_to_thcc_compensation(mdl, dss, "Coupling")
     dss = dss_to_thcc_compensation(mdl, dss, "Load")
+    dss = dss_to_thcc_compensation(mdl, dss, "Line")
+    #dss = dss_to_thcc_compensation(mdl, dss, "Vsource")
+    dss = dss_to_thcc_compensation(mdl, dss, "Three-Phase Transformer")
 
-    mdl.info(dss.Circuit.AllElementNames())
+
+    # mdl.info(dss.Circuit.AllElementNames())
 
     if dss_elements:
         mdl.info("OpenDSS Coupling Assistance started...")
         for idx_el, element in enumerate(dss_elements):
 
             mdl.info(f"----- {mdl.get_name(tse_elements[idx_el])} Element -----")
-
             r1, r2, bus1, bus2 = get_zsc_impedances(mdl, mask_handle, dss, element, "matrix")
 
             mode = mdl.get_property_value(mdl.prop(tse_elements[idx_el], "auto_mode"))
@@ -408,10 +414,10 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                 topological_conflict = False
                 topological_conflict_msg = []
                 # Current Side
-                dss_circuit.SetActiveBus(bus1)
-                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                dss.Circuit.SetActiveBus(bus1)
+                pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 pde_connected.remove(element.upper())
-                pce_connected = [item.upper() for item in dss_bus.AllPCEatBus()]
+                pce_connected = [item.upper() for item in dss.Bus.AllPCEatBus()]
 
                 for pde in pde_connected:
                     if pde.split(".")[0] in ["LINE", "TRANSFORMER"] and not current_side_snubber:
@@ -430,14 +436,14 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                                                         f" Please, considers to use a snubber at the current source side of {mdl.get_name(tse_elements[idx_el])}")
 
                 # Voltage Side
-                dss_circuit.SetActiveBus(bus2)
-                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                dss.Circuit.SetActiveBus(bus2)
+                pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 pde_connected.remove(element.upper())
 
                 for idx, pde in enumerate(pde_connected):
                     if pde.split(".")[0] in ["LINE"]:
-                        dss_circuit.SetActiveElement(pde_connected[idx])
-                        if dss_lines.C1() != 0.0 and not voltage_side_snubber:
+                        dss.Circuit.SetActiveElement(pde_connected[idx])
+                        if dss.Lines.C1() != 0.0 and not voltage_side_snubber:
                             topological_conflict = True
                             topological_status_msg = "Yes"
                             aux_element = pde.split(".")[1]
@@ -458,6 +464,8 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                         # mdl.warning(msg, kind=f"Coupling Element: {mdl.get_name(coupling_handle)}", context=mask_handle)
 
                 # Stability Check
+                #r1_snb = 1e9
+                #r2_snb = 0
                 r1_fixed = [rdss*r1_snb/(rdss + r1_snb) for rdss in r1]
                 r2_fixed = [rdss + r2_snb for rdss in r2]
 
@@ -489,10 +497,10 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                     mdl.set_property_value(mdl.prop(tse_elements[idx_el], "flip_status"), not flip_status)
 
                 # Current Side
-                dss_circuit.SetActiveBus(bus1)
-                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                dss.Circuit.SetActiveBus(bus1)
+                pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 pde_connected.remove(element.upper())
-                pce_connected = [item.upper() for item in dss_bus.AllPCEatBus()]
+                pce_connected = [item.upper() for item in dss.Bus.AllPCEatBus()]
                 topological_conflict = False
                 for pde in pde_connected:
                     if pde.split(".")[0] in ["LINE", "TRANSFORMER"]:
@@ -508,14 +516,14 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
                     mdl.info(f"  - Added Snubber in Current Source Side: R1 = 1e6 Ω")
 
                 # Voltage Side
-                dss_circuit.SetActiveBus(bus2)
-                pde_connected = [item.upper() for item in dss_bus.AllPDEatBus()]
+                dss.Circuit.SetActiveBus(bus2)
+                pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 pde_connected.remove(element.upper())
                 topological_conflict = False
                 for idx, pde in enumerate(pde_connected):
                     if pde.split(".")[0] in ["LINE"]:
-                        dss_circuit.SetActiveElement(pde_connected[idx])
-                        if dss_lines.C1() != 0.0:
+                        dss.Circuit.SetActiveElement(pde_connected[idx])
+                        if dss.Lines.C1() != 0.0:
                             topological_conflict = True
                     if pde.split(".")[0] in ["CAPACITOR"]:
                         topological_conflict = True
@@ -556,24 +564,30 @@ def get_all_dss_elements(mdl, comp_type, parent_comp=None):
 def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
 
     freq = float(mdl.get_property_value(mdl.prop(mask_handle, "basefrequency")))
-    dss_circuit = dss.Circuit
-    dss_ckt_element = dss.CktElement
-    dss_bus = dss.Bus
-    dss_lines = dss.Lines
+    # dss_circuit = dss.Circuit
+    # dss_ckt_element = dss.CktElement
+    # dss_bus = dss.Bus
+    # dss_lines = dss.Lines
     ts = 10e-6  # TODO use get_model_property and find a way to estimate it
 
-    if mode=="sequence":
-        dss_circuit.SetActiveElement(coupling_line)
-        bus = [bus_name.split(".")[0] for bus_name in dss_ckt_element.BusNames()]
-        dss_ckt_element.Open(0, 0)
+    #mdl.info(f"{coupling_line=}")
+    #mdl.info(dss.Circuit.AllElementNames())
+
+
+    if mode == "sequence":
+
+        dss.Circuit.SetActiveElement(coupling_line)
+        bus = [bus_name.split(".")[0] for bus_name in dss.CktElement.BusNames()]
+        dss.CktElement.Open(0, 0)
         dss.run_command("Solve Mode=FaultStudy")
+        # dss.run_command("calcv")
 
         # Thevenin Impedances
         # Bus1
         # Current sources ITM uses self impedance
         bus1 = bus[0]
-        dss_circuit.SetActiveBus(bus1)
-        zsc1 = [float(z) for z in dss_bus.Zsc1()]
+        dss.Circuit.SetActiveBus(bus1)
+        zsc1 = [float(z) for z in dss.Bus.Zsc1()]
         mdl.info("Current Source Side")
         mdl.info(f"{zsc1=}")
         if zsc1[1] >= 0:
@@ -582,7 +596,7 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
             r1x = (ts) / (zsc1[1] * 2 * np.pi * freq)
         r1_pos = zsc1[0] + r1x
 
-        zsc0 = [float(z) for z in dss_bus.Zsc0()]
+        zsc0 = [float(z) for z in dss.Bus.Zsc0()]
         mdl.info(f"{zsc0=}")
         if zsc0[1] >= 0:
             r1x = (1 / ts) * zsc0[1] / (2 * np.pi * freq)
@@ -595,8 +609,8 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         # Bus2
         # Voltage sources ITM uses kron reduction
         bus2 = bus[1]
-        dss_circuit.SetActiveBus(bus2)
-        zsc1 = [float(z) for z in dss_bus.Zsc1()]
+        dss.Circuit.SetActiveBus(bus2)
+        zsc1 = [float(z) for z in dss.Bus.Zsc1()]
         mdl.info("Voltage Source Side")
         mdl.info(f"{zsc1=}")
         if zsc1[1] >= 0:
@@ -605,7 +619,7 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
             r2x = ts / (zsc1[1] * 2 * np.pi * freq)
         r2_pos = zsc1[0] + r2x
 
-        zsc0 = [float(z) for z in dss_bus.Zsc0()]
+        zsc0 = [float(z) for z in dss.Bus.Zsc0()]
         mdl.info(f"{zsc0=}")
         if zsc0[1] >= 0:
             r2x = (1 / ts) * zsc0[1] / (2 * np.pi * freq)
@@ -617,22 +631,62 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         r2 = r2s - 2 * (r2m * r2m) / (r2s + r2m)
         r2 = [r2]*3  # TODO: Assuming phases = 3
 
-        dss_circuit.SetActiveElement(coupling_line)
-        dss_ckt_element.Close(0, 0)
+        dss.Circuit.SetActiveElement(coupling_line)
+        # dss_ckt_element.Close(0, 0)
         dss.run_command("Solve Mode=Snap")
 
     elif mode == "matrix":
-        dss_circuit.SetActiveElement(coupling_line)
-        bus = [bus_name.split(".")[0] for bus_name in dss_ckt_element.BusNames()]
-        dss_ckt_element.Open(0, 0)
-        dss.run_command("Solve Mode=FaultStudy")
 
+        dss.run_command("Solve Mode=FaultStudy")
+        dss.run_command("calcv")
+        dss.Circuit.SetActiveElement(coupling_line)
+        bus = [bus_name.split(".")[0] for bus_name in dss.CktElement.BusNames()]
+        bus1 = bus[0]
+        bus2 = bus[1]
+        # dss_ckt_element.Open(0, 0)
+
+        # I should to remove the reactors created during the compensation stage
+        dss.run_command("calcv")
+        dss.Circuit.SetActiveBus(bus1)
+        bus1_snb_list = []
+        bus2_snb_list = []
+        pce_pde = dss.Bus.AllPCEatBus() + dss.Bus.AllPDEatBus()
+        #mdl.info(f"Connected to {bus1}")
+        #mdl.info(f"{pce_pde}")
+        for connected_element in pce_pde:
+            #mdl.info(f"1{connected_element=}")
+            reactor_match = re.match(r"^REACTOR.(.+)_([VC])(?:SIDE_snb\d$)", connected_element, re.IGNORECASE)
+            #mdl.info(f"1{reactor_match=}")
+            if reactor_match:
+                if reactor_match.group(1).lower() == coupling_line.split(".")[-1].lower():
+                    bus1_snb_list.append(connected_element)
+
+        dss.run_command("calcv")
+        dss.Circuit.SetActiveBus(bus2)
+        pce_pde = dss.Bus.AllPCEatBus() + dss.Bus.AllPDEatBus()
+        for connected_element in pce_pde:
+            #mdl.info(f"2{connected_element=}")
+            reactor_match = re.match(r"^REACTOR.(.+)_([VC])(?:SIDE_snb\d$)", connected_element, re.IGNORECASE)
+            #mdl.info(f"2{reactor_match=}")
+            if reactor_match:
+                if reactor_match.group(1).lower() == coupling_line.split(".")[-1].lower():
+                    bus2_snb_list.append(connected_element)
+
+        #mdl.info(f"{bus1=}")
+        [dss.run_command(f"{pde}.enabled=no") for pde in bus1_snb_list]
+        #[mdl.info(f"{pde}.enabled=no") for pde in bus1_snb_list]
+
+        #mdl.info(f"{bus2=}")
+        [dss.run_command(f"{pde}.enabled=no") for pde in bus2_snb_list]
+        #[mdl.info(f"{pde}.enabled=no") for pde in bus2_snb_list]
+
+        dss.run_command("Solve Mode=FaultStudy")
         # Thevenin Impedances
         # Bus1
         # Current sources ITM uses self impedance
-        bus1 = bus[0]
-        dss_circuit.SetActiveBus(bus1)
-        zsc_matrix = dss_bus.ZscMatrix()
+        dss.run_command("calcv")
+        dss.Circuit.SetActiveBus(bus1)
+        zsc_matrix = dss.Bus.ZscMatrix()
         n_phases = int(np.sqrt(len(zsc_matrix)/2))
         r1_sc = []
         x1_sc = []
@@ -641,6 +695,10 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         xsc_array = np.array(zsc_matrix[1::2])
         rsc_matrix = rsc_array.reshape(n_phases, n_phases)
         xsc_matrix = xsc_array.reshape(n_phases, n_phases)
+        #mdl.info(f"{coupling_line}")
+        #mdl.info("Current Side")
+        #mdl.info(f"{rsc_matrix}")
+        #mdl.info(f"{xsc_matrix}")
         # Current sources ITM uses self impedance
         for idx in range(n_phases):
             r1_sc.append(rsc_matrix[idx, idx])
@@ -655,9 +713,9 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
             r1.append(r_eq)
 
         # Bus2
-        bus2 = bus[1]
-        dss_circuit.SetActiveBus(bus2)
-        zsc_matrix = dss_bus.ZscMatrix()
+        dss.run_command("calcv")
+        dss.Circuit.SetActiveBus(bus2)
+        zsc_matrix = dss.Bus.ZscMatrix()
         r2_sc = []
         x2_sc = []
         r2 = []
@@ -665,8 +723,9 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         xsc_array = np.array(zsc_matrix[1::2])
         rsc_matrix = rsc_array.reshape(n_phases, n_phases)
         xsc_matrix = xsc_array.reshape(n_phases, n_phases)
-        #mdl.info(f"{rsc_matrix=}")
-        #mdl.info(f"{xsc_matrix=}")
+        #mdl.info("Voltage Side")
+        #mdl.info(f"{rsc_matrix}")
+        #mdl.info(f"{xsc_matrix}")
         # Voltage sources ITM uses kron reduction
         for idx in range(n_phases):
             # resistance
@@ -702,6 +761,15 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
             r_eq = r2_sc[idx] + r2x
             r2.append(r_eq)
 
+        # I should to add the reactors created during the compensation stage
+        [dss.run_command(f"{pde}.enabled=yes") for pde in bus1_snb_list]
+        [dss.run_command(f"{pde}.enabled=yes") for pde in bus2_snb_list]
+        #[mdl.info(f"{pde}.enabled=yes") for pde in bus1_snb_list]
+        #[mdl.info(f"{pde}.enabled=yes") for pde in bus2_snb_list]
+
+        dss.run_command("calcv")
+        dss.run_command("Solve Mode=Snap")
+
     return r1, r2, bus1, bus2
 
 
@@ -710,19 +778,24 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
     ts = 10e-6
     if element_type == "Load":
         for load_handle in get_all_dss_elements(mdl, comp_type="Load"):
-            if mdl.get_property_value(mdl.prop(load_handle, "load_model")) == "Constant Power":
-                # Getting THCC properties
-                voltage = float(mdl.get_property_value(mdl.prop(load_handle, "Vn_3ph")))
-                phases = float(mdl.get_property_value(mdl.prop(load_handle, "phases")))
-                power = float(mdl.get_property_value(mdl.prop(load_handle, "Sn_3ph")))*3/phases
-                freq = float(mdl.get_property_value(mdl.prop(load_handle, "fn")))
-                # Disabling DSS Load and getting its properties
-                dss_load_name = mdl.get_fqn(load_handle).replace(".", "_").upper()
-                dss.Circuit.SetActiveElement(f"LOAD.{dss_load_name}")
-                bus = dss.CktElement.BusNames()[0].split(".")[0]
-                nodes = dss.CktElement.BusNames()[0].split(".")[1:]
-                # dss.CktElement.Enabled = 0
-                dss.run_command(f"Load.{dss_load_name}.enabled=no")
+            # Getting THCC properties
+            conn_type = mdl.get_property_value(mdl.prop(load_handle, "conn_type"))
+            voltage = float(mdl.get_property_value(mdl.prop(load_handle, "Vn_3ph")))
+            voltage = voltage*np.sqrt(3) if conn_type == "Δ" else voltage
+            pf_mode = mdl.get_property_value(mdl.prop(load_handle, "pf_mode_3ph"))
+            pf = float(mdl.get_property_value(mdl.prop(load_handle, "pf_3ph")))
+            phases = float(mdl.get_property_value(mdl.prop(load_handle, "phases")))
+            power = float(mdl.get_property_value(mdl.prop(load_handle, "Sn_3ph"))) * 3 / phases
+            freq = float(mdl.get_property_value(mdl.prop(load_handle, "fn")))
+            # Disabling DSS Load and getting its properties
+            dss_load_name = mdl.get_fqn(load_handle).replace(".", "_").upper()
+            dss.Circuit.SetActiveElement(f"LOAD.{dss_load_name}")
+            bus = dss.CktElement.BusNames()[0].split(".")[0]
+            nodes = dss.CktElement.BusNames()[0].split(".")[1:]
+            # dss.CktElement.Enabled = 0
+            dss.run_command(f"Load.{dss_load_name}.enabled=no")
+            #mdl.info(f"Load.{dss_load_name}.enabled=no")
+            if mdl.get_property_value(mdl.prop(load_handle, "load_model")) in ["Constant Power", "Constant Z,I,P"]:
                 # Creating new loads
                 cpl_handle = mdl.get_item("CPL", parent=load_handle)
                 cpl_phase_handle = [mdl.get_item(cname, parent=cpl_handle) for cname in ["CPLA", "CPLB", "CPLC"]]
@@ -739,11 +812,11 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
                         rsnb = rsnb/15
                         # Those resistances are in parallel from the THCC viewpoint
                         req = rsnb*(ts/csnb)/(rsnb+ts/csnb)
-                        mdl.info(f"{req=}")
+                        # mdl.info(f"{req=}")
                         snubber_p = 1e-3*(VLL*VLL/rsnb)
                         snubber_q = 1e-3*(VLL*VLL*2*np.pi*freq*csnb)
                         snubber_eq = 1e-3*(VLL*VLL/req)
-                        mdl.info(f"{snubber_eq=}")
+                        # mdl.info(f"{snubber_eq=}")
                         load_p["Bus1"] = bus + f".{nodes[idx]}"
                         load_p["kW"] = snubber_p
                         load_p["kvar"] = 0
@@ -752,7 +825,8 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
                         load_p["phases"] = 1
                         params = [f'{param}={load_p.get(param)}' for param in load_p]
                         cmd_string = "new" + f" Load.{dss_load_name}_P{idx+1} " + " ".join(params)
-                        # dss.run_command(cmd_string)
+                        #mdl.info(cmd_string)
+                        #dss.run_command(cmd_string)
                         load_q["Bus1"] = bus + f".{nodes[idx]}"
                         load_q["kW"] = 0
                         load_q["kvar"] = -1*snubber_q
@@ -761,7 +835,8 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
                         load_q["phases"] = 1
                         params = [f'{param}={load_q.get(param)}' for param in load_q]
                         cmd_string = "new" + f" Load.{dss_load_name}_Q{idx+1} " + " ".join(params)
-                        # dss.run_command(cmd_string)
+                        #mdl.info(cmd_string)
+                        #dss.run_command(cmd_string)
                         load_eq["Bus1"] = bus + f".{nodes[idx]}"
                         load_eq["kW"] = snubber_eq
                         load_eq["kvar"] = 0
@@ -770,6 +845,257 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
                         load_eq["phases"] = 1
                         params = [f'{param}={load_eq.get(param)}' for param in load_eq]
                         cmd_string = "new" + f" Load.{dss_load_name}_EQ{idx + 1} " + " ".join(params)
-                        dss.run_command(cmd_string)
+                        #mdl.info(cmd_string)
+                        #dss.run_command(cmd_string)
+            else:
+                load_eq = {}
+                VLL = 1e3 * voltage / np.sqrt(3)
+                SS = 1e3 * power / 3
+                if pf_mode == "Unit":
+                    R = (VLL ** 2) / SS
+                    req = R
+                elif pf_mode == "Lag":
+                    Z = (VLL ** 2) / SS
+                    R = pf * Z
+                    L = Z * ((1 - pf ** 2) ** 0.5) / (2 * np.pi * freq)
+                    req = R + (1/ts)*L
+                else:
+                    Z = (VLL ** 2) / SS
+                    R = pf * Z
+                    C = 1 / (Z * 2 * np.pi * freq * ((1 - pf ** 2) ** 0.5))
+                    req = R + (ts/C)
+                for idx in nodes:
+                    load_eq["Bus1"] = bus + f".{idx}"
+                    load_eq["kW"] = 1e-3*VLL*VLL/req
+                    load_eq["kvar"] = 0
+                    load_eq["model"] = 2
+                    load_eq["phases"] = 1
+                    load_eq["kV"] = 1e-3 * VLL
+                    params = [f'{param}={load_eq.get(param)}' for param in load_eq]
+                    cmd_string = "new" + f" Load.{dss_load_name}_EQ{idx} " + " ".join(params)
+                    #mdl.info(cmd_string)
+                    dss.run_command(cmd_string)
+
+    elif element_type == "Coupling":
+        for coupling_handle in get_all_dss_elements(mdl, comp_type="Coupling"):
+            # Opening DSS Line
+            dss_coupling_name = mdl.get_fqn(coupling_handle).replace(".", "_").upper()
+            dss.Circuit.SetActiveElement(f"LINE.{dss_coupling_name}")
+            # Ways to disabling the coupling
+            dss.CktElement.Open(0, 0)
+            # dss.run_command(f"Open LINE.{dss_coupling_name}")
+            # dss.run_command(f"LINE.{dss_coupling_name}.enabled=no")
+
+            #
+            bus1, bus2 = [bus_name.split(".")[0] for bus_name in dss.CktElement.BusNames()]
+            bus1_nodes, bus2_nodes = [bus_name.split(".")[1:] for bus_name in dss.CktElement.BusNames()]
+            if not mdl.get_property_value(mdl.prop(coupling_handle, "flip_status")):
+                bus_current_side = bus1
+                nodes_current_side = bus1_nodes
+                bus_voltage_side = bus2
+                nodes_voltage_side = bus2_nodes
+            else:
+                bus_current_side = bus2
+                nodes_current_side = bus2_nodes
+                bus_voltage_side = bus1
+                nodes_voltage_side = bus1_nodes
+
+            # Creating the Snubbers
+            mode = mdl.get_property_value(mdl.prop(coupling_handle, "auto_mode"))
+            itm_csnb_type = mdl.get_property_value(mdl.prop(coupling_handle, "itm_csnb_type"))
+            itm_vsnb_type = mdl.get_property_value(mdl.prop(coupling_handle, "itm_vsnb_type"))
+            if mode == "Automatic":
+                req_cside = 50e6
+                req_vside = 0
+            elif mode == "Manual":
+                if itm_csnb_type == "none":
+                    req_cside = 50e6
+                elif itm_csnb_type == "R1":
+                    req_cside = mdl.get_property_value(mdl.prop(coupling_handle, "itm_csnb_r"))
+                elif itm_csnb_type == "R1-C1":
+                    rsnb = mdl.get_property_value(mdl.prop(coupling_handle, "itm_csnb_r"))
+                    r_csnb = ts/mdl.get_property_value(mdl.prop(coupling_handle, "itm_csnb_c"))
+                    req_cside = rsnb + r_csnb
+
+                if itm_vsnb_type == "none":
+                    req_vside = 1e-6
+                elif itm_vsnb_type == "R2":
+                    req_vside = mdl.get_property_value(mdl.prop(coupling_handle, "itm_vsnb_r"))
+                elif itm_vsnb_type == "R2||L1":
+                    rsnb = mdl.get_property_value(mdl.prop(coupling_handle, "itm_vsnb_r"))
+                    r_lsnb = (1/ts)*mdl.get_property_value(mdl.prop(coupling_handle, "itm_vsnb_l"))
+                    req_vside = rsnb*r_lsnb/(rsnb+r_lsnb)
+
+            for idx in nodes_current_side:
+                snb_prop = {}
+                snb_prop["bus1"] = f"{bus_current_side}.{idx}"
+                snb_prop["phases"] = 1
+                snb_prop["R"] = req_cside
+                snb_prop["X"] = 1e-9
+                params = [f'{param}={snb_prop.get(param)}' for param in snb_prop]
+                cmd_string = "new" + f" REACTOR.{dss_coupling_name}_CSIDE_snb{idx} " + " ".join(params)
+                #mdl.info(cmd_string)
+                dss.run_command(cmd_string)
+            for idx in nodes_voltage_side:
+                snb_prop = {}
+                snb_prop["bus1"] = f"{bus_voltage_side}.{idx}"
+                snb_prop["phases"] = 1
+                snb_prop["R"] = req_vside
+                snb_prop["X"] = 1e-6
+                params = [f'{param}={snb_prop.get(param)}' for param in snb_prop]
+                cmd_string = "new" + f" REACTOR.{dss_coupling_name}_VSIDE_snb{idx} " + " ".join(params)
+                #mdl.info(cmd_string)
+                dss.run_command(cmd_string)
+
+    elif element_type == "Line":
+        for line_handle in get_all_dss_elements(mdl, comp_type="Line"):
+            dss_line_name = mdl.get_fqn(line_handle).replace(".", "_").upper()
+            #mdl.info(f"{dss_line_name=}")
+            dss.Circuit.SetActiveElement(f"LINE.{dss_line_name}")
+            rmatrix = dss.Lines.RMatrix()
+            xmatrix = dss.Lines.XMatrix()
+            cmatrix = dss.Lines.CMatrix()
+            freq = float(dss.Solution.Frequency())
+            n_phases = int(np.sqrt(len(rmatrix)))
+            rmatrix_compensated = np.zeros(len(rmatrix))
+            xmatrix_compensated = np.zeros(len(rmatrix))
+            cmatrix_compensated = np.zeros(len(rmatrix))
+            for idx in range(len(rmatrix)):
+                rmatrix_compensated[idx] = rmatrix[idx] + (1/ts)*xmatrix[idx]/(2*np.pi*freq)
+                xmatrix_compensated[idx] = 0.0
+                cmatrix_compensated[idx] = cmatrix[idx]
+
+            rmatrix_compensated = rmatrix_compensated.reshape(n_phases, n_phases)
+            xmatrix_compensated = xmatrix_compensated.reshape(n_phases, n_phases)
+            cmatrix_compensated = cmatrix_compensated.reshape(n_phases, n_phases)
+
+            rmatrix = np.array(rmatrix).reshape(n_phases, n_phases)
+            xmatrix = np.array(xmatrix).reshape(n_phases, n_phases)
+            cmatrix = np.array(cmatrix).reshape(n_phases, n_phases)
+
+            #mdl.info(f"{rmatrix=}")
+            #mdl.info(f"{xmatrix=}")
+            #mdl.info(f"{cmatrix=}")
+            #mdl.info(f"{rmatrix_compensated=}")
+            #mdl.info(f"{xmatrix_compensated=}")
+            #mdl.info(f"{cmatrix_compensated=}")
+
+            dss.Lines.RMatrix(rmatrix_compensated)
+            dss.Lines.XMatrix(xmatrix_compensated)
+            dss.Lines.CMatrix(cmatrix_compensated)
+
+            # Creating the capacitors as reactors (only resistive values)
+            bus1, bus2 = [bus_name.split(".")[0] for bus_name in dss.CktElement.BusNames()]
+            bus1_nodes, bus2_nodes = [bus_name.split(".")[1:] for bus_name in dss.CktElement.BusNames()]
+            for idx in bus1_nodes:
+                pos = int(idx)-1
+                if cmatrix[pos, pos] > 0:
+                    snb1_prop = {}
+                    req_cap = ts / (1e-9*cmatrix[pos, pos]/2)
+                    #mdl.info(f"{req_cap=}")
+                    snb1_prop["bus1"] = f"{bus1}.{idx}"
+                    snb1_prop["phases"] = 1
+                    snb1_prop["R"] = req_cap
+                    snb1_prop["X"] = 1e-9
+                    params = [f'{param}={snb1_prop.get(param)}' for param in snb1_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_line_name}_CAP1_snb{idx} " + " ".join(params)
+                    #mdl.info(cmd_string)
+                    dss.run_command(cmd_string)
+                    snb2_prop = {}
+                    snb2_prop["bus1"] = f"{bus2}.{idx}"
+                    snb2_prop["phases"] = 1
+                    snb2_prop["R"] = req_cap
+                    snb2_prop["X"] = 1e-9
+                    params = [f'{param}={snb2_prop.get(param)}' for param in snb2_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_line_name}_CAP2_snb{idx} " + " ".join(params)
+                    #mdl.info(cmd_string)
+                    dss.run_command(cmd_string)
+                dss.run_command("calcv")
+
+    if element_type == "Vsource":
+        for vsource_handle in get_all_dss_elements(mdl, comp_type="Vsource"):
+            dss_vsource_name = mdl.get_fqn(vsource_handle).replace(".", "_").upper()
+            dss.Circuit.SetActiveElement(f"VSOURCE.{dss_vsource_name}")
+            freq = float(dss.Properties.Value("frequency"))
+            r1, x1 = [float(prop_value) for prop_value in ast.literal_eval(dss.Properties.Value("Z1"))]
+            r0, x0 = [float(prop_value) for prop_value in ast.literal_eval(dss.Properties.Value("Z0"))]
+
+            #mdl.info(f"{r1=}")
+            #mdl.info(f"{x1=}")
+            #mdl.info(f"{r0=}")
+            #mdl.info(f"{x0=}")
+
+            r1_new = r1 + (1/ts)*(x1/(2*np.pi*freq))
+            x1_new = 0
+            r0_new = r0 + (1/ts)*(x0/(2*np.pi*freq))
+            x0_new = 0
+            cmd_string = f"VSOURCE.{dss_vsource_name}.Z1 = [{r1_new}, {x1_new}]"
+            mdl.info(cmd_string)
+            dss.run_command(cmd_string)
+            dss.run_command("calcv")
+            cmd_string = f"VSOURCE.{dss_vsource_name}.Z0 = [{r0_new}, {x0_new}]"
+            mdl.info(cmd_string)
+            dss.run_command(cmd_string)
+            dss.run_command("calcv")
+
+            r1_new, x1_new = [float(prop_value) for prop_value in ast.literal_eval(dss.Properties.Value("Z1"))]
+            r0_new, x0_new = [float(prop_value) for prop_value in ast.literal_eval(dss.Properties.Value("Z0"))]
+            #mdl.info(f"{r1_new=}")
+            #mdl.info(f"{x1_new=}")
+            #mdl.info(f"{r0_new=}")
+            #mdl.info(f"{x0_new=}")
+
+    elif element_type == "Three-Phase Transformer":
+        for trf_handle in get_all_dss_elements(mdl, comp_type="Three-Phase Transformer"):
+            dss_trf_name = mdl.get_fqn(trf_handle).replace(".", "_").upper()
+            dss.Circuit.SetActiveElement(f"TRANSFORMER.{dss_trf_name}")
+            freq = float(dss.Properties.Value("basefreq"))
+            # Assuming two windigs for now
+            vbase = mdl.get_property_value(mdl.prop(trf_handle, "KVs"))
+            pbase = mdl.get_property_value(mdl.prop(trf_handle, "KVAs"))
+            # conn1, conn2 = [mdl.get_property_value(mdl.prop(trf_handle, prop)) for prop in ["prim_conn", "sec1_conn"]]
+            zbase = [1e3*volt*volt/pot for volt, pot in zip(vbase, pbase)]
+            xarray = mdl.get_property_value(mdl.prop(trf_handle, "XArray"))
+            larray = [(1e-2*x/zb)/(2*np.pi*freq) for x,zb in zip(xarray, zbase)]
+            # Windings
+            dss.Transformers.Wdg(1)
+            rw1 = dss.Transformers.R()
+            rw1_eq = rw1 + (1/ts)*larray[0]
+            dss.Transformers.R(rw1_eq)
+            dss.Transformers.Wdg(2)
+            rw2 = dss.Transformers.R()
+            rw2_eq = rw2 + (1 / ts) * larray[1]
+            dss.Transformers.R(rw2_eq)
+            dss.Transformers.Xhl(0)
+
+            # Core
+            dss.Circuit.SetActiveElement(f"TRANSFORMER.{dss_trf_name}")
+            noloadloss = float(dss.Properties.Value("%noloadloss"))/100
+            imag = float(dss.Properties.Value("%imag"))/100
+            mdl.info(f"{noloadloss=}")
+            mdl.info(f"{imag=}")
+
+            if noloadloss != 0 or imag != 0:
+                try:
+                    rloss = (1/noloadloss)*zbase[0]
+                except:
+                    rloss = 1e12
+                try:
+                    xmag = (1/imag)*zbase[0]
+                    rmag = (1/ts)*(xmag/(2*np.pi*freq))
+                except:
+                    rmag = 1e12
+
+                req = rloss*rmag/(rloss+rmag)
+                noloadloss_eq = 100*1/(req/zbase[0])
+                cmd_string = f"TRANSFORMER.{dss_trf_name}.%noloadloss = {noloadloss_eq}"
+                mdl.info(cmd_string)
+                dss.run_command(cmd_string)
+                cmd_string = f"TRANSFORMER.{dss_trf_name}.%imag = {0}"
+                mdl.info(cmd_string)
+                dss.run_command(cmd_string)
+                dss.run_command("calcv")
+
 
     return dss
+
