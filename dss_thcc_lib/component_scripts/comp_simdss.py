@@ -367,8 +367,9 @@ def run_stability_analysis(mdl, mask_handle, dss_file):
     dss = dss_to_thcc_compensation(mdl, dss, "Coupling")
     dss = dss_to_thcc_compensation(mdl, dss, "Load")
     dss = dss_to_thcc_compensation(mdl, dss, "Line")
-    #dss = dss_to_thcc_compensation(mdl, dss, "Vsource")
+    dss = dss_to_thcc_compensation(mdl, dss, "Vsource")
     dss = dss_to_thcc_compensation(mdl, dss, "Three-Phase Transformer")
+    dss = dss_to_thcc_compensation(mdl, dss, "Manual Switch")
 
 
     # mdl.info(dss.Circuit.AllElementNames())
@@ -686,6 +687,7 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         # Current sources ITM uses self impedance
         dss.run_command("calcv")
         dss.Circuit.SetActiveBus(bus1)
+        dss.Bus.ZscRefresh()
         zsc_matrix = dss.Bus.ZscMatrix()
         n_phases = int(np.sqrt(len(zsc_matrix)/2))
         r1_sc = []
@@ -695,10 +697,10 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         xsc_array = np.array(zsc_matrix[1::2])
         rsc_matrix = rsc_array.reshape(n_phases, n_phases)
         xsc_matrix = xsc_array.reshape(n_phases, n_phases)
-        #mdl.info(f"{coupling_line}")
-        #mdl.info("Current Side")
-        #mdl.info(f"{rsc_matrix}")
-        #mdl.info(f"{xsc_matrix}")
+        mdl.info(f"{coupling_line}")
+        mdl.info("Current Side")
+        mdl.info(f"{rsc_matrix=}")
+        mdl.info(f"{xsc_matrix=}")
         # Current sources ITM uses self impedance
         for idx in range(n_phases):
             r1_sc.append(rsc_matrix[idx, idx])
@@ -715,6 +717,7 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         # Bus2
         dss.run_command("calcv")
         dss.Circuit.SetActiveBus(bus2)
+        dss.Bus.ZscRefresh()
         zsc_matrix = dss.Bus.ZscMatrix()
         r2_sc = []
         x2_sc = []
@@ -723,9 +726,9 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode):
         xsc_array = np.array(zsc_matrix[1::2])
         rsc_matrix = rsc_array.reshape(n_phases, n_phases)
         xsc_matrix = xsc_array.reshape(n_phases, n_phases)
-        #mdl.info("Voltage Side")
-        #mdl.info(f"{rsc_matrix}")
-        #mdl.info(f"{xsc_matrix}")
+        mdl.info("Voltage Side")
+        mdl.info(f"{rsc_matrix=}")
+        mdl.info(f"{xsc_matrix=}")
         # Voltage sources ITM uses kron reduction
         for idx in range(n_phases):
             # resistance
@@ -846,7 +849,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
                         params = [f'{param}={load_eq.get(param)}' for param in load_eq]
                         cmd_string = "new" + f" Load.{dss_load_name}_EQ{idx + 1} " + " ".join(params)
                         #mdl.info(cmd_string)
-                        #dss.run_command(cmd_string)
+                        dss.run_command(cmd_string)
             else:
                 load_eq = {}
                 VLL = 1e3 * voltage / np.sqrt(3)
@@ -962,7 +965,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
             cmatrix_compensated = np.zeros(len(rmatrix))
             for idx in range(len(rmatrix)):
                 rmatrix_compensated[idx] = rmatrix[idx] + (1/ts)*xmatrix[idx]/(2*np.pi*freq)
-                xmatrix_compensated[idx] = 0.0
+                xmatrix_compensated[idx] = 1e-6
                 cmatrix_compensated[idx] = cmatrix[idx]
 
             rmatrix_compensated = rmatrix_compensated.reshape(n_phases, n_phases)
@@ -1012,7 +1015,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
                     dss.run_command(cmd_string)
                 dss.run_command("calcv")
 
-    if element_type == "Vsource":
+    elif element_type == "Vsource":
         for vsource_handle in get_all_dss_elements(mdl, comp_type="Vsource"):
             dss_vsource_name = mdl.get_fqn(vsource_handle).replace(".", "_").upper()
             dss.Circuit.SetActiveElement(f"VSOURCE.{dss_vsource_name}")
@@ -1026,15 +1029,15 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
             #mdl.info(f"{x0=}")
 
             r1_new = r1 + (1/ts)*(x1/(2*np.pi*freq))
-            x1_new = 0
+            x1_new = 1e-6
             r0_new = r0 + (1/ts)*(x0/(2*np.pi*freq))
-            x0_new = 0
+            x0_new = 1e-6
             cmd_string = f"VSOURCE.{dss_vsource_name}.Z1 = [{r1_new}, {x1_new}]"
-            mdl.info(cmd_string)
+            #mdl.info(cmd_string)
             dss.run_command(cmd_string)
             dss.run_command("calcv")
             cmd_string = f"VSOURCE.{dss_vsource_name}.Z0 = [{r0_new}, {x0_new}]"
-            mdl.info(cmd_string)
+            #mdl.info(cmd_string)
             dss.run_command(cmd_string)
             dss.run_command("calcv")
 
@@ -1053,6 +1056,8 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
             # Assuming two windigs for now
             vbase = mdl.get_property_value(mdl.prop(trf_handle, "KVs"))
             pbase = mdl.get_property_value(mdl.prop(trf_handle, "KVAs"))
+            prim_conn = not mdl.get_property_value(mdl.prop(trf_handle, "prim_conn")) == "Y"
+            sec_conn = not mdl.get_property_value(mdl.prop(trf_handle, "sec1_conn")) == "Y"
             # conn1, conn2 = [mdl.get_property_value(mdl.prop(trf_handle, prop)) for prop in ["prim_conn", "sec1_conn"]]
             zbase = [1e3*volt*volt/pot for volt, pot in zip(vbase, pbase)]
             xarray = mdl.get_property_value(mdl.prop(trf_handle, "XArray"))
@@ -1062,18 +1067,26 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
             rw1 = dss.Transformers.R()
             rw1_eq = rw1 + (1/ts)*larray[0]
             dss.Transformers.R(rw1_eq)
+            dss.Transformers.IsDelta(prim_conn)
+            mdl.info(dss.Transformers.IsDelta())
             dss.Transformers.Wdg(2)
             rw2 = dss.Transformers.R()
             rw2_eq = rw2 + (1 / ts) * larray[1]
             dss.Transformers.R(rw2_eq)
-            dss.Transformers.Xhl(0)
+            dss.Transformers.Xhl(1e-3)
+            dss.Transformers.IsDelta(sec_conn)
+
+
+            dss.run_command("calcv")
 
             # Core
             dss.Circuit.SetActiveElement(f"TRANSFORMER.{dss_trf_name}")
+            #dss.Transformers.Xhl(xarray[0] + xarray[1])
+            #dss.Properties.Value("ppm_antifloat", "0")
             noloadloss = float(dss.Properties.Value("%noloadloss"))/100
             imag = float(dss.Properties.Value("%imag"))/100
-            mdl.info(f"{noloadloss=}")
-            mdl.info(f"{imag=}")
+            #mdl.info(f"{noloadloss=}")
+            #mdl.info(f"{imag=}")
 
             if noloadloss != 0 or imag != 0:
                 try:
@@ -1089,13 +1102,24 @@ def dss_to_thcc_compensation(mdl, dss, element_type):
                 req = rloss*rmag/(rloss+rmag)
                 noloadloss_eq = 100*1/(req/zbase[0])
                 cmd_string = f"TRANSFORMER.{dss_trf_name}.%noloadloss = {noloadloss_eq}"
-                mdl.info(cmd_string)
+                #mdl.info(cmd_string)
                 dss.run_command(cmd_string)
-                cmd_string = f"TRANSFORMER.{dss_trf_name}.%imag = {0}"
-                mdl.info(cmd_string)
+                cmd_string = f"TRANSFORMER.{dss_trf_name}.%imag = {1e-4}"
+                #mdl.info(cmd_string)
                 dss.run_command(cmd_string)
                 dss.run_command("calcv")
 
+    elif element_type == "Manual Switch":
+        for swt_handle in get_all_dss_elements(mdl, comp_type="Manual Switch"):
+            dss_swt_name = mdl.get_fqn(swt_handle).replace(".", "_").upper()
+            dss.Circuit.SetActiveElement(f"LINE.{dss_swt_name}")
+            dss.Lines.C1(0)
+            dss.Lines.C0(0)
+            dss.Lines.X0(1e-6)
+            dss.Lines.X1(1e-6)
+            dss.Lines.R0(1e-6)
+            dss.Lines.R1(1e-6)
+            dss.run_command("calcv")
 
     return dss
 

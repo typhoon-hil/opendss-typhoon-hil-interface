@@ -33,7 +33,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
     # ------------------------------------------------------------------------------------------------------------------
     #  "itm_vsnb_type" property code
     # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == itm_vsnb_type_prop:
+    elif caller_prop_handle == itm_vsnb_type_prop:
 
         comp_handle = mdl.get_parent(container_handle)
         coupling_handle = mdl.get_item("Coupling", parent=comp_handle)
@@ -196,7 +196,7 @@ def flip_coupling(mdl, container_handle, flip):
     fixed_csnb = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_csnb_fixed"))
     fixed_vsnb = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_vsnb_fixed"))
     csnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_csnb_type"))
-    vsnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_csnb_type"))
+    vsnb_type = mdl.get_property_disp_value(mdl.prop(container_handle, "itm_vsnb_type"))
 
 
     port1_names = ["A1", "B1", "C1"]
