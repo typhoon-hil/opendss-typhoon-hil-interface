@@ -9273,8 +9273,8 @@ if (counter >= Ts) {
                         Rneut = mdl.get_property_value(mdl.prop(item_handle, "Rneut"))
                         Xneut = mdl.get_property_value(mdl.prop(item_handle, "Xneut"))
                         # HEADER STOP
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.build_gnd_z(mdl, container_handle)
+                        comp_script = return_comp_script(mdl, item_handle)
+                        comp_script.build_gnd_z(mdl, item_handle)
                     ENDCODE
                 }
             }

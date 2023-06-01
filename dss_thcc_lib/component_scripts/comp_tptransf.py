@@ -4,6 +4,39 @@ from itertools import combinations
 x0, y0 = (8192, 8192)
 
 
+'''*******************************************************************
+This function manages the mask properties 
+If tp_connection == "Y - Grounded", the fields for Rneut and Xneut 
+will be available.
+https://youtu.be/Al3vXVe9WVU
+*******************************************************************'''
+def tp_connection_edited(mdl, mask_handle, new_value):
+    rneut_prop = mdl.prop(mask_handle, "Rneut")
+    xneut_prop = mdl.prop(mask_handle, "Xneut")
+
+    #tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    #tp_connection = mdl.get_property_disp_value(tp_connection_prop)
+
+    if new_value == "Y - Grounded":
+        # Enable user input fields for N to Gnd impedance
+        mdl.enable_property(mdl.prop(mask_handle, "Rneut"))
+        mdl.enable_property(mdl.prop(mask_handle, "Xneut"))
+        # We don't want to modify Rneut and Xneut user values
+        # on the 'on change' event. We put zeros only when
+        # the user commuted from "Y" or "Δ" to "Y - Grounded"
+        if mdl.get_property_disp_value(rneut_prop) == "'inf'":
+            mdl.set_property_value(rneut_prop, "0.0")
+        if mdl.get_property_disp_value(xneut_prop) == "'inf'":
+            mdl.set_property_value(xneut_prop, "0.0")
+    else:
+        # Disable user input fields for N to Gnd impedance
+        # show 'inf' because they are disconnected
+        mdl.set_property_disp_value(rneut_prop, "'inf'")
+        mdl.set_property_disp_value(xneut_prop, "'inf'")
+        mdl.disable_property(mdl.prop(mask_handle, "Rneut"))
+        mdl.disable_property(mdl.prop(mask_handle, "Xneut"))
+
+
 def delete_port(mdl, name, parent):
     comp = mdl.get_item(name, parent=parent, item_type="port")
     if comp:
@@ -12,14 +45,17 @@ def delete_port(mdl, name, parent):
 
 
 def enable_disable_grounds(mdl, mask_handle):
-    grounded_prim_prop = mdl.prop(mask_handle, "grounded_prim")
-    grounded_sec1_prop = mdl.prop(mask_handle, "grounded_sec1")
-    grounded_sec2_prop = mdl.prop(mask_handle, "grounded_sec2")
-    grounded_sec3_prop = mdl.prop(mask_handle, "grounded_sec3")
+    tp_prim_prop = mdl.prop(mask_handle, "prim_conn")
+    tp_sec1_prop = mdl.prop(mask_handle, "sec1_conn")
+    tp_sec2_prop = mdl.prop(mask_handle, "sec2_conn")
+    tp_sec3_prop = mdl.prop(mask_handle, "sec3_conn")
     num_windings_prop = mdl.prop(mask_handle, "num_windings")
     num_windings = mdl.get_property_disp_value(num_windings_prop)
 
+
     if num_windings == "2":
+        pass
+        '''
         if not mdl.get_property_disp_value(mdl.prop(mask_handle, "embedded_cpl")) == "None":
             mdl.set_property_disp_value(grounded_prim_prop, False)
             mdl.disable_property(grounded_prim_prop)
@@ -30,6 +66,22 @@ def enable_disable_grounds(mdl, mask_handle):
             mdl.set_property_disp_value(grounded_prim_prop, mdl.get_property_value(grounded_prim_prop))
             mdl.enable_property(grounded_sec1_prop)
             mdl.set_property_disp_value(grounded_sec1_prop, mdl.get_property_value(grounded_sec1_prop))
+        '''
+
+    elif num_windings == "3":
+        mdl.disable_property(tp_sec3_prop)
+        mdl.enable_property(tp_sec1_prop)
+        mdl.enable_property(tp_sec2_prop)
+        mdl.enable_property(tp_prim_prop)
+
+    elif num_windings == "4":
+        mdl.enable_property(tp_sec1_prop)
+        mdl.enable_property(tp_sec2_prop)
+        mdl.enable_property(tp_sec3_prop)
+        mdl.enable_property(tp_prim_prop)
+
+    # this next code will be removed by Ricardo
+    '''
     else:
         cpl_props = ["embedded_cpl_12", "embedded_cpl_13", "embedded_cpl_14"]
         gnd_props = [grounded_sec1_prop, grounded_sec2_prop, grounded_sec3_prop]
@@ -54,24 +106,30 @@ def enable_disable_grounds(mdl, mask_handle):
         else:
             mdl.disable_property(grounded_prim_prop)
             mdl.set_property_disp_value(grounded_prim_prop, False)
-
+    '''
 
 def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
-    num_windings = int(mdl.get_property_value(mdl.prop(mask_handle, "num_windings")))
+    num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
+    trafo_handle = mdl.get_item("T1", parent=comp_handle)
+
     conn_dict = ["prim", "sec1", "sec2", "sec3"]
     pos_y = 346 if num_windings == 4 else 240
 
-    for i in range(1, 5):
-        gnd = mdl.get_item("gnd", parent=comp_handle)
-        if gnd:
-            mdl.delete_item(gnd)
 
+    #for i in range(1, 5):
+    #    gnd = mdl.get_item("gnd", parent=comp_handle)
+    #    if gnd:
+    #        mdl.delete_item(gnd)
+
+    # for loop for each winding
+    # It takes the tp_conn for each winding
     for idx in range(0, num_windings):
-        grounded = mdl.get_property_value(mdl.prop(mask_handle, "grounded_" + conn_dict[idx]))
+        # grounded = mdl.get_property_value(mdl.prop(mask_handle, "grounded_" + conn_dict[idx]))
         conn_prop = mdl.prop(mask_handle, conn_dict[idx] + "_conn")
+        tp_conn = mdl.get_property_disp_value(conn_prop)
 
-        if mdl.get_property_value(conn_prop) == "Y" and not str(grounded) == "True" and created_ports:
+        if tp_conn == "Y" or tp_conn == "Y - Grounded" and created_ports:
             if idx == 0:
                 new_port_n = created_ports.get("N1")
                 # new_port_N = mdl.create_port(
@@ -97,25 +155,160 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
                 if not mdl.get_item(f"N{str(idx + 1)}n{str(idx + 1)}", parent=comp_handle, item_type="connection"):
                     mdl.create_connection(mdl.term(trafo_handle, "n" + str(idx + 1)),
                                           new_port_n, name=f"N{str(idx + 1)}n{str(idx + 1)}")
-        elif mdl.get_property_value(conn_prop) == "Y":
-            gnd = mdl.get_item("gnd", parent=comp_handle)
-            if not gnd:
-                gnd = mdl.create_component(
-                    "core/Ground",
-                    name="gnd",
-                    parent=comp_handle,
-                    position=(x0 + 150, y0 + 110 * num_windings)
-                )
-            if not mdl.get_item(f"gndn{str(idx + 1)}", parent=comp_handle, item_type="connection"):
-                mdl.create_connection(mdl.term(gnd, "node"), mdl.term(trafo_handle, "n" + str(idx + 1)),
-                                      name=f"gndn{str(idx + 1)}")
+
+
+        # If it is selected "Y - Grounded", place the grounding impedance for each neutral of the trafo...
+        if tp_conn == "Y - Grounded":
+
+            if idx == 0:
+                gnd0 = mdl.get_item("gnd0", parent=comp_handle)
+                if not gnd0:
+                    gnd0 = mdl.create_component("core/Ground", name="gnd0", parent=comp_handle,
+                                               position=(x0 + 150, y0 + 750))
+
+                gnd_z0 = mdl.get_item("Gnd Z0", parent=comp_handle, item_type="component")
+                if not gnd_z0:
+                    gnd_z0 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z0",
+                                                 position=(x0 + 150, y0 + 650), rotation="up")
+                    mdl.set_property_value(mdl.prop(gnd_z0, "f"), "Basefreq")
+
+                # Create connections:
+                # Ground impedance to GND, and
+                # Ground impedance to the transformer terminal
+                con_z02gnd = mdl.get_item("Conn_Z02gnd", parent=comp_handle, item_type="connection")
+                if not con_z02gnd:
+                    mdl.create_connection(mdl.term(gnd_z0, "G"), mdl.term(gnd0, "node"), "Conn_Z02gnd")
+
+                con_z02n = mdl.get_item("Conn_Z02N", parent=comp_handle, item_type="connection")
+                if not con_z02n:
+                    mdl.create_connection(mdl.term(gnd_z0, "N"), mdl.term(trafo_handle, "n1"), "Conn_Z02N")
+
+            elif idx == 1:
+                gnd1 = mdl.get_item("gnd1", parent=comp_handle)
+                if not gnd1:
+                    gnd1 = mdl.create_component("core/Ground", name="gnd1", parent=comp_handle,
+                    position=(x0 + 250, y0 + 750))
+
+                gnd_z1 = mdl.get_item("Gnd Z1", parent=comp_handle, item_type="component")
+                if not gnd_z1:
+                    gnd_z1 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z1",
+                                                 position=(x0 + 250, y0 + 650), rotation="up")
+                    mdl.set_property_value(mdl.prop(gnd_z1, "f"), "Basefreq")
+
+                # Create connections:
+                # Ground impedance to GND, and
+                # Ground impedance to the transformer Neutral terminal
+                con_z12gnd = mdl.get_item("Conn_Z12gnd", parent=comp_handle, item_type="connection")
+                if not con_z12gnd:
+                    mdl.create_connection(mdl.term(gnd_z1, "G"), mdl.term(gnd1, "node"), "Conn_Z12gnd")
+
+                con_z12n = mdl.get_item("Conn_Z12N", parent=comp_handle, item_type="connection")
+                if not con_z12n:
+                    mdl.create_connection(mdl.term(gnd_z1, "N"), mdl.term(trafo_handle, "n2"), "Conn_Z12N")
+
+            elif idx == 2:
+                gnd2 = mdl.get_item("gnd2", parent=comp_handle)
+
+                if not gnd2:
+                    gnd2 = mdl.create_component("core/Ground", name="gnd2", parent=comp_handle,
+                    position=(x0 + 350, y0 + 750))
+
+                gnd_z2 = mdl.get_item("Gnd Z2", parent=comp_handle, item_type="component")
+                if not gnd_z2:
+                    gnd_z2 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z2",
+                                                  position=(x0 + 350, y0 + 650), rotation="up")
+                    mdl.set_property_value(mdl.prop(gnd_z2, "f"), "Basefreq")
+
+                # Create connections:
+                # Ground impedance to GND, and
+                # Ground impedance to the transformer terminal
+                con_z22gnd = mdl.get_item("Conn_Z22gnd", parent=comp_handle, item_type="connection")
+                if not con_z22gnd:
+                    mdl.create_connection(mdl.term(gnd_z2, "G"), mdl.term(gnd2, "node"), "Conn_Z22gnd")
+
+                con_z22n = mdl.get_item("Conn_Z22N", parent=comp_handle, item_type="connection")
+                if not con_z22n:
+                    mdl.create_connection(mdl.term(gnd_z2, "N"), mdl.term(trafo_handle, "n3"), "Conn_Z22N")
+
+            elif idx == 3:
+                gnd3 = mdl.get_item("gnd3", parent=comp_handle)
+                if not gnd3:
+                    gnd3 = mdl.create_component("core/Ground", name="gnd3", parent=comp_handle,
+                    position=(x0 + 450, y0 + 750))
+
+                gnd_z3 = mdl.get_item("Gnd Z3", parent=comp_handle, item_type="component")
+                if not gnd_z3:
+                    gnd_z3 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z3",
+                                                  position=(x0 + 450, y0 + 650), rotation="up")
+                    mdl.set_property_value(mdl.prop(gnd_z3, "f"), "Basefreq")
+
+                # Create connections:
+                # Ground impedance to GND, and
+                # Ground impedance to the transformer terminal
+                con_z32gnd = mdl.get_item("Conn_Z32gnd", parent=comp_handle, item_type="connection")
+                if not con_z32gnd:
+                    mdl.create_connection(mdl.term(gnd_z3, "G"), mdl.term(gnd3, "node"), "Conn_Z32gnd")
+
+                con_z32n = mdl.get_item("Conn_Z32N", parent=comp_handle, item_type="connection")
+                if not con_z32n:
+                    mdl.create_connection(mdl.term(gnd_z3, "N"), mdl.term(trafo_handle, "n4"), "Conn_Z32N")
+
+
+            # commented the following three lines because they are giving error, investigate it
+            #if not mdl.get_item(f"gndn{str(idx + 1)}", parent=comp_handle, item_type="connection"):
+            #    mdl.create_connection(mdl.term(f"gnd{str(idx+1)}", "node"), mdl.term(trafo_handle, "n" + str(idx + 1)),
+            #                          name=f"gndn{str(idx + 1)}")
+
+        # if the tp_conn is not "Y - Grounded", we delete the grounds and ground impedance
+        else:
+            if idx == 0:
+                gnd0 = mdl.get_item("gnd0", parent=comp_handle)
+                if gnd0:
+                    mdl.delete_item(gnd0)
+
+                gnd_z0 = mdl.get_item("Gnd Z0", parent=comp_handle, item_type="component")
+                if gnd_z0:
+                    mdl.delete_item(gnd_z0)
+
+            elif idx == 1:
+                gnd1 = mdl.get_item("gnd1", parent=comp_handle)
+                if gnd1:
+                    mdl.delete_item(gnd1)
+
+                gnd_z1 = mdl.get_item("Gnd Z1", parent=comp_handle, item_type="component")
+                if gnd_z1:
+                    mdl.delete_item(gnd_z1)
+
+            elif idx == 2:
+                gnd2 = mdl.get_item("gnd2", parent=comp_handle)
+                if gnd2:
+                    mdl.delete_item(gnd2)
+
+                gnd_z2 = mdl.get_item("Gnd Z2", parent=comp_handle, item_type="component")
+                if gnd_z2:
+                    mdl.delete_item(gnd_z2)
+
+            elif idx == 3:
+                gnd3 = mdl.get_item("gnd3", parent=comp_handle)
+                if gnd3:
+                    mdl.delete_item(gnd3)
+
+                gnd_z3 = mdl.get_item("Gnd Z3", parent=comp_handle, item_type="component")
+                if gnd_z3:
+                    mdl.delete_item(gnd_z3)
+
+
+
+
 
 
 def update_subsystem_components(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
-    num_windings = int(mdl.get_property_value(mdl.prop(mask_handle, "num_windings")))
+    num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
 
     trafo_tag_names = [f"TagT{phase}{winding}" for winding in "1234" for phase in "ABCN"]
+    conn_dict = ["prim", "sec1", "sec2", "sec3"]
+
     # Delete trafo tags
     for tag in trafo_tag_names:
         tag_handle = mdl.get_item(tag, parent=comp_handle, item_type="tag")
@@ -154,10 +347,18 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
         pos_b = [y + 96 for y in pos_a]
         pos_c = [y + 96 for y in pos_b]
 
+
+    update_all_windings(mdl, mask_handle, created_ports)
+
     # Create transformer tags
     trafo_tag_labels = [f"T_{phase}{winding}" for winding in "1234" for phase in "ABCN"]
 
+    mdl.info(f"Line 354, the created tags are: {trafo_tag_labels}    $$$$$$$$$$")
+
     for idx in range(1, num_windings + 1):
+        conn_prop = mdl.prop(mask_handle, conn_dict[idx-1] + "_conn")
+        tp_conn = mdl.get_property_disp_value(conn_prop)
+
         # A
         new_tag_a = mdl.create_tag(
             name=trafo_tag_names[4*(idx-1)],
@@ -203,6 +404,8 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
             mdl.create_connection(mdl.term(trafo_handle, "sec_" + str(3 * (idx - 2) + 3)), new_tag_c)
         # N
         # if not idx == 1:
+        # If the connection type is Δ, we don't create the Neutral tags
+        #if tp_conn != "Δ":
         new_tag_n = mdl.create_tag(
             name=trafo_tag_names[4 * (idx - 1) + 3],
             value=trafo_tag_labels[4 * (idx - 1) + 3],
@@ -212,7 +415,9 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
             rotation='up',
             position=(x0 + 60 if idx == 1 else x0 + 408, y0 + 48*idx + 90*num_windings)
         )
-        mdl.create_connection(mdl.term(trafo_handle, f"n{idx}"), new_tag_n)
+
+        #connx = mdl.create_connection(mdl.term(trafo_handle, f"n{idx}"), new_tag_n)
+        #mdl.info(f"Line 410, {tp_conn=} and the strange connection is {connx} with trafo n{idx} !!!!!!!!!!")
 
     # Right ports and tags
     port_names = [f"{phase}{winding}" for winding in "234" for phase in "ABC"]
@@ -496,19 +701,176 @@ def set_autotrafo_properties(mdl, mask_handle):
                 mdl.set_property_value(at_prop, float(t_prop_value/1000))
 
 
-def show_hide_ground(mdl, prop_handle, mask_handle):
-    prop_name = mdl.get_name(prop_handle)
-    grd_prop = mdl.prop(mask_handle, "grounded_" + prop_name[:4])
-    if mdl.get_property_disp_value(mdl.prop(mask_handle, prop_name)) == "Y":
-        mdl.show_property(grd_prop)
+
+'''
+****************************************************************************
+Function to manages the Ground Impedance Rneut and Xneut
+It enables these fields if the corresponding tp_conn is "Grounded",
+otherwise these fields are disabled
+****************************************************************************
+'''
+def enable_disable_z_neut(mdl, mask_handle):
+    tp_prim_prop = mdl.prop(mask_handle, "prim_conn")
+    tp_prim = mdl.get_property_disp_value(tp_prim_prop)
+    rneut_prim_prop = mdl.prop(mask_handle, "Rneut_prim")
+    xneut_prim_prop = mdl.prop(mask_handle, "Xneut_prim")
+    tp_sec1_prop = mdl.prop(mask_handle, "sec1_conn")
+    tp_sec1 = mdl.get_property_disp_value(tp_sec1_prop)
+    rneut_sec1_prop = mdl.prop(mask_handle, "Rneut_sec1")
+    xneut_sec1_prop = mdl.prop(mask_handle, "Xneut_sec1")
+    tp_sec2_prop = mdl.prop(mask_handle, "sec2_conn")
+    tp_sec2 = mdl.get_property_disp_value(tp_sec2_prop)
+    rneut_sec2_prop = mdl.prop(mask_handle, "Rneut_sec2")
+    xneut_sec2_prop = mdl.prop(mask_handle, "Xneut_sec2")
+    tp_sec3_prop = mdl.prop(mask_handle, "sec3_conn")
+    tp_sec3 = mdl.get_property_disp_value(tp_sec3_prop)
+    rneut_sec3_prop = mdl.prop(mask_handle, "Rneut_sec3")
+    xneut_sec3_prop = mdl.prop(mask_handle, "Xneut_sec3")
+    num_windings_prop = mdl.prop(mask_handle, "num_windings")
+    num_windings = mdl.get_property_disp_value(num_windings_prop)
+
+    if tp_prim == "Y - Grounded":
+        mdl.enable_property(rneut_prim_prop)
+        mdl.enable_property(xneut_prim_prop)
     else:
-        mdl.hide_property(grd_prop)
-        mdl.set_property_value(grd_prop, False)
+        mdl.disable_property(rneut_prim_prop)
+        mdl.disable_property(xneut_prim_prop)
+
+    if num_windings == "2":
+        if tp_sec1 == "Y - Grounded":
+            mdl.enable_property(rneut_sec1_prop)
+            mdl.enable_property(xneut_sec1_prop)
+        else:
+            mdl.disable_property(rneut_sec1_prop)
+            mdl.disable_property(xneut_sec1_prop)
+
+    elif num_windings == "3":
+        if tp_sec1 == "Y - Grounded":
+            mdl.enable_property(rneut_sec1_prop)
+            mdl.enable_property(xneut_sec1_prop)
+        else:
+            mdl.disable_property(rneut_sec1_prop)
+            mdl.disable_property(xneut_sec1_prop)
+        if tp_sec2 == "Y - Grounded":
+            mdl.enable_property(rneut_sec2_prop)
+            mdl.enable_property(xneut_sec2_prop)
+        else:
+            mdl.disable_property(rneut_sec2_prop)
+            mdl.disable_property(xneut_sec2_prop)
+
+    elif num_windings == "4":
+        if tp_sec1 == "Y - Grounded":
+            mdl.enable_property(rneut_sec1_prop)
+            mdl.enable_property(xneut_sec1_prop)
+        else:
+            mdl.disable_property(rneut_sec1_prop)
+            mdl.disable_property(xneut_sec1_prop)
+        if tp_sec2 == "Y - Grounded":
+            mdl.enable_property(rneut_sec2_prop)
+            mdl.enable_property(xneut_sec2_prop)
+        else:
+            mdl.disable_property(rneut_sec2_prop)
+            mdl.disable_property(xneut_sec2_prop)
+        if tp_sec3 == "Y - Grounded":
+            mdl.enable_property(rneut_sec3_prop)
+            mdl.enable_property(xneut_sec3_prop)
+        else:
+            mdl.disable_property(rneut_sec3_prop)
+            mdl.disable_property(xneut_sec3_prop)
+
+
 
 
 def show_hide_conn(mdl, mask_handle):
-    num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
+    tp_prim_prop = mdl.prop(mask_handle, "prim_conn")
+    tp_prim = mdl.get_property_disp_value(tp_prim_prop)
+    rneut_prim_prop = mdl.prop(mask_handle, "Rneut_prim")
+    xneut_prim_prop = mdl.prop(mask_handle, "Xneut_prim")
+    tp_sec1_prop = mdl.prop(mask_handle, "sec1_conn")
+    tp_sec1 = mdl.get_property_value(tp_sec1_prop)
+    rneut_sec1_prop = mdl.prop(mask_handle, "Rneut_sec1")
+    xneut_sec1_prop = mdl.prop(mask_handle, "Xneut_sec1")
+    tp_sec2_prop = mdl.prop(mask_handle, "sec2_conn")
+    tp_sec2 = mdl.get_property_value(tp_sec2_prop)
+    rneut_sec2_prop = mdl.prop(mask_handle, "Rneut_sec2")
+    xneut_sec2_prop = mdl.prop(mask_handle, "Xneut_sec2")
+    tp_sec3_prop = mdl.prop(mask_handle, "sec3_conn")
+    tp_sec3 = mdl.get_property_value(tp_sec3_prop)
+    rneut_sec3_prop = mdl.prop(mask_handle, "Rneut_sec3")
+    xneut_sec3_prop = mdl.prop(mask_handle, "Xneut_sec3")
 
+    num_windings_prop = mdl.prop(mask_handle, "num_windings")
+    num_windings = mdl.get_property_disp_value(num_windings_prop)
+
+    if tp_prim == "Y - Grounded":
+        mdl.enable_property(rneut_prim_prop)
+        mdl.enable_property(xneut_prim_prop)
+    else:
+        mdl.disable_property(rneut_prim_prop)
+        mdl.disable_property(xneut_prim_prop)
+
+    if num_windings == "2":
+        mdl.enable_property(tp_sec1_prop)
+        if tp_sec1 == "Y - Grounded":
+            mdl.enable_property(rneut_sec1_prop)
+            mdl.enable_property(xneut_sec1_prop)
+        else:
+            mdl.disable_property(rneut_sec1_prop)
+            mdl.disable_property(xneut_sec1_prop)
+        mdl.disable_property(tp_sec2_prop)
+        mdl.disable_property(rneut_sec2_prop)
+        mdl.disable_property(xneut_sec2_prop)
+        mdl.disable_property(tp_sec3_prop)
+        mdl.disable_property(rneut_sec3_prop)
+        mdl.disable_property(xneut_sec3_prop)
+
+    elif num_windings == "3":
+        mdl.enable_property(tp_sec1_prop)
+        mdl.enable_property(tp_sec2_prop)
+        if tp_sec1 == "Y - Grounded":
+            mdl.enable_property(rneut_sec1_prop)
+            mdl.enable_property(xneut_sec1_prop)
+        else:
+            mdl.disable_property(rneut_sec1_prop)
+            mdl.disable_property(xneut_sec1_prop)
+        mdl.enable_property(tp_sec2_prop)
+        if tp_sec2 == "Y - Grounded":
+            mdl.enable_property(rneut_sec2_prop)
+            mdl.enable_property(xneut_sec2_prop)
+        else:
+            mdl.disable_property(rneut_sec2_prop)
+            mdl.disable_property(xneut_sec2_prop)
+        mdl.disable_property(tp_sec3_prop)
+        mdl.disable_property(rneut_sec3_prop)
+        mdl.disable_property(xneut_sec3_prop)
+
+
+    elif num_windings == "4":
+        mdl.enable_property(tp_sec1_prop)
+        mdl.enable_property(tp_sec2_prop)
+        mdl.enable_property(tp_sec3_prop)
+        if tp_sec1 == "Y - Grounded":
+            mdl.enable_property(rneut_sec1_prop)
+            mdl.enable_property(xneut_sec1_prop)
+        else:
+            mdl.disable_property(rneut_sec1_prop)
+            mdl.disable_property(xneut_sec1_prop)
+        mdl.enable_property(tp_sec2_prop)
+        if tp_sec2 == "Y - Grounded":
+            mdl.enable_property(rneut_sec2_prop)
+            mdl.enable_property(xneut_sec2_prop)
+        else:
+            mdl.disable_property(rneut_sec2_prop)
+            mdl.disable_property(xneut_sec2_prop)
+        if tp_sec3 == "Y - Grounded":
+            mdl.enable_property(rneut_sec3_prop)
+            mdl.enable_property(xneut_sec3_prop)
+        else:
+            mdl.disable_property(rneut_sec3_prop)
+            mdl.disable_property(xneut_sec3_prop)
+
+
+    '''
     p = ["prim", "sec1", "sec2", "sec3"]
 
     for idx in range(4):
@@ -525,7 +887,7 @@ def show_hide_conn(mdl, mask_handle):
         else:
             mdl.hide_property(conn_prop)
             mdl.hide_property(grd_prop)
-
+    '''
 
 def show_hide_couplings(mdl, mask_handle):
     num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
@@ -553,12 +915,20 @@ def update_winding_configs(mdl, prop_handle, mask_handle, created_ports):
     trafo_inner = mdl.get_item("T1", parent=comp_handle)
 
     wdg_num_dict = {"prim": "1", "sec1": "2", "sec2": "3", "sec3": "4"}
-    wdg_conn_dict = {"Y": "Y", "Δ": "D"}
-    wdg_clock_dict = {"Y": "0", "Δ": "1"}
+    wdg_conn_dict = {"Y": "Y", "Δ": "D", "Y - Grounded": "Y"}
+    wdg_clock_dict = {"Y": "0", "Δ": "1", "Y - Grounded": "0"}
 
     y_or_d_prim = mdl.get_property_value(mdl.prop(comp_handle, "prim_conn"))
+    '''
+    ydprim_tmp = mdl.get_property_value(mdl.prop(comp_handle, "prim_conn"))
+    if ydprim_tmp == "Δ":
+        y_or_d_prim = "Δ"
+    else:
+        y_or_d_prim = "Y"
+    '''
 
     wdg_name = mdl.get_name(prop_handle)[:4]
+    '''
     if wdg_name == "grou":
         # Passed by grounded property
         wdg_name = mdl.get_name(prop_handle)[-4:]
@@ -566,11 +936,23 @@ def update_winding_configs(mdl, prop_handle, mask_handle, created_ports):
     else:
         # Passed by conn property
         y_or_d = mdl.get_property_value(prop_handle)
+    '''
+
+    y_or_d = mdl.get_property_value(prop_handle)
+    '''
+    yd_tmp = mdl.get_property_value(prop_handle)
+    if yd_tmp == "Δ":
+        y_or_d = "Δ"
+    else:
+        y_or_d = "Y"
+    '''
+
+
+    mdl.info(f'Line 930, {wdg_name=}  ....... {y_or_d=} ++++++++++++++')
 
     if int(wdg_num_dict[wdg_name]) <= num_windings:
         inner_conn_prim_prop = mdl.prop(trafo_inner, "winding_1_connection")
         inner_conn_prop = mdl.prop(trafo_inner, "winding_" + wdg_num_dict[wdg_name] + "_connection")
-
         mdl.set_property_value(inner_conn_prop, wdg_conn_dict[y_or_d])
 
         if int(wdg_num_dict[wdg_name]) > 1:  # Secondaries
@@ -589,12 +971,16 @@ def update_winding_configs(mdl, prop_handle, mask_handle, created_ports):
         else:  # Primary
             # Update all others
             prop_names = ["sec1_conn", "sec2_conn", "sec3_conn"]
+
             for p in prop_names:
                 update_winding_configs(mdl, mdl.prop(mask_handle, p), mask_handle, created_ports)
+                mdl.info("Line 946, how may times i passed here...?")
 
-    update_neutrals(mdl, mask_handle, trafo_inner, created_ports=created_ports)
-
+    # I commented here
+    #mdl, mask_handle, trafo_inner, created_ports=created_ports)
     mdl.refresh_icon(mask_handle)
+
+
 
 
 def update_all_windings(mdl, mask_handle, created_ports):
@@ -713,38 +1099,47 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             deleted_ports.append("N" + str(i))
 
     port_names = [f"{phase}{winding}" for winding in "234" for phase in "ABC"]
-    if caller_prop_handle and mdl.get_name(caller_prop_handle) == "num_windings":
-        # Delete ports
-        for p in port_names:
-            if delete_port(mdl, p, comp_handle):
-                deleted_ports.append(p)
+    #if caller_prop_handle and mdl.get_name(caller_prop_handle) == "num_windings":
+    # Delete ports
+    for p in port_names:
+        if delete_port(mdl, p, comp_handle):
+            deleted_ports.append(p)
+
     for idx in range(0, num_windings):
-        grounded = mdl.get_property_value(mdl.prop(mask_handle, "grounded_" + conn_dict[idx]))
+        #grounded = mdl.get_property_value(mdl.prop(mask_handle, "grounded_" + conn_dict[idx]))
         conn_prop = mdl.prop(mask_handle, conn_dict[idx] + "_conn")
 
-        if mdl.get_property_value(conn_prop) == "Y" and not str(grounded) == "True":
+        conn_val = mdl.get_property_value(conn_prop)
+
+        # If we have "Y" or "Y - Grounded" selected, we have the neutral terminal
+        if conn_val == "Y" or conn_val == "Y - Grounded": # and not str(grounded) == "True":
             if idx == 0:
                 new_port_n = mdl.create_port(
                     name="N1",
                     parent=comp_handle,
                     rotation='up',
-                    position=(x0 + 32, y0 + pos_y + 64),
+                    position=(x0, y0 + pos_y + 200),
                     terminal_position=(-24, 48 * (num_windings - 1))
                 )
                 created_ports.update({"N1": new_port_n})
             else:
                 new_port_n = mdl.get_item("N" + str(idx + 1), parent=comp_handle, item_type="port")
                 if not new_port_n:
+                    if idx == 3:
+                        n4_posx_adj = -50
+                    else:
+                        n4_posx_adj = 0
                     new_port_n = mdl.create_port(
                         name="N" + str(idx + 1),
                         parent=comp_handle,
                         flip="flip_horizontal",
                         rotation='up',
-                        position=(x0 + 300, y0 + pos_y + 64 * idx),
+                        position=(x0 + 200*idx, y0 + pos_y + 250 + n4_posx_adj),
                         terminal_position=(24 - 16 * (num_windings - 1) + 16 * idx, 48 * (num_windings - 1))
                     )
                     created_ports.update({"N" + str(idx + 1): new_port_n})
 
+    # Put the secondary ports
     porty0 = y0 - 48 * 3 * (num_windings - 1)
     for idx in range(1, 3 * (num_windings - 1) + 1):
         new_port = mdl.get_item(port_names[idx - 1], parent=comp_handle, item_type="port")
@@ -757,7 +1152,10 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 position=(x0 + 1180, porty0 + idx * 96),
                 terminal_position=(32, - 16 - 16 * 3 * (num_windings - 1) + idx * 32)
             )
+            # mdl.info(f'The port and position are: {port_names[idx - 1]} - {x0 + 1180}, {porty0 + idx * 96} +++++++')
         created_ports.update({port_names[idx - 1]: new_port})
+
+    # mdl.info(f"Line 1122, por_dynamics() end .... {created_ports}  ++++++++++++++++")
     return created_ports, deleted_ports
 
 
@@ -862,3 +1260,49 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
         for component in delete_list:
             if component:
                 mdl.delete_item(component)
+
+
+def topology_dynamics(mdl, prop_handle, container_handle):
+    flg_run_prop = mdl.prop(container_handle, "flg_run_topology")
+    flg_run = mdl.get_property_value(flg_run_prop)
+
+    mdl.info(f'The flag_run is: {flg_run}  888888888')
+
+    if flg_run == False:
+        created_ports, _ = port_dynamics(mdl, container_handle)
+        update_subsystem_components(mdl, container_handle, created_ports)
+        #update_all_windings(mdl, container_handle, created_ports)
+        #update_winding_configs(mdl, prop_handle, container_handle, created_ports) this is called by update_all_windings()
+        #vreg_connection(mdl, container_handle)
+        enable_disable_z_neut(mdl, container_handle)
+        mdl.info("End of topology_dynamics()...................")
+        mdl.set_property_value(flg_run_prop, True)
+    else:
+        mdl.info("topology_dynamics() already run...")
+
+
+
+'''*************************************************************
+Manages the dialog close: If the user Cancels the modifications,
+restore the combo tp_connections initial state.
+*************************************************************'''
+
+def dialog_close(mdl, mask_handle, reason):
+    pass
+
+    '''
+    # Get tp combo values after closing
+    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    new_tp_combo_values = mdl.get_property_combo_values(tp_connection_prop)
+
+    # Get original tp combo values
+    tp_connection_combo_values_prop = mdl.prop(mask_handle, "tp_connection_combo_values")
+    tp_connection_combo_values = mdl.get_property_value(tp_connection_combo_values_prop)
+    old_tp_combo_values = ast.literal_eval(tp_connection_combo_values)
+
+    # Restore to the original if the user cancels
+    if reason == "reason_close_cancel":
+        if not (old_tp_combo_values == new_tp_combo_values):
+            mdl.set_property_combo_values(tp_connection_prop, old_tp_combo_values)
+
+    '''

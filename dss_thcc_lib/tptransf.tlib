@@ -272,10 +272,11 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle, prop_handle)
-                        comp_script.update_subsystem_components(mdl, container_handle, created_ports)
-                        comp_script.update_all_windings(mdl, container_handle, created_ports)
-                        comp_script.show_hide_conn(mdl, container_handle)
+                        #created_ports, _ = comp_script.port_dynamics(mdl, container_handle, prop_handle)
+                        #comp_script.update_subsystem_components(mdl, container_handle, created_ports)
+                        #comp_script.update_all_windings(mdl, container_handle, created_ports)
+                        #comp_script.show_hide_conn(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, prop_handle, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -478,7 +479,7 @@ library "OpenDSS" {
                 prim_conn {
                     label = "Primary"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections:2"
@@ -486,35 +487,43 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        #created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        #comp_script.update_subsystem_components(mdl, container_handle, created_ports)
+                        #comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, prop_handle, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        comp_script.enable_disable_z_neut(mdl, container_handle)
+
                     ENDCODE
                 }
 
-                grounded_prim {
-                    label = "Grounded Primary"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_prim {
+                    label = "Rneut prim"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                    ENDCODE
+                Xneut_prim {
+                    label = "Xneut prim"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 sec1_conn {
                     label = "Secondary 1"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections"
@@ -522,110 +531,127 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
+                        #created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        #comp_script.update_subsystem_components(mdl, container_handle, created_ports)
+                        #comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        #comp_script.vreg_connection(mdl, container_handle)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, prop_handle, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        comp_script.enable_disable_z_neut(mdl, container_handle)
+
                     ENDCODE
                 }
 
-                grounded_sec1 {
-                    label = "Grounded Secondary 1"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_sec1 {
+                    label = "Rneut sec 1"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
-                    ENDCODE
+                Xneut_sec1 {
+                    label = "Xneut sec 1"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 sec2_conn {
                     label = "Secondary 2"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections"
-                    nonvisible
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
+                        #created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        #comp_script.update_subsystem_components(mdl, container_handle, created_ports)
+                        #comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        #comp_script.vreg_connection(mdl, container_handle)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, prop_handle, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        comp_script.enable_disable_z_neut(mdl, container_handle)
+
                     ENDCODE
                 }
 
-                grounded_sec2 {
-                    label = "Grounded Secondary 2"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_sec2 {
+                    label = "Rneut sec 2"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    nonvisible
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
-                    ENDCODE
+                Xneut_sec2 {
+                    label = "Xneut sec 2"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 sec3_conn {
                     label = "Secondary 3"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections"
-                    nonvisible
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
+                        #created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        #comp_script.update_subsystem_components(mdl, container_handle, created_ports)
+                        #comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        #comp_script.vreg_connection(mdl, container_handle)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, prop_handle, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        comp_script.enable_disable_z_neut(mdl, container_handle)
                     ENDCODE
                 }
 
-                grounded_sec3 {
-                    label = "Grounded Secondary 3"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_sec3 {
+                    label = "Rneut sec 3"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    nonvisible
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                    ENDCODE
+                Xneut_sec3 {
+                    label = "Xneut sec 3"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 regcontrol_on {
@@ -779,8 +805,19 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
+                flg_run_topology {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    nonvisible
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    flg_run_prop = mdl.prop(item_handle, "flg_run_topology")
+                    mdl.set_property_value(flg_run_prop, False)
 
                     dialog = RegularComponentPropertiesDialog(
                         component=component,
@@ -826,18 +863,24 @@ library "OpenDSS" {
                     percentNoloadloss = mdl.get_property_value(mdl.prop(item_handle, "percentNoloadloss"))
                     percentimag = mdl.get_property_value(mdl.prop(item_handle, "percentimag"))
                     prim_conn = mdl.get_property_value(mdl.prop(item_handle, "prim_conn"))
-                    grounded_prim = mdl.get_property_value(mdl.prop(item_handle, "grounded_prim"))
+                    #grounded_prim = mdl.get_property_value(mdl.prop(item_handle, "grounded_prim"))
                     sec1_conn = mdl.get_property_value(mdl.prop(item_handle, "sec1_conn"))
-                    grounded_sec1 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec1"))
+                    #grounded_sec1 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec1"))
                     sec2_conn = mdl.get_property_value(mdl.prop(item_handle, "sec2_conn"))
-                    grounded_sec2 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec2"))
+                    #grounded_sec2 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec2"))
                     sec3_conn = mdl.get_property_value(mdl.prop(item_handle, "sec3_conn"))
-                    grounded_sec3 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec3"))
+                    #grounded_sec3 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec3"))
                     # HEADER STOP
 
                     comp_script.validate_properties(mdl, item_handle)
                     comp_script.convert_all_properties(mdl, item_handle)
 
+
+                ENDCODE
+
+                CODE on_dialog_close
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.dialog_close(mdl, item_handle, reason)
                 ENDCODE
 
                 CODE post_resolve
