@@ -123,6 +123,11 @@ library "OpenDSS" {
                     default_value = "Core"
                     group = "General:1"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
                 }
 
                 n_phases {
@@ -133,15 +138,21 @@ library "OpenDSS" {
                     default_value = "3"
                     group = "General"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
                 }
 
                 grounding {
-                    label = "Internal Grounding"
+                    label = "Internal Grounding - Considering Always True (nonvisible)"
                     widget = checkbox
                     type = bool
                     default_value = "True"
                     group = "General"
                     no_evaluate
+                    nonvisible
                 }
 
                 auto_mode {
@@ -223,12 +234,13 @@ library "OpenDSS" {
                 }
 
                 itm_csnb_fixed {
-                    label = "Fixed Snubber (CS Side)"
+                    label = "Fixed Snubber (CS Side) - Considering Always True (nonvisible)"
                     widget = checkbox
                     type = bool
                     default_value = "True"
                     group = "Parameterization"
                     no_evaluate
+                    nonvisible
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -294,12 +306,13 @@ library "OpenDSS" {
                 }
 
                 itm_vsnb_fixed {
-                    label = "Fixed Snubber (VS Side)"
+                    label = "Fixed Snubber (VS Side) - Considering Always True (nonvisible)"
                     widget = checkbox
                     type = bool
                     default_value = "True"
                     group = "Parameterization"
                     no_evaluate
+                    nonvisible
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
