@@ -6,7 +6,7 @@ x0, y0 = (8192, 8192)
 
 
 def toggle_frequency_prop(mdl, container_handle, init=False):
-    frequency_prop = mdl.prop(container_handle, "BaseFreq")
+    frequency_prop = mdl.prop(container_handle, "baseFreq")
     global_frequency_prop = mdl.prop(container_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -179,7 +179,7 @@ def get_r_l_matrices(mdl, container_handle):
     basekv = mdl.get_property_value(mdl.prop(container_handle, "basekv"))
     basemva = mdl.get_property_value(mdl.prop(container_handle, "baseMVA"))
     z_base = basekv*basekv/basemva
-    basefreq = mdl.get_property_value(mdl.prop(container_handle, "BaseFreq"))
+    baseFreq = mdl.get_property_value(mdl.prop(container_handle, "baseFreq"))
 
     input_method = mdl.get_property_value(mdl.prop(container_handle, "input_method"))
     if input_method == "Z":
@@ -224,10 +224,10 @@ def get_r_l_matrices(mdl, container_handle):
 
     rs = (2*r1 + r0)/3
     xs = (2*x1 + x0)/3
-    ls = xs/(2*np.pi*basefreq)
+    ls = xs/(2*np.pi*baseFreq)
     rm = (r0 - r1)/3
     xm = (x0 - x1)/3
-    lm = xm/(2*np.pi*basefreq)
+    lm = xm/(2*np.pi*baseFreq)
 
     rmatrix = [[rs, rm, rm], [rm, rs, rm], [rm, rm, rs]]
     lmatrix = [[ls, lm, lm], [lm, ls, lm], [lm, lm, ls]]

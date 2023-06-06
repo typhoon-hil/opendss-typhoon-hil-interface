@@ -396,7 +396,7 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
     return loadshape_points
 
 def toggle_frequency_prop(mdl, mask_handle):
-    frequency_prop = mdl.prop(mask_handle, "basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -413,7 +413,7 @@ def toggle_frequency_prop(mdl, mask_handle):
 
 def update_frequency_property(mdl, mask_handle, init=False):
 
-    frequency_prop = mdl.prop(mask_handle, "basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 

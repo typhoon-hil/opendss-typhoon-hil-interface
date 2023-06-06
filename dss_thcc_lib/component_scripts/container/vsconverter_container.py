@@ -471,7 +471,7 @@ def update_properties(mdl, _VSConverter_mask):
     )
     _VSConverter_mask_basefreq = mdl.create_property(
         item_handle=_VSConverter_mask,
-        name="basefreq",
+        name="baseFreq",
         label="",
         widget="edit",
         combo_values=[],
@@ -933,7 +933,7 @@ def update_properties(mdl, _VSConverter_mask):
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "kw"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "pf"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "model"), "0")
-    mdl.set_property_value(mdl.prop(_VSConverter_mask, "basefreq"), "0")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "baseFreq"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "r0"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "r1"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "x0"), "0")

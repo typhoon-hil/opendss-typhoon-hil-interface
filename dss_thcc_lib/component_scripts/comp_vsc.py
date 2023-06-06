@@ -429,7 +429,7 @@ def vsc_pre_compile_function(mdl, item_handle, prop_dict):
     phases = 3
     kv = prop_dict["vac_set"]
     kw = prop_dict["Sinv"]
-    basefreq = prop_dict["Fs"]
+    baseFreq = prop_dict["Fs"]
     frequency = prop_dict["Fs"]
     basekv = kv
 
@@ -491,7 +491,7 @@ def vsc_pre_compile_function(mdl, item_handle, prop_dict):
     mdl.set_property_value(mdl.prop(item_handle, "kw"), kw)
     mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
     mdl.set_property_value(mdl.prop(item_handle, "model"), model)
-    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+    mdl.set_property_value(mdl.prop(item_handle, "baseFreq"), baseFreq)
 
     mdl.set_property_value(mdl.prop(item_handle, "r0"), r0)
     mdl.set_property_value(mdl.prop(item_handle, "r1"), r1)

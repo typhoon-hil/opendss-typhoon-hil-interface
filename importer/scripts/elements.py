@@ -29,7 +29,7 @@ def Line(name):
     XMatrix = dss.Lines.XMatrix()
     CMatrix = dss.Lines.CMatrix()
     Length = dss.Lines.Length()
-    BaseFreq = dss.Properties.Value('BaseFreq')
+    baseFreq = dss.Properties.Value('baseFreq')
     # Use input type 'Matrix' for .tse
     input_type = 'Matrix'
     # Generate .tse compatible matrices
@@ -50,7 +50,7 @@ def Line(name):
                     'rmatrix': rmatrix,
                     'xmatrix': xmatrix,
                     'cmatrix': cmatrix,
-                    'BaseFreq': BaseFreq,
+                    'baseFreq': baseFreq,
                   }
     return tse_comp, properties, [Bus1,Bus2], name
 
@@ -129,7 +129,7 @@ def Transformer(name):
     tse_comp = 'Single-Phase Transformer'   #Typhoon OpenDSS library component type (updated later if phases>1
     dss.Transformers.Name(name)             # Update DSS object to reference current component
     # Read parameters from dss
-    Basefreq = dss.Properties.Value('Basefreq')
+    baseFreq = dss.Properties.Value('baseFreq')
     percentRs = dss.Properties.Value('%Rs')
     KVs = dss.Properties.Value('KVs')
     KVAs = dss.Properties.Value('KVAs')
@@ -167,7 +167,7 @@ def Transformer(name):
                     'KVs': KVs,
                     'KVAs': KVAs,
                     'num_windings': NumWindings,
-                    'Basefreq': Basefreq,
+                    'baseFreq': baseFreq,
                     'percentRs': percentRs,
                     'XscArray': XscArray,
                     'XArray': XArray,
@@ -223,7 +223,7 @@ def Load(name):
     Model = dss.Loads.Model()
     DY = chr(916) if dss.Loads.IsDelta() else 'Y'
     kVA = dss.Loads.kVABase()
-    basefreq = dss.Properties.Value('basefreq')
+    baseFreq = dss.Properties.Value('baseFreq')
     Phases = dss.Loads.Phases()
     
     # Get connection info
@@ -241,7 +241,7 @@ def Load(name):
                     'conn_type': DY,
                     'ground_connected': GND,
                     'Sn_3ph': kVA,
-                    'fn': basefreq,
+                    'fn': baseFreq,
                   }
     return tse_comp, properties, [Bus1], name
 
@@ -255,7 +255,7 @@ def Generator(name):
     dss.Generators.Name(name)   # Update DSS object to reference current component
     # Read parameters from dss
     kV = dss.Generators.kV()
-    basefreq = float(dss.Properties.Value('basefreq'))
+    baseFreq = float(dss.Properties.Value('baseFreq'))
     kVARated = dss.Generators.kVARated()
     PF = dss.Generators.PF()
     Xd = dss.Properties.Value('Xd')
@@ -281,7 +281,7 @@ def Generator(name):
     # Write properties to dictionary               
     properties = {
                     'kv': kV,
-                    'basefreq': basefreq,
+                    'baseFreq': baseFreq,
                     'kVA': kVARated,
                     'pf': PF,
                     'Xd': Xd,
@@ -290,7 +290,7 @@ def Generator(name):
                     'XRdp': XRdp,
                     'H': H,
                     'G_mod': Model,
-                    'nom_rpm': basefreq/2*60,
+                    'nom_rpm': baseFreq/2*60,
                     'Init_En': False,
                  }
     return tse_comp, properties, [Bus1], name
@@ -317,7 +317,7 @@ def Storage(name):
     pct_idlingkvar = storage.loc['%Idlingkvar']
     pct_idlingkw = storage.loc['%IdlingkW']
     pct_reserve = storage.loc['%reserve']
-    basefreq = storage.loc['basefreq']
+    baseFreq = storage.loc['baseFreq']
     snap_status = storage.loc['State'].lower().capitalize()
     dispatch_modes = ['Default', 'Follow']
     DispMode = storage.loc['DispMode'].lower().capitalize()
@@ -348,7 +348,7 @@ def Storage(name):
                     'pct_idlingkvar': pct_idlingkvar,
                     'pct_idlingkw': pct_idlingkw,
                     'pct_reserve': pct_reserve,
-                    'basefreq': basefreq,
+                    'baseFreq': baseFreq,
                     'snap_status': snap_status,
                     'dispatch_p': dispatch_p,
                     'dispatch_q': dispatch_q,
@@ -393,11 +393,11 @@ def Capacitor(name):
             tp_connection = 'Y-grounded'
         else:
             tp_connection = 'Series'
-    basefreq = float(dss.Properties.Value('basefreq'))
+    baseFreq = float(dss.Properties.Value('baseFreq'))
     # Write properties to dictionary               
     properties = {
                     'tp_connection': tp_connection,
-                    'BaseFreq': basefreq,
+                    'baseFreq': baseFreq,
                     'Kv': Kv,
                     'Kvar': Kvar,
                  }

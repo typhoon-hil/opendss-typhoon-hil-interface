@@ -200,7 +200,7 @@ def sim_with_opendss(mdl, mask_handle):
     sim_parameters["sim_mode"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "sim_mode"))
     sim_parameters["algorithm"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "algorithm"))
     sim_parameters["voltagebases"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "voltagebases"))
-    sim_parameters["basefrequency"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "basefrequency"))
+    sim_parameters["baseFreq"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "baseFreq"))
     sim_parameters["maxiter"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "maxiter"))
     sim_parameters["miniterations"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "miniterations"))
     sim_parameters["loadmodel"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "loadmodel"))
@@ -332,8 +332,8 @@ def report(mdl, mask_handle, mode="snap"):
 
 
 def set_basefrequency_ns_var(mdl, mask_handle):
-    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "basefrequency"))
-    mdl.set_ns_var("simdss_basefreq", basefreq)
+    baseFreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
+    mdl.set_ns_var("simdss_basefreq", baseFreq)
 
 
 def define_icon(mdl, mask_handle):

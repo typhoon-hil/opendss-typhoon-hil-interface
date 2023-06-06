@@ -450,7 +450,7 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                Basefreq {
+                baseFreq {
                     label = "Base frequency"
                     widget = edit
                     type = generic
@@ -822,7 +822,7 @@ library "OpenDSS" {
                     percentRs = mdl.get_property_value(mdl.prop(item_handle, "percentRs"))
                     XArray = mdl.get_property_value(mdl.prop(item_handle, "XArray"))
                     XscArray = mdl.get_property_value(mdl.prop(item_handle, "XscArray"))
-                    Basefreq = mdl.get_property_value(mdl.prop(item_handle, "Basefreq"))
+                    baseFreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
                     percentNoloadloss = mdl.get_property_value(mdl.prop(item_handle, "percentNoloadloss"))
                     percentimag = mdl.get_property_value(mdl.prop(item_handle, "percentimag"))
                     prim_conn = mdl.get_property_value(mdl.prop(item_handle, "prim_conn"))

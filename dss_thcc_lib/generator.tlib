@@ -2125,7 +2125,7 @@ Te_mem = Te;
                     ENDCODE
                 }
 
-                basefreq {
+                baseFreq {
                     label = "Nominal Frequency"
                     widget = edit
                     type = generic
@@ -2993,7 +2993,7 @@ Te_mem = Te;
                     kvar = mdl.get_property_value(mdl.prop(item_handle, "kvar"))
                     kv = mdl.get_property_value(mdl.prop(item_handle, "kv"))
                     global_basefreq = mdl.get_property_value(mdl.prop(item_handle, "global_basefreq"))
-                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    baseFreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
                     nom_rpm = mdl.get_property_value(mdl.prop(item_handle, "nom_rpm"))
                     kVA = mdl.get_property_value(mdl.prop(item_handle, "kVA"))
                     pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
@@ -3083,7 +3083,7 @@ Te_mem = Te;
                     T_lim_high = mdl.get_property_value(mdl.prop(item_handle, "T_lim_high"))
                     Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
                     # HEADER STOP
-                    prop_dict = {"basefreq": basefreq,
+                    prop_dict = {"baseFreq": baseFreq,
                                  "nom_rpm": nom_rpm,
                                  "Init_En": Init_En,
                                  "gen_ts_en": gen_ts_en,

@@ -25,9 +25,9 @@ def update_properties(mdl, _Capacitor_Bank_mask):
         tab_name="",
         unit=""
     )
-    _Capacitor_Bank_mask_BaseFreq = mdl.create_property(
+    _Capacitor_Bank_mask_Basefreq = mdl.create_property(
         item_handle=_Capacitor_Bank_mask,
-        name="BaseFreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -103,7 +103,7 @@ def update_properties(mdl, _Capacitor_Bank_mask):
 
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "tp_connection"), "Y")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "BaseFreq"), "60")
+    mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "phases"), "3")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "Kv"), "12.47")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "Kvar"), "600")

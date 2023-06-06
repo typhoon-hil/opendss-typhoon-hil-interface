@@ -122,7 +122,7 @@ library "OpenDSS" {
                 	group = "General"
                 }
 
-                BaseFreq {
+                baseFreq {
                     label = "Base Freq"
                     description = "Base Frequency for impedance specifications"
                     widget = edit

@@ -25,9 +25,9 @@ def update_properties(mdl, _Vsource_mask):
         tab_name="General",
         unit="MVA"
     )
-    _Vsource_mask_BaseFreq = mdl.create_property(
+    _Vsource_mask_Basefreq = mdl.create_property(
         item_handle=_Vsource_mask,
-        name="BaseFreq",
+        name="baseFreq",
         label="Base Freq",
         widget="edit",
         combo_values=[],
@@ -295,7 +295,7 @@ def update_properties(mdl, _Vsource_mask):
 
     mdl.set_property_value(mdl.prop(_Vsource_mask, "basekv"), "115.0")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "baseMVA"), "100.0")
-    mdl.set_property_value(mdl.prop(_Vsource_mask, "BaseFreq"), "60")
+    mdl.set_property_value(mdl.prop(_Vsource_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "global_basefreq"), "False")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "ground_connected"), "True")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "pu"), "1.0")

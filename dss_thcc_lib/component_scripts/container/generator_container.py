@@ -63,7 +63,7 @@ def update_properties(mdl, _Generator_mask):
     )
     _Generator_mask_basefreq = mdl.create_property(
         item_handle=_Generator_mask,
-        name="basefreq",
+        name="baseFreq",
         label="Nominal Frequency",
         widget="edit",
         combo_values=[],
@@ -1223,7 +1223,7 @@ def update_properties(mdl, _Generator_mask):
     mdl.set_property_value(mdl.prop(_Generator_mask, "kvar"), "0")
     mdl.set_property_value(mdl.prop(_Generator_mask, "kv"), "1")
     mdl.set_property_value(mdl.prop(_Generator_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Generator_mask, "basefreq"), "60")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Generator_mask, "nom_rpm"), "1800")
     mdl.set_property_value(mdl.prop(_Generator_mask, "kVA"), "1000")
     mdl.set_property_value(mdl.prop(_Generator_mask, "pf"), ".96")

@@ -193,7 +193,7 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                BaseFreq {
+                baseFreq {
                     label = "Base frequency"
                     widget = edit
                     type = generic
@@ -517,9 +517,9 @@ library "OpenDSS" {
                     L1_prop = mdl.prop(item_handle, "L1")
                     X0_prop = mdl.prop(item_handle, "X0")
                     X1_prop = mdl.prop(item_handle, "X1")
-                    BaseFreq_prop = mdl.prop(item_handle, "BaseFreq")
+                    baseFreq_prop = mdl.prop(item_handle, "baseFreq")
 
-                    f = mdl.get_property_value(BaseFreq_prop)
+                    f = mdl.get_property_value(baseFreq_prop)
                     X0 = mdl.get_property_value(X0_prop)
                     X1 = mdl.get_property_value(X1_prop)
                     L0 = mdl.get_property_value(L0_prop)

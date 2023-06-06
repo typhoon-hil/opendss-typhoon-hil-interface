@@ -20,7 +20,7 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
-                basefrequency {
+                baseFreq {
                     label = "Base frequency"
                     widget = edit
                     type = string

@@ -63,7 +63,7 @@ def update_properties(mdl, _Storage_mask):
     )
     _Storage_mask_basefreq = mdl.create_property(
         item_handle=_Storage_mask,
-        name="basefreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -539,7 +539,7 @@ def update_properties(mdl, _Storage_mask):
     mdl.set_property_value(mdl.prop(_Storage_mask, "snap_status"), "Charging")
     mdl.set_property_value(mdl.prop(_Storage_mask, "kv"), "115")
     mdl.set_property_value(mdl.prop(_Storage_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Storage_mask, "basefreq"), "60")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Storage_mask, "kwrated"), "25")
     mdl.set_property_value(mdl.prop(_Storage_mask, "kwhrated"), "50")
     mdl.set_property_value(mdl.prop(_Storage_mask, "chargetrigger"), "0.2")

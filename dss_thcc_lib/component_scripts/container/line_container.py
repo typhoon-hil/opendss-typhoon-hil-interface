@@ -62,9 +62,9 @@ def update_properties(mdl, _Line_mask):
         tab_name="Line Parameters",
         unit=""
     )
-    _Line_mask_BaseFreq = mdl.create_property(
+    _Line_mask_Basefreq = mdl.create_property(
         item_handle=_Line_mask,
-        name="BaseFreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -395,7 +395,7 @@ def update_properties(mdl, _Line_mask):
     mdl.set_property_value(mdl.prop(_Line_mask, "selected_object"), "")
     mdl.set_property_value(mdl.prop(_Line_mask, "Length"), "100")
     mdl.set_property_value(mdl.prop(_Line_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Line_mask, "BaseFreq"), "60")
+    mdl.set_property_value(mdl.prop(_Line_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Line_mask, "phases"), "3")
     mdl.set_property_value(mdl.prop(_Line_mask, "R1"), "0.1903")
     mdl.set_property_value(mdl.prop(_Line_mask, "R0"), "0.5853")

@@ -447,7 +447,7 @@ def update_properties(mdl, _Load_mask):
     )
     _Load_mask_basefreq = mdl.create_property(
         item_handle=_Load_mask,
-        name="basefreq",
+        name="baseFreq",
         label="",
         widget="edit",
         combo_values=[],
@@ -811,7 +811,7 @@ def update_properties(mdl, _Load_mask):
     mdl.set_property_value(mdl.prop(_Load_mask, "pf"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "conn"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "kVA"), "0")
-    mdl.set_property_value(mdl.prop(_Load_mask, "basefreq"), "0")
+    mdl.set_property_value(mdl.prop(_Load_mask, "baseFreq"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "gen_ts_en"), "True")
     mdl.set_property_value(mdl.prop(_Load_mask, "load_loadshape"), "Choose")
     mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_name"), "Default")

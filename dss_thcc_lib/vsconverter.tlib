@@ -4409,7 +4409,7 @@ if (Vdc<-2) {
                     nonvisible
                 }
 
-                basefreq {
+                baseFreq {
                     widget = edit
                     type = generic
                     default_value = "0"
@@ -4804,7 +4804,7 @@ if (Vdc<-2) {
                     kw = mdl.get_property_value(mdl.prop(item_handle, "kw"))
                     pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
-                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    baseFreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
                     r0 = mdl.get_property_value(mdl.prop(item_handle, "r0"))
                     r1 = mdl.get_property_value(mdl.prop(item_handle, "r1"))
                     x0 = mdl.get_property_value(mdl.prop(item_handle, "x0"))

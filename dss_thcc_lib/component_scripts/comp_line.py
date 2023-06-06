@@ -334,14 +334,14 @@ def configure_cable(mdl, container_handle):
     mode = mdl.get_property_value(mdl.prop(container_handle, "obj_mode"))
     input_type = mdl.get_property_value(mdl.prop(container_handle, "input_type"))
     length = mdl.get_property_value(mdl.prop(container_handle, "Length"))
-    basefreq = mdl.get_property_value(mdl.prop(container_handle, "BaseFreq"))
+    baseFreq = mdl.get_property_value(mdl.prop(container_handle, "baseFreq"))
     phase_num = mdl.get_property_value(mdl.prop(container_handle, "phases"))
-    w = 2 * np.pi * basefreq
+    w = 2 * np.pi * baseFreq
     transmission_line = mdl.get_item("TL", parent=comp_handle)
 
     mdl.set_property_value(mdl.prop(container_handle, "Length"), length)
     mdl.set_property_value(mdl.prop(container_handle, "Len"), length)
-    mdl.set_property_value(mdl.prop(container_handle, "Fr"), basefreq)
+    mdl.set_property_value(mdl.prop(container_handle, "Fr"), baseFreq)
 
     if input_type == "Symmetrical" or (input_type == "LineCode" and mode == "symmetrical"):
 
@@ -395,7 +395,7 @@ def configure_cable(mdl, container_handle):
         mdl.set_property_value(mdl.prop(container_handle, "C0"), c0)
         mdl.set_property_value(mdl.prop(transmission_line, "model_def"), "Sequence")
         mdl.set_property_value(mdl.prop(transmission_line, "Length_metric"), "Length")
-        mdl.set_property_value(mdl.prop(transmission_line, "Frequency"), "BaseFreq")
+        mdl.set_property_value(mdl.prop(transmission_line, "Frequency"), "baseFreq")
 
     elif input_type == "Matrix" or (input_type == "LineCode" and mode == "matrix"):
         # Convert matrix inputs to python format
@@ -410,7 +410,7 @@ def configure_cable(mdl, container_handle):
         # RLC model
         mdl.set_property_value(mdl.prop(transmission_line, "model_def"), "RLC")
         mdl.set_property_value(mdl.prop(transmission_line, "Length_metric"), "Length")
-        mdl.set_property_value(mdl.prop(transmission_line, "Frequency"), "BaseFreq")
+        mdl.set_property_value(mdl.prop(transmission_line, "Frequency"), "baseFreq")
 
         coupling = mdl.get_property_value(mdl.prop(container_handle, "coupling"))
         if not coupling == "None":
@@ -418,14 +418,14 @@ def configure_cable(mdl, container_handle):
 
     mdl.set_property_value(mdl.prop(container_handle, "Length"), length)
     mdl.set_property_value(mdl.prop(container_handle, "Len"), length)
-    mdl.set_property_value(mdl.prop(container_handle, "Fr"), basefreq)
+    mdl.set_property_value(mdl.prop(container_handle, "Fr"), baseFreq)
 
 
 def compute_sequence_values(mdl, mask_handle, zseq, mode):
 
     length = mdl.get_property_value(mdl.prop(mask_handle, "Length"))
-    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "BaseFreq"))
-    w = 2 * np.pi * basefreq
+    baseFreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
+    w = 2 * np.pi * baseFreq
 
     alpha = complex(np.cos(-120.0 * np.pi / 180.0), np.sin(-120.0 * np.pi / 180.0))
     a_matrix = np.matrix([[1, 1, 1],
@@ -721,7 +721,7 @@ def toggle_coupling(mdl, mask_handle, created_ports):
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
-    frequency_prop = mdl.prop(mask_handle, "BaseFreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -738,7 +738,7 @@ def toggle_frequency_prop(mdl, mask_handle, init=False):
 
 def update_frequency_property(mdl, mask_handle, init=False):
 
-    frequency_prop = mdl.prop(mask_handle, "BaseFreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 

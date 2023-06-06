@@ -1496,7 +1496,7 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
 
     """
 
-    basefreq = prop_dict["fn"]
+    baseFreq = prop_dict["fn"]
     kva = prop_dict["Sn_3ph"]
 
     if prop_dict["conn_type"] == 'Δ':
@@ -1571,7 +1571,7 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
     else:
         ts_switch = 0
 
-    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+    mdl.set_property_value(mdl.prop(item_handle, "baseFreq"), baseFreq)
     mdl.set_property_value(mdl.prop(item_handle, "kVA"), kva)
     mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"), vn_3ph_cpl)
     mdl.set_property_value(mdl.prop(item_handle, "P_CPL"), p_cpl)

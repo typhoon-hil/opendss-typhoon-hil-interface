@@ -135,7 +135,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     )
     _Three_Phase_Transformer_mask_Basefreq = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
-        name="Basefreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -424,7 +424,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "XArray"), "[1, 1]")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "XscArray"), "[2.0, 2.0]")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Basefreq"), "60")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "percentNoloadloss"), "2")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "percentimag"), "0")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "prim_conn"), "Y")
