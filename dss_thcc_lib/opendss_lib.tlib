@@ -9243,6 +9243,7 @@ if (counter >= Ts) {
                         type = generic
                         default_value = "Xneut"
                         unit = "Ω"
+
                     }
 
                     CODE open
@@ -9265,6 +9266,10 @@ if (counter >= Ts) {
                         
                         def return_comp_script(mdl, item_handle):
                             return comp_script
+
+                        comp_script = return_comp_script(mdl, item_handle)
+                        comp_script.init_gnd_z(mdl, item_handle)
+
                     ENDCODE
 
                     CODE pre_compile
@@ -9276,6 +9281,7 @@ if (counter >= Ts) {
                         comp_script = return_comp_script(mdl, item_handle)
                         comp_script.build_gnd_z(mdl, item_handle)
                     ENDCODE
+
                 }
             }
             [

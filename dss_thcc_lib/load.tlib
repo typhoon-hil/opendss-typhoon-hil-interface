@@ -178,6 +178,7 @@ library "OpenDSS" {
                     default_value = "0.0"
                     unit = "Ω"
                     group = "General:1"
+                    no_evaluate
                 }
 
                 Xneut {
@@ -187,6 +188,7 @@ library "OpenDSS" {
                     default_value = "0.0"
                     unit = "Ω"
                     group = "General:1"
+                    no_evaluate
                 }
 
                 global_basefreq {
@@ -902,10 +904,11 @@ library "OpenDSS" {
                     comp_script.restore_all_loads_points(mdl, item_handle)
 
                     # HEADER START
+                    tp_connection = mdl.get_property_value(mdl.prop(item_handle, "tp_connection"))
+                    Rneut = mdl.get_property_value(mdl.prop(item_handle, "Rneut"))
+                    Xneut = mdl.get_property_value(mdl.prop(item_handle, "Xneut"))
                     global_basefreq = mdl.get_property_value(mdl.prop(item_handle, "global_basefreq"))
                     fn = mdl.get_property_value(mdl.prop(item_handle, "fn"))
-                    conn_type = mdl.get_property_value(mdl.prop(item_handle, "conn_type"))
-                    ground_connected = mdl.get_property_value(mdl.prop(item_handle, "ground_connected"))
                     phases = mdl.get_property_value(mdl.prop(item_handle, "phases"))
                     Vn_3ph = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph"))
                     Sn_3ph = mdl.get_property_value(mdl.prop(item_handle, "Sn_3ph"))
@@ -917,15 +920,19 @@ library "OpenDSS" {
                     zip_vector_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_Q"))
                     zip_internal = mdl.get_property_value(mdl.prop(item_handle, "zip_internal"))
                     zip_internal_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_Q"))
-                    v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
-                    rate_lmt = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt"))
-                    Vminpu = mdl.get_property_value(mdl.prop(item_handle, "Vminpu"))
+                    zip_internal_n = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_n"))
+                    zip_internal_n_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_n_Q"))
+                    ZIPV = mdl.get_property_value(mdl.prop(item_handle, "ZIPV"))
                     Vmaxpu = mdl.get_property_value(mdl.prop(item_handle, "Vmaxpu"))
+                    Vminpu = mdl.get_property_value(mdl.prop(item_handle, "Vminpu"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
                     Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
                     execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                     Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
                     CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
+                    v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
+                    rate_lmt = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt"))
+                    zero_seq_remove = mdl.get_property_value(mdl.prop(item_handle, "zero_seq_remove"))
                     q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
                     r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                     Vn_3ph_CPL = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"))
@@ -936,15 +943,22 @@ library "OpenDSS" {
                     conn = mdl.get_property_value(mdl.prop(item_handle, "conn"))
                     kVA = mdl.get_property_value(mdl.prop(item_handle, "kVA"))
                     basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    gen_ts_en = mdl.get_property_value(mdl.prop(item_handle, "gen_ts_en"))
                     load_loadshape = mdl.get_property_value(mdl.prop(item_handle, "load_loadshape"))
                     loadshape_name = mdl.get_property_value(mdl.prop(item_handle, "loadshape_name"))
+                    loadshape_from_file = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file"))
+                    useactual = mdl.get_property_value(mdl.prop(item_handle, "useactual"))
+                    loadshape_from_file_path = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_path"))
+                    loadshape_from_file_column = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_column"))
+                    loadshape_from_file_header = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_header"))
                     loadshape = mdl.get_property_value(mdl.prop(item_handle, "loadshape"))
                     loadshape_int = mdl.get_property_value(mdl.prop(item_handle, "loadshape_int"))
                     S_Ts = mdl.get_property_value(mdl.prop(item_handle, "S_Ts"))
                     Q_Ts = mdl.get_property_value(mdl.prop(item_handle, "Q_Ts"))
+                    T_Ts = mdl.get_property_value(mdl.prop(item_handle, "T_Ts"))
                     T_mode = mdl.get_property_value(mdl.prop(item_handle, "T_mode"))
                     S_Ts_mode = mdl.get_property_value(mdl.prop(item_handle, "S_Ts_mode"))
-                    T_Ts = mdl.get_property_value(mdl.prop(item_handle, "T_Ts"))
+                    timespan = mdl.get_property_value(mdl.prop(item_handle, "timespan"))
                     T_Ts_internal = mdl.get_property_value(mdl.prop(item_handle, "T_Ts_internal"))
                     dssT = mdl.get_property_value(mdl.prop(item_handle, "dssT"))
                     dssnpts = mdl.get_property_value(mdl.prop(item_handle, "dssnpts"))
@@ -955,14 +969,14 @@ library "OpenDSS" {
                     T_lim_high = mdl.get_property_value(mdl.prop(item_handle, "T_lim_high"))
                     Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
                     enable_monitoring = mdl.get_property_value(mdl.prop(item_handle, "enable_monitoring"))
+                    tp_connection_combo_values = mdl.get_property_value(mdl.prop(item_handle, "tp_connection_combo_values"))
                     # HEADER STOP
                     prop_dict = {"fn": fn,
                                  "Sn_3ph": Sn_3ph,
-                                 "conn_type": conn_type,
                                  "pf_mode_3ph": pf_mode_3ph,
                                  "pf_3ph": pf_3ph,
+                                 "conn_type": tp_connection,
                                  "phases": phases,
-                                 "ground_connected": ground_connected,
                                  "Vn_3ph": Vn_3ph,
                                  "S_Ts": S_Ts,
                                  "load_model": load_model,

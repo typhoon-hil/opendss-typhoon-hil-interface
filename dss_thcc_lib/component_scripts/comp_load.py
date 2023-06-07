@@ -721,7 +721,6 @@ def connections_dynamics(mdl, mask_handle, created_ports):
         if len(conn_tmp) == 0:
             mdl.create_connection(tag, mdl.term(load, f"{phase}1"))
 
-    #conn_n2port = mdl.get_item("Conn_N", parent=comp_handle, item_type=ITEM_CONNECTION)
     jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
     port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
 
@@ -1234,7 +1233,7 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             mdl.delete_item(ts_module)
 
 
-def set_load_model(mdl, mask_handle, new_value):
+def set_load_model(mdl, mask_handle):
 
     tp_connection = mdl.get_property_disp_value(mdl.prop(mask_handle, "tp_connection"))
     comp_handle = mdl.get_parent(mask_handle)
@@ -1286,10 +1285,8 @@ def set_load_model(mdl, mask_handle, new_value):
                                         rotation="right", flip="flip_horizontal")
 
         if phss == "3":
-            mdl.set_property_value(mdl.prop(cpl1, "phases"), "1")
             mdl.set_property_value(mdl.prop(cpl1, "phases"), "3")
         else:
-            mdl.set_property_value(mdl.prop(cpl1, "phases"), "3")
             mdl.set_property_value(mdl.prop(cpl1, "phases"), "1")
 
         if t_slow == t_fast:
@@ -1363,7 +1360,7 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
         pf_3ph_set = prop_dict["pf_3ph"]
 
     if prop_dict["phases"] == "1":
-        if prop_dict["ground_connected"]:
+        if prop_dict["conn_type"] == "Y - Grounded":
             kv = (prop_dict["Vn_3ph"] / 1) / 1
             vn_3ph_cpl = kv / (3 ** 0.5)
         else:
@@ -1479,7 +1476,7 @@ def topology_dynamics(mdl, mask_handle):
 
     ports = port_dynamics(mdl, mask_handle)
 
-    set_load_model(mdl, mask_handle, None)
+    set_load_model(mdl, mask_handle)
 
     load_dynamics(mdl, mask_handle, ports)
 

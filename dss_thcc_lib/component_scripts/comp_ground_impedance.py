@@ -11,25 +11,19 @@ from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, I
 
 M_PI = 3.14159265358979323846       # pi value constant
 
-def build_gnd_z(mdl, container_handle):
-    comp_handle = mdl.get_parent(container_handle)
-
-    x_neut = float(mdl.get_property_value(mdl.prop(container_handle, "Xneut")))
-    f = mdl.get_property_value(mdl.prop(container_handle, "f"))
-    r_neut = float(mdl.get_property_value(mdl.prop(container_handle, "Rneut")))
-    omega = float(f)*2.0*M_PI   # Convert to float and [Hz] -> [rad/s]
+def init_gnd_z(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
 
     port_n = mdl.get_item("N", parent=comp_handle, item_type="port")
     port_g = mdl.get_item("G", parent=comp_handle, item_type="port")
     jun_jrx = mdl.get_item("JRX", parent=comp_handle, item_type="junction")
-    Xneut = mdl.get_item("Xneut", parent=comp_handle, item_type=ITEM_COMPONENT)
-    #conn_g = mdl.find_connections(port_g, jun_jrx)
-    conn_g = mdl.get_item("Conn_JG", parent=comp_handle, item_type=ITEM_CONNECTION)
-    conn_n = mdl.get_item("Conn_NJ", parent=comp_handle, item_type=ITEM_CONNECTION)
+    Xneut = mdl.get_item("Xneut", parent=comp_handle, item_type="component")
+    conn_g = mdl.get_item("Conn_JG", parent=comp_handle, item_type="connection")
+    conn_n = mdl.get_item("Conn_NJ", parent=comp_handle, item_type="connection")
     Rneut = mdl.get_item("Rneut", parent=comp_handle, item_type="component")
 
     # First, remove the components and connections that may exist
-    # And after build the circuit according the mask settings
+    # And after place a short circuit
     if Rneut:
         mdl.delete_item(Rneut)
 
@@ -43,37 +37,94 @@ def build_gnd_z(mdl, container_handle):
     if conn_n:
         mdl.delete_item(conn_n)
 
+    mdl.create_connection(jun_jrx, port_g, name="Conn_JG")
+    mdl.create_connection(port_n, jun_jrx, "Conn_NJ")
+
+
+
+
+
+
+def build_gnd_z(mdl, container_handle):
+    comp_handle = mdl.get_parent(container_handle)
+
+    x_neut = float(mdl.get_property_value(mdl.prop(container_handle, "Xneut")))
+    f = mdl.get_property_value(mdl.prop(container_handle, "f"))
+    r_neut = float(mdl.get_property_value(mdl.prop(container_handle, "Rneut")))
+    omega = float(f)*2.0*M_PI   # Convert to float and [Hz] -> [rad/s]
+
+    port_n = mdl.get_item("N", parent=comp_handle, item_type="port")
+    port_g = mdl.get_item("G", parent=comp_handle, item_type="port")
+    jun_jrx = mdl.get_item("JRX", parent=comp_handle, item_type="junction")
+    Xneut = mdl.get_item("Xneut", parent=comp_handle, item_type="component")
+    conn_jg = mdl.get_item("Conn_JG", parent=comp_handle, item_type="connection")
+    conn_nj = mdl.get_item("Conn_NJ", parent=comp_handle, item_type="connection")
+    Rneut = mdl.get_item("Rneut", parent=comp_handle, item_type="component")
+
     # Now implement the reactive component, a capacitor or an inductor, depending on the signal of the x_neut
     if x_neut > 0.0:
         l_val = x_neut/omega
-        Xneut = mdl.create_component("Inductor", parent=comp_handle, name="Xneut", position=(8192, 8256), rotation="right")
-        mdl.set_property_value(mdl.prop(Xneut, "inductance"), l_val)
-        mdl.create_connection(mdl.term(Xneut, "p_node"), jun_jrx, name="Conn_LJ")
-        mdl.create_connection(mdl.term(Xneut, "n_node"), port_g, name = "Conn_LG")
+
+        if conn_jg:
+            mdl.delete_item(conn_jg)
+            conn_jg = None
+        if conn_nj:
+            mdl.delete_item(conn_nj)
+            conn_nj = None
+
+        if not Xneut:
+            Xneut = mdl.create_component("Inductor", parent=comp_handle, name="Xneut", position=(8192, 8256), rotation="right")
+
+            mdl.set_property_value(mdl.prop(Xneut, "inductance"), l_val)
+            mdl.create_connection(mdl.term(Xneut, "p_node"), jun_jrx, name="Conn_LJ")
+            mdl.create_connection(mdl.term(Xneut, "n_node"), port_g, name = "Conn_LG")
 
     elif x_neut < 0.0:
         x_neut = abs(x_neut)
         c_val = 1.0/(x_neut*omega)
-        Xneut = mdl.create_component("Capacitor", parent=comp_handle, name="Xneut", position=(8192, 8256), rotation="right")
-        mdl.set_property_value(mdl.prop(Xneut, "capacitance"), c_val)
-        mdl.create_connection(mdl.term(Xneut, "p_node"), jun_jrx, name = "Conn_CJ")
-        mdl.create_connection(mdl.term(Xneut, "n_node"), port_g, name = "Conn_CG")
+
+        if conn_jg:
+            mdl.delete_item(conn_jg)
+            conn_jg = None
+        if conn_nj:
+            mdl.delete_item(conn_nj)
+            conn_nj = None
+
+        if not Xneut:
+            Xneut = mdl.create_component("Capacitor", parent=comp_handle, name="Xneut", position=(8192, 8256), rotation="right")
+
+            mdl.set_property_value(mdl.prop(Xneut, "capacitance"), c_val)
+            mdl.create_connection(mdl.term(Xneut, "p_node"), jun_jrx, name = "Conn_CJ")
+            mdl.create_connection(mdl.term(Xneut, "n_node"), port_g, name = "Conn_CG")
 
     else:
         # if the reactance is zero, just connect the junction JRX to the G port.
-        mdl.create_connection(jun_jrx, port_g, name = "Conn_JG")
+        if not conn_jg:
+            mdl.create_connection(jun_jrx, port_g, name = "Conn_JG")
 
     # Now take care of the resistor component. If the value of Rneut is zero,
     # replace the resistor by a short-circuit between N port and the junction JRX
     if r_neut > 0.0:
-        Rneut = mdl.create_component("Resistor", parent=comp_handle, name="Rneut", position=(8192, 8128), rotation="right")
-        mdl.create_connection(mdl.term(Rneut, "p_node"), port_n, name="Conn_RN")
-        mdl.create_connection(mdl.term(Rneut, "n_node"), jun_jrx, name="Conn_RJ")
-        mdl.set_property_value(mdl.prop(Rneut, "resistance"), r_neut)
+        if conn_jg:
+            mdl.delete_item(conn_jg)
+            conn_jg = None
+        if conn_nj:
+            mdl.delete_item(conn_nj)
+            conn_nj = None
+
+        if not Rneut:
+            Rneut = mdl.create_component("Resistor", parent=comp_handle, name="Rneut", position=(8192, 8128), rotation="right")
+            mdl.create_connection(mdl.term(Rneut, "p_node"), port_n, name="Conn_RN")
+            mdl.create_connection(mdl.term(Rneut, "n_node"), jun_jrx, name="Conn_RJ")
+            mdl.set_property_value(mdl.prop(Rneut, "resistance"), r_neut)
+
+            mdl.set_property_value(mdl.prop(Rneut, "resistance"), r_neut)
 
     # if the Rneut value is <= 0, short-circuit the path
     else:
-        mdl.create_connection(port_n, jun_jrx, "Conn_NJ")
+        if not conn_nj:
+            mdl.create_connection(port_n, jun_jrx, "Conn_NJ")
+
 
 
 
