@@ -217,6 +217,7 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         created_ports, _ = comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                         comp_script.toggle_coupling(mdl, container_handle, created_ports)
+                        comp_script.toggle_switches(mdl, container_handle, created_ports)
                         comp_script.show_hide_param_phases(mdl, container_handle, new_value)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
@@ -542,6 +543,7 @@ library "OpenDSS" {
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    comp_script.resolve_backward_compatibility(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
 
                     hil_device = mdl.core_model.configuration.hil_device
@@ -579,5 +581,4 @@ library "OpenDSS" {
         ]
 
     }
-
 }

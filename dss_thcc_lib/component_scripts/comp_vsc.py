@@ -509,3 +509,10 @@ def vsc_pre_compile_function(mdl, item_handle, prop_dict):
     mdl.set_property_value(mdl.prop(item_handle, "Ts_switch"), ts_switch)
     mdl.set_property_value(mdl.prop(item_handle, "Slen"), slen)
     mdl.set_property_value(mdl.prop(item_handle, "T_Ts_internal"), t_ts_internal)
+
+def resolve_backward_compatibility(mdl, mask_handle):
+    if mdl.exists("BaseFreq", parent = mask_handle, item_type = "property"):
+        old_prop = mdl.prop(mask_handle,"BaseFreq")
+        old_prop_val = mdl.get_property_value(old_prop)
+        new_prop = mdl.prop(mask_handle,"baseFreq")
+        mdl.set_property_value(new_prop, old_prop_val)

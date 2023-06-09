@@ -338,3 +338,10 @@ def set_basefrequency_ns_var(mdl, mask_handle):
 
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, 'images/dss_logo.svg')
+
+def resolve_backward_compatibility(mdl, mask_handle):
+    if mdl.exists("basefrequency", parent = mask_handle, item_type = "property"):
+        old_prop = mdl.prop(mask_handle,"basefrequency")
+        old_prop_val = mdl.get_property_value(old_prop)
+        new_prop = mdl.prop(mask_handle,"baseFreq")
+        mdl.set_property_value(new_prop, old_prop_val)

@@ -537,3 +537,10 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
         for component in delete_list:
             if component:
                 mdl.delete_item(component)
+
+def resolve_backward_compatibility(mdl, mask_handle):
+    if mdl.exists("Basefreq", parent = mask_handle, item_type = "property"):
+        old_prop = mdl.prop(mask_handle,"Basefreq")
+        old_prop_val = mdl.get_property_value(old_prop)
+        new_prop = mdl.prop(mask_handle,"baseFreq")
+        mdl.set_property_value(new_prop, old_prop_val)

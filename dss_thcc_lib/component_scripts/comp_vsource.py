@@ -248,3 +248,10 @@ def get_source_values(mdl, container_handle):
     source_frequency = Frequency
 
     return source_voltage, source_phase, source_frequency
+
+def resolve_backward_compatibility(mdl, mask_handle):
+    if mdl.exists("BaseFreq", parent = mask_handle, item_type = "property"):
+        old_prop = mdl.prop(mask_handle,"BaseFreq")
+        old_prop_val = mdl.get_property_value(old_prop)
+        new_prop = mdl.prop(mask_handle,"baseFreq")
+        mdl.set_property_value(new_prop, old_prop_val)

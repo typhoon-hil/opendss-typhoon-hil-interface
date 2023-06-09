@@ -76,3 +76,9 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, 'images/isource.svg')
 
+def resolve_backward_compatibility(mdl, mask_handle):
+    if mdl.exists("BaseFreq", parent = mask_handle, item_type = "property"):
+        old_prop = mdl.prop(mask_handle,"BaseFreq")
+        old_prop_val = mdl.get_property_value(old_prop)
+        new_prop = mdl.prop(mask_handle,"baseFreq")
+        mdl.set_property_value(new_prop, old_prop_val)

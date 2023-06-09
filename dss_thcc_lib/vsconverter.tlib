@@ -4864,6 +4864,7 @@ if (Vdc<-2) {
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    comp_script.resolve_backward_compatibility(mdl, item_handle)
                     def return_comp_script_load():
                         return comp_script2
                 ENDCODE

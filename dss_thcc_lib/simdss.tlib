@@ -317,6 +317,7 @@ library "OpenDSS" {
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
+                    comp_script.resolve_backward_compatibility(mdl, item_handle)
 
                     comp_script.define_icon(mdl, item_handle)
                     comp_script.set_basefrequency_ns_var(mdl, item_handle)

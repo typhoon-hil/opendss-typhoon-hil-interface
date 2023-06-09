@@ -1630,3 +1630,10 @@ def s_ts_mode_value_edited(mdl, container_handle, new_value):
         mdl.enable_property(mdl.prop(container_handle, "T_Ts_max"))
         mdl.enable_property(mdl.prop(container_handle, "del_Ts"))
         mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+
+def resolve_backward_compatibility(mdl, mask_handle):
+    if mdl.exists("basefreq", parent = mask_handle, item_type = "property"):
+        old_prop = mdl.prop(mask_handle,"Basefreq")
+        old_prop_val = mdl.get_property_value(old_prop)
+        new_prop = mdl.prop(mask_handle,"baseFreq")
+        mdl.set_property_value(new_prop, old_prop_val)
