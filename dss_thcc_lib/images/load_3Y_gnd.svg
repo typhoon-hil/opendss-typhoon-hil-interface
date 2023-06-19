@@ -1,121 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 27.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   version="1.1"
-   id="svg256"
-   x="0px"
-   y="0px"
-   viewBox="0 0 96 64"
-   style="enable-background:new 0 0 96 64;"
-   xml:space="preserve"
-   sodipodi:docname="load_3Y_gnd2.svg"
-   width="96"
-   height="64"
-   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
-   id="defs304" />
-<style
-   type="text/css"
-   id="style283">
-	.st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
+<!--Generator: Adobe Illustrator 27.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)-->
+<svg version="1.1" id="svg256" x="0px" y="0px" viewBox="0 0 96 64" style="enable-background:new 0 0 96 64;" xml:space="preserve" sodipodi:docname="load_3Y_gnd.svg" width="96" height="64" inkscape:version="1.2.2 (732a01da63, 2022-12-09)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <defs id="defs158"/>
+  <style type="text/css" id="style132">
+    .st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
 	.st1{fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10;}
-	.st2{fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-miterlimit:10;}
-	.st3{fill:none;stroke:#000000;stroke-width:1.002;stroke-linecap:round;stroke-linejoin:bevel;}
-	.st4{fill:none;stroke:#000000;stroke-width:1.4118;stroke-miterlimit:10;}
-	.st5{fill:none;stroke:#000000;stroke-width:0.993;stroke-linecap:round;stroke-linejoin:bevel;}
-	.st6{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:bevel;}
-	.st7{fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:bevel;}
-</style>
-<sodipodi:namedview
-   bordercolor="#000000"
-   borderopacity="0.25"
-   id="namedview174"
-   inkscape:current-layer="svg256"
-   inkscape:cx="40.428904"
-   inkscape:cy="32.671329"
-   inkscape:deskcolor="#d1d1d1"
-   inkscape:pagecheckerboard="0"
-   inkscape:pageopacity="0.0"
-   inkscape:showpageshadow="2"
-   inkscape:window-height="1009"
-   inkscape:window-maximized="1"
-   inkscape:window-width="1920"
-   inkscape:window-x="1912"
-   inkscape:window-y="-8"
-   inkscape:zoom="6.703125"
-   pagecolor="#ffffff"
-   showgrid="false">
-	</sodipodi:namedview>
-<path
-   id="line7"
-   class="st0"
-   d="M39.1,0v15.1" />
-<path
-   id="rect9"
-   class="st0"
-   d="M48.4,44.2l13.9-8.1l-3-5.2L45.4,39L48.4,44.2z" />
-<path
-   id="rect11"
-   class="st0"
-   d="M42.1,31.1v-16h-6v16H42.1z" />
-<path
-   id="line17"
-   class="st1"
-   d="M46.8,41.6l-7.7,4.5" />
-<path
-   id="rect27"
-   class="st1"
-   d="M32.6,38.8l-13.9-8l-3,5.2l13.9,8L32.6,38.8z" />
-<path
-   id="line31"
-   class="st1"
-   d="M31.3,41.6l7.8,4.5" />
-<path
-   id="line72"
-   class="st2"
-   d="M8.6,53.6v2.8" />
-<path
-   id="line74"
-   class="st2"
-   d="M10.5,52.8v4.5" />
-<path
-   id="line76"
-   class="st2"
-   d="M12.5,52v6" />
-<path
-   id="path1021"
-   class="st3"
-   d="M39.1,31.3V46" />
-<g
-   id="g1780"
-   transform="matrix(0,-0.69392,0.72302,0,-753.228,470.182)">
-	<path
-   id="rect11-2"
-   class="st4"
-   d="M601.3,1086.1v-16h-6v16H601.3z" />
-</g>
-<path
-   id="path1787"
-   class="st5"
-   d="M12.6,55h7.9" />
-<path
-   id="path1791"
-   class="st6"
-   d="M32.2,55h6.9v-8.9" />
-<path
-   id="path1876"
-   class="st7"
-   d="M39.1,55h42V0.5" />
-<path
-   id="path1878"
-   class="st7"
-   d="M60.8,33.6l2.1-1.5V0.5" />
-<path
-   id="path1878-6"
-   class="st7"
-   d="M17.3,33.4l-2.2-1.5V0.5" />
+	.st2{fill:none;stroke:#000000;stroke-width:1.0016;stroke-linecap:round;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-miterlimit:10;}
+	.st4{fill:none;stroke:#000000;stroke-width:1.002;stroke-linecap:round;stroke-linejoin:bevel;}
+	.st5{fill:none;stroke:#000000;stroke-width:1.414;stroke-miterlimit:10;}
+	.st6{fill:none;stroke:#000000;stroke-width:0.993;stroke-linejoin:bevel;}
+	.st7{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:bevel;}
+	.st8{fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:bevel;}
+	.st9{fill:none;stroke:url(#path3228_00000109715783456044249590000005470541541864338579_);stroke-linejoin:bevel;}
+  </style>
+  <sodipodi:namedview bordercolor="#000000" borderopacity="0.25" id="namedview174" inkscape:current-layer="svg256" inkscape:cx="45.75" inkscape:cy="40.125" inkscape:deskcolor="#d1d1d1" inkscape:pagecheckerboard="0" inkscape:pageopacity="0.0" inkscape:showpageshadow="2" inkscape:window-height="1009" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="1912" inkscape:window-y="-8" inkscape:zoom="8" pagecolor="#ffffff" showgrid="false"/>
+  <path id="line7" sodipodi:nodetypes="cc" class="st0" d="M40,0v15.1"/>
+  <path id="rect9" class="st0" d="M49.3,44.2l13.9-8.1l-3-5.2L46.3,39L49.3,44.2z"/>
+  <path id="rect11" class="st0" d="M43,31.1v-16h-6v16H43z"/>
+  <path id="line17" class="st1" d="M47.7,41.6L40,46.1"/>
+  <path id="rect27" class="st2" d="M33.5,38.8l-13.9-8l-3,5.2l13.9,8L33.5,38.8z"/>
+  <path id="line31" class="st1" d="M32.2,41.6l7.8,4.5"/>
+  <path id="line72" class="st3" d="M8.6,53.6v2.8"/>
+  <path id="line74" class="st3" d="M10.5,52.8v4.5"/>
+  <path id="line76" class="st3" d="M12.5,52v6"/>
+  <path id="path1021" class="st4" d="M40,31.3V46"/>
+  <g id="g1780" transform="matrix(0,-0.69392,0.72302,0,-753.228,470.182)">
+    <path id="rect11-2" class="st5" d="M601.3,1086.1v-16h-6v16H601.3z"/>
+  </g>
+  <path id="path1787" class="st6" d="M12.6,55h7.9"/>
+  <path id="path1791" sodipodi:nodetypes="ccc" class="st7" d="M32.2,55l7.8,0v-8.9"/>
+  <path id="path1878" sodipodi:nodetypes="ccc" class="st8" d="M61.7,33.5l2.3-1.4V0.5"/>
+  <path id="path1878-6" sodipodi:nodetypes="ccc" class="st8" d="M18.1,33.4L16,31.9V0.5"/>
+  <linearGradient id="path3228_00000034786151894727917490000000108982139809455277_" gradientUnits="userSpaceOnUse" x1="39.0999" y1="36.1352" x2="81.3749" y2="36.1352" gradientTransform="matrix(1 0 0 -1 -9.988570e-02 63.89)">
+    <stop offset="0" style="stop-color:#000000" id="stop151"/>
+    <stop offset="1" style="stop-color:#000000" id="stop153"/>
+  </linearGradient>
+  <path id="path3228" sodipodi:nodetypes="cccc" style="fill:none;stroke:url(#path3228_00000034786151894727917490000000108982139809455277_);stroke-linejoin:bevel;" d="  M80,0v48.5V55l-41,0"/>
 </svg>
