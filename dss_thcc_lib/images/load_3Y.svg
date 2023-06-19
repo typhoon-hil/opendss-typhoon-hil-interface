@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 27.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    id="svg256"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="load_3Y.svg"
    x="0px"
    y="0px"
    viewBox="0 0 96 64"
+   style="enable-background:new 0 0 96 64;"
    xml:space="preserve"
+   sodipodi:docname="load_3Y1.svg"
+   width="96"
    height="64"
-   width="96"><metadata
-   id="metadata26"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-   id="defs24" />
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs151" />
 <style
    type="text/css"
-   id="style2">
-	.st0{fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10;}
-	.st1{fill:none;stroke:#000000;stroke-miterlimit:10;}
-	.st2{fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:9.9998;}
-	.st3{fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:9.9998;}
+   id="style132">
+	.st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#000000;stroke-width:1.002;stroke-linecap:round;stroke-linejoin:bevel;}
+	.st3{fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:bevel;}
 </style>
 <sodipodi:namedview
    bordercolor="#666666"
@@ -38,136 +35,106 @@
    inkscape:bbox-nodes="false"
    inkscape:bbox-paths="false"
    inkscape:current-layer="svg256"
-   inkscape:cx="37.681331"
-   inkscape:cy="17.153471"
+   inkscape:cx="33.125"
+   inkscape:cy="26.875"
+   inkscape:deskcolor="#d1d1d1"
    inkscape:document-rotation="0"
+   inkscape:pagecheckerboard="0"
    inkscape:pageopacity="0"
    inkscape:pageshadow="2"
+   inkscape:showpageshadow="2"
    inkscape:snap-bbox="true"
    inkscape:snap-bbox-midpoints="false"
    inkscape:snap-global="true"
    inkscape:snap-page="true"
-   inkscape:window-height="1017"
+   inkscape:window-height="1009"
    inkscape:window-maximized="1"
    inkscape:window-width="1920"
-   inkscape:window-x="-8"
+   inkscape:window-x="1912"
    inkscape:window-y="-8"
-   inkscape:zoom="6.82"
+   inkscape:zoom="8.0000001"
    objecttolerance="10"
    pagecolor="#ffffff"
    showgrid="true">
 	</sodipodi:namedview>
 <line
-   id="line5"
-   class="st0"
-   x1="73.9"
-   y1="50"
-   x2="69.9"
-   y2="47.7" />
-<line
    id="line7"
-   class="st1"
-   x1="48"
-   y1="64"
-   x2="48"
-   y2="28.6" />
+   class="st0"
+   x1="39.1"
+   y1="0"
+   x2="39.1"
+   y2="17.1" />
 <rect
    id="rect9"
-   x="59.7"
-   y="35.5"
-   transform="matrix(0.5 -0.866 0.866 0.5 -6.3981 76.0697)"
-   class="st2"
-   width="6"
-   height="16.1" />
+   x="45.8"
+   y="36.6"
+   transform="matrix(0.866 -0.5 0.5 0.866 -12.5788 32.2292)"
+   class="st0"
+   width="16.1"
+   height="6" />
 <rect
    id="rect11"
-   x="44.9"
-   y="12.3"
-   class="st1"
+   x="36.1"
+   y="17.1"
+   class="st0"
    width="6"
    height="16" />
 <path
    id="path13"
-   class="st1"
-   d="M58.2,41.1" />
+   class="st0"
+   d="M49.3,42.1" />
 <path
    id="path15"
-   class="st1"
-   d="M48,12.1" />
+   class="st0"
+   d="M39.1,33.3" />
 <line
    id="line17"
-   class="st0"
-   x1="55.7"
-   y1="39.6"
-   x2="48"
-   y2="35.1" />
-<line
-   id="line19"
    class="st1"
-   x1="48"
-   y1="12.1"
-   x2="48"
-   y2="0.1" />
+   x1="46.8"
+   y1="43.6"
+   x2="39.1"
+   y2="48.1" />
 <path
    id="path21"
-   class="st1"
+   class="st0"
    d="M-104.4-22.4" />
-<line
-   id="line23"
-   class="st0"
-   x1="79.9"
-   y1="0"
-   x2="80"
-   y2="50" />
-<line
-   id="line25"
-   class="st0"
-   x1="22.1"
-   y1="50"
-   x2="25.8"
-   y2="47.9" />
 <rect
    id="rect27"
-   x="25.1"
-   y="40.8"
-   transform="matrix(0.866 -0.5 0.5 0.866 -17.4636 22.3997)"
-   class="st3"
-   width="16"
-   height="6" />
+   x="21.2"
+   y="31.4"
+   transform="matrix(0.5 -0.866 0.866 0.5 -22.0105 40.6746)"
+   class="st1"
+   width="6"
+   height="16" />
 <path
    id="path29"
-   class="st0"
-   d="M40.2,39.6" />
+   class="st1"
+   d="M31.3,43.6" />
 <line
    id="line31"
-   class="st0"
-   x1="40.2"
-   y1="39.6"
-   x2="48"
-   y2="35.1" />
-<line
-   id="line33"
-   class="st0"
-   x1="16"
-   y1="0"
-   x2="15.9"
-   y2="50" />
+   class="st1"
+   x1="31.3"
+   y1="43.6"
+   x2="39.1"
+   y2="48.1" />
 <path
    id="path35"
-   class="st1"
-   d="M74.9,16.7" />
-<line
-   id="line37"
    class="st0"
-   x1="22.1"
-   y1="50"
-   x2="15.9"
-   y2="50" />
-<line
-   id="line39"
-   class="st0"
-   x1="80"
-   y1="50"
-   x2="73.9"
-   y2="50" />
+   d="M76,48.5" />
+<path
+   id="path1021"
+   class="st2"
+   d="M39.1,33.3V48" />
+<path
+   id="path1876"
+   class="st3"
+   d="M81.1,0.5V57h-6.4H39.1V47" />
+<path
+   id="path1878"
+   class="st3"
+   d="M60.8,35.5L63,34V0.5" />
+<path
+   id="path1878-6"
+   class="st3"
+   d="M17.3,35.4l-2.2-1.6V0.6" />
 </svg>

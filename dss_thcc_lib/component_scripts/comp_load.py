@@ -420,16 +420,16 @@ def port_dynamics(mdl, mask_handle):
             created_ports.update({"portA": port_a})
         if not port_b:
             port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                     terminal_position=(0.0, -32),
-                                     position=(7919, 7862), rotation="right")
+                                     terminal_position=(-5, -32),
+                                     position=(7919, 7862), rotation="right") # terminal_position=(0, -32),
             created_ports.update({"portB": port_b})
         else:
-            mdl.set_port_properties(port_b, terminal_position=(0.0, -32))
+            mdl.set_port_properties(port_b, terminal_position=(-6, -32))
             created_ports.update({"portB": port_b})
         if not port_c:
             port_c = mdl.create_port(parent=comp_handle, name="C1", direction="out", kind="pe",
-                                     terminal_position=(30, -32),
-                                     position=(8055, 7862), rotation="right")
+                                     terminal_position=(15, -32),
+                                     position=(8055, 7862), rotation="right") # terminal_position=(30, -32),
             created_ports.update({"portC": port_c})
         else:
             created_ports.update({"portC": port_c})
@@ -438,8 +438,8 @@ def port_dynamics(mdl, mask_handle):
             port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
             if not port_n:
                 port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                         terminal_position=(0, 30),
-                                         position=(7921, 8384), rotation="left")
+                                         terminal_position=(34, -32),
+                                         position=(7921, 8384), rotation="right") #terminal_position=(0, 30),
             created_ports.update({"portN": port_n})
 
 

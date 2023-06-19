@@ -1,200 +1,121 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 27.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    id="svg256"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="load_3Y_gnd.svg"
    x="0px"
    y="0px"
-   viewBox="-297 613.5 96 64"
+   viewBox="0 0 96 64"
+   style="enable-background:new 0 0 96 64;"
    xml:space="preserve"
+   sodipodi:docname="load_3Y_gnd2.svg"
    width="96"
-   height="64"><metadata
-   id="metadata48"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-   id="defs46" />
+   height="64"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs304" />
 <style
    type="text/css"
-   id="style2">
-	.st0{fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10;}
-	.st1{fill:none;stroke:#000000;stroke-miterlimit:10;}
+   id="style283">
+	.st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#000000;stroke-width:1.002;stroke-linecap:round;stroke-linejoin:bevel;}
+	.st4{fill:none;stroke:#000000;stroke-width:1.4118;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#000000;stroke-width:0.993;stroke-linecap:round;stroke-linejoin:bevel;}
+	.st6{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:bevel;}
+	.st7{fill:none;stroke:#000000;stroke-linecap:square;stroke-linejoin:bevel;}
 </style>
 <sodipodi:namedview
-   bordercolor="#666666"
-   borderopacity="1"
-   gridtolerance="10"
-   guidetolerance="10"
-   id="namedview258"
-   inkscape:bbox-nodes="false"
-   inkscape:bbox-paths="false"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   id="namedview174"
    inkscape:current-layer="svg256"
-   inkscape:cx="37.681331"
-   inkscape:cy="17.153471"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:snap-bbox="true"
-   inkscape:snap-bbox-midpoints="false"
-   inkscape:snap-global="true"
-   inkscape:snap-page="true"
-   inkscape:window-height="1017"
+   inkscape:cx="40.428904"
+   inkscape:cy="32.671329"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:pagecheckerboard="0"
+   inkscape:pageopacity="0.0"
+   inkscape:showpageshadow="2"
+   inkscape:window-height="1009"
    inkscape:window-maximized="1"
    inkscape:window-width="1920"
-   inkscape:window-x="-8"
+   inkscape:window-x="1912"
    inkscape:window-y="-8"
-   inkscape:zoom="6.82"
-   objecttolerance="10"
+   inkscape:zoom="6.703125"
    pagecolor="#ffffff"
-   showgrid="true"
-   inkscape:document-rotation="0">
+   showgrid="false">
 	</sodipodi:namedview>
-<line
-   class="st0"
-   x1="-223.1"
-   y1="663.5"
-   x2="-227.1"
-   y2="661.2"
-   id="line5" />
-<line
-   class="st1"
-   x1="-249"
-   y1="648.6"
-   x2="-249"
-   y2="642.1"
-   id="line7" />
-<rect
-   x="-242.4"
-   y="654.1"
-   transform="matrix(0.866 0.5 -0.5 0.866 297.1773 205.2023)"
-   class="st1"
-   width="16.1"
-   height="6"
-   id="rect9" />
-<rect
-   x="-257"
-   y="630.8"
-   transform="matrix(-1.836970e-16 1 -1 -1.836970e-16 384.7477 882.8388)"
-   class="st1"
-   width="16"
-   height="6"
-   id="rect11" />
 <path
-   class="st1"
-   d="M-238.8,654.6"
-   id="path13" />
+   id="line7"
+   class="st0"
+   d="M39.1,0v15.1" />
 <path
-   class="st1"
-   d="M-249,625.6"
-   id="path15" />
-<line
+   id="rect9"
    class="st0"
-   x1="-241.3"
-   y1="653.1"
-   x2="-249"
-   y2="648.6"
-   id="line17" />
-<line
-   class="st1"
-   x1="-249"
-   y1="625.6"
-   x2="-249"
-   y2="613.6"
-   id="line19" />
+   d="M48.4,44.2l13.9-8.1l-3-5.2L45.4,39L48.4,44.2z" />
 <path
-   class="st1"
-   d="M-401.4,591.1"
-   id="path21" />
-<line
+   id="rect11"
    class="st0"
-   x1="-217.1"
-   y1="613.5"
-   x2="-217"
-   y2="663.5"
-   id="line23" />
-<line
-   class="st0"
-   x1="-274.9"
-   y1="663.5"
-   x2="-271.2"
-   y2="661.4"
-   id="line25" />
-<rect
-   x="-272"
-   y="654.3"
-   transform="matrix(-0.866 0.5 -0.5 -0.866 -163.9085 1358.5083)"
-   class="st0"
-   width="16"
-   height="6"
-   id="rect27" />
+   d="M42.1,31.1v-16h-6v16H42.1z" />
 <path
-   class="st0"
-   d="M-256.8,653.1"
-   id="path29" />
-<line
-   class="st0"
-   x1="-256.8"
-   y1="653.1"
-   x2="-249"
-   y2="648.6"
-   id="line31" />
-<line
-   class="st0"
-   x1="-281"
-   y1="613.5"
-   x2="-281.1"
-   y2="663.5"
-   id="line33" />
-<path
+   id="line17"
    class="st1"
-   d="M-222.1,630.2"
-   id="path35" />
-<line
-   class="st0"
-   x1="-274.9"
-   y1="663.5"
-   x2="-281.1"
-   y2="663.5"
-   id="line37" />
-<line
-   class="st0"
-   x1="-217"
-   y1="663.5"
-   x2="-223.1"
-   y2="663.5"
-   id="line39" />
-<line
+   d="M46.8,41.6l-7.7,4.5" />
+<path
+   id="rect27"
+   class="st1"
+   d="M32.6,38.8l-13.9-8l-3,5.2l13.9,8L32.6,38.8z" />
+<path
+   id="line31"
+   class="st1"
+   d="M31.3,41.6l7.8,4.5" />
+<path
    id="line72"
-   class="st0"
-   x1="-251.9"
-   y1="672.1"
-   x2="-246.2"
-   y2="672.1" />
-<line
+   class="st2"
+   d="M8.6,53.6v2.8" />
+<path
    id="line74"
-   class="st0"
-   x1="-253.6"
-   y1="668.1"
-   x2="-244.5"
-   y2="668.1" />
-<line
+   class="st2"
+   d="M10.5,52.8v4.5" />
+<path
    id="line76"
-   class="st0"
-   x1="-255.1"
-   y1="664.1"
-   x2="-243"
-   y2="664.1" />
-<line
-   id="line88"
-   class="st1"
-   x1="-249"
-   y1="664.1"
-   x2="-249"
-   y2="648.6" />
+   class="st2"
+   d="M12.5,52v6" />
+<path
+   id="path1021"
+   class="st3"
+   d="M39.1,31.3V46" />
+<g
+   id="g1780"
+   transform="matrix(0,-0.69392,0.72302,0,-753.228,470.182)">
+	<path
+   id="rect11-2"
+   class="st4"
+   d="M601.3,1086.1v-16h-6v16H601.3z" />
+</g>
+<path
+   id="path1787"
+   class="st5"
+   d="M12.6,55h7.9" />
+<path
+   id="path1791"
+   class="st6"
+   d="M32.2,55h6.9v-8.9" />
+<path
+   id="path1876"
+   class="st7"
+   d="M39.1,55h42V0.5" />
+<path
+   id="path1878"
+   class="st7"
+   d="M60.8,33.6l2.1-1.5V0.5" />
+<path
+   id="path1878-6"
+   class="st7"
+   d="M17.3,33.4l-2.2-1.5V0.5" />
 </svg>

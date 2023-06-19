@@ -43,35 +43,25 @@ def delete_port(mdl, name, parent):
         mdl.delete_item(comp)
         return True
 
-
+'''****************************************************************************
+This function enable or disable the combobox to select the type of the
+connection according to the number of windings.
+For instance, if num_windings == 3, disable the fourth type of connection
+combobox (sec3_conn), and so on.
+****************************************************************************'''
 def enable_disable_grounds(mdl, mask_handle, num_windings):
     tp_prim_prop = mdl.prop(mask_handle, "prim_conn")
     tp_sec1_prop = mdl.prop(mask_handle, "sec1_conn")
     tp_sec2_prop = mdl.prop(mask_handle, "sec2_conn")
     tp_sec3_prop = mdl.prop(mask_handle, "sec3_conn")
-    #num_windings_prop = mdl.prop(mask_handle, "num_windings")
-    #num_windings = mdl.get_property_disp_value(num_windings_prop)
 
-    show_hide_conn(mdl, mask_handle)
+    enable_disable_conn(mdl, mask_handle)
 
     if num_windings == 2:
         mdl.disable_property(tp_sec3_prop)
         mdl.disable_property(tp_sec2_prop)
         mdl.enable_property(tp_sec1_prop)
         mdl.enable_property(tp_prim_prop)
-
-        '''
-        if not mdl.get_property_disp_value(mdl.prop(mask_handle, "embedded_cpl")) == "None":
-            mdl.set_property_disp_value(grounded_prim_prop, False)
-            mdl.disable_property(grounded_prim_prop)
-            mdl.set_property_disp_value(grounded_sec1_prop, False)
-            mdl.disable_property(grounded_sec1_prop)
-        else:
-            mdl.enable_property(grounded_prim_prop)
-            mdl.set_property_disp_value(grounded_prim_prop, mdl.get_property_value(grounded_prim_prop))
-            mdl.enable_property(grounded_sec1_prop)
-            mdl.set_property_disp_value(grounded_sec1_prop, mdl.get_property_value(grounded_sec1_prop))
-        '''
 
     elif num_windings == 3:
         mdl.disable_property(tp_sec3_prop)
@@ -85,33 +75,7 @@ def enable_disable_grounds(mdl, mask_handle, num_windings):
         mdl.enable_property(tp_sec3_prop)
         mdl.enable_property(tp_prim_prop)
 
-    # this next code will be removed by Ricardo
-    '''
-    else:
-        cpl_props = ["embedded_cpl_12", "embedded_cpl_13", "embedded_cpl_14"]
-        gnd_props = [grounded_sec1_prop, grounded_sec2_prop, grounded_sec3_prop]
-        for idx in range(int(num_windings) - 1):
-            if not mdl.get_property_disp_value(mdl.prop(mask_handle, cpl_props[idx])) == "None":
-                mdl.set_property_disp_value(gnd_props[idx], False)
-                mdl.disable_property(gnd_props[idx])
-            else:
-                mdl.set_property_disp_value(gnd_props[idx], mdl.get_property_value(gnd_props[idx]))
-                mdl.enable_property(gnd_props[idx])
-        # Primary gnd
-        enable_prim_gnd = True
-        for idx in range(int(num_windings) - 1):
-            if mdl.get_property_disp_value(mdl.prop(mask_handle, cpl_props[idx])) == "None":
-                pass
-            else:
-                enable_prim_gnd = False
-                break
-        if enable_prim_gnd:
-            mdl.enable_property(grounded_prim_prop)
-            mdl.set_property_disp_value(grounded_prim_prop, mdl.get_property_value(grounded_prim_prop))
-        else:
-            mdl.disable_property(grounded_prim_prop)
-            mdl.set_property_disp_value(grounded_prim_prop, False)
-    '''
+
 
 def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
@@ -120,12 +84,6 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
 
     conn_dict = ["prim", "sec1", "sec2", "sec3"]
     pos_y = 346 if num_windings == 4 else 240
-
-
-    #for i in range(1, 5):
-    #    gnd = mdl.get_item("gnd", parent=comp_handle)
-    #    if gnd:
-    #        mdl.delete_item(gnd)
 
     # for loop for each winding
     # It takes the tp_conn for each winding
@@ -137,26 +95,13 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
         if tp_conn == "Y" or tp_conn == "Y - Grounded" and created_ports:
             if idx == 0:
                 new_port_n = created_ports.get("N1")
-                # new_port_N = mdl.create_port(
-                #     name="N1",
-                #     parent=comp_handle,
-                #     rotation='up',
-                #     position=(x0 + 32, y0 + posY + 64),
-                #     terminal_position=(-24, 48 * (num_windings - 1))
-                # )
+
                 if not mdl.get_item(f"N1n{str(idx + 1)}", parent=comp_handle, item_type="connection"):
                     mdl.create_connection(mdl.term(trafo_handle, "n" + str(idx + 1)),
                                           new_port_n, name=f"N1n{str(idx + 1)}")
             else:
                 new_port_n = created_ports.get("N" + str(idx + 1))
-                # new_port_N = mdl.create_port(
-                #     name="N" + str(idx + 1),
-                #     parent=comp_handle,
-                #     flip="flip_horizontal",
-                #     rotation='up',
-                #     position=(x0 + 300, y0 + posY + 64 * idx),
-                #     terminal_position=(24 - 16 * (num_windings - 1) + 16 * idx, 48 * (num_windings - 1))
-                # )
+
                 if not mdl.get_item(f"N{str(idx + 1)}n{str(idx + 1)}", parent=comp_handle, item_type="connection"):
                     mdl.create_connection(mdl.term(trafo_handle, "n" + str(idx + 1)),
                                           new_port_n, name=f"N{str(idx + 1)}n{str(idx + 1)}")
@@ -267,10 +212,6 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
                     mdl.create_connection(mdl.term(gnd_z3, "N"), mdl.term(trafo_handle, "n4"), "Conn_Z32N")
 
 
-            # commented the following three lines because they are giving error, investigate it
-            #if not mdl.get_item(f"gndn{str(idx + 1)}", parent=comp_handle, item_type="connection"):
-            #    mdl.create_connection(mdl.term(f"gnd{str(idx+1)}", "node"), mdl.term(trafo_handle, "n" + str(idx + 1)),
-            #                          name=f"gndn{str(idx + 1)}")
 
         # if the tp_conn is not "Y - Grounded", we delete the grounds and ground impedance
         else:
@@ -311,6 +252,35 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
                     mdl.delete_item(gnd_z3)
 
 
+    # Now check if the num_windings is less than the max allowed ( < 4 ). If it is,
+    # we need to check if there are remaining grounds and Grounding Impedances to delete them.
+    if num_windings < 3:
+        # if num_windings < 3, we have only 2 windings (0 and 1), so we delete the 3 and 4 gnd z comps
+        gnd2 = mdl.get_item("gnd2", parent=comp_handle)
+        if gnd2:
+            mdl.delete_item(gnd2)
+
+        gnd_z2 = mdl.get_item("Gnd Z2", parent=comp_handle, item_type="component")
+        if gnd_z2:
+            mdl.delete_item(gnd_z2)
+
+        gnd3 = mdl.get_item("gnd3", parent=comp_handle)
+        if gnd3:
+            mdl.delete_item(gnd3)
+
+        gnd_z3 = mdl.get_item("Gnd Z3", parent=comp_handle, item_type="component")
+        if gnd_z3:
+            mdl.delete_item(gnd_z3)
+
+    elif num_windings < 4:
+        # If the num_windings is less than 4, we delete the gnd z comps of the last winding if they exists
+        gnd3 = mdl.get_item("gnd3", parent=comp_handle)
+        if gnd3:
+            mdl.delete_item(gnd3)
+
+        gnd_z3 = mdl.get_item("Gnd Z3", parent=comp_handle, item_type="component")
+        if gnd_z3:
+            mdl.delete_item(gnd_z3)
 
 
 
@@ -718,14 +688,20 @@ def set_autotrafo_properties(mdl, mask_handle):
 
 
 
-'''
-****************************************************************************
-Function to manages the Ground Impedance Rneut and Xneut
-It enables these fields if the corresponding tp_conn is "Grounded",
-otherwise these fields are disabled
-****************************************************************************
-'''
-def enable_disable_z_neut(mdl, mask_handle):
+
+
+
+'''**********************************************************************
+Function to manages the combobox to select the type of connection
+It enables or disable the *_conn combobox according to the number
+of windings of the transformer.
+For instance, if the user selects num_windings == 3, the "sec3_conn"
+combobox will be disabled because we don't have the fourth winding.
+
+The Ground Impedance Rneut and Xneut fields are enabled if the
+corresponding tp_conn is "Y - Grounded", otherwise they are disabled.
+**********************************************************************'''
+def enable_disable_conn(mdl, mask_handle):
     tp_prim_prop = mdl.prop(mask_handle, "prim_conn")
     tp_prim = mdl.get_property_disp_value(tp_prim_prop)
     rneut_prim_prop = mdl.prop(mask_handle, "Rneut_prim")
@@ -742,81 +718,10 @@ def enable_disable_z_neut(mdl, mask_handle):
     tp_sec3 = mdl.get_property_disp_value(tp_sec3_prop)
     rneut_sec3_prop = mdl.prop(mask_handle, "Rneut_sec3")
     xneut_sec3_prop = mdl.prop(mask_handle, "Xneut_sec3")
-    num_windings_prop = mdl.prop(mask_handle, "num_windings")
-    num_windings = mdl.get_property_disp_value(num_windings_prop)
-
-    if tp_prim == "Y - Grounded":
-        mdl.enable_property(rneut_prim_prop)
-        mdl.enable_property(xneut_prim_prop)
-    else:
-        mdl.disable_property(rneut_prim_prop)
-        mdl.disable_property(xneut_prim_prop)
-
-    if num_windings == "2":
-        if tp_sec1 == "Y - Grounded":
-            mdl.enable_property(rneut_sec1_prop)
-            mdl.enable_property(xneut_sec1_prop)
-        else:
-            mdl.disable_property(rneut_sec1_prop)
-            mdl.disable_property(xneut_sec1_prop)
-
-    elif num_windings == "3":
-        if tp_sec1 == "Y - Grounded":
-            mdl.enable_property(rneut_sec1_prop)
-            mdl.enable_property(xneut_sec1_prop)
-        else:
-            mdl.disable_property(rneut_sec1_prop)
-            mdl.disable_property(xneut_sec1_prop)
-        if tp_sec2 == "Y - Grounded":
-            mdl.enable_property(rneut_sec2_prop)
-            mdl.enable_property(xneut_sec2_prop)
-        else:
-            mdl.disable_property(rneut_sec2_prop)
-            mdl.disable_property(xneut_sec2_prop)
-
-    elif num_windings == "4":
-        if tp_sec1 == "Y - Grounded":
-            mdl.enable_property(rneut_sec1_prop)
-            mdl.enable_property(xneut_sec1_prop)
-        else:
-            mdl.disable_property(rneut_sec1_prop)
-            mdl.disable_property(xneut_sec1_prop)
-        if tp_sec2 == "Y - Grounded":
-            mdl.enable_property(rneut_sec2_prop)
-            mdl.enable_property(xneut_sec2_prop)
-        else:
-            mdl.disable_property(rneut_sec2_prop)
-            mdl.disable_property(xneut_sec2_prop)
-        if tp_sec3 == "Y - Grounded":
-            mdl.enable_property(rneut_sec3_prop)
-            mdl.enable_property(xneut_sec3_prop)
-        else:
-            mdl.disable_property(rneut_sec3_prop)
-            mdl.disable_property(xneut_sec3_prop)
-
-
-
-
-def show_hide_conn(mdl, mask_handle):
-    tp_prim_prop = mdl.prop(mask_handle, "prim_conn")
-    tp_prim = mdl.get_property_disp_value(tp_prim_prop)
-    rneut_prim_prop = mdl.prop(mask_handle, "Rneut_prim")
-    xneut_prim_prop = mdl.prop(mask_handle, "Xneut_prim")
-    tp_sec1_prop = mdl.prop(mask_handle, "sec1_conn")
-    tp_sec1 = mdl.get_property_value(tp_sec1_prop)
-    rneut_sec1_prop = mdl.prop(mask_handle, "Rneut_sec1")
-    xneut_sec1_prop = mdl.prop(mask_handle, "Xneut_sec1")
-    tp_sec2_prop = mdl.prop(mask_handle, "sec2_conn")
-    tp_sec2 = mdl.get_property_value(tp_sec2_prop)
-    rneut_sec2_prop = mdl.prop(mask_handle, "Rneut_sec2")
-    xneut_sec2_prop = mdl.prop(mask_handle, "Xneut_sec2")
-    tp_sec3_prop = mdl.prop(mask_handle, "sec3_conn")
-    tp_sec3 = mdl.get_property_value(tp_sec3_prop)
-    rneut_sec3_prop = mdl.prop(mask_handle, "Rneut_sec3")
-    xneut_sec3_prop = mdl.prop(mask_handle, "Xneut_sec3")
 
     num_windings_prop = mdl.prop(mask_handle, "num_windings")
     num_windings = mdl.get_property_disp_value(num_windings_prop)
+
 
     if tp_prim == "Y - Grounded":
         mdl.enable_property(rneut_prim_prop)
@@ -886,24 +791,7 @@ def show_hide_conn(mdl, mask_handle):
             mdl.disable_property(xneut_sec3_prop)
 
 
-    '''
-    p = ["prim", "sec1", "sec2", "sec3"]
 
-    for idx in range(4):
-        conn_prop = mdl.prop(mask_handle, p[idx] + "_conn")
-        grd_prop = mdl.prop(mask_handle, "grounded_" + p[idx])
-        if idx < num_windings:
-            if not mdl.is_property_visible(conn_prop):
-                mdl.show_property(conn_prop)
-                conn_value = mdl.get_property_value(conn_prop)
-                if conn_value == "Y":
-                    mdl.show_property(grd_prop)
-                else:
-                    mdl.hide_property(grd_prop)
-        else:
-            mdl.hide_property(conn_prop)
-            mdl.hide_property(grd_prop)
-    '''
 
 def show_hide_couplings(mdl, mask_handle):
     num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
@@ -932,7 +820,7 @@ def update_winding_configs(mdl, prop_handle, mask_handle, created_ports):
 
     wdg_num_dict = {"prim": "1", "sec1": "2", "sec2": "3", "sec3": "4"}
     wdg_conn_dict = {"Y": "Y", "Δ": "D", "Y - Grounded": "Y"}
-    wdg_clock_dict = {"Y": "0", "Δ": "1", "Y - Grounded": "0"}
+    # wdg_clock_dict = {"Y": "0", "Δ": "1", "Y - Grounded": "0"}
 
     #y_or_d_prim = mdl.get_property_value(mdl.prop(comp_handle, "prim_conn"))
     ydprim_tmp = mdl.get_property_value(mdl.prop(comp_handle, "prim_conn"))
@@ -943,17 +831,7 @@ def update_winding_configs(mdl, prop_handle, mask_handle, created_ports):
 
 
     wdg_name = mdl.get_name(prop_handle)[:4]
-    '''
-    if wdg_name == "grou":
-        # Passed by grounded property
-        wdg_name = mdl.get_name(prop_handle)[-4:]
-        y_or_d = mdl.get_property_value(mdl.prop(mask_handle, wdg_name + "_conn"))
-    else:
-        # Passed by conn property
-        y_or_d = mdl.get_property_value(prop_handle)
-    '''
 
-    #y_or_d = mdl.get_property_value(prop_handle)
     yd_tmp = mdl.get_property_disp_value(prop_handle)
 
     if yd_tmp == "Δ":
@@ -987,8 +865,6 @@ def update_winding_configs(mdl, prop_handle, mask_handle, created_ports):
             for p in prop_names:
                 update_winding_configs(mdl, mdl.prop(mask_handle, p), mask_handle, created_ports)
 
-    # I commented here
-    #update_neutrals(mdl, mask_handle, trafo_inner, created_ports=created_ports)
 
     mdl.refresh_icon(mask_handle)
 
@@ -1118,7 +994,6 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             deleted_ports.append(p)
 
     for idx in range(0, num_windings):
-        #grounded = mdl.get_property_value(mdl.prop(mask_handle, "grounded_" + conn_dict[idx]))
         conn_prop = mdl.prop(mask_handle, conn_dict[idx] + "_conn")
 
         conn_val = mdl.get_property_disp_value(conn_prop)
@@ -1276,6 +1151,12 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
                 mdl.delete_item(component)
 
 
+'''**********************************************************************
+This call the functions to build the transformer configuration according
+to the user selected parameters and configurations.
+It uses a flag to avoid multiple unnecessary redundant calls of the
+functions.
+**********************************************************************'''
 def topology_dynamics(mdl, container_handle):
     flg_run_prop = mdl.prop(container_handle, "flg_run_topology")
     flg_run = mdl.get_property_value(flg_run_prop)
@@ -1283,36 +1164,8 @@ def topology_dynamics(mdl, container_handle):
     if flg_run == False:
         created_ports, _ = port_dynamics(mdl, container_handle)
         update_subsystem_components(mdl, container_handle, created_ports)
-        #update_all_windings(mdl, container_handle, created_ports)
-        #update_winding_configs(mdl, prop_handle, container_handle, created_ports) this is called by update_all_windings()
-        #vreg_connection(mdl, container_handle)
-        enable_disable_z_neut(mdl, container_handle)
+        enable_disable_conn(mdl, container_handle)
         mdl.refresh_icon(container_handle)
         mdl.set_property_value(flg_run_prop, True)
 
 
-
-'''*************************************************************
-Manages the dialog close: If the user Cancels the modifications,
-restore the combo tp_connections initial state.
-*************************************************************'''
-
-def dialog_close(mdl, mask_handle, reason):
-    pass
-
-    '''
-    # Get tp combo values after closing
-    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
-    new_tp_combo_values = mdl.get_property_combo_values(tp_connection_prop)
-
-    # Get original tp combo values
-    tp_connection_combo_values_prop = mdl.prop(mask_handle, "tp_connection_combo_values")
-    tp_connection_combo_values = mdl.get_property_value(tp_connection_combo_values_prop)
-    old_tp_combo_values = ast.literal_eval(tp_connection_combo_values)
-
-    # Restore to the original if the user cancels
-    if reason == "reason_close_cancel":
-        if not (old_tp_combo_values == new_tp_combo_values):
-            mdl.set_property_combo_values(tp_connection_prop, old_tp_combo_values)
-
-    '''
