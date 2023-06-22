@@ -1835,7 +1835,7 @@ library "OpenDSS" {
                             fast_con_prop = mdl.get_property_value(mdl.prop(container_handle, "Fast_con"))
                             
                             if new_value == "3":
-                                for phase in ["A", "B", "C"]:
+                                for idx, phase in enumerate(["A", "B", "C"]):
                                     if phase == "B":
                                         port_offset = (0, 80)
                                         cpl_offset = (-104, 80)
@@ -1851,7 +1851,7 @@ library "OpenDSS" {
                                         port_phase = mdl.create_port(parent=comp_handle,
                                                                      name=f"{phase}1", direction="out",
                                                                      kind = "pe",
-                                                                     terminal_position=("left", 2),
+                                                                     terminal_position=("left", idx+1),
                                                                      position=(7656 + port_offset[0], 8008 + port_offset[1]),
                                                                      rotation="up")
                             
