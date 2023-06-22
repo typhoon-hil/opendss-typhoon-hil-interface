@@ -20,7 +20,7 @@ library "OpenDSS" {
             }
             [
                 position = 7920, 8208
-                size = 96, 64
+                size = 112, 64
             ]
 
             port A1 {
@@ -1020,7 +1020,7 @@ library "OpenDSS" {
         [
             position = 5328, 4256
             scale = 1, 1
-            size = 96, 64
+            size = 112, 64
         ]
 
     }

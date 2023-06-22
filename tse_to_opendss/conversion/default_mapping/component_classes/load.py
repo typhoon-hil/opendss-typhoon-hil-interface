@@ -56,13 +56,13 @@ class Load(TwoTerminal):
         # Phase Property
         new_format_properties["phases"] = tse_properties["phases"]
         # kV property
-        if tse_properties["phases"] == 1:
-            if tse_properties["ground_connected"]:
-                kv = (tse_properties["Vn_3ph"] / 1) / 1
-            else:
-                kv = tse_properties["Vn_3ph"]
-        else:
-            kv = tse_properties["Vn_3ph"]
+        # if tse_properties["phases"] == 1:
+        #     if tse_properties["ground_connected"]:
+        #         kv = (tse_properties["Vn_3ph"] / 1) / 1
+        #     else:
+        #         kv = tse_properties["Vn_3ph"]
+        # else:
+        kv = tse_properties["Vn_3ph"]
         new_format_properties["kV"] = kv
         # PF Property
         if tse_properties["pf_mode_3ph"] == "Unit":
@@ -107,7 +107,12 @@ class Load(TwoTerminal):
         if tse_properties["Pow_ref_s"] == "Time Series":
             new_format_properties["daily"] = tse_properties.get("loadshape_name")
 
-        gnd = tse_properties["ground_connected"] == "True"
+        #gnd = tse_properties["ground_connected"] == "True"
+        if tse_properties["tp_connection"] == "Y - Ground Connected":
+            gnd = True
+        else:
+            gnd = False
+
         if tse_properties["phases"] == "3":
             if not gnd:
                 new_format_properties["Rneut"] = "-1"
@@ -122,7 +127,12 @@ class Load(TwoTerminal):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        gnd = tse_properties["ground_connected"] == "True"
+        #gnd = tse_properties["ground_connected"] == "True"
+        if tse_properties["tp_connection"] == "Y - Ground Connected":
+            gnd = True
+        else:
+            gnd = False
+
         num_phases = int(tse_properties["phases"])
 
         if num_phases == 1 and not gnd:

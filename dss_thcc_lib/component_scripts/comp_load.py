@@ -358,17 +358,17 @@ def define_icon(mdl, mask_handle):
 
     if int(phases) == 1:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph_gnd.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/comp_load_1ph_gnd.svg')
         else:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/comp_load_1ph.svg')
     else:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_3Y_gnd.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/comp_load_3Y_gnd.svg')
         else:
             if tp_connection == 'Δ':
-                mdl.set_component_icon_image(mask_handle, 'images/load_3D.svg')
+                mdl.set_component_icon_image(mask_handle, 'images/comp_load_3D.svg')
             else:
-                mdl.set_component_icon_image(mask_handle, 'images/load_3Y.svg')
+                mdl.set_component_icon_image(mask_handle, 'images/comp_load_3Y.svg')
 
 
 def port_dynamics(mdl, mask_handle):
@@ -403,43 +403,62 @@ def port_dynamics(mdl, mask_handle):
         p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
         q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
 
+        if tp_connection == 'Δ':
+            pos_port_a1 = (-32, -32)
+            pos_port_b1 = (0, -32)
+            pos_port_c1 = (32, -32)
+            pos_p_ext = (50, -15)
+            pos_q_ext = (50, 15)
+        else:
+            pos_port_a1 = (-48, -32)
+            pos_port_b1 = (-16, -32)
+            pos_port_c1 = (16, -32)
+            pos_p_ext = (65, -15)
+            pos_q_ext = (65, 15)
+
         if p_ext:
-            mdl.set_port_properties(p_ext, terminal_position=(50, -15))
+            mdl.set_port_properties(p_ext, terminal_position=pos_p_ext)
             created_ports.update({"P_ext": p_ext})
         if q_ext:
-            mdl.set_port_properties(q_ext, terminal_position=(50, 15))
+            mdl.set_port_properties(q_ext, terminal_position=pos_q_ext)
             created_ports.update({"Q_ext": q_ext})
+
 
         if not port_a:
             port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
-                                     terminal_position=(-30, -32),
+                                     terminal_position=pos_port_a1,
                                      position=(7802, 7862), rotation="right")
-            created_ports.update({"portA": port_a})
         else:
-            mdl.set_port_properties(port_a, terminal_position=(-30, -32))
-            created_ports.update({"portA": port_a})
+            mdl.set_port_properties(port_a, terminal_position=pos_port_a1)
+        created_ports.update({"portA": port_a})
+
+
         if not port_b:
             port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                     terminal_position=(-5, -32),
+                                     terminal_position=pos_port_b1,
                                      position=(7919, 7862), rotation="right") # terminal_position=(0, -32),
-            created_ports.update({"portB": port_b})
         else:
-            mdl.set_port_properties(port_b, terminal_position=(-6, -32))
-            created_ports.update({"portB": port_b})
+            mdl.set_port_properties(port_b, terminal_position=pos_port_b1)
+        created_ports.update({"portB": port_b})
+
         if not port_c:
             port_c = mdl.create_port(parent=comp_handle, name="C1", direction="out", kind="pe",
-                                     terminal_position=(15, -32),
+                                     terminal_position=pos_port_c1,
                                      position=(8055, 7862), rotation="right") # terminal_position=(30, -32),
-            created_ports.update({"portC": port_c})
         else:
-            created_ports.update({"portC": port_c})
+            mdl.set_port_properties(port_c, terminal_position=pos_port_c1)
+        created_ports.update({"portC": port_c})
+
 
         if tp_connection == "Y" or tp_connection == "Y - Grounded":
             port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
             if not port_n:
                 port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                         terminal_position=(34, -32),
+                                         terminal_position=(48, -32),
                                          position=(7921, 8384), rotation="right") #terminal_position=(0, 30),
+            else:
+                mdl.set_port_properties(port_n, terminal_position=(48, -32))
+
             created_ports.update({"portN": port_n})
 
 
@@ -450,30 +469,39 @@ def port_dynamics(mdl, mask_handle):
 
         p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
         q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+
         if p_ext:
-            mdl.set_port_properties(p_ext, terminal_position=(25, -15))
+            mdl.set_port_properties(p_ext, terminal_position=(24, -16))
             created_ports.update({"P_ext": p_ext})
         if q_ext:
-            mdl.set_port_properties(q_ext, terminal_position=(25, 15))
+            mdl.set_port_properties(q_ext, terminal_position=(24, 16))
             created_ports.update({"Q_ext": q_ext})
+
+        if tp_connection == "Y":
+            pos_port_a = (0, -32)
+            pos_port_b = (0, 30)
+        else:
+            pos_port_a = (8, -32)
+            pos_port_b = (8, 30)
 
         if not port_a:
             port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
-                                     terminal_position=(0, -32),
+                                     terminal_position=pos_port_a,
                                      position=(7802, 7862), rotation="right")
-            created_ports.update({"portA": port_a})
         else:
-            mdl.set_port_properties(port_a, terminal_position=(0, -32))
-            created_ports.update({"portA": port_a})
+            mdl.set_port_properties(port_a, terminal_position=pos_port_a)
+
+        created_ports.update({"portA": port_a})
+
 
         if not port_b:
             port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                     terminal_position=(0, 30),
+                                     terminal_position=pos_port_b,
                                      position=(7919, 7862), rotation="right")
-            created_ports.update({"portB": port_b})
         else:
-            mdl.set_port_properties(port_b, terminal_position=(0, 30))
-            created_ports.update({"portB": port_b})
+            mdl.set_port_properties(port_b, terminal_position=pos_port_b)
+
+        created_ports.update({"portB": port_b})
 
         # In the single-phase system, we don't need the Neutral output
         port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
@@ -514,13 +542,20 @@ def port_dynamics(mdl, mask_handle):
             created_ports.pop("T_ext", None)
 
         elif pow_ref_s == "External input":
-
             if phases == "1":
-                p_term_position = (25, -15)
-                q_term_position = (25, 15)
+                if tp_connection == "Y - Grounded":
+                    p_term_position = (24, -15)
+                    q_term_position = (24, 15)
+                else:
+                    p_term_position = (16, -15)
+                    q_term_position = (16, 15)
             else:
-                p_term_position = (50, -15)
-                q_term_position = (50, 15)
+                if tp_connection == 'Δ':
+                    p_term_position = (48, -15)
+                    q_term_position = (48, 15)
+                else:
+                    p_term_position = (64, -15)
+                    q_term_position = (64, 15)
 
             p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
             if not p_ext:
@@ -554,9 +589,15 @@ def port_dynamics(mdl, mask_handle):
                 created_ports.pop("Q_ext", None)
 
             if phases == "1":
-                term_position = (25, 0)
+                if tp_connection == "Y - Grounded":
+                    term_position = (25, 0)
+                else:
+                    term_position = (16, 0)
             else:
-                term_position = (50, 0)
+                if tp_connection == 'Δ':
+                    term_position = (50, 0)
+                else:
+                    term_position = (65, 0)
 
             t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
             if not t_ext:
@@ -1474,6 +1515,8 @@ on the mask
 ***************************************************************'''
 def topology_dynamics(mdl, mask_handle):
 
+    mdl.refresh_icon(mask_handle)
+
     ports = port_dynamics(mdl, mask_handle)
 
     set_load_model(mdl, mask_handle)
@@ -1483,8 +1526,6 @@ def topology_dynamics(mdl, mask_handle):
     connections_gnd_dynamics(mdl, mask_handle, ports)
 
     connections_dynamics(mdl, mask_handle, ports)
-
-    mdl.refresh_icon(mask_handle)
 
 
 '''*************************************************************
