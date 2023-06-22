@@ -81,7 +81,7 @@ class Load(TwoTerminal):
             model = 2
         new_format_properties["model"] = model
         # Conn Property
-        if tse_properties["conn_type"] == 'Δ':
+        if tse_properties["tp_connection"] == 'Δ':
             conn = "delta"
         else:
             conn = "wye"
@@ -116,6 +116,9 @@ class Load(TwoTerminal):
         if tse_properties["phases"] == "3":
             if not gnd:
                 new_format_properties["Rneut"] = "-1"
+            else:
+                new_format_properties["Rneut"] = tse_properties.get("Rneut")
+                new_format_properties["Xneut"] = tse_properties.get("Xneut")
 
         # For single phase use phase voltage instead of line voltage
         if gnd and tse_properties["phases"] == "1":

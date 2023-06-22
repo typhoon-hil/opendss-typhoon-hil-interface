@@ -192,10 +192,10 @@ def conn_type_value_edited_fnc(mdl, container_handle, new_value):
 
 def phase_value_changed(mdl, container_handle, new_value):
     conn_type_prop = mdl.prop(container_handle, "conn_type")
-    conn_type = mdl.get_property_disp_value(conn_type_prop)
+    conn_type = mdl.get_property_value(conn_type_prop)
     if new_value == "1":
         if conn_type == "Δ":
-            mdl.set_property_disp_value(mdl.prop(container_handle, 'ground_connected'), True)
+            mdl.set_property_value(mdl.prop(container_handle, 'ground_connected'), True)
         mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
         mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
         mdl.set_property_value(mdl.prop(container_handle, 'conn_type'), "Y")
@@ -478,6 +478,7 @@ def phase_n_selector(mdl, container_handle, new_value):
 def define_icon(mdl, mask_handle):
     phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
     grounded = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
+
     conn_type = mdl.get_property_value(mdl.prop(mask_handle, "conn_type"))
 
     if int(phases) == 1:

@@ -327,26 +327,12 @@ def update_frequency_property(mdl, mask_handle, init=False):
                 mdl.set_property_value(global_frequency_prop, False)
         toggle_frequency_prop(mdl, mask_handle, init)
 
-'''
-def define_icon(mdl, mask_handle):
-    phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
-    grounded = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
-    conn_type = mdl.get_property_value(mdl.prop(mask_handle, "conn_type"))
-    if int(phases) == 1:
-        if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph_gnd.svg')
-        else:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph.svg')
-    else:
-        if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_3Y_gnd.svg')
-        else:
-            if conn_type == 'Δ':
-                mdl.set_component_icon_image(mask_handle, 'images/load_3D.svg')
-            else:
-                mdl.set_component_icon_image(mask_handle, 'images/load_3Y.svg')
-'''
 
+
+'''*********************************************************************************
+The icons for the grounding-refactorization update are different from the internal
+component (CIL, CPL) because now the Figures are different in content and size.
+*********************************************************************************'''
 def define_icon(mdl, mask_handle):
     phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
     tp_connection = mdl.get_property_value(mdl.prop(mask_handle, "tp_connection"))
@@ -470,19 +456,23 @@ def port_dynamics(mdl, mask_handle):
         p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
         q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
 
-        if p_ext:
-            mdl.set_port_properties(p_ext, terminal_position=(24, -16))
-            created_ports.update({"P_ext": p_ext})
-        if q_ext:
-            mdl.set_port_properties(q_ext, terminal_position=(24, 16))
-            created_ports.update({"Q_ext": q_ext})
-
         if tp_connection == "Y":
             pos_port_a = (0, -32)
             pos_port_b = (0, 30)
+            pos_p_ext = (16, -16)
+            pos_q_ext = (16, 16)
         else:
             pos_port_a = (8, -32)
             pos_port_b = (8, 30)
+            pos_p_ext = (24, -16)
+            pos_q_ext = (24, 16)
+
+        if p_ext:
+            mdl.set_port_properties(p_ext, terminal_position=pos_p_ext)
+            created_ports.update({"P_ext": p_ext})
+        if q_ext:
+            mdl.set_port_properties(q_ext, terminal_position=pos_q_ext)
+            created_ports.update({"Q_ext": q_ext})
 
         if not port_a:
             port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
@@ -725,28 +715,12 @@ def connections_dynamics(mdl, mask_handle, created_ports):
 
     if load_model == "Constant Impedance":
         load = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-        '''
-        if not load:
-            set_load_model(mdl, mask_handle, load_model)
-            load = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-            mdl.info("Line 704 creating CIL......")
-        '''
+
     elif load_model == "Constant Power":
         load = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        '''
-        if not load:
-            set_load_model(mdl, mask_handle, load_model)
-            load = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-            mdl.info("Line 711 creating CPL......")
-        '''
+
     elif load_model == "Constant Z,I,P":
         load = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-        '''
-        if not load:
-            set_load_model(mdl, mask_handle, load_model)
-            load = mdl.get_item("CPL", parent=comp_handle, item_type="component")
-            mdl.info("Line 718 creating CPL for Constant Z,I,P......")
-        '''
 
 
 
