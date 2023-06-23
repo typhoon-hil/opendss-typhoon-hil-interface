@@ -354,7 +354,6 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
         self.mdl_ref = mdl
         self.saved_instance = instance  # Avoid window closing instantly
 
-
     def update_dss_path(self, path, filename):
 
         self.dss_folder = path
@@ -482,14 +481,14 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 self.hour_to_time_all(str(item_mon_names[idx]))
 
     def hour_to_time_all(self, plot_name):
-        csv_name = str(self.dss_model_name) + "_Mon_" + plot_name
+        csv_name = str(self.dss_model_name) + "_Mon_" + plot_name + "_1"    # _1 because it seems dss is including it
         csv_file_path = self.dss_output_path.joinpath(csv_name + '.csv')
         csvread = pd.read_csv(csv_file_path)
         csvread.rename(columns={'hour': 'Time'}, inplace=True)
         csvread.to_csv(csv_file_path)
 
     def hour_to_time(self, plot_name):
-        csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(plot_name)])
+        csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(plot_name)]) + "_1"    # _1 because it seems dss is including it
         csv_file_path = self.dss_output_path.joinpath(csv_name + '.csv')
         csvread = pd.read_csv(csv_file_path)
         csvread.rename(columns={'hour': 'Time'}, inplace=True)
@@ -546,7 +545,6 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 cfg_select = self.cfg_file_vi
             self.plotprocess.startDetached(f'cmd /c pushd "{thcc_folder[:2]}" & typhoon_hil sa --data_file="{csv_file_path}" --config_file="{cfg_select}"')
 
-
     def do_signal_plot(self):
         item_count = self.list_dss_plot.count()
 
@@ -564,7 +562,7 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
 
         mode = "0"
         if current_item:
-            csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(current_item.text())])
+            csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(current_item.text())]) + "_1"    # _1 because it seems dss is including it
             if "VOLTAGE" in csv_name:
                 mode = "0"
             elif "POWER" in csv_name:
@@ -589,8 +587,8 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 p1label = ["V1", "V2", "V3"]
                 p2label = ["I1", "I2", "I3"]
                 p2ylabel = "Irms (A)"
-                p1keys = [" V1", " V2", " V3"]
-                p2keys = [" I1", " I2", " I3"]
+                p1keys = ["V1", "V2", "V3"]
+                p2keys = ["I1", "I2", "I3"]
                 subplotsize = 220
                 fig = plt.figure(figsize=(12, 6))
                 p1title = item_chunks[0] + " Phase to Neutral Voltage " + item_chunks[(len(item_chunks)-2)] + " " + item_chunks[(len(item_chunks)-1)]
@@ -602,8 +600,8 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 p2ylabel = "Reactive power (kVAR)"
                 p1label = ["P1", "P2", "P3"]
                 p2label = ["Q1", "Q2", "Q3"]
-                p1keys = [" P1 (kW)", " P2 (kW)", " P3 (kW)"]
-                p2keys = [" Q1 (kvar)", " Q2 (kvar)", " Q3 (kvar)"]
+                p1keys = ["P1 (kW)", "P2 (kW)", "P3 (kW)"]
+                p2keys = ["Q1 (kvar)", "Q2 (kvar)", "Q3 (kvar)"]
                 subplotsize = 120
                 fig = plt.figure(figsize=(12, 3.8))
                 p1title = item_chunks[0] + " Phase Active Power " + item_chunks[(len(item_chunks)-2)] + " " + item_chunks[(len(item_chunks)-1)]
@@ -615,8 +613,8 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 p2ylabel = "Irms (A)"
                 p1label = ["V1", "V2", "V3"]
                 p2label = ["I1", "I2", "I3"]
-                p1keys = [" V1", " V2", " V3"]
-                p2keys = [" I1", " I2", " I3"]
+                p1keys = ["V1", "V2", "V3"]
+                p2keys = ["I1", "I2", "I3"]
                 subplotsize = 220
                 fig = plt.figure(figsize=(12, 6))
                 p1title = item_chunks[0] + " Phase to Neutral Voltage " + item_chunks[(len(item_chunks) - 2)] + " " + item_chunks[(len(item_chunks) - 1)]
@@ -642,11 +640,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
             if mode == "0":
                 p3 = plt.subplot(subplotsize+3)
                 # plt.ion()
-                plt.plot(csvread[time_header], csvread[" VAngle1"], label="V1 Angle", color='blue', marker='o')
-                if " VAngle2" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" VAngle2"], label="V2 Angle", color='green', marker='o')
-                if " VAngle3" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" VAngle3"], label="V3 Angle", color='red', marker='o')
+                plt.plot(csvread[time_header], csvread["VAngle1"], label="V1 Angle", color='blue', marker='o')
+                if "VAngle2" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["VAngle2"], label="V2 Angle", color='green', marker='o')
+                if "VAngle3" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["VAngle3"], label="V3 Angle", color='red', marker='o')
                 #plt.plot(csvread["hour"], csvread[" VAngle2"], color='tab:green', marker='o')
                 #plt.plot(csvread["hour"], csvread[" VAngle2"], color='green')
                 #plt.plot(csvread["hour"], csvread[" VAngle3"], color='tab:red', marker='o')
@@ -676,11 +674,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
             if mode == "0":
                 p4 = plt.subplot(subplotsize+4)
                 # plt.ion()
-                plt.plot(csvread[time_header], csvread[" IAngle1"], label="I1 Angle", color='blue', marker='o')
-                if " IAngle2" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" IAngle2"], label="I2 Angle", color='green', marker='o')
-                if " IAngle3" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" IAngle3"], label="I3 Angle", color='red', marker='o')
+                plt.plot(csvread[time_header], csvread["IAngle1"], label="I1 Angle", color='blue', marker='o')
+                if "IAngle2" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["IAngle2"], label="I2 Angle", color='green', marker='o')
+                if "IAngle3" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["IAngle3"], label="I3 Angle", color='red', marker='o')
                 # plt.plot(csvread["hour"], csvread[" VAngle2"], color='tab:green', marker='o')
                 # plt.plot(csvread["hour"], csvread[" VAngle2"], color='green')
                 # plt.plot(csvread["hour"], csvread[" VAngle3"], color='tab:red', marker='o')
