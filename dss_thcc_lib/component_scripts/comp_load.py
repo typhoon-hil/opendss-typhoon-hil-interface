@@ -16,7 +16,6 @@ def tp_connection_dynamics(mdl, container_handle):
     phases = mdl.get_property_disp_value(phases_prop)
 
     tp_connection_prop = mdl.prop(container_handle, "tp_connection")
-    #tp_connection = mdl.get_property_value(tp_connection_prop)
 
     mdl.enable_property(mdl.prop(container_handle, "tp_connection"))
 
@@ -131,9 +130,6 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
     zip_internal_n_q_prop = mdl.prop(container_handle, "zip_internal_n_Q")
     zip_internal_n_q = mdl.get_property_disp_value(zip_internal_n_q_prop)
 
-    phases_prop = mdl.prop(container_handle, "phases")
-    phases = mdl.get_property_value(phases_prop)
-
     if new_value == "Constant Impedance":
         mdl.hide_property(zip_vector_prop)
         mdl.hide_property(zip_vector_q_prop)
@@ -148,14 +144,7 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.disable_property(mdl.prop(container_handle, "r_gain_k"))
         mdl.enable_property(mdl.prop(container_handle, "tp_connection"))
         tp_connection_edited(mdl, container_handle, "Y - Grounded")
-        '''
-        if phases == "1":
-            mdl.disable_property(mdl.prop(container_handle, "tp_connection"))
-        else:
-            mdl.enable_property(mdl.prop(container_handle, "tp_connection"))
-        '''
-        #if conn_type == "Y":
-        #    mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
+
     else:
         if new_value == "Constant Power":
             mdl.hide_property(zip_vector_prop)
@@ -367,13 +356,6 @@ def port_dynamics(mdl, mask_handle):
 
     load_model_prop = mdl.prop(mask_handle, "load_model")
     load_model = mdl.get_property_disp_value(load_model_prop)
-
-    #ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    #ground_connected = mdl.get_property_value(ground_connected_prop)
-    if tp_connection == "Y - Grounded":
-        gnd_check = True
-    else:
-        gnd_check = False
 
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
@@ -741,9 +723,6 @@ def connections_dynamics(mdl, mask_handle, created_ports):
 
 
     if tp_connection == "Y":
-        #mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Y")
-        #mdl.set_property_value(mdl.prop(cil1, "ground_connected"), False)
-
         if not jun_n:
             jun_n = mdl.create_junction(name='JN', parent=comp_handle, kind='pe', position=(7921, 8326))
 
@@ -758,10 +737,6 @@ def connections_dynamics(mdl, mask_handle, created_ports):
 
 
     elif tp_connection == "Y - Grounded":
-        #mdl.set_property_value(mdl.prop(load, "conn_type"), "Y")
-        #mdl.set_property_value(mdl.prop(load, "ground_connected"), False)   # GND is managed on comp_load
-        #conn_n_cil = mdl.get_item("Conn_AN", parent=comp_handle, item_type=ITEM_CONNECTION)
-
         if not jun_n:
             jun_n = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
                                         position=(7921, 8326))
@@ -790,9 +765,6 @@ https://youtu.be/Al3vXVe9WVU
 def tp_connection_edited(mdl, mask_handle, new_value):
     rneut_prop = mdl.prop(mask_handle, "Rneut")
     xneut_prop = mdl.prop(mask_handle, "Xneut")
-
-    #tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
-    #tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
     if new_value == "Y - Grounded":
         # Enable user input fields for N to Gnd impedance

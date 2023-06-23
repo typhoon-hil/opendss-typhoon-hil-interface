@@ -320,11 +320,9 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
     # Y positions
     if num_windings == 2:
         pos_a = [-96, -96]
-        posa_term = -32
         pos_b = [0, 0]
-        posb_term = 0
         pos_c = [96, 96]
-        posc_term = 32
+
     else:
         pos_a = [-96, -346, -96, 154] if num_windings == 4 else [-96, -240, 48]
         pos_b = [y + 96 for y in pos_a]
@@ -428,8 +426,6 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
 
     update_neutrals(mdl, mask_handle, trafo_handle, created_ports)
     vreg_connection(mdl, mask_handle)
-
-
 
 
 
@@ -1155,7 +1151,7 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
 This call the functions to build the transformer configuration according
 to the user selected parameters and configurations.
 It uses a flag to avoid multiple unnecessary redundant calls of the
-functions.
+functions - "flg_run".
 **********************************************************************'''
 def topology_dynamics(mdl, container_handle):
     flg_run_prop = mdl.prop(container_handle, "flg_run_topology")

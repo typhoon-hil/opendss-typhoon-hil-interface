@@ -55,13 +55,6 @@ class Load(TwoTerminal):
         new_format_properties = dict()
         # Phase Property
         new_format_properties["phases"] = tse_properties["phases"]
-        # kV property
-        # if tse_properties["phases"] == 1:
-        #     if tse_properties["ground_connected"]:
-        #         kv = (tse_properties["Vn_3ph"] / 1) / 1
-        #     else:
-        #         kv = tse_properties["Vn_3ph"]
-        # else:
         kv = tse_properties["Vn_3ph"]
         new_format_properties["kV"] = kv
         # PF Property
@@ -108,17 +101,18 @@ class Load(TwoTerminal):
             new_format_properties["daily"] = tse_properties.get("loadshape_name")
 
         #gnd = tse_properties["ground_connected"] == "True"
-        if tse_properties["tp_connection"] == "Y - Ground Connected":
+        if tse_properties["tp_connection"] == "Y - Grounded":
             gnd = True
         else:
             gnd = False
 
-        if tse_properties["phases"] == "3":
-            if not gnd:
-                new_format_properties["Rneut"] = "-1"
-            else:
-                new_format_properties["Rneut"] = tse_properties.get("Rneut")
-                new_format_properties["Xneut"] = tse_properties.get("Xneut")
+        if gnd:
+            # Put the impedance between Neutral and Gnd
+            new_format_properties["Rneut"] = tse_properties.get("Rneut")
+            new_format_properties["Xneut"] = tse_properties.get("Xneut")
+        else:
+            # Neutral and Gnd are disconnected
+            new_format_properties["Rneut"] = "-1"
 
         # For single phase use phase voltage instead of line voltage
         if gnd and tse_properties["phases"] == "1":

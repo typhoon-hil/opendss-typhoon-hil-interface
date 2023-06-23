@@ -305,7 +305,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        num_windings_prop = mdl.prop(mask_handle, "num_windings")
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
                         num_windings = int(mdl.get_property_disp_value(num_windings_prop))
 
                         comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
@@ -334,7 +334,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        num_windings_prop = mdl.prop(mask_handle, "num_windings")
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
                         num_windings = int(mdl.get_property_disp_value(num_windings_prop))
                         comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                     ENDCODE
@@ -362,7 +362,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        num_windings_prop = mdl.prop(mask_handle, "num_windings")
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
                         num_windings = int(mdl.get_property_disp_value(num_windings_prop))
                         comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                     ENDCODE
@@ -389,7 +389,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        num_windings_prop = mdl.prop(mask_handle, "num_windings")
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
                         num_windings = int(mdl.get_property_disp_value(num_windings_prop))
                         comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                     ENDCODE
@@ -833,6 +833,9 @@ library "OpenDSS" {
                         return comp_script
 
                     comp_script.define_icon(mdl, item_handle)
+
+                    flg_run_prop = mdl.prop(item_handle, "flg_run_topology")
+                    mdl.set_property_value(flg_run_prop, False)
 
                 ENDCODE
 
