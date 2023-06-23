@@ -407,11 +407,15 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             created_ports.update({"C2": c2})
 
     if phases == 1:
-        ports_dict = {"A1": (0, -32),
-                      "A2": (0, 32),
-                      "N1": (0, 32)}
+        if tp_connection == "Y - Grounded":
+            ports_dict = {"A1": (8, -32),
+                          "A2": (8, 32),
+                          "N1": (8, 32)}
+        else:
+            ports_dict = {"A1": (0, -32),
+                          "A2": (0, 32),
+                          "N1": (0, 32)}
     elif phases == 2:
-        mdl.info("got here")
         ports_dict = {"A1": (-16, -32),
                       "A2": (-16, 32),
                       "B1": (16, 32),
