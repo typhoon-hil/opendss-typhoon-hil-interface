@@ -293,12 +293,17 @@ library "OpenDSS" {
                 }
 
                 stability_analysis {
-                    label = "Enable coupling assistance"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                    label = "OpenDSS Coupling Assistance"
+                    widget = button
+                    type = string
+                    default_value = "Run"
                     group = "Typhoon HIL:5"
                     no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.run_stability_analysis(mdl, container_handle)
+                    ENDCODE
                 }
 
                 CODE open
