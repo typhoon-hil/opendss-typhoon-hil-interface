@@ -696,7 +696,7 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode, ts):
     freq = float(mdl.get_property_value(mdl.prop(mask_handle, "basefrequency")))
     scale_l = (1/ts)/(2*np.pi*freq)  # Use as "scale_l*X"
     scale_c = ts*(2*np.pi*freq)  # Use as "scale_c*Xc"
-    debug = False
+    debug = True
 
     if mode == "matrix":
 
