@@ -5,6 +5,7 @@ import numpy as np
 import re
 from math import log10, floor
 import ast
+import itertools
 
 # Append commands dialog
 class Ui_Dialog(object):
@@ -348,8 +349,9 @@ def define_icon(mdl, mask_handle):
 def run_stability_analysis(mdl, mask_handle):
     import opendssdirect as dss
 
-    window_report = 90
+    stability_data = {}
 
+    window_report = 90
     mdl.info(f"Running the Power Flow")
     sim_with_opendss(mdl, mask_handle)
     # Get the path to the exported JSON
@@ -358,11 +360,10 @@ def run_stability_analysis(mdl, mask_handle):
     mdlfile_folder = pathlib.Path(mdlfile).parents[0]
     mdlfile_target_folder = mdlfile_folder.joinpath(mdlfile_name + ' Target files')
     dss_folder = mdlfile_target_folder.joinpath('dss')
-    # json_file_path = mdlfile_target_folder.joinpath(mdlfile_name + '.json')
     dss_file = mdlfile_target_folder.joinpath(dss_folder).joinpath(mdlfile_name + '_master.dss')
-    # TODO: Get the original power flow at the Coupling Elements
-    dss.run_command(f'Compile "{dss_file}"')
-    pf_results = get_pf_results(mdl, dss)
+
+    stability_data.update({"dss_folder": dss_folder})
+    stability_data.update({"mdlfile_name": mdlfile_name})
 
     # Initial settings
     # TODO: Create a function to estimate the time step if it is on "auto" mode
@@ -378,6 +379,39 @@ def run_stability_analysis(mdl, mask_handle):
         mdl.info("Setting the Ground component scope to core.")
         mdl.set_model_property_value("ground_scope_core", True)
 
+    stability_data.update({"ts": ts})
+
+    # Getting all switches/contactors
+    tse_sw_elements = []
+    dss_sw_elements = []
+    for switch_handle in get_all_dss_elements(mdl, comp_type=["Controlled Switch"]):
+        tse_sw_elements.append(switch_handle)
+        dss_sw_elements.append(f"LINE.{mdl.get_name(switch_handle)}")
+    sw_gen = [(0, 1) for _ in range(len(dss_sw_elements))]
+    sw_comb = [comb for comb in itertools.product(*sw_gen)]
+
+    # Get the original power flow at the Coupling Elements
+    dss.run_command(f'Compile "{dss_file}"')
+    pf_results = {}
+    if tse_sw_elements:
+        stability_data.update({"switches": tse_sw_elements})
+        for cnt, comb in enumerate(sw_comb):
+            for idx, sw_element in enumerate(dss_sw_elements):
+                dss.Circuit.SetActiveElement(sw_element)
+                if comb[idx] == 0:
+                    dss.CktElement.Open(0, 0)
+                    dss.CktElement.Open(1, 0)
+                elif comb[idx] == 1:
+                    dss.CktElement.Close(0, 0)
+                    dss.CktElement.Close(1, 0)
+            pf_results[comb] = get_pf_results(mdl, dss)
+    else:
+        sw_comb = ["no_sw"]
+        stability_data.update({"switches": []})
+        pf_results["no_sw"] = get_pf_results(mdl, dss)
+    #mdl.info(f"{pf_results=}")
+    dss.run_command(f'Compile "{dss_file}"')  # Reset the dss file
+
     # Compensation Stage (Changing DSS properties to follow the THCC approach)
     restore_names_dict = {}
     dss_to_thcc_compensation(mdl, dss, "Coupling", ts, restore_names_dict)
@@ -385,28 +419,64 @@ def run_stability_analysis(mdl, mask_handle):
     dss_to_thcc_compensation(mdl, dss, "Line", ts, restore_names_dict)
     dss_to_thcc_compensation(mdl, dss, "Vsource", ts, restore_names_dict)
     dss_to_thcc_compensation(mdl, dss, "Manual Switch", ts, restore_names_dict)
+    dss_to_thcc_compensation(mdl, dss, "Controlled Switch", ts, restore_names_dict)
     dss_to_thcc_compensation(mdl, dss, "Three-Phase Transformer", ts, restore_names_dict)
 
     tse_cpl_elements = []
     dss_cpl_elements = []
-    for coupling_handle in get_all_dss_elements(mdl, comp_type="Coupling"):
+    for coupling_handle in get_all_dss_elements(mdl, comp_type=["Coupling"]):
         tse_cpl_elements.append(coupling_handle)
         dss_cpl_elements.append(f"LINE.{mdl.get_name(coupling_handle)}")
 
     if dss_cpl_elements:
         mdl.info("\nOpenDSS Coupling Assistance started...")
         all_report_data = {}
+        stability_data.update({"couplings": tse_cpl_elements})
+
         for idx_el, element in enumerate(dss_cpl_elements):
-
+            tse_name = mdl.get_name(tse_cpl_elements[idx_el])
+            stability_data[tse_name] = {}
+            # Report Vars
             report_cpl_data = {}
-            report_cpl_data["name"] = mdl.get_name(tse_cpl_elements[idx_el])
-            # mdl.info(f"----- {mdl.get_name(tse_cpl_elements[idx_el])} Element -----")
+            report_cpl_data["name"] = tse_name
 
-            r1, r2, bus1, bus2, freq = get_zsc_impedances(mdl, mask_handle, dss, element, "matrix", ts)
-            report_cpl_data["bus1"] = bus1
-            report_cpl_data["bus2"]= bus2
+            case_data = {}
+            if tse_sw_elements:
+                for count, comb in enumerate(sw_comb):
+                    for idx, sw_element in enumerate(dss_sw_elements):
+                        dss.Circuit.SetActiveElement(sw_element)
+                        if comb[idx] == 0:
+                            dss.CktElement.Open(0, 0)
+                            dss.CktElement.Open(1, 0)
+                        elif comb[idx] == 1:
+                            dss.CktElement.Close(0, 0)
+                            dss.CktElement.Close(1, 0)
+                    r1, r2, bus1, bus2, freq = get_zsc_impedances(mdl, mask_handle, dss, element, "matrix", ts)
+                    case_data[comb] = {}
+                    case_data[comb].update({"r1": r1, "r2": r2})
+                    # Retrieve the Power flow data
+                    case_data[comb].update({"power_flow": pf_results[comb][tse_name]})
+            else:
+                r1, r2, bus1, bus2, freq  = get_zsc_impedances(mdl, mask_handle, dss, element, "matrix", ts)
+                case_data["no_sw"] = {"r1": r1, "r2": r2}
+                # Retrieve the Power flow data
+                case_data["no_sw"].update({"power_flow": pf_results["no_sw"][tse_name]})
+                mdl.info("----")
+
+            stability_data[tse_name].update(case_data)
+            stability_data[tse_name].update({"bus1": bus1, "bus2": bus2, "freq": freq})
+
+            # r1, r2, bus1, bus2, freq = get_zsc_impedances(mdl, mask_handle, dss, element, "matrix", ts)
+            # report_cpl_data["bus1"] = bus1
+            # report_cpl_data["bus2"]= bus2
+
+            cpl_bus1 = stability_data[tse_name].get("bus1")
+            cpl_bus2 = stability_data[tse_name].get("bus2")
+            cpl_freq = stability_data[tse_name].get("freq")
             mode = mdl.get_property_value(mdl.prop(tse_cpl_elements[idx_el], "auto_mode"))
             if mode == "Manual":
+                # Vars
+
                 report_cpl_data["mode"] = "Manual"
 
                 # Snubbers
@@ -429,7 +499,7 @@ def run_stability_analysis(mdl, mask_handle):
                     c1_cc_snb = float(mdl.get_property_value(mdl.prop(tse_cpl_elements[idx_el], "itm_csnb_c")))
                     r1_snb = r1_cc_snb + ts/c1_cc_snb
                     report_cpl_data["csnb_value"] = f"R1={sc_notation(r1_cc_snb)}Ω, C1={sc_notation(c1_cc_snb)}F"
-                    report_cpl_data["csnb_impedance"] = r1_cc_snb - (1/(2*np.pi*freq*c1_cc_snb))*1j
+                    report_cpl_data["csnb_impedance"] = r1_cc_snb - (1/(2*np.pi*cpl_freq*c1_cc_snb))*1j
 
                 if itm_vsnb_type == "none":
                     r2_snb = 0
@@ -447,7 +517,7 @@ def run_stability_analysis(mdl, mask_handle):
                     l1_cc_snb_r = (1/ts)*l1_cc_snb
                     r2_snb = r2_cc_snb*l1_cc_snb_r/(r2_cc_snb+l1_cc_snb_r)
                     report_cpl_data["vsnb_value"] = f"R2={sc_notation(r2_cc_snb)}Ω, L1={sc_notation(l1_cc_snb)}H"
-                    report_cpl_data["vsnb_impedance"] = (r2_cc_snb*(2*np.pi*freq*l1_cc_snb)*1j) / (r2_cc_snb+(2*np.pi*freq*l1_cc_snb)*1j)
+                    report_cpl_data["vsnb_impedance"] = (r2_cc_snb*(2*np.pi*cpl_freq*l1_cc_snb)*1j) / (r2_cc_snb+(2*np.pi*cpl_freq*l1_cc_snb)*1j)
 
                 # Check Topological Conflicts
                 topological_status_msg = "No"
@@ -455,7 +525,7 @@ def run_stability_analysis(mdl, mask_handle):
                 topological_conflict_msg = []
                 # Current Side
                 dss.run_command("Calcv")
-                dss.Circuit.SetActiveBus(bus1)
+                dss.Circuit.SetActiveBus(cpl_bus1)
                 pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 # Removing the lines created by the components compensation stage
                 pde_connected_filtered = []
@@ -485,7 +555,7 @@ def run_stability_analysis(mdl, mask_handle):
                                                         f"\n  Please, considers to use a snubber at the current source side of the {mdl.get_name(tse_cpl_elements[idx_el])}")
 
                 # Voltage Side
-                dss.Circuit.SetActiveBus(bus2)
+                dss.Circuit.SetActiveBus(cpl_bus2)
                 pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 # Removing the lines created by the components compensation stage
                 pde_connected_filtered = []
@@ -515,24 +585,43 @@ def run_stability_analysis(mdl, mask_handle):
                 report_cpl_data['topological_status_msg'] = topological_status_msg
                 report_cpl_data["top_conflicts"] = topological_conflict_msg
 
-                # Stability Check
-                r1_fixed = [rdss*r1_snb/(rdss + r1_snb) for rdss in r1]
-                r2_fixed = [rdss + r2_snb for rdss in r2]
-                z_ratio = [r1/r2 for r1, r2 in zip(r1_fixed, r2_fixed)]
-                if any([z > 1.1 for z in z_ratio]):
-                    # mdl.info(f"Stability Info: {mdl.get_name(tse_cpl_elements[idx_el])} is unstable.\n")
-                    report_cpl_data["stability"] = "unstable"
-                    report_cpl_data['stability_tip'] = f"- A flip on the {report_cpl_data['name']} might solve this issue."
-                elif any([(0.9 < z < 1.1) for z in z_ratio]):
-                    # mdl.info(f"Stability Info: {mdl.get_name(tse_cpl_elements[idx_el])} is around stability border.\n")
-                    report_cpl_data["stability"] = "around stability border"
-                    if any([z >= 1.0 for z in z_ratio]):
-                        report_cpl_data['stability_tip'] = f"- A flip on the {report_cpl_data['name']} and an increase in its snubbers might solve this issue might solve this issue."
-                    else:
-                        report_cpl_data['stability_tip'] = f"- An increase in the {report_cpl_data['name']}'s snubbers might solve this issue."
-                else:
-                    # mdl.info(f"Stability Info: {mdl.get_name(tse_cpl_elements[idx_el])} is stable.\n")
-                    report_cpl_data["stability"] = "stable"
+                # mdl.info(f"{stability_data=}")
+
+                for count, comb in enumerate(sw_comb):
+                    # Stability Check
+                    r1_fixed = [rdss*r1_snb/(rdss + r1_snb) for rdss in stability_data[tse_name][comb].get("r1")]
+                    r2_fixed = [rdss + r2_snb for rdss in stability_data[tse_name][comb].get("r2")]
+                    stability_data[tse_name][comb].update({"r1_fixed": r1_fixed})
+                    stability_data[tse_name][comb].update({"r2_fixed": r2_fixed})
+                    z_ratio = [_r1/_r2 for _r1, _r2 in zip(r1_fixed, r2_fixed)]
+                    cpl_stable = []
+                    for z in z_ratio:
+                        if z > 1.1:
+                            cpl_stable.append(0)
+                            # stability_data[tse_name][comb].update({"stability": "unstable"})
+                            # mdl.info(f"Stability Info: {mdl.get_name(tse_cpl_elements[idx_el])} is unstable.\n")
+                            report_cpl_data["stability"] = "unstable"
+                            report_cpl_data["stability_tip"] = f"- A flip on the {report_cpl_data['name']} might solve this issue."
+                        elif (0.9 < z < 1.1):
+                            cpl_stable.append(2)
+                            # mdl.info(f"Stability Info: {mdl.get_name(tse_cpl_elements[idx_el])} is around stability border.\n")
+                            # stability_data[tse_name][comb].update({"stability": "around stability border"})
+                            report_cpl_data["stability"] = "around stability border"
+                            if z >= 1.0:
+                                msg = f"- A flip on the {report_cpl_data['name']} and an increase in its snubbers might solve this issue might solve this issue."
+                                report_cpl_data['stability_tip'] = msg
+                                # stability_data[tse_name][comb].update({"stability_tip": msg})
+                            else:
+                                msg = f"- An increase in the {report_cpl_data['name']}'s snubbers might solve this issue."
+                                report_cpl_data['stability_tip'] = msg
+                                # stability_data[tse_name][comb].update({"stability_tip": msg})
+                        else:
+                            cpl_stable.append(1)
+                            # mdl.info(f"Stability Info: {mdl.get_name(tse_cpl_elements[idx_el])} is stable.\n")
+                            stability_data[tse_name][comb].update({"stability": "stable"})
+                            report_cpl_data["stability"] = "stable"
+                    stability_data[tse_name].update({"report_cpl": report_cpl_data})
+                    stability_data[tse_name][comb].update({"stability": cpl_stable})
 
             elif mode == "Automatic":
                 report_cpl_data["mode"] = "Automatic"
@@ -544,7 +633,7 @@ def run_stability_analysis(mdl, mask_handle):
                 # TODO The logic has not considered the phases individually yet
                 if flip_status:
                     r1, r2 = r2, r1
-                    bus1, bus2 = bus2, bus1
+                    cpl_bus1, cpl_bus2 = cpl_bus2, cpl_bus1
 
                 z_ratio = [rth1/rth2 for rth1, rth2 in zip(r1, r2)]
                 if any([z > 1.1 for z in z_ratio]):
@@ -561,7 +650,7 @@ def run_stability_analysis(mdl, mask_handle):
                     report_cpl_data["stability"] = "stable"
 
                 # Current Side
-                dss.Circuit.SetActiveBus(bus1)
+                dss.Circuit.SetActiveBus(cpl_bus1)
                 pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 mdl.info(f"{pde_connected=}")
                 pde_connected.remove(element.upper())
@@ -587,7 +676,7 @@ def run_stability_analysis(mdl, mask_handle):
                 report_cpl_data['topological_status_msg'] = "None"
 
                 # Voltage Side
-                dss.Circuit.SetActiveBus(bus2)
+                dss.Circuit.SetActiveBus(cpl_bus2)
                 pde_connected = [item.upper() for item in dss.Bus.AllPDEatBus()]
                 pde_connected.remove(element.upper())
                 topological_conflict = False
@@ -600,7 +689,7 @@ def run_stability_analysis(mdl, mask_handle):
                         topological_conflict = True
 
                 if topological_conflict:
-                    mdl.info(tse_cpl_elements[idx_el])
+                    #mdl.info(tse_cpl_elements[idx_el])
                     mdl.set_property_value(mdl.prop(tse_cpl_elements[idx_el], "itm_vsnb_type"), "R2")
                     mdl.set_property_value(mdl.prop(tse_cpl_elements[idx_el], "itm_vsnb_r_auto"), "1e-3")
                     report_cpl_data["vsnb_value"] = f"R2={sc_notation(1e-3)}Ω"
@@ -611,6 +700,7 @@ def run_stability_analysis(mdl, mask_handle):
 
             all_report_data[f"{mdl.get_name(tse_cpl_elements[idx_el])}"] = report_cpl_data
 
+        """
         for _, cpl_data in all_report_data.items():
             mdl.info(" ")
             msg = f"{cpl_data['name']} Element"
@@ -663,9 +753,16 @@ def run_stability_analysis(mdl, mask_handle):
             if cpl_data.get("stability_tip"):
                 mdl.info(f"{cpl_data['stability_tip']}")
         mdl.info("-"*window_report)
-
+        """
+        mdl.info(f"- Detailed stability report saved on: {stability_data['dss_folder']}\stability_report.txt")
+        detailed_report(mdl, stability_data)
+        mdl.info(f"Summary Report:")
+        summary_report(mdl, stability_data)
+        mdl.info("-"*window_report)
         mdl.info("Stability analysis Completed.")
         dss.run_command(f'Compile "{dss_file}"')
+    else:
+        stability_data.update({"couplings": []})
 
 
 def get_all_dss_elements(mdl, comp_type, parent_comp=None):
@@ -679,10 +776,10 @@ def get_all_dss_elements(mdl, comp_type, parent_comp=None):
     for comp in all_components:
         try:
             type_name = mdl.get_component_type_name(comp)
-            if type_name and type_name == comp_type and mdl.is_enabled(comp):
+            if type_name and type_name in comp_type and mdl.is_enabled(comp):
                 component_list.append(comp)
             elif not type_name:  # Component is a subsystem
-                component_list.extend(get_all_dss_elements(mdl, mdl.get_mask(comp), parent_comp=comp))
+                component_list.extend(get_all_dss_elements(mdl, [mdl.get_mask(comp)], parent_comp=comp))
         except:
             # Some components (such as ports and connections) cannot be used with
             # get_component_type_name
@@ -696,7 +793,7 @@ def get_zsc_impedances(mdl, mask_handle, dss, coupling_line, mode, ts):
     freq = float(mdl.get_property_value(mdl.prop(mask_handle, "basefrequency")))
     scale_l = (1/ts)/(2*np.pi*freq)  # Use as "scale_l*X"
     scale_c = ts*(2*np.pi*freq)  # Use as "scale_c*Xc"
-    debug = True
+    debug = False
 
     if mode == "matrix":
 
@@ -829,7 +926,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
     debug = False
 
     if element_type == "Load":
-        for load_handle in get_all_dss_elements(mdl, comp_type="Load"):
+        for load_handle in get_all_dss_elements(mdl, comp_type=["Load"]):
             # Getting THCC properties
             #mdl.info(load_handle)
             conn_type = mdl.get_property_value(mdl.prop(load_handle, "conn_type"))
@@ -937,7 +1034,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                     dss.run_command(cmd_string)
 
     elif element_type == "Coupling":
-        for coupling_handle in get_all_dss_elements(mdl, comp_type="Coupling"):
+        for coupling_handle in get_all_dss_elements(mdl, comp_type=["Coupling"]):
             # Opening DSS Line
             dss_coupling_name = mdl.get_fqn(coupling_handle).replace(".", "_").upper()
             dss.Circuit.SetActiveElement(f"LINE.{dss_coupling_name}")
@@ -1008,7 +1105,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                 dss.run_command(cmd_string)
 
     elif element_type == "Line":
-        for line_handle in get_all_dss_elements(mdl, comp_type="Line"):
+        for line_handle in get_all_dss_elements(mdl, comp_type=["Line"]):
             dss_line_name = mdl.get_fqn(line_handle).replace(".", "_").upper()
             #mdl.info(f"{dss_line_name=}")
             dss.Circuit.SetActiveElement(f"LINE.{dss_line_name}")
@@ -1073,7 +1170,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                 dss.run_command("calcv")
 
     elif element_type == "Vsource":
-        for vsource_handle in get_all_dss_elements(mdl, comp_type="Vsource"):
+        for vsource_handle in get_all_dss_elements(mdl, comp_type=["Vsource"]):
             dss_vsource_name = mdl.get_fqn(vsource_handle).replace(".", "_").upper()
             dss.Circuit.SetActiveElement(f"VSOURCE.{dss_vsource_name}")
 
@@ -1096,7 +1193,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
 
     elif element_type == "Three-Phase Transformer":
 
-        for trf_handle in get_all_dss_elements(mdl, comp_type="Three-Phase Transformer"):
+        for trf_handle in get_all_dss_elements(mdl, comp_type=["Three-Phase Transformer"]):
 
             dss_trf_name = mdl.get_fqn(trf_handle).replace(".", "_").upper()
             dss.run_command("calcv")
@@ -1236,17 +1333,16 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                 dss.run_command("calcv")
                 restore_dict[f"LINE.{dss_trf_name.upper()}_{trf_names[idx].upper()}_SECCOMP"] = f"TRANSFORMER.{dss_trf_name.upper()}"
 
-
-    elif element_type == "Manual Switch":
-        for swt_handle in get_all_dss_elements(mdl, comp_type="Manual Switch"):
+    elif element_type in ["Manual Switch", "Controlled Switch"]:
+        for swt_handle in get_all_dss_elements(mdl, comp_type=["Manual Switch", "Controlled Switch"]):
             dss_swt_name = mdl.get_fqn(swt_handle).replace(".", "_").upper()
             dss.Circuit.SetActiveElement(f"LINE.{dss_swt_name}")
             dss.Lines.C1(0)
             dss.Lines.C0(0)
-            dss.Lines.X0(1e-6)
-            dss.Lines.X1(1e-6)
-            dss.Lines.R0(1e-6)
-            dss.Lines.R1(1e-6)
+            dss.Lines.X0(1e-3)
+            dss.Lines.X1(1e-3)
+            dss.Lines.R0(1e-3)
+            dss.Lines.R1(1e-3)
             dss.run_command("calcv")
 
 
@@ -1314,3 +1410,205 @@ def format_report_line(original_string, new_string, ini_pos, sub_item=False):
         original_char_list[1] = "-"
 
     return "".join(original_char_list)
+
+
+def detailed_report(mdl, stability_data):
+
+    window_report = 90
+    file_name = f"{stability_data['dss_folder']}\stability_report.txt"
+    # mdl.info(f"{stability_data=}")
+
+    with open(file_name, mode="w", encoding="utf-8") as file:
+        file.write(f"Stability Report for {stability_data.get('mdlfile_name')}\n")
+        file.write(f"Time Step: {sc_notation(stability_data.get('ts'))}s\n")
+        n_cpls = len(stability_data.get('couplings'))
+        cpl_names = []
+        for cpl in stability_data.get('couplings'):
+            cpl_names.append(mdl.get_name(cpl))
+        if n_cpls > 0:
+            file.write(f"Couplings: {n_cpls} ({', '.join(cpl_names)})\n")
+        else:
+            file.write(f"Couplings: {n_cpls}\n")
+        n_sw = len(stability_data.get('switches'))
+        sw_names = []
+        for sw in stability_data.get('switches'):
+            sw_names.append(mdl.get_name(sw))
+        if n_sw > 0:
+            file.write(f"Switches: {n_sw} ({', '.join(sw_names)})\n")
+        else:
+            file.write(f"Switches: {n_sw}\n")
+
+        if n_sw > 0:
+            sw_gen = [(0, 1) for _ in range(n_sw)]
+            sw_comb = [comb for comb in itertools.product(*sw_gen)]
+        else:
+            sw_comb = ["no_sw"]
+
+        for count_cpl, cpl in enumerate(stability_data.get("couplings")):
+            coupling = mdl.get_name(cpl)
+            bus1 = stability_data.get(f"{coupling}").get("bus1")
+            bus2 = stability_data.get(f"{coupling}").get("bus2")
+            cpl_data = stability_data.get(f"{coupling}").get("report_cpl")
+            #mdl.info(f"{cpl_data=}")
+            file.write("\n")
+            msg = f"{cpl_data['name']} Element"
+            file.write(format_report_line("-" * window_report, msg, int((window_report - len(msg)) / 2)))
+            file.write("\n")
+            file.write(f"Operational Mode: {cpl_data['mode']}\n")
+            file.write(f"Snubbers Parameterization:\n")
+            file.write(f"- Current Source Side: {cpl_data['csnb_value']}\n")
+            file.write(f"- Voltage Source Side: {cpl_data['vsnb_value']}\n")
+            file.write(f"Topological Conflicts: {cpl_data['topological_status_msg']}\n")
+            if cpl_data['topological_status_msg'] == "Yes":
+                for msg in cpl_data['top_conflicts']:
+                    file.write(f"{msg}\n")
+            for count_comb, comb in enumerate(sw_comb):
+                pf_data = stability_data.get(f"{coupling}").get(comb).get(f"power_flow")
+                if comb != "no_sw":
+                    sw_pos = []
+                    for count_sw, sw in enumerate(comb):
+                        if sw == 1:
+                            sw_pos.append(f"{sw_names[count_sw]}=Close")
+                        else:
+                            sw_pos.append(f"{sw_names[count_sw]}=Open")
+                    msg = f"--- Switch Condition: {'|'.join(sw_pos)} ---"
+                    file.write(format_report_line(" "*window_report, msg, int((window_report - len(msg)) / 2)))
+                    file.write("\n")
+                file.write(f"Power Flow data at the Coupling:\n")
+                phases = int(len(pf_data.get("power")) / 2 / 2)
+                power_msg = format_report_line(f"{'': <{window_report}}", "", 0, sub_item=True)
+                current_msg = format_report_line(f"{'': <{window_report}}", "", 0, sub_item=True)
+                voltage_msg = format_report_line(f"{'': <{window_report}}", "", 0, sub_item=True)
+                for idx in range(phases):
+                    pf_power_aux = pf_data.get("power")
+                    pf_current_aux = pf_data.get("current")[2*idx] + pf_data.get("current")[2*idx+1]*1j
+                    pf_voltage_aux = pf_data.get("voltage")[2*idx] + pf_data.get("voltage")[2*idx+1]*1j
+                    msg = f"S{bus1.split('.')[1 + idx]}= {abs(round(pf_power_aux[2 * idx], 3))} + j{abs(round(pf_power_aux[2 * idx + 1], 3))} kVA"
+                    power_msg = format_report_line(power_msg, msg, 29*idx + 3)
+                    msg = f"I{bus1.split('.')[1 + idx]}= {round(np.absolute(pf_current_aux), 3)} A < {round(np.angle(pf_current_aux, deg=True),2)}°"
+                    current_msg = format_report_line(current_msg, msg, 29*idx + 3)
+                    msg = f"V{bus1.split('.')[1 + idx]}= {round(np.absolute(pf_voltage_aux)*1e-3, 3)} kV < {round(np.angle(pf_voltage_aux, deg=True), 2)}°"
+                    voltage_msg = format_report_line(voltage_msg, msg, 29*idx + 3)
+                file.write(f"{power_msg}\n")
+                file.write(f"{current_msg}\n")
+                file.write(f"{voltage_msg}\n")
+
+                file.write(f"Stability Data (ITM):\n")
+                r1_aux = stability_data.get(f"{coupling}").get(comb).get(f"r1_fixed")
+                r2_aux = stability_data.get(f"{coupling}").get(comb).get(f"r2_fixed")
+                stability_aux = stability_data.get(f"{coupling}").get(comb).get(f"stability")
+                for idx in range(phases):
+                    if stability_aux[idx] == 0:
+                        stability_results = "**UNSTABLE**"
+                    elif stability_aux[idx] == 2:
+                        stability_results = "**BORDER**"
+                    else:
+                        stability_results = "**STABLE**"
+                    msg = f"- Phase{bus1.split('.')[1 + idx]}: r1={sc_notation(r1_aux[idx])}Ω,  r2={sc_notation(r2_aux[idx])}Ω {stability_results}"
+                    file.write(f"{msg}\n")
+
+def summary_report(mdl, stability_data):
+
+    window_report = 90
+    n_sw = len(stability_data.get('switches'))
+    if n_sw > 0:
+        sw_gen = [(0, 1) for _ in range(n_sw)]
+        sw_comb = [comb for comb in itertools.product(*sw_gen)]
+    else:
+        sw_comb = ["no_sw"]
+
+    for cpl_handle in stability_data.get("couplings"):
+        cpl_name = mdl.get_name(cpl_handle)
+        cpl_data = stability_data.get(f"{cpl_name}").get("report_cpl")
+        mdl.info(" ")
+        msg = f"{cpl_data['name']} Element"
+        mdl.info(format_report_line("-"*window_report, msg, int((window_report - len(msg)) / 2)))
+        mdl.info(f"Operational Mode: {cpl_data['mode']}")
+        mdl.info(f"Topological Conflicts: {cpl_data['topological_status_msg']}") if cpl_data["mode"] == "Manual" else None
+        if cpl_data['topological_status_msg'] == "Yes":
+            for msg in cpl_data['top_conflicts']:
+                mdl.info(msg)
+
+        mdl.info(f"Snubbers Parameterization:")
+        max_current = 1e-6 + 1e-6*1j  # For compute line drop voltage
+        max_voltage = 1e-6 + 1e-6*1j  # For compute snubber power
+        for count_comb, comb in enumerate(sw_comb):
+            pf_data = stability_data.get(f"{cpl_name}").get(comb).get(f"power_flow")
+            phases = int(len(pf_data.get("power")) / 2 / 2)
+            for idx in range(phases):
+                pf_power_aux = pf_data.get("power")
+                pf_current_aux = pf_data.get("current")[2*idx] + pf_data.get("current")[2*idx+1]*1j
+                pf_voltage_aux = pf_data.get("voltage")[2*idx] + pf_data.get("voltage")[2*idx+1]*1j
+                if round(np.absolute(pf_current_aux), 3) > max_current:
+                    max_current = pf_current_aux
+                if round(np.absolute(pf_voltage_aux), 3) > max_voltage:
+                    max_voltage = pf_voltage_aux
+        if cpl_data['csnb_value'] == "none":
+            mdl.info(f"- Current Source Side: {cpl_data['csnb_value']}")
+        else:
+            snubber_power = max_voltage*np.conj(max_voltage)/(cpl_data["csnb_impedance"])
+            if np.imag(snubber_power) != 0:
+                mdl.info(f"- Current Source Side: {cpl_data['csnb_value']} (maximum snubber power: {sc_notation(np.real(snubber_power))}W + j{sc_notation(np.imag(snubber_power))}var)")
+            else:
+                mdl.info(f"- Current Source Side: {cpl_data['csnb_value']} (maximum snubber power: {sc_notation(np.real(snubber_power))}W)")
+        if cpl_data['vsnb_value'] == "none":
+            mdl.info(f"- Voltage Source Side: {cpl_data['vsnb_value']}")
+        else:
+            line_drop_voltage = max_current * cpl_data["vsnb_impedance"]
+            line_loss = np.real(max_current*np.conj(max_current)*cpl_data["vsnb_impedance"])
+            mdl.info(f"- Voltage Source Side: {cpl_data['vsnb_value']} (maximum drop voltage {sc_notation(np.absolute(line_drop_voltage))}V, and maximum loss {sc_notation(line_loss)}W)")
+
+    """
+    for _, cpl_data in all_report_data.items():
+        mdl.info(" ")
+        msg = f"{cpl_data['name']} Element"
+        mdl.info(format_report_line("-"*window_report, msg, int((window_report - len(msg)) / 2)))
+        mdl.info(f"Operational Mode: {cpl_data['mode']}")
+        mdl.info(f"Topological Conflicts: {cpl_data['topological_status_msg']}") if cpl_data["mode"] == "Manual" else None
+        if cpl_data['topological_status_msg'] == "Yes":
+            for msg in cpl_data['top_conflicts']:
+                mdl.info(msg)
+        phases = int(len(pf_results[cpl_data["name"]]["power"])/2/2)
+        mdl.info(f"Power Flow data at the Coupling:") if cpl_data["mode"] == "Manual" else None
+        max_current = 0  # For compute line drop voltage
+        max_voltage = 0  # For compute line drop voltage
+        power_msg = format_report_line(f"{'': <{window_report}}", "", 0, sub_item=True)
+        current_msg = format_report_line(f"{'': <{window_report}}", "", 0, sub_item=True)
+        voltage_msg = format_report_line(f"{'': <{window_report}}", "", 0, sub_item=True)
+        for idx in range(phases):
+            pf_power_aux = pf_results[cpl_data["name"]]["power"]
+            pf_current_aux = pf_results[cpl_data["name"]]["current"][2*idx] + pf_results[cpl_data["name"]]["current"][2*idx+1]*1j
+            pf_voltage_aux = pf_results[cpl_data["name"]]["voltage"][2*idx] + pf_results[cpl_data["name"]]["voltage"][2*idx+1]*1j
+            if round(np.absolute(pf_current_aux), 3) > max_current:
+                max_current = pf_current_aux
+            if round(np.absolute(pf_voltage_aux), 3) > max_voltage:
+                max_voltage = pf_voltage_aux
+            msg = f"S{cpl_data['bus1'].split('.')[1 + idx]}= {abs(round(pf_power_aux[2 * idx], 3))} + j{abs(round(pf_power_aux[2 * idx + 1], 3))} kVA"
+            power_msg = format_report_line(power_msg, msg, 29*idx + 3)
+            msg = f"I{cpl_data['bus1'].split('.')[1 + idx]}= {round(np.absolute(pf_current_aux), 3)} A ∠{round(np.angle(pf_current_aux, deg=True),2)}°"
+            current_msg = format_report_line(current_msg, msg, 28*idx + 3)
+            msg = f"V{cpl_data['bus1'].split('.')[1 + idx]}= {round(np.absolute(pf_voltage_aux)*1e-3, 3)} kV ∠{round(np.angle(pf_voltage_aux, deg=True), 2)}°"
+            voltage_msg = format_report_line(voltage_msg, msg, 28*idx + 3)
+        mdl.info(power_msg) if cpl_data["mode"] == "Manual" else None
+        mdl.info(current_msg) if cpl_data["mode"] == "Manual" else None
+        mdl.info(voltage_msg) if cpl_data["mode"] == "Manual" else None
+        mdl.info(f"Snubbers Parameterization:")
+        if cpl_data['csnb_value'] == "none":
+            mdl.info(f"- Current Source Side: {cpl_data['csnb_value']}")
+        else:
+            snubber_power = max_voltage*np.conj(max_voltage)/(cpl_data["csnb_impedance"])
+            if np.imag(snubber_power) != 0:
+                mdl.info(f"- Current Source Side (by phase): {cpl_data['csnb_value']} (snubber power: {sc_notation(np.real(snubber_power))}W + j{sc_notation(np.imag(snubber_power))}var)")
+            else:
+                mdl.info(f"- Current Source Side (by phase): {cpl_data['csnb_value']} (snubber power: {sc_notation(np.real(snubber_power))}W)")
+        if cpl_data['vsnb_value'] == "none":
+            mdl.info(f"- Voltage Source Side: {cpl_data['vsnb_value']}")
+        else:
+            line_drop_voltage = max_current * cpl_data["vsnb_impedance"]
+            line_loss = np.real(max_current*np.conj(max_current)*cpl_data["vsnb_impedance"])
+            mdl.info(f"- Voltage Source Side (by phase): {cpl_data['vsnb_value']} ({sc_notation(np.absolute(line_drop_voltage))}V drop voltage, {sc_notation(line_loss)}W Loss)")
+        mdl.info(f"Stability Check: {cpl_data['name']} is {cpl_data['stability']}")
+        if cpl_data.get("stability_tip"):
+            mdl.info(f"{cpl_data['stability_tip']}")
+    mdl.info("-"*window_report)
+    """
