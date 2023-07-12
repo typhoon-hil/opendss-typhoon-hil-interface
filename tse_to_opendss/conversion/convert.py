@@ -137,6 +137,10 @@ def generate_output_files(output_circuit):
         converted_component_types.add("LINECODE")
     if dss_data_path.joinpath("loadshapes.dss").is_file():
         converted_component_types.add("LOADSHAPE")
+    if dss_data_path.joinpath("xycurves.dss").is_file():
+        converted_component_types.add("XYCURVE")
+    if dss_data_path.joinpath("tshapes.dss").is_file():
+        converted_component_types.add("TSHAPE")
 
     # Write the output lines
     for converted_comp_type in converted_component_types:

@@ -40,3 +40,7 @@ def create_comp_instance(converted_comp_type, comp_data):
         return Container(converted_comp_type, **comp_data)
     elif converted_comp_type == "PVSYSTEM":
         return PVSystem(converted_comp_type, **comp_data)
+    elif converted_comp_type == "XYCURVE":
+        return XYCurve(converted_comp_type, **comp_data)
+    elif converted_comp_type == "TSHAPE":
+        return TShape(converted_comp_type, **comp_data)

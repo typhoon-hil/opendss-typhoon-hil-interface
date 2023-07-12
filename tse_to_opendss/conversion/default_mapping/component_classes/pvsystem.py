@@ -47,16 +47,14 @@ class PVSystem(TwoTerminal):
         tse_curve_names = ["xycurve_name_eff", "xycurve_name_cf"]
         dss_curve_names = ["EffCurve", "P-TCurve"]
 
-        tse_convert_props = tse_inverter_names + tse_pv_names
-        dss_convert_props = dss_inverter_names + dss_pv_names
+        tse_convert_props = tse_inverter_names + tse_pv_names + tse_curve_names
+        dss_convert_props = dss_inverter_names + dss_pv_names + dss_curve_names
         for index, prop in enumerate(tse_convert_props):
             new_format_properties[dss_convert_props[index]] = tse_properties.get(prop)
 
-        # Include component name to the curves
-        tse_convert_props = tse_curve_names
-        dss_convert_props = dss_curve_names
-        for index, prop in enumerate(tse_convert_props):
-            new_format_properties[dss_convert_props[index]] = f"\"{self.name}_{tse_properties.get(prop)}\""
+        if self.circuit.simulation_parameters.get("sim_mode") == "Time Series":
+            new_format_properties["daily"] = tse_properties.get("loadshape_name")
+            new_format_properties["Tdaily"] = tse_properties.get("tshape_name")
 
         return new_format_properties
 
@@ -85,8 +83,8 @@ class PVSystem(TwoTerminal):
     @staticmethod
     def extra_conversion_steps(self, tse_properties, tse_component):
         """ Applies extra necessary conversion steps. """
-
-
+        pass
+        """
         xycurve_eff_props = {"npts": tse_properties.get("xycurve_npts_eff"),
                              "xarray": tse_properties.get("xycurve_xarray_eff"),
                              "yarray": tse_properties.get("xycurve_yarray_eff")
@@ -97,8 +95,10 @@ class PVSystem(TwoTerminal):
                             "yarray": tse_properties.get("xycurve_yarray_cf")
                             }
 
+        
         xycurve_eff_exists = False  # TODO: GUI option
         xycurve_cf_exists = False   # TODO: GUI option
+        tshape_temp_exists = False  # TODO: GUI option
 
         from .xycurve import XYCurve
         if not xycurve_eff_exists:
@@ -116,6 +116,17 @@ class PVSystem(TwoTerminal):
                                   tse_properties=xycurve_cf_props,
                                   tse_component=None)
             self.created_instances_list.append(new_xycurve)
+
+        from .tshape import TShape
+        if not tshape_temp_exists:
+            new_tshape = TShape(converted_comp_type="TSHAPE",
+                                name=self.name + "_" + tse_properties["tshape_name"].upper(),
+                                circuit=self.circuit,
+                                tse_properties=xycurve_eff_props,
+                                tse_component=None)
+            self.created_instances_list.append(new_tshape)
+        """
+
 
     def output_line(self):
         """ Overrides parent output_line method. """

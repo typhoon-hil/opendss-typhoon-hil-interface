@@ -113,6 +113,8 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
             getname = "loadshapes"
         elif self.obj_type == "XYCurve":
             getname = "xycurves"
+        elif self.obj_type == "TShape":
+            getname = "tshapes"
 
         if self.obj_dicts.get(getname):
             self.list_object.clear()
@@ -161,7 +163,10 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
             self.unit_dict = {"mult": "", "npts": "", "hour": "", "useactual": "", }
         elif self.obj_type == "XYCurve":
             self.getname = "xycurves"
-            self.unit_dict = {"mult": "", "npts": "", "hour": ""}
+            self.unit_dict = {"npts": "", "xarray": "", "yarray": ""}
+        elif self.obj_type == "TShape":
+            self.getname = "tshapes"
+            self.unit_dict = {"npts": "", "interval": "", "temp": ""}
 
 
         if self.list_object.currentItem():
@@ -242,6 +247,8 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
                 dss_fpath = os.path.join(dss_folder_path, 'data', 'loadshapes.dss')
             elif self.obj_type == "XYCurve":
                 dss_fpath = os.path.join(dss_folder_path, 'data', 'xycurves.dss')
+            elif self.obj_type == "TShape":
+                dss_fpath = os.path.join(dss_folder_path, 'data', 'tshapes.dss')
 
             self.write_dss_object_file(dss_fpath)
 
@@ -294,7 +301,6 @@ class LoadObject(QtWidgets.QDialog, Ui_load_object):
     def return_selected_object(self):
         self.selected_object = self.list_object.currentItem().text()
         self.accept()
-
 
     def get_points_from_csv(self, loaded_file_path, headers, column):
         try:

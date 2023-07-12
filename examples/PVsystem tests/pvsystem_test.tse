@@ -1,0 +1,243 @@
+version = 4.2
+
+//
+// Saved by sw version: 2023.3 DEV
+//
+
+model "pvsystem_test" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/Vsource" V1 {
+            basekv = "0.240"
+            input_method = "MVAsc"
+        }
+        [
+            position = 8008, 4384
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus1 {
+        }
+        [
+            position = 8160, 4384
+            size = 16, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS1 {
+            powers = "kVA Elem"
+            sim_counter = "5"
+            sim_mode = "Time Series"
+            sim_status = "Sim5 complete"
+            voltagebases = "[0.240]"
+        }
+        [
+            position = 8160, 4232
+            size = 96, 96
+        ]
+
+        component "OpenDSS/PV System" "PV System1" {
+            Iki = "0.5"
+            Ikp = "5.0"
+            enable_monitoring = "True"
+            power = "5.0"
+            rl1_inductance = "6.8e-3"
+            rl1_resistance = "0.1"
+            voltage = "0.240"
+        }
+        [
+            position = 8000, 4528
+            size = 97, 97
+        ]
+
+        connect V1.A1 Bus1.A1 as Connection1
+        connect V1.B1 Bus1.B1 as Connection2
+        connect V1.C1 Bus1.C1 as Connection3
+        connect "PV System1.A1" Bus1.A2 as Connection4
+        [
+            breakpoints = 8272, 4496; 8272, 4352
+        ]
+        connect "PV System1.B1" Bus1.B2 as Connection5
+        [
+            breakpoints = 8232, 4528; 8232, 4384
+        ]
+        connect "PV System1.C1" Bus1.C2 as Connection6
+        [
+            breakpoints = 8200, 4560; 8200, 4416
+        ]
+    }
+
+    default {
+        "OpenDSS/Bus" {
+            type_prop = "ABC"
+            ground_prop = "False"
+            conf = "on both sides"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            execution_rate = "100e-6"
+            enable_output = "False"
+        }
+
+        "OpenDSS/PV System" {
+            power = "100"
+            voltage = "115"
+            freq = "60"
+            phases = "3"
+            connection = "Y"
+            load_xycurve_eff = "Choose"
+            xycurve_name_eff = "Eff"
+            xycurve_npts_eff = "4"
+            xycurve_xarray_eff = "[.1, .2, .4, 1.0]"
+            xycurve_yarray_eff = "[.86, .9, .93, .97]"
+            pmpp = "1000"
+            irrad = "1"
+            temp = "25"
+            load_xycurve_cf = "Choose"
+            xycurve_name_cf = "FactorPvsT"
+            xycurve_npts_cf = "4"
+            xycurve_xarray_cf = "[0, 25, 75, 100]"
+            xycurve_yarray_cf = "[1.2, 1.0, 0.8, 0.6]"
+            filter_type = "L"
+            rl1_resistance = "1e-3"
+            rl1_inductance = "1e-3"
+            rc_resistance = "1e-3"
+            rc_capacitance = "100e-6"
+            rl2_resistance = "1e-3"
+            rl2_inductance = "1e-3"
+            Ikp = "0"
+            Iki = "0"
+            ts = "100e-6"
+            power_ref = "Internal Scada Input"
+            t_mode = "Time value (h)"
+            load_loadshape = "Choose"
+            loadshape_name = "Irrad"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+            loadshape_int = "1"
+            loadshape_hour = "[]"
+            timespan = "Daily"
+            load_tshape = "Choose"
+            tshape_name = "Temp"
+            tshape_temp = "[25, 25, 25, 25, 25, 25, 25, 25, 35, 40, 45, 50, 60, 60, 55, 40, 35, 30, 25, 25, 25, 25, 25, 25]"
+            tshape_int = "1"
+            tshape_npts = "24"
+            tshape_hour = "[]"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            basefrequency = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+        }
+
+        "OpenDSS/Vsource" {
+            basekv = "115.0"
+            baseMVA = "100.0"
+            BaseFreq = "60"
+            global_basefreq = "False"
+            ground_connected = "True"
+            pu = "1.0"
+            Angle = "0"
+            Frequency = "60"
+            input_method = "Z"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
+            enable_monitoring = "False"
+        }
+    }
+}

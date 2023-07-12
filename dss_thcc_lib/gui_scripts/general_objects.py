@@ -8,6 +8,7 @@ import dss_thcc_lib.extra.dss_parser as dss_parser
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_objects(object):
+
     def setupUi(self, objects):
         objects.setObjectName("objects")
         objects.resize(589, 549)
@@ -246,42 +247,30 @@ class Ui_objects(object):
         self.label_savewarning.setGeometry(QtCore.QRect(60, 490, 481, 16))
         self.label_savewarning.setObjectName("label_savewarning")
 
-
+        # XYCurve widgets
         self.tab_xycurve = QtWidgets.QWidget()
         self.tab_xycurve.setObjectName("tab_xycurve")
-
         self.group_xycurve_parameters = QtWidgets.QGroupBox(self.tab_xycurve)
         self.group_xycurve_parameters.setGeometry(QtCore.QRect(150, 40, 400, 350))
         self.group_xycurve_parameters.setObjectName("group_xycurve_parameters")
-
         self.label_xycurves = QtWidgets.QLabel(self.tab_xycurve)
         self.label_xycurves.setGeometry(QtCore.QRect(10, 40, 80, 16))
         self.label_xycurves.setObjectName("label_xycurves")
-
         self.list_xycurves = QtWidgets.QListWidget(self.tab_xycurve)
         self.list_xycurves.setGeometry(QtCore.QRect(10, 60, 121, 271))
         self.list_xycurves.setObjectName("list_xycurves")
-
-        self.button_xycurvesfromdss = QtWidgets.QPushButton(self.tab_xycurve)
-        self.button_xycurvesfromdss.setGeometry(QtCore.QRect(10, 10, 121, 23))
-        self.button_xycurvesfromdss.setObjectName("button_xycurvesfromdss")
-
         self.button_newxycurve = QtWidgets.QPushButton(self.tab_xycurve)
         self.button_newxycurve.setGeometry(QtCore.QRect(10, 340, 121, 23))
         self.button_newxycurve.setObjectName("button_newxycurve")
-
         self.button_copyxycurve = QtWidgets.QPushButton(self.tab_xycurve)
         self.button_copyxycurve.setGeometry(QtCore.QRect(10, 370, 121, 23))
         self.button_copyxycurve.setObjectName("button_copyxycurve")
-
-
         self.edit_npts_xycurve = QtWidgets.QLineEdit(self.group_xycurve_parameters)
         self.edit_npts_xycurve.setGeometry(QtCore.QRect(50, 25, 51, 20))
         self.edit_npts_xycurve.setObjectName("edit_npts_xycurve")
         self.label_npts_xycurve = QtWidgets.QLabel(self.group_xycurve_parameters)
         self.label_npts_xycurve.setGeometry(QtCore.QRect(20, 25, 41, 20))
         self.label_npts_xycurve.setObjectName("label_npts_xycurve")
-
         self.edit_yarray = QtWidgets.QLineEdit(self.group_xycurve_parameters)
         self.edit_yarray.setGeometry(QtCore.QRect(50, 50, 261, 20))
         self.edit_yarray.setObjectName("edit_yarray")
@@ -294,16 +283,55 @@ class Ui_objects(object):
         self.label_xarray = QtWidgets.QLabel(self.group_xycurve_parameters)
         self.label_xarray.setGeometry(QtCore.QRect(10, 75, 41, 20))
         self.label_xarray.setObjectName("label_xarray")
-
-
         self.xycurve_plot = QtWidgets.QWidget(self.group_xycurve_parameters)
         self.xycurve_plot.setGeometry(QtCore.QRect(10, 100, 381, 181))
         self.xycurve_plot.setObjectName("xycurve_plot")
-
         self.button_xycurve_save = QtWidgets.QPushButton(self.group_xycurve_parameters)
         self.button_xycurve_save.setGeometry(QtCore.QRect(163, 300, 75, 23))
         self.button_xycurve_save.setObjectName("button_xycurve_save")
 
+        # TShape widgets
+        self.tab_tshape = QtWidgets.QWidget()
+        self.tab_tshape.setObjectName("tab_tshape")
+        self.group_tshape_parameters = QtWidgets.QGroupBox(self.tab_tshape)
+        self.group_tshape_parameters.setGeometry(QtCore.QRect(150, 40, 400, 350))
+        self.group_tshape_parameters.setObjectName("group_tshape_parameters")
+        self.label_tshapes = QtWidgets.QLabel(self.tab_tshape)
+        self.label_tshapes.setGeometry(QtCore.QRect(10, 40, 80, 16))
+        self.label_tshapes.setObjectName("label_tshapes")
+        self.list_tshapes = QtWidgets.QListWidget(self.tab_tshape)
+        self.list_tshapes.setGeometry(QtCore.QRect(10, 60, 121, 271))
+        self.list_tshapes.setObjectName("list_tshapes")
+        self.button_newtshape = QtWidgets.QPushButton(self.tab_tshape)
+        self.button_newtshape.setGeometry(QtCore.QRect(10, 340, 121, 23))
+        self.button_newtshape.setObjectName("button_newtshape")
+        self.button_copytshape = QtWidgets.QPushButton(self.tab_tshape)
+        self.button_copytshape.setGeometry(QtCore.QRect(10, 370, 121, 23))
+        self.button_copytshape.setObjectName("button_copytshape")
+        self.edit_npts_tshape = QtWidgets.QLineEdit(self.group_tshape_parameters)
+        self.edit_npts_tshape.setGeometry(QtCore.QRect(50, 25, 51, 20))
+        self.edit_npts_tshape.setObjectName("edit_npts_tshape")
+        self.label_npts_tshape = QtWidgets.QLabel(self.group_tshape_parameters)
+        self.label_npts_tshape.setGeometry(QtCore.QRect(20, 25, 41, 20))
+        self.label_npts_tshape.setObjectName("label_npts_tshape")
+        self.edit_temp_tshape = QtWidgets.QLineEdit(self.group_tshape_parameters)
+        self.edit_temp_tshape.setGeometry(QtCore.QRect(50, 50, 261, 20))
+        self.edit_temp_tshape.setObjectName("edit_temp_tshape")
+        self.label_temp_tshape = QtWidgets.QLabel(self.group_tshape_parameters)
+        self.label_temp_tshape.setGeometry(QtCore.QRect(10, 50, 41, 20))
+        self.label_temp_tshape.setObjectName("label_temp_tshape")
+        self.edit_interval_tshape = QtWidgets.QLineEdit(self.group_tshape_parameters)
+        self.edit_interval_tshape.setGeometry(QtCore.QRect(50, 75, 261, 20))
+        self.edit_interval_tshape.setObjectName("edit_interval_tshape")
+        self.label_interval_tshape = QtWidgets.QLabel(self.group_tshape_parameters)
+        self.label_interval_tshape.setGeometry(QtCore.QRect(10, 75, 41, 20))
+        self.label_interval_tshape.setObjectName("label_interval_tshape")
+        self.tshape_plot = QtWidgets.QWidget(self.group_tshape_parameters)
+        self.tshape_plot.setGeometry(QtCore.QRect(10, 100, 381, 181))
+        self.tshape_plot.setObjectName("tshape_plot")
+        self.button_tshape_save = QtWidgets.QPushButton(self.group_tshape_parameters)
+        self.button_tshape_save.setGeometry(QtCore.QRect(163, 300, 75, 23))
+        self.button_tshape_save.setObjectName("button_tshape_save")
 
         self.retranslateUi(objects)
         self.tabWidget.setCurrentIndex(4)
@@ -374,8 +402,7 @@ class Ui_objects(object):
         self.button_cancel.setText(_translate("objects", "Cancel"))
         self.label_savewarning.setText(_translate("objects", "Warning: changes are independent from the schematic model and cannot be restored once saved."))
 
-        # XYCurve Objects
-        self.button_xycurvesfromdss.setText(_translate("objects", "Add from file"))
+        # XYCurve Widgets
         self.button_newxycurve.setText(_translate("objects", "New"))
         self.button_copyxycurve.setText(_translate("objects", "Copy selected"))
         self.group_xycurve_parameters.setTitle(_translate("objects", "Parameters"))
@@ -384,6 +411,15 @@ class Ui_objects(object):
         self.button_xycurve_save.setText(_translate("objects", "Save"))
         self.label_xycurves.setText(_translate("objects", "XYCurve Names"))
         self.label_npts_xycurve.setText(_translate("objects", "npts"))
+        # TShape Widgets
+        self.button_newtshape.setText(_translate("objects", "New"))
+        self.button_copytshape.setText(_translate("objects", "Copy selected"))
+        self.group_tshape_parameters.setTitle(_translate("objects", "Parameters"))
+        self.label_temp_tshape.setText(_translate("objects", "Temp"))
+        self.label_interval_tshape.setText(_translate("objects", "Interval"))
+        self.button_tshape_save.setText(_translate("objects", "Save"))
+        self.label_tshapes.setText(_translate("objects", "TShape Names"))
+        self.label_npts_tshape.setText(_translate("objects", "npts"))
 
     def edited(self):
 
@@ -420,6 +456,12 @@ class Ui_objects(object):
             "npts": self.edit_npts_xycurve,
             "xarray": self.edit_xarray,
             "yarray": self.edit_yarray
+        }
+
+        self.tshape_pars = {
+            "npts": self.edit_npts_tshape,
+            "temp": self.edit_temp_tshape,
+            "interval": self.edit_interval_tshape
         }
 
         self.double_validator = QtGui.QDoubleValidator()
@@ -469,7 +511,6 @@ class Ui_objects(object):
         self.loadshape_subplot.set_ylim([0, 4])
         self.loadshape_subplot.grid(which="both")
 
-
     def create_xycurve_plot(self):
         from matplotlib import rc
         import matplotlib.figure
@@ -487,6 +528,22 @@ class Ui_objects(object):
         self.xycurve_subplot.set_ylim([0, 4])
         self.xycurve_subplot.grid(which="both")
 
+    def create_tshape_plot(self):
+        from matplotlib import rc
+        import matplotlib.figure
+        from matplotlib.backends.backend_qt5agg import FigureCanvas
+
+        # Font
+        rc('font', **{'size': 8})       # XYCurve
+        self.tshape_plot_grid = QtWidgets.QGridLayout()
+        self.tshape_plot.setLayout(self.tshape_plot_grid)
+        self.figure_tshape = matplotlib.figure.Figure()
+        self.canvas_tshape = FigureCanvas(self.figure_tshape)
+        self.tshape_plot_grid.addWidget(self.canvas_tshape)
+        self.tshape_subplot = self.figure_tshape.add_subplot(111, position=[0.12, 0.2, 0.76, 0.7])
+        self.tshape_subplot.set_xlim([0, 4])
+        self.tshape_subplot.set_ylim([0, 4])
+        self.tshape_subplot.grid(which="both")
 
     def return_list_of_floats(self, str_input):
         try:
@@ -522,6 +579,7 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.wiredata_dict = {}
         self.linegeometry_dict = {}
         self.xycurve_dict = {}
+        self.tshape_dict = {}
 
         if self.obj_type == "linecode":
             self.tabWidget.addTab(self.tab_linecode, "LineCode")
@@ -535,6 +593,8 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.tabWidget.addTab(self.tab_loadshape, "LoadShape")
         elif self.obj_type == "xycurve":
             self.tabWidget.addTab(self.tab_xycurve, "XYCurve")
+        elif self.obj_type == "tshape":
+            self.tabWidget.addTab(self.tab_tshape, "TShape")
 
         # Auxiliary vars
         self.old_listitem_name = ""
@@ -567,6 +627,12 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.xycurves_delegate.closeEditor.connect(lambda _: self.rename_object_step3("xycurve"))
         self.list_xycurves.itemSelectionChanged.connect(lambda: self.update_parameters_from_dict(self.list_xycurves))
 
+        self.list_tshapes.itemDoubleClicked.connect(self.rename_object_step1)
+        self.tshapes_delegate = self.list_tshapes.itemDelegate()
+        self.tshapes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
+        self.tshapes_delegate.closeEditor.connect(lambda _: self.rename_object_step3("tshape"))
+        self.list_tshapes.itemSelectionChanged.connect(lambda: self.update_parameters_from_dict(self.list_tshapes))
+
         # Keyboard shortcuts
         if self.obj_type == "linecode":
             del_list_widget = self.list_linecodes
@@ -574,6 +640,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             del_list_widget = self.list_loadshapes
         elif self.obj_type == "xycurve":
             del_list_widget = self.list_xycurves
+        elif self.obj_type == "tshape":
+            del_list_widget = self.list_tshapes
+
         self.delete_shortcut = QtWidgets.QShortcut("Delete", del_list_widget)
         self.delete_shortcut.activated.connect(lambda: self.delete_object(del_list_widget))
 
@@ -591,8 +660,10 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.button_newxycurve.clicked.connect(lambda: self.new_object("xycurve"))
         self.button_copyxycurve.clicked.connect(lambda: self.copy_object("xycurve"))
         self.button_xycurve_save.clicked.connect(lambda: self.save_parameters("xycurve"))
-        #self.button_xycurvesfromdss.clicked.connect(lambda: self.add_from_file("xycurve"))
 
+        self.button_newtshape.clicked.connect(lambda: self.new_object("tshape"))
+        self.button_copytshape.clicked.connect(lambda: self.copy_object("tshape"))
+        self.button_tshape_save.clicked.connect(lambda: self.save_parameters("tshape"))
 
         self.button_ok.clicked.connect(self.return_updated_dict)
         self.button_cancel.clicked.connect(self.reject)
@@ -631,6 +702,11 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         for param, widget in self.xycurve_pars.items():
             widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_xycurves))
             widget.textEdited.connect(lambda txt: self.update_plot(self.xycurve_subplot))
+        # TShape
+        self.edit_npts_tshape.textEdited.connect(self.npts_validation)
+        for param, widget in self.tshape_pars.items():
+            widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_tshapes))
+            widget.textEdited.connect(lambda txt: self.update_plot(self.tshape_subplot))
 
         # Phases limit
         self.edit_phases.textChanged.connect(self.cap_phases)
@@ -652,7 +728,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         elif self.obj_type == "xycurve":
             self.create_xycurve_plot()
             self.update_plot(self.xycurve_subplot)
-
+        elif self.obj_type == "tshape":
+            self.create_tshape_plot()
+            self.update_plot(self.tshape_subplot)
 
     def npts_validation(self):
 
@@ -701,11 +779,19 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             return loadshape_def
 
         elif obj_type == "xycurve":
-            xycurve_def = {"npts": "4",
-                           "yarray": "[.86, .9, .93, .97]",
-                           "xarray": "[.1, .2, .4, 1.0]"}
+            xycurve_def = {"npts": "5",
+                           "yarray": "[0.2, 0.4, 0.6, 0.8, 1.0]",
+                           "xarray": "[1.0, 2.0, 3.0, 4.0, 5.0]"}
 
             return xycurve_def
+
+        elif obj_type == "tshape":
+            tshape_def = {"npts": "24",
+                          "temp": "[25, 25, 25, 25, 25, 25, 25, 25, 35, 40, 45, 50, 60, 60, 55, 40, 35, 30, 25, 25, 25, 25, 25, 25]",
+                          "interval": "1"
+                          }
+            return tshape_def
+
 
     def update_plot(self, plot_object):
 
@@ -721,6 +807,13 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             hour_values = self.return_list_of_floats(self.edit_xarray.text())
             interval = "0"
             npts = self.edit_npts_xycurve.text()
+        elif self.obj_type == "tshape":
+            canvas_obj = self.canvas_tshape
+            mult_values = self.return_list_of_floats(self.edit_temp_tshape.text())
+            plot_points = len(mult_values)
+            hour_values = [h for h in range(plot_points)]
+            interval = "1"
+            npts = self.edit_npts_tshape.text()
 
         if npts and not npts == '-' and interval and not interval == '-':
             npts = int(npts)
@@ -773,24 +866,33 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         linecode_def = {"Default": self.get_obj_defaults("linecode")}
         loadshape_def = {"Default": self.get_obj_defaults("loadshape")}
         xycurve_def = {"Default": self.get_obj_defaults("xycurve")}
+        tshape_def = {"Default": self.get_obj_defaults("tshape")}
 
         if self.obj_dicts:
             if self.obj_dicts.get("linecodes"):
                 self.linecodes_dict.update(self.obj_dicts.get("linecodes"))
             else:
                 self.linecodes_dict.update(linecode_def)
+
             if self.obj_dicts.get("loadshapes"):
                 self.loadshape_dict.update(self.obj_dicts.get("loadshapes"))
             else:
                 self.loadshape_dict.update(loadshape_def)
-            if self.xycurve_dict.get("xycurves"):
+
+            if self.obj_dicts.get("xycurves"):
                 self.xycurve_dict.update(self.obj_dicts.get("xycurves"))
             else:
                 self.xycurve_dict.update(xycurve_def)
+
+            if self.obj_dicts.get("tshapes"):
+                self.tshape_dict.update(self.obj_dicts.get("tshapes"))
+            else:
+                self.tshape_dict.update(tshape_def)
         else:
             self.linecodes_dict.update(linecode_def)
             self.loadshape_dict.update(loadshape_def)
             self.xycurve_dict.update(xycurve_def)
+            self.tshape_dict.update(tshape_def)
 
     def update_lists_with_names(self, start=False):
 
@@ -825,7 +927,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         # XYCurves
         self.list_xycurves.clear()
         xycurve_names = list(self.xycurve_dict.keys())
-
         if xycurve_names:
             xycurve_names.sort()
             self.list_xycurves.addItems(xycurve_names)
@@ -834,6 +935,18 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
         if start:
             self.list_xycurves.setCurrentRow(0)
+
+        # TShapes
+        self.list_tshapes.clear()
+        tshape_names = list(self.tshape_dict.keys())
+        if tshape_names:
+            tshape_names.sort()
+            self.list_tshapes.addItems(tshape_names)
+            for idx in range(self.list_tshapes.count()):
+                item = self.list_tshapes.item(idx)
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
+        if start:
+            self.list_tshapes.setCurrentRow(0)
 
     def update_parameters_from_dict(self, obj_list):
 
@@ -867,7 +980,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 mode = "symmetrical" if self.radio_symmetrical.isChecked() else "matrix"
                 for par in self.linecode_pars.get(mode):
                     self.linecode_pars.get(mode).get(par).setText(f"")
-
 
         # LoadShape
         elif obj_list == self.list_loadshapes:
@@ -950,6 +1062,19 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                         if isinstance(self.xycurve_pars.get(par), QtWidgets.QLineEdit):
                             self.xycurve_pars.get(par).setText(f"{par_value}")
                             self.xycurve_pars.get(par).setStyleSheet("color: black;")
+
+        elif obj_list == self.list_tshapes:
+
+            if obj_list.currentItem():
+                tshape_name = obj_list.currentItem().text()
+
+                # Process xycurve parameters
+                for par in self.tshape_pars:
+                    par_value = self.tshape_dict.get(tshape_name).get(par)
+                    if par_value:
+                        if isinstance(self.tshape_pars.get(par), QtWidgets.QLineEdit):
+                            self.tshape_pars.get(par).setText(f"{par_value}")
+                            self.tshape_pars.get(par).setStyleSheet("color: black;")
 
         self.edit_mult.setCursorPosition(0)
 
@@ -1049,6 +1174,23 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             else:
                 self.button_xycurve_save.setEnabled(False)
 
+        elif list_widget == self.list_tshapes:
+            pending = []
+            for param, widget in self.tshape_pars.items():
+                current_value = self.tshape_dict.get(list_widget.currentItem().text()).get(param)
+                current_text = widget.text()
+
+                if not current_text == current_value:
+                    widget.setStyleSheet("color: red;")
+                    pending.append(True)
+                else:
+                    widget.setStyleSheet("color: black;")
+                    pending.append(False)
+
+            if any(pending):
+                self.button_tshape_save.setEnabled(True)
+            else:
+                self.button_tshape_save.setEnabled(False)
 
     def new_object(self, obj_type):
 
@@ -1089,6 +1231,17 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                         self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[0]
                     )
                     break
+            elif obj_type == "tshape":
+                if self.list_tshapes.findItems(new_name, QtCore.Qt.MatchFixedString):
+                    # If the new name already exists, count k+1
+                    pass
+                else:
+                    self.tshape_dict.update({new_name: self.get_obj_defaults("tshape")})
+                    self.update_lists_with_names()
+                    self.list_tshapes.setCurrentItem(
+                        self.list_tshapes.findItems(new_name, QtCore.Qt.MatchExactly)[0]
+                    )
+                    break
 
     def copy_object(self, obj_type):
 
@@ -1101,6 +1254,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         elif obj_type == "xycurve":
             if self.list_xycurves.currentItem():
                 selected_object = self.list_xycurves.currentItem()
+        elif obj_type == "tshape":
+            if self.list_tshapes.currentItem():
+                selected_object = self.list_tshapes.currentItem()
 
         for k in range(10000):
             if k == 0:
@@ -1137,6 +1293,15 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     self.update_lists_with_names()
                     self.list_xycurves.setCurrentItem(self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[0])
                     break
+            elif obj_type == "tshape":
+                if self.list_tshapes.findItems(new_name, QtCore.Qt.MatchExactly):
+                    # If the new name already exists, count k + 1
+                    pass
+                else:
+                    self.tshape_dict.update({new_name: self.tshape_dict.get(selected_object.text())})
+                    self.update_lists_with_names()
+                    self.list_tshapes.setCurrentItem(self.list_tshapes.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                    break
 
     def rename_object_step1(self, list_item):
         # Save current name
@@ -1167,6 +1332,17 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 current_item = self.list_loadshapes.item(row)
                 if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
                     duplicate = True
+        elif obj_type == "xycurve":
+            for row in range(self.list_xycurves.count()):
+                current_item = self.list_xycurves.item(row)
+                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                    duplicate = True
+        elif obj_type == "tshape":
+            for row in range(self.list_tshapes.count()):
+                current_item = self.list_tshapes.item(row)
+                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                    duplicate = True
+
         if duplicate:
             msgbox_dup = QtWidgets.QMessageBox()
             msgbox_dup.warning(self, "Invalid name", "Duplicate name")
@@ -1186,6 +1362,10 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.linecodes_dict.update({new_name: self.linecodes_dict.pop(self.old_listitem_name)})
         elif obj_type == "loadshape":
             self.loadshape_dict.update({new_name: self.loadshape_dict.pop(self.old_listitem_name)})
+        elif obj_type == "xycurve":
+            self.xycurve_dict.update({new_name: self.xycurve_dict.pop(self.old_listitem_name)})
+        elif obj_type == "tshape":
+            self.tshape_dict.update({new_name: self.tshape_dict.pop(self.old_listitem_name)})
 
     def delete_object(self, list_widget):
         msgbox = QtWidgets.QMessageBox()
@@ -1199,6 +1379,10 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 self.linecodes_dict.pop(selected_item_name)
             elif self.obj_type == "loadshape":
                 self.loadshape_dict.pop(selected_item_name)
+            elif self.obj_type == "xycurve":
+                self.xycurve_dict.pop(selected_item_name)
+            elif self.obj_type == "tshape":
+                self.tshape_dict.pop(selected_item_name)
 
     def save_parameters(self, obj_type):
 
@@ -1248,6 +1432,17 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 widget.setStyleSheet("color: black;")
             self.button_xycurve_save.setDisabled(True)
 
+        if obj_type == "tshape":
+
+            for param_name, param_widget in self.tshape_pars.items():
+                new_param_values.update({param_name: param_widget.text()})
+
+            self.tshape_dict.update({self.list_tshapes.currentItem().text(): new_param_values})
+
+            for param, widget in self.tshape_pars.items():
+                widget.setStyleSheet("color: black;")
+            self.button_tshape_save.setDisabled(True)
+
     def cap_phases(self):
         _translate = QtCore.QCoreApplication.translate
         if not str(self.edit_phases.text()) == "":
@@ -1276,6 +1471,8 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.obj_dicts.update({
                 "linecodes": self.linecodes_dict,
                 "loadshapes": self.loadshape_dict,
+                "xycurves": self.xycurve_dict,
+                "tshapes": self.tshape_dict,
             })
             self.accept()
 
@@ -1551,6 +1748,7 @@ if __name__ == "__main__":
         "c0": "7.751e-9",
     }}}
 
-    mainwindow = GeneralObjects("xycurve", bla)
+    mainwindow = GeneralObjects("tshape")
     mainwindow.show()
     app.exec()
+    print(mainwindow.obj_dicts)

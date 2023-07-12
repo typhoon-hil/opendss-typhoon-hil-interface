@@ -35,6 +35,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
         nport_handle = mdl.get_item("N", parent=comp_handle, item_type="port")
         lport_handle = mdl.get_item("L", parent=comp_handle, item_type="port")
         vmeas_handle = mdl.get_item("Vout", parent=comp_handle)
+        switch_handle = mdl.get_item("S1", parent=comp_handle)
 
         # Workaround for the RLC Series Branch (is deleting all port in the initialization)
         imeas_handle = mdl.get_item("Iout", parent=comp_handle)
@@ -42,77 +43,77 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
             mdl.create_connection(mdl.term(imeas_handle, "n_node"), mdl.term(rl1_handle, "P1_pos"))
 
         if new_value == "L":
-            if rc_type == "Series RLC Branch":
-                mdl.delete_item(rc_handle)
-                rc_handle = mdl.create_component("core/Open Circuit",
-                                                 parent=comp_handle,
-                                                 name="RC",
-                                                 position=rc_pos,
-                                                 rotation="right")
-                mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rc_handle, "p_node"))
-                mdl.create_connection(mdl.term(rc_handle, "n_node"), nport_handle)
+            # if rc_type == "Series RLC Branch": (WorkAround)
+            mdl.delete_item(rc_handle)
+            rc_handle = mdl.create_component("core/Open Circuit",
+                                             parent=comp_handle,
+                                             name="RC",
+                                             position=rc_pos,
+                                             rotation="right")
+            mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rc_handle, "p_node"))
+            mdl.create_connection(mdl.term(rc_handle, "n_node"), nport_handle)
 
-            if rl2_type == "Series RLC Branch":
-                mdl.delete_item(rl2_handle)
-                rl2_handle = mdl.create_component("core/Short Circuit",
-                                                  parent=comp_handle,
-                                                  name="RL2",
-                                                  position=rl2_pos)
-                mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rl2_handle, "p_node"))
-                mdl.create_connection(mdl.term(rl2_handle, "n_node"), lport_handle)
-                mdl.create_connection(mdl.term(rl2_handle, "n_node"), mdl.term(vmeas_handle, "p_node"))
+            # if rl2_type == "Series RLC Branch": (WorkAround)
+            mdl.delete_item(rl2_handle)
+            rl2_handle = mdl.create_component("core/Short Circuit",
+                                              parent=comp_handle,
+                                              name="RL2",
+                                              position=rl2_pos)
+            mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rl2_handle, "p_node"))
+            mdl.create_connection(mdl.term(rl2_handle, "n_node"), mdl.term(switch_handle, "a_in"))
+            # mdl.create_connection(mdl.term(rl2_handle, "n_node"), mdl.term(vmeas_handle, "p_node"))
         elif new_value == "LC":
-            if rc_type == "el_open":
-                mdl.delete_item(rc_handle)
-                rc_handle = mdl.create_component("core/Series RLC Branch",
-                                                 parent=comp_handle,
-                                                 name="RC",
-                                                 position=rc_pos,
-                                                 rotation="right")
-                mdl.set_property_value(mdl.prop(rc_handle, "num_phases"), "Single-Phase")
-                mdl.set_property_value(mdl.prop(rc_handle, "branch_type"), "RC")
-                mdl.set_property_value(mdl.prop(rc_handle, "resistance"), "rc_resistance")
-                mdl.set_property_value(mdl.prop(rc_handle, "capacitance"), "rc_capacitance")
-                mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rc_handle, "P1_pos"))
-                mdl.create_connection(mdl.term(rc_handle, "P1_neg"), nport_handle)
+            # if rc_type == "el_open": (WorkAround)
+            mdl.delete_item(rc_handle)
+            rc_handle = mdl.create_component("core/Series RLC Branch",
+                                             parent=comp_handle,
+                                             name="RC",
+                                             position=rc_pos,
+                                             rotation="right")
+            mdl.set_property_value(mdl.prop(rc_handle, "num_phases"), "Single-Phase")
+            mdl.set_property_value(mdl.prop(rc_handle, "branch_type"), "RC")
+            mdl.set_property_value(mdl.prop(rc_handle, "resistance"), "rc_resistance")
+            mdl.set_property_value(mdl.prop(rc_handle, "capacitance"), "rc_capacitance")
+            mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rc_handle, "P1_pos"))
+            mdl.create_connection(mdl.term(rc_handle, "P1_neg"), nport_handle)
 
-            if rl2_type == "Series RLC Branch":
-                mdl.delete_item(rl2_handle)
-                rl2_handle = mdl.create_component("core/Short Circuit",
-                                                  parent=comp_handle,
-                                                  name="RL2",
-                                                  position=rl2_pos)
-                mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rl2_handle, "p_node"))
-                mdl.create_connection(mdl.term(rl2_handle, "n_node"), lport_handle)
-                mdl.create_connection(mdl.term(rl2_handle, "n_node"), mdl.term(vmeas_handle, "p_node"))
+            # if rl2_type == "Series RLC Branch": (WorkAround)
+            mdl.delete_item(rl2_handle)
+            rl2_handle = mdl.create_component("core/Short Circuit",
+                                              parent=comp_handle,
+                                              name="RL2",
+                                              position=rl2_pos)
+            mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rl2_handle, "p_node"))
+            mdl.create_connection(mdl.term(rl2_handle, "n_node"), mdl.term(switch_handle, "a_in"))
+            # mdl.create_connection(mdl.term(rl2_handle, "n_node"), mdl.term(vmeas_handle, "p_node"))
         elif new_value == "LCL":
-            if rc_type == "el_open":
-                mdl.delete_item(rc_handle)
-                rc_handle = mdl.create_component("core/Series RLC Branch",
-                                                 parent=comp_handle,
-                                                 name="RC",
-                                                 position=rc_pos,
-                                                 rotation="right")
-                mdl.set_property_value(mdl.prop(rc_handle, "num_phases"), "Single-Phase")
-                mdl.set_property_value(mdl.prop(rc_handle, "branch_type"), "RC")
-                mdl.set_property_value(mdl.prop(rc_handle, "resistance"), "rc_resistance")
-                mdl.set_property_value(mdl.prop(rc_handle, "capacitance"), "rc_capacitance")
-                mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rc_handle, "P1_pos"))
-                mdl.create_connection(mdl.term(rc_handle, "P1_neg"), nport_handle)
+            # if rc_type == "el_open": (WorkAround)
+            mdl.delete_item(rc_handle)
+            rc_handle = mdl.create_component("core/Series RLC Branch",
+                                             parent=comp_handle,
+                                             name="RC",
+                                             position=rc_pos,
+                                             rotation="right")
+            mdl.set_property_value(mdl.prop(rc_handle, "num_phases"), "Single-Phase")
+            mdl.set_property_value(mdl.prop(rc_handle, "branch_type"), "RC")
+            mdl.set_property_value(mdl.prop(rc_handle, "resistance"), "rc_resistance")
+            mdl.set_property_value(mdl.prop(rc_handle, "capacitance"), "rc_capacitance")
+            mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rc_handle, "P1_pos"))
+            mdl.create_connection(mdl.term(rc_handle, "P1_neg"), nport_handle)
 
-            if rl2_type == "el_short":
-                mdl.delete_item(rl2_handle)
-                rl2_handle = mdl.create_component("core/Series RLC Branch",
-                                                  parent=comp_handle,
-                                                  name="RL2",
-                                                  position=rl2_pos)
-                mdl.set_property_value(mdl.prop(rl2_handle, "num_phases"), "Single-Phase")
-                mdl.set_property_value(mdl.prop(rl2_handle, "branch_type"), "RL")
-                mdl.set_property_value(mdl.prop(rl2_handle, "resistance"), "rl_resistance")
-                mdl.set_property_value(mdl.prop(rl2_handle, "inductance"), "rl_inductance")
-                mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rl2_handle, "P1_pos"))
-                mdl.create_connection(mdl.term(rl2_handle, "P1_neg"), lport_handle)
-                mdl.create_connection(mdl.term(rl2_handle, "P1_neg"), mdl.term(vmeas_handle, "p_node"))
+            # if rl2_type == "el_short": (WorkAround)
+            mdl.delete_item(rl2_handle)
+            rl2_handle = mdl.create_component("core/Series RLC Branch",
+                                              parent=comp_handle,
+                                              name="RL2",
+                                              position=rl2_pos)
+            mdl.set_property_value(mdl.prop(rl2_handle, "num_phases"), "Single-Phase")
+            mdl.set_property_value(mdl.prop(rl2_handle, "branch_type"), "RL")
+            mdl.set_property_value(mdl.prop(rl2_handle, "resistance"), "rl_resistance")
+            mdl.set_property_value(mdl.prop(rl2_handle, "inductance"), "rl_inductance")
+            mdl.create_connection(mdl.term(rl1_handle, "P1_neg"), mdl.term(rl2_handle, "P1_pos"))
+            mdl.create_connection(mdl.term(rl2_handle, "P1_neg"), mdl.term(switch_handle, "a_in"))
+            #mdl.create_connection(mdl.term(rl2_handle, "P1_neg"), mdl.term(vmeas_handle, "p_node"))
 
 
 def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
