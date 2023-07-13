@@ -23,6 +23,7 @@ library "OpenDSS" {
             }
             [
                 position = 7600, 7856
+                hide_name = True
             ]
 
             port B1 {
@@ -33,6 +34,7 @@ library "OpenDSS" {
             }
             [
                 position = 7600, 7952
+                hide_name = True
             ]
 
             port C1 {
@@ -43,6 +45,7 @@ library "OpenDSS" {
             }
             [
                 position = 7600, 8048
+                hide_name = True
             ]
 
             port A2 {
@@ -53,6 +56,7 @@ library "OpenDSS" {
             }
             [
                 position = 7872, 7856
+                hide_name = True
                 scale = -1, 1
             ]
 
@@ -64,6 +68,7 @@ library "OpenDSS" {
             }
             [
                 position = 7872, 7952
+                hide_name = True
                 scale = -1, 1
             ]
 
@@ -75,17 +80,15 @@ library "OpenDSS" {
             }
             [
                 position = 7872, 8048
+                hide_name = True
                 scale = -1, 1
             ]
 
-            port gnd {
-                position = bottom center
-                kind = pe
-                direction =  in
+            component "core/Ground" gnd {
             }
             [
                 position = 7736, 8144
-                rotation = left
+                rotation = up
             ]
 
             connect A1 F1.A1 as Connection1
@@ -94,14 +97,15 @@ library "OpenDSS" {
             connect A2 F1.A2 as Connection4
             connect B2 F1.B2 as Connection5
             connect C2 F1.C2 as Connection6
-            connect gnd F1.GND as Connection7
+            connect gnd.node F1.GND as Connection7
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The OpenDSS Fault object is a resistor network, a two-terminal device in which the second terminal defaults to ground.<br><br>Only one Bus must be connected to either side this component.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=169"
 
-                type {
+                fault_type {
                     label = "Fault type"
+                    previous_names = "type"
                     widget = combo
                     combo_values = "A-B-C-GND", "A-B-GND", "A-C-GND", "B-C-GND", "A-GND", "B-GND", "C-GND", "A-B-C", "A-B", "A-C", "B-C", "None"
                     type = string

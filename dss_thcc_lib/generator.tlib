@@ -843,34 +843,37 @@ Te_mem = Te;
 
             port A1 {
                 label = "A1"
-                position = 88.0, -32.0
+                position = 48.0, -32.0
                 kind = pe
             }
             [
                 position = 5176, 8280
+                hide_name = True
             ]
 
             port B1 {
                 label = "B1"
-                position = 88.0, 0.0
+                position = 48.0, 0.0
                 kind = pe
             }
             [
                 position = 5176, 8376
+                hide_name = True
             ]
 
             port C1 {
                 label = "C1"
-                position = 88.0, 32.0
+                position = 48.0, 32.0
                 kind = pe
             }
             [
                 position = 5176, 8472
+                hide_name = True
             ]
 
             port Vfd_in {
                 label = "Vfd"
-                position = -88.0, -1.0
+                position = -32.0, -80.0
                 kind = sp
                 direction =  out
                 sp_type {
@@ -884,7 +887,7 @@ Te_mem = Te;
 
             port Tm_in {
                 label = "Tm"
-                position = -36.0, -88.0
+                position = -16.0, -80.0
                 kind = sp
                 direction =  out
                 sp_type {
@@ -898,7 +901,7 @@ Te_mem = Te;
 
             port meas {
                 label = "meas"
-                position = -50.0, -88.0
+                position = 32, -80
                 kind = sp
                 direction =  in
                 sp_type {
@@ -912,7 +915,7 @@ Te_mem = Te;
 
             port ctrl {
                 label = "ctrl"
-                position = -88.0, -80.0
+                position = 16, -80
                 kind = sp
                 direction =  in
                 sp_type {
@@ -926,7 +929,7 @@ Te_mem = Te;
 
             port Vfd0 {
                 label = "Vfd0"
-                position = -88.0, -51.0
+                position = -48.0, 64.0
                 kind = sp
                 direction =  in
                 sp_type {
@@ -940,7 +943,7 @@ Te_mem = Te;
 
             port Tm0 {
                 label = "Tm0"
-                position = -88.0, -65.0
+                position = -48.0, 48.0
                 kind = sp
                 direction =  in
                 sp_type {
@@ -2069,7 +2072,7 @@ Te_mem = Te;
             gen_ts_en = "False"
 
             mask {
-                icon = "image(\'images/mchn_wrsync_generic2.svg\')"
+                icon = "image(\'images/generator.svg\')"
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Wound rotor synchronous generator with constant-parameter VBR interface and initialization capability.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Initialization is done in three steps. </p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Step-1: The machine starts as an ideal voltage source behind sstator impedance while the rotor is rotating at a constant speed. </p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Step-2: The machine electrical circuit is connected and fully enabled, while the rotor is still rotating at a constant speed.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Step-3: Full machine model is enabled including both electrical circuit and mechanical model.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Note: When initializing the machine, two extra outputs (Vfd0 and Tm0) are provided indicating the amount of exciter voltage and mechanical torque which are internally applied to the model for seamless transition between modes. In this case, the external inputs to Vfd and Tm ports are added on top of Vfd0 and Tm0.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The measurement signal port provides a 8x1 vectorized output including generator three-phase to neutral voltages in volts, three-phase currents in amps, electromagnetic torque in N.m and mechanical speed in rad/s.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=196"
 
@@ -2113,10 +2116,7 @@ Te_mem = Te;
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited

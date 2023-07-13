@@ -37,6 +37,7 @@ library "OpenDSS" {
             }
             [
                 position = 8392, 8096
+                hide_name = True
                 rotation = down
             ]
 
@@ -46,6 +47,7 @@ library "OpenDSS" {
             }
             [
                 position = 8392, 8192
+                hide_name = True
                 rotation = down
             ]
 
@@ -55,6 +57,7 @@ library "OpenDSS" {
             }
             [
                 position = 8392, 8288
+                hide_name = True
                 rotation = down
             ]
 
@@ -84,7 +87,6 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        #comp_script.ensure_forward_compatibility(mdl, container_handle)
                         comp_script.tp_connection_edited(mdl, container_handle, new_value)
                         comp_script.port_dynamics(mdl, container_handle)
                         comp_script.redo_connections(mdl, container_handle)
@@ -130,10 +132,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
                 }
 
@@ -222,6 +221,8 @@ library "OpenDSS" {
                         return comp_script
 
                     comp_script.define_icon(mdl, item_handle)
+
+                    comp_script.retro_compatibility(mdl, item_handle)
 
                 ENDCODE
 

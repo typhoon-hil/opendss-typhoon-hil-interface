@@ -32,6 +32,7 @@ library "OpenDSS" {
             }
             [
                 position = 7992, 8104
+                hide_name = True
             ]
 
             port B1 {
@@ -40,6 +41,7 @@ library "OpenDSS" {
             }
             [
                 position = 7992, 8296
+                hide_name = True
             ]
 
             port A2 {
@@ -49,6 +51,7 @@ library "OpenDSS" {
             }
             [
                 position = 9376, 8192
+                hide_name = True
                 scale = -1, 1
             ]
 
@@ -59,6 +62,7 @@ library "OpenDSS" {
             }
             [
                 position = 9376, 8288
+                hide_name = True
                 scale = -1, 1
             ]
 
@@ -409,10 +413,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
                 }
 

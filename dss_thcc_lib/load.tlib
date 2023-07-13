@@ -30,6 +30,7 @@ library "OpenDSS" {
             }
             [
                 position = 7800, 7864
+                hide_name = True
                 rotation = right
             ]
 
@@ -40,6 +41,7 @@ library "OpenDSS" {
             }
             [
                 position = 7920, 7864
+                hide_name = True
                 rotation = right
             ]
 
@@ -50,6 +52,7 @@ library "OpenDSS" {
             }
             [
                 position = 8056, 7864
+                hide_name = True
                 rotation = right
             ]
 
@@ -60,6 +63,7 @@ library "OpenDSS" {
             }
             [
                 position = 7920, 8384
+                hide_name = True
                 rotation = left
             ]
 
@@ -162,12 +166,31 @@ library "OpenDSS" {
                         comp_script.tp_connection_edited(mdl, container_handle, new_value)
                         tp_connection_prop = mdl.prop(container_handle, "tp_connection")
                         combo_values = mdl.get_property_combo_values(tp_connection_prop)
-                        comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.tp_connection_edited(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                phases {
+                    label = "Number of Phases"
+                    widget = combo
+                    combo_values = "3", "1"
+                    type = string
+                    default_value = "3"
+                    group = "General"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_dynamics(mdl, container_handle)
                     ENDCODE
                 }
 
@@ -178,7 +201,6 @@ library "OpenDSS" {
                     default_value = "0.0"
                     unit = "Ω"
                     group = "General:1"
-                    no_evaluate
                 }
 
                 Xneut {
@@ -188,7 +210,6 @@ library "OpenDSS" {
                     default_value = "0.0"
                     unit = "Ω"
                     group = "General:1"
-                    no_evaluate
                 }
 
                 global_basefreq {
@@ -201,10 +222,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -221,26 +239,6 @@ library "OpenDSS" {
                     unit = "Hz"
                     group = "General:1"
                     nonvisible
-                }
-
-                phases {
-                    label = "Number of Phases"
-                    widget = combo
-                    combo_values = "3", "1"
-                    type = string
-                    default_value = "3"
-                    group = "General"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.topology_dynamics(mdl, container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.tp_connection_dynamics(mdl, container_handle)
-                    ENDCODE
                 }
 
                 Vn_3ph {
@@ -313,7 +311,6 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value == "Constant Power" or new_value == "Constant Z,I,P":
                             mdl.info("Warning: Load Constant Power mode demands grounding for correct HIL simulation.")
-                        comp_script.topology_dynamics(mdl, container_handle)
                         comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
                     ENDCODE
 
@@ -584,11 +581,6 @@ library "OpenDSS" {
                     group = "Time Series Settings:4"
                     no_evaluate
                     nonvisible
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        # comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
-                    ENDCODE
                 }
 
                 load_loadshape {
@@ -1008,6 +1000,16 @@ library "OpenDSS" {
 
                     comp_script.define_icon(mdl, item_handle)
 
+                ENDCODE
+
+                CODE before_change
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
+                ENDCODE
+
+                CODE model_loaded
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
                 ENDCODE
 
 

@@ -84,8 +84,8 @@ class Vsource(TwoTerminal):
     def define_number_of_buses(self, tse_properties, tse_component):
         """ Returns the number of buses the component is connected to. """
 
-        ground_connected = tse_properties.pop("ground_connected")
-        num_buses = 2 if ground_connected == "False" else 1
+        ground_connected = tse_properties.get("tp_connection") == "Y - Grounded"
+        num_buses = 1 if ground_connected else 2
 
         return num_buses
 
@@ -93,10 +93,7 @@ class Vsource(TwoTerminal):
     def is_neutral_floating(self, tse_properties, tse_component):
         """ Floating neutrals connect to an unused bus node """
 
-        if tse_properties.get("Neutral point accessible"):
-            return True
-        else:
-            return False
+        return False
 
     @staticmethod
     def extra_conversion_steps(self, tse_properties, tse_component):

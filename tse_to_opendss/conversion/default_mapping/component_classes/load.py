@@ -124,11 +124,7 @@ class Load(TwoTerminal):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        #gnd = tse_properties["ground_connected"] == "True"
-        if tse_properties["tp_connection"] == "Y - Ground Connected":
-            gnd = True
-        else:
-            gnd = False
+        gnd = tse_properties["tp_connection"] == "Y - Ground"
 
         num_phases = int(tse_properties["phases"])
 

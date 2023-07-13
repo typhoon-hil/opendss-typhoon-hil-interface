@@ -46,9 +46,9 @@ def update_connections(mdl, container_handle, ports):
     vb = mdl.get_item("Vb", parent=comp_handle)
     vc = mdl.get_item("Vc", parent=comp_handle)
 
-    ground_connected = mdl.get_property_value(mdl.prop(container_handle, "ground_connected"))
+    tp_connection = mdl.get_property_value(mdl.prop(container_handle, "tp_connection"))
 
-    if ground_connected in ["Grounded", "Neutral point accessible"]:
+    if tp_connection == "Y - Grounded":
         jun = mdl.get_item("junction_abc", parent=comp_handle, item_type="junction")
         if not jun:
             jun = mdl.create_junction(
@@ -63,7 +63,7 @@ def update_connections(mdl, container_handle, ports):
         if len(mdl.find_connections(mdl.term(vc, 'n_node'), jun)) == 0:
             mdl.create_connection(mdl.term(vc, 'n_node'), jun)
 
-        if ground_connected == "Grounded":
+        if tp_connection == "Y - Grounded":
             gnd = mdl.create_component(
                 "core/Ground",
                 name="gnd1",
@@ -73,12 +73,12 @@ def update_connections(mdl, container_handle, ports):
             )
             if len(mdl.find_connections(mdl.term(gnd, "node"), jun)) == 0:
                 mdl.create_connection(mdl.term(gnd, "node"), jun)
-        else:  # ground_connected == "Neutral point accessible"
-            gnd = mdl.get_item("gnd1", parent=comp_handle)
-            if gnd:
-                mdl.delete_item(gnd)
-            if len(mdl.find_connections(ports.get("N1"), jun)) == 0:
-                mdl.create_connection(ports.get("N1"), jun)
+        # else:  # tp_connection == "Neutral point accessible"
+        #     gnd = mdl.get_item("gnd1", parent=comp_handle)
+        #     if gnd:
+        #         mdl.delete_item(gnd)
+        #     if len(mdl.find_connections(ports.get("N1"), jun)) == 0:
+        #         mdl.create_connection(ports.get("N1"), jun)
 
     else:
         # Ground handle
@@ -100,8 +100,8 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
     deleted_ports = []
     created_ports = {}
 
-    ground_connected = mdl.get_property_value(mdl.prop(container_handle, "ground_connected"))
-    if ground_connected in ["Grounded", "Neutral point accessible"]:
+    tp_connection = mdl.get_property_value(mdl.prop(container_handle, "tp_connection"))
+    if tp_connection == "Y - Grounded":
         # Delete A2-C2 ports
         a2 = mdl.get_item("A2", parent=comp_handle, item_type="port")
         b2 = mdl.get_item("B2", parent=comp_handle, item_type="port")
@@ -109,18 +109,8 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
 
         deleted_ports_list = [a2, b2, c2]
 
-        if ground_connected == "Neutral point accessible":
-            n1 = mdl.create_port(
-                                 name="N1",
-                                 parent=comp_handle,
-                                 terminal_position=[32, 48],
-                                 position=(x0 - 300, y0 - 0),
-                                 rotation="up"
-                                 )
-            created_ports.update({"N1": n1})
-        else:
-            n1 = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            deleted_ports_list.append(n1)
+        n1 = mdl.get_item("N1", parent=comp_handle, item_type="port")
+        deleted_ports_list.append(n1)
 
         for port in deleted_ports_list:
             if port:
@@ -133,18 +123,21 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
             name="A2",
             parent=comp_handle,
             terminal_position=[-32, -32],
+            hide_name=True,
             position=(x0 - 200, y0 - 100)
         )
         b2 = mdl.create_port(
             name="B2",
             parent=comp_handle,
             terminal_position=[-32, 0],
+            hide_name=True,
             position=(x0 - 200, y0 - 0)
         )
         c2 = mdl.create_port(
             name="C2",
             parent=comp_handle,
             terminal_position=[-32, 32],
+            hide_name=True,
             position=(x0 - 200, y0 + 100)
         )
 
@@ -162,14 +155,14 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
     a1 = mdl.get_item("A1", parent=comp_handle, item_type="port")
     b1 = mdl.get_item("B1", parent=comp_handle, item_type="port")
     c1 = mdl.get_item("C1", parent=comp_handle, item_type="port")
-    if ground_connected == "Neutral point accessible":
-        mdl.set_port_properties(a1, terminal_position=(32, -48))
-        mdl.set_port_properties(b1, terminal_position=(32, -16))
-        mdl.set_port_properties(c1, terminal_position=(32, 16))
-    else:
-        mdl.set_port_properties(a1, terminal_position=(32, -32))
-        mdl.set_port_properties(b1, terminal_position=(32, 0))
-        mdl.set_port_properties(c1, terminal_position=(32, 32))
+    # if tp_connection == "Neutral point accessible":
+    #     mdl.set_port_properties(a1, terminal_position=(32, -48))
+    #     mdl.set_port_properties(b1, terminal_position=(32, -16))
+    #     mdl.set_port_properties(c1, terminal_position=(32, 16))
+    # else:
+    mdl.set_port_properties(a1, terminal_position=(32, -32))
+    mdl.set_port_properties(b1, terminal_position=(32, 0))
+    mdl.set_port_properties(c1, terminal_position=(32, 32))
 
     return created_ports, deleted_ports
 
@@ -234,13 +227,11 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
 
 
 def define_icon(mdl, container_handle):
-    ground_connected = mdl.get_property_value(mdl.prop(container_handle, "ground_connected"))
-    if ground_connected == "Grounded":
-        mdl.set_component_icon_image(container_handle, 'images/vsource_gnd.svg')
-    elif ground_connected == "Neutral point accessible":
-        mdl.set_component_icon_image(container_handle, 'images/vsource_neutral.svg')
+    tp_connection = mdl.get_property_value(mdl.prop(container_handle, "tp_connection"))
+    if tp_connection == "Y - Grounded":
+        mdl.set_component_icon_image(container_handle, 'images/vsource_y_3ph.svg')
     else:
-        mdl.set_component_icon_image(container_handle, 'images/vsource.svg')
+        mdl.set_component_icon_image(container_handle, 'images/vsource_s_3ph.svg')
 
 
 def sc_notation(val, num_decimals=2, exponent_pad=2):
@@ -334,3 +325,13 @@ def get_source_values(mdl, container_handle):
     source_frequency = Frequency
 
     return source_voltage, source_phase, source_frequency
+
+
+def retro_compatibility(mdl, mask_handle):
+
+    prop_handle = mdl.prop(mask_handle, "tp_connection")
+    ground_connected = mdl.get_property_value(prop_handle)
+    if ground_connected == "True":
+        mdl.set_property_value(prop_handle, "Y - Grounded")
+    elif ground_connected == "False":
+        mdl.set_property_value(prop_handle, "In series")

@@ -37,7 +37,7 @@ def toggle_inner_fault(mdl, mask_handle, mode="delete"):
 
 def update_inner_fault(mdl, mask_handle, prop_name, new_value):
     comp_handle = mdl.get_parent(mask_handle)
-    type_prop = mdl.prop(mask_handle, "type")
+    type_prop = mdl.prop(mask_handle, "fault_type")
     prop_type = mdl.get_property_value(type_prop)
 
     if prop_name == "fault_type":
@@ -59,14 +59,26 @@ def update_inner_fault(mdl, mask_handle, prop_name, new_value):
 
 def update_inner_gnd(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
-    av_gnd = mdl.get_item("gnd", parent=comp_handle, item_type="port")
+    av_gnd = mdl.get_item("gnd", parent=comp_handle)
     inner_fault = mdl.get_item("F1", parent=comp_handle)
-    type_prop = mdl.prop(comp_handle, "type")
+    type_prop = mdl.prop(comp_handle, "fault_type")
     gnd_connection = True if "GND" in mdl.get_property_value(type_prop) else False
 
     if gnd_connection:
-        if av_gnd and not (len(mdl.find_connections(av_gnd)) > 0):
-            mdl.create_connection(av_gnd, mdl.term(inner_fault, 'GND'))
+        if not av_gnd:
+            av_gnd = mdl.create_component(
+                type_name="core/Ground",
+                name="gnd",
+                parent=comp_handle,
+                rotation="up",
+                position=(7736, 8142)
+            )
+
+        if not mdl.find_connections(mdl.term(av_gnd, "node")):
+            mdl.create_connection(mdl.term(av_gnd, "node"), mdl.term(inner_fault, 'GND'))
+    else:
+        if av_gnd:
+            mdl.delete_item(av_gnd)
 
 
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
@@ -74,34 +86,14 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
 
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
-    comp_handle = mdl.get_parent(mask_handle)
     deleted_ports = []
     created_ports = {}
-
-    av_gnd = mdl.get_item("gnd", parent=comp_handle, item_type="port")
-    type_prop = mdl.prop(comp_handle, "type")
-    gnd_connection = True if "GND" in mdl.get_property_value(type_prop) else False
-
-    if gnd_connection:
-        if not av_gnd:
-            gnd = mdl.create_port(
-                name="gnd",
-                parent=comp_handle,
-                terminal_position=("bottom", "center"),
-                rotation="left",
-                position=(7736, 8142)
-            )
-            created_ports.update({"gnd": gnd})
-    else:
-        if av_gnd:
-            deleted_ports.append(mdl.get_name(av_gnd))
-            mdl.delete_item(av_gnd)
 
     return created_ports, deleted_ports
 
 
 def define_icon(mdl, mask_handle):
-    type_prop = mdl.prop(mask_handle, "type")
+    type_prop = mdl.prop(mask_handle, "fault_type")
     type = mdl.get_property_value(type_prop)
 
     if type == "A-B-C-GND":

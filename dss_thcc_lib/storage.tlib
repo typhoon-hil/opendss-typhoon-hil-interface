@@ -1839,32 +1839,35 @@ out = out_value;
             ]
 
             port A1 {
-                position = -32.0, -32.0
+                position = -40.0, -32.0
                 kind = pe
             }
             [
                 position = 7104, 8216
+                hide_name = True
             ]
 
             port B1 {
-                position = -32.0, 0.0
+                position = -40.0, 0.0
                 kind = pe
             }
             [
                 position = 7104, 8312
+                hide_name = True
             ]
 
             port C1 {
-                position = -32.0, 32.0
+                position = -40.0, 32.0
                 kind = pe
             }
             [
                 position = 7104, 8408
+                hide_name = True
             ]
 
             port "Load point" {
                 label = "t"
-                position = -8.0, -44.0
+                position = 0, -48.0
                 kind = sp
                 direction =  out
                 sp_type {
@@ -2390,10 +2393,7 @@ out = out_value;
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
                 }
 

@@ -46,11 +46,12 @@ def inv_control_mode_value_edited(mdl, container_handle, new_value):
 
 
 def define_icon(mdl, mask_handle):
-    dc_cap = mdl.get_property_value(mdl.prop(mask_handle, "dc_cap_en"))
-    if dc_cap:
-        mdl.set_component_icon_image(mask_handle, 'images/vsc_cap.svg')
+
+    all_ports = mdl.get_items(parent=mdl.get_parent(mask_handle), item_type="port")
+    if any(mdl.get_connectable_kind(port) == "sp" for port in all_ports):
+        mdl.set_component_icon_image(mask_handle, 'images/vsconverter_sp_ports.svg')
     else:
-        mdl.set_component_icon_image(mask_handle, 'images/vsc_nocap.svg')
+        mdl.set_component_icon_image(mask_handle, 'images/vsconverter.svg')
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
@@ -175,6 +176,8 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
         if ts_module:
             mdl.delete_item(ts_module)
 
+    mdl.refresh_icon(mask_handle)
+
     return port_t
 
 
@@ -201,7 +204,7 @@ def set_control_mode(mdl, container_handle, new_value):
 
         if not mode_ext:
             mode_ext = mdl.create_port(parent=comp_handle, name="mode", direction="in", kind="sp",
-                                       terminal_position=(-10, 87),
+                                       terminal_position=(-16, 80),
                                        position=(7120, 9201))
         if len(mdl.find_connections(mdl.term(mode_inp, "in"), mode_ext)) == 0:
             mdl.create_connection(mdl.term(mode_inp, "in"), mode_ext)
@@ -213,13 +216,15 @@ def set_control_mode(mdl, container_handle, new_value):
         if len(mdl.find_connections(mode_int, mdl.term(mode_inp, "in"))) == 0:
             mdl.create_connection(mdl.term(mode_inp, "in"), mode_int)
 
+    mdl.refresh_icon(container_handle)
+
 
 def set_external_input(mdl, container_handle, prop_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(container_handle)
 
     input_dict = {"P_ref_str": {"external_port": {"name": "P_set",
                                                   "position": (6642, 8348),
-                                                  "terminal_position": (-10, -87)},
+                                                  "terminal_position": (-16, -80)},
                                 "input_comp": {"name": "Sum9"},
                                 "input_term": {"name": "Termination1",
                                                "position": (6567, 8352),
@@ -227,7 +232,7 @@ def set_external_input(mdl, container_handle, prop_handle, new_value):
                                 "input_tag": {"name": "From11"}},
                   "Q_ref_str": {"external_port": {"name": "Q_set",
                                                   "position": (6504, 8753),
-                                                  "terminal_position": (25, -87)},
+                                                  "terminal_position": (0, -80)},
                                 "input_comp": {"name": "Sum7"},
                                 "input_term": {"name": "Termination2",
                                                "position": (6424, 8751),
@@ -235,7 +240,7 @@ def set_external_input(mdl, container_handle, prop_handle, new_value):
                                 "input_tag": {"name": "From10"}},
                   "V_ref_str": {"external_port": {"name": "V_set",
                                                   "position": (6450, 8926),
-                                                  "terminal_position": (55, -87)},
+                                                  "terminal_position": (16, -80)},
                                 "input_comp": {"name": "Sum11"},
                                 "input_term": {"name": "Termination3",
                                                "position": (6376, 8930),
@@ -243,7 +248,7 @@ def set_external_input(mdl, container_handle, prop_handle, new_value):
                                 "input_tag": {"name": "From15"}},
                   "vdc_ref_str": {"external_port": {"name": "vdc_set",
                                                     "position": (6695, 8660),
-                                                    "terminal_position": (25, 87)},
+                                                    "terminal_position": (0, 80)},
                                   "input_comp": {"name": "Gain30"},
                                   "input_term": {"name": "Termination4",
                                                  "position": (6621, 8663),
@@ -251,7 +256,7 @@ def set_external_input(mdl, container_handle, prop_handle, new_value):
                                   "input_tag": {"name": "From22"}},
                   "fs_ref_str": {"external_port": {"name": "fs_set",
                                                    "position": (6893, 8248),
-                                                   "terminal_position": (55, 87)},
+                                                   "terminal_position": (16, 80)},
                                  "input_comp": {"name": "Gain33"},
                                  "input_term": {"name": "Termination8",
                                                 "position": (6767, 8247),
@@ -298,6 +303,8 @@ def set_external_input(mdl, container_handle, prop_handle, new_value):
 
         if len(mdl.find_connections(input_tag, mdl.term(input_comp, "in"))) == 0:
             mdl.create_connection(mdl.term(input_comp, "in"), input_tag)
+
+    mdl.refresh_icon(container_handle)
 
 
 def enable_time_series(mdl, container_handle, new_value):
@@ -366,8 +373,6 @@ def enable_time_series(mdl, container_handle, new_value):
 
 def place_internal_dc_capacitor(mdl, container_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(container_handle)
-
-    mdl.refresh_icon(container_handle)
 
     if new_value:
         c_dc = mdl.get_item("dccap", parent=comp_handle, item_type="component")

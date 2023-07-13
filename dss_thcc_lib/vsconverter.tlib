@@ -2165,35 +2165,38 @@ if (Vdc<-2) {
             ]
 
             port A1 {
-                position = 110.0, -32.0
+                position = 32, -32.0
                 kind = pe
             }
             [
                 position = 9224, 9424
                 rotation = down
+                hide_name = True
             ]
 
             port B1 {
-                position = 110.0, 0.0
+                position = 32, 0.0
                 kind = pe
             }
             [
                 position = 9224, 9504
                 rotation = down
+                hide_name = True
             ]
 
             port C1 {
-                position = 110.0, 32.0
+                position = 32, 32.0
                 kind = pe
             }
             [
                 position = 9224, 9584
                 rotation = down
+                hide_name = True
             ]
 
             port DC+ {
                 label = "DC+"
-                position = -110.0, -35.0
+                position = -32, -32.0
                 kind = pe
             }
             [
@@ -2202,7 +2205,7 @@ if (Vdc<-2) {
 
             port DC- {
                 label = "DC-"
-                position = -110.0, 35.0
+                position = -32, 32.0
                 kind = pe
             }
             [
@@ -4286,10 +4289,7 @@ if (Vdc<-2) {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited

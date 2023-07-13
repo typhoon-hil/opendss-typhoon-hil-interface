@@ -176,6 +176,7 @@ def set_balanced(mdl, mask_handle, new_value):
         mdl.disable_property(mdl.prop(mask_handle, "pf_mode_3ph"))
         mdl.disable_property(mdl.prop(mask_handle, "pf_3ph"))
 
+
 def conn_type_value_edited_fnc(mdl, container_handle, new_value):
     phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
 
@@ -483,12 +484,12 @@ def define_icon(mdl, mask_handle):
 
     if int(phases) == 1:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph_gnd.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/load_1Yg.svg')
         else:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/load_1Y.svg')
     else:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_3Y_gnd.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/load_3Yg.svg')
         else:
             if conn_type == 'Δ':
                 mdl.set_component_icon_image(mask_handle, 'images/load_3D.svg')

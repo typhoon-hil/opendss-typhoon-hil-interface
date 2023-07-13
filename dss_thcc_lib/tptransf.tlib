@@ -17,75 +17,83 @@ library "OpenDSS" {
             ]
 
             port A1 {
-                position = -32.0, -32.0
+                position = -32.0, -48.0
                 kind = pe
             }
             [
                 position = 8056, 8088
+                hide_name = True
             ]
 
             port B1 {
-                position = -32.0, 0.0
+                position = -32.0, -16.0
                 kind = pe
             }
             [
                 position = 8056, 8160
+                hide_name = True
             ]
 
             port C1 {
-                position = -32.0, 32.0
+                position = -32.0, 16.0
                 kind = pe
             }
             [
                 position = 8056, 8232
+                hide_name = True
             ]
 
             port N1 {
-                position = -24, 48
+                position = -32, 48
                 kind = pe
                 direction =  in
             }
             [
                 position = 8224, 8496
+                hide_name = True
             ]
 
             port N2 {
-                position = 24, 48
+                position = 32, 48
                 kind = pe
                 direction =  in
             }
             [
                 position = 8496, 8496
+                hide_name = True
                 scale = -1, 1
             ]
 
             port A2 {
-                position = 32, -32
+                position = 32, -48
                 kind = pe
                 direction =  in
             }
             [
                 position = 9376, 8144
+                hide_name = True
                 scale = -1, 1
             ]
 
             port B2 {
-                position = 32, 0
+                position = 32, -16
                 kind = pe
                 direction =  in
             }
             [
                 position = 9376, 8240
+                hide_name = True
                 scale = -1, 1
             ]
 
             port C2 {
-                position = 32, 32
+                position = 32, 16
                 kind = pe
                 direction =  in
             }
             [
                 position = 9376, 8336
+                hide_name = True
                 scale = -1, 1
             ]
 
@@ -271,7 +279,7 @@ library "OpenDSS" {
                         num_windings = int(new_value)
 
                         comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
-                        comp_script.topology_dynamics(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -450,10 +458,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
                 }
 
@@ -493,7 +498,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.topology_dynamics(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -534,7 +539,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.topology_dynamics(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -575,7 +580,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.topology_dynamics(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -616,7 +621,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.topology_dynamics(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -795,20 +800,8 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
-                flg_run_topology {
-                    label = "Global base frequency"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    nonvisible
-                }
-
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-                    comp_script = return_comp_script(mdl, item_handle)
-
-                    flg_run_prop = mdl.prop(item_handle, "flg_run_topology")
-                    mdl.set_property_value(flg_run_prop, False)
 
                     dialog = RegularComponentPropertiesDialog(
                         component=component,
@@ -834,9 +827,16 @@ library "OpenDSS" {
 
                     comp_script.define_icon(mdl, item_handle)
 
-                    flg_run_prop = mdl.prop(item_handle, "flg_run_topology")
-                    mdl.set_property_value(flg_run_prop, False)
+                ENDCODE
 
+                CODE model_loaded
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
+                ENDCODE
+
+                CODE before_change
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
                 ENDCODE
 
                 CODE pre_compile

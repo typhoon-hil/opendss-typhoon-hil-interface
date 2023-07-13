@@ -62,17 +62,29 @@ class ThreePhaseTransformer(MultiTerminal):
 
             new_format_properties.update(tap_parameters)
 
-        conn_dict = {"Y": "wye", "Δ": "delta"}
-        connections = []
+        conn_dict = {"Y": "wye", "Δ": "delta", "Y - Grounded": "wye"}
+        connections_list = []
         num_windings = int(tse_properties['num_windings'])
 
         # Go through every winding checking the connection type
-        for idx, w in enumerate(["prim", "sec1", "sec2", "sec3"][:num_windings]):
+        wdg_names = ["prim", "sec1", "sec2", "sec3"]
+        for idx, w in enumerate(wdg_names[:num_windings]):
             # Translate the connection
             this_connection = conn_dict[tse_properties[w + "_conn"]]
-            connections.append(this_connection)
-        connections = f'[{", ".join([conn for conn in connections])}]'
+            connections_list.append(this_connection)
+        connections = f'[{", ".join([conn for conn in connections_list])}]'
         new_format_properties.update({"conns": connections})
+
+        # Rneut / Xneut
+        neutral_impedances = {}
+        new_format_properties["neutral_impedances"] = neutral_impedances
+        for idx, wdg_name in enumerate(wdg_names[:num_windings]):
+            this_connection = tse_properties[wdg_name + "_conn"]
+            neutral_impedances[idx + 1] = {}
+            if this_connection == "Y - Grounded":
+                neutral_impedances[idx + 1] = {}
+                neutral_impedances[idx + 1]["rneut"] = tse_properties[f"Rneut_{wdg_name}"]
+                neutral_impedances[idx + 1]["xneut"] = tse_properties[f"Xneut_{wdg_name}"]
 
         return new_format_properties
 
@@ -137,8 +149,18 @@ class ThreePhaseTransformer(MultiTerminal):
         """ Overrides parent output_line method. """
 
         windings = self.new_format_properties.pop("windings")
+
+        impedances_str = ""
+        neutral_impedances = self.new_format_properties.pop("neutral_impedances")
+        for winding_n, impedance_dict in neutral_impedances.items():
+            if impedance_dict:
+                impedances_str += f" wdg={winding_n} rneut={impedance_dict['rneut']}" \
+                                  f" xneut={impedance_dict['xneut'] }"
+
         line_props = [f'{k}={v}' for k, v in self.new_format_properties.items()]
-        return f'new {self.identifier()} windings={windings} Buses=[{", ".join(self.buses)}] {" ".join(line_props)}\n'
+        return f'new {self.identifier()} windings={windings} phases={self.num_phases} '\
+               f'Buses=[{", ".join(self.buses)}] {" ".join(line_props)}' \
+               f'{impedances_str}\n'
 
     def created_component_instances(self):
         """ Some TSE components may result in multiple converted components. """
