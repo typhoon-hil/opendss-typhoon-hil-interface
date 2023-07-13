@@ -365,12 +365,12 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
         self.cfg_file_vi = self.dss_output_path.joinpath('plot_vi' + '.json')
         self.cfg_file_pq = self.dss_output_path.joinpath('plot_pq' + '.json')
 
-        self.current_plot_cfg_pq = {"signals": {" P1 (kW)": {"viewports": [1]},
-                                                " P2 (kW)": {"viewports": [1]},
-                                                " P3 (kW)": {"viewports": [1]},
-                                                " Q1 (kvar)": {"viewports": [2]},
-                                                " Q2 (kvar)": {"viewports": [2]},
-                                                " Q3 (kvar)": {"viewports": [2]}},
+        self.current_plot_cfg_pq = {"signals": {"P1 (kW)": {"viewports": [1]},
+                                                "P2 (kW)": {"viewports": [1]},
+                                                "P3 (kW)": {"viewports": [1]},
+                                                "Q1 (kvar)": {"viewports": [2]},
+                                                "Q2 (kvar)": {"viewports": [2]},
+                                                "Q3 (kvar)": {"viewports": [2]}},
                                     "viewports": {
                                         "1": {"x_label": "time (h)"},
                                         "2": {"x_label": "time (h)"},
@@ -379,18 +379,18 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
          }
          }
 
-        self.current_plot_cfg_vi = {"signals": {" V1": {"viewports": [1]},
-                                                " V2": {"viewports": [1]},
-                                                " V3": {"viewports": [1]},
-                                                " I1": {"viewports": [2]},
-                                                " I2": {"viewports": [2]},
-                                                " I3": {"viewports": [2]},
-                                                " VAngle1": {"viewports": [3]},
-                                                " VAngle2": {"viewports": [3]},
-                                                " VAngle3": {"viewports": [3]},
-                                                " IAngle1": {"viewports": [4]},
-                                                " IAngle2": {"viewports": [4]},
-                                                " IAngle3": {"viewports": [4]}
+        self.current_plot_cfg_vi = {"signals": {"V1": {"viewports": [1]},
+                                                "V2": {"viewports": [1]},
+                                                "V3": {"viewports": [1]},
+                                                "I1": {"viewports": [2]},
+                                                "I2": {"viewports": [2]},
+                                                "I3": {"viewports": [2]},
+                                                "VAngle1": {"viewports": [3]},
+                                                "VAngle2": {"viewports": [3]},
+                                                "VAngle3": {"viewports": [3]},
+                                                "IAngle1": {"viewports": [4]},
+                                                "IAngle2": {"viewports": [4]},
+                                                "IAngle3": {"viewports": [4]}
                                                 },
                                     "viewports": {
                                         "1": {"x_label": "time (h)"},
@@ -482,14 +482,14 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 self.hour_to_time_all(str(item_mon_names[idx]))
 
     def hour_to_time_all(self, plot_name):
-        csv_name = str(self.dss_model_name) + "_Mon_" + plot_name
+        csv_name = str(self.dss_model_name) + "_Mon_" + plot_name + "_1" # It seems dss is including the _1
         csv_file_path = self.dss_output_path.joinpath(csv_name + '.csv')
         csvread = pd.read_csv(csv_file_path)
         csvread.rename(columns={'hour': 'Time'}, inplace=True)
         csvread.to_csv(csv_file_path)
 
     def hour_to_time(self, plot_name):
-        csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(plot_name)])
+        csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(plot_name)]) + "_1" # It seems dss is including the _1
         csv_file_path = self.dss_output_path.joinpath(csv_name + '.csv')
         csvread = pd.read_csv(csv_file_path)
         csvread.rename(columns={'hour': 'Time'}, inplace=True)
@@ -564,7 +564,7 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
 
         mode = "0"
         if current_item:
-            csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(current_item.text())])
+            csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(current_item.text())]) + "_1" # It seems dss is including the _1
             if "VOLTAGE" in csv_name:
                 mode = "0"
             elif "POWER" in csv_name:
@@ -589,8 +589,8 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 p1label = ["V1", "V2", "V3"]
                 p2label = ["I1", "I2", "I3"]
                 p2ylabel = "Irms (A)"
-                p1keys = [" V1", " V2", " V3"]
-                p2keys = [" I1", " I2", " I3"]
+                p1keys = ["V1", "V2", "V3"]
+                p2keys = ["I1", "I2", "I3"]
                 subplotsize = 220
                 fig = plt.figure(figsize=(12, 6))
                 p1title = item_chunks[0] + " Phase to Neutral Voltage " + item_chunks[(len(item_chunks)-2)] + " " + item_chunks[(len(item_chunks)-1)]
@@ -602,8 +602,8 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 p2ylabel = "Reactive power (kVAR)"
                 p1label = ["P1", "P2", "P3"]
                 p2label = ["Q1", "Q2", "Q3"]
-                p1keys = [" P1 (kW)", " P2 (kW)", " P3 (kW)"]
-                p2keys = [" Q1 (kvar)", " Q2 (kvar)", " Q3 (kvar)"]
+                p1keys = ["P1 (kW)", "P2 (kW)", "P3 (kW)"]
+                p2keys = ["Q1 (kvar)", "Q2 (kvar)", "Q3 (kvar)"]
                 subplotsize = 120
                 fig = plt.figure(figsize=(12, 3.8))
                 p1title = item_chunks[0] + " Phase Active Power " + item_chunks[(len(item_chunks)-2)] + " " + item_chunks[(len(item_chunks)-1)]
@@ -615,8 +615,8 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 p2ylabel = "Irms (A)"
                 p1label = ["V1", "V2", "V3"]
                 p2label = ["I1", "I2", "I3"]
-                p1keys = [" V1", " V2", " V3"]
-                p2keys = [" I1", " I2", " I3"]
+                p1keys = ["V1", "V2", "V3"]
+                p2keys = ["I1", "I2", "I3"]
                 subplotsize = 220
                 fig = plt.figure(figsize=(12, 6))
                 p1title = item_chunks[0] + " Phase to Neutral Voltage " + item_chunks[(len(item_chunks) - 2)] + " " + item_chunks[(len(item_chunks) - 1)]
@@ -642,11 +642,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
             if mode == "0":
                 p3 = plt.subplot(subplotsize+3)
                 # plt.ion()
-                plt.plot(csvread[time_header], csvread[" VAngle1"], label="V1 Angle", color='blue', marker='o')
-                if " VAngle2" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" VAngle2"], label="V2 Angle", color='green', marker='o')
-                if " VAngle3" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" VAngle3"], label="V3 Angle", color='red', marker='o')
+                plt.plot(csvread[time_header], csvread["VAngle1"], label="V1 Angle", color='blue', marker='o')
+                if "VAngle2" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["VAngle2"], label="V2 Angle", color='green', marker='o')
+                if "VAngle3" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["VAngle3"], label="V3 Angle", color='red', marker='o')
                 #plt.plot(csvread["hour"], csvread[" VAngle2"], color='tab:green', marker='o')
                 #plt.plot(csvread["hour"], csvread[" VAngle2"], color='green')
                 #plt.plot(csvread["hour"], csvread[" VAngle3"], color='tab:red', marker='o')
@@ -676,11 +676,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
             if mode == "0":
                 p4 = plt.subplot(subplotsize+4)
                 # plt.ion()
-                plt.plot(csvread[time_header], csvread[" IAngle1"], label="I1 Angle", color='blue', marker='o')
-                if " IAngle2" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" IAngle2"], label="I2 Angle", color='green', marker='o')
-                if " IAngle3" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread[" IAngle3"], label="I3 Angle", color='red', marker='o')
+                plt.plot(csvread[time_header], csvread["IAngle1"], label="I1 Angle", color='blue', marker='o')
+                if "IAngle2" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["IAngle2"], label="I2 Angle", color='green', marker='o')
+                if "IAngle3" in csvread.columns:
+                    plt.plot(csvread[time_header], csvread["IAngle3"], label="I3 Angle", color='red', marker='o')
                 # plt.plot(csvread["hour"], csvread[" VAngle2"], color='tab:green', marker='o')
                 # plt.plot(csvread["hour"], csvread[" VAngle2"], color='green')
                 # plt.plot(csvread["hour"], csvread[" VAngle3"], color='tab:red', marker='o')
