@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg256" xmlns="http://www.w3.org/2000/svg" width="64" height="96" viewBox="0 0 64 96">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke: #000;
+      }
+
+      .cls-1, .cls-2, .cls-4, .cls-5 {
+        fill: none;
+      }
+
+      .cls-1, .cls-3, .cls-4 {
+        stroke-linejoin: round;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke-linecap: round;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-6 {
+        fill: blue;
+      }
+
+      .cls-5 {
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <path id="path304" class="cls-6" d="M56,19c-1.66,0-3,1.34-3,3s1.34,3,3,3c1.66,0,3-1.34,3-3,0-1.66-1.34-3-3-3"/>
+  <path id="path3684-1-0-7-3" class="cls-2" d="M17.08,37.15v22"/>
+  <path id="path2902-2-9-7" class="cls-2" d="M36.65,40.24h13.59"/>
+  <path id="path2904-8-8-0" class="cls-2" d="M10.49,48.17h6.38"/>
+  <path id="path2900-0-3-0" class="cls-3" d="M43.44,40.24l-6.59,15.86h13.18l-6.59-15.86Z"/>
+  <path id="path2908-2-4-7" class="cls-2" d="M20.38,32.09v32"/>
+  <path id="path3093" class="cls-1" d="M33.37,80.09v-16l-13-8v-16l13-8V16.09"/>
+  <path id="path3095" class="cls-1" d="M43.37,40.09V24.09h-10"/>
+  <path id="path3097" class="cls-1" d="M43.37,56.09v16h-10"/>
+  <g>
+    <line class="cls-4" x1="20.37" y1="56.1" x2="27.29" y2="60.26"/>
+    <polygon points="24.61 62.73 31.59 62.85 28.21 56.75 24.61 62.73"/>
+  </g>
+  <rect class="cls-5" width="64" height="96"/>
+</svg>

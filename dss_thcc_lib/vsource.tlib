@@ -43,7 +43,8 @@ library "OpenDSS" {
             component "core/Ground" gnd1 {
             }
             [
-                position = 8000, 8400
+                position = 7892, 8192
+                rotation = right
             ]
 
             component "core/Transmission Line" TL1 {
@@ -66,6 +67,7 @@ library "OpenDSS" {
             }
             [
                 position = 8496, 8096
+                hide_name = True
                 rotation = down
             ]
 
@@ -75,6 +77,7 @@ library "OpenDSS" {
             }
             [
                 position = 8496, 8192
+                hide_name = True
                 rotation = down
             ]
 
@@ -84,7 +87,13 @@ library "OpenDSS" {
             }
             [
                 position = 8496, 8288
+                hide_name = True
                 rotation = down
+            ]
+
+            junction junction_abc pe
+            [
+                position = 7992, 8192
             ]
 
             connect Vb.p_node TL1.b_in as Connection25
@@ -93,12 +102,13 @@ library "OpenDSS" {
             connect TL1.a_out A1 as Connection28
             connect B1 TL1.b_out as Connection29
             connect TL1.c_out C1 as Connection30
-            connect gnd1.node Va.n_node as Connection31
-            connect Vc.n_node gnd1.node as Connection32
-            connect Vb.n_node gnd1.node as Connection33
+            connect gnd1.node junction_abc as Connection31
+            connect Vc.n_node junction_abc as Connection32
+            connect Vb.n_node junction_abc as Connection33
+            connect Va.n_node junction_abc as Connection34
 
             mask {
-                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A Vsource object is a voltage source behind an impedance. The most common way to use a voltage source object is with the first terminal connected to one bus with the second terminal connected to ground, but it is possible to connect it to two different buses by unchecking the “ground-connected” property.</p></body></html>"
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A Vsource object is a voltage source behind an impedance. The most common way to use a voltage source object is with the first terminal connected to one bus with the second terminal connected to ground or neutral point. </p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> It is possible to connect it to two different buses by selecting “In series” on the connection method property.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=166"
 
                 basekv {
@@ -123,7 +133,7 @@ library "OpenDSS" {
                 }
 
                 BaseFreq {
-                    label = "Base Freq"
+                    label = "Base frequency"
                     description = "Base Frequency for impedance specifications"
                     widget = edit
                     type = generic
@@ -133,7 +143,7 @@ library "OpenDSS" {
                 }
 
                 global_basefreq {
-                    label = "Global base freq"
+                    label = "Global base frequency"
                     description = "Uses the Global Base Frequency"
                     widget = checkbox
                     type = bool
@@ -152,20 +162,20 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                ground_connected {
-                    label = "Ground-connected"
-                    description = "Create a second terminal connection to Bus.0.0.0"
-                    widget = checkbox
-                    type = bool
-                    default_value = "True"
+                tp_connection {
+                    label = "Connection method"
+                    widget = combo
+                    combo_values = "Y - Grounded", "In series"
+                    previous_names = "ground_connected"
+                    type = string
+                    default_value = "Y - Grounded"
                     no_evaluate
                     group = "General"
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if not new_value == old_value:
-                            ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                            comp_script.update_connections(mdl, container_handle, ports)
+                        ports, _ = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.update_connections(mdl, container_handle, ports)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
@@ -199,7 +209,7 @@ library "OpenDSS" {
                     keepline
                 }
 
-                input_method {
+                 input_method {
                 	label = "Input Method"
                 	description = "Method to define the input parameterization. Either impedance or short-circuit based"
                 	widget = combo
@@ -405,6 +415,7 @@ library "OpenDSS" {
                         return comp_script
 
                     comp_script.define_icon(mdl, item_handle)
+                    comp_script.retro_compatibility(mdl, item_handle)
                 ENDCODE
 
                 CODE pre_compile

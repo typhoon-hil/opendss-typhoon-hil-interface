@@ -113,7 +113,9 @@ class SinglePhaseTransformer(MultiTerminal):
 
         windings = self.new_format_properties.pop("windings")
         line_props = [f'{k}={v}' for k, v in self.new_format_properties.items()]
-        return f'new {self.identifier()} windings={windings} Buses=[{", ".join(self.buses)}] {" ".join(line_props)}\n'
+        return f'new {self.identifier()} windings={windings} ' \
+               f'phases={self.num_phases - 1} Buses=[{", ".join(self.buses)}]' \
+               f' {" ".join(line_props)}\n'
 
     def created_component_instances(self):
         """ Some TSE components may result in multiple converted components. """

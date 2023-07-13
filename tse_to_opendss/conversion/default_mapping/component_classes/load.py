@@ -55,14 +55,7 @@ class Load(TwoTerminal):
         new_format_properties = dict()
         # Phase Property
         new_format_properties["phases"] = tse_properties["phases"]
-        # kV property
-        if tse_properties["phases"] == 1:
-            if tse_properties["ground_connected"]:
-                kv = (tse_properties["Vn_3ph"] / 1) / 1
-            else:
-                kv = tse_properties["Vn_3ph"]
-        else:
-            kv = tse_properties["Vn_3ph"]
+        kv = tse_properties["Vn_3ph"]
         new_format_properties["kV"] = kv
         # PF Property
         if tse_properties["pf_mode_3ph"] == "Unit":
@@ -81,7 +74,7 @@ class Load(TwoTerminal):
             model = 2
         new_format_properties["model"] = model
         # Conn Property
-        if tse_properties["conn_type"] == 'Δ':
+        if tse_properties["tp_connection"] == 'Δ':
             conn = "delta"
         else:
             conn = "wye"
@@ -107,10 +100,19 @@ class Load(TwoTerminal):
         if tse_properties["Pow_ref_s"] == "Time Series":
             new_format_properties["daily"] = tse_properties.get("loadshape_name")
 
-        gnd = tse_properties["ground_connected"] == "True"
-        if tse_properties["phases"] == "3":
-            if not gnd:
-                new_format_properties["Rneut"] = "-1"
+        #gnd = tse_properties["ground_connected"] == "True"
+        if tse_properties["tp_connection"] == "Y - Grounded":
+            gnd = True
+        else:
+            gnd = False
+
+        if gnd:
+            # Put the impedance between Neutral and Gnd
+            new_format_properties["Rneut"] = tse_properties.get("Rneut")
+            new_format_properties["Xneut"] = tse_properties.get("Xneut")
+        else:
+            # Neutral and Gnd are disconnected
+            new_format_properties["Rneut"] = "-1"
 
         # For single phase use phase voltage instead of line voltage
         if gnd and tse_properties["phases"] == "1":
@@ -122,7 +124,8 @@ class Load(TwoTerminal):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        gnd = tse_properties["ground_connected"] == "True"
+        gnd = tse_properties["tp_connection"] == "Y - Ground"
+
         num_phases = int(tse_properties["phases"])
 
         if num_phases == 1 and not gnd:

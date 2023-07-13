@@ -1295,29 +1295,3 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
                     msgbox.exec()
 
-
-if __name__ == "__main__":
-    import sys
-    import traceback
-
-    # Show tracebacks #
-    if QtCore.QT_VERSION >= 0x50501:
-        def excepthook(type_, value, traceback_):
-            traceback.print_exception(type_, value, traceback_)
-            QtCore.qFatal('')
-    sys.excepthook = excepthook
-
-    app = QtWidgets.QApplication(sys.argv)
-    bla = {"linecodes": {"aaa": {
-        "mode": "symmetrical",
-        "r1": "0.01273",
-        "r0": "0.3864",
-        "x1": "0.9337e-3",
-        "x0": "4.1264e-3",
-        "c1": "12.74e-9",
-        "c0": "7.751e-9",
-    }}}
-
-    mainwindow = GeneralObjects("loadshape", bla)
-    mainwindow.show()
-    app.exec()

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg256" xmlns="http://www.w3.org/2000/svg" width="64" height="124" viewBox="0 0 64 124">
+  <line x1="30.15" y1="16.41" x2="30.15" y2="75.59" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line x1="34.36" y1="16.41" x2="34.36" y2="75.59" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path304" d="M11,20c0,1.66-1.34,3-3,3s-3-1.34-3-3c0-1.66,1.34-3,3-3,1.66,0,3,1.34,3,3" style="fill: blue;"/>
+  <line x1="18.01" y1="78" x2="0" y2="78" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <line x1="18.01" y1="14" x2="0" y2="14" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <line x1="15.22" y1="46" y2="46" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <path id="path276" d="M18.01,16.55c4.2,.52,7.12,2.26,7.12,4.25,0,1.99-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280" d="M18.01,23.77c-.13,0-.28-.01-.41-.01-1.31,0-2.38,.3-2.38,.66s1.07,.66,2.38,.66c.13,0,.28-.01,.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-2" data-name="path276" d="M18.01,23.77c4.2,.52,7.12,2.26,7.12,4.25s-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-2" data-name="path280" d="M18.01,30.99c-.13,0-.28-.01-.41-.01-1.31,0-2.38,.3-2.38,.66s1.07,.66,2.38,.66c.13,0,.28-.01,.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-3" data-name="path276" d="M18.01,30.99c4.2,.52,7.12,2.26,7.12,4.25s-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-3" data-name="path280" d="M18.01,38.21c-.13,0-.28-.01-.41-.01-1.31,0-2.38,.3-2.38,.66s1.07,.66,2.38,.66c.13,0,.28-.01,.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-4" data-name="path276" d="M18.01,38.21c4.2,.52,7.12,2.26,7.12,4.25,0,1.99-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-4" data-name="path280" d="M18.01,45.42c-.13,0-.28-.01-.41-.01-1.31,0-2.38,.3-2.38,.66s1.07,.66,2.38,.66c.13,0,.28-.01,.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-5" data-name="path276" d="M18.01,45.42c4.2,.52,7.12,2.26,7.12,4.25,0,1.99-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-5" data-name="path280" d="M18.01,52.64c-.13,0-.28-.01-.41-.01-1.31,0-2.38,.3-2.38,.66,0,.37,1.07,.66,2.38,.66,.13,0,.28-.01,.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-6" data-name="path276" d="M18.01,52.64c4.2,.52,7.12,2.26,7.12,4.25,0,1.99-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-6" data-name="path280" d="M18.01,59.86c-.13,0-.28-.01-.41-.01-1.31,0-2.38,.3-2.38,.66,0,.37,1.07,.66,2.38,.66,.13,0,.28-.01,.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-7" data-name="path276" d="M18.01,59.86c4.2,.52,7.12,2.26,7.12,4.25,0,1.99-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-7" data-name="path280" d="M18.01,67.08c-.13,0-.28-.01-.41-.01-1.31,0-2.38,.3-2.38,.66s1.07,.66,2.38,.66c.13,0,.28-.01,.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-8" data-name="path276" d="M18.01,67.08c4.2,.52,7.12,2.26,7.12,4.25,0,1.99-2.92,3.73-7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line x1="18.01" y1="78" x2="18.01" y2="75.59" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line x1="18.01" y1="16.41" x2="18.01" y2="14" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line x1="13.84" y1="110" x2="0" y2="110" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <line id="line72-2" x1="27.78" y1="108.93" x2="27.78" y2="111.04" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line id="line74-4" x1="26.22" y1="108.31" x2="26.22" y2="111.72" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line id="line76-7" x1="24.6" y1="107.72" x2="24.6" y2="112.3" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <rect x="13.84" y="107.68" width="6.97" height="4.65" transform="translate(34.66 220) rotate(-180)" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <line x1="20.82" y1="109.99" x2="24.6" y2="109.99" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <path id="path304-2" data-name="path304" d="M53,20c0,1.66,1.34,3,3,3s3-1.34,3-3c0-1.66-1.34-3-3-3-1.66,0-3,1.34-3,3" style="fill: blue;"/>
+  <line x1="45.99" y1="78" x2="64" y2="78" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <line x1="45.99" y1="14" x2="64" y2="14" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <line x1="48.78" y1="46" x2="64" y2="46" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"/>
+  <path id="path276-9" data-name="path276" d="M45.99,16.55c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-8" data-name="path280" d="M45.99,23.77c.13,0,.28-.01,.41-.01,1.31,0,2.38,.3,2.38,.66s-1.07,.66-2.38,.66c-.13,0-.28-.01-.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-10" data-name="path276" d="M45.99,23.77c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-9" data-name="path280" d="M45.99,30.99c.13,0,.28-.01,.41-.01,1.31,0,2.38,.3,2.38,.66s-1.07,.66-2.38,.66c-.13,0-.28-.01-.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-11" data-name="path276" d="M45.99,30.99c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-10" data-name="path280" d="M45.99,38.21c.13,0,.28-.01,.41-.01,1.31,0,2.38,.3,2.38,.66s-1.07,.66-2.38,.66c-.13,0-.28-.01-.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-12" data-name="path276" d="M45.99,38.21c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-11" data-name="path280" d="M45.99,45.42c.13,0,.28-.01,.41-.01,1.31,0,2.38,.3,2.38,.66s-1.07,.66-2.38,.66c-.13,0-.28-.01-.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-13" data-name="path276" d="M45.99,45.42c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-12" data-name="path280" d="M45.99,52.64c.13,0,.28-.01,.41-.01,1.31,0,2.38,.3,2.38,.66,0,.37-1.07,.66-2.38,.66-.13,0-.28-.01-.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-14" data-name="path276" d="M45.99,52.64c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-13" data-name="path280" d="M45.99,59.86c.13,0,.28-.01,.41-.01,1.31,0,2.38,.3,2.38,.66,0,.37-1.07,.66-2.38,.66-.13,0-.28-.01-.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-15" data-name="path276" d="M45.99,59.86c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path280-14" data-name="path280" d="M45.99,67.08c.13,0,.28-.01,.41-.01,1.31,0,2.38,.3,2.38,.66s-1.07,.66-2.38,.66c-.13,0-.28-.01-.41-.01" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <path id="path276-16" data-name="path276" d="M45.99,67.08c-4.2,.52-7.12,2.26-7.12,4.25s2.92,3.73,7.12,4.25" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line x1="45.99" y1="78" x2="45.99" y2="75.59" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line x1="45.99" y1="16.41" x2="45.99" y2="14" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <line x1="30.15" y1="16.41" x2="30.15" y2="75.59" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"/>
+  <rect x="59" y="107.49" width="5" height="5" transform="translate(-48.49 171.49) rotate(-90)"/>
+  <rect x="0" y="107.35" width="5" height="5" transform="translate(-107.35 112.35) rotate(-90)"/>
+</svg>

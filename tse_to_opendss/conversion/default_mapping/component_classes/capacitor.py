@@ -48,9 +48,9 @@ class Capacitor(TwoTerminal):
         """ Returns the number of buses the component is connected to. """
 
         tp_connection = tse_properties['tp_connection']
-        if tp_connection in ["Y-grounded", "Δ"]:
+        if tp_connection in ["Y - Grounded", "Δ"]:
             num_buses = 1
-        elif tp_connection in ["Y", "Series"]:
+        elif tp_connection in ["Y", "In series"]:
             num_buses = 2
 
         return num_buses

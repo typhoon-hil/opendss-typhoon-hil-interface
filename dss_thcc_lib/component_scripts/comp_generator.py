@@ -204,7 +204,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                         label="Vfd0",
                         kind="sp",
                         direction="out",
-                        terminal_position=(-88, -51),
+                        terminal_position=(-48, 48),
                         position=(5968, 7640)
                     )
                     created_ports.update({"Vfd0": Vfd00})
@@ -214,7 +214,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                         label="Tm0",
                         kind="sp",
                         direction="out",
-                        terminal_position=(-88, -65),
+                        terminal_position=(-48, 32),
                         position=(5936, 7824)
                     )
                     created_ports.update({"Tm00": Tm00})
@@ -243,9 +243,9 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                                                 name="T",
                                                 direction="in",
                                                 kind="sp",
-                                                terminal_position=(-88, 40),
+                                                terminal_position=(-48, 32),
                                                 position=(6200, 8477),
-                                                label="T_series")
+                                                label="t")
                         created_ports.update({"T": t_ext})
                 else:
                     if t_ext:
@@ -264,7 +264,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 if new_value == "Manual input":
                     if not t_ext:
                         t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
-                                                terminal_position=(-88, 40),
+                                                terminal_position=(-48, 64),
                                                 position=(6200, 8477))
                         created_ports.update({"T": t_ext})
                 else:
@@ -331,7 +331,7 @@ def update_frequency_property(mdl, mask_handle, init=False):
 
 
 def define_icon(mdl, mask_handle):
-    mdl.set_component_icon_image(mask_handle, 'images/mchn_wrsync_generic2.svg')
+    mdl.set_component_icon_image(mask_handle, 'images/generator.svg')
 
 
 def generator_pre_compile_function(mdl, item_handle, prop_dict):

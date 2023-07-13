@@ -17,75 +17,83 @@ library "OpenDSS" {
             ]
 
             port A1 {
-                position = -32.0, -32.0
+                position = -32.0, -48.0
                 kind = pe
             }
             [
                 position = 8056, 8088
+                hide_name = True
             ]
 
             port B1 {
-                position = -32.0, 0.0
+                position = -32.0, -16.0
                 kind = pe
             }
             [
                 position = 8056, 8160
+                hide_name = True
             ]
 
             port C1 {
-                position = -32.0, 32.0
+                position = -32.0, 16.0
                 kind = pe
             }
             [
                 position = 8056, 8232
+                hide_name = True
             ]
 
             port N1 {
-                position = -24, 48
+                position = -32, 48
                 kind = pe
                 direction =  in
             }
             [
                 position = 8224, 8496
+                hide_name = True
             ]
 
             port N2 {
-                position = 24, 48
+                position = 32, 48
                 kind = pe
                 direction =  in
             }
             [
                 position = 8496, 8496
+                hide_name = True
                 scale = -1, 1
             ]
 
             port A2 {
-                position = 32, -32
+                position = 32, -48
                 kind = pe
                 direction =  in
             }
             [
                 position = 9376, 8144
+                hide_name = True
                 scale = -1, 1
             ]
 
             port B2 {
-                position = 32, 0
+                position = 32, -16
                 kind = pe
                 direction =  in
             }
             [
                 position = 9376, 8240
+                hide_name = True
                 scale = -1, 1
             ]
 
             port C2 {
-                position = 32, 32
+                position = 32, 16
                 kind = pe
                 direction =  in
             }
             [
                 position = 9376, 8336
+                hide_name = True
                 scale = -1, 1
             ]
 
@@ -236,10 +244,6 @@ library "OpenDSS" {
                 size = 60, 20
             ]
 
-            junction Junction1 pe
-            [
-                position = 8480, 8464
-            ]
 
             connect TagA1 A1 as Connection42
             connect B1 TagB1 as Connection43
@@ -272,17 +276,19 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle, prop_handle)
-                        comp_script.update_subsystem_components(mdl, container_handle, created_ports)
-                        comp_script.update_all_windings(mdl, container_handle, created_ports)
-                        comp_script.show_hide_conn(mdl, container_handle)
+                        num_windings = int(new_value)
+
+                        comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
+                        num_windings = int(new_value)
+
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_conn(mdl, container_handle)
+                        comp_script.enable_disable_conn(mdl, container_handle)
                         comp_script.show_hide_couplings(mdl, container_handle)
-                        comp_script.enable_disable_grounds(mdl, container_handle)
+                        comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                         comp_script.update_regctrl_combo(mdl, container_handle)
                     ENDCODE
                 }
@@ -307,7 +313,10 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.enable_disable_grounds(mdl, container_handle)
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
+                        num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+
+                        comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                     ENDCODE
                 }
 
@@ -333,7 +342,9 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.enable_disable_grounds(mdl, container_handle)
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
+                        num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+                        comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                     ENDCODE
                 }
 
@@ -359,7 +370,9 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.enable_disable_grounds(mdl, container_handle)
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
+                        num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+                        comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                     ENDCODE
                 }
 
@@ -384,7 +397,9 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.enable_disable_grounds(mdl, container_handle)
+                        num_windings_prop = mdl.prop(container_handle, "num_windings")
+                        num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+                        comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
                     ENDCODE
                 }
 
@@ -443,10 +458,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
                 }
 
@@ -478,7 +490,7 @@ library "OpenDSS" {
                 prim_conn {
                     label = "Primary"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections:2"
@@ -486,35 +498,40 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.enable_disable_conn(mdl, container_handle)
+
                     ENDCODE
                 }
 
-                grounded_prim {
-                    label = "Grounded Primary"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_prim {
+                    label = "Rneut prim"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                    ENDCODE
+                Xneut_prim {
+                    label = "Xneut prim"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 sec1_conn {
                     label = "Secondary 1"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections"
@@ -522,110 +539,114 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.enable_disable_conn(mdl, container_handle)
+
                     ENDCODE
                 }
 
-                grounded_sec1 {
-                    label = "Grounded Secondary 1"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_sec1 {
+                    label = "Rneut sec 1"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
-                    ENDCODE
+                Xneut_sec1 {
+                    label = "Xneut sec 1"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 sec2_conn {
                     label = "Secondary 2"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections"
-                    nonvisible
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.enable_disable_conn(mdl, container_handle)
+
                     ENDCODE
                 }
 
-                grounded_sec2 {
-                    label = "Grounded Secondary 2"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_sec2 {
+                    label = "Rneut sec 2"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    nonvisible
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
-                    ENDCODE
+                Xneut_sec2 {
+                    label = "Xneut sec 2"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 sec3_conn {
                     label = "Secondary 3"
                     widget = combo
-                    combo_values = "Y", "Δ"
+                    combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
                     default_value = "Y"
                     group = "Winding connections"
-                    nonvisible
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                        comp_script.vreg_connection(mdl, container_handle)
+                        #comp_script.topology_dynamics(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+                        #comp_script.enable_disable_z_neut(mdl, container_handle)
+                        comp_script.enable_disable_conn(mdl, container_handle)
                     ENDCODE
                 }
 
-                grounded_sec3 {
-                    label = "Grounded Secondary 3"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
+                Rneut_sec3 {
+                    label = "Rneut sec 3"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
                     group = "Winding connections"
-                    nonvisible
-                    no_evaluate
+                }
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_winding_configs(mdl, prop_handle, container_handle, created_ports)
-                    ENDCODE
+                Xneut_sec3 {
+                    label = "Xneut sec 3"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "Winding connections"
                 }
 
                 regcontrol_on {
@@ -808,6 +829,16 @@ library "OpenDSS" {
 
                 ENDCODE
 
+                CODE model_loaded
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
+                ENDCODE
+
+                CODE before_change
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
+                ENDCODE
+
                 CODE pre_compile
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.update_frequency_property(mdl, item_handle)
@@ -826,13 +857,13 @@ library "OpenDSS" {
                     percentNoloadloss = mdl.get_property_value(mdl.prop(item_handle, "percentNoloadloss"))
                     percentimag = mdl.get_property_value(mdl.prop(item_handle, "percentimag"))
                     prim_conn = mdl.get_property_value(mdl.prop(item_handle, "prim_conn"))
-                    grounded_prim = mdl.get_property_value(mdl.prop(item_handle, "grounded_prim"))
+                    #grounded_prim = mdl.get_property_value(mdl.prop(item_handle, "grounded_prim"))
                     sec1_conn = mdl.get_property_value(mdl.prop(item_handle, "sec1_conn"))
-                    grounded_sec1 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec1"))
+                    #grounded_sec1 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec1"))
                     sec2_conn = mdl.get_property_value(mdl.prop(item_handle, "sec2_conn"))
-                    grounded_sec2 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec2"))
+                    #grounded_sec2 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec2"))
                     sec3_conn = mdl.get_property_value(mdl.prop(item_handle, "sec3_conn"))
-                    grounded_sec3 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec3"))
+                    #grounded_sec3 = mdl.get_property_value(mdl.prop(item_handle, "grounded_sec3"))
                     # HEADER STOP
 
                     comp_script.validate_properties(mdl, item_handle)
@@ -840,8 +871,6 @@ library "OpenDSS" {
 
                 ENDCODE
 
-                CODE post_resolve
-                ENDCODE
             }
         }
         [
