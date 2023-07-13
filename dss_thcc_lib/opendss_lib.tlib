@@ -9124,6 +9124,137 @@ library "OpenDSS" {
                 position = 8216, 8256
                 size = 48, 48
             ]
+
+            component Subsystem "TS Reset" {
+                layout = dynamic
+                component "core/C function" "Division Remainder" {
+                    execution_rate = "execution_rate"
+                    input_terminals_dimensions = "inherit"
+                    input_terminals_feedthrough = "True"
+                    input_terminals_show_labels = "False"
+                    output_fnc = "/*Begin code section*/
+                    out = fmod(in, max);
+                    /*End code section*/"
+                    output_terminals_dimensions = "inherit"
+                    output_terminals_feedthrough = "True"
+                    output_terminals_show_labels = "False"
+                    parameters = "real max;"
+                }
+                [
+                    position = 7752, 8048
+                    size = 48, 48
+                ]
+
+                component "core/Round" round {
+                    execution_rate = "execution_rate"
+                }
+                [
+                    position = 7616, 8048
+                ]
+
+                port In {
+                    position = auto:auto
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7496, 8048
+                ]
+
+                port Out {
+                    position = auto:auto
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7944, 8048
+                ]
+
+                connect Out "Division Remainder.out" as Connection3
+                connect In round.in as Connection4
+                connect round.out "Division Remainder.in" as Connection5
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                    max {
+                        label = "max value"
+                        widget = edit
+                        type = generic
+                        default_value = "23"
+                    }
+
+                    input_type {
+                        label = "Input type"
+                        widget = combo
+                        combo_values = "Index", "Hour"
+                        type = string
+                        default_value = "Index"
+                        no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_parent(container_handle)
+                            round_handle = mdl.get_item("round", parent=comp_handle)
+                            inpunt_port_handle = mdl.get_item("In", parent=comp_handle, item_type="port")
+                            cfunction_handle = mdl.get_item("Division Remainder", parent=comp_handle)
+
+                            if new_value == "Index":
+                                round_pos = mdl.get_position(round_handle)
+                                mdl.delete_item(round_handle)
+                                round_handle = mdl.create_component("Round",
+                                                                    name="round",
+                                                                    parent=comp_handle,
+                                                                    position=round_pos)
+                                mdl.set_property_value(mdl.prop(round_handle, "execution_rate"), "execution_rate")
+                                mdl.create_connection(inpunt_port_handle, mdl.term(round_handle, "in"))
+                                mdl.create_connection(mdl.term(round_handle, "out"), mdl.term(cfunction_handle, "in"))
+                            else:
+                                round_pos = mdl.get_position(round_handle)
+                                mdl.delete_item(round_handle)
+                                round_handle = mdl.create_component("Gain",
+                                                                    name="round",
+                                                                    parent=comp_handle,
+                                                                    position=round_pos)
+                                mdl.set_property_value(mdl.prop(round_handle, "execution_rate"), "execution_rate")
+                                mdl.create_connection(inpunt_port_handle, mdl.term(round_handle, "in"))
+                                mdl.create_connection(mdl.term(round_handle, "out"), mdl.term(cfunction_handle, "in"))
+                        ENDCODE
+                    }
+
+                    execution_rate {
+                        label = "Execution rate"
+                        widget = edit
+                        type = generic
+                        default_value = "inherit"
+                        unit = "s"
+                    }
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+
+                    ENDCODE
+                }
+            }
+            [
+                position = 8384, 8256
+                size = 64, 48
+            ]
+
         }
         [
             position = 4344, 3880

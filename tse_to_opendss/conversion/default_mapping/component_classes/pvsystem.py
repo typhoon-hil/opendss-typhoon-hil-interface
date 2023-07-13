@@ -62,7 +62,7 @@ class PVSystem(TwoTerminal):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        num_phases = 3
+        num_phases = int(tse_properties.get("phases"))
 
         return num_phases
 

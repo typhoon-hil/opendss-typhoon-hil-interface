@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.3 DEV
+// Saved by sw version: 2023.4 DEV
 //
 
 model "pvsystem_test" {
@@ -9,7 +9,7 @@ model "pvsystem_test" {
         hil_device = "HIL604"
         hil_configuration_id = 1
         simulation_method = exact
-        simulation_time_step = auto
+        simulation_time_step = 20e-6
         simulation_discret_scaling = 1.0
         dsp_timer_periods = 100e-6, 50e-3
         ss_calc_method = "systematic elimination"
@@ -60,64 +60,360 @@ model "pvsystem_test" {
     component Subsystem Root {
         component "OpenDSS/Vsource" V1 {
             basekv = "0.240"
+            enable_monitoring = "True"
             input_method = "MVAsc"
         }
         [
-            position = 8008, 4384
+            position = 9016, 4208
+            rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus1 {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
         }
         [
-            position = 8160, 4384
+            position = 9016, 4312
+            rotation = right
             size = 16, 96
         ]
 
-        component "OpenDSS/SimDSS" SimDSS1 {
+        component "OpenDSS/SimDSS" SimDSS {
+            currents = "Elem"
             powers = "kVA Elem"
-            sim_counter = "5"
+            sim_counter = "34"
             sim_mode = "Time Series"
-            sim_status = "Sim5 complete"
+            sim_status = "Sim34 complete"
             voltagebases = "[0.240]"
         }
         [
-            position = 8160, 4232
+            position = 8664, 4088
             size = 96, 96
         ]
 
-        component "OpenDSS/PV System" "PV System1" {
-            Iki = "0.5"
-            Ikp = "5.0"
-            enable_monitoring = "True"
-            power = "5.0"
-            rl1_inductance = "6.8e-3"
-            rl1_resistance = "0.1"
-            voltage = "0.240"
+        component "core/SCADA Input" "SCADA Input1" {
+            format = "int"
+            max = "1"
+            min = "0"
+            signal_type = "int"
+            unit = ""
         }
         [
-            position = 8000, 4528
-            size = 97, 97
+            position = 8480, 4248
         ]
 
-        connect V1.A1 Bus1.A1 as Connection1
-        connect V1.B1 Bus1.B1 as Connection2
-        connect V1.C1 Bus1.C1 as Connection3
-        connect "PV System1.A1" Bus1.A2 as Connection4
+        component "core/Integrator" Integrator1 {
+        }
         [
-            breakpoints = 8272, 4496; 8272, 4352
+            position = 8632, 4248
         ]
-        connect "PV System1.B1" Bus1.B2 as Connection5
+
+        component "core/Probe" time_hour {
+        }
         [
-            breakpoints = 8232, 4528; 8232, 4384
+            position = 8808, 4184
         ]
-        connect "PV System1.C1" Bus1.C2 as Connection6
+
+        component "core/Gain" scale {
+            gain = "0.5"
+        }
         [
-            breakpoints = 8200, 4560; 8200, 4416
+            position = 8712, 4248
         ]
+
+        component "OpenDSS/PV System" PV1 {
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            power_ref = "Time Series"
+            tshape_hour = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            tshape_name = "Irrad"
+        }
+        [
+            position = 8576, 4416
+            size = 96, 144
+        ]
+
+        component "OpenDSS/PV System" PV2 {
+            connection = "Δ"
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            phases = "1"
+        }
+        [
+            position = 8576, 4632
+            size = 96, 96
+        ]
+
+        component "OpenDSS/PV System" PV3 {
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            phases = "1"
+            tshape_hour = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            voltage = "0.240/np.sqrt(3)"
+        }
+        [
+            position = 8576, 4824
+            size = 96, 96
+        ]
+
+        component "OpenDSS/Bus" "Bus PV1" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8680, 4440
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" "Bus PV2" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            type_prop = "AB"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8680, 4632
+            size = 16, 64
+        ]
+
+        component "OpenDSS/Bus" "Bus PV3" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            type_prop = "C"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8680, 4792
+            size = 16, 32
+        ]
+
+        component "OpenDSS/Line" Line1 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            dC0 = "0"
+            dC1 = "0"
+        }
+        [
+            position = 8816, 4440
+            size = 64, 112
+        ]
+
+        component "OpenDSS/Line" Line2 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            cmatrix = "[[0, 0], [0,0]]"
+            dC0 = "0"
+            dC1 = "0"
+            input_type = "Matrix"
+            phases = "2"
+            rmatrix = "[[0.1903, 0], [0, 0.1903]]"
+            xmatrix = "[[0.3957, 0], [0, 0.3957]]"
+        }
+        [
+            position = 8816, 4632
+            size = 64, 80
+        ]
+
+        component "OpenDSS/Line" Line3 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            cmatrix = "[[0]]"
+            dC0 = "0"
+            dC1 = "0"
+            input_type = "Matrix"
+            phases = "1"
+            rmatrix = "[[0.1903]]"
+            xmatrix = "[[0.39570]]"
+        }
+        [
+            position = 8816, 4792
+            size = 64, 49
+        ]
+
+        component "core/Data Type Conversion" "Data Type Conversion1" {
+        }
+        [
+            position = 8552, 4248
+            hide_name = True
+        ]
+
+        tag Goto1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8808, 4248
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8456, 4368
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From2 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8456, 4560
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From3 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8456, 4752
+            hide_name = True
+            size = 60, 20
+        ]
+
+        junction Junction1 sp
+        [
+            position = 8752, 4248
+        ]
+
+        junction Junction2 pe
+        [
+            position = 9048, 4408
+        ]
+
+        junction Junction3 pe
+        [
+            position = 9016, 4440
+        ]
+
+        junction Junction4 pe
+        [
+            position = 8984, 4472
+        ]
+
+        comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Time-Series</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">seconds -&gt; hour</p></body></html> ENDCOMMENT 
+        [
+            position = 8600, 4168
+        ]
+
+        connect Integrator1.out scale.in as Connection31
+        connect Junction1 Goto1 as Connection60
+        connect Junction1 time_hour.in as Connection61
+        connect Junction1 scale.out as Connection62
+        connect V1.C1 Bus1.C1 as Connection63
+        connect V1.B1 Bus1.B1 as Connection64
+        connect V1.A1 Bus1.A1 as Connection65
+        connect "Bus PV2.A1" PV2.A1 as Connection81
+        connect "Bus PV2.B1" PV2.N as Connection82
+        connect "Bus PV3.C1" PV3.A1 as Connection83
+        connect "Bus PV1.A1" PV1.A1 as Connection84
+        connect "Bus PV1.B1" PV1.B1 as Connection85
+        connect "Bus PV1.C1" PV1.C1 as Connection86
+        connect "Bus PV1.A2" Line1.A1 as Connection87
+        connect "Bus PV1.B2" Line1.B1 as Connection88
+        connect "Bus PV1.C2" Line1.C1 as Connection89
+        connect "Bus PV2.A2" Line2.A1 as Connection90
+        connect "Bus PV2.B2" Line2.B1 as Connection91
+        connect Line1.A2 Junction2 as Connection95
+        connect Junction2 Bus1.A2 as Connection96
+        connect Line2.A2 Junction2 as Connection97
+        connect Line1.B2 Junction3 as Connection98
+        connect Junction3 Bus1.B2 as Connection99
+        connect Line2.B2 Junction3 as Connection100
+        connect "Bus PV3.C2" Line3.A1 as Connection101
+        connect Line1.C2 Junction4 as Connection102
+        connect Junction4 Bus1.C2 as Connection103
+        connect Line3.A2 Junction4 as Connection104
+        connect "SCADA Input1.out" "Data Type Conversion1.in" as Connection105
+        connect "Data Type Conversion1.out" Integrator1.in as Connection106
+        connect From1 PV1.Time_p as Connection107
     }
 
     default {
+        "core/Data Type Conversion" {
+            output_type = "real"
+            execution_rate = "inherit"
+        }
+
+        "core/Gain" {
+            gain = "1"
+            multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
+            execution_rate = "inherit"
+        }
+
+        "core/Integrator" {
+            show_reset = "none"
+            reset_type = "asynchronous"
+            show_init_condition = "internal"
+            init_value = "0"
+            limit_output = "False"
+            limit_upper = "inf"
+            limit_lower = "-inf"
+            show_state = "False"
+            state_port_type = "inherit"
+            execution_rate = "inherit"
+        }
+
+        "core/Probe" {
+            signal_access = "inherit"
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        "core/SCADA Input" {
+            addr = "0"
+            format = "real"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "real"
+            min = "-1e6"
+            max = "1e6"
+            def_value = "0"
+            unit = " "
+            execution_rate = "100e-6"
+        }
+
         "OpenDSS/Bus" {
             type_prop = "ABC"
             ground_prop = "False"
@@ -134,9 +430,44 @@ model "pvsystem_test" {
             enable_output = "False"
         }
 
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
         "OpenDSS/PV System" {
-            power = "100"
-            voltage = "115"
+            power = "5.0"
+            voltage = "0.240"
             freq = "60"
             phases = "3"
             connection = "Y"
@@ -145,7 +476,7 @@ model "pvsystem_test" {
             xycurve_npts_eff = "4"
             xycurve_xarray_eff = "[.1, .2, .4, 1.0]"
             xycurve_yarray_eff = "[.86, .9, .93, .97]"
-            pmpp = "1000"
+            pmpp = "5.0"
             irrad = "1"
             temp = "25"
             load_xycurve_cf = "Choose"
@@ -154,14 +485,14 @@ model "pvsystem_test" {
             xycurve_xarray_cf = "[0, 25, 75, 100]"
             xycurve_yarray_cf = "[1.2, 1.0, 0.8, 0.6]"
             filter_type = "L"
-            rl1_resistance = "1e-3"
-            rl1_inductance = "1e-3"
+            rl1_resistance = "0.1"
+            rl1_inductance = "0.68e-3"
             rc_resistance = "1e-3"
             rc_capacitance = "100e-6"
             rl2_resistance = "1e-3"
             rl2_inductance = "1e-3"
-            Ikp = "0"
-            Iki = "0"
+            Ikp = "0.5"
+            Iki = "5.0"
             ts = "100e-6"
             power_ref = "Internal Scada Input"
             t_mode = "Time value (h)"
@@ -172,9 +503,10 @@ model "pvsystem_test" {
             loadshape_from_file_path = ""
             loadshape_from_file_column = "1"
             loadshape_from_file_header = "True"
-            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+            loadshape = "[0, 0, 0, 0, 0, 0, .1, .2, .3, .5, .8, .9, 1.0, 1.0, .99, .9, .7, .4, .1, 0, 0, 0, 0, 0]"
             loadshape_int = "1"
             loadshape_hour = "[]"
+            loadshape_npts = "24"
             timespan = "Daily"
             load_tshape = "Choose"
             tshape_name = "Temp"

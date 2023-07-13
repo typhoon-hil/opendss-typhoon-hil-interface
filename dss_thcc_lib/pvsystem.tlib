@@ -7,6 +7,7 @@ library "OpenDSS" {
     component Subsystem Root {
         component Subsystem "PV System" {
             layout = static
+            label = "PV"
             component "OpenDSS/InvControl" InvControl {
                 Iki = "Iki"
                 Ikp = "Ikp"
@@ -46,29 +47,7 @@ library "OpenDSS" {
                 signs = "3"
             }
             [
-                position = 7512, 7512
-            ]
-
-            component "core/SCADA Input" Irradiance {
-                def_value = "irrad"
-                execution_rate = "ts"
-                max = "10"
-                min = "0"
-                unit = ""
-            }
-            [
-                position = 7192, 7512
-            ]
-
-            component "core/SCADA Input" Temperature {
-                def_value = "temp"
-                execution_rate = "ts"
-                max = "150"
-                min = "0"
-                unit = "°C"
-            }
-            [
-                position = 7192, 7576
+                position = 7464, 7512
             ]
 
             component "core/1D look-up table" PvsT {
@@ -84,7 +63,7 @@ library "OpenDSS" {
                 gain = "1/power"
             }
             [
-                position = 7640, 7512
+                position = 7536, 7512
             ]
 
             component "core/1D look-up table" Eff {
@@ -93,7 +72,7 @@ library "OpenDSS" {
                 table_impl = "Non-equidistant"
             }
             [
-                position = 7720, 7512
+                position = 7736, 7528
             ]
 
             component "core/Gain" Qref_pu {
@@ -106,7 +85,7 @@ library "OpenDSS" {
             component "core/Product" Product2 {
             }
             [
-                position = 7808, 7520
+                position = 7808, 7536
                 hide_name = True
             ]
 
@@ -149,18 +128,6 @@ library "OpenDSS" {
                 position = 7288, 7448
             ]
 
-            component "core/Gain" Irrad_lut {
-            }
-            [
-                position = 7288, 7512
-            ]
-
-            component "core/Gain" Temp_lut {
-            }
-            [
-                position = 7288, 7576
-            ]
-
             component "core/Constant" Qref {
                 _tunable = "True"
                 execution_rate = "ts"
@@ -185,9 +152,72 @@ library "OpenDSS" {
                 position = 7192, 7448
             ]
 
+            component "core/1D look-up table" Irrad_lut {
+                in_vec_x = "loadshape_time"
+                out_vec_f_x = "loadshape"
+                table_impl = "Non-equidistant"
+            }
+            [
+                position = 7288, 7512
+            ]
+
+            component "OpenDSS/TS Reset" "Rst Irrad" {
+                input_type = "Hour"
+                max = "irrad_max"
+            }
+            [
+                position = 7160, 7512
+                size = 64, 48
+            ]
+
+            component "core/1D look-up table" Temp_lut {
+                in_vec_x = "tshape_time"
+                out_vec_f_x = "tshape_temp"
+                table_impl = "Non-equidistant"
+            }
+            [
+                position = 7288, 7576
+            ]
+
+            component "OpenDSS/TS Reset" "Rst Temp" {
+                input_type = "Hour"
+                max = "temp_max"
+            }
+            [
+                position = 7160, 7576
+                size = 64, 48
+            ]
+
+            component "core/Hysteresis Function" Cutin-Cutout {
+                init_state = "high"
+                low_thr = "0.2"
+                up_thr = "0.2"
+            }
+            [
+                position = 7608, 7432
+                size = 32, 32
+            ]
+
+            component "core/Signal switch" "Signal switch1" {
+                criterion = "ctrl >= threshold"
+            }
+            [
+                position = 7648, 7528
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant1 {
+                execution_rate = "ts"
+                value = "0"
+            }
+            [
+                position = 7568, 7568
+                hide_name = True
+            ]
+
             port A1 {
                 label = "A"
-                position = 40.0, -32.0
+                position = 40.0, -8.0
                 kind = pe
             }
             [
@@ -198,7 +228,7 @@ library "OpenDSS" {
 
             port B1 {
                 label = "B"
-                position = 40.0, -0.0
+                position = 40.0, 24
                 kind = pe
             }
             [
@@ -209,13 +239,27 @@ library "OpenDSS" {
 
             port C1 {
                 label = "C"
-                position = 40.0, 32.0
+                position = 40.0, 56.0
                 kind = pe
             }
             [
                 position = 7984, 8280
                 hide_name = True
                 scale = -1, 1
+            ]
+
+            port Time_p {
+                label = "t (h)"
+                position = -48.0, -48.0
+                kind = sp
+                direction =  out
+                sp_type {
+                    default = auto
+                    readonly = True
+                }
+            }
+            [
+                position = 7064, 7512
             ]
 
             tag from_modA {
@@ -491,9 +535,14 @@ library "OpenDSS" {
                 size = 60, 20
             ]
 
-            junction Junction15 sp
+            junction Junction2 sp
             [
-                position = 7680, 7512
+                position = 7568, 7512
+            ]
+
+            junction Junction3 sp
+            [
+                position = 7696, 7528
             ]
 
             comment Comment22 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Calculation of PV array's output power</p></body></html> ENDCOMMENT
@@ -518,48 +567,50 @@ library "OpenDSS" {
             connect Pdc_prod.out Pdc_pu.in as Connection1954
             connect PvsT.value Pdc_prod.in2 as Connection1960
             connect Eff.value Product2.in as Connection1965
-            connect Pdc_pu.out Junction15 as Connection1968
-            connect Junction15 Eff.addr as Connection1969
-            connect Product2.in1 Junction15 as Connection1970
-            [
-                position = 0, 0
-                breakpoints = 7760, 7528; 7760, 7568
-            ]
             connect InvLeg_A.N gnd_tag as Connection1977
             connect from_modA InvLeg_A.mod as Connection1978
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect goto_IA InvLeg_A.Imeas as Connection1979
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect InvLeg_A.Vmeas goto_VA as Connection1980
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect from_modB InvLeg_B.mod as Connection1981
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect goto_IB InvLeg_B.Imeas as Connection1982
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect InvLeg_B.Vmeas goto_VB as Connection1983
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect InvLeg_C.Imeas goto_IC as Connection1984
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect InvLeg_C.Vmeas goto_VC as Connection1985
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect from_modC InvLeg_C.mod as Connection1986
             [
+                position = 0, 0
                 hide_name = True
             ]
             connect InvLeg_B.N gnd_tag as Connection1987
@@ -568,10 +619,6 @@ library "OpenDSS" {
             connect InvLeg_B.L B1 as Connection1990
             connect InvLeg_C.L C1 as Connection1991
             connect Pmpp_aux.out Pdc_prod.in as Connection2015
-            connect Irradiance.out Irrad_lut.in as Connection2016
-            connect Irrad_lut.out Pdc_prod.in1 as Connection2017
-            connect PvsT.addr Temp_lut.out as Connection2018
-            connect Temp_lut.in Temperature.out as Connection2019
             connect Qref.out Qref_pu.in as Connection2020
             connect gnd_src gnd.node as Connection2021
             connect Pmpp.out Pmpp_aux.in as Connection2022
@@ -579,15 +626,39 @@ library "OpenDSS" {
             connect en_swB InvLeg_B.sw as Connection2024
             connect en_swC InvLeg_C.sw as Connection2025
             connect InvControl.en_inv Goto1 as Connection2026
+            connect "Rst Irrad.Out" Irrad_lut.addr as Connection2027
+            connect Irrad_lut.value Pdc_prod.in1 as Connection2028
+            connect "Rst Temp.Out" Temp_lut.addr as Connection2029
+            connect Temp_lut.value PvsT.addr as Connection2030
+            connect Time_p "Rst Irrad.In" as Connection2031
+            connect Time_p "Rst Temp.In" as Connection2032
+            connect Cutin-Cutout.out "Signal switch1.in2" as Connection2040
+            connect Pdc_pu.out Junction2 as Connection2041
+            connect Junction2 Cutin-Cutout.in as Connection2042
+            [
+                breakpoints = 7568, 7512; 7568, 7512; 7568, 7448
+            ]
+            connect "Signal switch1.in" Junction2 as Connection2043
+            [
+                breakpoints = 7616, 7512; 7568, 7512
+            ]
+            connect Constant1.out "Signal switch1.in1" as Connection2044
+            connect "Signal switch1.out" Junction3 as Connection2046
+            connect Junction3 Eff.addr as Connection2047
+            connect Product2.in1 Junction3 as Connection2048
+            [
+                breakpoints = 7760, 7544; 7760, 7576
+            ]
 
             mask {
-                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Remember to copu the tse_component_edit.tlib to the pvsystem.tlib and rollback it!!!!!!!!!!!!!!!</p></body></html>"
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It implements the PVSystem from the OpenDSS. The time-domain component comprises an average inverter model interfaced with the grid and supports only grid-forming mode.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A detailed explanation of the OpenDSS PVSystem model can be found by clicking the help button.</p><p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+                help_file = "help/PVSystem_InvControl.pdf"
 
                 power {
                     label = "Power Rating"
                     widget = edit
                     type = generic
-                    default_value = "100"
+                    default_value = "5.0"
                     unit = "kVA"
                     group = "PV Inverter:!"
                 }
@@ -596,7 +667,7 @@ library "OpenDSS" {
                     label = "Nominal Voltage"
                     widget = edit
                     type = generic
-                    default_value = "115"
+                    default_value = "0.240"
                     unit = "kV"
                     group = "PV Inverter"
                 }
@@ -620,7 +691,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle, old_value==new_value)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
 
@@ -640,7 +711,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle, old_value==new_value)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 
@@ -723,7 +794,7 @@ library "OpenDSS" {
                     label = "Array MPPT"
                     widget = edit
                     type = generic
-                    default_value = "1000"
+                    default_value = "5.0"
                     unit = "kW"
                     group = "PV Array:2"
                 }
@@ -832,7 +903,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle, old_value==new_value)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
 
@@ -846,7 +917,7 @@ library "OpenDSS" {
                     label = "Resistance RL1 Branch"
                     widget = edit
                     type = generic
-                    default_value = "1e-3"
+                    default_value = "0.1"
                     unit = "Ω"
                     group = "Typhoon"
                 }
@@ -855,7 +926,7 @@ library "OpenDSS" {
                     label = "Inductance RL1 Branch"
                     widget = edit
                     type = generic
-                    default_value = "1e-3"
+                    default_value = "0.68e-3"
                     unit = "H"
                     group = "Typhoon"
                 }
@@ -900,7 +971,7 @@ library "OpenDSS" {
                     label = "Current Controller Kp (Inner Loop)"
                     widget = edit
                     type = generic
-                    default_value = "0"
+                    default_value = "0.5"
                     group = "Typhoon"
                 }
 
@@ -908,7 +979,7 @@ library "OpenDSS" {
                     label = "Current Controller Ki (Inner Loop)"
                     widget = edit
                     type = generic
-                    default_value = "0"
+                    default_value = "5.0"
                     group = "Typhoon"
                 }
 
@@ -931,7 +1002,14 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle, old_value==new_value)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+                        comp_handle = mdl.get_parent(container_handle)
+                        comp_position = mdl.get_position(comp_handle)
+                        if old_value == "Internal Scada Input" and new_value == "Time Series":
+                            mdl.set_position(comp_handle, [comp_position[0], comp_position[1]-24])
+                        elif new_value == "Internal Scada Input" and old_value == "Time Series":
+                            mdl.set_position(comp_handle, [comp_position[0], comp_position[1]+24])
+
                     ENDCODE
                 }
 
@@ -1045,8 +1123,8 @@ library "OpenDSS" {
                     label = "Irradiance points"
                     widget = edit
                     type = generic
-                    default_value = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
-                    unit = "pu"
+                    default_value = "[0, 0, 0, 0, 0, 0, .1, .2, .3, .5, .8, .9, 1.0, 1.0, .99, .9, .7, .4, .1, 0, 0, 0, 0, 0]"
+                    unit = "kW/m2"
                     group = "Operating Conditions"
                     no_evaluate
 
@@ -1081,6 +1159,21 @@ library "OpenDSS" {
                     nonvisible
 
                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_npts{
+                    label = "Irrad N. Points"
+                    widget = edit
+                    type = generic
+                    default_value = "24"
+                    group = "Operating Conditions"
+                    unit = "(read only)"
+                    no_evaluate
+
+                     CODE property_value_edited
                         old_value = mdl.get_property_value(prop_handle)
                         mdl.set_property_value(prop_handle, old_value)
                     ENDCODE
@@ -1278,12 +1371,43 @@ library "OpenDSS" {
                     tshape_int = mdl.get_property_value(mdl.prop(item_handle, "tshape_int"))
                     tshape_npts = mdl.get_property_value(mdl.prop(item_handle, "tshape_npts"))
                     tshape_hour = mdl.get_property_value(mdl.prop(item_handle, "tshape_hour"))
+                    loadshape_npts = mdl.get_property_value(mdl.prop(item_handle, "loadshape_npts"))
                     # HEADER STOP
+                    import ast
+
+                    comp_handle = mdl.get_parent(item_handle)
+                    rst_irrad = mdl.get_item("Rst Irrad", parent=comp_handle)
+                    rst_temp = mdl.get_item("Rst Temp", parent=comp_handle)
 
                     scale = 0.01
                     ts = 10e-6
                     pv_z = 1e-3*(voltage*voltage/power)
                     pv_r = pv_z*scale/(2*np.pi*freq)/ts
+
+                    loadshape_hour = loadshape_hour if loadshape_hour else '[]' # WorkAround
+                    if not ast.literal_eval(tshape_hour):
+                        if t_mode == "Index":
+                            tshape_time = [h for h in range(len(ast.literal_eval(tshape_temp)))]
+                            temp_max = len(tshape_time)-1
+                        else:
+                            tshape_time = [h*float(tshape_int) for h in range(ast.literal_eval(tshape_npts))]
+                            temp_max = tshape_time[-1]
+
+                    if not ast.literal_eval(loadshape_hour):
+                        if t_mode == "Index":
+                            loadshape_time = [h for h in range(len(ast.literal_eval(loadshape)))]
+                            irrad_max = len(loadshape_time)-1
+                        else:
+                            loadshape_time = [h*float(loadshape_int) for h in range(ast.literal_eval(loadshape_npts))]
+                            irrad_max = loadshape_time[-1]
+
+                    if power_ref == "Time Series":
+                        if t_mode == "Index":
+                            mdl.set_property_value(mdl.prop(rst_irrad, "input_type"), "Index")
+                            mdl.set_property_value(mdl.prop(rst_temp, "input_type"), "Index")
+                        else:
+                            mdl.set_property_value(mdl.prop(rst_irrad, "input_type"), "Hour")
+                            mdl.set_property_value(mdl.prop(rst_temp, "input_type"), "Hour")
 
                 ENDCODE
             }

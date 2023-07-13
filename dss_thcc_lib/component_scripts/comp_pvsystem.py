@@ -231,21 +231,19 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
         comp_handle = mdl.get_parent(container_handle)
         port_dynamics(mdl, container_handle, caller_prop_handle)
 
-        #pmpp_lut_handle = mdl.get_item("Pmpp_lut", parent=comp_handle)
-        #pmpp_lut_pos = mdl.get_position(pmpp_lut_handle)
         irrad_lut_handle = mdl.get_item("Irrad_lut", parent=comp_handle)
         irrad_lut_pos = mdl.get_position(irrad_lut_handle)
         temp_lut_handle = mdl.get_item("Temp_lut", parent=comp_handle)
         temp_lut_pos = mdl.get_position(temp_lut_handle)
         pdc_product_handle = mdl.get_item("Pdc_prod", parent=comp_handle)
         pvst_lut_handle = mdl.get_item("PvsT", parent=comp_handle)
+        reset_irrad_handle = mdl.get_item("Rst Irrad", parent=comp_handle)
+        reset_temp_handle = mdl.get_item("Rst Temp", parent=comp_handle)
 
-        pmpp_port_handle = mdl.get_item("Pmpp_p", parent=comp_handle, item_type="port")
         irrad_port_handle = mdl.get_item("Irradiance_p", parent=comp_handle, item_type="port")
         temp_port_handle = mdl.get_item("Temperature_p", parent=comp_handle, item_type="port")
         time_port_handle = mdl.get_item("Time_p", parent=comp_handle, item_type="port")
 
-        pmpp_attrib = get_port_const_attributes(mdl, container_handle, "Pmpp")
         irrad_attrib = get_port_const_attributes(mdl, container_handle, "Irradiance")
         temp_attrib = get_port_const_attributes(mdl, container_handle, "Temperature")
         time_attrib = get_port_const_attributes(mdl, container_handle, "Time")
@@ -254,26 +252,8 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
 
         if new_value == "Internal Scada Input":
 
-            """
-            pmpp_handle = mdl.get_item("Pmpp", parent=comp_handle)
-            if not pmpp_handle:
-                pmpp_handle = mdl.create_component("core/SCADA Input",
-                                                   name="Pmpp",
-                                                   parent=comp_handle,
-                                                   position=pmpp_attrib.get("pos"))
-
-                pmpp_lut_pos = mdl.get_position(pmpp_lut_handle)
-                mdl.delete_item(pmpp_lut_handle)
-                pmpp_lut_handle = mdl.create_component("core/Gain",
-                                                       name="Pmpp_lut",
-                                                       parent=comp_handle,
-                                                       position=pmpp_lut_pos)
-
-                if not mdl.find_connections(mdl.term(pmpp_handle, "out"), mdl.term(pmpp_lut_handle, "in")):
-                    mdl.create_connection(mdl.term(pmpp_handle, "out"), mdl.term(pmpp_lut_handle, "in"))
-                if not mdl.find_connections(mdl.term(pmpp_lut_handle, "out"), mdl.term(pdc_product_handle, "in")):
-                    mdl.create_connection(mdl.term(pmpp_lut_handle, "out"), mdl.term(pdc_product_handle, "in"))
-            """
+            mdl.delete_item(reset_irrad_handle) if reset_irrad_handle else None
+            mdl.delete_item(reset_temp_handle) if reset_temp_handle else None
 
             irrad_handle = mdl.get_item("Irradiance", parent=comp_handle)
             if not irrad_handle:
@@ -323,20 +303,6 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
 
         elif new_value == "Time Series":
 
-            """
-            pmpp_handle = mdl.get_item("Pmpp", parent=comp_handle)
-            if pmpp_handle:
-                mdl.delete_item(pmpp_handle)
-
-                mdl.delete_item(pmpp_lut_handle)
-                pmpp_lut_handle = mdl.create_component("1D look-up table",
-                                                       name="Pmpp_lut",
-                                                       parent=comp_handle,
-                                                       position=pmpp_lut_pos)
-                if not mdl.find_connections(mdl.term(pmpp_lut_handle, "value"), mdl.term(pdc_product_handle, "in")):
-                    mdl.create_connection(mdl.term(pmpp_lut_handle, "value"), mdl.term(pdc_product_handle, "in"))
-            """
-
             irrad_handle = mdl.get_item("Irradiance", parent=comp_handle)
             if irrad_handle:
                 mdl.delete_item(irrad_handle)
@@ -346,11 +312,17 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                                                         name="Irrad_lut",
                                                         parent=comp_handle,
                                                         position=irrad_lut_pos)
-                mdl.set_property_value(mdl.prop(irrad_lut_handle, "in_vec_x"), "loadshape_hour")
+                mdl.set_property_value(mdl.prop(irrad_lut_handle, "in_vec_x"), "loadshape_time")
                 mdl.set_property_value(mdl.prop(irrad_lut_handle, "out_vec_f_x"), "loadshape")
-                mdl.set_property_value(mdl.prop(irrad_lut_handle, "table_impl"), "Non_equidistant")
-                if not mdl.find_connections(mdl.term(irrad_lut_handle, "value"), mdl.term(pdc_product_handle, "in1")):
-                    mdl.create_connection(mdl.term(irrad_lut_handle, "value"), mdl.term(pdc_product_handle, "in1"))
+                mdl.set_property_value(mdl.prop(irrad_lut_handle, "table_impl"), "Non-equidistant")
+                reset_irrad_handle = mdl.create_component("OpenDSS/TS Reset",
+                                                          name="Rst Irrad",
+                                                          parent=comp_handle,
+                                                          position=[irrad_lut_pos[0]-128, irrad_lut_pos[1]])
+                mdl.set_property_value(mdl.prop(reset_irrad_handle, "max"), "irrad_max")
+
+                mdl.create_connection(mdl.term(reset_irrad_handle, "Out"), mdl.term(irrad_lut_handle, "addr"))
+                mdl.create_connection(mdl.term(irrad_lut_handle, "value"), mdl.term(pdc_product_handle, "in1"))
 
             temp_handle = mdl.get_item("Temperature", parent=comp_handle)
             if temp_handle:
@@ -361,37 +333,39 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
                                                        name="Temp_lut",
                                                        parent=comp_handle,
                                                        position=temp_lut_pos)
-                mdl.set_property_value(mdl.prop(temp_lut_handle, "in_vec_x"), "tshape_hour")
+                mdl.set_property_value(mdl.prop(temp_lut_handle, "in_vec_x"), "tshape_time")
                 mdl.set_property_value(mdl.prop(temp_lut_handle, "out_vec_f_x"), "tshape_temp")
-                mdl.set_property_value(mdl.prop(temp_lut_handle, "table_impl"), "Non_equidistant")
-                if not mdl.find_connections(mdl.term(temp_lut_handle, "value"), mdl.term(pvst_lut_handle, "addr")):
-                    mdl.create_connection(mdl.term(temp_lut_handle, "value"), mdl.term(pvst_lut_handle, "addr"))
+                mdl.set_property_value(mdl.prop(temp_lut_handle, "table_impl"), "Non-equidistant")
+                reset_temp_handle = mdl.create_component("OpenDSS/TS Reset",
+                                                         name="Rst Temp",
+                                                         parent=comp_handle,
+                                                         position=[temp_lut_pos[0]-128, temp_lut_pos[1]])
+                mdl.set_property_value(mdl.prop(reset_temp_handle, "max"), "temp_max")
+
+                mdl.create_connection(mdl.term(reset_temp_handle, "Out"), mdl.term(temp_lut_handle, "addr"))
+                mdl.create_connection(mdl.term(temp_lut_handle, "value"), mdl.term(pvst_lut_handle, "addr"))
 
             if t_mode == "Time value (h)":
 
-                """
-                if not mdl.find_connections(time_port_handle, mdl.term(pmpp_lut_handle, "addr")):
-                    mdl.create_connection(time_port_handle, mdl.term(pmpp_lut_handle, "addr"))
-                """
+                if not mdl.find_connections(time_port_handle, mdl.term(reset_irrad_handle, "In")):
+                    mdl.create_connection(time_port_handle, mdl.term(reset_irrad_handle, "In"))
 
-                if not mdl.find_connections(time_port_handle, mdl.term(irrad_lut_handle, "addr")):
-                    mdl.create_connection(time_port_handle, mdl.term(irrad_lut_handle, "addr"))
+                if not mdl.find_connections(time_port_handle, mdl.term(reset_temp_handle, "In")):
+                    mdl.create_connection(time_port_handle, mdl.term(reset_temp_handle, "In"))
 
-                if not mdl.find_connections(time_port_handle, mdl.term(temp_lut_handle, "addr")):
-                    mdl.create_connection(time_port_handle, mdl.term(temp_lut_handle, "addr"))
+                mdl.set_property_value(mdl.prop(reset_irrad_handle, "input_type"), "Hour")
+                mdl.set_property_value(mdl.prop(reset_temp_handle, "input_type"), "Hour")
 
             elif t_mode == "Index":
 
-                """
-                if not mdl.find_connections(pmpp_port_handle, mdl.term(pmpp_lut_handle, "addr")):
-                    mdl.create_connection(pmpp_port_handle, mdl.term(pmpp_lut_handle, "addr"))
-                """
+                if not mdl.find_connections(irrad_port_handle, mdl.term(reset_irrad_handle, "In")):
+                    mdl.create_connection(irrad_port_handle, mdl.term(reset_irrad_handle, "In"))
 
-                if not mdl.find_connections(irrad_port_handle, mdl.term(irrad_lut_handle, "addr")):
-                    mdl.create_connection(irrad_port_handle, mdl.term(irrad_lut_handle, "addr"))
+                if not mdl.find_connections(temp_port_handle, mdl.term(reset_temp_handle, "In")):
+                    mdl.create_connection(temp_port_handle, mdl.term(reset_temp_handle, "In"))
 
-                if not mdl.find_connections(temp_port_handle, mdl.term(temp_lut_handle, "addr")):
-                    mdl.create_connection(temp_port_handle, mdl.term(temp_lut_handle, "addr"))
+                mdl.set_property_value(mdl.prop(reset_irrad_handle, "input_type"), "Index")
+                mdl.set_property_value(mdl.prop(reset_temp_handle, "input_type"), "Index")
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "t_mode" property code
@@ -402,42 +376,39 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
         power_ref = mdl.get_property_value(power_ref_prop)
         port_dynamics(mdl, container_handle, caller_prop_handle)
 
-        # pmpp_handle = mdl.get_item("Pmpp_p", parent=comp_handle, item_type="port")
         irrad_handle = mdl.get_item("Irradiance_p", parent=comp_handle, item_type="port")
         temp_handle = mdl.get_item("Temperature_p", parent=comp_handle, item_type="port")
         time_handle = mdl.get_item("Time_p", parent=comp_handle, item_type="port")
 
-        #pmpp_lut_handle = mdl.get_item("Pmpp_lut", parent=comp_handle)
         irrad_lut_handle = mdl.get_item("Irrad_lut", parent=comp_handle)
         temp_lut_handle = mdl.get_item("Temp_lut", parent=comp_handle)
+
+        reset_irrad_handle = mdl.get_item("Rst Irrad", parent=comp_handle)
+        reset_temp_handle = mdl.get_item("Rst Temp", parent=comp_handle)
 
         if power_ref == "Time Series":
 
             if new_value == "Time":
 
-                """
-                if not mdl.find_connections(time_handle, mdl.term(pmpp_lut_handle, "addr")):
-                    mdl.create_connection(time_handle, mdl.term(pmpp_lut_handle, "addr"))
-                """
+                if not mdl.find_connections(time_handle, mdl.term(reset_irrad_handle, "In")):
+                    mdl.create_connection(time_handle, mdl.term(reset_irrad_handle, "In"))
 
-                if not mdl.find_connections(time_handle, mdl.term(irrad_lut_handle, "addr")):
-                    mdl.create_connection(time_handle, mdl.term(irrad_lut_handle, "addr"))
+                if not mdl.find_connections(time_handle, mdl.term(reset_temp_handle, "In")):
+                    mdl.create_connection(time_handle, mdl.term(reset_temp_handle, "In"))
 
-                if not mdl.find_connections(time_handle, mdl.term(temp_lut_handle, "addr")):
-                    mdl.create_connection(time_handle, mdl.term(temp_lut_handle, "addr"))
+                mdl.set_property_value(mdl.prop(reset_irrad_handle, "input_type"), "Hour")
+                mdl.set_property_value(mdl.prop(reset_temp_handle, "input_type"), "Hour")
 
             elif new_value == "Index":
 
-                """
-                if not mdl.find_connections(pmpp_handle, mdl.term(pmpp_lut_handle, "addr")):
-                    mdl.create_connection(pmpp_handle, mdl.term(pmpp_lut_handle, "addr"))
-                """
+                if not mdl.find_connections(irrad_handle, mdl.term(reset_irrad_handle, "In")):
+                    mdl.create_connection(irrad_handle, mdl.term(reset_irrad_handle, "In"))
 
-                if not mdl.find_connections(irrad_handle, mdl.term(irrad_lut_handle, "addr")):
-                    mdl.create_connection(irrad_handle, mdl.term(irrad_lut_handle, "addr"))
+                if not mdl.find_connections(temp_handle, mdl.term(reset_temp_handle, "In")):
+                    mdl.create_connection(temp_handle, mdl.term(reset_temp_handle, "In"))
 
-                if not mdl.find_connections(temp_handle, mdl.term(temp_lut_handle, "addr")):
-                    mdl.create_connection(temp_handle, mdl.term(temp_lut_handle, "addr"))
+                mdl.set_property_value(mdl.prop(reset_irrad_handle, "input_type"), "Index")
+                mdl.set_property_value(mdl.prop(reset_temp_handle, "input_type"), "Index")
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "filter_type" property code
@@ -513,6 +484,7 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
     """
 
     comp_handle = mdl.get_parent(container_handle)
+    mdl.refresh_icon(container_handle)
     prop_name = None
     new_value = None
     if caller_prop_handle:
@@ -557,7 +529,6 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
 
     elif prop_name in ["power_ref", "t_mode"]:
 
-        mdl.refresh_icon(container_handle)
         power_ref = mdl.get_property_disp_value(mdl.prop(container_handle, "power_ref"))
         mode = mdl.get_property_disp_value(mdl.prop(container_handle, "t_mode"))
 
@@ -671,8 +642,8 @@ def get_port_const_attributes(mdl, container_handle, port_name):
                  "C1": {"name": "C1", "pos": (7984, 8280), "term_pos": term_positions[2], "label": "C"},
                  "N": {"name": "N", "pos": (7984, 8408), "term_pos": term_positions[3], "label": "N"},
                  "Pmpp": {"name": "Pmpp_p", "pos": (7192, 7448), "term_pos": (-32, -64.0), "label": "Pmpp_i"},
-                 "Irradiance": {"name": "Irradiance_p", "pos": (7192, 7512), "term_pos": (-48.0, -48.0), "label": "Irrad_i"},
-                 "Temperature": {"name": "Temperature_p", "pos": (7192, 7576), "term_pos": (-48, -32.0), "label": "Temp_i"},
+                 "Irradiance": {"name": "Irradiance_p", "pos": (7064, 7512), "term_pos": (-48.0, -48.0), "label": "Irrad_i"},
+                 "Temperature": {"name": "Temperature_p", "pos": (7064, 7576), "term_pos": (-48, -32.0), "label": "Temp_i"},
                  "Time": {"name": "Time_p", "pos": (7064, 7512), "term_pos": (-48.0, -48.0), "label": "t (h)"}}
 
     return port_dict[port_name]
@@ -726,6 +697,7 @@ def load_loadshape(mdl, container_handle):
         loadshape_from_file_header_prop = mdl.prop(container_handle, "loadshape_from_file_header")
         loadshape_from_file_column_prop = mdl.prop(container_handle, "loadshape_from_file_column")
         loadshape_hour_prop = mdl.prop(container_handle, "loadshape_hour")
+        loadshape_npts_prop = mdl.prop(container_handle, "loadshape_npts")
 
         selected_obj_dict = obj_dicts.get("loadshapes").get(selected_object)
         loadshape_name = selected_object
@@ -739,6 +711,9 @@ def load_loadshape(mdl, container_handle):
         npts = selected_obj_dict.get("npts")
         if npts:
             npts = ast.literal_eval(npts)
+        else:
+            npts = len(ast.literal_eval(loadshape))
+
         hour = selected_obj_dict.get("hour")
         if hour:
             hour = ast.literal_eval(hour)
@@ -773,13 +748,14 @@ def load_loadshape(mdl, container_handle):
         mdl.set_property_disp_value(useactual_prop, useactual)
         if interval == 0:
             if hour:
-                mdl.set_property_disp_value(loadshape_time_range_prop, str(hour))
+                mdl.set_property_value(loadshape_time_range_prop, str(hour)) # Non-visible prop
         else:
             time_range_str = f"[{', '.join(str(interval * n) for n in range(npts))}]"
-            mdl.set_property_disp_value(loadshape_time_range_prop, time_range_str)
+            mdl.set_property_value(loadshape_time_range_prop, time_range_str) # Non-visible prop
         mdl.set_property_disp_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
         mdl.set_property_disp_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
         mdl.set_property_disp_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
+        mdl.set_property_value(mdl.prop(container_handle, "loadshape_npts"), npts)
 
 
 def verify_time_loadshape_sizes(mdl, mask_handle, caller=None):
@@ -867,9 +843,9 @@ def load_xycurve(mdl, container_handle, caller_prop_handle):
             xycurve_yarray_eff_prop = mdl.prop(container_handle, "xycurve_yarray_eff")
 
             mdl.set_property_disp_value(xycurve_name_eff_prop, str(xycurve_name))
-            mdl.set_property_disp_value(xycurve_npts_eff_prop, str(xycurve_npts_eff))
             mdl.set_property_disp_value(xycurve_xarray_eff_prop, str(xycurve_xarray_eff))
             mdl.set_property_disp_value(xycurve_yarray_eff_prop, str(xycurve_yarray_eff))
+            mdl.set_property_value(xycurve_npts_eff_prop, str(xycurve_npts_eff)) # Non-visible prop
 
         elif caller_prop_handle == mdl.prop(container_handle, "load_xycurve_cf"):
             # Property handles
@@ -879,9 +855,9 @@ def load_xycurve(mdl, container_handle, caller_prop_handle):
             xycurve_yarray_cf_prop = mdl.prop(container_handle, "xycurve_yarray_cf")
 
             mdl.set_property_disp_value(xycurve_name_cf_prop, str(xycurve_name))
-            mdl.set_property_disp_value(xycurve_npts_cf_prop, str(xycurve_npts_eff))
             mdl.set_property_disp_value(xycurve_xarray_cf_prop, str(xycurve_xarray_eff))
             mdl.set_property_disp_value(xycurve_yarray_cf_prop, str(xycurve_yarray_eff))
+            mdl.set_property_value(xycurve_npts_cf_prop, str(xycurve_npts_eff)) # Non-visible prop
 
 
 def load_tshape(mdl, container_handle, caller_prop_handle):
@@ -937,11 +913,6 @@ def load_tshape(mdl, container_handle, caller_prop_handle):
         tshape_int_prop = mdl.prop(container_handle, "tshape_int")
         tshape_hour_prop = mdl.prop(container_handle, "tshape_hour")
 
-        mdl.set_property_disp_value(tshape_name_prop, str(tshape_name))
-        mdl.set_property_disp_value(tshape_npts_prop, str(tshape_npts))
-        mdl.set_property_disp_value(tshape_temp_prop, str(tshape_temp))
-        mdl.set_property_disp_value(tshape_int_prop, str(tshape_int))
-
         if not tshape_npts:
             tshape_npts = len(tshape_temp)
 
@@ -953,7 +924,12 @@ def load_tshape(mdl, container_handle, caller_prop_handle):
             mdl.set_property_disp_value(tshape_temp_prop, str(tshape_temp))
 
         time_range_str = f"[{', '.join(str(tshape_int * n) for n in range(tshape_npts))}]"
-        mdl.set_property_disp_value(tshape_hour_prop, time_range_str)
+
+        mdl.set_property_disp_value(tshape_name_prop, str(tshape_name))
+        mdl.set_property_disp_value(tshape_temp_prop, str(tshape_temp))
+        mdl.set_property_disp_value(tshape_int_prop, str(tshape_int))
+        mdl.set_property_value(tshape_npts_prop, str(tshape_npts)) # Non-visible prop
+        mdl.set_property_value(tshape_hour_prop, time_range_str) # Non-visible prop
 
 
 def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
@@ -1074,10 +1050,13 @@ def ini_general_objects_from_json(mdl, mask_handle):
 
     xycurve_eff_name = mdl.get_property_value(mdl.prop(mask_handle, "xycurve_name_eff"))
     xycurve_cf_name = mdl.get_property_value(mdl.prop(mask_handle, "xycurve_name_cf"))
+    temp_name = mdl.get_property_value(mdl.prop(mask_handle, "tshape_name"))
+    irrad_name = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_name"))
 
     mask_gen_dict = {}
     mask_gen_dict.update({"xycurves": {}})
     mask_gen_dict.update({"tshapes": {}})
+    mask_gen_dict.update({"loadshapes": {}})
     # XYCurves
     eff_dict = {"npts": str(mdl.get_property_value(mdl.prop(mask_handle, "xycurve_npts_eff"))),
                 "xarray": str(mdl.get_property_value(mdl.prop(mask_handle, "xycurve_xarray_eff"))),
@@ -1091,17 +1070,31 @@ def ini_general_objects_from_json(mdl, mask_handle):
     xycurves_dict.update({f"{xycurve_eff_name}": eff_dict})
     xycurves_dict.update({f"{xycurve_cf_name}": cf_dict})
     # Tshapes
-    temp_name = mdl.get_property_value(mdl.prop(mask_handle, "tshape_name"))
     temp_dict = {"npts": str(mdl.get_property_value(mdl.prop(mask_handle, "tshape_npts"))),
                  "temp": str(mdl.get_property_value(mdl.prop(mask_handle, "tshape_temp"))),
                  "interval": str(mdl.get_property_value(mdl.prop(mask_handle, "tshape_int")))
                  }
     tshapes_dict = {}
     tshapes_dict.update({f"{temp_name}": temp_dict})
+    # Loadshapes
+    irrad_dict = {"npts": len(mdl.get_property_value(mdl.prop(mask_handle, "loadshape"))),
+                  "interval": mdl.get_property_value(mdl.prop(mask_handle, "loadshape_int")),
+                  "mult": mdl.get_property_value(mdl.prop(mask_handle, "loadshape")),
+                  "hour": mdl.get_property_value(mdl.prop(mask_handle, "loadshape_hour")),
+                  "interval_unit": "h",
+                  "useactual": mdl.get_property_value(mdl.prop(mask_handle, "useactual")),
+                  "csv_file": mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file")),
+                  "csv_path": mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_path")),
+                  "headers": mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_header")),
+                  "column": mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_column"))
+                  }
+    loadshapes_dict = {}
+    loadshapes_dict.update({f"{irrad_name}": irrad_dict})
 
     # Updating the general dict
     mask_gen_dict.get("xycurves").update(xycurves_dict)
     mask_gen_dict.get("tshapes").update(tshapes_dict)
+    mask_gen_dict.get("loadshapes").update(loadshapes_dict)
 
     model_path = pathlib.Path(mdl.get_model_file_path())
 
@@ -1175,3 +1168,33 @@ def ini_general_objects_from_json(mdl, mask_handle):
     mdl.set_property_value(tshape_npts_prop, str(tshape_npts))
     mdl.set_property_value(tshape_temp_prop, str(tshape_temp))
     mdl.set_property_value(tshape_int_prop, str(tshape_int))
+
+    # Irrad Properties
+    irrad_new = mask_gen_dict.get("loadshapes").get(f"{irrad_name}")
+
+    loadshape = irrad_new.get("mult")
+    loadshape_int = irrad_new.get("interval")
+    loadshape_hour = irrad_new.get("hour")
+    useactual = irrad_new.get("useactual")
+    loadshape_from_file = irrad_new.get("csv_file")
+    loadshape_from_file_path = irrad_new.get("csv_path")
+    loadshape_from_file_header = irrad_new.get("headers")
+    loadshape_from_file_column = irrad_new.get("column")
+    # Property handles
+    loadshape_prop = mdl.prop(mask_handle, "loadshape")
+    loadshape_int_prop = mdl.prop(mask_handle, "loadshape_int")
+    loadshape_hour_prop = mdl.prop(mask_handle, "loadshape_hour")
+    useactual_prop = mdl.prop(mask_handle, "useactual")
+    loadshape_from_file_prop = mdl.prop(mask_handle, "loadshape_from_file")
+    loadshape_from_file_path_prop = mdl.prop(mask_handle, "loadshape_from_file_path")
+    loadshape_from_file_header_prop = mdl.prop(mask_handle, "loadshape_from_file_header")
+    loadshape_from_file_column_prop = mdl.prop(mask_handle, "loadshape_from_file_column")
+    # Set Values
+    mdl.set_property_value(loadshape_prop, str(loadshape))
+    mdl.set_property_value(loadshape_int_prop, str(loadshape_int))
+    mdl.set_property_value(loadshape_hour_prop, str(loadshape_hour))
+    mdl.set_property_value(useactual_prop, str(useactual))
+    mdl.set_property_value(loadshape_from_file_prop, str(loadshape_from_file))
+    mdl.set_property_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
+    mdl.set_property_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
+    mdl.set_property_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
