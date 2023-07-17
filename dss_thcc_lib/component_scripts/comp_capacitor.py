@@ -44,7 +44,7 @@ def calculate_c(mdl, mask_handle):
     phases = mdl.get_property_value(phases_prop)
 
     v_correction = 1 if tp_connection == "Δ" else (1/(3**0.5))
-    f = mdl.get_property_value(mdl.prop(mask_handle, "BaseFreq"))
+    f = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
     kvar = mdl.get_property_value(mdl.prop(mask_handle, "Kvar"))
     kv = mdl.get_property_value(mdl.prop(mask_handle, "Kv"))
     cap = (1 / (int(phases))) * kvar * 1000 / (2 * np.pi * f * (1000 * v_correction * kv) ** 2)
@@ -244,7 +244,7 @@ def redo_connections(mdl, mask_handle):
 
 
 def toggle_frequency_prop(mdl, mask_handle):
-    frequency_prop = mdl.prop(mask_handle, "BaseFreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -261,7 +261,7 @@ def toggle_frequency_prop(mdl, mask_handle):
 
 def update_frequency_property(mdl, mask_handle, init=False):
 
-    frequency_prop = mdl.prop(mask_handle, "BaseFreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 

@@ -136,8 +136,9 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                BaseFreq {
+                baseFreq {
                     label = "Base frequency"
+                    previous_names = "BaseFreq"
                     widget = edit
                     type = generic
                     default_value = "60"

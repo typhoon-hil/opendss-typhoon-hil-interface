@@ -6,7 +6,7 @@ x0, y0 = (8192, 8192)
 
 
 def toggle_frequency_prop(mdl, container_handle, init=False):
-    frequency_prop = mdl.prop(container_handle, "BaseFreq")
+    frequency_prop = mdl.prop(container_handle, "baseFreq")
     global_frequency_prop = mdl.prop(container_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -23,7 +23,7 @@ def toggle_frequency_prop(mdl, container_handle, init=False):
 
 def update_frequency_property(mdl, mask_handle, init=False):
 
-    frequency_prop = mdl.prop(mask_handle, "BaseFreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 
@@ -248,7 +248,7 @@ def get_r_l_matrices(mdl, container_handle):
     basekv = mdl.get_property_value(mdl.prop(container_handle, "basekv"))
     basemva = mdl.get_property_value(mdl.prop(container_handle, "baseMVA"))
     z_base = basekv * basekv / basemva
-    basefreq = mdl.get_property_value(mdl.prop(container_handle, "BaseFreq"))
+    basefreq = mdl.get_property_value(mdl.prop(container_handle, "baseFreq"))
 
     input_method = mdl.get_property_value(mdl.prop(container_handle, "input_method"))
     if input_method == "Z":

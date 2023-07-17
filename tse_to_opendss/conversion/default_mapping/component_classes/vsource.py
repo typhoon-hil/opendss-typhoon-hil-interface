@@ -49,8 +49,8 @@ class Vsource(TwoTerminal):
         dss_mva_prop_names = ["MVAsc3", "MVAsc1", "x1r1", "x0r0"]
         tse_i_prop_names = ["i_sc3", "i_sc1", "x1r1", "x0r0"]
         dss_i_prop_names = ["Isc3", "Isc1", "x1r1", "x0r0"]
-        tse_general_prop_names = ["BaseFreq", "basekv", "baseMVA", "pu", "Angle", "Frequency"]
-        dss_general_prop_names = ["BaseFreq", "basekv", "baseMVA", "pu", "Angle", "Frequency"]
+        tse_general_prop_names = ["baseFreq", "basekv", "baseMVA", "pu", "Angle", "Frequency"]
+        dss_general_prop_names = ["baseFreq", "basekv", "baseMVA", "pu", "Angle", "Frequency"]
 
         if tse_properties['input_method'] == "Z":
             tse_values = [tse_properties.get(key) for key in tse_si_prop_names]

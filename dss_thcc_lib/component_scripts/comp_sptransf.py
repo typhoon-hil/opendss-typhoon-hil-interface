@@ -188,7 +188,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
     regcontrol_on = mdl.get_property_value(mdl.prop(mask_handle, "regcontrol_on"))
 
     if not prop_names:
-        prop_names = ["KVs", "KVAs", "Basefreq", "percentRs", "percentNoloadloss", "percentimag", "XArray"]
+        prop_names = ["KVs", "KVAs", "baseFreq", "percentRs", "percentNoloadloss", "percentimag", "XArray"]
 
     try:
         for prop_name in prop_names:
@@ -204,7 +204,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                 converted_value = prop_value[0] * 1000
                 mdl.set_property_value(sn_prop, converted_value)
             # Frequency
-            elif prop_name == "Basefreq":
+            elif prop_name == "baseFreq":
                 f_prop = mdl.prop(trafo_inner, "f")
                 prop_value = prop_value[0]
                 converted_value = prop_value
@@ -249,7 +249,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                         converted_value = "inf"
                     mdl.set_property_value(rm_prop, converted_value)
                 elif prop_name == "percentimag":
-                    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
                     if not prop_value <= 0:
                         converted_value = ((base_v * base_v) / base_p) / (prop_value / 100) / (
                                 2 * np.pi * basefreq)
@@ -262,7 +262,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                 kvas_prop = mdl.prop(comp_handle, "KVAs")
                 kvs = mdl.get_property_value(kvs_prop)
                 kvas = mdl.get_property_value(kvas_prop)
-                basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                basefreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
                 reactances_pct = prop_value
                 l_prim_prop = mdl.prop(trafo_inner, "L_prim")
                 l_sec_prop = mdl.prop(trafo_inner, "L_sec")
@@ -397,7 +397,7 @@ def toggle_regcontrol_props(mdl, mask_handle):
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
-    frequency_prop = mdl.prop(mask_handle, "Basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -414,7 +414,7 @@ def toggle_frequency_prop(mdl, mask_handle, init=False):
 
 def update_frequency_property(mdl, mask_handle, init=False):
 
-    frequency_prop = mdl.prop(mask_handle, "Basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 

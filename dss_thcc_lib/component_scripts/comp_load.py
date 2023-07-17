@@ -1485,7 +1485,7 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
     else:
         ts_switch = 0
 
-    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+    mdl.set_property_value(mdl.prop(item_handle, "baseFreq"), basefreq)
     mdl.set_property_value(mdl.prop(item_handle, "kVA"), kva)
     mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"), vn_3ph_cpl)
     mdl.set_property_value(mdl.prop(item_handle, "P_CPL"), p_cpl)
