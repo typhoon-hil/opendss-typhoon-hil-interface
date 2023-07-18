@@ -84,7 +84,6 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
     # for loop for each winding
     # It takes the tp_conn for each winding
     for idx in range(0, num_windings):
-        # grounded = mdl.get_property_value(mdl.prop(mask_handle, "grounded_" + conn_dict[idx]))
         conn_prop = mdl.prop(mask_handle, conn_dict[idx] + "_conn")
         tp_conn = mdl.get_property_disp_value(conn_prop)
 
