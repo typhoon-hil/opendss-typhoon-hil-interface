@@ -59,7 +59,7 @@ class Storage(TwoTerminal):
 
         # Specify the base frequency if not inheriting the global value
         if tse_properties['global_basefreq'] == "False":
-            new_format_properties["basefreq"] = tse_properties['basefreq']
+            new_format_properties["baseFreq"] = tse_properties['baseFreq']
 
         if new_format_properties.get("dispmode") == "Default":
             new_format_properties["%discharge"] = tse_properties['pct_discharge']

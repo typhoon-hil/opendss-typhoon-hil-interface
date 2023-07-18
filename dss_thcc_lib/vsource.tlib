@@ -132,16 +132,6 @@ library "OpenDSS" {
                 	group = "General"
                 }
 
-                BaseFreq {
-                    label = "Base frequency"
-                    description = "Base Frequency for impedance specifications"
-                    widget = edit
-                    type = generic
-                    default_value = "60"
-                    unit = "Hz"
-                    group = "General"
-                }
-
                 global_basefreq {
                     label = "Global base frequency"
                     description = "Uses the Global Base Frequency"
@@ -160,6 +150,17 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
+                }
+
+                baseFreq {
+                    label = "Base frequency"
+                    previous_names = "BaseFreq"
+                    description = "Base Frequency for impedance specifications"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    group = "General"
                 }
 
                 tp_connection {

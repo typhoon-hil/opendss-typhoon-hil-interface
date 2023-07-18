@@ -95,7 +95,7 @@ class Load(TwoTerminal):
 
         # Specify the base frequency if not inheriting the global value
         if tse_properties['global_basefreq'] == "False":
-            new_format_properties["basefreq"] = tse_properties['basefreq']
+            new_format_properties["baseFreq"] = tse_properties['baseFreq']
 
         if tse_properties["Pow_ref_s"] == "Time Series":
             new_format_properties["daily"] = tse_properties.get("loadshape_name")

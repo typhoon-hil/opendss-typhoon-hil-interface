@@ -115,7 +115,7 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
                 if not gnd_z0:
                     gnd_z0 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z0",
                                                   position=(x0 + 150, y0 + 650), rotation="up")
-                    mdl.set_property_value(mdl.prop(gnd_z0, "f"), "Basefreq")
+                    mdl.set_property_value(mdl.prop(gnd_z0, "f"), "baseFreq")
                     mdl.set_property_value(mdl.prop(gnd_z0, "Rneut"), "Rneut_prim")
                     mdl.set_property_value(mdl.prop(gnd_z0, "Xneut"), "Xneut_prim")
 
@@ -140,7 +140,7 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
                 if not gnd_z1:
                     gnd_z1 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z1",
                                                   position=(x0 + 250, y0 + 650), rotation="up")
-                    mdl.set_property_value(mdl.prop(gnd_z1, "f"), "Basefreq")
+                    mdl.set_property_value(mdl.prop(gnd_z1, "f"), "baseFreq")
                     mdl.set_property_value(mdl.prop(gnd_z1, "Rneut"), "Rneut_sec1")
                     mdl.set_property_value(mdl.prop(gnd_z1, "Xneut"), "Xneut_sec1")
 
@@ -166,7 +166,7 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
                 if not gnd_z2:
                     gnd_z2 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z2",
                                                   position=(x0 + 350, y0 + 650), rotation="up")
-                    mdl.set_property_value(mdl.prop(gnd_z2, "f"), "Basefreq")
+                    mdl.set_property_value(mdl.prop(gnd_z2, "f"), "baseFreq")
                     mdl.set_property_value(mdl.prop(gnd_z2, "Rneut"), "Rneut_sec2")
                     mdl.set_property_value(mdl.prop(gnd_z2, "Xneut"), "Xneut_sec2")
 
@@ -191,7 +191,7 @@ def update_neutrals(mdl, mask_handle, trafo_handle, created_ports):
                 if not gnd_z3:
                     gnd_z3 = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle, name="Gnd Z3",
                                                   position=(x0 + 450, y0 + 650), rotation="up")
-                    mdl.set_property_value(mdl.prop(gnd_z3, "f"), "Basefreq")
+                    mdl.set_property_value(mdl.prop(gnd_z3, "f"), "baseFreq")
                     mdl.set_property_value(mdl.prop(gnd_z3, "Rneut"), "Rneut_sec3")
                     mdl.set_property_value(mdl.prop(gnd_z3, "Xneut"), "Xneut_sec3")
 
@@ -516,7 +516,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
     regcontrol_on = mdl.get_property_value(mdl.prop(mask_handle, "regcontrol_on"))
 
     if not prop_names:
-        prop_names = ["KVs", "KVAs", "Basefreq", "percentRs", "percentNoloadloss", "percentimag", "XArray"]
+        prop_names = ["KVs", "KVAs", "baseFreq", "percentRs", "percentNoloadloss", "percentimag", "XArray"]
 
     try:
         for prop_name in prop_names:
@@ -532,7 +532,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                 converted_value = prop_value[0] * 1000
                 mdl.set_property_value(sn_prop, converted_value)
             # Frequency
-            elif prop_name == "Basefreq":
+            elif prop_name == "baseFreq":
                 prop_value = prop_value[0]
                 f_prop = mdl.prop(trafo_inner, "f")
                 converted_value = prop_value
@@ -593,7 +593,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                     ''' ------------------------ '''
                     base_i = base_p / base_v
                     lm_prop = mdl.prop(trafo_inner, "Lm")
-                    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
                     if not prop_value <= 0:
                         converted_value = factor * ((base_v * base_v) / base_p) / (prop_value / 100) / (
                                 2 * np.pi * basefreq)
@@ -606,7 +606,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                 kvas_prop = mdl.prop(comp_handle, "KVAs")
                 kvs = mdl.get_property_value(kvs_prop)
                 kvas = mdl.get_property_value(kvas_prop)
-                basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                basefreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
                 reactances_pct = prop_value
                 xsc_array = []
 
@@ -906,7 +906,7 @@ def toggle_regcontrol_props(mdl, mask_handle):
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
-    frequency_prop = mdl.prop(mask_handle, "Basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -922,7 +922,7 @@ def toggle_frequency_prop(mdl, mask_handle, init=False):
 
 
 def update_frequency_property(mdl, mask_handle, init=False):
-    frequency_prop = mdl.prop(mask_handle, "Basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 

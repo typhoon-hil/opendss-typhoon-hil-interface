@@ -171,7 +171,7 @@ def components_and_connections(mdl, mask_handle, created_ports, caller_prop_hand
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
-    frequency_prop = mdl.prop(mask_handle, "basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -315,7 +315,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
 def update_frequency_property(mdl, mask_handle, init=False):
 
-    frequency_prop = mdl.prop(mask_handle, "basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 
@@ -337,7 +337,7 @@ def define_icon(mdl, mask_handle):
 def generator_pre_compile_function(mdl, item_handle, prop_dict):
     import numpy
 
-    pp = 60 * prop_dict["basefreq"] / prop_dict["nom_rpm"]
+    pp = 60 * prop_dict["baseFreq"] / prop_dict["nom_rpm"]
 
     if prop_dict["Init_En"] is True:
         init_switch = 1
@@ -386,7 +386,7 @@ def generator_pre_compile_function(mdl, item_handle, prop_dict):
     kw = prop_dict["pf"] * prop_dict["kVA"]
     kvar = prop_dict["kVA"] * ((1 - prop_dict["pf"] ** 2) ** 0.5)
 
-    ws = prop_dict["basefreq"] * 2 * numpy.pi
+    ws = prop_dict["baseFreq"] * 2 * numpy.pi
     ws_inv = 1 / ws
     z_base = 1000 * (prop_dict["kv"] ** 2) / prop_dict["kVA"]
 

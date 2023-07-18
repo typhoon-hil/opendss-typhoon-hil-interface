@@ -566,8 +566,9 @@ library "OpenDSS" {
                     nonvisible
                 }
 
-                basefreq {
+                baseFreq {
                     widget = edit
+                    previous_names = "basefreq"
                     type = generic
                     default_value = "0"
                     nonvisible
@@ -936,7 +937,7 @@ library "OpenDSS" {
                     pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
                     conn = mdl.get_property_value(mdl.prop(item_handle, "conn"))
                     kVA = mdl.get_property_value(mdl.prop(item_handle, "kVA"))
-                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
                     gen_ts_en = mdl.get_property_value(mdl.prop(item_handle, "gen_ts_en"))
                     load_loadshape = mdl.get_property_value(mdl.prop(item_handle, "load_loadshape"))
                     loadshape_name = mdl.get_property_value(mdl.prop(item_handle, "loadshape_name"))

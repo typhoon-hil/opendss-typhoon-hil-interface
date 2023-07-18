@@ -2397,8 +2397,9 @@ out = out_value;
                     ENDCODE
                 }
 
-                basefreq {
+                baseFreq {
                     label = "Base frequency"
+                    previous_names = "basefreq"
                     widget = edit
                     type = generic
                     default_value = "60"
@@ -2812,7 +2813,7 @@ out = out_value;
                     dispatch_q = mdl.get_property_value(mdl.prop(item_handle, "dispatch_q"))
                     snap_status = mdl.get_property_value(mdl.prop(item_handle, "snap_status"))
                     kv = mdl.get_property_value(mdl.prop(item_handle, "kv"))
-                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
                     kwrated = mdl.get_property_value(mdl.prop(item_handle, "kwrated"))
                     kwhrated = mdl.get_property_value(mdl.prop(item_handle, "kwhrated"))
                     chargetrigger = mdl.get_property_value(mdl.prop(item_handle, "chargetrigger"))

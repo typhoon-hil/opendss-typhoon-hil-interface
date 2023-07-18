@@ -58,7 +58,7 @@ class Line(TwoTerminal):
         # Specify the base frequency if not inheriting the global value
 
         if tse_properties['global_basefreq'] == "False":
-            new_format_properties["BaseFreq"] = tse_properties['BaseFreq']
+            new_format_properties["baseFreq"] = tse_properties['baseFreq']
         return new_format_properties
 
     @staticmethod

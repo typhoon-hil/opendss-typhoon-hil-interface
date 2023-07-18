@@ -965,8 +965,9 @@ library "OpenDSS" {
                         nonvisible
                     }
 
-                    basefreq {
+                    baseFreq {
                         widget = edit
+                        previous_names = "basefreq"
                         type = generic
                         default_value = "0"
                         nonvisible
@@ -1030,7 +1031,7 @@ library "OpenDSS" {
                         pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
                         conn = mdl.get_property_value(mdl.prop(item_handle, "conn"))
                         kVA = mdl.get_property_value(mdl.prop(item_handle, "kVA"))
-                        basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                        basefreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
                         dss_mod = mdl.get_property_value(mdl.prop(item_handle, "dss_mod"))
                         # HEADER STOP
                         def calc_impedance(mdl, power_1ph, voltage, pf_mode, power_factor,
@@ -1166,7 +1167,7 @@ library "OpenDSS" {
                         else:
                             model = 2
                     
-                        mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+                        mdl.set_property_value(mdl.prop(item_handle, "baseFreq"), basefreq)
                         mdl.set_property_value(mdl.prop(item_handle, "kVA"), kVA)
                         mdl.set_property_value(mdl.prop(item_handle, "conn"), conn)
                         mdl.set_property_value(mdl.prop(item_handle, "pf"), pf)
