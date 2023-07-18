@@ -6,32 +6,13 @@ library "OpenDSS" {
          component Subsystem Bus {
             layout = static
 
-            port B1 {
-                position = -8, 0
-                kind = pe
-                direction =  out
-            }
-            [
-                position = 7400, 7952
-            ]
-
-            port B2 {
-                position = 8, 0
-                kind = pe
-                direction =  out
-            }
-            [
-                position = 7792, 7952
-                scale = -1, 1
-            ]
-
             port A1 {
                 position = -8, -32
                 kind = pe
                 direction =  out
             }
             [
-                position = 7400, 7856
+                position = 7992, 7992
             ]
 
             port A2 {
@@ -40,7 +21,26 @@ library "OpenDSS" {
                 direction =  out
             }
             [
-                position = 7792, 7856
+                position = 8392, 7992
+                scale = -1, 1
+            ]
+
+            port B1 {
+                position = -8, 0
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7992, 8192
+            ]
+
+            port B2 {
+                position = 8, 0
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 8392, 8192
                 scale = -1, 1
             ]
 
@@ -50,7 +50,7 @@ library "OpenDSS" {
                 direction =  out
             }
             [
-                position = 7400, 8048
+                position = 7992, 8392
             ]
 
             port C2 {
@@ -59,7 +59,7 @@ library "OpenDSS" {
                 direction =  out
             }
             [
-                position = 7792, 8048
+                position = 8392, 8392
                 scale = -1, 1
             ]
 
@@ -82,16 +82,6 @@ library "OpenDSS" {
                     nonvisible
                     disabled
                     no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.retro_compatibility(mdl, container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
                 }
 
                 phase_a {
@@ -100,11 +90,6 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
                 }
 
                 phase_b {
@@ -113,11 +98,6 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
                 }
 
                 phase_c {
@@ -126,11 +106,6 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
                 }
 
                 phase_n {
@@ -139,11 +114,6 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
                 }
 
                 conf {
@@ -152,142 +122,6 @@ library "OpenDSS" {
                     combo_values = "on both sides", "on one side"
                     type = string
                     default_value = "on both sides"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                i_rms_meas {
-                    label = "Line Currents  - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                i_inst_meas {
-                    label = " Instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_line_rms_meas {
-                    label = "Line Voltages  - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_line_inst_meas {
-                    label = " instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_phase_rms_meas {
-                    label = "Phase Voltage - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_phase_inst_meas {
-                    label = " instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                freq_meas {
-                    label = "Frequency"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                power_meas {
-                    label = "Power"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                execution_rate {
-                    label = "Execution Rate"
-                    widget = edit
-                    type = generic
-                    default_value = "100e-6"
-                }
-
-                enable_output {
-                    label = "Enable Output"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
                     no_evaluate
 
                     CODE property_value_edited
@@ -313,14 +147,10 @@ library "OpenDSS" {
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 
-                CODE model_load
-                    comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.circuit_dynamics(mdl, item_handle)
-                ENDCODE
-
                 CODE before_change
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.circuit_dynamics(mdl, item_handle, prop_entered_values)
+                    mdl.refresh_icon(item_handle)
                 ENDCODE
 
                 CODE init
@@ -332,6 +162,8 @@ library "OpenDSS" {
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.circuit_dynamics(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
             }
