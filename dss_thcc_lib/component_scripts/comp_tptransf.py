@@ -2,6 +2,7 @@ import numpy as np
 from itertools import combinations
 
 x0, y0 = (8192, 8192)
+old_state = {}
 
 
 def tp_connection_edited(mdl, mask_handle, new_value):
@@ -1182,13 +1183,32 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
                 mdl.delete_item(component)
 
 
-def topology_dynamics(mdl, container_handle):
+def topology_dynamics(mdl, mask_handle):
     """
     This call the functions to build the transformer configuration according
     to the user selected parameters and configurations.
     """
 
-    mdl.refresh_icon(container_handle)
-    created_ports, _ = port_dynamics(mdl, container_handle)
-    update_subsystem_components(mdl, container_handle, created_ports)
-    enable_disable_conn(mdl, container_handle)
+    comp_handle = mdl.get_parent(mask_handle)
+
+    #
+    # Get new property values to be applied (display values)
+    #
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle):
+        return
+
+    mdl.refresh_icon(mask_handle)
+    created_ports, _ = port_dynamics(mdl, mask_handle)
+    update_subsystem_components(mdl, mask_handle, created_ports)
+    enable_disable_conn(mdl, mask_handle)
+
+    old_state[comp_handle] = new_prop_values

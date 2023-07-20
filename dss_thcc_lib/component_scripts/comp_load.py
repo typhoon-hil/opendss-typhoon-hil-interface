@@ -5,6 +5,7 @@ import pandas as pd
 from typhoon.api.schematic_editor.const import ITEM_CONNECTION, ITEM_COMPONENT
 
 got_loadshape_points_list = []
+old_state = {}
 
 
 def tp_connection_dynamics(mdl, container_handle):
@@ -1541,7 +1542,23 @@ def topology_dynamics(mdl, mask_handle):
     This function is called when the user changes the configuration on the mask
     """
 
-    mdl.refresh_icon(mask_handle)
+    comp_handle = mdl.get_parent(mask_handle)
+
+    #
+    # Get new property values to be applied (display values)
+    #
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle):
+        return
+
+    define_icon(mdl, mask_handle)
 
     ports = port_dynamics(mdl, mask_handle)
 
@@ -1553,6 +1570,7 @@ def topology_dynamics(mdl, mask_handle):
 
     connections_dynamics(mdl, mask_handle, ports)
 
+    old_state[comp_handle] = new_prop_values
 
 def dialog_close(mdl, mask_handle, reason):
     """
@@ -1582,5 +1600,5 @@ def retro_compatibility(mdl, mask_handle):
     old_ground_connected = mdl.get_property_value(
         mdl.prop(mask_handle, "ground_connected")
     )
-    if old_ground_connected:
+    if old_ground_connected in ("True", True):
         mdl.set_property_value(tp_connection_prop, "Y - Grounded")

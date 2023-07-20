@@ -90,6 +90,13 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
                 }
 
                 phase_b {
@@ -98,6 +105,13 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
                 }
 
                 phase_c {
@@ -106,6 +120,13 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
                 }
 
                 phase_n {
@@ -114,6 +135,13 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
                 }
 
                 conf {
@@ -123,6 +151,13 @@ library "OpenDSS" {
                     type = string
                     default_value = "on both sides"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
@@ -139,18 +174,11 @@ library "OpenDSS" {
                         current_diagram=current_diagram
                     )
                     dialog.exec_()
-
                 ENDCODE
 
                 CODE define_icon
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
-                ENDCODE
-
-                CODE before_change
-                    comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.circuit_dynamics(mdl, item_handle, prop_entered_values)
-                    mdl.refresh_icon(item_handle)
                 ENDCODE
 
                 CODE init
@@ -161,9 +189,9 @@ library "OpenDSS" {
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
-
+                        
                     comp_script.retro_compatibility(mdl, item_handle)
-                    comp_script.circuit_dynamics(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
             }

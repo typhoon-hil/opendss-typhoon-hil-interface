@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg256" xmlns="http://www.w3.org/2000/svg" width="48" height="96" viewBox="0 0 48 96">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: blue;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #000;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <rect class="cls-2" width="48" height="96"/>
+  <path id="path304" class="cls-1" d="M8,19c-1.66,0-3,1.34-3,3,0,1.66,1.34,3,3,3,1.66,0,3-1.34,3-3,0-1.66-1.34-3-3-3"/>
+</svg>

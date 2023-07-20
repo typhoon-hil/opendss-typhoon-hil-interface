@@ -1,3 +1,6 @@
+old_state = {}
+
+
 def pos_offset(pos):
     """
     Offset position from center of the schematic
@@ -9,14 +12,22 @@ def pos_offset(pos):
     return x0 + pos_x, y0 + pos_y
 
 
-def circuit_dynamics(mdl, mask_handle, new_values=None):
+def topology_dynamics(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
 
-    # When loading a model
-    if not new_values:
-        new_values = mdl.get_property_values(comp_handle)
-
-    mdl.info(f"{new_values=}")
+    #
+    # Get new property values to be applied (display values)
+    #
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle):
+        return
 
     # conf_prop = mdl.prop(comp_handle, "conf")
     # type_prop = mdl.prop(comp_handle, "type_prop")
@@ -24,16 +35,16 @@ def circuit_dynamics(mdl, mask_handle, new_values=None):
     #
     # Phases checkbox properties
     #
-    phase_a = new_values.get("phase_a") in ("True", True)
-    phase_b = new_values.get("phase_b") in ("True", True)
-    phase_c = new_values.get("phase_c") in ("True", True)
-    phase_n = new_values.get("phase_n") in ("True", True)
+    phase_a = new_prop_values.get("phase_a") in ("True", True)
+    phase_b = new_prop_values.get("phase_b") in ("True", True)
+    phase_c = new_prop_values.get("phase_c") in ("True", True)
+    phase_n = new_prop_values.get("phase_n") in ("True", True)
 
     #
     # Port altering properties
     #
     num_phases = sum((phase_a, phase_b, phase_c, phase_n))
-    sides_conf = new_values.get("conf")
+    sides_conf = new_prop_values.get("conf")
 
     #
     # Must select at least one phase
@@ -130,132 +141,7 @@ def circuit_dynamics(mdl, mask_handle, new_values=None):
                 port_2 = mdl.get_item(port_2_name, parent=comp_handle, item_type="port")
                 mdl.create_connection(port_1, port_2)
 
-
-def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
-    """
-
-    :param mdl:
-    :param container_handle:
-    :param caller_prop_handle:
-    :param init:
-    :return:
-    """
-    return
-    # Property Registration
-    conf_prop = mdl.prop(container_handle, "conf")
-    type_prop = mdl.prop(container_handle, "type_prop")
-    i_rms_meas_prop = mdl.prop(container_handle, "i_rms_meas")
-    i_inst_meas_prop = mdl.prop(container_handle, "i_inst_meas")
-    v_line_rms_meas_prop = mdl.prop(container_handle, "v_line_rms_meas")
-    v_line_inst_meas_prop = mdl.prop(container_handle, "v_line_inst_meas")
-    v_phase_rms_meas_prop = mdl.prop(container_handle, "v_phase_rms_meas")
-    v_phase_inst_meas_prop = mdl.prop(container_handle, "v_phase_inst_meas")
-    freq_meas_prop = mdl.prop(container_handle, "freq_meas")
-    power_meas_prop = mdl.prop(container_handle, "power_meas")
-    enable_output_prop = mdl.prop(container_handle, "enable_output")
-
-    new_value = None
-
-    if caller_prop_handle:
-        new_value = mdl.get_property_disp_value(caller_prop_handle)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "conf" property code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == conf_prop:
-        comp_type = mdl.get_property_disp_value(type_prop)
-
-        prop_list = [i_rms_meas_prop, i_inst_meas_prop, v_line_rms_meas_prop,
-                     v_line_inst_meas_prop,
-                     v_phase_rms_meas_prop, v_phase_inst_meas_prop, freq_meas_prop,
-                     power_meas_prop,
-                     enable_output_prop]
-        if "ABC" in comp_type and new_value == "on both sides":
-            [mdl.show_property(prop) for prop in prop_list]
-        else:
-            [mdl.hide_property(prop) for prop in prop_list]
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "type" property code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == type_prop:
-        pass
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "i_rms_meas_prop" properties code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == i_rms_meas_prop:
-
-        if new_value:
-            mdl.set_property_disp_value(i_inst_meas_prop, True)
-            if init:
-                mdl.set_property_value(i_inst_meas_prop, True)
-            mdl.disable_property(i_inst_meas_prop)
-        else:
-            mdl.enable_property(i_inst_meas_prop)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "v_line_rms_meas_prop" properties code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == v_line_rms_meas_prop:
-
-        if new_value:
-            mdl.set_property_disp_value(v_line_inst_meas_prop, True)
-            if init:
-                mdl.set_property_value(v_line_inst_meas_prop, True)
-            mdl.disable_property(v_line_inst_meas_prop)
-        else:
-            mdl.enable_property(v_line_inst_meas_prop)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "v_phase_rms_meas_prop" properties code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == v_phase_rms_meas_prop:
-
-        if new_value:
-            mdl.set_property_disp_value(v_phase_inst_meas_prop, True)
-            if init:
-                mdl.set_property_value(v_phase_inst_meas_prop, True)
-            mdl.disable_property(v_phase_inst_meas_prop)
-        else:
-            mdl.enable_property(v_phase_inst_meas_prop)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "freq_meas_prop" properties code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == freq_meas_prop:
-
-        if new_value:
-            mdl.set_property_disp_value(v_phase_inst_meas_prop, True)
-            if init:
-                mdl.set_property_value(v_phase_inst_meas_prop, True)
-            mdl.disable_property(v_phase_inst_meas_prop)
-        else:
-            mdl.enable_property(v_phase_inst_meas_prop)
-
-    # ------------------------------------------------------------------------------------------------------------------
-    #  "power_meas_prop" properties code
-    # ------------------------------------------------------------------------------------------------------------------
-    if caller_prop_handle == power_meas_prop:
-
-        if new_value:
-            [mdl.set_property_disp_value(prop, True)
-             for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop,
-                          v_phase_inst_meas_prop,
-                          freq_meas_prop]]
-            if init:
-                [mdl.set_property_value(prop, True)
-                 for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop,
-                              v_phase_inst_meas_prop,
-                              freq_meas_prop]]
-            [mdl.disable_property(prop)
-             for prop in [i_rms_meas_prop, i_inst_meas_prop, v_phase_rms_meas_prop,
-                          v_phase_inst_meas_prop,
-                          freq_meas_prop]]
-        else:
-            [mdl.enable_property(prop)
-             for prop in [i_rms_meas_prop, v_phase_rms_meas_prop, freq_meas_prop]]
-
+    old_state[comp_handle] = new_prop_values
 
 def define_icon(mdl, mask_handle):
     """
@@ -270,6 +156,7 @@ def define_icon(mdl, mask_handle):
     num_phases = sum((phase_a, phase_b, phase_c, phase_n))
     image = f"images/bus_{num_phases}ph.svg"
     mdl.set_component_icon_image(mask_handle, image)
+
 
 def retro_compatibility(mdl, mask_handle):
     phase_a_prop = mdl.prop(mask_handle, "phase_a")

@@ -477,24 +477,8 @@ def phase_n_selector(mdl, container_handle, new_value):
             mdl.delete_item(Rc)
 
 def define_icon(mdl, mask_handle):
-    phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
-    grounded = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
-
-    conn_type = mdl.get_property_value(mdl.prop(mask_handle, "conn_type"))
-
-    if int(phases) == 1:
-        if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1Yg.svg')
-        else:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1Y.svg')
-    else:
-        if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_3Yg.svg')
-        else:
-            if conn_type == 'Δ':
-                mdl.set_component_icon_image(mask_handle, 'images/load_3D.svg')
-            else:
-                mdl.set_component_icon_image(mask_handle, 'images/load_3Y.svg')
+    # Restore old image
+    return
 
 
 

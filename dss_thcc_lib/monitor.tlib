@@ -93,6 +93,13 @@ library "OpenDSS" {
                     default_value = "True"
                     no_evaluate
 
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
@@ -105,6 +112,13 @@ library "OpenDSS" {
                     type = bool
                     default_value = "True"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
@@ -119,19 +133,12 @@ library "OpenDSS" {
                     default_value = "True"
                     no_evaluate
 
-                    CODE property_value_edited
+                    CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
-                }
-
-                i_rms_meas {
-                    label = "Line Currents  - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
@@ -139,100 +146,19 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                i_inst_meas {
-                    label = " Instantaneous"
+                enable_output {
+                    label = "Enable signal output"
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    group = "Measurements:2"
-                    keepline
                     no_evaluate
 
-                    CODE property_value_edited
+                    CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
-                }
-
-                v_line_rms_meas {
-                    label = "Line Voltages  - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_line_inst_meas {
-                    label = " instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_phase_rms_meas {
-                    label = "Phase Voltage - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_phase_inst_meas {
-                    label = " instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                freq_meas {
-                    label = "Frequency"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                power_meas {
-                    label = "Power"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
@@ -245,20 +171,178 @@ library "OpenDSS" {
                     widget = edit
                     type = generic
                     default_value = "100e-6"
+                    keepline
                 }
 
-                enable_output {
-                    label = "Enable Output"
+                i_rms_meas {
+                    label = "Currents               RMS"
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    group = "Measurements:2"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
+                }
+
+                i_inst_meas {
+                    label = "Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_rms_meas {
+                    label = "Line Voltages        RMS"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_inst_meas {
+                    label = "Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_rms_meas {
+                    label = "Phase Voltages     RMS"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_inst_meas {
+                    label = "Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                freq_meas {
+                    label = "Frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                power_meas {
+                    label = "Power"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                ran_dynamics {
+                    label = ""
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    nonvisible
                 }
 
                 CODE open
@@ -278,11 +362,6 @@ library "OpenDSS" {
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 
-                CODE before_change
-                    comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.circuit_dynamics(mdl, item_handle, prop_entered_values)
-                ENDCODE
-
                 CODE init
                     import importlib
 
@@ -291,7 +370,7 @@ library "OpenDSS" {
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
-                    comp_script.circuit_dynamics(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
             }
