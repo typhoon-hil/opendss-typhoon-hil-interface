@@ -38,9 +38,11 @@ class LineCode(GeneralObject):
 
         tse_props_copy = dict(tse_properties)
 
+        tse_props_copy.pop("mode", "")
+        tse_props_copy['nphases'] = tse_props_copy.pop("phases")
+
         # Matrix parameters need to be converted
         if any((tse_props_copy.get(p) for p in ["rmatrix", "xmatrix", "cmatrix"])):
-            tse_props_copy['nphases'] = self.num_phases
             for p in ["rmatrix", "xmatrix", "cmatrix"]:
                 tse_props_copy[p] = convert_matrix_format(tse_props_copy.get(p), self.num_phases)
 
@@ -52,7 +54,7 @@ class LineCode(GeneralObject):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        nphases = tse_properties.get("nphases")
+        nphases = tse_properties.get("phases")
         num_phases = int(nphases) if nphases else 1
 
         return num_phases
@@ -80,8 +82,9 @@ class LineCode(GeneralObject):
     def output_line(self):
         """ Overrides parent output_line method. """
 
+        n_phases = self.new_format_properties.pop("nphases")
         line_props = [f'{k}={v}' for k, v in self.new_format_properties.items()]
-        return f'new {self.identifier()} {" ".join(line_props)}\n'
+        return f'new {self.identifier()} nphases={n_phases} {" ".join(line_props)}\n'
 
     def created_component_instances(self):
         """ Some TSE components may result in multiple converted components. """

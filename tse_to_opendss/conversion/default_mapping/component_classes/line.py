@@ -58,7 +58,7 @@ class Line(TwoTerminal):
         # Specify the base frequency if not inheriting the global value
 
         if tse_properties['global_basefreq'] == "False":
-            new_format_properties["BaseFreq"] = tse_properties['BaseFreq']
+            new_format_properties["baseFreq"] = tse_properties['baseFreq']
         return new_format_properties
 
     @staticmethod
@@ -99,14 +99,17 @@ class Line(TwoTerminal):
                     "x1": tse_properties['X1'],
                     "x0": tse_properties['X0'],
                     "c1": tse_properties['dC1'],
-                    "c0": tse_properties['dC0']
+                    "c0": tse_properties['dC0'],
+                    "phases": tse_properties['phases'],
+                    "mode": "symmetrical"
                 }
             else:
                 linecode_props = {
                     "rmatrix": tse_properties['rmatrix'],
                     "cmatrix": tse_properties['cmatrix'],
                     "xmatrix": tse_properties['xmatrix'],
-                    "nphases": self.num_phases
+                    "phases": tse_properties['phases'],
+                    "mode": "matrix"
                 }
 
             #############
@@ -144,9 +147,8 @@ class Line(TwoTerminal):
 
                 if not saved_linecodes:
                     general_objects['linecodes'] = {}
-                general_objects['linecodes'].update({tse_properties["selected_object"]: linecode_props})
-
-                linecode_props['mode'] = tse_properties['obj_mode']
+                general_objects['linecodes'].update({tse_properties["selected_object"]:
+                                                         linecode_props})
 
                 with open(obj_json_file, 'w') as f:
                     f.write(json.dumps(general_objects, indent=4))

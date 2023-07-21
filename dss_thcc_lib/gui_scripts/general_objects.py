@@ -144,8 +144,6 @@ class Ui_objects(object):
         self.tab_linegeometry = QtWidgets.QWidget()
         self.tab_linegeometry.setObjectName("tab_linegeometry")
         self.tabWidget.addTab(self.tab_linegeometry, "")
-
-
         self.tab_loadshape = QtWidgets.QWidget()
         self.tab_loadshape.setObjectName("tab_loadshape")
         self.group_loadshape_parameters = QtWidgets.QGroupBox(self.tab_loadshape)

@@ -2,252 +2,31 @@ import pathlib
 import json
 import ast
 import pandas as pd
-from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
+from typhoon.api.schematic_editor.const import ITEM_CONNECTION, ITEM_COMPONENT
 
 got_loadshape_points_list = []
 
 
-def set_balanced_fcn(mdl, mask_handle, new_value):
-    if new_value is True:
-        mdl.disable_property(mdl.prop(mask_handle, "VAn"))
-        mdl.disable_property(mdl.prop(mask_handle, "VBn"))
-        mdl.disable_property(mdl.prop(mask_handle, "VCn"))
-        mdl.disable_property(mdl.prop(mask_handle, "VAB"))
-        mdl.disable_property(mdl.prop(mask_handle, "VBC"))
-        mdl.disable_property(mdl.prop(mask_handle, "VCA"))
-        mdl.disable_property(mdl.prop(mask_handle, "SAn"))
-        mdl.disable_property(mdl.prop(mask_handle, "SBn"))
-        mdl.disable_property(mdl.prop(mask_handle, "SCn"))
-        mdl.disable_property(mdl.prop(mask_handle, "SAB"))
-        mdl.disable_property(mdl.prop(mask_handle, "SBC"))
-        mdl.disable_property(mdl.prop(mask_handle, "SCA"))
-        mdl.disable_property(mdl.prop(mask_handle, "pf_modeA"))
-        mdl.disable_property(mdl.prop(mask_handle, "pf_modeB"))
-        mdl.disable_property(mdl.prop(mask_handle, "pf_modeC"))
-        mdl.disable_property(mdl.prop(mask_handle, "pfA"))
-        mdl.disable_property(mdl.prop(mask_handle, "pfB"))
-        mdl.disable_property(mdl.prop(mask_handle, "pfC"))
-
-        mdl.enable_property(mdl.prop(mask_handle, "Vn_3ph"))
-        mdl.enable_property(mdl.prop(mask_handle, "Sn_3ph"))
-        mdl.enable_property(mdl.prop(mask_handle, "pf_mode_3ph"))
-
-        vn_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "Vn_3ph"))
-        sn_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "Sn_3ph"))
-        phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
-        pf_mode_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_mode_3ph"))
-        if not pf_mode_3ph == "Unit":
-            mdl.enable_property(mdl.prop(mask_handle, "pf_3ph"))
-        pf_3ph = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_3ph"))
-
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VAn'), vn_3ph + '*1000/(3**0.5)')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VBn'), vn_3ph + '*1000/(3**0.5)')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VCn'), vn_3ph + '*1000/(3**0.5)')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VAB'), vn_3ph + '*1000')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VBC'), vn_3ph + '*1000')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'VCA'), vn_3ph + '*1000')
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SAn'), sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SBn'), sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SCn'), sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SAB'), sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SBC'), sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'SCA'), sn_3ph + '*1000/' + str(phases))
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'pf_modeA'), pf_mode_3ph)
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'pf_modeB'), pf_mode_3ph)
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'pf_modeC'), pf_mode_3ph)
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'pfA'), pf_3ph)
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'pfB'), pf_3ph)
-        mdl.set_property_disp_value(mdl.prop(mask_handle, 'pfC'), pf_3ph)
-
-    else:
-        mdl.enable_property(mdl.prop(mask_handle, "VAn"))
-        mdl.enable_property(mdl.prop(mask_handle, "VBn"))
-        mdl.enable_property(mdl.prop(mask_handle, "VCn"))
-        mdl.enable_property(mdl.prop(mask_handle, "VAB"))
-        mdl.enable_property(mdl.prop(mask_handle, "VBC"))
-        mdl.enable_property(mdl.prop(mask_handle, "VCA"))
-        mdl.enable_property(mdl.prop(mask_handle, "SAn"))
-        mdl.enable_property(mdl.prop(mask_handle, "SBn"))
-        mdl.enable_property(mdl.prop(mask_handle, "SCn"))
-        mdl.enable_property(mdl.prop(mask_handle, "SAB"))
-        mdl.enable_property(mdl.prop(mask_handle, "SBC"))
-        mdl.enable_property(mdl.prop(mask_handle, "SCA"))
-        mdl.enable_property(mdl.prop(mask_handle, "pf_modeA"))
-        mdl.enable_property(mdl.prop(mask_handle, "pf_modeB"))
-        mdl.enable_property(mdl.prop(mask_handle, "pf_modeC"))
-        pf_mode_a = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeA"))
-        if not pf_mode_a == "Unit":
-            mdl.enable_property(mdl.prop(mask_handle, "pfA"))
-        pf_mode_b = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeB"))
-        if not pf_mode_b == "Unit":
-            mdl.enable_property(mdl.prop(mask_handle, "pfB"))
-        pf_mode_c = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_modeC"))
-        if not pf_mode_c == "Unit":
-            mdl.enable_property(mdl.prop(mask_handle, "pfC"))
-
-        mdl.disable_property(mdl.prop(mask_handle, "Vn_3ph"))
-        mdl.disable_property(mdl.prop(mask_handle, "Sn_3ph"))
-        mdl.disable_property(mdl.prop(mask_handle, "pf_mode_3ph"))
-        mdl.disable_property(mdl.prop(mask_handle, "pf_3ph"))
-
-
-def pf_mode_fcn(mdl, mask_handle, new_value, phase, comp_pos, jun_pos):
-
-    comp_handle = mdl.get_sub_level_handle(mask_handle)
-    resistance = mdl.get_item("R" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-
-    jun1 = mdl.get_item("J" + phase + "1", parent=comp_handle, item_type=ITEM_JUNCTION)
-    if not jun1:
-        jun1 = mdl.create_junction(name="J" + phase + "1", parent=comp_handle, kind='pe', position=jun_pos)
-
-    if new_value == "Unit":
-        inductance = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-        capacitance = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-
-        if inductance:
-            mdl.delete_item(inductance)
-        if capacitance:
-            mdl.delete_item(capacitance)
-
-        conn = mdl.get_item("Conn_" + phase, parent=comp_handle, item_type=ITEM_CONNECTION)
-        if not conn:
-            mdl.create_connection(mdl.term(resistance, "n_node"), jun1, name="Conn_" + phase)
-
-    elif new_value == "Lead":
-        inductance = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-        capacitance = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-
-        if inductance:
-            mdl.delete_item(inductance)
-        if not capacitance:
-            capacitance = mdl.create_component("Capacitor", parent=comp_handle, name="C" + phase.lower(),
-                                               position=comp_pos, rotation="right")
-            mdl.set_property_value(mdl.prop(capacitance, "capacitance"), "C" + phase.lower())
-
-        conn = mdl.get_item("Conn_" + phase, parent=comp_handle, item_type=ITEM_CONNECTION)
-        if conn:
-            mdl.delete_item(conn)
-
-        mdl.create_connection(mdl.term(capacitance, "n_node"), jun1, name="Conn_" + phase)
-
-        conn0 = mdl.get_item("Conn_" + phase + "0", parent=comp_handle, item_type=ITEM_CONNECTION)
-        if not conn0:
-            mdl.create_connection(mdl.term(resistance, "n_node"), mdl.term(capacitance, "p_node"),
-                                  name="Conn_" + phase + "0")
-
-    else:
-        inductance = mdl.get_item("L" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-        capacitance = mdl.get_item("C" + phase.lower(), parent=comp_handle, item_type=ITEM_COMPONENT)
-
-        if capacitance:
-            mdl.delete_item(capacitance)
-        if not inductance:
-            inductance = mdl.create_component("Inductor", parent=comp_handle, name="L" + phase.lower(),
-                                              position=comp_pos, rotation="right")
-            mdl.set_property_value(mdl.prop(inductance, "inductance"), "L" + phase.lower())
-
-        conn = mdl.get_item("Conn_" + phase, parent=comp_handle, item_type=ITEM_CONNECTION)
-        if conn:
-            mdl.delete_item(conn)
-
-        mdl.create_connection(mdl.term(inductance, "n_node"), jun1, name="Conn_" + phase)
-
-        conn0 = mdl.get_item("Conn_" + phase + "0", parent=comp_handle, item_type=ITEM_CONNECTION)
-        if not conn0:
-            mdl.create_connection(mdl.term(resistance, "n_node"), mdl.term(inductance, "p_node"),
-                                  name="Conn_" + phase + "0")
-
-
-def lock_prop(mdl, comp_handle, mask_property, new_value, locking_value):
-    if new_value == locking_value:
-        mdl.disable_property(mdl.prop(comp_handle, mask_property))
-    else:
-        mdl.enable_property(mdl.prop(comp_handle, mask_property))
-
-
-def conn_type_value_edited_fnc(mdl, container_handle, new_value):
-    phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
-
-    if phases == "3":
-        if new_value == "Δ":
-            mdl.disable_property(mdl.prop(container_handle, "ground_connected"))
-            mdl.set_property_disp_value(mdl.prop(container_handle, 'ground_connected'), False)
-        else:
-            mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
-            mdl.set_property_disp_value(mdl.prop(container_handle, 'ground_connected'), False)
-    elif phases == "1":
-        mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
-
-
-def phase_value_changed_fnc(mdl, container_handle, new_value):
-    conn_type_prop = mdl.prop(container_handle, "conn_type")
-    conn_type = mdl.get_property_disp_value(conn_type_prop)
-    if new_value == "1":
-        if conn_type == "Δ":
-            mdl.set_property_disp_value(mdl.prop(container_handle, 'ground_connected'), True)
-        mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
-        mdl.set_property_value(mdl.prop(container_handle, 'conn_type'), "Y")
-        mdl.disable_property(mdl.prop(container_handle, "conn_type"))
-
-    elif new_value == "3":
-        mdl.enable_property(mdl.prop(container_handle, "conn_type"))
-        if conn_type == "Y":
-            mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
-        else:
-            mdl.set_property_disp_value(mdl.prop(container_handle, 'ground_connected'), False)
-            mdl.set_property_value(mdl.prop(container_handle, 'ground_connected'), False)
-            mdl.disable_property(mdl.prop(container_handle, "ground_connected"))
-
-
-def phase_value_edited_fnc(mdl, container_handle, new_value):
+def tp_connection_dynamics(mdl, container_handle):
     load_model_prop = mdl.prop(container_handle, "load_model")
     load_model = mdl.get_property_disp_value(load_model_prop)
 
-    if new_value == "3":
-        if load_model == "Constant Impedance":
-            mdl.enable_property(mdl.prop(container_handle, "conn_type"))
-        else:
-            mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
-            mdl.disable_property(mdl.prop(container_handle, "conn_type"))
+    phases_prop = mdl.prop(container_handle, "phases")
+    phases = mdl.get_property_disp_value(phases_prop)
+
+    tp_connection_prop = mdl.prop(container_handle, "tp_connection")
+
+    mdl.enable_property(mdl.prop(container_handle, "tp_connection"))
+
+    if phases == "3":
+        if not load_model == "Constant Impedance":
             mdl.enable_property(mdl.prop(container_handle, "zero_seq_remove"))
     else:
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'zero_seq_remove'), False)
-        mdl.disable_property(mdl.prop(container_handle, "conn_type"))
+        mdl.set_property_value(mdl.prop(container_handle, 'zero_seq_remove'), False)
         mdl.disable_property(mdl.prop(container_handle, "zero_seq_remove"))
-        mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
 
-
-# def zip_normalize_fnc(mdl, container_handle, new_value):
-#     no_bracket = new_value.strip("[]")
-#     zip_list = [float(s) for s in no_bracket.split(',')]
-#     zip_len = len(zip_list)
-#     zip_norm = [0, 0, 0]
-#
-#     if zip_len == 3:
-#         zip_total = zip_list[0]+zip_list[1]+zip_list[2]
-#         if not zip_total == 0:
-#             zip_norm = [value / zip_total for value in zip_list]
-#     elif zip_len > 3:
-#         zip_total = zip_list[0] + zip_list[1] + zip_list[2]
-#         if not zip_total == 0:
-#             zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], zip_list[2]]]
-#     elif zip_len == 2:
-#         zip_total = zip_list[0] + zip_list[1]
-#         if not zip_total == 0:
-#             zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], 0]]
-#     else:
-#         if not zip_list[0] == 0:
-#             zip_norm = [1, 0, 0]
-#
-#     idx = 0
-#     for elem in zip_norm:
-#         zip_norm[idx] = round(elem, 3)
-#         idx = idx + 1
-#
-#     mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
-#     mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+    new_connection = mdl.get_property_disp_value(tp_connection_prop)
+    tp_connection_edited(mdl, container_handle, new_connection)
 
 
 def zip_change_fnc(mdl, container_handle, new_value):
@@ -277,7 +56,8 @@ def zip_change_fnc(mdl, container_handle, new_value):
     elif zip_len > 3:
         zip_total = zip_list[0] + zip_list[1] + zip_list[2]
         if not zip_total == 0:
-            zip_norm = [value / zip_total for value in [zip_list[0], zip_list[1], zip_list[2]]]
+            zip_norm = [value / zip_total for value in
+                        [zip_list[0], zip_list[1], zip_list[2]]]
     elif zip_len == 2:
         zip_total = zip_list[0] + zip_list[1]
         if not zip_total == 0:
@@ -293,11 +73,13 @@ def zip_change_fnc(mdl, container_handle, new_value):
     elif zip_len_q > 3:
         zip_total_q = zip_list_q[0] + zip_list_q[1] + zip_list_q[2]
         if not zip_total_q == 0:
-            zip_norm_q = [value / zip_total_q for value in [zip_list_q[0], zip_list_q[1], zip_list_q[2]]]
+            zip_norm_q = [value / zip_total_q for value in
+                          [zip_list_q[0], zip_list_q[1], zip_list_q[2]]]
     elif zip_len_q == 2:
         zip_total_q = zip_list_q[0] + zip_list_q[1]
         if not zip_total_q == 0:
-            zip_norm_q = [value / zip_total_q for value in [zip_list_q[0], zip_list_q[1], 0]]
+            zip_norm_q = [value / zip_total_q for value in
+                          [zip_list_q[0], zip_list_q[1], 0]]
     else:
         if not zip_list_q[0] == 0:
             zip_norm_q = [1, 0, 0]
@@ -312,25 +94,32 @@ def zip_change_fnc(mdl, container_handle, new_value):
         zip_norm_q[idx_q] = round(elem, 3)
         idx_q = idx_q + 1
 
-    zipv_dss = [zip_norm[0], zip_norm[1], zip_norm[2], zip_norm_q[0], zip_norm_q[1], zip_norm_q[2], 0]
+    zipv_dss = [zip_norm[0], zip_norm[1], zip_norm[2], zip_norm_q[0], zip_norm_q[1],
+                zip_norm_q[2], 0]
 
-    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n'),
+                                str(zip_norm))
     mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n'), str(zip_norm))
-    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal'), str(zip_norm))
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal'),
+                                str(zip_norm))
     mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'), str(zip_norm))
 
-    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n_Q'), str(zip_norm_q))
-    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n_Q'), str(zip_norm_q))
-    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_Q'), str(zip_norm_q))
-    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'), str(zip_norm_q))
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_n_Q'),
+                                str(zip_norm_q))
+    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_n_Q'),
+                           str(zip_norm_q))
+    mdl.set_property_disp_value(mdl.prop(container_handle, 'zip_internal_Q'),
+                                str(zip_norm_q))
+    mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'),
+                           str(zip_norm_q))
 
     mdl.set_property_disp_value(mdl.prop(container_handle, 'ZIPV'), str(zipv_dss))
     mdl.set_property_value(mdl.prop(container_handle, 'ZIPV'), str(zipv_dss))
 
 
 def load_model_value_edited_fnc(mdl, container_handle, new_value):
-    conn_type_prop = mdl.prop(container_handle, "conn_type")
-    conn_type = mdl.get_property_disp_value(conn_type_prop)
+    tp_connection_prop = mdl.prop(container_handle, "tp_connection")
+    tp_connection = mdl.get_property_value(tp_connection_prop)
 
     zip_vector_prop = mdl.prop(container_handle, "zip_vector")
     # zip_vector = mdl.get_property_disp_value(zip_vector_prop)
@@ -342,13 +131,10 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
     zip_internal_n_q_prop = mdl.prop(container_handle, "zip_internal_n_Q")
     zip_internal_n_q = mdl.get_property_disp_value(zip_internal_n_q_prop)
 
-    phases_prop = mdl.prop(container_handle, "phases")
-    phases = mdl.get_property_disp_value(phases_prop)
-
     if new_value == "Constant Impedance":
         mdl.hide_property(zip_vector_prop)
         mdl.hide_property(zip_vector_q_prop)
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'Pow_ref_s'), "Fixed")
+        mdl.set_property_value(mdl.prop(container_handle, 'Pow_ref_s'), "Fixed")
         mdl.disable_property(mdl.prop(container_handle, "Pow_ref_s"))
         mdl.disable_property(mdl.prop(container_handle, "execution_rate"))
         mdl.disable_property(mdl.prop(container_handle, "Tfast"))
@@ -357,23 +143,24 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.disable_property(mdl.prop(container_handle, "rate_lmt"))
         mdl.disable_property(mdl.prop(container_handle, "q_gain_k"))
         mdl.disable_property(mdl.prop(container_handle, "r_gain_k"))
-        if phases == "1":
-            mdl.disable_property(mdl.prop(container_handle, "conn_type"))
-        else:
-            mdl.enable_property(mdl.prop(container_handle, "conn_type"))
-        if conn_type == "Y":
-            mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
+        mdl.enable_property(mdl.prop(container_handle, "tp_connection"))
+        tp_connection_edited(mdl, container_handle, "Y - Grounded")
+
     else:
         if new_value == "Constant Power":
             mdl.hide_property(zip_vector_prop)
             mdl.hide_property(zip_vector_q_prop)
-            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'), "[0,0,1]")
-            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'), "[0,0,1]")
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'),
+                                   "[0,0,1]")
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'),
+                                   "[0,0,1]")
         elif new_value == "Constant Z,I,P":
             mdl.show_property(zip_vector_prop)
             mdl.show_property(zip_vector_q_prop)
-            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'), zip_internal_n)
-            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'), zip_internal_n_q)
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal'),
+                                   zip_internal_n)
+            mdl.set_property_value(mdl.prop(container_handle, 'zip_internal_Q'),
+                                   zip_internal_n_q)
         mdl.enable_property(mdl.prop(container_handle, "Pow_ref_s"))
         mdl.enable_property(mdl.prop(container_handle, "execution_rate"))
         mdl.enable_property(mdl.prop(container_handle, "Tfast"))
@@ -382,9 +169,10 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.enable_property(mdl.prop(container_handle, "rate_lmt"))
         mdl.enable_property(mdl.prop(container_handle, "q_gain_k"))
         mdl.enable_property(mdl.prop(container_handle, "r_gain_k"))
-        mdl.set_property_disp_value(mdl.prop(container_handle, 'conn_type'), "Y")
-        mdl.disable_property(mdl.prop(container_handle, "conn_type"))
-        mdl.enable_property(mdl.prop(container_handle, "ground_connected"))
+        mdl.set_property_disp_value(mdl.prop(container_handle, "tp_connection"),
+                                    "Y - Grounded")
+        tp_connection_edited(mdl, container_handle, "Y - Grounded")
+        # mdl.disable_property(mdl.prop(container_handle, "tp_connection"))
 
 
 def load_loadshape(mdl, container_handle):
@@ -417,7 +205,7 @@ def load_loadshape(mdl, container_handle):
     fname = os.path.join(dss_folder_path, 'data', 'general_objects.json')
 
     loadshape_name_prop = mdl.prop(container_handle, "loadshape_name")
-    loadshape_name = mdl.get_property_disp_value(loadshape_name_prop)
+    loadshape_name = mdl.get_property_value(loadshape_name_prop)
     loadshape_name = "" if loadshape_name == "-" else loadshape_name
 
     obj_type = "LoadShape"
@@ -429,7 +217,8 @@ def load_loadshape(mdl, container_handle):
         obj_dicts = None
 
     if obj_dicts:
-        new_load_window = load_obj.LoadObject(mdl, obj_type, obj_dicts=obj_dicts, starting_object=loadshape_name)
+        new_load_window = load_obj.LoadObject(mdl, obj_type, obj_dicts=obj_dicts,
+                                              starting_object=loadshape_name)
     else:
         new_load_window = load_obj.LoadObject(mdl, obj_type)
 
@@ -444,9 +233,12 @@ def load_loadshape(mdl, container_handle):
         loadshape_prop_time = mdl.prop(container_handle, "T_Ts")
         useactual_prop = mdl.prop(container_handle, "useactual")
         loadshape_from_file_prop = mdl.prop(container_handle, "loadshape_from_file")
-        loadshape_from_file_path_prop = mdl.prop(container_handle, "loadshape_from_file_path")
-        loadshape_from_file_header_prop = mdl.prop(container_handle, "loadshape_from_file_header")
-        loadshape_from_file_column_prop = mdl.prop(container_handle, "loadshape_from_file_column")
+        loadshape_from_file_path_prop = mdl.prop(container_handle,
+                                                 "loadshape_from_file_path")
+        loadshape_from_file_header_prop = mdl.prop(container_handle,
+                                                   "loadshape_from_file_header")
+        loadshape_from_file_column_prop = mdl.prop(container_handle,
+                                                   "loadshape_from_file_column")
 
         selected_obj_dict = obj_dicts.get("loadshapes").get(selected_object)
         loadshape_name = selected_object
@@ -471,7 +263,8 @@ def load_loadshape(mdl, container_handle):
             loadshape = selected_obj_dict.get("mult")
         else:
             selected_obj_dict.update({"loadshape_name": selected_object})
-            loadshape = str(read_loadshape_from_json(mdl, container_handle, reload_dict=selected_obj_dict))
+            loadshape = str(read_loadshape_from_json(mdl, container_handle,
+                                                     reload_dict=selected_obj_dict))
 
         if loadshape:
             loadshape = ast.literal_eval(loadshape)
@@ -480,7 +273,8 @@ def load_loadshape(mdl, container_handle):
                 if hour:
                     loadshape = loadshape[:npts]
                 else:
-                    mdl.info("interval property is zero, but hour property is not defined")
+                    mdl.info(
+                        "interval property is zero, but hour property is not defined")
             else:
                 loadshape = loadshape[:npts]
 
@@ -496,9 +290,12 @@ def load_loadshape(mdl, container_handle):
         else:
             time_range_str = f"[{', '.join(str(interval * n) for n in range(1, len(loadshape) + 1))}]"
             mdl.set_property_disp_value(loadshape_prop_time, time_range_str)
-        mdl.set_property_disp_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
-        mdl.set_property_disp_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
-        mdl.set_property_disp_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
+        mdl.set_property_disp_value(loadshape_from_file_path_prop,
+                                    str(loadshape_from_file_path))
+        mdl.set_property_disp_value(loadshape_from_file_header_prop,
+                                    str(loadshape_from_file_header))
+        mdl.set_property_disp_value(loadshape_from_file_column_prop,
+                                    str(loadshape_from_file_column))
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
@@ -518,7 +315,6 @@ def toggle_frequency_prop(mdl, mask_handle, init=False):
 
 
 def update_frequency_property(mdl, mask_handle, init=False):
-
     frequency_prop = mdl.prop(mask_handle, "fn")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
@@ -528,54 +324,71 @@ def update_frequency_property(mdl, mask_handle, init=False):
     else:
         if use_global:
             if "simdss_basefreq" in mdl.get_ns_vars():
-                mdl.set_property_value(frequency_prop, mdl.get_ns_var("simdss_basefreq"))
+                mdl.set_property_value(frequency_prop,
+                                       mdl.get_ns_var("simdss_basefreq"))
             else:
                 mdl.set_property_value(global_frequency_prop, False)
         toggle_frequency_prop(mdl, mask_handle, init)
 
 
 def define_icon(mdl, mask_handle):
-    phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
-    grounded = mdl.get_property_value(mdl.prop(mask_handle, "ground_connected"))
-    conn_type = mdl.get_property_value(mdl.prop(mask_handle, "conn_type"))
+    phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
+    tp_connection = mdl.get_property_disp_value(mdl.prop(mask_handle, "tp_connection"))
+
+    if tp_connection == "Y - Grounded":
+        grounded = True
+    else:
+        grounded = False
+
     if int(phases) == 1:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph_gnd.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/load_1Yg.svg')
         else:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1ph.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/load_1Y.svg')
     else:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_3Y_gnd.svg')
+            mdl.set_component_icon_image(mask_handle, 'images/load_3Yg.svg')
         else:
-            if conn_type == 'Δ':
+            if tp_connection == 'Δ':
                 mdl.set_component_icon_image(mask_handle, 'images/load_3D.svg')
             else:
                 mdl.set_component_icon_image(mask_handle, 'images/load_3Y.svg')
 
+    #
+    # Set text
+    #
 
-def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
+    mdl.set_color(mask_handle, "blue")
+
+    # Neutral
+    if tp_connection in ("Y", "Y - Grounded"):
+        if phases == "3":
+            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
+                                         relpos_x=0.81, relpos_y=0.12,
+                                         size=8, trim_factor=2)
+        elif tp_connection == "Y":
+            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
+                                         relpos_x=0.92, relpos_y=0.5,
+                                         size=8, trim_factor=2)
+
+
+def port_dynamics(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
     # deleted_ports = []
     created_ports = {}
 
-    conn_type_prop = mdl.prop(mask_handle, "conn_type")
-    conn_type = mdl.get_property_disp_value(conn_type_prop)
+    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
     load_model_prop = mdl.prop(mask_handle, "load_model")
     load_model = mdl.get_property_disp_value(load_model_prop)
-
-    ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_value(ground_connected_prop)
-
-    gnd_check = False
-    if str(ground_connected) == "True":
-        gnd_check = True
 
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
     pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
+
     if phases == "3":
         port_a = mdl.get_item("A1", parent=comp_handle, item_type="port")
         port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
@@ -584,45 +397,64 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
         q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
 
+        if tp_connection == 'Δ':
+            pos_port_a1 = (-32, -24)
+            pos_port_b1 = (0, -24)
+            pos_port_c1 = (32, -24)
+            pos_p_ext = (50, -15)
+            pos_q_ext = (50, 15)
+        else:
+            pos_port_a1 = (-48, -24)
+            pos_port_b1 = (-16, -24)
+            pos_port_c1 = (16, -24)
+            pos_p_ext = (65, -15)
+            pos_q_ext = (65, 15)
+
         if p_ext:
-            mdl.set_port_properties(p_ext, terminal_position=(50, -15))
+            mdl.set_port_properties(p_ext, terminal_position=pos_p_ext)
             created_ports.update({"P_ext": p_ext})
         if q_ext:
-            mdl.set_port_properties(q_ext, terminal_position=(50, 15))
+            mdl.set_port_properties(q_ext, terminal_position=pos_q_ext)
             created_ports.update({"Q_ext": q_ext})
 
         if not port_a:
-            port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
-                                     terminal_position=(-30, -32),
+            port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out",
+                                     kind="pe",
+                                     terminal_position=pos_port_a1, hide_name=True,
                                      position=(7802, 7862), rotation="right")
-            created_ports.update({"portA": port_a})
         else:
-            mdl.set_port_properties(port_a, terminal_position=(-30, -32))
-            created_ports.update({"portA": port_a})
-        if not port_b:
-            port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                     terminal_position=(0.0, -32),
-                                     position=(7919, 7862), rotation="right")
-            created_ports.update({"portB": port_b})
-        else:
-            mdl.set_port_properties(port_b, terminal_position=(0.0, -32))
-            created_ports.update({"portB": port_b})
-        if not port_c:
-            port_c = mdl.create_port(parent=comp_handle, name="C1", direction="out", kind="pe",
-                                     terminal_position=(30, -32),
-                                     position=(8055, 7862), rotation="right")
-            created_ports.update({"portC": port_c})
-        else:
-            created_ports.update({"portC": port_c})
+            mdl.set_port_properties(port_a, terminal_position=pos_port_a1)
+        created_ports.update({"portA": port_a})
 
-        if not gnd_check:
-            if conn_type == "Y":
-                port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-                if not port_n:
-                    port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                             terminal_position=(0, 30),
-                                             position=(7921, 8384), rotation="left")
-                created_ports.update({"portN": port_n})
+        if not port_b:
+            port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out",
+                                     kind="pe",
+                                     terminal_position=pos_port_b1, hide_name=True,
+                                     position=(7919, 7862), rotation="right")
+        else:
+            mdl.set_port_properties(port_b, terminal_position=pos_port_b1)
+        created_ports.update({"portB": port_b})
+
+        if not port_c:
+            port_c = mdl.create_port(parent=comp_handle, name="C1", direction="out",
+                                     kind="pe",
+                                     terminal_position=pos_port_c1, hide_name=True,
+                                     position=(8055, 7862), rotation="right")
+        else:
+            mdl.set_port_properties(port_c, terminal_position=pos_port_c1)
+        created_ports.update({"portC": port_c})
+
+        if tp_connection in ("Y", "Y - Grounded"):
+            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+            if not port_n:
+                port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out",
+                                         kind="pe",
+                                         terminal_position=(48, -24), hide_name=True,
+                                         position=(7921, 8384), rotation="right")
+            else:
+                mdl.set_port_properties(port_n, terminal_position=(48, -24))
+
+            created_ports.update({"portN": port_n})
 
     elif phases == "1":
         port_a = mdl.get_item("A1", parent=comp_handle, item_type="port")
@@ -631,93 +463,62 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
         p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
         q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
-        if p_ext:
-            mdl.set_port_properties(p_ext, terminal_position=(25, -15))
-            created_ports.update({"P_ext": p_ext})
-        if q_ext:
-            mdl.set_port_properties(q_ext, terminal_position=(25, 15))
-            created_ports.update({"Q_ext": q_ext})
 
-        if not port_a:
-            port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out", kind="pe",
-                                     terminal_position=(0, -32),
-                                     position=(7802, 7862), rotation="right")
-            created_ports.update({"portA": port_a})
-        else:
-            mdl.set_port_properties(port_a, terminal_position=(0, -32))
-            created_ports.update({"portA": port_a})
+        if tp_connection == "Y - Grounded":
+            pos_port_a = (0, -24)
+            pos_p_ext = (24, -16)
+            pos_q_ext = (24, 16)
 
-        if gnd_check:
             if port_b:
                 mdl.delete_item(port_b)
                 created_ports.pop("portB", None)
 
         else:
+            pos_port_a = (-16, -12)
+            pos_port_b = (16, -12)
+            pos_p_ext = (16, -16)
+            pos_q_ext = (16, 16)
+
             if not port_b:
-                port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                         terminal_position=(0, 30),
+                port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out",
+                                         kind="pe",
+                                         terminal_position=pos_port_b, hide_name=True,
                                          position=(7919, 7862), rotation="right")
-                created_ports.update({"portB": port_b})
             else:
-                mdl.set_port_properties(port_b, terminal_position=(0, 30))
-                created_ports.update({"portB": port_b})
-            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            if port_n:
-                mdl.delete_item(port_n)
-                created_ports.pop("portN", None)
+                mdl.set_port_properties(port_b, terminal_position=pos_port_b)
+
+            created_ports.update({"portB": port_b})
+
+        if p_ext:
+            mdl.set_port_properties(p_ext, terminal_position=pos_p_ext)
+            created_ports.update({"P_ext": p_ext})
+        if q_ext:
+            mdl.set_port_properties(q_ext, terminal_position=pos_q_ext)
+            created_ports.update({"Q_ext": q_ext})
+
+        if not port_a:
+            port_a = mdl.create_port(parent=comp_handle, name="A1", direction="out",
+                                     kind="pe",
+                                     terminal_position=pos_port_a, hide_name=True,
+                                     position=(7802, 7862), rotation="right")
+        else:
+            mdl.set_port_properties(port_a, terminal_position=pos_port_a)
+
+        created_ports.update({"portA": port_a})
+
+        # In the single-phase system, we don't need the Neutral output
+        port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
+        if port_n:
+            mdl.delete_item(port_n)
+            created_ports.pop("portN", None)
 
         if port_c:
             mdl.delete_item(port_c)
             created_ports.pop("portC", None)
 
-    if conn_type == "Y":
-        if not gnd_check:
-            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            if not port_n:
-                port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                         terminal_position=(0, 30),
-                                         position=(7921, 8384), rotation="left")
-            created_ports.update({"portN": port_n})
-
-    elif load_model == "Constant Impedance":
+    if tp_connection == "Δ" and load_model == "Constant Impedance":
+        # https://youtu.be/gqQertPg9wI?list=RDMM
         port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-        if port_n:
-            mdl.delete_item(port_n)
-            created_ports.pop("portN", None)
-    if not gnd_check:
-        port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-        port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
-        if phases == "3":
-            if not port_n:
-                port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out", kind="pe",
-                                         terminal_position=(0, 30),
-                                         position=(7921, 8384), rotation="left")
-            created_ports.update({"portN": port_n})
-        else:
-            if not port_b:
-                port_b = mdl.create_port(parent=comp_handle, name="B1", direction="out", kind="pe",
-                                         terminal_position=(0.0, 30),
-                                         position=(7919, 7862), rotation="right")
-                created_ports.update({"portB": port_b})
-            else:
-                mdl.set_port_properties(port_b, terminal_position=(0.0, 30))
-                created_ports.update({"portB": port_b})
-            if port_n:
-                mdl.delete_item(port_n)
-                created_ports.pop("portN", None)
-
-        if conn_type == "Δ" and load_model == "Constant Impedance":
-            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-            if port_n:
-                mdl.delete_item(port_n)
-                created_ports.pop("portN", None)
-    else:
-        port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
-        if phases == "1":
-            port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
-            if port_b:
-                mdl.delete_item(port_b)
-                created_ports.pop("portB", None)
         if port_n:
             mdl.delete_item(port_n)
             created_ports.pop("portN", None)
@@ -741,24 +542,33 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             created_ports.pop("T_ext", None)
 
         elif pow_ref_s == "External input":
-
             if phases == "1":
-                p_term_position = (25, -15)
-                q_term_position = (25, 15)
+                if tp_connection == "Y - Grounded":
+                    p_term_position = (24, -15)
+                    q_term_position = (24, 15)
+                else:
+                    p_term_position = (16, -15)
+                    q_term_position = (16, 15)
             else:
-                p_term_position = (50, -15)
-                q_term_position = (50, 15)
+                if tp_connection == 'Δ':
+                    p_term_position = (48, -15)
+                    q_term_position = (48, 15)
+                else:
+                    p_term_position = (64, -15)
+                    q_term_position = (64, 15)
 
             p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
             if not p_ext:
-                p_ext = mdl.create_port(parent=comp_handle, name="P", direction="in", kind="sp",
+                p_ext = mdl.create_port(parent=comp_handle, name="P", direction="in",
+                                        kind="sp",
                                         terminal_position=p_term_position,
                                         position=(7680, 8175))
             created_ports.update({"P_ext": p_ext})
 
             q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
             if not q_ext:
-                q_ext = mdl.create_port(parent=comp_handle, name="Q", direction="in", kind="sp",
+                q_ext = mdl.create_port(parent=comp_handle, name="Q", direction="in",
+                                        kind="sp",
                                         terminal_position=q_term_position,
                                         position=(7680, 8240))
             created_ports.update({"Q_ext": q_ext})
@@ -781,13 +591,20 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                 created_ports.pop("Q_ext", None)
 
             if phases == "1":
-                term_position = (25, 0)
+                if tp_connection == "Y - Grounded":
+                    term_position = (25, 0)
+                else:
+                    term_position = (16, 0)
             else:
-                term_position = (50, 0)
+                if tp_connection == 'Δ':
+                    term_position = (50, 0)
+                else:
+                    term_position = (65, 0)
 
             t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
             if not t_ext:
-                t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in", kind="sp",
+                t_ext = mdl.create_port(parent=comp_handle, name="T", direction="in",
+                                        kind="sp",
                                         terminal_position=term_position,
                                         position=(7368, 8400))
             else:
@@ -817,12 +634,8 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
-    ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_value(ground_connected_prop)
-
-    gnd_check = False
-    if str(ground_connected) == "True":
-        gnd_check = True
+    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
     tags_dict = {"TagA1": {"position": (7800, 7944), "rotation": "left"},
                  "TagB1": {"position": (7920, 7944), "rotation": "left"},
@@ -837,15 +650,18 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
             tag1 = mdl.get_item(f"Tag{phase}1", parent=comp_handle, item_type="tag")
             if tag1:
                 mdl.delete_item(tag1)
-            tag1 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}1", parent=comp_handle, scope="local", kind="pe",
+            tag1 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}1", parent=comp_handle,
+                                  scope="local", kind="pe",
                                   rotation=tags_dict[f"Tag{phase}1"]["rotation"],
                                   position=tags_dict[f"Tag{phase}1"]["position"])
+
             mdl.create_connection(tag1, created_ports.get(f"port{phase}"))
 
             tag2 = mdl.get_item(f"Tag{phase}2", parent=comp_handle, item_type="tag")
             if tag2:
                 mdl.delete_item(tag2)
-            mdl.create_tag(f"{phase}1", name=f"Tag{phase}2", parent=comp_handle, scope="local", kind="pe",
+            mdl.create_tag(f"{phase}1", name=f"Tag{phase}2", parent=comp_handle,
+                           scope="local", kind="pe",
                            rotation=tags_dict[f"Tag{phase}2"]["rotation"],
                            position=tags_dict[f"Tag{phase}2"]["position"])
 
@@ -853,9 +669,6 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
                 tag3 = mdl.get_item(f"Tag{phase}3", parent=comp_handle, item_type="tag")
                 if tag3:
                     mdl.delete_item(tag3)
-                    jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
-                    if jun_n:
-                        mdl.create_connection(created_ports.get(f"portN"), jun_n)
 
     elif int(phases) == 1:
         for phase in ["A", "B", "C"]:
@@ -868,12 +681,14 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
                 mdl.delete_item(tag2)
 
             if phase == "A":
-                tag1 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}1", parent=comp_handle, scope="local", kind="pe",
+                tag1 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}1",
+                                      parent=comp_handle, scope="local", kind="pe",
                                       rotation=tags_dict[f"Tag{phase}1"]["rotation"],
                                       position=tags_dict[f"Tag{phase}1"]["position"])
                 mdl.create_connection(tag1, created_ports.get(f"port{phase}"))
 
-                mdl.create_tag(f"{phase}1", name=f"Tag{phase}2", parent=comp_handle, scope="local", kind="pe",
+                mdl.create_tag(f"{phase}1", name=f"Tag{phase}2", parent=comp_handle,
+                               scope="local", kind="pe",
                                rotation=tags_dict[f"Tag{phase}2"]["rotation"],
                                position=tags_dict[f"Tag{phase}2"]["position"])
 
@@ -881,17 +696,24 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
                 tag3 = mdl.get_item(f"Tag{phase}3", parent=comp_handle, item_type="tag")
                 if tag3:
                     mdl.delete_item(tag3)
-                if not gnd_check:
-                    tag1 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}1", parent=comp_handle, scope="local",
+
+                if tp_connection in ("Y", "Δ"):
+                    tag1 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}1",
+                                          parent=comp_handle, scope="local",
                                           kind="pe",
-                                          rotation=tags_dict[f"Tag{phase}1"]["rotation"],
-                                          position=tags_dict[f"Tag{phase}1"]["position"])
+                                          rotation=tags_dict[f"Tag{phase}1"][
+                                              "rotation"],
+                                          position=tags_dict[f"Tag{phase}1"][
+                                              "position"])
                     mdl.create_connection(tag1, created_ports.get(f"port{phase}"))
 
-                    tag3 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}3", parent=comp_handle,
+                    tag3 = mdl.create_tag(f"{phase}1", name=f"Tag{phase}3",
+                                          parent=comp_handle,
                                           scope="local", kind="pe",
-                                          rotation=tags_dict[f"Tag{phase}3"]["rotation"],
-                                          position=tags_dict[f"Tag{phase}3"]["position"])
+                                          rotation=tags_dict[f"Tag{phase}3"][
+                                              "rotation"],
+                                          position=tags_dict[f"Tag{phase}3"][
+                                              "position"])
 
                     jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
                     if jun_n:
@@ -899,61 +721,126 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
 
 
 def connections_dynamics(mdl, mask_handle, created_ports):
-    create_tags_and_connections_to_ports(mdl, mask_handle, created_ports)
+    # create_tags_and_connections_to_ports(mdl, mask_handle, created_ports)
 
     comp_handle = mdl.get_parent(mask_handle)
 
-    conn_type_prop = mdl.prop(mask_handle, "conn_type")
-    conn_type = mdl.get_property_disp_value(conn_type_prop)
+    tp_connection_prop = mdl.prop(comp_handle, "tp_connection")
+    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
     load_model_prop = mdl.prop(mask_handle, "load_model")
     load_model = mdl.get_property_disp_value(load_model_prop)
 
-    ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_value(ground_connected_prop)
-
-    gnd_check = False
-    if str(ground_connected) == "True":
-        gnd_check = True
-
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
-    cil1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-    if not cil1:
-        set_load_model(mdl, comp_handle, load_model)
-        cil1 = mdl.get_item("CIL", parent=comp_handle, item_type="component")
-    mdl.set_property_disp_value(mdl.prop(cil1, "phases"), "1")
+    if load_model == "Constant Impedance":
+        load = mdl.get_item("CIL", parent=comp_handle, item_type="component")
 
-    for phase in ["A", "B", "C"]:
+    elif load_model == "Constant Power":
+        load = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+    elif load_model == "Constant Z,I,P":
+        load = mdl.get_item("CPL", parent=comp_handle, item_type="component")
+
+    # This loop connects the Load tags to the CIL terminals
+    if phases == "1":
+        phase_list = ["A"]
+    else:
+        phase_list = ["A", "B", "C"]
+
+    for phase in phase_list:
         tag = mdl.get_item(f"Tag{phase}2", parent=comp_handle, item_type="tag")
-        if len(mdl.find_connections(tag, mdl.term(cil1, f"{phase}1"))) == 0:
-            mdl.create_connection(tag, mdl.term(cil1, f"{phase}1"))
+        conn_tmp = mdl.find_connections(tag, mdl.term(load, f"{phase}1"))
+        if len(conn_tmp) == 0:
+            mdl.create_connection(tag, mdl.term(load, f"{phase}1"))
 
-    if conn_type == "Y":
-        mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Y")
-        mdl.set_property_value(mdl.prop(cil1, "ground_connected"), True)
-        mdl.set_property_value(mdl.prop(cil1, "ground_connected"), False)
-        conn_n_cil = mdl.get_item("Conn_AN", parent=comp_handle, item_type="component")
-        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+    jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+    port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
 
+    if tp_connection == "Y":
         if not jun_n:
             jun_n = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
                                         position=(7921, 8326))
-        if not conn_n_cil:
-            mdl.create_connection(mdl.term(cil1, "N"), jun_n, name="Conn_AN")
 
-        if not gnd_check:
-            gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
-            if gnd1:
-                mdl.delete_item(gnd1)
+        conn_n_load = mdl.get_item("Conn_AN", parent=comp_handle,
+                                   item_type=ITEM_CONNECTION)
+        if not conn_n_load:
+            mdl.create_connection(mdl.term(load, "N"), jun_n, name="Conn_AN")
+
+        if phases == "3":
+            conn_n2port = mdl.get_item("Conn_N", parent=comp_handle,
+                                       item_type=ITEM_CONNECTION)
+            if not conn_n2port:
+                mdl.create_connection(jun_n, port_n, name="Conn_N")
+
+    elif tp_connection == "Y - Grounded":
+        if not jun_n:
+            jun_n = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
+                                        position=(7921, 8326))
+
+        conn_n_load = mdl.get_item("Conn_AN", parent=comp_handle,
+                                   item_type=ITEM_CONNECTION)
+        if not conn_n_load:
+            mdl.create_connection(mdl.term(load, "N"), jun_n, name="Conn_AN")
+
+        if phases == "3":
+            conn_n2port = mdl.get_item("Conn_N", parent=comp_handle,
+                                       item_type=ITEM_CONNECTION)
+            if not conn_n2port:
+                mdl.create_connection(jun_n, port_n, name="Conn_N")
+
+    elif tp_connection == "Δ":
+        if phases == "1":
+            if not jun_n:
+                jun_n = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
+                                            position=(7921, 8326))
+
+            conn_n_load = mdl.get_item("Conn_AN", parent=comp_handle,
+                                       item_type=ITEM_CONNECTION)
+            if not conn_n_load:
+                mdl.create_connection(mdl.term(load, "N"), jun_n, name="Conn_AN")
+        else:
             if jun_n:
-                if phases == "3":
-                    if len(mdl.find_connections(created_ports.get("portN"))) == 0:
-                        mdl.create_connection(jun_n, created_ports.get("portN"), name="Conn_N0")
+                mdl.delete_item(jun_n)
 
+
+'''*******************************************************************
+This function manages the mask properties 
+If tp_connection == "Y - Grounded", the fields for Rneut and Xneut 
+will be available.
+https://youtu.be/Al3vXVe9WVU
+*******************************************************************'''
+
+
+def tp_connection_edited(mdl, mask_handle, new_value):
+    rneut_prop = mdl.prop(mask_handle, "Rneut")
+    xneut_prop = mdl.prop(mask_handle, "Xneut")
+
+    if new_value == "Y - Grounded":
+        # Enable user input fields for N to Gnd impedance
+        mdl.enable_property(mdl.prop(mask_handle, "Rneut"))
+        mdl.enable_property(mdl.prop(mask_handle, "Xneut"))
+        # We don't want to modify Rneut and Xneut user values
+        # on the 'on change' event. We put zeros only when
+        # the user commuted from "Y" or "Δ" to "Y - Grounded"
+        if mdl.get_property_disp_value(rneut_prop) == "'inf'":
+            mdl.set_property_value(rneut_prop, "0.0")
+        if mdl.get_property_disp_value(xneut_prop) == "'inf'":
+            mdl.set_property_value(xneut_prop, "0.0")
     else:
-        mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Δ")
+        # Disable user input fields for N to Gnd impedance
+        # show 'inf' because they are disconnected
+        mdl.set_property_disp_value(rneut_prop, "'inf'")
+        mdl.set_property_disp_value(xneut_prop, "'inf'")
+        mdl.disable_property(mdl.prop(mask_handle, "Rneut"))
+        mdl.disable_property(mdl.prop(mask_handle, "Xneut"))
+
+
+'''*******************************************************************
+This function manages the GND connection according to the type of the 
+Load connection (Δ or Y). 
+*******************************************************************'''
 
 
 def connections_gnd_dynamics(mdl, mask_handle, created_ports):
@@ -961,26 +848,17 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
 
     comp_handle = mdl.get_parent(mask_handle)
 
-    # conn_type_prop = mdl.prop(mask_handle, "conn_type")
-    # conn_type = mdl.get_property_disp_value(conn_type_prop)
+    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
     load_model_prop = mdl.prop(mask_handle, "load_model")
     load_model = mdl.get_property_disp_value(load_model_prop)
 
-    ground_connected_prop = mdl.prop(mask_handle, "ground_connected")
-    ground_connected = mdl.get_property_value(ground_connected_prop)
-
-    gnd_check = False
-    if str(ground_connected) == "True":
-        gnd_check = True
-
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
-    if int(phases) == 3:
+    if phases == "3":
         phase_list = ["A", "B", "C"]
-    elif int(phases) == 1:
-        phase_list = ["A"]
     else:
         phase_list = ["A"]
 
@@ -994,29 +872,49 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
         if len(mdl.find_connections(tag, mdl.term(load_comp, f"{phase}1"))) == 0:
             mdl.create_connection(tag, mdl.term(load_comp, f"{phase}1"))
 
-    if not gnd_check:
-        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
-        gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
+    gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
+    jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
+    gnd_z = mdl.get_item("Gnd Z", parent=comp_handle, item_type=ITEM_COMPONENT)
+
+    # Here we have the grounding through Rneut and Xneut AND the neutral terminal on Y configurations
+    if tp_connection == "Y - Grounded":
+        # https://www.youtube.com/playlist?list=PLtPtQsu5cwyq13GbLu6TqxIQUtcjjCbRt
+
+        if not gnd1:
+            # gnd1 = mdl.create_component("src_ground", parent=comp_handle, name="gndc", position=(8000, 8640))
+            gnd1 = mdl.create_component("src_ground", parent=comp_handle, name="gndc",
+                                        position=(8030, 8480))
+
+        if not jun_n:
+            jun_n = mdl.create_junction(name="JN", parent=comp_handle,
+                                        position=(7920, 8328), kind="pe")
+
+        if not gnd_z:
+            gnd_z = mdl.create_component("OpenDSS/Ground Impedance", parent=comp_handle,
+                                         name="Gnd Z",
+                                         position=(8030, 8385), rotation="up")
+
+        conn_gnd_z2gnd = mdl.find_connections(mdl.term(gnd_z, "G"),
+                                              mdl.term(gnd1, "node"))
+        if not conn_gnd_z2gnd:
+            mdl.create_connection(mdl.term(gnd_z, "G"), mdl.term(gnd1, "node"),
+                                  "Conn_z2gnd")
+
+        conn_gnd_z2jn = mdl.find_connections(mdl.term(gnd_z, "N"), jun_n)
+        if not conn_gnd_z2jn:
+            mdl.create_connection(mdl.term(gnd_z, "N"), jun_n, "Conn_gnd_z2jn")
+
+    # In this case, we don't use Grounding, but the neutral remains connected in Y configurations!
+    else:
+        if gnd_z:
+            mdl.delete_item(gnd_z)
+
+        # Delete the GND component - no grounding here!
         if gnd1:
             mdl.delete_item(gnd1)
-        if jun_n:
-            if phases == "3":
-                port_n = created_ports.get("portN")
-                if port_n:
-                    if len(mdl.find_connections(port_n)) == 0:
-                        mdl.create_connection(jun_n, port_n)
-    else:
-        gnd1 = mdl.get_item("gndc", parent=comp_handle, item_type="component")
-        jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
-        if jun_n:
-            if not gnd1:
-                gnd1 = mdl.create_component("src_ground", parent=comp_handle, name="gndc", position=(7921, 8376))
-            conn_g = mdl.get_item("Conn_G", parent=comp_handle, item_type="connection")
-            if not conn_g:
-                mdl.create_connection(mdl.term(gnd1, "node"), jun_n, name="Conn_G")
 
 
-def connections_phases_dynamics(mdl, mask_handle, created_ports):
+def load_dynamics(mdl, mask_handle, created_ports):
     create_tags_and_connections_to_ports(mdl, mask_handle, created_ports)
 
     comp_handle = mdl.get_parent(mask_handle)
@@ -1035,6 +933,7 @@ def connections_phases_dynamics(mdl, mask_handle, created_ports):
         load_type = "Constant Power"
 
     load_comp = mdl.get_item(load_name, parent=comp_handle, item_type="component")
+
     if not load_comp:
         set_load_model(mdl, mask_handle, load_type)
         load_comp = mdl.get_item(load_name, parent=comp_handle, item_type="component")
@@ -1056,9 +955,9 @@ def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
 
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
-    pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
+    pow_ref_s = mdl.get_property_value(pow_ref_s_prop)
 
-    load_model = mdl.get_property_disp_value(mdl.prop(mask_handle, "load_model"))
+    load_model = mdl.get_property_value(mdl.prop(mask_handle, "load_model"))
     if load_model != "Constant Impedance":
         if pow_ref_s == "Fixed":
             cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
@@ -1066,7 +965,8 @@ def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
                 set_load_model(mdl, mask_handle, "Constant Power")
                 cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
 
-            ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
+            ts_mdl = mdl.get_item("TS_module", parent=comp_handle,
+                                  item_type="component")
             if ts_mdl:
                 set_timeseries_switch(mdl, mask_handle, False)
 
@@ -1079,18 +979,23 @@ def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
                 set_load_model(mdl, mask_handle, "Constant Power")
                 cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
 
-            ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
+            ts_mdl = mdl.get_item("TS_module", parent=comp_handle,
+                                  item_type="component")
             if ts_mdl:
                 set_timeseries_switch(mdl, mask_handle, False)
 
             mdl.set_property_value(mdl.prop(cpl1, "kP_inp"), "Variable input")
             mdl.set_property_value(mdl.prop(cpl1, "kQ_inp"), "Variable input")
 
-            conn_p_int = mdl.get_item("connP", parent=comp_handle, item_type="connection")
-            conn_q_int = mdl.get_item("connQ", parent=comp_handle, item_type="connection")
+            conn_p_int = mdl.get_item("connP", parent=comp_handle,
+                                      item_type="connection")
+            conn_q_int = mdl.get_item("connQ", parent=comp_handle,
+                                      item_type="connection")
 
-            conn_ts_p_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
-            conn_ts_q_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
+            conn_ts_p_int = mdl.get_item("ConnTsP", parent=comp_handle,
+                                         item_type="connection")
+            conn_ts_q_int = mdl.get_item("ConnTsQ", parent=comp_handle,
+                                         item_type="connection")
 
             if conn_ts_p_int:
                 mdl.delete_item(conn_ts_p_int)
@@ -1102,8 +1007,10 @@ def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
             if conn_q_int:
                 mdl.delete_item(conn_q_int)
 
-            mdl.create_connection(mdl.term(cpl1, "P_set"), created_ports.get("P_ext"), "ConnP")
-            mdl.create_connection(mdl.term(cpl1, "Q_set"), created_ports.get("Q_ext"), "ConnQ")
+            mdl.create_connection(mdl.term(cpl1, "P_set"), created_ports.get("P_ext"),
+                                  "ConnP")
+            mdl.create_connection(mdl.term(cpl1, "Q_set"), created_ports.get("Q_ext"),
+                                  "ConnQ")
 
         else:
             cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
@@ -1112,25 +1019,33 @@ def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
                 cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type="component")
             mdl.set_property_value(mdl.prop(cpl1, "kP_inp"), "Variable input")
             mdl.set_property_value(mdl.prop(cpl1, "kQ_inp"), "Variable input")
-            ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
+            ts_mdl = mdl.get_item("TS_module", parent=comp_handle,
+                                  item_type="component")
             if not ts_mdl:
                 set_timeseries_switch(mdl, mask_handle, True)
-                ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
-            conn_p_int = mdl.get_item("connP", parent=comp_handle, item_type="connection")
-            conn_q_int = mdl.get_item("connQ", parent=comp_handle, item_type="connection")
+                ts_mdl = mdl.get_item("TS_module", parent=comp_handle,
+                                      item_type="component")
+            conn_p_int = mdl.get_item("connP", parent=comp_handle,
+                                      item_type="connection")
+            conn_q_int = mdl.get_item("connQ", parent=comp_handle,
+                                      item_type="connection")
 
             if conn_p_int:
                 mdl.delete_item(conn_p_int)
             if conn_q_int:
                 mdl.delete_item(conn_q_int)
             mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
-            conn_ts_p_int = mdl.get_item("ConnTsP", parent=comp_handle, item_type="connection")
-            conn_ts_q_int = mdl.get_item("ConnTsQ", parent=comp_handle, item_type="connection")
+            conn_ts_p_int = mdl.get_item("ConnTsP", parent=comp_handle,
+                                         item_type="connection")
+            conn_ts_q_int = mdl.get_item("ConnTsQ", parent=comp_handle,
+                                         item_type="connection")
 
             if not conn_ts_p_int:
-                mdl.create_connection(mdl.term(cpl1, "P_set"), mdl.term(ts_mdl, "P"), "ConnTsP")
+                mdl.create_connection(mdl.term(cpl1, "P_set"), mdl.term(ts_mdl, "P"),
+                                      "ConnTsP")
             if not conn_ts_q_int:
-                mdl.create_connection(mdl.term(cpl1, "Q_set"), mdl.term(ts_mdl, "Q"), "ConnTsQ")
+                mdl.create_connection(mdl.term(cpl1, "Q_set"), mdl.term(ts_mdl, "Q"),
+                                      "ConnTsQ")
     elif load_model == "Constant Impedance":
         set_timeseries_switch(mdl, mask_handle, False)
 
@@ -1139,19 +1054,22 @@ def connections_ts_mode_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
 
     load_model_prop = mdl.prop(mask_handle, "load_model")
-    load_model = mdl.get_property_disp_value(load_model_prop)
+    load_model = mdl.get_property_value(load_model_prop)
 
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
-    pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
+    pow_ref_s = mdl.get_property_value(pow_ref_s_prop)
 
     if load_model == "Constant Power" or load_model == "Constant Z,I,P":
         if pow_ref_s == "Time Series":
-            ts_mdl = mdl.get_item("TS_module", parent=comp_handle, item_type="component")
-            conn_ts_in = mdl.get_item("ConnTs", parent=comp_handle, item_type="connection")
+            ts_mdl = mdl.get_item("TS_module", parent=comp_handle,
+                                  item_type="component")
+            conn_ts_in = mdl.get_item("ConnTs", parent=comp_handle,
+                                      item_type="connection")
 
             mdl.set_property_value(mdl.prop(ts_mdl, "P_mode"), "Manual input")
             if not conn_ts_in:
-                mdl.create_connection(mdl.term(ts_mdl, "T"), created_ports.get("T_ext"), "ConnTs")
+                mdl.create_connection(mdl.term(ts_mdl, "T"), created_ports.get("T_ext"),
+                                      "ConnTs")
 
 
 def get_all_circuit_loads(mdl, mask_handle, parent_comp=None):
@@ -1167,7 +1085,8 @@ def get_all_circuit_loads(mdl, mask_handle, parent_comp=None):
             if type_name and type_name == "Load":
                 component_list.append(comp)
             elif not type_name:  # Component is a subsystem
-                component_list.extend(get_all_circuit_loads(mdl, mdl.get_mask(comp), parent_comp=comp))
+                component_list.extend(
+                    get_all_circuit_loads(mdl, mdl.get_mask(comp), parent_comp=comp))
         except:
             # Some components (such as ports and connections) cannot be used with
             # get_component_type_name
@@ -1194,19 +1113,23 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
     comp_handle = mdl.get_parent(mask_handle)
 
     try:
-        current_points = ast.literal_eval(mdl.get_property_disp_value(mdl.prop(mask_handle, "loadshape")))
+        current_points = ast.literal_eval(
+            mdl.get_property_value(mdl.prop(mask_handle, "loadshape")))
     except:
         current_points = []
-    useactual = mdl.get_property_disp_value(mdl.prop(mask_handle, "useactual"))
-    interval = mdl.get_property_disp_value(mdl.prop(mask_handle, "loadshape_int"))
+    useactual = mdl.get_property_value(mdl.prop(mask_handle, "useactual"))
+    interval = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_int"))
 
     if not reload_dict:
-        loadshape_name = mdl.get_property_disp_value(mdl.prop(mask_handle, "loadshape_name"))
-        loadshape_from_file = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file")) == "True"
+        loadshape_name = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_name"))
+        loadshape_from_file = mdl.get_property_value(
+            mdl.prop(mask_handle, "loadshape_from_file")) == "True"
         loadshape_from_file_header = mdl.get_property_value(
             mdl.prop(mask_handle, "loadshape_from_file_header")) == "True"
-        loadshape_from_file_column = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_column"))
-        loadshape_from_file_path = mdl.get_property_value(mdl.prop(mask_handle, "loadshape_from_file_path"))
+        loadshape_from_file_column = mdl.get_property_value(
+            mdl.prop(mask_handle, "loadshape_from_file_column"))
+        loadshape_from_file_path = mdl.get_property_value(
+            mdl.prop(mask_handle, "loadshape_from_file_path"))
     else:
         loadshape_name = reload_dict.get("loadshape_name")
         loadshape_from_file = reload_dict.get("csv_file") == "True"
@@ -1218,27 +1141,35 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
 
     if model_path:
         filename = model_path.stem
-        data_folder_path = model_path.parent.joinpath(filename + " Target files").joinpath('dss').joinpath("data")
+        data_folder_path = model_path.parent.joinpath(
+            filename + " Target files").joinpath('dss').joinpath("data")
         general_objects_json = data_folder_path.joinpath(f"general_objects.json")
         if general_objects_json.is_file():
             with open(general_objects_json, 'r') as f:
                 general_objects_dict = json.load(f)
-            loadshape_points = general_objects_dict.get("loadshapes", {}).get(loadshape_name, {}).get("mult", [])
+            loadshape_points = general_objects_dict.get("loadshapes", {}).get(
+                loadshape_name, {}).get("mult", [])
             if loadshape_from_file:
                 if pathlib.Path(loadshape_from_file_path).is_file():
-                    with open(pathlib.Path(loadshape_from_file_path), 'r', encoding='utf-8-sig') as ls_f:
+                    with open(pathlib.Path(loadshape_from_file_path), 'r',
+                              encoding='utf-8-sig') as ls_f:
                         if loadshape_from_file_header:
                             table = pd.read_csv(ls_f)
                             table = table.fillna(0)
                         else:
                             table = pd.read_csv(ls_f, header=None)
                             table = table.fillna(0)
-                        loadshape_points = list(table.iloc[:, int(loadshape_from_file_column) - 1])
-                    mdl.set_property_value(mdl.prop(mask_handle, "loadshape"), loadshape_points)
-                    mdl.set_property_disp_value(mdl.prop(mask_handle, "loadshape"), loadshape_points)
+                        loadshape_points = list(
+                            table.iloc[:, int(loadshape_from_file_column) - 1])
+                    mdl.set_property_value(mdl.prop(mask_handle, "loadshape"),
+                                           loadshape_points)
+                    mdl.set_property_disp_value(mdl.prop(mask_handle, "loadshape"),
+                                                loadshape_points)
                 else:
-                    mdl.error(f"Could not find the CSV file '{loadshape_from_file_path}'."
-                              f" Please edit or choose a new LoadShape.", context=mdl.get_parent(mask_handle))
+                    mdl.error(
+                        f"Could not find the CSV file '{loadshape_from_file_path}'."
+                        f" Please edit or choose a new LoadShape.",
+                        context=mdl.get_parent(mask_handle))
                 if loadshape_name not in general_objects_dict.get("loadshapes"):
                     with open(general_objects_json, 'w') as f:
                         new_loadshape_dict = {
@@ -1253,7 +1184,8 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
                             "headers": str(loadshape_from_file_header),
                             "column": loadshape_from_file_column
                         }
-                        general_objects_dict.get("loadshapes")[loadshape_name] = new_loadshape_dict
+                        general_objects_dict.get("loadshapes")[
+                            loadshape_name] = new_loadshape_dict
                         f.write(json.dumps(general_objects_dict, indent=4))
             elif not loadshape_points:
                 new_loadshape_dict = {
@@ -1269,12 +1201,15 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
                     "column": loadshape_from_file_column
                 }
 
-                general_objects_dict.get("loadshapes")[loadshape_name] = new_loadshape_dict
+                general_objects_dict.get("loadshapes")[
+                    loadshape_name] = new_loadshape_dict
                 with open(general_objects_json, 'w') as f:
                     f.write(json.dumps(general_objects_dict, indent=4))
             else:
-                mdl.set_property_value(mdl.prop(mask_handle, "loadshape"), loadshape_points)
-                mdl.set_property_disp_value(mdl.prop(mask_handle, "loadshape"), loadshape_points)
+                mdl.set_property_value(mdl.prop(mask_handle, "loadshape"),
+                                       loadshape_points)
+                mdl.set_property_disp_value(mdl.prop(mask_handle, "loadshape"),
+                                            loadshape_points)
         else:
             loadshape_points = str(current_points)
             if not data_folder_path.is_dir():
@@ -1292,7 +1227,8 @@ def read_loadshape_from_json(mdl, mask_handle, reload_dict=None):
                     "headers": str(loadshape_from_file_header),
                     "column": loadshape_from_file_column
                 }
-                f.write(json.dumps({"loadshapes": {loadshape_name: new_loadshape_dict}}, indent=4))
+                f.write(json.dumps({"loadshapes": {loadshape_name: new_loadshape_dict}},
+                                   indent=4))
 
     if comp_handle not in got_loadshape_points_list:
         got_loadshape_points_list.append(comp_handle)
@@ -1313,11 +1249,14 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
 
         port_t = mdl.get_item("T", parent=comp_handle, item_type="port")
 
-        signal_switch = mdl.get_item("Signal switch", parent=comp_handle, item_type="component")
+        signal_switch = mdl.get_item("Signal switch", parent=comp_handle,
+                                     item_type="component")
         if not signal_switch:
             signal_switch = mdl.create_component("Signal switch", parent=comp_handle,
-                                                 name="Signal switch", position=(7624, 8384))
-            mdl.set_property_value(mdl.prop(signal_switch, "criterion"), "ctrl >= threshold")
+                                                 name="Signal switch",
+                                                 position=(7624, 8384))
+            mdl.set_property_value(mdl.prop(signal_switch, "criterion"),
+                                   "ctrl >= threshold")
             mdl.set_property_value(mdl.prop(signal_switch, "threshold"), 0.5)
 
         round_comp = mdl.get_item("Round", parent=comp_handle, item_type="component")
@@ -1353,7 +1292,8 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
         if ts_switch:
             mdl.delete_item(ts_switch)
 
-        signal_switch = mdl.get_item("Signal switch", parent=comp_handle, item_type="component")
+        signal_switch = mdl.get_item("Signal switch", parent=comp_handle,
+                                     item_type="component")
         if signal_switch:
             mdl.delete_item(signal_switch)
 
@@ -1370,16 +1310,17 @@ def set_timeseries_switch(mdl, mask_handle, new_value):
             mdl.delete_item(ts_module)
 
 
-def set_load_model(mdl, mask_handle, new_value):
+def set_load_model(mdl, mask_handle):
+    tp_connection = mdl.get_property_disp_value(mdl.prop(mask_handle, "tp_connection"))
+    comp_handle = mdl.get_parent(mask_handle)
 
-    connt = mdl.get_property_disp_value(mdl.prop(mask_handle, "conn_type"))
-    comp_handle = mdl.get_sub_level_handle(mask_handle)
-    phss = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
+    phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
     t_slow = mdl.get_property_value(mdl.prop(mask_handle, "execution_rate"))
     t_fast = mdl.get_property_value(mdl.prop(mask_handle, "Tfast"))
-    pf_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "pf_mode_3ph"))
+    pf_mode = mdl.get_property_value(mdl.prop(mask_handle, "pf_mode_3ph"))
+    load_model = mdl.get_property_disp_value(mdl.prop(mask_handle, "load_model"))
 
-    if new_value == "Constant Impedance":
+    if load_model == "Constant Impedance":
         mdl.set_property_disp_value(mdl.prop(mask_handle, 'Pow_ref_s'), "Fixed")
 
         cpl1 = mdl.get_item("CPL", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1393,29 +1334,22 @@ def set_load_model(mdl, mask_handle, new_value):
                                         rotation="up")
             set_pf_mode(mdl, mask_handle, pf_mode)
 
-        if phss == "3":
+        if tp_connection == "Y" or tp_connection == "Y - Grounded":
+            mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Y")
+            mdl.set_property_value(mdl.prop(cil1, "ground_connected"), False)
+
+        else:
+            if phases == "1":
+                mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Y")
+            else:
+                mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Δ")
+            mdl.set_property_value(mdl.prop(cil1, "ground_connected"), False)
+
+        if phases == "3":
             mdl.set_property_value(mdl.prop(cil1, "phases"), "3")
+
         else:
             mdl.set_property_value(mdl.prop(cil1, "phases"), "1")
-
-        tag_a = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
-        if len(mdl.find_connections(mdl.term(cil1, "A1"), tag_a)) == 0:
-            mdl.create_connection(mdl.term(cil1, "A1"), tag_a)
-
-        jun_n = mdl.get_item("JN", parent=comp_handle, item_type=ITEM_JUNCTION)
-        conn_n0_cil = mdl.get_item("Conn_AN", parent=comp_handle, item_type=ITEM_CONNECTION)
-        if not conn_n0_cil:
-            if connt == "Y":
-                mdl.create_connection(mdl.term(cil1, "N"), jun_n, name="Conn_AN")
-
-        if phss == "3":
-            tag_b = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cil1, "B1"), tag_b)) == 0:
-                mdl.create_connection(mdl.term(cil1, "B1"), tag_b)
-
-            tag_c = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cil1, "C1"), tag_c)) == 0:
-                mdl.create_connection(mdl.term(cil1, "C1"), tag_c)
 
     else:
         cil1 = mdl.get_item("CIL", parent=comp_handle, item_type=ITEM_COMPONENT)
@@ -1428,35 +1362,15 @@ def set_load_model(mdl, mask_handle, new_value):
                                         name="CPL", position=(7920, 8208),
                                         rotation="right", flip="flip_horizontal")
 
-        if phss == "3":
-            mdl.set_property_value(mdl.prop(cpl1, "phases"), "1")
+        if phases == "3":
             mdl.set_property_value(mdl.prop(cpl1, "phases"), "3")
         else:
-            mdl.set_property_value(mdl.prop(cpl1, "phases"), "3")
             mdl.set_property_value(mdl.prop(cpl1, "phases"), "1")
 
         if t_slow == t_fast:
             mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "False")
         else:
             mdl.set_property_value(mdl.prop(cpl1, "Fast_con"), "True")
-
-        tag_a = mdl.get_item("TagA2", parent=comp_handle, item_type="tag")
-        if len(mdl.find_connections(mdl.term(cpl1, "A1"), tag_a)) == 0:
-            mdl.create_connection(mdl.term(cpl1, "A1"), tag_a)
-
-        jun_n = mdl.get_item("JN", parent=comp_handle, item_type=ITEM_JUNCTION)
-        conn_n0_cpl = mdl.get_item("Conn_AN_CPL", parent=comp_handle, item_type=ITEM_CONNECTION)
-        if not conn_n0_cpl:
-            mdl.create_connection(mdl.term(cpl1, "N"), jun_n, name="Conn_AN_CPL")
-
-        if phss == "3":
-            tag_b = mdl.get_item("TagB2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cpl1, "B1"), tag_b)) == 0:
-                mdl.create_connection(mdl.term(cpl1, "B1"), tag_b)
-
-            tag_c = mdl.get_item("TagC2", parent=comp_handle, item_type="tag")
-            if len(mdl.find_connections(mdl.term(cpl1, "C1"), tag_c)) == 0:
-                mdl.create_connection(mdl.term(cpl1, "C1"), tag_c)
 
 
 def zero_seq_removal(mdl, mask_handle, new_value):
@@ -1470,7 +1384,7 @@ def zero_seq_removal(mdl, mask_handle, new_value):
 def set_pf_mode(mdl, mask_handle, new_value):
     comp_handle = mdl.get_sub_level_handle(mask_handle)
 
-    load_model = mdl.get_property_disp_value(mdl.prop(mask_handle, "load_model"))
+    load_model = mdl.get_property_value(mdl.prop(mask_handle, "load_model"))
 
     if load_model == "Constant Impedance":
         if new_value == "Unit":
@@ -1524,7 +1438,7 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
         pf_3ph_set = prop_dict["pf_3ph"]
 
     if prop_dict["phases"] == "1":
-        if prop_dict["ground_connected"]:
+        if prop_dict["conn_type"] == "Y - Grounded":
             kv = (prop_dict["Vn_3ph"] / 1) / 1
             vn_3ph_cpl = kv / (3 ** 0.5)
         else:
@@ -1571,7 +1485,7 @@ def load_pre_compile_function(mdl, item_handle, prop_dict):
     else:
         ts_switch = 0
 
-    mdl.set_property_value(mdl.prop(item_handle, "basefreq"), basefreq)
+    mdl.set_property_value(mdl.prop(item_handle, "baseFreq"), basefreq)
     mdl.set_property_value(mdl.prop(item_handle, "kVA"), kva)
     mdl.set_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"), vn_3ph_cpl)
     mdl.set_property_value(mdl.prop(item_handle, "P_CPL"), p_cpl)
@@ -1603,8 +1517,8 @@ def pf_mode_3ph_value_edited(mdl, container_handle, new_value):
 
 def validate_execution_rate(mdl, container_handle):
     comp_handle = mdl.get_sub_level_handle(container_handle)
-    tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfast"))
-    ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
+    tfst_mask = mdl.get_property_value(mdl.prop(container_handle, "Tfast"))
+    ts_mask = mdl.get_property_value(mdl.prop(container_handle, "execution_rate"))
     cpl_comp = mdl.get_item("CPL", parent=comp_handle, item_type="component")
 
     if cpl_comp:
@@ -1630,3 +1544,43 @@ def s_ts_mode_value_edited(mdl, container_handle, new_value):
         mdl.enable_property(mdl.prop(container_handle, "T_Ts_max"))
         mdl.enable_property(mdl.prop(container_handle, "del_Ts"))
         mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+
+
+def topology_dynamics(mdl, mask_handle):
+    """
+    This function is called when the user changes the configuration on the mask
+    """
+
+    mdl.refresh_icon(mask_handle)
+
+    ports = port_dynamics(mdl, mask_handle)
+
+    set_load_model(mdl, mask_handle)
+
+    load_dynamics(mdl, mask_handle, ports)
+
+    connections_gnd_dynamics(mdl, mask_handle, ports)
+
+    connections_dynamics(mdl, mask_handle, ports)
+
+
+def dialog_close(mdl, mask_handle, reason):
+    """
+    Manages the dialog close: If the user cancels the modifications,
+    restore the combo tp_connections initial state.
+    """
+
+    # Get tp combo values after closing
+    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    new_tp_combo_values = mdl.get_property_combo_values(tp_connection_prop)
+
+    # Get original tp combo values
+    tp_connection_combo_values_prop = mdl.prop(mask_handle,
+                                               "tp_connection_combo_values")
+    tp_connection_combo_values = mdl.get_property_value(tp_connection_combo_values_prop)
+    old_tp_combo_values = ast.literal_eval(tp_connection_combo_values)
+
+    # Restore to the original if the user cancels
+    if reason == "reason_close_cancel":
+        if not (old_tp_combo_values == new_tp_combo_values):
+            mdl.set_property_combo_values(tp_connection_prop, old_tp_combo_values)

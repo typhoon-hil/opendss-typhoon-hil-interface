@@ -56,7 +56,7 @@ def get_linecodes_dict(dss_lines, dss_path, debug_mode=False):
             linecode_lines.append(line)
 
     linecode_param_names = ["r1", "x1", "r0", "x0", "c1", "c0", "units", "rmatrix", "xmatrix", "cmatrix",
-                       "basefreq", "normamps", "emergams", "faultrate", "pctperm", "repair", "kron",
+                       "baseFreq", "normamps", "emergams", "faultrate", "pctperm", "repair", "kron",
                        "rg", "xg", "rho", "neutral", "b1", "b0", "seasons", "ratings", "linetype"]
 
     linecodes_dict = {}
