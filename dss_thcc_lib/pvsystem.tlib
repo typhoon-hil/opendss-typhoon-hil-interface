@@ -1385,29 +1385,33 @@ library "OpenDSS" {
                     pv_r = pv_z*scale/(2*np.pi*freq)/ts
 
                     loadshape_hour = loadshape_hour if loadshape_hour else '[]' # WorkAround
-                    if not ast.literal_eval(tshape_hour):
-                        if t_mode == "Index":
-                            tshape_time = [h for h in range(len(ast.literal_eval(tshape_temp)))]
-                            temp_max = len(tshape_time)-1
-                        else:
-                            tshape_time = [h*float(tshape_int) for h in range(ast.literal_eval(tshape_npts))]
-                            temp_max = tshape_time[-1]
-
                     if not ast.literal_eval(loadshape_hour):
                         if t_mode == "Index":
                             loadshape_time = [h for h in range(len(ast.literal_eval(loadshape)))]
-                            irrad_max = len(loadshape_time)-1
                         else:
                             loadshape_time = [h*float(loadshape_int) for h in range(ast.literal_eval(loadshape_npts))]
-                            irrad_max = loadshape_time[-1]
+                    else:
+                        loadshape_time = loadshape_hour
+
+                    if not ast.literal_eval(tshape_hour):
+                        if t_mode == "Index":
+                            tshape_time = [h for h in range(len(ast.literal_eval(tshape_temp)))]
+                        else:
+                            tshape_time = [h*float(tshape_int) for h in range(ast.literal_eval(tshape_npts))]
+                    else:
+                        tshape_time = tshape_hour
 
                     if power_ref == "Time Series":
                         if t_mode == "Index":
                             mdl.set_property_value(mdl.prop(rst_irrad, "input_type"), "Index")
                             mdl.set_property_value(mdl.prop(rst_temp, "input_type"), "Index")
+                            irrad_max = len(loadshape_time)-1
+                            temp_max = len(tshape_time)-1
                         else:
                             mdl.set_property_value(mdl.prop(rst_irrad, "input_type"), "Hour")
                             mdl.set_property_value(mdl.prop(rst_temp, "input_type"), "Hour")
+                            temp_max = tshape_time[-1]
+                            irrad_max = loadshape_time[-1]
 
                 ENDCODE
             }

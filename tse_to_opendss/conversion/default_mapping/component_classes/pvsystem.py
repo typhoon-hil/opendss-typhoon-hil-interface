@@ -63,6 +63,8 @@ class PVSystem(TwoTerminal):
         """ Returns the number of phases of the component. """
 
         num_phases = int(tse_properties.get("phases"))
+        if num_phases == 1 and not tse_properties.get("phases") == "Y":
+            num_phases = 2
 
         return num_phases
 
@@ -83,49 +85,8 @@ class PVSystem(TwoTerminal):
     @staticmethod
     def extra_conversion_steps(self, tse_properties, tse_component):
         """ Applies extra necessary conversion steps. """
+
         pass
-        """
-        xycurve_eff_props = {"npts": tse_properties.get("xycurve_npts_eff"),
-                             "xarray": tse_properties.get("xycurve_xarray_eff"),
-                             "yarray": tse_properties.get("xycurve_yarray_eff")
-                             }
-
-        xycurve_cf_props = {"npts": tse_properties.get("xycurve_npts_cf"),
-                            "xarray": tse_properties.get("xycurve_xarray_cf"),
-                            "yarray": tse_properties.get("xycurve_yarray_cf")
-                            }
-
-        
-        xycurve_eff_exists = False  # TODO: GUI option
-        xycurve_cf_exists = False   # TODO: GUI option
-        tshape_temp_exists = False  # TODO: GUI option
-
-        from .xycurve import XYCurve
-        if not xycurve_eff_exists:
-            new_xycurve = XYCurve(converted_comp_type="XYCURVE",
-                                  name=self.name + "_" + tse_properties["xycurve_name_eff"].upper(),
-                                  circuit=self.circuit,
-                                  tse_properties=xycurve_eff_props,
-                                  tse_component=None)
-            self.created_instances_list.append(new_xycurve)
-
-        if not xycurve_cf_exists:
-            new_xycurve = XYCurve(converted_comp_type="XYCURVE",
-                                  name=self.name + "_" + tse_properties["xycurve_name_cf"].upper(),
-                                  circuit=self.circuit,
-                                  tse_properties=xycurve_cf_props,
-                                  tse_component=None)
-            self.created_instances_list.append(new_xycurve)
-
-        from .tshape import TShape
-        if not tshape_temp_exists:
-            new_tshape = TShape(converted_comp_type="TSHAPE",
-                                name=self.name + "_" + tse_properties["tshape_name"].upper(),
-                                circuit=self.circuit,
-                                tse_properties=xycurve_eff_props,
-                                tse_component=None)
-            self.created_instances_list.append(new_tshape)
-        """
 
 
     def output_line(self):

@@ -31,16 +31,19 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
         new_value = mdl.get_property_value(caller_prop_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
-    #  "grounding" property code
+    #  "connection" property code
     # ------------------------------------------------------------------------------------------------------------------
     if caller_prop_handle == connection_prop:
+        # Connection function is changed to support just single-phase configuration (for now)
         comp_handle = mdl.get_parent(container_handle)
         # port_dynamics function to support container component
         port_dynamics(mdl, container_handle, connection_prop)
         # Connections and Internal Items
         ntag_handle = mdl.get_item("gnd_src", parent=comp_handle, item_type="tag")
+
         if new_value == "Y":
-            xpos, ypos = get_port_const_attributes(mdl, container_handle, "N")["pos"]
+            # N1 changed to B1 due to the output_functions requirements
+            xpos, ypos = get_port_const_attributes(mdl, container_handle, "B1")["pos"]
             gnd_handle = mdl.get_item("gnd", parent=comp_handle)
             if not gnd_handle:
                 gnd_handle = mdl.create_component("core/Ground",
@@ -52,7 +55,7 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
             gnd_handle = mdl.get_item("gnd", parent=comp_handle)
             if gnd_handle:
                 mdl.delete_item(gnd_handle)
-            nport_handle = mdl.get_item("N", parent=comp_handle, item_type="port")
+            nport_handle = mdl.get_item("B1", parent=comp_handle, item_type="port")
             if nport_handle:
                 if not mdl.find_connections(ntag_handle, nport_handle):
                     mdl.create_connection(ntag_handle, nport_handle)
@@ -491,25 +494,33 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
         prop_name = mdl.get_name(caller_prop_handle)
         new_value = mdl.get_property_value(caller_prop_handle)
 
+    # Changed N1 by B1 (due to the output_functions rules)
     if prop_name == "connection":
-        if new_value == "Y":
-            nport_handle = mdl.get_item("N", parent=comp_handle, item_type="port")
-            if nport_handle:
-                mdl.delete_item(nport_handle)
-        else:
-            nport_handle = mdl.get_item("N", parent=comp_handle, item_type="port")
-            if not nport_handle:
-                nport_param = get_port_const_attributes(mdl, container_handle, "N")
-                nport_handle = mdl.create_port(name=nport_param["name"],
-                                               parent=comp_handle,
-                                               position=nport_param["pos"],
-                                               terminal_position=nport_param["term_pos"],
-                                               kind="pe",
-                                               flip="flip_horizontal",
-                                               hide_name=True)
+        phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
+        if phases == "1": # The Delta option is just enabled for the single-phase option
+            if new_value == "Y":
+                nport_handle = mdl.get_item("B1", parent=comp_handle, item_type="port")
+                if nport_handle:
+                    mdl.delete_item(nport_handle)
+            else:
+                nport_handle = mdl.get_item("B1", parent=comp_handle, item_type="port")
+                if not nport_handle:
+                    nport_param = get_port_const_attributes(mdl, container_handle, "B1")
+                    nport_handle = mdl.create_port(name=nport_param["name"],
+                                                   parent=comp_handle,
+                                                   position=nport_param["pos"],
+                                                   terminal_position=nport_param["term_pos"],
+                                                   kind="pe",
+                                                   flip="flip_horizontal",
+                                                   hide_name=True)
 
     elif prop_name == "phases":
-        port_names = ["B1", "C1"]
+        # Changed N1 by C1 (due to the output_functions rules)
+        connection = mdl.get_property_disp_value(mdl.prop(container_handle, "connection"))
+        if connection == "Y":
+            port_names = ["B1", "C1"]
+        else:
+            port_names = ["C1"]
         port_handles = [mdl.get_item(pname, parent=comp_handle, item_type="port") for pname in port_names]
         if new_value == "3":
             for cnt, phandle in enumerate(port_handles):
@@ -595,7 +606,7 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
                                                   position=time_attrib.get("pos"),
                                                   direction="in")
 
-    port_names = ["A1", "B1", "C1", "N"]
+    port_names = ["A1", "B1", "C1", "N1"]
     port_handles = [mdl.get_item(pname, parent=comp_handle, item_type="port") for pname in port_names]
     port_attrib = [get_port_const_attributes(mdl, container_handle, pname) for pname in port_names]
     for idx, phandle in enumerate(port_handles):
@@ -632,15 +643,21 @@ def get_port_const_attributes(mdl, container_handle, port_name):
 
     """
     power_ref = mdl.get_property_disp_value(mdl.prop(container_handle, "power_ref"))
-    if power_ref == "Internal Scada Input":
-        term_positions = [(40.0, -32.0), (40.0, -0.0), (40.0, 32.0), (40.0, 32.0)]
+    phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
+
+    if phases == "3":
+        term_positions = [[40.0, -32.0], [40.0, 0.0], [40.0, 32.0], [40.0, 32.0]]
     else:
-        term_positions = [(40.0, -8.0), (40.0, 24), (40.0, 56.0), (40.0, 56.0)]
+        term_positions = [[40.0, -32.0], [40.0, 32.0], [40.0, 32.0], [40.0, 32.0]]
+
+    if power_ref != "Internal Scada Input":
+        new_term_positions = [[p[0], p[1]+24] for p in term_positions]
+        term_positions = new_term_positions
 
     port_dict = {"A1": {"name": "A1", "pos": (7984, 7984), "term_pos": term_positions[0], "label": "A"},
                  "B1": {"name": "B1", "pos": (7984, 8128), "term_pos": term_positions[1], "label": "B"},
                  "C1": {"name": "C1", "pos": (7984, 8280), "term_pos": term_positions[2], "label": "C"},
-                 "N": {"name": "N", "pos": (7984, 8408), "term_pos": term_positions[3], "label": "N"},
+                 "N1": {"name": "N1", "pos": (7984, 8408), "term_pos": term_positions[3], "label": "N"},
                  "Pmpp": {"name": "Pmpp_p", "pos": (7192, 7448), "term_pos": (-32, -64.0), "label": "Pmpp_i"},
                  "Irradiance": {"name": "Irradiance_p", "pos": (7064, 7512), "term_pos": (-48.0, -48.0), "label": "Irrad_i"},
                  "Temperature": {"name": "Temperature_p", "pos": (7064, 7576), "term_pos": (-48, -32.0), "label": "Temp_i"},
