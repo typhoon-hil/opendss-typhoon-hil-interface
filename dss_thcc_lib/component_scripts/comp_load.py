@@ -192,7 +192,7 @@ def load_loadshape(mdl, container_handle):
         from tse_to_opendss.tse2tpt_base_converter import tse2tpt
         import tse_to_opendss
 
-    import tse_to_opendss.thcc_libs.gui_scripts.load_object as load_obj
+    import dss_thcc_lib.gui_scripts.load_object as load_obj
     import json
     import ast
 
