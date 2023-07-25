@@ -354,6 +354,7 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
         self.mdl_ref = mdl
         self.saved_instance = instance  # Avoid window closing instantly
 
+
     def update_dss_path(self, path, filename):
 
         self.dss_folder = path
@@ -364,12 +365,12 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
         self.cfg_file_vi = self.dss_output_path.joinpath('plot_vi' + '.json')
         self.cfg_file_pq = self.dss_output_path.joinpath('plot_pq' + '.json')
 
-        self.current_plot_cfg_pq = {"signals": {" P1 (kW)": {"viewports": [1]},
-                                                " P2 (kW)": {"viewports": [1]},
-                                                " P3 (kW)": {"viewports": [1]},
-                                                " Q1 (kvar)": {"viewports": [2]},
-                                                " Q2 (kvar)": {"viewports": [2]},
-                                                " Q3 (kvar)": {"viewports": [2]}},
+        self.current_plot_cfg_pq = {"signals": {"P1 (kW)": {"viewports": [1]},
+                                                "P2 (kW)": {"viewports": [1]},
+                                                "P3 (kW)": {"viewports": [1]},
+                                                "Q1 (kvar)": {"viewports": [2]},
+                                                "Q2 (kvar)": {"viewports": [2]},
+                                                "Q3 (kvar)": {"viewports": [2]}},
                                     "viewports": {
                                         "1": {"x_label": "time (h)"},
                                         "2": {"x_label": "time (h)"},
@@ -378,18 +379,18 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
          }
          }
 
-        self.current_plot_cfg_vi = {"signals": {" V1": {"viewports": [1]},
-                                                " V2": {"viewports": [1]},
-                                                " V3": {"viewports": [1]},
-                                                " I1": {"viewports": [2]},
-                                                " I2": {"viewports": [2]},
-                                                " I3": {"viewports": [2]},
-                                                " VAngle1": {"viewports": [3]},
-                                                " VAngle2": {"viewports": [3]},
-                                                " VAngle3": {"viewports": [3]},
-                                                " IAngle1": {"viewports": [4]},
-                                                " IAngle2": {"viewports": [4]},
-                                                " IAngle3": {"viewports": [4]}
+        self.current_plot_cfg_vi = {"signals": {"V1": {"viewports": [1]},
+                                                "V2": {"viewports": [1]},
+                                                "V3": {"viewports": [1]},
+                                                "I1": {"viewports": [2]},
+                                                "I2": {"viewports": [2]},
+                                                "I3": {"viewports": [2]},
+                                                "VAngle1": {"viewports": [3]},
+                                                "VAngle2": {"viewports": [3]},
+                                                "VAngle3": {"viewports": [3]},
+                                                "IAngle1": {"viewports": [4]},
+                                                "IAngle2": {"viewports": [4]},
+                                                "IAngle3": {"viewports": [4]}
                                                 },
                                     "viewports": {
                                         "1": {"x_label": "time (h)"},
@@ -481,14 +482,14 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 self.hour_to_time_all(str(item_mon_names[idx]))
 
     def hour_to_time_all(self, plot_name):
-        csv_name = str(self.dss_model_name) + "_Mon_" + plot_name + "_1"    # _1 because it seems dss is including it
+        csv_name = str(self.dss_model_name) + "_Mon_" + plot_name + "_1" # It seems dss is including the _1
         csv_file_path = self.dss_output_path.joinpath(csv_name + '.csv')
         csvread = pd.read_csv(csv_file_path)
         csvread.rename(columns={'hour': 'Time'}, inplace=True)
         csvread.to_csv(csv_file_path)
 
     def hour_to_time(self, plot_name):
-        csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(plot_name)]) + "_1"    # _1 because it seems dss is including it
+        csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(plot_name)]) + "_1" # It seems dss is including the _1
         csv_file_path = self.dss_output_path.joinpath(csv_name + '.csv')
         csvread = pd.read_csv(csv_file_path)
         csvread.rename(columns={'hour': 'Time'}, inplace=True)
@@ -545,6 +546,7 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
                 cfg_select = self.cfg_file_vi
             self.plotprocess.startDetached(f'cmd /c pushd "{thcc_folder[:2]}" & typhoon_hil sa --data_file="{csv_file_path}" --config_file="{cfg_select}"')
 
+
     def do_signal_plot(self):
         item_count = self.list_dss_plot.count()
 
@@ -562,7 +564,7 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
 
         mode = "0"
         if current_item:
-            csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(current_item.text())]) + "_1"    # _1 because it seems dss is including it
+            csv_name = str(self.dss_model_name) + "_Mon_" + str(self.plot_list_dict[str(current_item.text())]) + "_1" # It seems dss is including the _1
             if "VOLTAGE" in csv_name:
                 mode = "0"
             elif "POWER" in csv_name:

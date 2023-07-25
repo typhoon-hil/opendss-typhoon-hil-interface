@@ -1,0 +1,313 @@
+version = 4.2
+
+//
+// Saved by sw version: 2023.4 DEV
+//
+
+model "New schematic 21-Jul-2023@16-47-13" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 5
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        feedthrough_validation_error_level = error
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/Bus" "Bus PV1" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            phase_n = "False"
+            power_meas = "True"
+            type_prop = "ABC"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8488, 8320
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" Line1 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            dC0 = "0"
+            dC1 = "0"
+        }
+        [
+            position = 8624, 8320
+            size = 64, 96
+        ]
+
+        component "OpenDSS/PV System" PV1 {
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            power_ref = "Time Series"
+            tshape_hour = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+        }
+        [
+            position = 8384, 8296
+            size = 96, 144
+        ]
+
+        component "OpenDSS/PV System" PV3 {
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            phases = "1"
+            power_ref = "Time Series"
+            tshape_hour = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            voltage = "0.240/np.sqrt(3)"
+        }
+        [
+            position = 8376, 8536
+            size = 98, 144
+        ]
+
+        component "OpenDSS/Bus" "Bus PV3" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            phase_a = "False"
+            phase_b = "False"
+            phase_n = "False"
+            power_meas = "True"
+            type_prop = "C"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8488, 8528
+            size = 16, 32
+        ]
+
+        component "OpenDSS/Line" Line3 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            cmatrix = "[[0]]"
+            dC0 = "0"
+            dC1 = "0"
+            input_type = "Matrix"
+            phases = "1"
+            rmatrix = "[[0.1903]]"
+            xmatrix = "[[0.39570]]"
+        }
+        [
+            position = 8616, 8528
+            size = 64, 32
+        ]
+
+        tag From1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8264, 8248
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From3 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8264, 8488
+            hide_name = True
+            size = 60, 20
+        ]
+
+        connect "Bus PV1.A2" Line1.A1 as Connection87
+        connect "Bus PV1.B2" Line1.B1 as Connection88
+        connect "Bus PV1.C2" Line1.C1 as Connection89
+        connect PV1.A1 "Bus PV1.A1" as Connection110
+        connect PV1.B1 "Bus PV1.B1" as Connection111
+        connect PV1.C1 "Bus PV1.C1" as Connection112
+        connect PV1.Time_p From1 as Connection113
+        connect "Bus PV3.C1" PV3.A1 as Connection83
+        connect "Bus PV3.C2" Line3.A1 as Connection101
+        connect PV3.Time_p From3 as Connection108
+    }
+
+    logically_deleted {
+        "Bus PV1"
+        "Line1"
+        "PV1"
+        "From1"
+        "Connection87"
+        "Connection88"
+        "Connection89"
+        "Connection110"
+        "Connection111"
+        "Connection112"
+        "Connection113"
+        "PV3"
+        "Bus PV3"
+        "Line3"
+        "From3"
+        "Connection83"
+        "Connection101"
+        "Connection108"
+    }
+
+    default {
+        "OpenDSS/Bus" {
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
+            conf = "on both sides"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            execution_rate = "100e-6"
+            enable_output = "False"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            baseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/PV System" {
+            power = "5.0"
+            voltage = "0.240"
+            freq = "60"
+            phases = "3"
+            connection = "Y"
+            load_xycurve_eff = "Choose"
+            xycurve_name_eff = "Eff"
+            xycurve_npts_eff = "4"
+            xycurve_xarray_eff = "[.1, .2, .4, 1.0]"
+            xycurve_yarray_eff = "[.86, .9, .93, .97]"
+            pmpp = "5.0"
+            irrad = "1"
+            temp = "25"
+            load_xycurve_cf = "Choose"
+            xycurve_name_cf = "FactorPvsT"
+            xycurve_npts_cf = "4"
+            xycurve_xarray_cf = "[0, 25, 75, 100]"
+            xycurve_yarray_cf = "[1.2, 1.0, 0.8, 0.6]"
+            filter_type = "L"
+            rl1_resistance = "0.1"
+            rl1_inductance = "0.68e-3"
+            rc_resistance = "1e-3"
+            rc_capacitance = "100e-6"
+            rl2_resistance = "1e-3"
+            rl2_inductance = "1e-3"
+            Ikp = "0.5"
+            Iki = "5.0"
+            ts = "100e-6"
+            power_ref = "Internal Scada Input"
+            t_mode = "Time value (h)"
+            load_loadshape = "Choose"
+            loadshape_name = "Irrad"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, .1, .2, .3, .5, .8, .9, 1.0, 1.0, .99, .9, .7, .4, .1, 0, 0, 0, 0, 0]"
+            loadshape_int = "1"
+            loadshape_hour = "[]"
+            loadshape_npts = "24"
+            timespan = "Daily"
+            load_tshape = "Choose"
+            tshape_name = "Temp"
+            tshape_temp = "[25, 25, 25, 25, 25, 25, 25, 25, 35, 40, 45, 50, 60, 60, 55, 40, 35, 30, 25, 25, 25, 25, 25, 25]"
+            tshape_int = "1"
+            tshape_npts = "24"
+            tshape_hour = "[]"
+            enable_monitoring = "False"
+        }
+    }
+}

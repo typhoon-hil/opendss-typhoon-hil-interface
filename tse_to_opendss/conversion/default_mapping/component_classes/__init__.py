@@ -15,6 +15,9 @@ from .loadshape import LoadShape
 from .linecode import LineCode
 from .regcontrol import RegControl
 from .container import Container
+from .pvsystem import PVSystem
+from .xycurve import XYCurve
+from .tshape import TShape
 
 
 
