@@ -15,9 +15,10 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
     num_windings = int(mdl.get_property_value(mdl.prop(mask_handle, "num_windings")))
     wdg_n_list = [str(n) for n in range(1, num_windings + 1)]
     trafo_tag_names = [f"TagT{phase}{winding}" for winding in wdg_n_list for phase in "AB"]
+    all_trafo_tag_names = [f"TagT{phase}{winding}" for winding in range(1, 11) for phase in "AB"]
 
     # Delete trafo tags
-    for tag in trafo_tag_names:
+    for tag in all_trafo_tag_names:
         tag_handle = mdl.get_item(tag, parent=comp_handle, item_type="tag")
         if tag_handle:
             mdl.delete_item(tag_handle)
@@ -67,10 +68,11 @@ def update_subsystem_components(mdl, mask_handle, created_ports):
     # Right ports and tags
     port_names = [f"{phase}{winding}" for winding in wdg_n_list[1:] for phase in "AB"]
     tag_names = [f"Tag{phase}{winding}" for winding in wdg_n_list[1:] for phase in "AB"]
+    all_tag_names = [f"Tag{phase}{winding}" for winding in range(2, 11) for phase in "AB"]
     tag_labels = [f"T_{phase}{winding}" for winding in wdg_n_list[1:] for phase in "AB"]
 
     # Delete tags
-    for it in tag_names:
+    for it in all_tag_names:
         it_handle = mdl.get_item(it, parent=comp_handle, item_type="tag")
         if it_handle:
             mdl.delete_item(it_handle)
@@ -186,7 +188,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
     regcontrol_on = mdl.get_property_value(mdl.prop(mask_handle, "regcontrol_on"))
 
     if not prop_names:
-        prop_names = ["KVs", "KVAs", "Basefreq", "percentRs", "percentNoloadloss", "percentimag", "XArray"]
+        prop_names = ["KVs", "KVAs", "baseFreq", "percentRs", "percentNoloadloss", "percentimag", "XArray"]
 
     try:
         for prop_name in prop_names:
@@ -202,7 +204,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                 converted_value = prop_value[0] * 1000
                 mdl.set_property_value(sn_prop, converted_value)
             # Frequency
-            elif prop_name == "Basefreq":
+            elif prop_name == "baseFreq":
                 f_prop = mdl.prop(trafo_inner, "f")
                 prop_value = prop_value[0]
                 converted_value = prop_value
@@ -247,7 +249,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                         converted_value = "inf"
                     mdl.set_property_value(rm_prop, converted_value)
                 elif prop_name == "percentimag":
-                    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                    basefreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
                     if not prop_value <= 0:
                         converted_value = ((base_v * base_v) / base_p) / (prop_value / 100) / (
                                 2 * np.pi * basefreq)
@@ -260,7 +262,7 @@ def convert_all_properties(mdl, mask_handle, prop_names=None):
                 kvas_prop = mdl.prop(comp_handle, "KVAs")
                 kvs = mdl.get_property_value(kvs_prop)
                 kvas = mdl.get_property_value(kvas_prop)
-                basefreq = mdl.get_property_value(mdl.prop(mask_handle, "Basefreq"))
+                basefreq = mdl.get_property_value(mdl.prop(mask_handle, "baseFreq"))
                 reactances_pct = prop_value
                 l_prim_prop = mdl.prop(trafo_inner, "L_prim")
                 l_sec_prop = mdl.prop(trafo_inner, "L_sec")
@@ -395,7 +397,7 @@ def toggle_regcontrol_props(mdl, mask_handle):
 
 
 def toggle_frequency_prop(mdl, mask_handle, init=False):
-    frequency_prop = mdl.prop(mask_handle, "Basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_disp_value(global_frequency_prop)
 
@@ -412,7 +414,7 @@ def toggle_frequency_prop(mdl, mask_handle, init=False):
 
 def update_frequency_property(mdl, mask_handle, init=False):
 
-    frequency_prop = mdl.prop(mask_handle, "Basefreq")
+    frequency_prop = mdl.prop(mask_handle, "baseFreq")
     global_frequency_prop = mdl.prop(mask_handle, "global_basefreq")
     use_global = mdl.get_property_value(global_frequency_prop)
 
@@ -445,19 +447,21 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
     porty0 = y0 - 48 * 2 * (num_windings - 1)
 
-    for idx in range(1, 2 * (num_windings - 1) + 1):
-        new_port = mdl.create_port(
-            name=port_names[idx - 1],
-            parent=comp_handle,
-            flip="flip_horizontal",
-            rotation='up',
-            position=(x0 + 1180, porty0 + idx * 96),
-            terminal_position=(32, - 16 - 16 * 2 * (num_windings - 1) + idx * 32)
-        )
-        created_ports.update({port_names[idx - 1]: new_port})
+    for sec_n in range(2, num_windings + 1):
+        for term_idx in range(2):
+            ty_start = -16 - 48 * (num_windings - 2)
+            new_port = mdl.create_port(
+                name=port_names[(sec_n - 2) * 2 + term_idx],
+                parent=comp_handle,
+                flip="flip_horizontal",
+                rotation='up',
+                position=(x0 + 1180, porty0 + ((sec_n - 1) * 2 + (term_idx - 1)) * 96),
+                terminal_position=(32, ty_start + (sec_n - 2) * 96 + (term_idx) * 32),
+                hide_name=True
+            )
+            created_ports.update({port_names[(sec_n - 2) * 2 + term_idx]: new_port})
 
     return created_ports, deleted_ports
-
 
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
@@ -471,19 +475,40 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
 def define_icon(mdl, mask_handle):
     images = {
-        "2": "t_2p2w.svg",
-        "3": "t_2p3w.svg",
-        "4": "t_2p4w.svg",
-        "5": "t_2p5w.svg",
-        "6": "t_2p6w.svg",
-        "7": "t_2p7w.svg",
-        "8": "t_2p8w.svg",
-        "9": "t_2p9w.svg",
-        "10": "t_2p10w.svg",
+        2: "t_2p2w.svg",
+        3: "t_2p3w.svg",
+        4: "t_2p4w.svg",
+        5: "t_2p5w.svg",
+        6: "t_2p6w.svg",
+        7: "t_2p7w.svg",
+        8: "t_2p8w.svg",
+        9: "t_2p9w.svg",
+        10: "t_2p10w.svg",
     }
-    num_windings = mdl.get_property_value(mdl.prop(mask_handle, "num_windings"))
+    num_windings = int(mdl.get_property_value(mdl.prop(mask_handle, "num_windings")))
 
     mdl.set_component_icon_image(mask_handle, "images/" + images[num_windings])
+
+    #
+    # Set text
+    #
+    mdl.set_color(mask_handle, "blue")
+
+    for wdg_number in range(1, num_windings + 1):
+        size_y = 64 + 96 * (num_windings - 2)
+
+        # Winding number
+        if wdg_number == 1:
+            mdl.disp_component_icon_text(mask_handle, "1", rotate="rotate",
+                                         relpos_x=0.14,
+                                         relpos_y=(36 + 48 * (
+                                                     num_windings - 2)) / size_y,
+                                         size=8, trim_factor=2)
+        else:
+            mdl.disp_component_icon_text(mask_handle, f"{wdg_number}", rotate="rotate",
+                                         relpos_x=0.88,
+                                         relpos_y=(36 + 96 * (wdg_number - 2)) / size_y,
+                                         size=8, trim_factor=2)
 
 
 def place_voltage_regulator(mdl, mask_handle, new_value):

@@ -44,7 +44,7 @@ class SinglePhaseTransformer(MultiTerminal):
 
         # Specify the base frequency if not inheriting the global value
         if tse_properties['global_basefreq'] == "False":
-            new_format_properties["Basefreq"] = tse_properties['Basefreq']
+            new_format_properties["baseFreq"] = tse_properties['baseFreq']
 
         # Update property names to match OpenDSS
         new_format_properties[r"%Rs"] = tse_properties["percentRs"]
@@ -113,7 +113,9 @@ class SinglePhaseTransformer(MultiTerminal):
 
         windings = self.new_format_properties.pop("windings")
         line_props = [f'{k}={v}' for k, v in self.new_format_properties.items()]
-        return f'new {self.identifier()} windings={windings} Buses=[{", ".join(self.buses)}] {" ".join(line_props)}\n'
+        return f'new {self.identifier()} windings={windings} ' \
+               f'phases={self.num_phases - 1} Buses=[{", ".join(self.buses)}]' \
+               f' {" ".join(line_props)}\n'
 
     def created_component_instances(self):
         """ Some TSE components may result in multiple converted components. """

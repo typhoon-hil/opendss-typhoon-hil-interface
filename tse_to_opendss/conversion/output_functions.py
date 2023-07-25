@@ -37,41 +37,47 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
         terminal_groups_dict.update({n: terminal_list})
         for p in phase_letters:
             terminal_list.append(f"{p}{n}")
+    print(f"{terminal_groups_dict=}")
 
     # Find the Bus components that are connected to the current component
     connected_buses = tse_fns.connected_components(tse_component, comp_type=constants.DSS_BUS)
 
-    conn = tse_fns.connected_components(tse_component)
     # Raise error if more than the expect number of buses are connected
     if len(connected_buses) > num_buses:
         bus_names = ", ".join([b.name for b in connected_buses])
         raise (Exception(f"Component {tse_component.name} is connected to more than {num_buses} buses ({bus_names})."))
-    if len(connected_buses) < num_buses:
-        bus_names = ", ".join([b.name for b in connected_buses])
-        raise (Exception(f"Component {tse_component.name} is missing bus connections (only connected to {bus_names})."))
+    elif len(connected_buses) == 0:
+        raise Exception(f"Component {tse_component.name} is not connected to any bus.")
 
     # Go through each group (must be ordered) and find which bus is connected to it.
     for group, term_list in terminal_groups_dict.items():
         for bus in connected_buses:
+            # Get the dictionary of connections between tse_component and bus
             connected_terminals_dict = tse_fns.connected_terminals(tse_component, bus, term_list)
+            # Iterate over the terminals of the component and find the bus terminal it is connected to
+            # This will determine the order of the connections
             if connected_terminals_dict:
-                sequence = []
-                for idx in range(1, num_buses + 1):
-                    for terminal in term_list:
-                        term_connected = connected_terminals_dict.get(terminal)
-                        if term_connected:
-                            bus_terminals = [t[0] for t in term_connected]  # Only the letter
-                            if bus_terminals[0] not in sequence:  # Do not repeat the letter
-                                sequence.extend(bus_terminals[0])
+                order = []
+                for terminal in term_list:
+                    term_connected = connected_terminals_dict.get(terminal)
+                    if term_connected:
+                        bus_terminals = [t[0] for t in term_connected]  # Only the letter
+                        order.extend(bus_terminals[0])
 
-                terminal_order = [str(ord(ph[0]) - 64) if ph in ['A', 'B', 'C', 'G'] else '0' for ph in sequence]
+                terminal_order = []
+                for phase_name in order:
+                    if phase_name in ['A', 'B', 'C']:
+                        terminal_order.append(str(ord(phase_name[0]) - 64))
+                    elif phase_name == "N":
+                        terminal_order.append(str(num_phases + 1))
                 terminal_order = '.'.join(terminal_order)
                 bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
 
     if floating_neutral:
         # Connect to unused bus node (working only for single bus components)
+        p = num_phases + 1
         for conn_bus in connected_buses:
-            bus_connections.append(f"{conn_bus.name}.9.9.9")
+            bus_connections.append(f"{conn_bus.name}.{p}.{p}.{p}")
 
     return bus_connections
 

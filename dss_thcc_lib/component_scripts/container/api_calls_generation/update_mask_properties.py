@@ -75,7 +75,7 @@ def generate_api_calls(component_list):
     port_update_lists = {
         "Vsource": ["ground_connected"],
         "Line": ["input_type", "phases", "dC1", "dC0", "cmatrix", "coupling"],
-        "Load": ["conn_type", "ground_connected", "phases", "Pow_ref_s", "S_Ts_mode"],
+        "Load": ["tp_connection", "ground_connected", "phases", "Pow_ref_s", "S_Ts_mode"],
         "Capacitor_Bank": ["tp_connection", "phases"],
         "Controlled_Switch": ["enable_fb_out", "phases"],
         "Fault": ["type"],
@@ -92,7 +92,7 @@ def generate_api_calls(component_list):
     icon_update_lists = {
         "Vsource": ["ground_connected"],
         "Line": ["phases"],
-        "Load": ["conn_type", "ground_connected", "phases", "Pow_ref_s", "S_Ts_mode", "Ts_switch"],
+        "Load": ["tp_connection", "ground_connected", "phases", "Pow_ref_s", "S_Ts_mode", "Ts_switch"],
         "Capacitor_Bank": ["tp_connection", "phases"],
         "Controlled_Switch": ["initial_state", "phases"],
         "Fault": ["type"],

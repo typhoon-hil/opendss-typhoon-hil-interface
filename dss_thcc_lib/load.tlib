@@ -20,7 +20,7 @@ library "OpenDSS" {
             }
             [
                 position = 7920, 8208
-                size = 96, 64
+                size = 112, 64
             ]
 
             port A1 {
@@ -30,36 +30,40 @@ library "OpenDSS" {
             }
             [
                 position = 7800, 7864
+                hide_name = True
                 rotation = right
             ]
 
             port B1 {
-                position = 0.0, -32
+                position = -5, -32
                 kind = pe
                 direction =  in
             }
             [
                 position = 7920, 7864
+                hide_name = True
                 rotation = right
             ]
 
             port C1 {
-                position = 30.0, -32.0
+                position = 15, -32
                 kind = pe
                 direction =  in
             }
             [
                 position = 8056, 7864
+                hide_name = True
                 rotation = right
             ]
 
             port N1 {
-                position = 0.0, 30.0
+                position = 34, -32
                 kind = pe
                 direction =  in
             }
             [
                 position = 7920, 8384
+                hide_name = True
                 rotation = left
             ]
 
@@ -137,7 +141,7 @@ library "OpenDSS" {
             connect A1 TagA1 as ConnA1P
             connect B1 TagB1 as ConnB1P
             connect C1 TagC1 as ConnC1P
-            connect JN N1 as Conn_N0
+            connect JN N1 as Conn_N
             connect CIL.A1 TagA2 as Connection1
             connect CIL.N JN as Conn_AN
             connect CIL.B1 TagB2 as Connection2
@@ -146,6 +150,67 @@ library "OpenDSS" {
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Three-phase/Single-phase constant-impedance/constant-power Load component.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=192"
+
+                // https://youtu.be/Gp1JHonRaP4?list=PL9NFe4Eipyfc3eHcT6v4r7C20QX1b-Gy2
+                tp_connection {
+                    label = "Connection type"
+                    widget = combo
+                    combo_values = "Y - Grounded", "Y", "Δ"
+                    type = string
+                    default_value = "Y - Grounded"
+                    group = "General"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
+                        tp_connection_prop = mdl.prop(container_handle, "tp_connection")
+                        combo_values = mdl.get_property_combo_values(tp_connection_prop)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
+                    ENDCODE
+                }
+
+                phases {
+                    label = "Number of Phases"
+                    widget = combo
+                    combo_values = "3", "1"
+                    type = string
+                    default_value = "3"
+                    group = "General"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_dynamics(mdl, container_handle)
+                    ENDCODE
+                }
+
+                Rneut {
+                    label = "Rneut"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "General:1"
+                }
+
+                Xneut {
+                    label = "Xneut"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "General:1"
+                }
 
                 global_basefreq {
                     label = "Global base frequency"
@@ -157,10 +222,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -177,76 +239,6 @@ library "OpenDSS" {
                     unit = "Hz"
                     group = "General:1"
                     nonvisible
-                }
-
-                conn_type {
-                    label = "Connection type"
-                    widget = combo
-                    combo_values = "Y", "Δ"
-                    type = string
-                    default_value = "Y"
-                    group = "General"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_dynamics(mdl, container_handle, ports)
-
-                        mdl.refresh_icon(container_handle)
-
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-                    ENDCODE
-                }
-
-                ground_connected {
-                    label = "Ground-connected"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "General"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        mdl.refresh_icon(container_handle)
-
-                        comp_script = return_comp_script(mdl, container_handle)
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_gnd_dynamics(mdl, container_handle, ports)
-                    ENDCODE
-                }
-
-                phases {
-                    label = "Number of Phases"
-                    widget = combo
-                    combo_values = "3", "1"
-                    type = string
-                    default_value = "3"
-                    group = "General"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-
-                        comp_script.phase_value_edited_fnc(mdl, container_handle, new_value)
-
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_phases_dynamics(mdl, container_handle, ports)
-
-
-                        mdl.refresh_icon(container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.phase_value_edited_fnc(mdl, container_handle, new_value)
-                    ENDCODE
                 }
 
                 Vn_3ph {
@@ -278,7 +270,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
+                        # comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
                         comp_script.set_pf_mode(mdl, container_handle, new_value)
@@ -288,6 +280,7 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
                     ENDCODE
+
                 }
 
                 pf_3ph {
@@ -315,18 +308,15 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
                         if new_value == "Constant Power" or new_value == "Constant Z,I,P":
                             mdl.info("Warning: Load Constant Power mode demands grounding for correct HIL simulation.")
-
-                        comp_script = return_comp_script(mdl, container_handle)
                         comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
-                        comp_script.set_load_model(mdl, container_handle, new_value)
-
-                        mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_dynamics(mdl, container_handle)
                         comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
                     ENDCODE
                 }
@@ -576,8 +566,9 @@ library "OpenDSS" {
                     nonvisible
                 }
 
-                basefreq {
+                baseFreq {
                     widget = edit
+                    previous_names = "basefreq"
                     type = generic
                     default_value = "0"
                     nonvisible
@@ -591,11 +582,6 @@ library "OpenDSS" {
                     group = "Time Series Settings:4"
                     no_evaluate
                     nonvisible
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        # comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
-                    ENDCODE
                 }
 
                 load_loadshape {
@@ -880,11 +866,23 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
+                tp_connection_combo_values {
+                    widget = edit
+                    default_value = ""
+                    type = generic
+                    no_evaluate
+                    nonvisible
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.read_loadshape_from_json(mdl, item_handle)
+
+                    tp_connection_prop = mdl.prop(item_handle, "tp_connection")
+                    tp_conn_items = mdl.get_property_combo_values(tp_connection_prop)
+                    mdl.set_property_value(mdl.prop(item_handle, "tp_connection_combo_values"), str(tp_conn_items))
 
                     dialog = RegularComponentPropertiesDialog(
                         component=component,
@@ -901,10 +899,11 @@ library "OpenDSS" {
                     comp_script.restore_all_loads_points(mdl, item_handle)
 
                     # HEADER START
+                    tp_connection = mdl.get_property_value(mdl.prop(item_handle, "tp_connection"))
+                    Rneut = mdl.get_property_value(mdl.prop(item_handle, "Rneut"))
+                    Xneut = mdl.get_property_value(mdl.prop(item_handle, "Xneut"))
                     global_basefreq = mdl.get_property_value(mdl.prop(item_handle, "global_basefreq"))
                     fn = mdl.get_property_value(mdl.prop(item_handle, "fn"))
-                    conn_type = mdl.get_property_value(mdl.prop(item_handle, "conn_type"))
-                    ground_connected = mdl.get_property_value(mdl.prop(item_handle, "ground_connected"))
                     phases = mdl.get_property_value(mdl.prop(item_handle, "phases"))
                     Vn_3ph = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph"))
                     Sn_3ph = mdl.get_property_value(mdl.prop(item_handle, "Sn_3ph"))
@@ -916,15 +915,19 @@ library "OpenDSS" {
                     zip_vector_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_vector_Q"))
                     zip_internal = mdl.get_property_value(mdl.prop(item_handle, "zip_internal"))
                     zip_internal_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_Q"))
-                    v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
-                    rate_lmt = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt"))
-                    Vminpu = mdl.get_property_value(mdl.prop(item_handle, "Vminpu"))
+                    zip_internal_n = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_n"))
+                    zip_internal_n_Q = mdl.get_property_value(mdl.prop(item_handle, "zip_internal_n_Q"))
+                    ZIPV = mdl.get_property_value(mdl.prop(item_handle, "ZIPV"))
                     Vmaxpu = mdl.get_property_value(mdl.prop(item_handle, "Vmaxpu"))
+                    Vminpu = mdl.get_property_value(mdl.prop(item_handle, "Vminpu"))
                     model = mdl.get_property_value(mdl.prop(item_handle, "model"))
                     Pow_ref_s = mdl.get_property_value(mdl.prop(item_handle, "Pow_ref_s"))
                     execution_rate = mdl.get_property_value(mdl.prop(item_handle, "execution_rate"))
                     Tfast = mdl.get_property_value(mdl.prop(item_handle, "Tfast"))
                     CPL_LMT = mdl.get_property_value(mdl.prop(item_handle, "CPL_LMT"))
+                    v_min_max = mdl.get_property_value(mdl.prop(item_handle, "v_min_max"))
+                    rate_lmt = mdl.get_property_value(mdl.prop(item_handle, "rate_lmt"))
+                    zero_seq_remove = mdl.get_property_value(mdl.prop(item_handle, "zero_seq_remove"))
                     q_gain_k = mdl.get_property_value(mdl.prop(item_handle, "q_gain_k"))
                     r_gain_k = mdl.get_property_value(mdl.prop(item_handle, "r_gain_k"))
                     Vn_3ph_CPL = mdl.get_property_value(mdl.prop(item_handle, "Vn_3ph_CPL"))
@@ -934,16 +937,23 @@ library "OpenDSS" {
                     pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
                     conn = mdl.get_property_value(mdl.prop(item_handle, "conn"))
                     kVA = mdl.get_property_value(mdl.prop(item_handle, "kVA"))
-                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "basefreq"))
+                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
+                    gen_ts_en = mdl.get_property_value(mdl.prop(item_handle, "gen_ts_en"))
                     load_loadshape = mdl.get_property_value(mdl.prop(item_handle, "load_loadshape"))
                     loadshape_name = mdl.get_property_value(mdl.prop(item_handle, "loadshape_name"))
+                    loadshape_from_file = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file"))
+                    useactual = mdl.get_property_value(mdl.prop(item_handle, "useactual"))
+                    loadshape_from_file_path = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_path"))
+                    loadshape_from_file_column = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_column"))
+                    loadshape_from_file_header = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_header"))
                     loadshape = mdl.get_property_value(mdl.prop(item_handle, "loadshape"))
                     loadshape_int = mdl.get_property_value(mdl.prop(item_handle, "loadshape_int"))
                     S_Ts = mdl.get_property_value(mdl.prop(item_handle, "S_Ts"))
                     Q_Ts = mdl.get_property_value(mdl.prop(item_handle, "Q_Ts"))
+                    T_Ts = mdl.get_property_value(mdl.prop(item_handle, "T_Ts"))
                     T_mode = mdl.get_property_value(mdl.prop(item_handle, "T_mode"))
                     S_Ts_mode = mdl.get_property_value(mdl.prop(item_handle, "S_Ts_mode"))
-                    T_Ts = mdl.get_property_value(mdl.prop(item_handle, "T_Ts"))
+                    timespan = mdl.get_property_value(mdl.prop(item_handle, "timespan"))
                     T_Ts_internal = mdl.get_property_value(mdl.prop(item_handle, "T_Ts_internal"))
                     dssT = mdl.get_property_value(mdl.prop(item_handle, "dssT"))
                     dssnpts = mdl.get_property_value(mdl.prop(item_handle, "dssnpts"))
@@ -954,14 +964,14 @@ library "OpenDSS" {
                     T_lim_high = mdl.get_property_value(mdl.prop(item_handle, "T_lim_high"))
                     Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
                     enable_monitoring = mdl.get_property_value(mdl.prop(item_handle, "enable_monitoring"))
+                    tp_connection_combo_values = mdl.get_property_value(mdl.prop(item_handle, "tp_connection_combo_values"))
                     # HEADER STOP
                     prop_dict = {"fn": fn,
                                  "Sn_3ph": Sn_3ph,
-                                 "conn_type": conn_type,
                                  "pf_mode_3ph": pf_mode_3ph,
                                  "pf_3ph": pf_3ph,
+                                 "conn_type": tp_connection,
                                  "phases": phases,
-                                 "ground_connected": ground_connected,
                                  "Vn_3ph": Vn_3ph,
                                  "S_Ts": S_Ts,
                                  "load_model": load_model,
@@ -985,15 +995,35 @@ library "OpenDSS" {
 
                     import dss_thcc_lib.component_scripts.comp_load as comp_script
                     importlib.reload(comp_script)
+
                     def return_comp_script(mdl, item_handle):
                         return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE before_change
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
+                ENDCODE
+
+                CODE model_loaded
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
+                ENDCODE
+
+
+                CODE on_dialog_close
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.dialog_close(mdl, item_handle, reason)
                 ENDCODE
             }
         }
         [
             position = 5328, 4256
-            scale = -1, 1
-            size = 96, 64
+            scale = 1, 1
+            size = 112, 64
         ]
 
     }

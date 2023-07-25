@@ -3,141 +3,211 @@
 library "OpenDSS" {
 
     component Subsystem Root {
-        component Subsystem Bus {
+         component Subsystem Bus {
             layout = static
-
-			component "core/Three-phase Meter" Measurements {
-				IA = "False"
-				IB = "False"
-				IC = "False"
-				Ts = "execution_rate"
-				VAn = "False"
-				VBn = "False"
-				VCn = "False"
-				enable_out = "False"
-				P_method = "RMS based"
-				remove_snubber = "True"
-			}
-			[
-				position = 7536, 7952
-				size = 56, 240
-			]
-
-			port A1 {
-				position = -8.0, -32.0
-				kind = pe
-				direction =  in
-			}
-			[
-				position = 7400, 7856
-			]
-
-			port A2 {
-				position = 8.0, -32.0
-				kind = pe
-				direction =  in
-			}
-			[
-				position = 7792, 7856
-				scale = -1, 1
-			]
-
-			port B1 {
-				position = -8.0, 0
-				kind = pe
-				direction =  in
-			}
-			[
-				position = 7400, 7952
-			]
-
-			port B2 {
-				position = 8.0, 0
-				kind = pe
-				direction =  in
-			}
-			[
-				position = 7792, 7952
-				scale = -1, 1
-			]
-
-			port C1 {
-				position = -8.0, 32.0
-				kind = pe
-				direction =  in
-			}
-			[
-				position = 7400, 8048
-			]
-
-			port C2 {
-				position = 8.0, 32.0
-				kind = pe
-				direction =  in
-			}
-			[
-				position = 7792, 8048
-				scale = -1, 1
-			]
-
-            component "core/Short Circuit" SCA {
-            }
-            [
-                position = 7664, 7856
-            ]
-
-            component "core/Short Circuit" SCB {
-            }
-            [
-                position = 7664, 7952
-            ]
-
-            component "core/Short Circuit" SCC {
-            }
-            [
-                position = 7664, 8048
-            ]
-
-            component "core/Short Circuit" GND_SC {
-            }
-            [
-                position = 7464, 8152
-            ]
-
             component "core/Ground" gnd1 {
             }
             [
-                position = 7400, 8208
+                position = 7592, 8352
                 hide_name = True
             ]
 
-            junction Junction_gnd pe
+            component "core/Open Circuit" OCB {
+            }
             [
-                position = 7536, 8152
+                position = 7512, 8000
+                hide_name = True
             ]
 
-			connect Measurements.A+ A1 as Connection1
-			connect Measurements.B+ B1 as Connection2
-			connect Measurements.C+ C1 as Connection3
-			connect Measurements.A- SCA.p_node as Connection4
-            connect Measurements.B- SCB.p_node as Connection5
-            connect Measurements.C- SCC.p_node as Connection6
-            connect SCA.n_node A2 as Connection7
-            connect SCB.n_node B2 as Connection8
-            connect SCC.n_node C2 as Connection9
-            connect Junction_gnd Measurements.GND as Connection10
-            connect GND_SC.n_node Junction_gnd as Connection11
-            connect gnd1.node GND_SC.p_node as Connection12
+            component "core/Open Circuit" OCA {
+            }
+            [
+                position = 7512, 7904
+                hide_name = True
+            ]
+
+            component "core/Three-phase Meter" meter_3ph {
+                IA = "False"
+                IB = "False"
+                IC = "False"
+                VAn = "False"
+                VBn = "False"
+                VCn = "False"
+                enable_out = "False"
+            }
+            [
+                position = 7672, 7952
+                size = 56, 240
+            ]
+
+            component "core/Open Circuit" OCC {
+            }
+            [
+                position = 7512, 8096
+                hide_name = True
+            ]
+
+            port B1 {
+                position = -8, 0
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7400, 7952
+            ]
+
+            port B2 {
+                position = 8, 0
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7792, 7952
+                scale = -1, 1
+            ]
+
+            port A1 {
+                position = -8, -32
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7400, 7856
+            ]
+
+            port A2 {
+                position = 8, -32
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7792, 7856
+                scale = -1, 1
+            ]
+
+            port C1 {
+                position = -8, 32
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7400, 8048
+            ]
+
+            port C2 {
+                position = 8, 32
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7792, 8048
+                scale = -1, 1
+            ]
+
+            tag "Electric Tag1" {
+                value = "ground"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7592, 8272
+                rotation = right
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag tag_ph_B {
+                value = "ground"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7416, 8000
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag tag_ph_A {
+                value = "ground"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7416, 7904
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag tag_3ph {
+                value = "ground"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7720, 8112
+                rotation = down
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag tag_ph_C {
+                value = "ground"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7416, 8096
+                hide_name = True
+                size = 60, 20
+            ]
+
+            junction jun_B pe
+            [
+                position = 7560, 7952
+            ]
+
+            junction jun_A pe
+            [
+                position = 7560, 7856
+            ]
+
+            junction jun_C pe
+            [
+                position = 7560, 8048
+            ]
+
+            connect "Electric Tag1" gnd1.node as Connection61
+            connect B1 jun_B as Connection116
+            connect jun_B OCB.n_node as Connection117
+            connect OCB.p_node tag_ph_B as Connection118
+            connect A1 jun_A as Connection124
+            connect jun_A OCA.n_node as Connection125
+            connect OCA.p_node tag_ph_A as Connection126
+            connect meter_3ph.GND tag_3ph as Connection142
+            connect C1 jun_C as Connection143
+            connect jun_C OCC.n_node as Connection144
+            connect OCC.p_node tag_ph_C as Connection145
+            connect jun_A meter_3ph.A+ as Connection146
+            connect meter_3ph.A- A2 as Connection147
+            connect jun_B meter_3ph.B+ as Connection148
+            connect meter_3ph.B- B2 as Connection149
+            connect jun_C meter_3ph.C+ as Connection150
+            connect meter_3ph.C- C2 as Connection151
+
+            phase_n = "False"
+            type_prop = "ABC"
 
             mask {
-                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be directly connected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has a Three-Phase meter from which electrical measurements can be accessed. Using a fixed three-phase meter, some measurements could be miss-results depending on the Bus Type (single/two-phase configuration).</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Only up to three phases are supported at the moment.</p></body></html>"
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be connected directly.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has internal meters from which electrical measurements can be accessed. At this moment only the three-phase meter is available, thus, measurements are only available when the phases 'ABC' are selected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
 
                 type_prop {
                     label = "Type"
                     widget = combo
-                    combo_values = "ABC", "AB", "AC", "BC", "A", "B", "C"
+                    combo_values = "ABC", "AB", "AC", "BC", "A", "B", "C", "ABCN", "ABN", "ACN", "BCN", "AN", "BN", "CN", "N"
                     type = string
-                    default_value = "ABC"
+                    default_value = "ABCN"
+                    nonvisible
+                    disabled
                     no_evaluate
 
                     CODE property_value_changed
@@ -151,21 +221,75 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                ground_prop {
-                    label = "Show DSS ground terminal (0)"
+                phase_a {
+                    label = "Phase A"
                     widget = checkbox
                     type = bool
-                    default_value = "False"
+                    default_value = "True"
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                   ENDCODE
+                        comp_script.set_bus_phases(mdl, container_handle)
+                    ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
+                    ENDCODE
+                }
+
+                phase_b {
+                    label = "Phase B"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_bus_phases(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
+                    ENDCODE
+                }
+
+                phase_c {
+                    label = "Phase C"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_bus_phases(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
+                    ENDCODE
+                }
+
+                phase_n {
+                    label = "Phase N"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_bus_phases(mdl, container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
                     ENDCODE
                 }
 
@@ -190,12 +314,11 @@ library "OpenDSS" {
 
                 i_rms_meas {
                     label = "Line Currents  - RMS"
-                    previous_names = "i_meas"
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
                     group = "Measurements:2"
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -215,9 +338,9 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
-                    keepline
                     group = "Measurements:2"
+                    keepline
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -234,12 +357,11 @@ library "OpenDSS" {
 
                 v_line_rms_meas {
                     label = "Line Voltages  - RMS"
-                    previous_names = "v_meas"
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
                     group = "Measurements:2"
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -259,9 +381,9 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
-                    keepline
                     group = "Measurements:2"
+                    keepline
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -281,8 +403,8 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
                     group = "Measurements:2"
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -302,9 +424,9 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
-                    keepline
                     group = "Measurements:2"
+                    keepline
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -324,8 +446,8 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
                     group = "Measurements:2"
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -345,8 +467,8 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
                     group = "Measurements:2"
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -363,7 +485,6 @@ library "OpenDSS" {
 
                 execution_rate {
                     label = "Execution Rate"
-                    previous_names = "ts"
                     widget = edit
                     type = generic
                     default_value = "100e-6"
@@ -374,8 +495,8 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "False"
-                    no_evaluate
                     group = "Measurements:2"
+                    no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -420,7 +541,7 @@ library "OpenDSS" {
             }
         }
         [
-            position = 4480, 4064
+            position = 4512, 4032
             size = 16, 96
         ]
 

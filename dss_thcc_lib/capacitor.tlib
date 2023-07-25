@@ -37,6 +37,7 @@ library "OpenDSS" {
             }
             [
                 position = 8392, 8096
+                hide_name = True
                 rotation = down
             ]
 
@@ -46,6 +47,7 @@ library "OpenDSS" {
             }
             [
                 position = 8392, 8192
+                hide_name = True
                 rotation = down
             ]
 
@@ -55,6 +57,7 @@ library "OpenDSS" {
             }
             [
                 position = 8392, 8288
+                hide_name = True
                 rotation = down
             ]
 
@@ -77,13 +80,14 @@ library "OpenDSS" {
                 tp_connection {
                     label = "Connection"
                     widget = combo
-                    combo_values = "Y", "Y-grounded", "Δ", "Series"
+                    combo_values = "Y - Grounded", "Y", "Δ", "In series"
                     type = string
-                    default_value = "Y"
+                    default_value = "Y - Grounded"
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
                         comp_script.port_dynamics(mdl, container_handle)
                         comp_script.redo_connections(mdl, container_handle)
                         mdl.refresh_icon(container_handle)
@@ -91,8 +95,27 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
+                }
+
+                Rneut {
+                    label = "Rneut"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "General:1"
+                }
+
+                Xneut {
+                    label = "Xneut"
+                    widget = edit
+                    type = generic
+                    default_value = "0.0"
+                    unit = "Ω"
+                    group = "General:1"
                 }
 
                 global_basefreq {
@@ -109,15 +132,13 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if old_value == new_value:
-                            comp_script.update_frequency_property(mdl, container_handle, init=True)
-                        else:
-                            comp_script.update_frequency_property(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
                     ENDCODE
                 }
 
-                BaseFreq {
+                baseFreq {
                     label = "Base frequency"
+                    previous_names = "BaseFreq"
                     widget = edit
                     type = generic
                     default_value = "60"
@@ -202,6 +223,8 @@ library "OpenDSS" {
 
                     comp_script.define_icon(mdl, item_handle)
 
+                    comp_script.retro_compatibility(mdl, item_handle)
+
                 ENDCODE
 
                 CODE pre_compile
@@ -218,7 +241,7 @@ library "OpenDSS" {
         }
         [
             position = 4472, 4320
-            scale = -1, 1
+            scale = 1, 1
             size = 96, 64
         ]
 
