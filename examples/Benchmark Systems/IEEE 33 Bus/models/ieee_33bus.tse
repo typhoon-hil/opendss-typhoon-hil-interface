@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.2
+// Saved by sw version: 2023.4 DEV
 //
 
 model "ieee_33bus" {
@@ -55,6 +55,7 @@ model "ieee_33bus" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        feedthrough_validation_error_level = warning
     }
 
     component Subsystem Root {
@@ -1222,9 +1223,9 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/SimDSS" SimDSS {
-            sim_counter = "15"
+            sim_counter = "17"
             sim_mode = "Time Series"
-            sim_status = "Sim15 complete"
+            sim_status = "Sim17 complete"
             voltagebases = "[12.66, 0.48]"
         }
         [
@@ -9935,6 +9936,7 @@ out = fmod(in, max);
             visualize_luts = "Visualize Lookup Tables"
             vout_cmp_pullup_mode = "False"
             vout_cmp_timeout = "5e-6"
+            PESB_Optimization = "True"
             show_cnt_out = "False"
             show_monitoring = "False"
             _control_property = "all high"
