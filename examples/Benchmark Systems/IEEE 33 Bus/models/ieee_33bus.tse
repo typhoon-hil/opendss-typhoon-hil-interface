@@ -22,8 +22,8 @@ model "ieee_33bus" {
         vhil_adio_loopback = False
         cpl_stb = True
         enb_dep_sw_detect = False
-        code_section = "internal memory"
-        data_section = "internal memory"
+        code_section = "external memory"
+        data_section = "external memory"
         sys_sp_rate_1 = 0.0001
         sys_sp_rate_2 = 0.05
         sys_real_type_precision = "default"
@@ -614,11 +614,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load2 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load2\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load2\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load2\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -630,11 +634,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load3 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load3\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load3\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load3\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -646,11 +654,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load4 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load4\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load4\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load4\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -662,11 +674,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load5 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load5\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load5\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load5\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -795,6 +811,7 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load13\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -806,11 +823,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load14 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load14\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load14\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load14\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -822,11 +843,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load15 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load15\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load15\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load15\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -838,11 +863,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load16 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load16\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load16\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load16\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -854,11 +883,15 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load17 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load17\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load17\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load17\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -870,12 +903,16 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load18 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load18\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load18\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             enable_monitoring = "True"
             global_basefreq = "False"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load18\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1172,6 +1209,7 @@ model "ieee_33bus" {
 
         component "OpenDSS/Vsource" V1 {
             basekv = "12.66"
+            enable_monitoring = "True"
             global_basefreq = "True"
             r0 = "1e-3"
             r1 = "1e-3"
@@ -1183,13 +1221,14 @@ model "ieee_33bus" {
             size = 64, 96
         ]
 
-        component "OpenDSS/SimDSS" SimDSS1 {
-            sim_counter = "12"
-            sim_status = "Sim12 complete"
+        component "OpenDSS/SimDSS" SimDSS {
+            sim_counter = "15"
+            sim_mode = "Time Series"
+            sim_status = "Sim15 complete"
             voltagebases = "[12.66, 0.48]"
         }
         [
-            position = 9464, 7656
+            position = 9488, 7584
             size = 96, 96
         ]
 
@@ -1285,10 +1324,14 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load29 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load29\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load29\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load29\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1300,10 +1343,14 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load30 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load30\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load30\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load30\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1315,10 +1362,14 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load31 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load31\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load31\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load31\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1330,10 +1381,14 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load32 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load32\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load32\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load32\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1345,10 +1400,14 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/Load" Load33 {
+            Pow_ref_s = "Time Series"
             Sn_3ph = "load_data[\"Load33\"][\"S\"]/1e3"
+            Tfast = "300e-6"
             Vn_3ph = "load_data[\"Load33\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            load_model = "Constant Power"
             pf_3ph = "load_data[\"Load33\"][\"PF\"]"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -6892,8 +6951,8 @@ model "ieee_33bus" {
 
                 component "core/SCADA Input" Qref {
                     execution_rate = "Ts"
-                    max = "-500"
-                    min = "500"
+                    max = "500"
+                    min = "-500"
                     unit = ""
                 }
                 [
@@ -7468,7 +7527,7 @@ out = fmod(in, max);
             connect tokW.out Probe1.in as Connection2056
             connect Constant1.out EPC.In1 as Connection2057
 
-            T_Ts = "[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23]"
+            T_Ts = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
             T_mode = "Time"
             basefreq = "60"
             chargetrigger = "0.2"
@@ -8027,13 +8086,6 @@ out = fmod(in, max);
             size = 80, 96
         ]
 
-        component "core/Constant" Constant1 {
-        }
-        [
-            position = 13560, 8160
-            scale = 1, -1
-        ]
-
         component "OpenDSS/Three-Phase Transformer" T1 {
             KVAs = "[500, 500]"
             KVs = "[12.66, 0.480]"
@@ -8046,10 +8098,10 @@ out = fmod(in, max);
             size = 64, 124
         ]
 
-        component "OpenDSS/Monitoring" Monitoring1 {
+        component "OpenDSS/Monitoring" Monitoring {
         }
         [
-            position = 9584, 7656
+            position = 9600, 7592
             size = 64, 64
         ]
 
@@ -8070,6 +8122,7 @@ out = fmod(in, max);
         }
         [
             position = 9376, 8272
+            scale = -1, 1
             size = 34, 97
         ]
 
@@ -8100,6 +8153,237 @@ out = fmod(in, max);
         [
             position = 10304, 8272
             size = 16, 96
+        ]
+
+        component "core/SCADA Input" enable_time {
+            def_value = "1"
+            execution_rate = "300e-6"
+            format = "int"
+            max = "1"
+            min = "0"
+            signal_type = "int"
+            unit = ""
+        }
+        [
+            position = 9288, 7744
+        ]
+
+        component "core/Integrator" Integrator1 {
+        }
+        [
+            position = 9448, 7744
+        ]
+
+        component "core/Probe" time_hour {
+        }
+        [
+            position = 9632, 7680
+        ]
+
+        component "core/Gain" scale {
+            gain = "0.5"
+        }
+        [
+            position = 9528, 7744
+        ]
+
+        component "core/Data Type Conversion" "Data Type Conversion1" {
+        }
+        [
+            position = 9368, 7744
+            hide_name = True
+        ]
+
+        tag Goto1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 9624, 7744
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 13560, 8160
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From2 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 13232, 8448
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From3 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 12944, 8456
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From4 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 12616, 8456
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From5 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 12368, 8456
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From6 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 12056, 8456
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From7 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 11584, 8056
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From8 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 11304, 8056
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From9 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 11040, 8056
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From10 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 10768, 8056
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From11 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 10472, 8056
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From12 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 9072, 8472
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From13 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8824, 8472
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From14 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8584, 8472
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From15 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8176, 8464
+            hide_name = True
+            size = 60, 20
         ]
 
         junction Junction7 pe
@@ -8612,6 +8896,11 @@ out = fmod(in, max);
             position = 9528, 8304
         ]
 
+        junction Junction1 sp
+        [
+            position = 9560, 7744
+        ]
+
         junction Junction190 pe
         [
             position = 9464, 8240
@@ -8625,6 +8914,11 @@ out = fmod(in, max);
         junction Junction192 pe
         [
             position = 9528, 8304
+        ]
+
+        comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Time-Series</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">seconds -&gt; hour</p></body></html> ENDCOMMENT 
+        [
+            position = 9416, 7664
         ]
 
         connect Bus3.A2 Line3_4.A1 as Connection19
@@ -8929,7 +9223,6 @@ out = fmod(in, max);
         connect Junction137 Load33.B1 as Connection693
         connect Junction137 Line32_33.B2 as Connection694
         connect Junction137 Bus33.B1 as Connection695
-        connect Junction138 Load33.C1 as Connection696
         connect Junction138 Line32_33.C2 as Connection697
         connect Junction138 Bus33.C1 as Connection698
         connect Junction72 Load9.C1 as Connection726
@@ -9017,7 +9310,6 @@ out = fmod(in, max);
         [
             breakpoints = 10504, 8240
         ]
-        connect Constant1.out "Storage.Load point" as Connection1122
         connect Bus25.C1 Junction108 as Connection1124
         [
             breakpoints = 9224, 7920
@@ -9096,21 +9388,6 @@ out = fmod(in, max);
         connect Buscpl2.A2 Line8_9.A1 as Connection1219
         connect Buscpl2.B2 Line8_9.B1 as Connection1220
         connect Buscpl2.C2 Line8_9.C1 as Connection1221
-        connect BusEPC.A2 Storage.A1 as Connection1222
-        connect BusEPC.B2 Storage.B1 as Connection1223
-        connect BusEPC.C2 Storage.C1 as Connection1224
-        connect Buscpl1.A2 CPL1.A1 as Connection1228
-        connect Buscpl1.B2 CPL1.B1 as Connection1229
-        connect Buscpl1.C2 CPL1.C1 as Connection1230
-        connect Junction190 CPL1.A2 as Connection1231
-        connect Junction190 Junction187 as Connection1232
-        connect Junction190 Bus6.A1 as Connection1233
-        connect Junction191 CPL1.B2 as Connection1234
-        connect Junction191 Bus6.B1 as Connection1235
-        connect Junction191 Junction188 as Connection1236
-        connect Junction192 CPL1.C2 as Connection1237
-        connect Junction192 Bus6.C1 as Connection1238
-        connect Junction192 Junction189 as Connection1239
         connect Junction176 Bus18.B1 as Connection1251
         [
             breakpoints = 13208, 8272; 13264, 8272
@@ -9126,6 +9403,46 @@ out = fmod(in, max);
         connect Bus18.A2 T1.A1 as Connection1252
         connect Bus18.B2 T1.B1 as Connection1253
         connect Bus18.C2 T1.C1 as Connection1254
+        connect Integrator1.out scale.in as Connection31
+        connect Junction1 Goto1 as Connection60
+        connect Junction1 time_hour.in as Connection61
+        connect Junction1 scale.out as Connection62
+        connect enable_time.out "Data Type Conversion1.in" as Connection1255
+        connect "Data Type Conversion1.out" Integrator1.in as Connection106
+        connect From1 "Storage.Load point" as Connection1256
+        connect Storage.A1 BusEPC.A2 as Connection1257
+        connect Storage.B1 BusEPC.B2 as Connection1258
+        connect Storage.C1 BusEPC.C2 as Connection1259
+        connect From2 Load18.T as Connection1260
+        connect From3 Load17.T as Connection1261
+        connect From4 Load16.T as Connection1262
+        connect From5 Load15.T as Connection1263
+        connect From6 Load14.T as Connection1264
+        connect Load33.C1 Junction138 as Connection1268
+        [
+            breakpoints = 11568, 7936
+        ]
+        connect From7 Load33.T as Connection1269
+        connect From8 Load32.T as Connection1270
+        connect From9 Load31.T as Connection1271
+        connect From10 Load30.T as Connection1272
+        connect From11 Load29.T as Connection1273
+        connect Load5.T From12 as Connection1274
+        connect From13 Load4.T as Connection1275
+        connect From14 Load3.T as Connection1276
+        connect From15 Load2.T as Connection1277
+        connect Buscpl1.A2 CPL1.A2 as Connection1281
+        connect Buscpl1.B2 CPL1.B2 as Connection1282
+        connect Buscpl1.C2 CPL1.C2 as Connection1283
+        connect Junction190 CPL1.A1 as Connection1284
+        connect Junction190 Bus6.A1 as Connection1285
+        connect Junction190 Junction187 as Connection1286
+        connect Junction191 CPL1.B1 as Connection1287
+        connect Junction191 Bus6.B1 as Connection1288
+        connect Junction191 Junction188 as Connection1289
+        connect Junction192 CPL1.C1 as Connection1290
+        connect Junction192 Bus6.C1 as Connection1291
+        connect Junction192 Junction189 as Connection1292
     }
 
     default {
@@ -9209,6 +9526,19 @@ out = fmod(in, max);
             initial_current = "0.0"
             pole_shift_ignore = "False"
             visible = "True"
+        }
+
+        "core/Integrator" {
+            show_reset = "none"
+            reset_type = "asynchronous"
+            show_init_condition = "internal"
+            init_value = "0"
+            limit_output = "False"
+            limit_upper = "inf"
+            limit_lower = "-inf"
+            show_state = "False"
+            state_port_type = "inherit"
+            execution_rate = "inherit"
         }
 
         "core/Power Meter" {

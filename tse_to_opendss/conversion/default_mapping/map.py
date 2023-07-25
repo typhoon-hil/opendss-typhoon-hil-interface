@@ -20,7 +20,7 @@ def map_component(comp_type):
         DSS_VSCONVERTER: ["VSCONVERTER"],
         DSS_STORAGE: ["STORAGE"],
         DSS_CONTAINER: ["CONTAINER"],
-        DSS_COUPLING: ["COUPLING"]
+        DSS_COUPLING: ["COUPLING"],
         DSS_CONTAINER: ["CONTAINER"],
         DSS_PVSYSTEM: ["PVSYSTEM"]
     }
