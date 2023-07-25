@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.4 DEV
+// Saved by sw version: 2023.2
 //
 
 model "ieee_33bus" {
@@ -55,7 +55,6 @@ model "ieee_33bus" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
-        feedthrough_validation_error_level = error
     }
 
     component Subsystem Root {
@@ -620,7 +619,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load2\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -637,7 +635,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load3\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -654,7 +651,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load4\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -671,7 +667,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load5\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -688,7 +683,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load6\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -705,7 +699,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load7\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -722,7 +715,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load8\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -739,7 +731,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load9\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -756,7 +747,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load10\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -773,7 +763,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load11\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -790,7 +779,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load12\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -807,7 +795,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load13\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -824,7 +811,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load14\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -841,7 +827,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load15\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -858,7 +843,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load16\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -875,7 +859,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load17\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -893,7 +876,6 @@ model "ieee_33bus" {
             enable_monitoring = "True"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load18\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1130,7 +1112,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load19\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1147,7 +1128,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load20\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1164,7 +1144,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load21\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1181,7 +1160,6 @@ model "ieee_33bus" {
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             pf_3ph = "load_data[\"Load22\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1206,10 +1184,9 @@ model "ieee_33bus" {
         ]
 
         component "OpenDSS/SimDSS" SimDSS1 {
-            sim_counter = "7"
-            sim_mode = "Time Series"
-            sim_status = "Sim7 complete"
-            voltagebases = "[12.66]"
+            sim_counter = "12"
+            sim_status = "Sim12 complete"
+            voltagebases = "[12.66, 0.48]"
         }
         [
             position = 9464, 7656
@@ -1221,7 +1198,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load23\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load23\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1237,7 +1213,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load24\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load24\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1253,7 +1228,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load25\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load25\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1269,7 +1243,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load26\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load26\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1285,7 +1258,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load27\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load27\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1317,7 +1289,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load29\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load29\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1333,7 +1304,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load30\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load30\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1349,7 +1319,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load31\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load31\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1365,7 +1334,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load32\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load32\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1381,7 +1349,6 @@ model "ieee_33bus" {
             Vn_3ph = "load_data[\"Load33\"][\"V\"]/1e3"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             pf_3ph = "load_data[\"Load33\"][\"PF\"]"
-            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1392,7 +1359,7 @@ model "ieee_33bus" {
             size = 128, 48
         ]
 
-        component Subsystem EPC {
+        component Subsystem Storage {
             layout = static
             component Subsystem EPC {
                 layout = dynamic
@@ -1482,23 +1449,6 @@ model "ieee_33bus" {
                 [
                     position = 8512, 8304
                     hide_name = True
-                ]
-
-                component "core/Three-phase Meter" MTR-SGW {
-                    I_rms = "True"
-                    P_meas = "True"
-                    Ts = "Ts"
-                    VAB = "True"
-                    VBC = "True"
-                    VCA = "True"
-                    VLL_avg_rms = "True"
-                    VLL_rms = "True"
-                    VLn_rms = "True"
-                    freq = "True"
-                }
-                [
-                    position = 6952, 7808
-                    size = 56, 240
                 ]
 
                 component "core/Current Measurement" Ibat {
@@ -1727,7 +1677,7 @@ model "ieee_33bus" {
                     }
                 }
                 [
-                    position = 8144, 7808
+                    position = 7920, 7808
                     scale = -1, 1
                     size = 120, 240
                 ]
@@ -1871,7 +1821,7 @@ model "ieee_33bus" {
                     }
                 }
                 [
-                    position = 7960, 7808
+                    position = 7736, 7808
                     size = 120, 240
                 ]
 
@@ -2403,7 +2353,7 @@ model "ieee_33bus" {
                     }
                 }
                 [
-                    position = 8424, 7808
+                    position = 8200, 7808
                     size = 120, 240
                 ]
 
@@ -2414,7 +2364,7 @@ model "ieee_33bus" {
                     threshold_value = "2.5"
                 }
                 [
-                    position = 7808, 7808
+                    position = 7584, 7808
                     size = 64, 256
                 ]
 
@@ -6860,431 +6810,9 @@ model "ieee_33bus" {
                     }
                 }
                 [
-                    position = 8600, 7808
+                    position = 8376, 7808
                     scale = -1, 1
                     size = 56, 240
-                ]
-
-                component Subsystem epc2sgw_total {
-                    layout = dynamic
-                    component "core/Probe" HIL_PPVphAB {
-                    }
-                    [
-                        position = 8064, 7688
-                    ]
-
-                    component "core/Probe" HIL_PPVphCA {
-                    }
-                    [
-                        position = 8064, 7800
-                    ]
-
-                    component "core/Probe" HIL_PPVphBC {
-                    }
-                    [
-                        position = 8064, 7744
-                    ]
-
-                    component "core/Probe" HIL_AphA {
-                    }
-                    [
-                        position = 8064, 7952
-                    ]
-
-                    component "core/Probe" HIL_AphC {
-                    }
-                    [
-                        position = 8064, 8064
-                    ]
-
-                    component "core/Probe" HIL_AphB {
-                    }
-                    [
-                        position = 8064, 8008
-                    ]
-
-                    component "core/Probe" HIL_W {
-                    }
-                    [
-                        position = 8064, 8432
-                    ]
-
-                    component "core/Probe" HIL_VAr {
-                    }
-                    [
-                        position = 8064, 8592
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector1" {
-                        signal_indexes = "[0, 1, 2]"
-                    }
-                    [
-                        position = 7960, 8008
-                        hide_name = True
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector2" {
-                        signal_indexes = "[0, 1, 2]"
-                    }
-                    [
-                        position = 7960, 7744
-                        hide_name = True
-                    ]
-
-                    component "core/Gain" Gain3 {
-                        gain = "10"
-                    }
-                    [
-                        position = 8752, 7888
-                        hide_name = True
-                    ]
-
-                    component "core/Probe" SGW_PPVphAB {
-                    }
-                    [
-                        position = 9016, 7728
-                    ]
-
-                    component "core/Probe" SGW_PPVphCA {
-                    }
-                    [
-                        position = 9016, 7832
-                    ]
-
-                    component "core/Probe" SGW_PPVphBC {
-                    }
-                    [
-                        position = 9016, 7776
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector4" {
-                        signal_indexes = "[0, 1, 2]"
-                    }
-                    [
-                        position = 8912, 7776
-                        hide_name = True
-                    ]
-
-                    component "core/Gain" Gain6 {
-                        gain = "10"
-                    }
-                    [
-                        position = 8752, 8128
-                        hide_name = True
-                    ]
-
-                    component "core/Probe" SGW_AphA {
-                    }
-                    [
-                        position = 9008, 7952
-                    ]
-
-                    component "core/Probe" SGW_AphC {
-                    }
-                    [
-                        position = 9008, 8064
-                    ]
-
-                    component "core/Probe" SGW_AphB {
-                    }
-                    [
-                        position = 9008, 8008
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector5" {
-                        signal_indexes = "[0, 1, 2]"
-                    }
-                    [
-                        position = 8904, 8008
-                        hide_name = True
-                    ]
-
-                    component "core/Gain" Gain11 {
-                        gain = "1/1000"
-                    }
-                    [
-                        position = 8536, 8552
-                        hide_name = True
-                    ]
-
-                    component "core/Gain" Gain12 {
-                        gain = "10"
-                    }
-                    [
-                        position = 8752, 8552
-                        hide_name = True
-                    ]
-
-                    component "core/Probe" SGW_W {
-                    }
-                    [
-                        position = 9008, 8432
-                    ]
-
-                    component "core/Gain" Gain15 {
-                        gain = "10"
-                    }
-                    [
-                        position = 8752, 8704
-                        hide_name = True
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector6" {
-                        signal_indexes = "[14, 15, 16]"
-                    }
-                    [
-                        position = 7488, 7888
-                        hide_name = True
-                    ]
-
-                    component "core/Bus Join" "Bus Join1" {
-                        inputs = "3"
-                    }
-                    [
-                        position = 7576, 7888
-                        hide_name = True
-                    ]
-
-                    component "core/Probe" SGW_VAr {
-                    }
-                    [
-                        position = 9008, 8592
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector7" {
-                        signal_indexes = "[18,19,20]"
-                    }
-                    [
-                        position = 7488, 8128
-                        hide_name = True
-                    ]
-
-                    component "core/Bus Join" "Bus Join2" {
-                        inputs = "3"
-                    }
-                    [
-                        position = 7576, 8128
-                        hide_name = True
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector8" {
-                        signal_indexes = "[22]"
-                    }
-                    [
-                        position = 7488, 8552
-                        hide_name = True
-                    ]
-
-                    component "core/Bus Selector" "Bus Selector9" {
-                        signal_indexes = "[22]"
-                    }
-                    [
-                        position = 7488, 8704
-                        hide_name = True
-                    ]
-
-                    component "core/Gain" Gain16 {
-                        gain = "1/1000"
-                    }
-                    [
-                        position = 8536, 8704
-                        hide_name = True
-                    ]
-
-                    port In1 {
-                        position = left:1
-                        kind = sp
-                        direction =  out
-                        sp_type {
-                            default = auto
-                            readonly = True
-                        }
-                    }
-                    [
-                        position = 7312, 8264
-                    ]
-
-                    junction Junction1 sp
-                    [
-                        position = 7920, 7888
-                    ]
-
-                    junction Junction2 sp
-                    [
-                        position = 7920, 8128
-                    ]
-
-                    junction Junction3 sp
-                    [
-                        position = 7920, 8552
-                    ]
-
-                    junction Junction4 sp
-                    [
-                        position = 7920, 8704
-                    ]
-
-                    junction Junction5 sp
-                    [
-                        position = 7344, 8128
-                    ]
-
-                    junction Junction6 sp
-                    [
-                        position = 7344, 8264
-                    ]
-
-                    junction Junction7 sp
-                    [
-                        position = 7344, 8552
-                    ]
-
-                    comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Voltage</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Measurements</p></body></html> ENDCOMMENT 
-                    [
-                        position = 7640, 7824
-                    ]
-
-                    comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Engineering Values </p></body></html> ENDCOMMENT 
-                    [
-                        position = 8192, 7624
-                    ]
-
-                    comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">HIL-&gt;Sungrow Conversion  </p></body></html> ENDCOMMENT 
-                    [
-                        position = 8424, 7624
-                    ]
-
-                    comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Sungrow Scaling</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8672, 7624
-                    ]
-
-                    comment Comment8 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to 0.1 Scaling</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8688, 7840
-                    ]
-
-                    comment Comment9 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Sungrow Registers</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8888, 7624
-                    ]
-
-                    comment Comment12 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to 0.1 Scaling</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8688, 8080
-                    ]
-
-                    comment Comment16 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">HIL Registers </p></body></html> ENDCOMMENT 
-                    [
-                        position = 8032, 7624
-                    ]
-
-                    comment Comment17 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Current</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Measurements</p></body></html> ENDCOMMENT 
-                    [
-                        position = 7632, 8064
-                    ]
-
-                    comment Comment20 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to kW</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8496, 8504
-                    ]
-
-                    comment Comment21 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to 0.1 Scaling</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8688, 8504
-                    ]
-
-                    comment Comment22 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Power</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Measurements</p></body></html> ENDCOMMENT 
-                    [
-                        position = 7648, 8480
-                    ]
-
-                    comment Comment25 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to 0.1 Scaling</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8688, 8656
-                    ]
-
-                    comment Comment26 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Power</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Measurements</p></body></html> ENDCOMMENT 
-                    [
-                        position = 7656, 8640
-                    ]
-
-                    comment Comment27 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to kvar</p></body></html> ENDCOMMENT 
-                    [
-                        position = 8496, 8656
-                    ]
-
-                    connect "Bus Selector2.out1" HIL_PPVphBC.in as Connection3309
-                    connect "Bus Selector2.out" HIL_PPVphAB.in as Connection3310
-                    connect "Bus Selector2.out2" HIL_PPVphCA.in as Connection3311
-                    connect "Bus Selector1.out1" HIL_AphB.in as Connection3312
-                    connect "Bus Selector1.out" HIL_AphA.in as Connection3313
-                    connect "Bus Selector1.out2" HIL_AphC.in as Connection3314
-                    connect "Bus Selector4.out1" SGW_PPVphBC.in as Connection3328
-                    connect "Bus Selector4.out" SGW_PPVphAB.in as Connection3329
-                    connect "Bus Selector4.out2" SGW_PPVphCA.in as Connection3330
-                    connect Gain3.out "Bus Selector4.in" as Connection3331
-                    connect "Bus Selector5.out1" SGW_AphB.in as Connection3338
-                    connect "Bus Selector5.out" SGW_AphA.in as Connection3339
-                    connect "Bus Selector5.out2" SGW_AphC.in as Connection3340
-                    connect Gain6.out "Bus Selector5.in" as Connection3341
-                    connect Gain11.out Gain12.in as Connection3352
-                    connect Gain12.out SGW_W.in as Connection3356
-                    [
-                        breakpoints = 8864, 8552; 8864, 8432
-                    ]
-                    connect "Bus Join1.in" "Bus Selector6.out" as Connection3371
-                    connect "Bus Join1.in1" "Bus Selector6.out1" as Connection3372
-                    connect "Bus Join1.in2" "Bus Selector6.out2" as Connection3373
-                    connect Gain15.out SGW_VAr.in as Connection3362
-                    [
-                        breakpoints = 8864, 8704; 8864, 8592
-                    ]
-                    connect "Bus Join1.out" Junction1 as Connection3375
-                    connect Junction1 "Bus Selector2.in" as Connection3376
-                    [
-                        breakpoints = 7920, 7888; 7920, 7888
-                    ]
-                    connect Gain3.in Junction1 as Connection3377
-                    connect "Bus Join2.in" "Bus Selector7.out" as Connection3378
-                    connect "Bus Join2.in1" "Bus Selector7.out1" as Connection3379
-                    connect "Bus Join2.in2" "Bus Selector7.out2" as Connection3380
-                    connect "Bus Join2.out" Junction2 as Connection3385
-                    connect Junction2 "Bus Selector1.in" as Connection3386
-                    [
-                        breakpoints = 7920, 8128
-                    ]
-                    connect Gain6.in Junction2 as Connection3387
-                    connect HIL_W.in Junction3 as Connection3392
-                    [
-                        breakpoints = 7920, 8448
-                    ]
-                    connect Junction3 "Bus Selector8.out" as Connection3393
-                    [
-                        breakpoints = 7920, 8552
-                    ]
-                    connect Gain11.in Junction3 as Connection3394
-                    connect Gain15.in Gain16.out as Connection3399
-                    connect HIL_VAr.in Junction4 as Connection3400
-                    [
-                        breakpoints = 7920, 8592
-                    ]
-                    connect Junction4 "Bus Selector9.out" as Connection3401
-                    [
-                        breakpoints = 7920, 8704
-                    ]
-                    connect Gain16.in Junction4 as Connection3402
-                    connect "Bus Selector7.in" Junction5 as Connection3404
-                    connect "Bus Selector6.in" Junction5 as Connection3406
-                    connect Junction5 Junction6 as Connection3407
-                    connect Junction6 In1 as Connection3408
-                    connect "Bus Selector8.in" Junction7 as Connection3410
-                    connect Junction7 Junction6 as Connection3411
-                    connect "Bus Selector9.in" Junction7 as Connection3412
-                }
-                [
-                    position = 7024, 7536
-                    size = 48, 80
                 ]
 
                 component "core/Probe" excp_code_EPC {
@@ -7327,34 +6855,11 @@ model "ieee_33bus" {
                     size = 64, 32
                 ]
 
-                component "core/Current Measurement" INV1_IC {
-                    frequency = "100e3"
-                }
-                [
-                    position = 7448, 7904
-                    scale = -1, 1
-                    size = 64, 32
-                ]
-
-                component "core/Current Measurement" INV1_IB {
-                    frequency = "100e3"
-                }
-                [
-                    position = 7448, 7808
-                    scale = -1, 1
-                    size = 64, 32
-                ]
-
-                component "core/Current Measurement" INV1_IA {
-                    frequency = "300"
-                }
-                [
-                    position = 7448, 7712
-                    scale = -1, 1
-                    size = 64, 32
-                ]
-
                 component "core/Battery" Battery1 {
+                    R_series = "0.010666666666666677"
+                    capacity = "1875.0"
+                    nominal_voltage = "800.0"
+                    signal_access = "Inherit"
                 }
                 [
                     position = 9512, 7808
@@ -7370,7 +6875,7 @@ model "ieee_33bus" {
                     unit = ""
                 }
                 [
-                    position = 8552, 8912
+                    position = 8552, 8904
                 ]
 
                 component "core/SCADA Input" "SCADA Input1" {
@@ -7378,7 +6883,7 @@ model "ieee_33bus" {
                     unit = ""
                 }
                 [
-                    position = 8552, 8480
+                    position = 8552, 8472
                 ]
 
                 component "core/SCADA Input" "SCADA Input2" {
@@ -7386,7 +6891,7 @@ model "ieee_33bus" {
                     unit = ""
                 }
                 [
-                    position = 8552, 8624
+                    position = 8552, 8616
                 ]
 
                 component "core/SCADA Input" "SCADA Input3" {
@@ -7394,14 +6899,41 @@ model "ieee_33bus" {
                     unit = ""
                 }
                 [
-                    position = 8552, 8768
+                    position = 8552, 8760
                 ]
 
                 component "core/Three Phase Core Coupling" CC2 {
                 }
                 [
-                    position = 8272, 7808
+                    position = 8048, 7808
                     size = 12, 256
+                ]
+
+                component "core/Current Measurement" INV1_IC {
+                    frequency = "100e3"
+                }
+                [
+                    position = 8552, 7904
+                    scale = -1, 1
+                    size = 64, 32
+                ]
+
+                component "core/Current Measurement" INV1_IB {
+                    frequency = "100e3"
+                }
+                [
+                    position = 8552, 7808
+                    scale = -1, 1
+                    size = 64, 32
+                ]
+
+                component "core/Current Measurement" INV1_IA {
+                    frequency = "300"
+                }
+                [
+                    position = 8552, 7712
+                    scale = -1, 1
+                    size = 64, 32
                 ]
 
                 port A1 {
@@ -7410,7 +6942,7 @@ model "ieee_33bus" {
                     direction =  in
                 }
                 [
-                    position = 6784, 7712
+                    position = 7152, 7712
                 ]
 
                 port B1 {
@@ -7419,7 +6951,7 @@ model "ieee_33bus" {
                     direction =  in
                 }
                 [
-                    position = 6784, 7808
+                    position = 7152, 7808
                 ]
 
                 port C1 {
@@ -7428,7 +6960,7 @@ model "ieee_33bus" {
                     direction =  in
                 }
                 [
-                    position = 6784, 7904
+                    position = 7152, 7904
                 ]
 
                 tag Goto2 {
@@ -7519,17 +7051,17 @@ model "ieee_33bus" {
 
                 comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Pref</p></body></html> ENDCOMMENT 
                 [
-                    position = 8528, 8576
+                    position = 8528, 8568
                 ]
 
                 comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Qref</p></body></html> ENDCOMMENT 
                 [
-                    position = 8536, 8720
+                    position = 8536, 8712
                 ]
 
                 comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Clear_Fauts</p></body></html> ENDCOMMENT 
                 [
-                    position = 8496, 8848
+                    position = 8496, 8840
                 ]
 
                 connect C3.out 0_0A.in as Connection3052
@@ -7550,7 +7082,6 @@ model "ieee_33bus" {
                 connect Lg.C Cf.c as Connection2247
                 connect Lg.A Cf.a as Connection2249
                 connect Goto2 "Signal switch1.out" as Connection3561
-                connect MTR-SGW.Out epc2sgw_total.In1 as Connection3582
                 connect Constant1.out Junction498 as Connection3594
                 connect Junction498 "Signal switch1.in1" as Connection3595
                 connect Goto3 Junction498 as Connection3596
@@ -7559,30 +7090,9 @@ model "ieee_33bus" {
                 [
                     breakpoints = 8800, 8352; 8800, 8432
                 ]
-                connect INV1.a_in MTR-INV1.A+ as Connection3883
-                connect INV1.b_in MTR-INV1.B+ as Connection3884
-                connect INV1.c_in MTR-INV1.C+ as Connection3885
                 connect MTR-INV1.A- Lc.A as Connection3886
                 connect MTR-INV1.B- Lc.B as Connection3887
                 connect MTR-INV1.C- Lc.C as Connection3888
-                connect MTR-GRID.A- INV1_IA.n_node as Connection3940
-                connect MTR-GRID.B- INV1_IB.n_node as Connection3941
-                connect MTR-GRID.C- INV1_IC.n_node as Connection3942
-                connect INV1_IA.p_node INV1-MX1.a_in as Connection3947
-                [
-                    breakpoints = 7624, 7712
-                ]
-                connect INV1-MX1.b_in INV1_IB.p_node as Connection3945
-                [
-                    breakpoints = 7576, 7808
-                ]
-                connect INV1_IC.p_node INV1-MX1.c_in as Connection3946
-                [
-                    breakpoints = 7528, 7904
-                ]
-                connect MTR-GRID.A+ MTR-SGW.A- as Connection3948
-                connect MTR-GRID.B+ MTR-SGW.B- as Connection3949
-                connect MTR-GRID.C+ MTR-SGW.C- as Connection3950
                 connect Battery1.p_node Junction550 as Connection3953
                 connect Junction550 Ibat.p_node as Connection3954
                 connect Vdc_EPC.p_node Junction550 as Connection3955
@@ -7603,9 +7113,6 @@ model "ieee_33bus" {
                 connect Junction552 Junction554 as Connection3971
                 connect Junction554 Junction553 as Connection3972
                 connect From1 Junction554 as Connection3973
-                connect A1 MTR-SGW.A+ as Connection3974
-                connect B1 MTR-SGW.B+ as Connection3975
-                connect C1 MTR-SGW.C+ as Connection3976
                 connect INV1.pos_out I_ac.n_node as Connection4002
                 connect INV1.neg_out "INV1-DC Link.DC-" as Connection4003
                 connect Cf.C CC2.c_in as Connection4004
@@ -7620,6 +7127,18 @@ model "ieee_33bus" {
                     breakpoints = 9512, 7904
                 ]
                 connect "INV1-DC Link.-DC" Junction555 as Connection4013
+                connect A1 MTR-GRID.A+ as Connection4014
+                connect MTR-GRID.B+ B1 as Connection4015
+                connect C1 MTR-GRID.C+ as Connection4016
+                connect MTR-INV1.A+ INV1_IA.n_node as Connection4017
+                connect INV1_IA.p_node INV1.a_in as Connection4018
+                connect MTR-INV1.B+ INV1_IB.n_node as Connection4019
+                connect INV1_IB.p_node INV1.b_in as Connection4020
+                connect MTR-INV1.C+ INV1_IC.n_node as Connection4021
+                connect INV1_IC.p_node INV1.c_in as Connection4022
+                connect MTR-GRID.A- INV1-MX1.a_in as Connection4023
+                connect MTR-GRID.B- INV1-MX1.b_in as Connection4024
+                connect MTR-GRID.C- INV1-MX1.c_in as Connection4025
 
                 mask {
                     description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
@@ -7733,7 +7252,7 @@ model "ieee_33bus" {
                 breakpoints = 7720, 8336; 7720, 8400
             ]
 
-            T_Ts = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            T_Ts = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]"
             T_mode = "Time"
             basefreq = "60"
             chargetrigger = "0.2"
@@ -7749,19 +7268,19 @@ model "ieee_33bus" {
             inv_r = "1e-5"
             inv_rf = "100e-3"
             kv = "0.480"
-            kwhrated = "50"
-            kwrated = "25"
+            kwhrated = "1500"
+            kwrated = "500"
             load_loadshape = "Choose"
-            loadshape = "[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
             loadshape_from_file_column = "1"
             loadshape_from_file_header = "True"
             loadshape_from_file_path = ""
             loadshape_int = "1"
-            loadshape_name = "Discharge"
+            loadshape_name = "Default"
             pct_charge = "100"
             pct_discharge = "100"
-            pct_effcharge = "90"
-            pct_effdischarge = "90"
+            pct_effcharge = "95"
+            pct_effdischarge = "95"
             pct_idlingkw = "1"
             pct_reserve = "20"
             pct_stored = "100"
@@ -8299,27 +7818,6 @@ model "ieee_33bus" {
             scale = 1, -1
         ]
 
-        component "OpenDSS/Coupling" Cpl2 {
-            itm_csnb_r = "100e6"
-            itm_csnb_type = "R1"
-            itm_vsnb_r = "1e-3"
-            itm_vsnb_type = "R2"
-        }
-        [
-            position = 9400, 8272
-            scale = -1, 1
-            size = 34, 97
-        ]
-
-        component "OpenDSS/Bus" BusCpl2 {
-            phase_n = "False"
-            type_prop = "ABC"
-        }
-        [
-            position = 9320, 8272
-            size = 16, 96
-        ]
-
         component "OpenDSS/Three-Phase Transformer" T1 {
             KVAs = "[500, 500]"
             KVs = "[12.66, 0.480]"
@@ -8330,26 +7828,6 @@ model "ieee_33bus" {
         [
             position = 13392, 8288
             size = 64, 124
-        ]
-
-        component "OpenDSS/Coupling" Cpl6 {
-            itm_csnb_r = "100e6"
-            itm_csnb_type = "R1"
-            itm_vsnb_r = "1e-3"
-            itm_vsnb_type = "R2"
-        }
-        [
-            position = 10208, 8272
-            size = 34, 97
-        ]
-
-        component "OpenDSS/Bus" BusCpl6 {
-            phase_n = "False"
-            type_prop = "ABC"
-        }
-        [
-            position = 10288, 8272
-            size = 16, 96
         ]
 
         component "OpenDSS/Monitoring" Monitoring1 {
@@ -8365,6 +7843,46 @@ model "ieee_33bus" {
         }
         [
             position = 13512, 8272
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Coupling" CPL1 {
+            itm_csnb_r = "100e5"
+            itm_csnb_type = "R1"
+            itm_vsnb_r = "1e-3"
+            itm_vsnb_type = "R2"
+        }
+        [
+            position = 9376, 8272
+            size = 34, 97
+        ]
+
+        component "OpenDSS/Bus" Buscpl1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9296, 8272
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Coupling" CPL2 {
+            itm_csnb_r = "100e5"
+            itm_csnb_type = "R1"
+            itm_vsnb_r = "1e-3"
+            itm_vsnb_type = "R2"
+        }
+        [
+            position = 10232, 8272
+            size = 34, 97
+        ]
+
+        component "OpenDSS/Bus" Buscpl2 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 10304, 8272
             size = 16, 96
         ]
 
@@ -9236,18 +8754,6 @@ model "ieee_33bus" {
         connect Junction153 Line16_17.C2 as Connection906
         connect Junction153 Load17.C1 as Connection907
         connect Junction153 Bus17.C1 as Connection908
-        connect T1.B1 Bus18.B2 as Connection926
-        [
-            breakpoints = 13280, 8272
-        ]
-        connect T1.C1 Bus18.C2 as Connection925
-        [
-            breakpoints = 13280, 8304
-        ]
-        connect Bus18.A2 T1.A1 as Connection924
-        [
-            breakpoints = 13280, 8240
-        ]
         connect Junction160 Load9.A1 as Connection967
         [
             breakpoints = 10504, 8240; 10504, 8240; 10504, 8240; 10504, 8240; 10504, 8240; 10504, 8240; 10504, 8240; 10504, 8240
@@ -9262,18 +8768,12 @@ model "ieee_33bus" {
         connect Junction165 Line6_7.C2 as Connection984
         connect Junction165 Bus7.C1 as Connection985
         connect Junction165 Load7.C1 as Connection986
-        connect Line5_6.A2 BusCpl2.A1 as Connection1017
-        connect Line5_6.B2 BusCpl2.B1 as Connection1018
-        connect Line5_6.C2 BusCpl2.C1 as Connection1019
         connect Junction175 Line17_18.A2 as Connection1044
-        connect Junction175 Bus18.A1 as Connection1045
         connect Junction175 Load18.A1 as Connection1046
         connect Junction176 Line17_18.B2 as Connection1047
-        connect Junction176 Bus18.B1 as Connection1048
         connect Junction176 Load18.B1 as Connection1049
         connect Junction177 Line17_18.C2 as Connection1050
         connect Junction177 Bus18.C1 as Connection1051
-        connect Junction177 Load18.C1 as Connection1052
         connect Junction178 Line14_15.A2 as Connection1068
         connect Junction178 Bus15.A1 as Connection1069
         connect Junction178 Load15.A1 as Connection1070
@@ -9301,19 +8801,7 @@ model "ieee_33bus" {
         [
             breakpoints = 10504, 8240
         ]
-        connect Bus8.C2 Cpl6.C1 as Connection1093
-        connect Cpl6.A1 Bus8.A2 as Connection1096
-        connect Bus8.B2 Cpl6.B1 as Connection1097
-        connect Cpl6.B2 BusCpl6.B1 as Connection1098
-        connect BusCpl6.B2 Line8_9.B1 as Connection1099
-        connect Line8_9.A1 BusCpl6.A2 as Connection1100
-        connect BusCpl6.A1 Cpl6.A2 as Connection1101
-        connect Cpl6.C2 BusCpl6.C1 as Connection1102
-        connect BusCpl6.C2 Line8_9.C1 as Connection1103
-        connect BusCpl2.A2 Cpl2.A2 as Connection1107
-        connect BusCpl2.B2 Cpl2.B2 as Connection1108
-        connect BusCpl2.C2 Cpl2.C2 as Connection1109
-        connect Constant1.out "EPC.Load point" as Connection1122
+        connect Constant1.out "Storage.Load point" as Connection1122
         connect Bus25.C1 Junction108 as Connection1124
         [
             breakpoints = 9224, 7920
@@ -9363,36 +8851,70 @@ model "ieee_33bus" {
         connect Junction186 Load2.C1 as Connection1145
         connect Junction186 Bus2.C1 as Connection1146
         connect Junction187 Load6.A1 as Connection1150
-        connect Junction187 Bus6.A1 as Connection1152
         connect Junction188 Load6.B1 as Connection1153
-        connect Junction188 Bus6.B1 as Connection1155
         connect Junction189 Load6.C1 as Connection1156
-        connect Junction189 Bus6.C1 as Connection1158
-        connect Junction190 Line6_26.A1 as Connection1159
-        connect Junction190 Junction187 as Connection1160
-        connect Junction190 Cpl2.A1 as Connection1161
-        connect Junction191 Line6_26.B1 as Connection1162
-        connect Junction191 Junction188 as Connection1163
-        connect Junction191 Cpl2.B1 as Connection1164
-        connect Junction192 Line6_26.C1 as Connection1165
-        connect Junction192 Junction189 as Connection1166
-        connect Junction192 Cpl2.C1 as Connection1167
         connect T1.C2 BusEPC.C1 as Connection1168
-        connect BusEPC.C2 EPC.C1 as Connection1169
         connect T1.B2 BusEPC.B1 as Connection1170
-        connect BusEPC.B2 EPC.B1 as Connection1171
         connect T1.A2 BusEPC.A1 as Connection1172
-        connect BusEPC.A2 EPC.A1 as Connection1173
+        connect Junction188 Line6_26.B1 as Connection1176
+        [
+            breakpoints = 9496, 8272; 9496, 8272
+        ]
+        connect Line6_26.A1 Junction187 as Connection1174
+        [
+            breakpoints = 9464, 8240
+        ]
+        connect Junction189 Line6_26.C1 as Connection1175
+        [
+            breakpoints = 9528, 8304; 9528, 8304
+        ]
+        connect Line5_6.A2 Buscpl1.A1 as Connection1198
+        connect Line5_6.B2 Buscpl1.B1 as Connection1199
+        connect Line5_6.C2 Buscpl1.C1 as Connection1200
+        connect Bus8.A2 CPL2.A1 as Connection1213
+        connect Bus8.B2 CPL2.B1 as Connection1214
+        connect Bus8.C2 CPL2.C1 as Connection1215
+        connect CPL2.A2 Buscpl2.A1 as Connection1216
+        connect CPL2.B2 Buscpl2.B1 as Connection1217
+        connect CPL2.C2 Buscpl2.C1 as Connection1218
+        connect Buscpl2.A2 Line8_9.A1 as Connection1219
+        connect Buscpl2.B2 Line8_9.B1 as Connection1220
+        connect Buscpl2.C2 Line8_9.C1 as Connection1221
+        connect BusEPC.A2 Storage.A1 as Connection1222
+        connect BusEPC.B2 Storage.B1 as Connection1223
+        connect BusEPC.C2 Storage.C1 as Connection1224
+        connect Buscpl1.A2 CPL1.A1 as Connection1228
+        connect Buscpl1.B2 CPL1.B1 as Connection1229
+        connect Buscpl1.C2 CPL1.C1 as Connection1230
+        connect Junction190 CPL1.A2 as Connection1231
+        connect Junction190 Junction187 as Connection1232
+        connect Junction190 Bus6.A1 as Connection1233
+        connect Junction191 CPL1.B2 as Connection1234
+        connect Junction191 Bus6.B1 as Connection1235
+        connect Junction191 Junction188 as Connection1236
+        connect Junction192 CPL1.C2 as Connection1237
+        connect Junction192 Bus6.C1 as Connection1238
+        connect Junction192 Junction189 as Connection1239
+        connect Junction176 Bus18.B1 as Connection1251
+        [
+            breakpoints = 13208, 8272; 13264, 8272
+        ]
+        connect Bus18.A1 Junction175 as Connection1250
+        [
+            breakpoints = 13264, 8240
+        ]
+        connect Junction177 Load18.C1 as Connection1249
+        [
+            breakpoints = 13240, 8304; 13240, 8304
+        ]
+        connect Bus18.A2 T1.A1 as Connection1252
+        connect Bus18.B2 T1.B1 as Connection1253
+        connect Bus18.C2 T1.C1 as Connection1254
     }
 
     default {
         "core/Bus Join" {
             inputs = "2"
-            execution_rate = "inherit"
-        }
-
-        "core/Bus Selector" {
-            signal_indexes = "[0]"
             execution_rate = "inherit"
         }
 
@@ -9837,7 +9359,6 @@ model "ieee_33bus" {
             visualize_luts = "Visualize Lookup Tables"
             vout_cmp_pullup_mode = "False"
             vout_cmp_timeout = "5e-6"
-            PESB_Optimization = "True"
             show_cnt_out = "False"
             show_monitoring = "False"
             _control_property = "all high"
