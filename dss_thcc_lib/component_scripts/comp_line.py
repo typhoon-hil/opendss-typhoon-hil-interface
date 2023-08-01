@@ -198,11 +198,8 @@ def convert_matrix_to_hil_format(mdl, container_handle, matrix_props):
         dummy_matrix = str(evaluated_matrix)
         hil_matrices[mat_name] = dummy_matrix
 
-    mdl.info("-------------------")
-    mdl.info(f"{mdl.get_name(comp_handle)=}")
     for mat_name in ['rmatrix', 'xmatrix', 'cmatrix']:
         if mat_name in matrix_props:
-            mdl.info(f"setting {mat_name} to {hil_matrices.get(mat_name)}")
             mdl.set_property_value(mdl.prop(container_handle, prop_dict.get(mat_name)),
                                    hil_matrices.get(mat_name))
         else:
@@ -210,12 +207,9 @@ def convert_matrix_to_hil_format(mdl, container_handle, matrix_props):
             if mat_name == 'cmatrix':
                 prop_handle = mdl.prop(container_handle, "d_C")
                 cap_array = np.array(mdl.get_property_value(prop_handle)) * 1e-9
-                list_cap_array = cap_array.tolist()
-                mdl.info(f"setting cap to {list_cap_array}")
                 mdl.set_property_value(prop_handle, cap_array.tolist())
             else:
                 mat_prop = mdl.prop(container_handle, mat_name)
-                mdl.info(f"setting {mat_name} to {mdl.get_property_disp_value(mat_prop)}")
                 mdl.set_property_value(mdl.prop(container_handle, prop_dict.get(mat_name)),
                                        mdl.get_property_disp_value(mat_prop))
 

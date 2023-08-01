@@ -5,66 +5,6 @@ library "OpenDSS" {
     component Subsystem Root {
          component Subsystem Bus {
             layout = static
-            component "core/Ground" gnd1 {
-            }
-            [
-                position = 7592, 8352
-                hide_name = True
-            ]
-
-            component "core/Open Circuit" OCB {
-            }
-            [
-                position = 7512, 8000
-                hide_name = True
-            ]
-
-            component "core/Open Circuit" OCA {
-            }
-            [
-                position = 7512, 7904
-                hide_name = True
-            ]
-
-            component "core/Three-phase Meter" meter_3ph {
-                IA = "False"
-                IB = "False"
-                IC = "False"
-                VAn = "False"
-                VBn = "False"
-                VCn = "False"
-                enable_out = "False"
-            }
-            [
-                position = 7672, 7952
-                size = 56, 240
-            ]
-
-            component "core/Open Circuit" OCC {
-            }
-            [
-                position = 7512, 8096
-                hide_name = True
-            ]
-
-            port B1 {
-                position = -8, 0
-                kind = pe
-                direction =  out
-            }
-            [
-                position = 7400, 7952
-            ]
-
-            port B2 {
-                position = 8, 0
-                kind = pe
-                direction =  out
-            }
-            [
-                position = 7792, 7952
-                scale = -1, 1
-            ]
 
             port A1 {
                 position = -8, -32
@@ -72,7 +12,7 @@ library "OpenDSS" {
                 direction =  out
             }
             [
-                position = 7400, 7856
+                position = 7992, 7992
             ]
 
             port A2 {
@@ -81,7 +21,26 @@ library "OpenDSS" {
                 direction =  out
             }
             [
-                position = 7792, 7856
+                position = 8392, 7992
+                scale = -1, 1
+            ]
+
+            port B1 {
+                position = -8, 0
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 7992, 8192
+            ]
+
+            port B2 {
+                position = 8, 0
+                kind = pe
+                direction =  out
+            }
+            [
+                position = 8392, 8192
                 scale = -1, 1
             ]
 
@@ -91,7 +50,7 @@ library "OpenDSS" {
                 direction =  out
             }
             [
-                position = 7400, 8048
+                position = 7992, 8392
             ]
 
             port C2 {
@@ -100,99 +59,13 @@ library "OpenDSS" {
                 direction =  out
             }
             [
-                position = 7792, 8048
+                position = 8392, 8392
                 scale = -1, 1
             ]
 
-            tag "Electric Tag1" {
-                value = "ground"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 7592, 8272
-                rotation = right
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag tag_ph_B {
-                value = "ground"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 7416, 8000
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag tag_ph_A {
-                value = "ground"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 7416, 7904
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag tag_3ph {
-                value = "ground"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 7720, 8112
-                rotation = down
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag tag_ph_C {
-                value = "ground"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 7416, 8096
-                hide_name = True
-                size = 60, 20
-            ]
-
-            junction jun_B pe
-            [
-                position = 7560, 7952
-            ]
-
-            junction jun_A pe
-            [
-                position = 7560, 7856
-            ]
-
-            junction jun_C pe
-            [
-                position = 7560, 8048
-            ]
-
-            connect "Electric Tag1" gnd1.node as Connection61
-            connect B1 jun_B as Connection116
-            connect jun_B OCB.n_node as Connection117
-            connect OCB.p_node tag_ph_B as Connection118
-            connect A1 jun_A as Connection124
-            connect jun_A OCA.n_node as Connection125
-            connect OCA.p_node tag_ph_A as Connection126
-            connect meter_3ph.GND tag_3ph as Connection142
-            connect C1 jun_C as Connection143
-            connect jun_C OCC.n_node as Connection144
-            connect OCC.p_node tag_ph_C as Connection145
-            connect jun_A meter_3ph.A+ as Connection146
-            connect meter_3ph.A- A2 as Connection147
-            connect jun_B meter_3ph.B+ as Connection148
-            connect meter_3ph.B- B2 as Connection149
-            connect jun_C meter_3ph.C+ as Connection150
-            connect meter_3ph.C- C2 as Connection151
+            connect A1 A2 as ConnectionA1A2
+            connect B1 B2 as ConnectionB1B2
+            connect C1 C2 as ConnectionC1C2
 
             phase_n = "False"
             type_prop = "ABC"
@@ -209,16 +82,6 @@ library "OpenDSS" {
                     nonvisible
                     disabled
                     no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
                 }
 
                 phase_a {
@@ -230,12 +93,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
 
@@ -248,12 +108,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
 
@@ -266,12 +123,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
 
@@ -284,12 +138,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.set_bus_phases(mdl, container_handle, caller_handle="value_edited")
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
 
@@ -303,205 +154,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                i_rms_meas {
-                    label = "Line Currents  - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                i_inst_meas {
-                    label = " Instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_line_rms_meas {
-                    label = "Line Voltages  - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_line_inst_meas {
-                    label = " instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_phase_rms_meas {
-                    label = "Phase Voltage - RMS"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                v_phase_inst_meas {
-                    label = " instantaneous"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    keepline
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                freq_meas {
-                    label = "Frequency"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                power_meas {
-                    label = "Power"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle,
-                                                         init= new_value == old_value)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                execution_rate {
-                    label = "Execution Rate"
-                    widget = edit
-                    type = generic
-                    default_value = "100e-6"
-                }
-
-                enable_output {
-                    label = "Enable Output"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    group = "Measurements:2"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -519,7 +174,6 @@ library "OpenDSS" {
                         current_diagram=current_diagram
                     )
                     dialog.exec_()
-
                 ENDCODE
 
                 CODE define_icon
@@ -535,7 +189,9 @@ library "OpenDSS" {
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
-
+                        
+                    comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
             }

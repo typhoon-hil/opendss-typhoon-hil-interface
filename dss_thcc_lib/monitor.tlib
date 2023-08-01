@@ -1,0 +1,383 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem Monitor {
+            layout = static
+
+            port A1 {
+                position = -16, -32
+                kind = pe
+            }
+            [
+                position = 7992, 7992
+                hide_name = True
+            ]
+
+            port A2 {
+                position = -16, 0
+                kind = pe
+            }
+            [
+                position = 8392, 7992
+                hide_name = True
+                scale = -1, 1
+            ]
+
+            port B1 {
+                position = 16, -32
+                kind = pe
+            }
+            [
+                position = 7992, 8192
+                hide_name = True
+            ]
+
+            port B2 {
+                position = 16, 0
+                kind = pe
+            }
+            [
+                position = 8392, 8192
+                hide_name = True
+                scale = -1, 1
+            ]
+
+            port C1 {
+                position = -16, 32
+                kind = pe
+            }
+            [
+                position = 7992, 8392
+                hide_name = True
+            ]
+
+            port C2 {
+                position = 16, 32
+                kind = pe
+            }
+            [
+                position = 8392, 8392
+                hide_name = True
+                scale = -1, 1
+            ]
+
+            component "core/Ground" gnd {
+            }
+            [
+                position = 8192, 8592
+            ]
+
+            tag "gnd_tag" {
+                value = "gnd"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 8152, 8542
+                hide_name = True
+                size = 60, 20
+            ]
+
+            connect "gnd_tag" gnd.node as Connection_gnd_tag
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Monitor.</p></body></html>"
+
+                phase_a {
+                    label = "Phase A"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                phase_b {
+                    label = "Phase B"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                phase_c {
+                    label = "Phase C"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                enable_output {
+                    label = "Enable signal output"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                execution_rate {
+                    label = "Execution Rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                    keepline
+                }
+
+                i_rms_meas {
+                    label = "Currents               RMS"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                i_inst_meas {
+                    label = "Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_rms_meas {
+                    label = "Line Voltages        RMS"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_line_inst_meas {
+                    label = "Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_rms_meas {
+                    label = "Phase Voltages     RMS"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                v_phase_inst_meas {
+                    label = "Instantaneous"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    keepline
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                freq_meas {
+                    label = "Frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                power_meas {
+                    label = "Power"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                ran_dynamics {
+                    label = ""
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    nonvisible
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    import dss_thcc_lib.component_scripts.comp_monitor as comp_script
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.topology_dynamics(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4704, 4208
+            size = 144, 144
+        ]
+    }
+}

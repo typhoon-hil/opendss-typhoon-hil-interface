@@ -64,21 +64,17 @@ def update_connections(mdl, container_handle, ports):
             mdl.create_connection(mdl.term(vc, 'n_node'), jun)
 
         if tp_connection == "Y - Grounded":
-            gnd = mdl.create_component(
-                "core/Ground",
-                name="gnd1",
-                parent=comp_handle,
-                position=(x0 - 300, y0 - 0),
-                rotation="right"
-            )
+            gnd = mdl.get_item("gnd1", parent=comp_handle)
+            if not gnd:
+                gnd = mdl.create_component(
+                    "core/Ground",
+                    name="gnd1",
+                    parent=comp_handle,
+                    position=(x0 - 300, y0 - 0),
+                    rotation="right"
+                )
             if len(mdl.find_connections(mdl.term(gnd, "node"), jun)) == 0:
                 mdl.create_connection(mdl.term(gnd, "node"), jun)
-        # else:  # tp_connection == "Neutral point accessible"
-        #     gnd = mdl.get_item("gnd1", parent=comp_handle)
-        #     if gnd:
-        #         mdl.delete_item(gnd)
-        #     if len(mdl.find_connections(ports.get("N1"), jun)) == 0:
-        #         mdl.create_connection(ports.get("N1"), jun)
 
     else:
         # Ground handle
