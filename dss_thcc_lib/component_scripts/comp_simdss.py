@@ -1672,12 +1672,13 @@ def check_topological_conflicts(mdl, dss, cpl_handle, restore_names_dict):
     # Current Source Side
     cs_topological_components = []
     cpl_csnb_type = mdl.get_property_value(mdl.prop(cpl_handle, "itm_csnb_type"))
-    has_cs_snb = cpl_csnb_type != "none" and cpl_mode != "Manual"   # Skip the process if is in auto-mode
+    has_cs_snb = cpl_csnb_type != "none" or cpl_mode != "Manual"   # Skip the process if is in auto-mode
     has_bus_snb = False
     bus_meter_handle = mdl.get_item("meter_3ph", parent=dss_tse_dict_handles[cs_bus[0].upper()])
     if bus_meter_handle:
         has_bus_snb = not mdl.get_property_value(mdl.prop(bus_meter_handle, "remove_snubber"))
 
+    has_bus_snb = False  # Forcing for debug
     connected_elem = []
     if (not has_cs_snb) and (not has_bus_snb):
 
