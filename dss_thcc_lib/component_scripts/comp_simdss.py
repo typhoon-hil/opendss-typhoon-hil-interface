@@ -1676,7 +1676,6 @@ def check_topological_conflicts(mdl, dss, cpl_handle, restore_names_dict):
     if bus_meter_handle:
         has_bus_snb = not mdl.get_property_value(mdl.prop(bus_meter_handle, "remove_snubber"))
 
-    has_bus_snb = False  # Forcing for debug
     connected_elem = []
     if (not has_cs_snb) and (not has_bus_snb):
 
