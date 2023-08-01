@@ -42,7 +42,7 @@ class Isource(TwoTerminal):
         new_format_properties = dict(tse_properties)
 
         if new_format_properties['global_basefreq'] == "True":
-            new_format_properties.pop('BaseFreq')
+            new_format_properties.pop('baseFreq')
 
         new_format_properties.pop('global_basefreq')
         new_format_properties.pop('enable_monitoring')

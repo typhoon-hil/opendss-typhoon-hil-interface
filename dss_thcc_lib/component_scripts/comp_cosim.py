@@ -23,7 +23,6 @@ def open_mask(mdl, mask_handle, cosim):
     dss_model_path = mdl.get_property_value(mdl.prop(mask_handle, "model_path"))
     execution_rate = mdl.get_property_disp_value(mdl.prop(mask_handle, "execution_rate"))
 
-    # dss = load_dss_api(mdl, mask_handle)
     import opendssdirect as dss
     cosim_window = cosim.CoSimulation(dss, selected_interface_points, dss_model_path, execution_rate)
     if cosim_window.exec():
@@ -54,22 +53,8 @@ def get_saved_properties(mdl, mask_handle):
     except:
         selected_interface_points = [mdl.get_property_value(saved_selected_interface_points_prop)]
 
-
     return [position_dict, selected_interface_points]
 
-# def load_dss_api(mdl, mask_handle):
-#     import typhoon.api.hil as hil
-#     import os, sys
-#
-#     SW_VERS = hil.get_sw_version()
-#     appdata_path = os.getenv('APPDATA')
-#     dss_direct_path = fr"{appdata_path}\typhoon\{SW_VERS}\python_portables\python3_portable\Lib\site-packages"
-#     if not dss_direct_path in sys.path:
-#         sys.path.append(dss_direct_path)
-#
-#     import opendssdirect as dss
-#
-#     return dss
 
 def restore_configuration(mdl, mask_handle):
     position_dict, _ = get_saved_properties(mdl, mask_handle)

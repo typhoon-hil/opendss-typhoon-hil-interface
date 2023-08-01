@@ -7,14 +7,10 @@ x0, y0 = (8192, 8192)
 # This function manages the mask properties
 # If tp_connection == "Y - Grounded", the fields for Rneut and Xneut
 # will be available.
-# https://youtu.be/Al3vXVe9WVU
 # *******************************************************************
 def tp_connection_edited(mdl, mask_handle, new_value):
     rneut_prop = mdl.prop(mask_handle, "Rneut")
     xneut_prop = mdl.prop(mask_handle, "Xneut")
-
-    #tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
-    #tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
     if new_value == "Y - Grounded":
         # Enable user input fields for N to Gnd impedance

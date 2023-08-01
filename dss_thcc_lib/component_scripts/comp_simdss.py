@@ -170,8 +170,6 @@ def sim_with_opendss(mdl, mask_handle):
 
     import opendssdirect as dss
 
-    mdl.info(f"{dss.__path__=}")
-
     # try:
     from tse_to_opendss.tse2tpt_base_converter import tse2tpt
     import tse_to_opendss

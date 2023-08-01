@@ -151,21 +151,35 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Three-phase/Single-phase constant-impedance/constant-power Load component.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=192"
 
-                // https://youtu.be/Gp1JHonRaP4?list=PL9NFe4Eipyfc3eHcT6v4r7C20QX1b-Gy2
+                ground_connected {
+                    label = "Old ground connection property (retro-compatibility)"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "General"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.retro_compatibility(mdl, container_handle)
+                    ENDCODE
+                }
+
                 tp_connection {
                     label = "Connection type"
                     widget = combo
                     combo_values = "Y - Grounded", "Y", "Δ"
                     type = string
-                    default_value = "Y - Grounded"
+                    default_value = "Y"
                     group = "General"
                     no_evaluate
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
-                        tp_connection_prop = mdl.prop(container_handle, "tp_connection")
-                        combo_values = mdl.get_property_combo_values(tp_connection_prop)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -173,7 +187,6 @@ library "OpenDSS" {
                         comp_script.tp_connection_edited(mdl, container_handle, new_value)
                     ENDCODE
                 }
-
                 phases {
                     label = "Number of Phases"
                     widget = combo
@@ -186,6 +199,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -270,10 +286,10 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        # comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
-                        comp_script.set_pf_mode(mdl, container_handle, new_value)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                        #comp_script.set_pf_mode(mdl, container_handle, new_value)
                     ENDCODE
 
                     CODE property_value_edited
@@ -307,13 +323,6 @@ library "OpenDSS" {
                     group = "Load Parameters"
                     no_evaluate
 
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        if new_value == "Constant Power" or new_value == "Constant Z,I,P":
-                            mdl.info("Warning: Load Constant Power mode demands grounding for correct HIL simulation.")
-                        comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
-                    ENDCODE
-
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.tp_connection_dynamics(mdl, container_handle)
@@ -331,7 +340,8 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.zip_change_fnc(mdl, container_handle, new_value)
+                        if new_value != old_value:
+                            comp_script.zip_change_fnc(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -345,7 +355,8 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.zip_change_fnc(mdl, container_handle, new_value)
+                        if new_value != old_value:
+                            comp_script.zip_change_fnc(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -417,8 +428,11 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_pow_ref_dynamics(mdl, container_handle, ports)
+                        #ports = comp_script.port_dynamics(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                        #comp_script.connections_pow_ref_dynamics(mdl, container_handle, ports)
                     ENDCODE
                 }
 
@@ -434,7 +448,8 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.validate_execution_rate(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.validate_execution_rate(mdl, container_handle)
 
                     ENDCODE
                 }
@@ -450,8 +465,8 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.validate_execution_rate(mdl, container_handle)
-
+                        if new_value != old_value:
+                            comp_script.validate_execution_rate(mdl, container_handle)
                     ENDCODE
                 }
 
@@ -495,7 +510,8 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.zero_seq_removal(mdl, container_handle, new_value)
+                        if new_value != old_value:
+                            comp_script.zero_seq_removal(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
@@ -756,8 +772,9 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        ports = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.connections_ts_mode_dynamics(mdl, container_handle, ports)
+                        if new_value != old_value:
+                            ports = comp_script.port_dynamics(mdl, container_handle)
+                            comp_script.connections_ts_mode_dynamics(mdl, container_handle, ports)
                     ENDCODE
 
                     CODE property_value_edited
@@ -999,20 +1016,10 @@ library "OpenDSS" {
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    comp_script.topology_dynamics(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
 
                 ENDCODE
-
-                CODE before_change
-                    comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.topology_dynamics(mdl, item_handle)
-                ENDCODE
-
-                CODE model_loaded
-                    comp_script = return_comp_script(mdl, item_handle)
-                    comp_script.topology_dynamics(mdl, item_handle)
-                ENDCODE
-
 
                 CODE on_dialog_close
                     comp_script = return_comp_script(mdl, item_handle)
