@@ -1323,7 +1323,7 @@ def set_load_model(mdl, mask_handle):
             cil1 = mdl.create_component("OpenDSS/CIL", parent=comp_handle,
                                         name="CIL", position=(7920, 8208),
                                         rotation="up")
-            set_pf_mode(mdl, mask_handle, pf_mode)
+        set_pf_mode(mdl, mask_handle, pf_mode)
 
         if tp_connection == "Y" or tp_connection == "Y - Grounded":
             mdl.set_property_value(mdl.prop(cil1, "conn_type"), "Y")
