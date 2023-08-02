@@ -37,7 +37,6 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
         terminal_groups_dict.update({n: terminal_list})
         for p in phase_letters:
             terminal_list.append(f"{p}{n}")
-    print(f"{terminal_groups_dict=}")
 
     # Find the Bus components that are connected to the current component
     connected_buses = tse_fns.connected_components(tse_component, comp_type=constants.DSS_BUS)
