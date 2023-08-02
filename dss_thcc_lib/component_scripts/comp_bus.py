@@ -143,6 +143,14 @@ def topology_dynamics(mdl, mask_handle):
 
     old_state[comp_handle] = new_prop_values
 
+    #
+    # Save value to the retro-compatibility property
+    #
+    type_prop = mdl.prop(mask_handle, "type_prop")
+    retro_string = ""
+    retro_string += phase_a * "A" + phase_b * "B" + phase_c * "C" + phase_n * "N"
+    mdl.set_property_value(type_prop, retro_string)
+
 def define_icon(mdl, mask_handle):
     """
     Defines the component icon based on the number of phases

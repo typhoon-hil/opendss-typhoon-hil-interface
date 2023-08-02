@@ -224,6 +224,9 @@ def topology_dynamics(mdl, mask_handle):
             for inner_prop_name in inner_prop_name_list:
                 prop = mdl.prop(meter_abc, inner_prop_name)
                 mdl.set_property_value(prop, prop_bool)
+        # Set execution rate
+        ts_prop = mdl.prop(meter_abc, "Ts")
+        mdl.set_property_value(ts_prop, "execution_rate")
 
         # Create output port if necessary
         if create_out_ports:
@@ -320,6 +323,13 @@ def topology_dynamics(mdl, mask_handle):
                 mdl.create_connection(port_n_meter, new_tag)
 
             meas_components.append(new_meter)
+
+            # Set execution rate
+            ts_prop = mdl.prop(new_meter, "execution_rate")
+            mdl.set_property_value(ts_prop, "execution_rate")
+            # Set fgrid
+            fgrid_prop = mdl.prop(new_meter, "fgrid")
+            mdl.set_property_value(fgrid_prop, "replace_with_simdss_basefreq")
 
             # Create output port if necessary
             if create_out_ports:
@@ -457,6 +467,31 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             mdl.disable_property(prop)
             mdl.set_property_disp_value(prop, True)
 
+def pre_compilation(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    #
+    # Updates the inner single-phase meters fgrid
+    # based on the global basefrequency value
+    #
+
+    # Get global basefreq
+    if "simdss_basefreq" in mdl.get_ns_vars():
+        global_basefreq = mdl.get_ns_var("simdss_basefreq")
+    else:
+        mdl.error(
+            "Add a SimDSS component to define the global frequency value.",
+            context=comp_handle,
+        )
+        return
+
+    for phase in "ABC":
+        meter = mdl.get_item(f"meter_{phase}", parent=comp_handle)
+
+        if meter:
+            # Set fgrid
+            fgrid_prop = mdl.prop(meter, "fgrid")
+            mdl.set_property_value(fgrid_prop, global_basefreq)
 
 def define_icon(mdl, mask_handle):
     """
