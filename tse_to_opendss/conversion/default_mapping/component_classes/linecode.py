@@ -40,7 +40,7 @@ class LineCode(GeneralObject):
 
         tse_props_copy.pop("mode", "")
         # Assume 3 if phases is not found
-        tse_props_copy['nphases'] = str(self.num_phases)
+        tse_props_copy['nphases'] = tse_props_copy.pop("phases", "3")
 
         # Matrix parameters need to be converted
         if any((tse_props_copy.get(p) for p in ["rmatrix", "xmatrix", "cmatrix"])):
