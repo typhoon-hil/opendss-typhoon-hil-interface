@@ -1,6 +1,5 @@
 import os, pathlib
 
-import dss
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 import numpy as np
@@ -1037,6 +1036,7 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
             pf = float(dss.Properties.Value("pf"))
             kva = float(dss.Properties.Value("KVA"))
             freq = float(dss.Properties.Value("basefreq"))
+            conn = dss.Properties.Value("conn")
             scale_l = (1 / ts) / (2 * np.pi * freq)  # Use as "scale_l*X"
             scale_c = ts * (2 * np.pi * freq)  # Use as "scale_c*Xc"
             mdl.info(f"{kv=}") if debug else None
@@ -1068,6 +1068,63 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
             mdl.info(f"{dss.Properties.Value('kvar')=}") if debug else None
             mdl.info(f"{dss.Properties.Value('kW')=}") if debug else None
             mdl.info(f"{dss.Properties.Value('pf')=}") if debug else None
+
+            # WorkAround for Yz loads (The coupling gets 4 phases instead 3)
+            load_bus = dss.Properties.Value('bus1').split(".")[0]
+            load_nodes = dss.Properties.Value('bus1').split(".")[1:]
+            if "4" in load_nodes:
+                load_nodes.remove("4")
+                dss.CktElement.Enabled(False)
+                load_rneut = float(dss.Properties.Value("Rneut"))
+                load_xneut = float(dss.Properties.Value("Xneut"))
+                if load_rneut != -1:
+                    if load_xneut >= 0:
+                        rneut_eq = load_rneut + scale_l*load_xneut
+                    else:
+                        rneut_eq = load_rneut + scale_c * load_xneut
+                else:
+                    rneut_eq = 1e9
+
+                for load_ph in load_nodes:
+                    snb1_prop = {}
+                    snb1_prop["bus1"] = f"{load_bus}.{load_ph}"
+                    snb1_prop["bus2"] = f"aux1_{load_bus}.4"
+                    snb1_prop["phases"] = 1
+                    snb1_prop["R"] = r_eq
+                    snb1_prop["X"] = 1e-9
+                    params = [f'{param}={snb1_prop.get(param)}' for param in snb1_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_load_name.upper()}_ph{load_ph} " + " ".join(params)
+                    restore_dict[f" REACTOR.{dss_load_name.upper()}_ph{load_ph} "] = f"LOAD.{dss_load_name.upper()}"
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
+
+                snb2_prop = {}
+                snb2_prop["bus1"] = f"aux1_{load_bus}.4"
+                snb2_prop["bus2"] = f"aux2_{load_bus}.0"
+                snb2_prop["phases"] = 1
+                snb2_prop["R"] = rneut_eq
+                snb2_prop["X"] = 1e-9
+                params = [f'{param}={snb2_prop.get(param)}' for param in snb2_prop]
+                cmd_string = "new" + f" REACTOR.{dss_load_name.upper()}_ph{load_ph}_gnd " + " ".join(params)
+                mdl.info(cmd_string) if debug else None
+                dss.run_command(cmd_string)
+                dss.run_command("calcv")
+
+            # WorkAround for delta loads (dss needs a connection to the ground to performs the matrix inversion)
+            if conn == "delta":
+                for load_ph in load_nodes:
+                    snb3_prop = {}
+                    snb3_prop["bus1"] = f"{load_bus}.{load_ph}"
+                    snb3_prop["bus2"] = f"aux2_{load_bus}.0"
+                    snb3_prop["phases"] = 1
+                    snb3_prop["R"] = 1e9
+                    snb3_prop["X"] = 1e-9
+                    params = [f'{param}={snb3_prop.get(param)}' for param in snb3_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_load_name.upper()}_{load_ph}_delta " + " ".join(params)
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
 
     elif element_type == "Coupling":
         # Add Snubbers to the both sides of the Coupling (Those should be removed during its stability analysis stage)
@@ -1155,6 +1212,8 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
             bus1, bus2 = [bus_name for bus_name in dss.CktElement.BusNames()]
             freq = float(dss.Properties.Value("basefreq"))
             scale_l = (1 / ts) / (2 * np.pi * freq)  # Use as "scale_l*X"
+            scale_c = ts * (2 * np.pi * freq)
+
             # TODO Assuming two windigs for now (print a message if there is more than 2 windings)
             vbase = mdl.get_property_value(mdl.prop(trf_handle, "KVs"))
             pbase = mdl.get_property_value(mdl.prop(trf_handle, "KVAs"))
@@ -1173,6 +1232,8 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
             dss.Transformers.Wdg(1)
             rw1 = 1e-2 * dss.Transformers.R() * zbase[0]
             rw1_eq = rw1 + scale_l * xarray[0] * zbase[0]
+            rw1_rneut = float(dss.Properties.Value("Rneut"))
+            rw1_xneut = float(dss.Properties.Value("Xneut"))
             mdl.info(f"{rw1=}") if debug else None
             mdl.info(f"{rw1_eq=}") if debug else None
             dss.Transformers.R(100 * rw1_eq / zbase[0])
@@ -1180,6 +1241,8 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
             dss.Transformers.Wdg(2)
             rw2 = 1e-2 * dss.Transformers.R() * zbase[1]
             rw2_eq = rw2 + scale_l * xarray[1] * zbase[1]
+            rw2_rneut = float(dss.Properties.Value("Rneut"))
+            rw2_xneut = float(dss.Properties.Value("Xneut"))
             dss.Transformers.R(100 * rw2_eq / zbase[1])
             mdl.info(f"{rw2=}") if debug else None
             mdl.info(f"{rw2_eq=}") if debug else None
@@ -1208,13 +1271,14 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                 pri_nodes = ["1.2", "2.3", "3.1"]
                 pri_kv = vbase[0]
             else:
-                pri_nodes = ["1.0", "2.0", "3.0"]
+                pri_nodes = ["1.4", "2.4", "3.4"]
                 pri_kv = vbase[0]/np.sqrt(3)
+
             if conn2 == "Δ":
                 sec_nodes = ["1.2", "2.3", "3.1"]
                 sec_kv = vbase[1]
             else:
-                sec_nodes = ["1.0", "2.0", "3.0"]
+                sec_nodes = ["1.4", "2.4", "3.4"]
                 sec_kv = vbase[1]/np.sqrt(3)
 
             pri_rmatrix = f"({rw1_eq} | 0 1e-6)"
@@ -1243,45 +1307,188 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                 trafo_prop["Buses"] = f"[{int_bus2}_{trf_names[idx]}.1.2, {int_bus1}_{trf_names[idx]}.1.2]"
                 trafo_prop["KVs"] = f"[{sec_kv}, {pri_kv}]"
                 trafo_prop["KVAs"] = f"[{pbase[0]/3}, {pbase[1]/3}]"
-                trafo_prop["XHL"] = "1e-6"
-                trafo_prop["%Rs"] = "[0, 0]"
+                trafo_prop["XHL"] = "1e-4"
+                trafo_prop["%Rs"] = "[0.1, 0.1]"
                 trafo_prop["%noloadloss"] = core_loss
                 trafo_prop["%imag"] = "0"
                 trafo_prop["phases"] = "1"
-                trafo_prop["ppm_antifloat"] = "0.0"
+                trafo_prop["ppm_antifloat"] = "0.005"
                 params = [f'{param}={trafo_prop.get(param)}' for param in trafo_prop]
                 cmd_string = "new" + f" TRANSFORMER.{dss_trf_name}_{trf_names[idx]} " + " ".join(params)
                 mdl.info(cmd_string) if debug else None
                 dss.run_command(cmd_string)
                 dss.run_command("calcv")
+                dss.Transformers.Wdg(1)
+                dss.Properties.Value("Rneut", "-1")
+                dss.Properties.Value("Xneut", "0")
+                dss.Transformers.Wdg(2)
+                dss.Properties.Value("Rneut", "-1")
+                dss.Properties.Value("Xneut", "0")
 
-                line_pri_prop = {}
-                line_pri_prop["bus1"] = f"{int_bus1}_{trf_names[idx]}.1.2"
-                line_pri_prop["bus2"] = f"{bus1}.{pri_nodes[idx]}"
-                line_pri_prop["phases"] = 2
-                line_pri_prop["rmatrix"] = pri_rmatrix
-                line_pri_prop["xmatrix"] = xmatrix
-                line_pri_prop["cmatrix"] = cmatrix
-                params = [f'{param}={line_pri_prop.get(param)}' for param in line_pri_prop]
-                cmd_string = "new" + f" LINE.{dss_trf_name}_{trf_names[idx]}_pricomp " + " ".join(params)
+                if conn1 == "Δ":
+                    line_pri_prop = {}
+                    line_pri_prop["bus1"] = f"{int_bus1}_{trf_names[idx]}.1.2"
+                    line_pri_prop["bus2"] = f"{bus1}.{pri_nodes[idx]}"
+                    line_pri_prop["phases"] = 2
+                    line_pri_prop["rmatrix"] = pri_rmatrix
+                    line_pri_prop["xmatrix"] = xmatrix
+                    line_pri_prop["cmatrix"] = cmatrix
+                    params = [f'{param}={line_pri_prop.get(param)}' for param in line_pri_prop]
+                    cmd_string = "new" + f" LINE.{dss_trf_name}_{trf_names[idx]}_pricomp " + " ".join(params)
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
+                    restore_dict[
+                        f"LINE.{dss_trf_name.upper()}_{trf_names[idx].upper()}_PRICOMP"] = f"TRANSFORMER.{dss_trf_name.upper()}"
+                else:
+                    line_pri_prop = {}
+                    line_pri_prop["bus1"] = f"{int_bus1}_{trf_names[idx]}.1"
+                    line_pri_prop["bus2"] = f"{bus1}.{pri_nodes[idx].split('.')[0]}"
+                    line_pri_prop["phases"] = 1
+                    line_pri_prop["R"] = rw1_eq
+                    line_pri_prop["X"] = 1e-6
+                    params = [f'{param}={line_pri_prop.get(param)}' for param in line_pri_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_trf_name}_{trf_names[idx]}_pricomp " + " ".join(params)
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
+                    restore_dict[f"REACTOR.{dss_trf_name.upper()}_{trf_names[idx].upper()}_PRICOMP"] = f"TRANSFORMER.{dss_trf_name.upper()}"
+
+                    line_pri_neutral_prop = {}
+                    line_pri_neutral_prop["bus1"] = f"{int_bus1}_{trf_names[idx]}.2"
+                    line_pri_neutral_prop["bus2"] = f"auxZ_{bus1}.4"
+                    line_pri_neutral_prop["phases"] = 1
+                    line_pri_neutral_prop["R"] = 1e-6
+                    line_pri_neutral_prop["X"] = 1e-6
+                    params = [f'{param}={line_pri_neutral_prop.get(param)}' for param in line_pri_neutral_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_trf_name}_{trf_names[idx]}_prineutr " + " ".join(params)
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
+
+                if conn2 == "Δ":
+                    line_sec_prop = {}
+                    line_sec_prop["bus1"] = f"{int_bus2}_{trf_names[idx]}.1.2"
+                    line_sec_prop["bus2"] = f"{bus2}.{sec_nodes[idx]}"
+                    line_sec_prop["phases"] = 2
+                    line_sec_prop["rmatrix"] = sec_rmatrix
+                    line_sec_prop["xmatrix"] = xmatrix
+                    line_sec_prop["cmatrix"] = cmatrix
+                    params = [f'{param}={line_sec_prop.get(param)}' for param in line_sec_prop]
+                    cmd_string = "new" + f" LINE.{dss_trf_name}_{trf_names[idx]}_seccomp " + " ".join(params)
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
+                    restore_dict[
+                        f"LINE.{dss_trf_name.upper()}_{trf_names[idx].upper()}_SECCOMP"] = f"TRANSFORMER.{dss_trf_name.upper()}"
+                else:
+                    line_sec_prop = {}
+                    line_sec_prop["bus1"] = f"{int_bus2}_{trf_names[idx]}.1"
+                    line_sec_prop["bus2"] = f"{bus2}.{sec_nodes[idx].split('.')[0]}"
+                    line_sec_prop["phases"] = 1
+                    line_sec_prop["R"] = rw2_eq
+                    line_sec_prop["X"] = 1e-6
+                    params = [f'{param}={line_sec_prop.get(param)}' for param in line_sec_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_trf_name}_{trf_names[idx]}_seccomp " + " ".join(params)
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
+                    restore_dict[f"REACTOR.{dss_trf_name.upper()}_{trf_names[idx].upper()}_SECCOMP"] = f"TRANSFORMER.{dss_trf_name.upper()}"
+
+                    line_sec_neutral_prop = {}
+                    line_sec_neutral_prop["bus1"] = f"{int_bus2}_{trf_names[idx]}.2"
+                    line_sec_neutral_prop["bus2"] = f"auxZ_{bus2}.4"
+                    line_sec_neutral_prop["phases"] = 1
+                    line_sec_neutral_prop["R"] = 1e-6
+                    line_sec_neutral_prop["X"] = 1e-6
+                    params = [f'{param}={line_sec_neutral_prop.get(param)}' for param in line_sec_neutral_prop]
+                    cmd_string = "new" + f" REACTOR.{dss_trf_name}_{trf_names[idx]}_secneutr " + " ".join(params)
+                    mdl.info(cmd_string) if debug else None
+                    dss.run_command(cmd_string)
+                    dss.run_command("calcv")
+
+            if conn1 != "Δ":
+                if rw1_rneut != -1:
+                    if rw1_xneut >= 0:
+                        rw1_neut_eq = rw1_rneut + scale_l * rw1_xneut
+                    else:
+                        rw1_neut_eq = rw1_rneut + scale_c * rw1_xneut
+                else:
+                    rw1_neut_eq = 1e15
+
+                snb1_prop = {}
+                snb1_prop["bus1"] = f"auxZ_{bus1}.4"
+                snb1_prop["bus2"] = f"{bus1}.0"
+                snb1_prop["phases"] = 1
+                snb1_prop["R"] = rw1_neut_eq
+                snb1_prop["X"] = 1e-9
+                params = [f'{param}={snb1_prop.get(param)}' for param in snb1_prop]
+                cmd_string = "new" + f" REACTOR.{dss_trf_name.upper()}_zn1 " + " ".join(params)
                 mdl.info(cmd_string) if debug else None
                 dss.run_command(cmd_string)
                 dss.run_command("calcv")
-                restore_dict[f"LINE.{dss_trf_name.upper()}_{trf_names[idx].upper()}_PRICOMP"] = f"TRANSFORMER.{dss_trf_name.upper()}"
 
-                line_sec_prop = {}
-                line_sec_prop["bus1"] = f"{int_bus2}_{trf_names[idx]}.1.2"
-                line_sec_prop["bus2"] = f"{bus2}.{sec_nodes[idx]}"
-                line_sec_prop["phases"] = 2
-                line_sec_prop["rmatrix"] = sec_rmatrix
-                line_sec_prop["xmatrix"] = xmatrix
-                line_sec_prop["cmatrix"] = cmatrix
-                params = [f'{param}={line_sec_prop.get(param)}' for param in line_sec_prop]
-                cmd_string = "new" + f" LINE.{dss_trf_name}_{trf_names[idx]}_seccomp " + " ".join(params)
+            if conn2 != "Δ":
+
+                if rw2_rneut != -1:
+                    if rw2_xneut >= 0:
+                        rw2_neut_eq = rw2_rneut + scale_l * rw2_xneut
+                    else:
+                        rw2_neut_eq = rw2_rneut + scale_c * rw2_xneut
+                else:
+                    rw2_neut_eq = 1e15
+
+                snb2_prop = {}
+                snb2_prop["bus1"] = f"auxZ_{bus2}.4"
+                snb2_prop["bus2"] = f"{bus2}.0"
+                snb2_prop["phases"] = 1
+                snb2_prop["R"] = rw2_neut_eq
+                snb2_prop["X"] = 1e-9
+                params = [f'{param}={snb2_prop.get(param)}' for param in snb2_prop]
+                cmd_string = "new" + f" REACTOR.{dss_trf_name.upper()}_zn2 " + " ".join(params)
                 mdl.info(cmd_string) if debug else None
                 dss.run_command(cmd_string)
                 dss.run_command("calcv")
-                restore_dict[f"LINE.{dss_trf_name.upper()}_{trf_names[idx].upper()}_SECCOMP"] = f"TRANSFORMER.{dss_trf_name.upper()}"
+
+            # cmd_string = f"new REACTOR.ref_b2_t1 bus1=intb2_t_t1.2 bus2=intb2_t_t1.0 phases=1 R=1e9 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
+            #
+            # cmd_string = f"new REACTOR.ref_b2_t2 bus1=intb2_t_t2.2 bus2=intb2_t_t2.0 phases=1 R=1e9 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
+            #
+            # cmd_string = f"new REACTOR.ref_b2_t3 bus1=intb2_t_t3.2 bus2=intb2_t_t3.0 phases=1 R=1e4 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
+            #
+            # cmd_string = f"new REACTOR.ref_b1_t1 bus1=intb1_t_t3.2 bus2=intb1_t_t1.0 phases=1 R=1e4 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
+            #
+            # cmd_string = f"new REACTOR.ref_b1_t2 bus1=intb1_t_t2.2 bus2=intb1_t_t2.0 phases=1 R=1e4 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
+            #
+            # cmd_string = f"new REACTOR.ref_b1_t3 bus1=intb1_t_t3.2 bus2=intb1_t_t3.0 phases=1 R=1e4 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
+            #
+            # cmd_string = f"new REACTOR.aux_b1 bus1=aux23_b1_t.4 bus2=aux23_b1_t.0 phases=1 R=1e4 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
+            #
+            # cmd_string = f"new REACTOR.aux_b2 bus1=aux23_b2_t.4 bus2=aux23_b2_t.0 phases=1 R=1e4 X=1e-09"
+            # dss.run_command(cmd_string)
+            # mdl.info(cmd_string)
+            # dss.run_command("calcv")
 
     elif element_type in ["Manual Switch", "Controlled Switch"]:
         for swt_handle in get_all_dss_elements(mdl, comp_type=["Manual Switch", "Controlled Switch"]):
@@ -1398,8 +1605,10 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
 
     elif element_type == "Fault":
         mdl.info("Fault Compensation Stage...") if debug else None
-        mdl.info("The current version of the Stability Assistance doesn't support Fault elements."
-                 "The results might not be trustable.")
+        fault_elements = get_all_dss_elements(mdl, comp_type=["Fault"])
+        if fault_elements:
+            mdl.info("The current version of the Stability Assistance doesn't support Fault elements."
+                     "The results might not be trustable.")
 
 
 def sc_notation(val, num_decimals=2, exponent_pad=2):

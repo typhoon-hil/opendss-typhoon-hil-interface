@@ -294,7 +294,7 @@ library "OpenDSS" {
                 }
 
                 stability_analysis {
-                    label = "Model Partitioning Assistance (beta)"
+                    label = "Model Partitioning Assistant (beta)"
                     widget = button
                     type = string
                     default_value = "Run"
