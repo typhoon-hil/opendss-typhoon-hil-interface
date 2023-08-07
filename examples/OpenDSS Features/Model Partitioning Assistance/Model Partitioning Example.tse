@@ -1,0 +1,1752 @@
+version = 4.2
+
+//
+// Saved by sw version: 2023.4 DEV
+//
+
+model "Model Partitioning Example" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = 10e-6
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = True
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = True
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        feedthrough_validation_error_level = warning
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/Bus" Bus201 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8320, 6928
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 7488, 7488
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T202 {
+            KVAs = "[500, 500]"
+            KVs = "[13.8, 0.208]"
+            XArray = "[2.44951, 2.44951]"
+            global_basefreq = "False"
+            percentRs = "[0.49990, 0.49990]"
+            prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 7208, 7832
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Bus" Bus204x2 {
+        }
+        [
+            position = 7208, 7952
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Load" Load_I3 {
+            Sn_3ph = "300"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.208"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            rate_lmt = "100"
+            tp_connection = "Y - Grounded"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 7208, 8048
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T203 {
+            KVAs = "[3750, 3750]"
+            KVs = "[13.8, 4.16]"
+            XArray = "[2.36591, 2.36591]"
+            global_basefreq = "False"
+            percentRs = "[0.20754, 0.20754]"
+            prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 7472, 7832
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Bus" Bus205 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 7488, 8304
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8320, 7488
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_P3 {
+            Sn_3ph = "1000"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.48"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            rate_lmt = "100"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 7648, 8808
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Line" C202 {
+            Length = "0.610"
+            R0 = "1.1405"
+            R1 = "0.0749"
+            X0 = "0.7559"
+            X1 = "0.1167"
+            dC0 = "0"
+            dC1 = "0"
+            d_C = "0.0"
+            d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
+            input_type = "LineCode"
+            obj_mode = "symmetrical"
+            selected_object = "c13_500kCMIL-CU-15kV"
+        }
+        [
+            position = 8320, 7344
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T210 {
+            KVs = "[13.8, 0.48]"
+            XArray = "[2.79717, 2.79717]"
+            global_basefreq = "False"
+            percentRs = "[0.66441, 0.66441]"
+            prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 8304, 7824
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Bus" Bus207 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8320, 8088
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB201 {
+        }
+        [
+            position = 7488, 7144
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB202 {
+        }
+        [
+            position = 8320, 7144
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB203 {
+        }
+        [
+            position = 9176, 7160
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus201x1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 7488, 7224
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus201x2 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8320, 7224
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus201x3 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9176, 7240
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB206 {
+        }
+        [
+            position = 7224, 7656
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 7224, 7736
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB207 {
+        }
+        [
+            position = 7488, 7656
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x3 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 7488, 7736
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB222 {
+        }
+        [
+            position = 7488, 8192
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus204x4 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 7488, 8104
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB208 {
+        }
+        [
+            position = 7320, 8480
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB209 {
+        }
+        [
+            position = 8056, 7656
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB210 {
+        }
+        [
+            position = 8320, 7656
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203x1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8056, 7728
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus203x2 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8320, 7728
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB219 {
+        }
+        [
+            position = 8056, 8184
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus206x1 {
+        }
+        [
+            position = 8040, 8256
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Load" Load_P2 {
+            Sn_3ph = "1000"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.48"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            rate_lmt = "100"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 8040, 8344
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Bus" Bus205x1 {
+        }
+        [
+            position = 7304, 8568
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T208 {
+            KVAs = "[2000, 2000]"
+            KVs = "[13.8, 0.48]"
+            XArray = "[2.81205, 2.81205]"
+            global_basefreq = "False"
+            percentRs = "[0.59831, 0.59830]"
+            prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 8960, 7832
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Manual Switch" CB214 {
+        }
+        [
+            position = 8976, 7664
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus208x1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8976, 7736
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus208x2 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9376, 7736
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_P5 {
+            Sn_3ph = "700"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.48"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            rate_lmt = "100"
+            tp_connection = "Y - Grounded"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 9360, 8368
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Bus" Bus206 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8056, 8088
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB205 {
+        }
+        [
+            position = 7768, 7656
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Manual Switch" CB204 {
+        }
+        [
+            position = 7664, 8480
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus205x3 {
+        }
+        [
+            position = 7648, 8568
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T204 {
+            KVs = "[4.16, 0.48]"
+            XArray = "[2.79717, 2.79717]"
+            global_basefreq = "False"
+            percentRs = "[0.66441, 0.66441]"
+            prim_conn = "Y - Grounded"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 7304, 8648
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Bus" Bus205x2 {
+        }
+        [
+            position = 7304, 8728
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Load" Load_I4 {
+            Sn_3ph = "600"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.48"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            rate_lmt = "100"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 7304, 8816
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T205 {
+            KVAs = "[1500, 1500]"
+            KVs = "[4.16, 0.48]"
+            XArray = "[2.82003, 2.82003]"
+            global_basefreq = "False"
+            percentRs = "[0.55953, 0.55953]"
+            prim_conn = "Y - Grounded"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 7648, 8648
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Bus" Bus205x4 {
+        }
+        [
+            position = 7648, 8720
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Bus" Bus204x5 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 7768, 7736
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T201 {
+            KVAs = "[2500, 2500]"
+            KVs = "[13.8, 0.48]"
+            XArray = "[2.73547, 2.73547]"
+            global_basefreq = "False"
+            percentRs = "[0.49556, 0.49556]"
+            prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 7752, 7832
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Bus" Bus202 {
+        }
+        [
+            position = 7752, 7952
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Load" Load_C3 {
+            Sn_3ph = "1000"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.48"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            tp_connection = "Y - Grounded"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 7752, 8072
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T206 {
+            KVAs = "[2500, 2500]"
+            KVs = "[13.8, 0.48]"
+            XArray = "[2.84256, 2.84256]"
+            global_basefreq = "False"
+            percentRs = "[0.43069, 0.43069]"
+            prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 8040, 7832
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Manual Switch" CB212 {
+        }
+        [
+            position = 8320, 8184
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus207x1 {
+        }
+        [
+            position = 8304, 8256
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Load" Load_I5 {
+            Sn_3ph = "400"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.48"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            rate_lmt = "100"
+            tp_connection = "Y - Grounded"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 8304, 8344
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Line" C203 {
+            Length = "0.914"
+            R0 = "1.1405"
+            R1 = "0.0749"
+            X0 = "0.7559"
+            X1 = "0.1167"
+            dC0 = "0"
+            dC1 = "0"
+            d_C = "0.0"
+            d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
+            input_type = "LineCode"
+            obj_mode = "symmetrical"
+            selected_object = "c13_500kCMIL-CU-15kV"
+        }
+        [
+            position = 9176, 7352
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus208 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9176, 7496
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" Bus209 {
+        }
+        [
+            position = 8960, 8088
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Bus" Bus210 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9376, 8088
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Load" Load_C4 {
+            Sn_3ph = "1000"
+            T_Ts = "[0, 6, 12, 18, 24]"
+            T_mode = "Loadshape index"
+            Vn_3ph = "0.48"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
+            rate_lmt = "100"
+            tp_connection = "Y - Grounded"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 8960, 8208
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Manual Switch" CB218 {
+        }
+        [
+            position = 9376, 8184
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus210x1 {
+        }
+        [
+            position = 9360, 8272
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Vsource" V2 {
+            basekv = "13.8"
+            global_basefreq = "True"
+            i_sc1 = "10240"
+            i_sc3 = "15730"
+            input_method = "Isc"
+            pu = "1"
+            x0r0 = "2.6"
+            x1r1 = "7.9"
+        }
+        [
+            position = 8320, 6632
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Three-Phase Transformer" T209 {
+            KVAs = "[2000, 2000]"
+            KVs = "[13.8, 0.48]"
+            XArray = "[2.81205, 2.81205]"
+            global_basefreq = "False"
+            percentRs = "[0.59831, 0.59830]"
+            prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
+        }
+        [
+            position = 9360, 7832
+            rotation = right
+            size = 64, 124
+        ]
+
+        component "OpenDSS/Bus" Bus2 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8320, 6736
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Coupling" Coupling1 {
+            itm_csnb_r_auto = "1000000.0"
+            itm_vsnb_l = "0.1e-3"
+            itm_vsnb_r = "1e-3"
+            itm_vsnb_r_auto = "0.001"
+        }
+        [
+            position = 7488, 8032
+            rotation = right
+            size = 34, 97
+        ]
+
+        component "OpenDSS/Bus" BusCoupling4 {
+        }
+        [
+            position = 7472, 7952
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Coupling" Coupling2 {
+            itm_csnb_r_auto = "1000000.0"
+            itm_vsnb_l = "0.1e-3"
+            itm_vsnb_r = "1e-3"
+            itm_vsnb_r_auto = "0.001"
+        }
+        [
+            position = 8056, 8016
+            rotation = right
+            scale = 1, -1
+            size = 34, 97
+        ]
+
+        component "OpenDSS/Bus" BusCoupling5 {
+        }
+        [
+            position = 8040, 7952
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Coupling" Coupling3 {
+            itm_csnb_r_auto = "1000000.0"
+            itm_vsnb_l = "0.1e-3"
+            itm_vsnb_r = "1e-3"
+            itm_vsnb_r_auto = "0.001"
+        }
+        [
+            position = 8320, 8016
+            rotation = right
+            scale = 1, -1
+            size = 34, 97
+        ]
+
+        component "OpenDSS/Bus" BusCoupling6 {
+        }
+        [
+            position = 8304, 7952
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Coupling" Coupling4 {
+            itm_csnb_r_auto = "1000000.0"
+            itm_csnb_type = "R1"
+            itm_vsnb_l = "0.1e-3"
+            itm_vsnb_r = "1e-3"
+            itm_vsnb_r_auto = "0.001"
+            itm_vsnb_type = "R2"
+        }
+        [
+            position = 8976, 8016
+            rotation = right
+            size = 34, 97
+        ]
+
+        component "OpenDSS/Bus" BusCoupling7 {
+        }
+        [
+            position = 8960, 7944
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/Coupling" Coupling5 {
+            itm_csnb_r_auto = "1000000.0"
+            itm_csnb_type = "R1"
+            itm_vsnb_l = "0.1e-3"
+            itm_vsnb_r = "1e-3"
+            itm_vsnb_r_auto = "0.001"
+            itm_vsnb_type = "R2"
+        }
+        [
+            position = 9376, 8016
+            rotation = right
+            size = 34, 97
+        ]
+
+        component "OpenDSS/Bus" BusCoupling8 {
+        }
+        [
+            position = 9360, 7944
+            rotation = right
+            size = 16, 128
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS {
+            sim_counter = "69"
+            sim_status = "Sim69 complete"
+        }
+        [
+            position = 8320, 6520
+            size = 96, 96
+        ]
+
+        component "OpenDSS/Controlled Switch" SW1 {
+        }
+        [
+            position = 8320, 6840
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "core/SCADA Input" "SCADA Input1" {
+            def_value = "1"
+            format = "int"
+            max = "1"
+            min = "0"
+            signal_type = "int"
+            unit = ""
+        }
+        [
+            position = 8432, 6784
+        ]
+
+        component "OpenDSS/Controlled Switch" SW2 {
+        }
+        [
+            position = 9376, 7672
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "core/SCADA Input" "SCADA Input2" {
+            def_value = "1"
+            format = "int"
+            max = "1"
+            min = "0"
+            signal_type = "int"
+            unit = ""
+        }
+        [
+            position = 9496, 7600
+        ]
+
+        component "OpenDSS/Line" C204 {
+            Length = "1.676"
+            R0 = "1.3302"
+            R1 = "0.1668"
+            X0 = "0.9830"
+            X1 = "0.1286"
+            dC0 = "0"
+            dC1 = "0"
+            d_C = "0.0"
+            d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
+            obj_mode = "symmetrical"
+            selected_object = "c11_4_0AWG-CU-15kV"
+        }
+        [
+            position = 7488, 7368
+            rotation = right
+            size = 64, 96
+        ]
+
+        junction Junction49 pe
+        [
+            position = 8352, 7000
+        ]
+
+        junction Junction50 pe
+        [
+            position = 8320, 7032
+        ]
+
+        junction Junction51 pe
+        [
+            position = 8288, 7064
+        ]
+
+        junction Junction52 pe
+        [
+            position = 8352, 7000
+        ]
+
+        junction Junction53 pe
+        [
+            position = 8320, 7032
+        ]
+
+        junction Junction54 pe
+        [
+            position = 8288, 7064
+        ]
+
+        junction Junction58 pe
+        [
+            position = 8288, 7600
+        ]
+
+        junction Junction59 pe
+        [
+            position = 8320, 7576
+        ]
+
+        junction Junction86 pe
+        [
+            position = 7488, 7576
+        ]
+
+        junction Junction87 pe
+        [
+            position = 7520, 7552
+        ]
+
+        junction Junction105 pe
+        [
+            position = 8352, 7552
+        ]
+
+        junction Junction176 pe
+        [
+            position = 7456, 7600
+        ]
+
+        junction Junction177 pe
+        [
+            position = 7456, 8424
+        ]
+
+        junction Junction178 pe
+        [
+            position = 7488, 8400
+        ]
+
+        junction Junction179 pe
+        [
+            position = 7520, 8376
+        ]
+
+        junction Junction180 pe
+        [
+            position = 7456, 7600
+        ]
+
+        junction Junction181 pe
+        [
+            position = 7488, 7576
+        ]
+
+        junction Junction182 pe
+        [
+            position = 7520, 7552
+        ]
+
+        junction Junction183 pe
+        [
+            position = 9208, 7568
+        ]
+
+        junction Junction184 pe
+        [
+            position = 9176, 7592
+        ]
+
+        junction Junction185 pe
+        [
+            position = 9144, 7616
+        ]
+
+        comment Comment21 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Coupling</span></p></body></html> ENDCOMMENT 
+        [
+            position = 7528, 7872
+        ]
+
+        comment Comment31 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T201      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.56%. X/R=5.52</p></body></html> ENDCOMMENT 
+        [
+            position = 7552, 7776
+        ]
+
+        comment Comment32 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">      T202      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">13.8/0.208 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"> 5%. X/R=4.9  </p></body></html> ENDCOMMENT 
+        [
+            position = 7024, 7776
+        ]
+
+        comment Comment33 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T203      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    3750 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/4.16 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">4.75%.X/R=11.4</p></body></html> ENDCOMMENT 
+        [
+            position = 7280, 7776
+        ]
+
+        comment Comment34 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">         T204      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">      1000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   4.16/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%.X/R=4.21</p></body></html> ENDCOMMENT 
+        [
+            position = 7072, 8592
+        ]
+
+        comment Comment35 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">         T205      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">      1500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">   4.16/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%.X/R=5.04</p></body></html> ENDCOMMENT 
+        [
+            position = 7432, 8592
+        ]
+
+        comment Comment36 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T206      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2500 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=6.6</p></body></html> ENDCOMMENT 
+        [
+            position = 7856, 7776
+        ]
+
+        comment Comment37 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T210      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    1000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.21</p></body></html> ENDCOMMENT 
+        [
+            position = 8112, 7776
+        ]
+
+        comment Comment39 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T208      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.7</p></body></html> ENDCOMMENT 
+        [
+            position = 8776, 7784
+        ]
+
+        comment Comment40 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">       T209      </span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">    2000 kVA   </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">  13.8/0.48 kV</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">5.75%. X/R=4.7</p></body></html> ENDCOMMENT 
+        [
+            position = 9176, 7784
+        ]
+
+        connect Bus204x2.C1 T202.C2 as Connection456
+        connect Bus204x2.B1 T202.B2 as Connection457
+        connect Bus204x2.A1 T202.A2 as Connection458
+        connect Bus204x2.C2 Load_I3.C1 as Connection459
+        connect Bus204x2.B2 Load_I3.B1 as Connection460
+        connect Bus204x2.A2 Load_I3.A1 as Connection461
+        connect Bus203.C1 C202.C2 as Connection462
+        connect Bus203.B1 C202.B2 as Connection463
+        connect CB202.A1 Junction49 as Connection471
+        connect Junction49 Bus201.A2 as Connection472
+        [
+            breakpoints = 8352, 7000
+        ]
+        connect Bus201.B2 Junction50 as Connection473
+        connect Junction50 CB202.B1 as Connection474
+        connect CB202.C1 Junction51 as Connection475
+        connect Junction51 Bus201.C2 as Connection476
+        [
+            breakpoints = 8288, 7048
+        ]
+        connect CB203.A1 Junction52 as Connection477
+        connect Junction52 Junction49 as Connection478
+        connect CB201.A1 Junction52 as Connection479
+        connect CB203.B1 Junction53 as Connection480
+        connect Junction53 Junction50 as Connection481
+        connect CB201.B1 Junction53 as Connection482
+        connect CB203.C1 Junction54 as Connection483
+        connect Junction54 Junction51 as Connection484
+        connect CB201.C1 Junction54 as Connection485
+        connect Bus201x1.C1 CB201.C2 as Connection486
+        connect Bus201x1.B1 CB201.B2 as Connection487
+        connect Bus201x1.A1 CB201.A2 as Connection488
+        connect Bus201x2.C1 CB202.C2 as Connection492
+        connect Bus201x2.B1 CB202.B2 as Connection493
+        connect Bus201x2.A1 CB202.A2 as Connection494
+        connect Bus201x2.C2 C202.C1 as Connection495
+        connect Bus201x2.B2 C202.B1 as Connection496
+        connect Bus201x2.A2 C202.A1 as Connection497
+        connect CB203.C2 Bus201x3.C1 as Connection498
+        connect CB203.B2 Bus201x3.B1 as Connection499
+        connect CB203.A2 Bus201x3.A1 as Connection500
+        connect Bus204x1.C1 CB206.C2 as Connection501
+        connect Bus204x1.B1 CB206.B2 as Connection502
+        connect Bus204x1.A1 CB206.A2 as Connection503
+        connect Bus204x3.C1 CB207.C2 as Connection504
+        connect Bus204x3.B1 CB207.B2 as Connection505
+        connect Bus204x3.A1 CB207.A2 as Connection506
+        connect Bus204x1.C2 T202.C1 as Connection516
+        connect Bus204x1.B2 T202.B1 as Connection517
+        connect Bus204x1.A2 T202.A1 as Connection518
+        connect CB210.C1 Junction58 as Connection519
+        connect CB210.B1 Junction59 as Connection520
+        connect CB209.C1 Junction58 as Connection522
+        connect CB209.B1 Junction59 as Connection523
+        connect CB209.C2 Bus203x1.C1 as Connection534
+        connect CB209.B2 Bus203x1.B1 as Connection535
+        connect CB209.A2 Bus203x1.A1 as Connection536
+        connect CB210.C2 Bus203x2.C1 as Connection537
+        connect CB210.B2 Bus203x2.B1 as Connection538
+        connect CB210.A2 Bus203x2.A1 as Connection539
+        connect Bus206x1.C1 CB219.C2 as Connection570
+        connect Bus206x1.B1 CB219.B2 as Connection571
+        connect Bus206x1.A1 CB219.A2 as Connection572
+        connect CB208.C2 Bus205x1.C1 as Connection600
+        connect CB208.B2 Bus205x1.B1 as Connection601
+        connect CB208.A2 Bus205x1.A1 as Connection602
+        connect Bus203x2.C2 T210.C1 as Connection603
+        connect Bus203x2.B2 T210.B1 as Connection604
+        connect Bus203x2.A2 T210.A1 as Connection605
+        connect CB214.C2 Bus208x1.C1 as Connection630
+        connect CB214.B2 Bus208x1.B1 as Connection631
+        connect CB214.A2 Bus208x1.A1 as Connection632
+        connect Bus208x1.C2 T208.C1 as Connection633
+        connect Bus208x1.B2 T208.B1 as Connection634
+        connect Bus208x1.A2 T208.A1 as Connection635
+        connect Bus204x3.C2 T203.C1 as Connection660
+        connect Bus204x3.B2 T203.B1 as Connection661
+        connect Bus204x3.A2 T203.A1 as Connection662
+        connect Bus204x4.C2 CB222.C1 as Connection666
+        connect Bus204x4.B2 CB222.B1 as Connection667
+        connect Bus204x4.A2 CB222.A1 as Connection668
+        connect CB222.C2 Bus205.C1 as Connection669
+        connect CB222.B2 Bus205.B1 as Connection670
+        connect CB222.A2 Bus205.A1 as Connection671
+        connect Junction86 Bus204.B2 as Connection708
+        connect Junction87 Bus204.A2 as Connection711
+        connect CB204.C2 Bus205x3.C1 as Connection738
+        connect CB204.B2 Bus205x3.B1 as Connection739
+        connect CB204.A2 Bus205x3.A1 as Connection740
+        connect Bus205x1.C2 T204.C1 as Connection741
+        connect Bus205x1.B2 T204.B1 as Connection742
+        connect Bus205x1.A2 T204.A1 as Connection743
+        connect T204.C2 Bus205x2.C1 as Connection744
+        connect T204.B2 Bus205x2.B1 as Connection745
+        connect T204.A2 Bus205x2.A1 as Connection746
+        connect Bus205x2.C2 Load_I4.C1 as Connection747
+        connect Bus205x2.B2 Load_I4.B1 as Connection748
+        connect Bus205x2.A2 Load_I4.A1 as Connection749
+        connect Bus205x3.C2 T205.C1 as Connection750
+        connect Bus205x3.B2 T205.B1 as Connection751
+        connect Bus205x3.A2 T205.A1 as Connection752
+        connect T205.C2 Bus205x4.C1 as Connection753
+        connect T205.B2 Bus205x4.B1 as Connection754
+        connect T205.A2 Bus205x4.A1 as Connection755
+        connect Bus205x4.C2 Load_P3.C1 as Connection756
+        connect Bus205x4.B2 Load_P3.B1 as Connection757
+        connect Bus205x4.A2 Load_P3.A1 as Connection758
+        connect Bus204x5.C1 CB205.C2 as Connection768
+        connect Bus204x5.B1 CB205.B2 as Connection769
+        connect Bus204x5.A1 CB205.A2 as Connection770
+        connect Bus204x5.C2 T201.C1 as Connection771
+        connect Bus204x5.B2 T201.B1 as Connection772
+        connect Bus204x5.A2 T201.A1 as Connection773
+        connect Bus202.C1 T201.C2 as Connection774
+        connect Bus202.B1 T201.B2 as Connection775
+        connect Bus202.A1 T201.A2 as Connection776
+        connect Bus203x1.C2 T206.C1 as Connection789
+        connect Bus203x1.B2 T206.B1 as Connection790
+        connect Bus203x1.A2 T206.A1 as Connection791
+        connect Bus206x1.C2 Load_P2.C1 as Connection795
+        connect Bus206x1.B2 Load_P2.B1 as Connection796
+        connect Bus206x1.A2 Load_P2.A1 as Connection797
+        connect Bus207x1.C1 CB212.C2 as Connection809
+        connect Bus207x1.B1 CB212.B2 as Connection810
+        connect Bus207x1.A1 CB212.A2 as Connection811
+        connect Bus207x1.C2 Load_I5.C1 as Connection812
+        connect Bus207x1.B2 Load_I5.B1 as Connection813
+        connect Bus207x1.A2 Load_I5.A1 as Connection814
+        connect Junction105 Bus203.A2 as Connection824
+        connect Junction105 CB209.A1 as Connection825
+        connect Bus201x3.C2 C203.C1 as Connection869
+        connect Bus201x3.B2 C203.B1 as Connection870
+        connect Bus201x3.A2 C203.A1 as Connection871
+        connect C203.C2 Bus208.C1 as Connection872
+        [
+            breakpoints = 9144, 7400; 9144, 7480
+        ]
+        connect C203.B2 Bus208.B1 as Connection873
+        [
+            breakpoints = 9176, 7400; 9176, 7480
+        ]
+        connect Bus210x1.C1 CB218.C2 as Connection935
+        connect Bus210x1.B1 CB218.B2 as Connection936
+        connect Bus210x1.A1 CB218.A2 as Connection937
+        connect Bus210x1.C2 Load_P5.C1 as Connection938
+        connect Bus210x1.B2 Load_P5.B1 as Connection939
+        connect Bus210x1.A2 Load_P5.A1 as Connection940
+        connect Bus208x2.C2 T209.C1 as Connection1292
+        connect Bus208x2.B2 T209.B1 as Connection1293
+        connect Bus208x2.A2 T209.A1 as Connection1294
+        connect V2.B1 Bus2.B1 as Connection1567
+        connect V2.A1 Bus2.A1 as Connection1568
+        connect C203.A2 Bus208.A1 as Connection1629
+        connect C202.A2 Bus203.A1 as Connection1630
+        [
+            breakpoints = 8352, 7432
+        ]
+        connect V2.C1 Bus2.C1 as Connection1638
+        [
+            breakpoints = 8288, 6680
+        ]
+        connect CB205.B1 Junction86 as Connection1788
+        [
+            breakpoints = 7552, 7576
+        ]
+        connect CB205.A1 Junction87 as Connection1787
+        [
+            breakpoints = 7584, 7552
+        ]
+        connect Bus204.C2 Junction176 as Connection1789
+        connect CB205.C1 Junction176 as Connection1791
+        connect Junction177 Bus205.C2 as Connection1792
+        connect Junction177 CB204.C1 as Connection1793
+        connect Junction178 Bus205.B2 as Connection1795
+        connect Junction178 CB204.B1 as Connection1797
+        connect Junction179 Bus205.A2 as Connection1798
+        connect Junction179 CB204.A1 as Connection1800
+        connect Junction180 CB207.C1 as Connection1801
+        connect Junction180 Junction176 as Connection1802
+        connect Junction181 CB207.B1 as Connection1804
+        connect Junction181 Junction86 as Connection1806
+        connect Junction182 CB207.A1 as Connection1807
+        connect Junction182 Junction87 as Connection1809
+        connect Coupling1.A2 Bus204x4.A1 as Connection1857
+        connect Coupling1.B2 Bus204x4.B1 as Connection1859
+        connect Coupling1.C2 Bus204x4.C1 as Connection1861
+        connect T203.C2 BusCoupling4.C1 as Connection1862
+        connect BusCoupling4.C2 Coupling1.C1 as Connection1863
+        connect T203.B2 BusCoupling4.B1 as Connection1864
+        connect BusCoupling4.B2 Coupling1.B1 as Connection1865
+        connect T203.A2 BusCoupling4.A1 as Connection1866
+        connect BusCoupling4.A2 Coupling1.A1 as Connection1867
+        connect T206.C2 BusCoupling5.C1 as Connection1874
+        connect T206.B2 BusCoupling5.B1 as Connection1876
+        connect T206.A2 BusCoupling5.A1 as Connection1878
+        connect T210.C2 BusCoupling6.C1 as Connection1885
+        connect T210.B2 BusCoupling6.B1 as Connection1887
+        connect BusCoupling6.A1 T210.A2 as Connection1890
+        connect Coupling4.B2 Bus209.B1 as Connection1894
+        connect Coupling4.C2 Bus209.C1 as Connection1896
+        connect T208.C2 BusCoupling7.C1 as Connection1897
+        connect BusCoupling7.C2 Coupling4.C1 as Connection1898
+        connect T208.B2 BusCoupling7.B1 as Connection1899
+        connect BusCoupling7.B2 Coupling4.B1 as Connection1900
+        connect T208.A2 BusCoupling7.A1 as Connection1901
+        connect BusCoupling7.A2 Coupling4.A1 as Connection1902
+        connect T209.A2 BusCoupling8.A1 as Connection1903
+        connect T209.B2 BusCoupling8.B1 as Connection1905
+        connect T209.C2 BusCoupling8.C1 as Connection1907
+        connect BusCoupling8.C2 Coupling5.C1 as Connection1908
+        connect Coupling5.C2 Bus210.C1 as Connection1909
+        connect BusCoupling8.B2 Coupling5.B1 as Connection1910
+        connect Coupling5.B2 Bus210.B1 as Connection1911
+        connect BusCoupling8.A2 Coupling5.A1 as Connection1912
+        connect CB218.A1 Bus210.A2 as Connection1976
+        connect CB218.C1 Bus210.C2 as Connection1977
+        connect CB218.B1 Bus210.B2 as Connection1975
+        connect Bus209.C2 Load_C4.C1 as Connection1980
+        connect Bus209.B2 Load_C4.B1 as Connection1978
+        connect Bus207.B2 CB212.B1 as Connection1981
+        connect Bus207.C2 CB212.C1 as Connection1983
+        connect Bus209.A1 Coupling4.A2 as Connection1987
+        connect Coupling5.A2 Bus210.A1 as Connection1988
+        [
+            breakpoints = 9408, 8072
+        ]
+        connect Junction180 CB206.C1 as Connection1990
+        [
+            breakpoints = 7456, 7600; 7192, 7600
+        ]
+        connect Junction182 CB206.A1 as Connection1989
+        [
+            breakpoints = 7520, 7552; 7256, 7552
+        ]
+        connect Junction181 CB206.B1 as Connection1991
+        [
+            breakpoints = 7488, 7576; 7224, 7576
+        ]
+        connect Junction179 CB208.A1 as Connection1992
+        [
+            breakpoints = 7520, 8376; 7352, 8376
+        ]
+        connect Junction178 CB208.B1 as Connection1994
+        [
+            breakpoints = 7488, 8400; 7320, 8400
+        ]
+        connect CB208.C1 Junction177 as Connection1993
+        [
+            breakpoints = 7288, 8424
+        ]
+        connect Bus206.A2 CB219.A1 as Connection1997
+        connect Bus206.B2 CB219.B1 as Connection1995
+        connect Bus206.C2 CB219.C1 as Connection1996
+        connect Load_C3.C1 Bus202.C2 as Connection1998
+        connect Load_C3.B1 Bus202.B2 as Connection2000
+        connect Load_C3.A1 Bus202.A2 as Connection1999
+        connect CB212.A1 Bus207.A2 as Connection2001
+        connect Bus2.C2 SW1.C1 as Connection2026
+        connect Bus2.B2 SW1.B1 as Connection2027
+        connect Bus2.A2 SW1.A1 as Connection2028
+        connect SW1.C2 Bus201.C1 as Connection2029
+        connect SW1.B2 Bus201.B1 as Connection2030
+        connect SW1.A2 Bus201.A1 as Connection2031
+        connect "SCADA Input1.out" SW1.ctrl as Connection2032
+        connect "SCADA Input2.out" SW2.ctrl as Connection2045
+        connect SW2.C2 Bus208x2.C1 as Connection2049
+        connect SW2.B2 Bus208x2.B1 as Connection2050
+        connect SW2.A2 Bus208x2.A1 as Connection2051
+        connect CB214.A1 Junction183 as Connection2052
+        connect Junction183 Bus208.A2 as Connection2053
+        [
+            breakpoints = 9208, 7568
+        ]
+        connect SW2.A1 Junction183 as Connection2054
+        connect Bus208.B2 Junction184 as Connection2055
+        connect Junction184 CB214.B1 as Connection2056
+        [
+            breakpoints = 9176, 7592
+        ]
+        connect SW2.B1 Junction184 as Connection2057
+        connect CB214.C1 Junction185 as Connection2058
+        connect Junction185 Bus208.C2 as Connection2059
+        [
+            breakpoints = 9144, 7616
+        ]
+        connect SW2.C1 Junction185 as Connection2060
+        connect Load_C4.A1 Bus209.A2 as Connection2072
+        [
+            breakpoints = 9008, 8144
+        ]
+        connect Junction59 Bus203.B2 as Connection2073
+        [
+            breakpoints = 8320, 7576; 8320, 7576
+        ]
+        connect Junction58 Bus203.C2 as Connection2075
+        [
+            breakpoints = 8288, 7600; 8288, 7600
+        ]
+        connect CB210.A1 Junction105 as Connection2074
+        [
+            breakpoints = 8352, 7552
+        ]
+        connect Bus206x1.N2 Load_P2.N1 as Connection2078
+        connect T206.N2 BusCoupling5.N1 as Connection2079
+        connect T201.N2 Bus202.N1 as Connection2080
+        connect Bus202.N2 Load_C3.N1 as Connection2081
+        connect T203.N2 BusCoupling4.N1 as Connection2082
+        connect T202.N2 Bus204x2.N1 as Connection2083
+        connect Bus204x2.N2 Load_I3.N1 as Connection2084
+        connect T205.N2 Bus205x4.N1 as Connection2085
+        connect Bus205x4.N2 Load_P3.N1 as Connection2086
+        connect Bus205x3.N2 T205.N1 as Connection2087
+        connect T204.N2 Bus205x2.N1 as Connection2088
+        connect Bus205x2.N2 Load_I4.N1 as Connection2089
+        connect Bus205x1.N2 T204.N1 as Connection2090
+        connect Bus207x1.N2 Load_I5.N1 as Connection2091
+        connect Bus210x1.N2 Load_P5.N1 as Connection2092
+        connect Bus209.N2 Load_C4.N1 as Connection2093
+        connect T208.N2 BusCoupling7.N1 as Connection2094
+        connect T209.N2 BusCoupling8.N1 as Connection2095
+        connect T210.N2 BusCoupling6.N1 as Connection2096
+        connect Bus201x1.C2 C204.C1 as Connection2097
+        connect Bus201x1.B2 C204.B1 as Connection2098
+        connect Bus201x1.A2 C204.A1 as Connection2099
+        connect C204.C2 Bus204.C1 as Connection2100
+        connect C204.B2 Bus204.B1 as Connection2101
+        connect C204.A2 Bus204.A1 as Connection2102
+        connect Coupling2.C1 Bus206.C1 as Connection2103
+        connect Coupling2.B1 Bus206.B1 as Connection2104
+        connect Coupling2.A1 Bus206.A1 as Connection2105
+        connect Coupling3.C1 Bus207.C1 as Connection2106
+        connect Coupling3.B1 Bus207.B1 as Connection2107
+        connect Coupling3.A1 Bus207.A1 as Connection2108
+        connect Coupling3.A2 BusCoupling6.A2 as Connection2109
+        [
+            breakpoints = 8352, 7968
+        ]
+        connect Coupling3.B2 BusCoupling6.B2 as Connection2110
+        connect Coupling3.C2 BusCoupling6.C2 as Connection2111
+        connect Coupling2.A2 BusCoupling5.A2 as Connection2112
+        connect Coupling2.B2 BusCoupling5.B2 as Connection2113
+        connect Coupling2.C2 BusCoupling5.C2 as Connection2114
+    }
+
+    default {
+        "core/SCADA Input" {
+            addr = "0"
+            format = "real"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "real"
+            min = "-1e6"
+            max = "1e6"
+            def_value = "0"
+            unit = " "
+            execution_rate = "100e-6"
+        }
+
+        "OpenDSS/Bus" {
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
+            conf = "on both sides"
+        }
+
+        "OpenDSS/Controlled Switch" {
+            enable_fb_out = "False"
+            fb_out_type = "real"
+            phases = "3"
+            execution_rate = "inherit"
+            initial_state = "on"
+            on_delay = "0"
+            off_delay = "0"
+        }
+
+        "OpenDSS/Coupling" {
+            coupling_type = "Core"
+            n_phases = "3"
+            grounding = "True"
+            auto_mode = "Manual"
+            itm_csnb_type = "none"
+            itm_csnb_r = "100e3"
+            itm_csnb_c = "1e-06"
+            itm_csnb_r_auto = "100e3"
+            itm_csnb_c_auto = "1e-06"
+            itm_csnb_fixed = "True"
+            itm_vsnb_type = "none"
+            itm_vsnb_r = "0.1"
+            itm_vsnb_l = "0.1"
+            itm_vsnb_r_auto = "0.1"
+            itm_vsnb_l_auto = "0.1"
+            itm_vsnb_fixed = "True"
+            switch_status = "True"
+            flip_status = "False"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            baseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Load" {
+            ground_connected = "False"
+            tp_connection = "Y"
+            phases = "3"
+            Rneut = "0.0"
+            Xneut = "0.0"
+            global_basefreq = "True"
+            fn = "60"
+            Vn_3ph = "4.16"
+            Sn_3ph = "3500"
+            pf_mode_3ph = "Lag"
+            pf_3ph = "0.9"
+            pf_3ph_set = "0"
+            load_model = "Constant Impedance"
+            zip_vector = "[0,0,1]"
+            zip_vector_Q = "[0,0,1]"
+            zip_internal = "[0,0,1]"
+            zip_internal_Q = "[0,0,1]"
+            zip_internal_n = "[0,0,1]"
+            zip_internal_n_Q = "[0,0,1]"
+            ZIPV = "[0,0,1,0,0,1,0]"
+            Vmaxpu = "1.05"
+            Vminpu = "0.95"
+            model = "2"
+            Pow_ref_s = "Fixed"
+            execution_rate = "300e-6"
+            Tfast = "100e-6"
+            CPL_LMT = "2"
+            v_min_max = "[0.95,1.05]"
+            rate_lmt = "1"
+            zero_seq_remove = "False"
+            q_gain_k = "0.5"
+            r_gain_k = "20"
+            Vn_3ph_CPL = "0"
+            P_CPL = "0"
+            Q_CPL = "0"
+            kV = "0"
+            pf = "0"
+            conn = "0"
+            kVA = "0"
+            baseFreq = "0"
+            gen_ts_en = "True"
+            load_loadshape = "Choose"
+            loadshape_name = "Default"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+            loadshape_int = "1"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            T_Ts = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            T_mode = "Time"
+            S_Ts_mode = "Manual input"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "5"
+            T_Ts_max = "10"
+            del_Ts = "20"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+            tp_connection_combo_values = ""
+        }
+
+        "OpenDSS/Manual Switch" {
+            switch_status = "True"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            baseFreq = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+            stability_analysis = "Run"
+        }
+
+        "OpenDSS/Three-Phase Transformer" {
+            num_windings = "2"
+            embedded_cpl = "None"
+            embedded_cpl_12 = "None"
+            embedded_cpl_13 = "None"
+            embedded_cpl_14 = "None"
+            KVs = "[12.47, 12.47]"
+            KVAs = "[1000, 1000]"
+            percentRs = "[2, 2]"
+            XArray = "[1, 1]"
+            XscArray = "[2.0, 2.0]"
+            global_basefreq = "True"
+            baseFreq = "60"
+            percentNoloadloss = "2"
+            percentimag = "0"
+            prim_conn = "Y"
+            Rneut_prim = "0.0"
+            Xneut_prim = "0.0"
+            sec1_conn = "Y"
+            Rneut_sec1 = "0.0"
+            Xneut_sec1 = "0.0"
+            sec2_conn = "Y"
+            Rneut_sec2 = "0.0"
+            Xneut_sec2 = "0.0"
+            sec3_conn = "Y"
+            Rneut_sec3 = "0.0"
+            Xneut_sec3 = "0.0"
+            regcontrol_on = "False"
+            maxtap = "1.1"
+            mintap = "0.9"
+            numtaps = "32"
+            ctrl_winding = "Winding 1"
+            vreg = "120"
+            ptratio = "60"
+            winding_voltage = "7200.0"
+            band = "3"
+            delay = "15"
+            execution_rate = "100e-6"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Vsource" {
+            basekv = "115.0"
+            baseMVA = "100.0"
+            global_basefreq = "False"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
+            pu = "1.0"
+            Angle = "0"
+            Frequency = "60"
+            input_method = "Z"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
+            enable_monitoring = "False"
+        }
+    }
+}
