@@ -5,6 +5,7 @@ import pandas as pd
 from typhoon.api.schematic_editor.const import ITEM_CONNECTION, ITEM_COMPONENT
 
 got_loadshape_points_list = []
+old_state = {}
 
 
 def tp_connection_dynamics(mdl, container_handle):
@@ -30,13 +31,9 @@ def tp_connection_dynamics(mdl, container_handle):
 
 
 def zip_change_fnc(mdl, container_handle, new_value):
-    # zip_internal_n_prop = mdl.prop(container_handle, "zip_internal_n")
-    # zip_internal_n = mdl.get_property_value(zip_internal_n_prop)
     zip_vector_prop = mdl.prop(container_handle, "zip_vector")
     zip_vector = mdl.get_property_disp_value(zip_vector_prop)
 
-    # zip_internal_n_q_prop = mdl.prop(container_handle, "zip_internal_n_Q")
-    # zip_internal_n_q = mdl.get_property_value(zip_internal_n_q_prop)
     zip_vector_q_prop = mdl.prop(container_handle, "zip_vector_Q")
     zip_vector_q = mdl.get_property_disp_value(zip_vector_q_prop)
 
@@ -172,7 +169,6 @@ def load_model_value_edited_fnc(mdl, container_handle, new_value):
         mdl.set_property_disp_value(mdl.prop(container_handle, "tp_connection"),
                                     "Y - Grounded")
         tp_connection_edited(mdl, container_handle, "Y - Grounded")
-        # mdl.disable_property(mdl.prop(container_handle, "tp_connection"))
 
 
 def load_loadshape(mdl, container_handle):
@@ -517,7 +513,6 @@ def port_dynamics(mdl, mask_handle):
             created_ports.pop("portC", None)
 
     if tp_connection == "Δ" and load_model == "Constant Impedance":
-        # https://youtu.be/gqQertPg9wI?list=RDMM
         port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
         if port_n:
             mdl.delete_item(port_n)
@@ -721,7 +716,6 @@ def create_tags_and_connections_to_ports(mdl, mask_handle, created_ports):
 
 
 def connections_dynamics(mdl, mask_handle, created_ports):
-    # create_tags_and_connections_to_ports(mdl, mask_handle, created_ports)
 
     comp_handle = mdl.get_parent(mask_handle)
 
@@ -805,13 +799,11 @@ def connections_dynamics(mdl, mask_handle, created_ports):
                 mdl.delete_item(jun_n)
 
 
-'''*******************************************************************
-This function manages the mask properties 
-If tp_connection == "Y - Grounded", the fields for Rneut and Xneut 
-will be available.
-https://youtu.be/Al3vXVe9WVU
-*******************************************************************'''
-
+#
+# This function manages the mask properties
+# If tp_connection == "Y - Grounded", the fields for Rneut and Xneut
+# will be available.
+#
 
 def tp_connection_edited(mdl, mask_handle, new_value):
     rneut_prop = mdl.prop(mask_handle, "Rneut")
@@ -876,12 +868,11 @@ def connections_gnd_dynamics(mdl, mask_handle, created_ports):
     jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
     gnd_z = mdl.get_item("Gnd Z", parent=comp_handle, item_type=ITEM_COMPONENT)
 
-    # Here we have the grounding through Rneut and Xneut AND the neutral terminal on Y configurations
+    # Here we have the grounding through Rneut and Xneut
+    # AND the neutral terminal on Y configurations
     if tp_connection == "Y - Grounded":
-        # https://www.youtube.com/playlist?list=PLtPtQsu5cwyq13GbLu6TqxIQUtcjjCbRt
 
         if not gnd1:
-            # gnd1 = mdl.create_component("src_ground", parent=comp_handle, name="gndc", position=(8000, 8640))
             gnd1 = mdl.create_component("src_ground", parent=comp_handle, name="gndc",
                                         position=(8030, 8480))
 
@@ -1551,7 +1542,23 @@ def topology_dynamics(mdl, mask_handle):
     This function is called when the user changes the configuration on the mask
     """
 
-    mdl.refresh_icon(mask_handle)
+    comp_handle = mdl.get_parent(mask_handle)
+
+    #
+    # Get new property values to be applied (display values)
+    #
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle):
+        return
+
+    define_icon(mdl, mask_handle)
 
     ports = port_dynamics(mdl, mask_handle)
 
@@ -1563,6 +1570,7 @@ def topology_dynamics(mdl, mask_handle):
 
     connections_dynamics(mdl, mask_handle, ports)
 
+    old_state[comp_handle] = new_prop_values
 
 def dialog_close(mdl, mask_handle, reason):
     """
@@ -1584,3 +1592,13 @@ def dialog_close(mdl, mask_handle, reason):
     if reason == "reason_close_cancel":
         if not (old_tp_combo_values == new_tp_combo_values):
             mdl.set_property_combo_values(tp_connection_prop, old_tp_combo_values)
+
+
+def retro_compatibility(mdl, mask_handle):
+
+    tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    old_ground_connected = mdl.get_property_value(
+        mdl.prop(mask_handle, "ground_connected")
+    )
+    if old_ground_connected in ("True", True):
+        mdl.set_property_value(tp_connection_prop, "Y - Grounded")
