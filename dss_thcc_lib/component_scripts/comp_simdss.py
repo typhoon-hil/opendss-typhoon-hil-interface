@@ -1453,46 +1453,6 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                 dss.run_command(cmd_string)
                 dss.run_command("calcv")
 
-            # cmd_string = f"new REACTOR.ref_b2_t1 bus1=intb2_t_t1.2 bus2=intb2_t_t1.0 phases=1 R=1e9 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-            #
-            # cmd_string = f"new REACTOR.ref_b2_t2 bus1=intb2_t_t2.2 bus2=intb2_t_t2.0 phases=1 R=1e9 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-            #
-            # cmd_string = f"new REACTOR.ref_b2_t3 bus1=intb2_t_t3.2 bus2=intb2_t_t3.0 phases=1 R=1e4 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-            #
-            # cmd_string = f"new REACTOR.ref_b1_t1 bus1=intb1_t_t3.2 bus2=intb1_t_t1.0 phases=1 R=1e4 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-            #
-            # cmd_string = f"new REACTOR.ref_b1_t2 bus1=intb1_t_t2.2 bus2=intb1_t_t2.0 phases=1 R=1e4 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-            #
-            # cmd_string = f"new REACTOR.ref_b1_t3 bus1=intb1_t_t3.2 bus2=intb1_t_t3.0 phases=1 R=1e4 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-            #
-            # cmd_string = f"new REACTOR.aux_b1 bus1=aux23_b1_t.4 bus2=aux23_b1_t.0 phases=1 R=1e4 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-            #
-            # cmd_string = f"new REACTOR.aux_b2 bus1=aux23_b2_t.4 bus2=aux23_b2_t.0 phases=1 R=1e4 X=1e-09"
-            # dss.run_command(cmd_string)
-            # mdl.info(cmd_string)
-            # dss.run_command("calcv")
-
     elif element_type in ["Manual Switch", "Controlled Switch"]:
         for swt_handle in get_all_dss_elements(mdl, comp_type=["Manual Switch", "Controlled Switch"]):
             dss_swt_name = mdl.get_fqn(swt_handle).replace(".", "_").upper()
