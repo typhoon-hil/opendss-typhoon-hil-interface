@@ -456,6 +456,9 @@ def run_stability_analysis(mdl, mask_handle):
     dss_to_thcc_compensation(mdl, dss, "Storage", ts, restore_names_dict)
     dss_to_thcc_compensation(mdl, dss, "Generator", ts, restore_names_dict)
     dss_to_thcc_compensation(mdl, dss, "Fault", ts, restore_names_dict)
+    dss_to_thcc_compensation(mdl, dss, "VSConverter", ts, restore_names_dict)
+    dss_to_thcc_compensation(mdl, dss, "Isource", ts, restore_names_dict)
+    dss_to_thcc_compensation(mdl, dss, "Single-Phase Transformer", ts, restore_names_dict)
 
     tse_cpl_elements = []
     dss_cpl_elements = []
@@ -1607,7 +1610,28 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
         mdl.info("Fault Compensation Stage...") if debug else None
         fault_elements = get_all_dss_elements(mdl, comp_type=["Fault"])
         if fault_elements:
-            mdl.info("The current version of the Stability Assistance doesn't support Fault elements."
+            mdl.info("The current version of the MPA doesn't support Fault elements."
+                     "The results might not be trustable.")
+
+    elif element_type == "VSConverter":
+        mdl.info("Fault Compensation Stage...") if debug else None
+        fault_elements = get_all_dss_elements(mdl, comp_type=["VSConverter"])
+        if fault_elements:
+            mdl.info("The current version of the MPA doesn't support VSConverter elements."
+                     "The results might not be trustable.")
+
+    elif element_type == "Isource":
+        mdl.info("Fault Compensation Stage...") if debug else None
+        fault_elements = get_all_dss_elements(mdl, comp_type=["Isource"])
+        if fault_elements:
+            mdl.info("The current version of the MPA doesn't support Isource elements."
+                     "The results might not be trustable.")
+
+    elif element_type == "Single-Phase Transformer":
+        mdl.info("Fault Compensation Stage...") if debug else None
+        fault_elements = get_all_dss_elements(mdl, comp_type=["Single-Phase Transformer"])
+        if fault_elements:
+            mdl.info("The current version of the MPA doesn't support Single-Phase Transformer elements."
                      "The results might not be trustable.")
 
 
