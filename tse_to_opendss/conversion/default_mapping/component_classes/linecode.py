@@ -39,7 +39,8 @@ class LineCode(GeneralObject):
         tse_props_copy = dict(tse_properties)
 
         tse_props_copy.pop("mode", "")
-        tse_props_copy['nphases'] = tse_props_copy.pop("phases")
+        # Assume 3 if phases is not found
+        tse_props_copy['nphases'] = tse_props_copy.pop("phases", "3")
 
         # Matrix parameters need to be converted
         if any((tse_props_copy.get(p) for p in ["rmatrix", "xmatrix", "cmatrix"])):
@@ -54,8 +55,7 @@ class LineCode(GeneralObject):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        nphases = tse_properties.get("phases")
-        num_phases = int(nphases) if nphases else 1
+        num_phases = int(tse_properties.get("phases", "3"))
 
         return num_phases
 

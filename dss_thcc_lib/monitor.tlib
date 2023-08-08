@@ -362,6 +362,11 @@ library "OpenDSS" {
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.pre_compilation(mdl, item_handle)
+                ENDCODE
+
                 CODE init
                     import importlib
 

@@ -3,7 +3,6 @@
 library "OpenDSS" {
 
     component Subsystem Root {
-
         component Subsystem Storage {
             layout = static
             component "core/Constant" chtrigger {
@@ -891,9 +890,6 @@ else if (dispatch_mode == 4 || dispatch_mode == 5 || dispatch_mode == 6){
 
                 component "core/C function" "C function1" {
                     global_variables = "int old_point;"
-                    init_fnc = "/*Begin code section*/
-kw = p_in;
-/*End code section*/"
                     input_terminals = "int load_point;inherit p_in;int idle_signal;int mode_int;"
                     input_terminals_dimensions = "inherit;inherit;inherit;inherit"
                     input_terminals_feedthrough = "True;True;True;True"
@@ -1323,6 +1319,7 @@ kw = kw * idle_signal;
                 connect Sum7.in1 Junction663 as Connection3950
                 connect Junction680 discharge_gain.in as Connection3960
                 [
+                    position = 0, 0
                     breakpoints = 7872, 8136
                 ]
                 connect Sum7.out Junction681 as Connection3961
@@ -1330,16 +1327,19 @@ kw = kw * idle_signal;
                 connect Junction680 Junction681 as Connection3963
                 connect "Signal switch6.in2" Junction680 as Connection3964
                 [
+                    position = 0, 0
                     breakpoints = 8088, 8080; 8088, 8080; 8088, 8080; 7872, 8136; 7872, 8136; 7872, 8136
                 ]
                 connect "C function1.kw" Junction682 as Connection3965
                 connect Junction682 Product1.in as Connection3966
                 [
+                    position = 0, 0
                     breakpoints = 7296, 8056; 7296, 8056; 7296, 8056
                 ]
                 connect Tag7 Junction682 as Connection3967
                 connect idle_signal "C function1.idle_signal" as Connection3968
                 [
+                    position = 0, 0
                     breakpoints = 6976, 8072
                 ]
                 connect idle_losses.out Product3.in as Connection3969
@@ -1452,34 +1452,15 @@ else{
                     position = 8216, 8248
                 ]
 
-                component "core/Probe" slope {
-                }
-                [
-                    position = 8664, 8184
-                ]
-
-                component "core/Probe" "start index" {
-                }
-                [
-                    position = 8600, 8232
-                ]
-
-                component "core/Probe" end_index {
-                }
-                [
-                    position = 8472, 8280
-                ]
-
                 component "core/Advanced C function" "Advanced C function1" {
                     arb_defs = "/*Begin code section*/
 double slopes[loadshape_n_points] = {0};
 /*End code section*/"
-                    global_variables = "real out_value;real ls_interval;int idx;real end_point;real bat_full;real bat_on_reserve;real saved_point;int old_index;"
+                    global_variables = "real out_value;real ls_interval;int idx;real end_point;real bat_full;real bat_on_reserve;real saved_point;int old_index;real var_input_time;real start_point;"
                     init_fnc = "/*Begin code section*/
 start_index = 0;
 old_index = start_index;
 end_index = 1;
-idle_signal = 0;
 /*End code section*/"
                     input_terminals = "real loadshape_array;inherit time_array;int input_mode;int input_idx;real input_time;real bat_soc;"
                     input_terminals_dimensions = "inherit;inherit;inherit;inherit;inherit;inherit"
@@ -1505,13 +1486,11 @@ if (input_mode == 0){
 
     // Limit the index values
     if (input_idx > loadshape_n_points - 1) {
-        input_idx = loadshape_n_points - 1;
+        out_value = loadshape_array[loadshape_n_points - 1];
     }
     else if (input_idx < 0) {
-        input_idx = 0;
+        out_value = loadshape_array[0];
     }
-
-    out_value = loadshape_array[input_idx];
 }
 else if (input_mode == 1){
     // Time mode
@@ -1531,15 +1510,15 @@ else if (input_mode == 1){
             if (input_time >= (time_array[loadshape_n_points - 1])){
                 start_index = loadshape_n_points - 1;
                 end_index = 0;
-                input_time = fmod(input_time, time_array[loadshape_n_points - 1]);
+                var_input_time = fmod(input_time, time_array[loadshape_n_points - 1]);
             }
             else{
                 start_index = 0;
                 end_index = 1;
-                input_time = input_time;
+                var_input_time = input_time;
             }
             for (idx = 0; idx < loadshape_n_points; idx++){
-                if (input_time >= time_array[idx]){
+                if (var_input_time >= time_array[idx]){
                     start_index = idx;
                     end_index = start_index + 1;
                 }
@@ -1556,8 +1535,8 @@ else if (input_mode == 1){
         }
         else{
             // Fixed time interval
-            input_time = fmod(input_time - 1, loadshape_int*loadshape_n_points);
-            start_index = input_time / loadshape_int;
+            var_input_time = fmod(input_time - 1, loadshape_int*loadshape_n_points);
+            start_index = var_input_time / loadshape_int;
             end_index = start_index + 1;
 
             ls_interval = loadshape_int;
@@ -1598,14 +1577,14 @@ else if (input_mode == 1){
 
         if (loadshape_int == 0){
             if (start_index == (loadshape_n_points - 1)){
-                out_value = start_point + slope * input_time;
+                out_value = start_point + slope * var_input_time;
             }
             else{
-                out_value = start_point + slope * (input_time - time_array[start_index]);
+                out_value = start_point + slope * (var_input_time - time_array[start_index]);
             }
         }
         else{
-            out_value = start_point + slope * (input_time - ls_interval * start_index);
+            out_value = start_point + slope * (var_input_time - ls_interval * start_index);
         }
     }
 }
@@ -1620,27 +1599,15 @@ else if (out_value < -1) {
 
 out = out_value;
 /*End code section*/"
-                    output_terminals = "real out;real slope;int start_index;int end_index;int idle_signal;real start_point;"
-                    output_terminals_dimensions = "1;1;1;1;1;1"
-                    output_terminals_feedthrough = "True;True;True;True;True;True"
-                    output_terminals_show_labels = "True;True;True;True;True;True"
+                    output_terminals = "real out;int idle_signal;"
+                    output_terminals_dimensions = "1;1"
+                    output_terminals_feedthrough = "True;True"
+                    output_terminals_show_labels = "True;True"
                     parameters = "int loadshape_n_points;int loadshape_int;real pct_idlingkw;real pct_reserve;"
                 }
                 [
                     position = 8336, 8232
                     size = 144, 240
-                ]
-
-                component "core/Probe" idle {
-                }
-                [
-                    position = 8536, 8416
-                ]
-
-                component "core/Probe" end_point {
-                }
-                [
-                    position = 8504, 8504
                 ]
 
                 port loadshape_value {
@@ -1667,19 +1634,6 @@ out = out_value;
                 }
                 [
                     position = 8136, 8248
-                ]
-
-                port end_point_to_bat {
-                    position = right:1
-                    kind = sp
-                    direction =  in
-                    sp_type {
-                        default = inherit
-                        readonly = True
-                    }
-                }
-                [
-                    position = 8624, 8480
                 ]
 
                 port bat_soc {
@@ -1718,7 +1672,7 @@ out = out_value;
                     }
                 }
                 [
-                    position = 8536, 8328
+                    position = 8512, 8328
                 ]
 
                 junction Junction1 sp
@@ -1734,16 +1688,6 @@ out = out_value;
                 junction Junction4 sp
                 [
                     position = 8048, 8216
-                ]
-
-                junction Junction5 sp
-                [
-                    position = 8456, 8328
-                ]
-
-                junction Junction6 sp
-                [
-                    position = 8424, 8480
                 ]
 
                 connect "Advanced C function1.loadshape_array" loadshape.out as Connection39
@@ -1763,26 +1707,18 @@ out = out_value;
                     breakpoints = 8472, 8136; 8472, 8032
                 ]
                 connect "Advanced C function1.out" Junction2 as Connection48
-                connect "Advanced C function1.slope" slope.in as Connection49
-                connect end_index.in "Advanced C function1.end_index" as Connection55
                 connect "Advanced C function1.input_mode" Junction4 as Connection60
                 connect Junction4 mode_int.out as Connection61
                 connect mode Junction4 as Connection62
-                connect "Advanced C function1.idle_signal" Junction5 as Connection64
-                connect Junction5 idle_signal as Connection65
-                connect idle.in Junction5 as Connection66
                 connect "Advanced C function1.bat_soc" bat_soc as Connection71
                 [
                     position = 0, 0
                     breakpoints = 8168, 8328
                 ]
-                connect "start index.in" "Advanced C function1.start_index" as Connection73
+                connect "Advanced C function1.idle_signal" idle_signal as Connection77
                 [
-                    breakpoints = 8504, 8232
+                    position = 0, 0
                 ]
-                connect end_point.in Junction6 as Connection74
-                connect Junction6 "Advanced C function1.start_point" as Connection75
-                connect end_point_to_bat Junction6 as Connection76
             }
             [
                 position = 7928, 7320
@@ -1867,7 +1803,7 @@ out = out_value;
 
             port "Load point" {
                 label = "t"
-                position = 0, -48.0
+                position = 0.0, -48.0
                 kind = sp
                 direction =  out
                 sp_type {
@@ -2066,7 +2002,7 @@ out = out_value;
                 direction = in
             }
             [
-                position = 8072, 7304
+                position = 8072, 7368
                 hide_name = True
                 size = 60, 20
             ]
@@ -2136,7 +2072,7 @@ out = out_value;
                 direction = in
             }
             [
-                position = 8072, 7368
+                position = 8072, 7336
                 hide_name = True
                 size = 60, 20
             ]
@@ -2148,7 +2084,7 @@ out = out_value;
                 direction = in
             }
             [
-                position = 8072, 7336
+                position = 8072, 7304
                 hide_name = True
                 size = 60, 20
             ]
@@ -2302,7 +2238,6 @@ out = out_value;
             ]
             connect "Simple Battery inverter (Average)1.DC+" iDC.p_node as Connection3565
             connect iDC.n_node Vs1.p_node as Connection3566
-            connect "Loadshape Point Calculator.end_point_to_bat" Goto14 as Connection3568
             connect "Battery Energy.bat_active" Tag13 as "(Battery Energy)(bat_on_reserve)--1"
             connect Tag14 "Loadshape Point Calculator.bat_soc" as Connection3570
             connect Goto15 "Battery Energy.bat_soc" as Connection3571
@@ -2319,6 +2254,8 @@ out = out_value;
             ]
             connect "Dispatch kW Reference Calculation.p_inv" Junction641 as Connection3592
             connect Tag24 "Battery Energy.p_in" as Connection3593
+
+            global_basefreq = "False"
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p>A detailed explanation of the OpenDSS Storage model can be found by clicking on the help button.</p><p>The Storage component time-domain model is comprised of an ideal battery and a Simple Battery inverter (average) from the Microgrid library.</p></body></html>"
@@ -2405,7 +2342,6 @@ out = out_value;
                     default_value = "60"
                     unit = "Hz"
                     group = "Ratings:3"
-                    nonvisible
                 }
 
                 kwrated {
