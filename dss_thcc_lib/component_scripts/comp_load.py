@@ -77,6 +77,15 @@ def mask_dialog_dynamics(mdl, mask_handle, prop_handle, new_value):
     elif prop_name == "phases":
         mask_edit_zero_sequence(mdl, mask_handle)
 
+        # 3-phase CPL demands grounded connection
+        tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+        if new_value == "3":
+            mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
+            mdl.disable_property(tp_connection_prop)
+        else:
+            mdl.enable_property(tp_connection_prop)
+        mask_edit_neutral_impedances(mdl, mask_handle)
+
     elif prop_name == "load_model":
         
         mask_edit_zero_sequence(mdl, mask_handle)
@@ -114,10 +123,16 @@ def mask_dialog_dynamics(mdl, mask_handle, prop_handle, new_value):
             for pname in enable_prop_list:
                 mdl.enable_property(mdl.prop(mask_handle, pname))
 
-            # CPL demands grounded connection
+            # 3-phase CPL demands grounded connection
+            phases_prop = mdl.prop(mask_handle, "phases")
+            phases = mdl.get_property_disp_value(phases_prop)
             tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
-            mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
-            mdl.disable_property(tp_connection_prop)
+
+            if phases == "3":
+                mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
+                mdl.disable_property(tp_connection_prop)
+            else:
+                mdl.enable_property(tp_connection_prop)
             mask_edit_neutral_impedances(mdl, mask_handle)
 
         if new_value == "Constant Power":
@@ -512,8 +527,8 @@ def port_dynamics(mdl, mask_handle):
             mdl.set_port_properties(port_c, terminal_position=pos_port_c1)
         created_ports.update({"portC": port_c})
 
+        port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
         if tp_connection in ("Y", "Y - Grounded"):
-            port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
             if not port_n:
                 port_n = mdl.create_port(parent=comp_handle, name="N1", direction="out",
                                          kind="pe",
@@ -523,6 +538,9 @@ def port_dynamics(mdl, mask_handle):
                 mdl.set_port_properties(port_n, terminal_position=(48, -24))
 
             created_ports.update({"portN": port_n})
+        else:
+            if port_n:
+                mdl.delete_item(port_n)
 
     elif phases == "1":
         port_a = mdl.get_item("A1", parent=comp_handle, item_type="port")
@@ -792,13 +810,13 @@ def connections_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
 
     tp_connection_prop = mdl.prop(comp_handle, "tp_connection")
-    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
+    tp_connection = mdl.get_property_value(tp_connection_prop)
 
     load_model_prop = mdl.prop(mask_handle, "load_model")
-    load_model = mdl.get_property_disp_value(load_model_prop)
+    load_model = mdl.get_property_value(load_model_prop)
 
     phases_prop = mdl.prop(mask_handle, "phases")
-    phases = mdl.get_property_disp_value(phases_prop)
+    phases = mdl.get_property_value(phases_prop)
 
     if load_model == "Constant Impedance":
         load = mdl.get_item("CIL", parent=comp_handle, item_type="component")
@@ -810,16 +828,21 @@ def connections_dynamics(mdl, mask_handle, created_ports):
         load = mdl.get_item("CPL", parent=comp_handle, item_type="component")
 
     # This loop connects the Load tags to the CIL terminals
-    if phases == "1":
+    if int(phases) == 1:
         phase_list = ["A"]
     else:
         phase_list = ["A", "B", "C"]
 
     for phase in phase_list:
-        tag = mdl.get_item(f"Tag{phase}2", parent=comp_handle, item_type="tag")
-        conn_tmp = mdl.find_connections(tag, mdl.term(load, f"{phase}1"))
-        if len(conn_tmp) == 0:
-            mdl.create_connection(tag, mdl.term(load, f"{phase}1"))
+        tag = mdl.get_item(
+            f"Tag{phase}2",
+            parent=comp_handle,
+            item_type="tag",
+        )
+        if tag:
+            conn_tmp = mdl.find_connections(tag, mdl.term(load, f"{phase}1"))
+            if len(conn_tmp) == 0:
+                mdl.create_connection(tag, mdl.term(load, f"{phase}1"))
 
     jun_n = mdl.get_item("JN", parent=comp_handle, item_type="junction")
     port_n = mdl.get_item("N1", parent=comp_handle, item_type="port")
@@ -834,7 +857,7 @@ def connections_dynamics(mdl, mask_handle, created_ports):
         if not conn_n_load:
             mdl.create_connection(mdl.term(load, "N"), jun_n, name="Conn_AN")
 
-        if phases == "3":
+        if int(phases) == 3:
             conn_n2port = mdl.get_item("Conn_N", parent=comp_handle,
                                        item_type=ITEM_CONNECTION)
             if not conn_n2port:
@@ -850,14 +873,14 @@ def connections_dynamics(mdl, mask_handle, created_ports):
         if not conn_n_load:
             mdl.create_connection(mdl.term(load, "N"), jun_n, name="Conn_AN")
 
-        if phases == "3":
+        if int(phases) == 3:
             conn_n2port = mdl.get_item("Conn_N", parent=comp_handle,
                                        item_type=ITEM_CONNECTION)
             if not conn_n2port:
                 mdl.create_connection(jun_n, port_n, name="Conn_N")
 
     elif tp_connection == "Δ":
-        if phases == "1":
+        if int(phases) == 1:
             if not jun_n:
                 jun_n = mdl.create_junction(name='JN', parent=comp_handle, kind='pe',
                                             position=(7921, 8326))

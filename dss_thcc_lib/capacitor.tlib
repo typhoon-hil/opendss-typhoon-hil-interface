@@ -100,24 +100,6 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-                Rneut {
-                    label = "Rneut"
-                    widget = edit
-                    type = generic
-                    default_value = "0.0"
-                    unit = "Ω"
-                    group = "General:1"
-                }
-
-                Xneut {
-                    label = "Xneut"
-                    widget = edit
-                    type = generic
-                    default_value = "0.0"
-                    unit = "Ω"
-                    group = "General:1"
-                }
-
                 global_basefreq {
                     label = "Global base frequency"
                     widget = checkbox
