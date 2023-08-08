@@ -807,9 +807,9 @@ def load_xycurve(mdl, container_handle, caller_prop_handle):
 
     import os
     import dss_thcc_lib.gui_scripts.load_object as load_obj
-    # Tirar o importlib depois
-    import importlib
-    importlib.reload(load_obj)
+    # Using the importLib as debug
+    # import importlib
+    # importlib.reload(load_obj)
     import pathlib
     import json
     import ast
@@ -881,9 +881,9 @@ def load_tshape(mdl, container_handle, caller_prop_handle):
 
     import os
     import dss_thcc_lib.gui_scripts.load_object as load_obj
-    # Tirar o importlib depois
-    import importlib
-    importlib.reload(load_obj)
+    # Using the importLib as debug
+    # import importlib
+    # importlib.reload(load_obj)
     import pathlib
     import json
     import ast
