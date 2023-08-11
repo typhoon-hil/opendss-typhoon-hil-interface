@@ -65,9 +65,7 @@ class Line(TwoTerminal):
     def define_number_of_phases(self, tse_properties, tse_component):
         """ Returns the number of phases of the component. """
 
-        phases = int(tse_properties.get('phases'))
-
-        num_phases = phases if phases else 3
+        num_phases = int(tse_properties.get('phases', '3'))
 
         return num_phases
 
@@ -89,7 +87,8 @@ class Line(TwoTerminal):
     def extra_conversion_steps(self, tse_properties, tse_component):
         """ Applies extra necessary conversion steps. """
 
-        # Check the if the provided linecode (selected_object) exists. If not, create a new linecode object.
+        # Check the if the provided linecode (selected_object) exists.
+        # If not, create a new linecode object.
         if tse_properties['input_type'] == "LineCode":
 
             if tse_properties['obj_mode'] == "symmetrical":
@@ -125,12 +124,12 @@ class Line(TwoTerminal):
 
             saved_linecodes = general_objects.get("linecodes")
 
-            # Make dict search case insensitive
+            # Make sure dict search is case insensitive
             if saved_linecodes:
-                for key in list(saved_linecodes.keys()):
-                    saved_linecodes[key.upper()] = saved_linecodes.pop(key)
+                upper_dict = {key.upper(): value
+                              for key, value in saved_linecodes.items()}
 
-                if saved_linecodes.get(tse_properties["selected_object"].upper()):
+                if upper_dict.get(tse_properties["selected_object"].upper()):
                     linecode_exists = True
 
             if not linecode_exists:

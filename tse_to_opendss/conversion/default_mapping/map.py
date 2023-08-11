@@ -18,7 +18,8 @@ def map_component(comp_type):
         DSS_GENERATOR: ["GENERATOR"],
         DSS_VSCONVERTER: ["VSCONVERTER"],
         DSS_STORAGE: ["STORAGE"],
-        DSS_CONTAINER: ["CONTAINER"]
+        DSS_CONTAINER: ["CONTAINER"],
+        DSS_COUPLING: ["COUPLING"]
     }
 
     if comp_type in mappings.keys():
@@ -26,14 +27,17 @@ def map_component(comp_type):
 
 
 def ignore_component(comp_type):
-    """ Merge terminals of supported ignored components
-        Dictionary key is a terminal and the value is the list of terminals that are being merged to it.
+    """
+    Merge terminals of supported ignored components
+    Dictionary key is a terminal and the value is the list
+    of terminals that are being merged to it.
     """
 
     merge_dict = {
         "Current Measurement": {"p_node": ["n_node"]},
         "Current RMS": {"p_node": ["n_node"]},
         "Three-phase Meter": {"A-": ["A+"], "B-": ["B+"], "C-": ["C+"]},
+        "OpenDSS/Monitor": {"A1": ["A2"], "B1": ["B2"], "C1": ["C2"]},
         "Three Phase Core Coupling":
                 {"a_in": ["a_out"], "b_in": ["b_out"], "c_in": ["c_out"]},
         "Three Phase TLM Core Coupling":

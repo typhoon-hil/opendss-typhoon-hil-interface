@@ -203,7 +203,6 @@ def convert_matrix_to_hil_format(mdl, container_handle, matrix_props):
             mdl.set_property_value(mdl.prop(container_handle, prop_dict.get(mat_name)),
                                    hil_matrices.get(mat_name))
         else:
-            mdl.info("not in matrix_props")
             if mat_name == 'cmatrix':
                 prop_handle = mdl.prop(container_handle, "d_C")
                 cap_array = np.array(mdl.get_property_value(prop_handle)) * 1e-9

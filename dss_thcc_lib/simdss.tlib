@@ -293,6 +293,20 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
+                stability_analysis {
+                    label = "Model Partitioning Assistant (beta)"
+                    widget = button
+                    type = string
+                    default_value = "Run"
+                    group = "Typhoon HIL:5"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.run_stability_analysis(mdl, container_handle)
+                    ENDCODE
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 

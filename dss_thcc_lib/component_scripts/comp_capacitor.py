@@ -2,37 +2,6 @@ import numpy as np
 
 x0, y0 = (8192, 8192)
 
-
-# *******************************************************************
-# This function manages the mask properties
-# If tp_connection == "Y - Grounded", the fields for Rneut and Xneut
-# will be available.
-# *******************************************************************
-def tp_connection_edited(mdl, mask_handle, new_value):
-    rneut_prop = mdl.prop(mask_handle, "Rneut")
-    xneut_prop = mdl.prop(mask_handle, "Xneut")
-
-    if new_value == "Y - Grounded":
-        # Enable user input fields for N to Gnd impedance
-        mdl.enable_property(mdl.prop(mask_handle, "Rneut"))
-        mdl.enable_property(mdl.prop(mask_handle, "Xneut"))
-        # We don't want to modify Rneut and Xneut user values
-        # on the 'on change' event. We put zeros only when
-        # the user commuted from "Y" or "Δ" to "Y - Grounded"
-        if mdl.get_property_disp_value(rneut_prop) == "'inf'":
-            mdl.set_property_value(rneut_prop, "0.0")
-        if mdl.get_property_disp_value(xneut_prop) == "'inf'":
-            mdl.set_property_value(xneut_prop, "0.0")
-    else:
-        # Disable user input fields for N to Gnd impedance
-        # show 'inf' because they are disconnected
-        mdl.set_property_disp_value(rneut_prop, "'inf'")
-        mdl.set_property_disp_value(xneut_prop, "'inf'")
-        mdl.disable_property(mdl.prop(mask_handle, "Rneut"))
-        mdl.disable_property(mdl.prop(mask_handle, "Xneut"))
-
-
-
 def calculate_c(mdl, mask_handle):
     tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
     tp_connection = mdl.get_property_value(tp_connection_prop)
