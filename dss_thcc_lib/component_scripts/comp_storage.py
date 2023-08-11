@@ -239,7 +239,8 @@ def get_all_circuit_storages(mdl, mask_handle, parent_comp=None):
 def verify_time_loadshape_sizes(mdl, mask_handle, caller=None):
     import ast
 
-    comp_name = mdl.get_name(mdl.get_parent(mask_handle))
+    comp_handle = mdl.get_parent(mask_handle)
+    comp_name = mdl.get_name(comp_handle)
 
     loadshape_prop = mdl.prop(mask_handle, "loadshape")
     time_prop = mdl.prop(mask_handle, "T_Ts")
@@ -253,10 +254,12 @@ def verify_time_loadshape_sizes(mdl, mask_handle, caller=None):
     if mode == "Time" and time_list and ls_list:
         # The time vector and the loadshape must be the same size
         if not len(ls_list) == len(time_list):
-            mdl.info(f"Component {comp_name}: The number of points on the time range "
-                     f"({len(time_list)}) and loadshape ({len(ls_list)}) must be equal for correct operation.")
             min_points = min(len(time_list), len(ls_list))
-            mdl.info(f"HIL simulation will use the first {min_points} points.")
+            warning_msg = (f"The number of points of the time range property "
+                           f"({len(time_list)}) and of the loadshape "
+                           f"({len(ls_list)}) must be equal for correct operation. "
+                           f"HIL simulation will use the first {min_points} points.")
+            mdl.warning(warning_msg, context=mask_handle)
             if caller == "pre_compile":
                 if len(time_list) > len(ls_list):
                     mdl.set_property_value(time_prop, time_list[:min_points])
