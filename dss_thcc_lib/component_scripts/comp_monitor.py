@@ -220,7 +220,7 @@ def topology_dynamics(mdl, mask_handle):
             "power_meas": ["P_meas"],
         }
         for prop_name, inner_prop_name_list in prop_mapping.items():
-            prop_bool = new_prop_values.get(prop_name) == "True"
+            prop_bool = new_prop_values.get(prop_name)
             for inner_prop_name in inner_prop_name_list:
                 prop = mdl.prop(meter_abc, inner_prop_name)
                 mdl.set_property_value(prop, prop_bool)
