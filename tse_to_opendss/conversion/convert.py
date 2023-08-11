@@ -160,11 +160,10 @@ def generate_output_files(output_circuit):
     for par, val in output_circuit.simulation_parameters.items():
         if type(val) == str:
             simulation_parameter_lines += f'set {par} = {val.replace(" ", "")} \n'
-
     # Redirect lines for each component type
     converted_component_types = [comp.lower() for comp in converted_component_types]
     # Some objects need to be in the correct order
-    converted_component_types.sort(key=lambda x: x in ['linecode', 'loadshape'], reverse=True)
+    converted_component_types.sort(key=lambda x: x in ['xycurve', 'tshape', 'linecode', 'loadshape'], reverse=True)
     if "regcontrol" in converted_component_types:
         converted_component_types.append(converted_component_types.pop(converted_component_types.index('regcontrol')))
     if "monitor" in converted_component_types:

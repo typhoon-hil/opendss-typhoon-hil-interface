@@ -1375,6 +1375,10 @@ library "OpenDSS" {
                     # HEADER STOP
                     import ast
 
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.ini_general_objects_from_json(mdl, item_handle)
+                    comp_script.read_loadshape_from_json(mdl, item_handle)
+
                     comp_handle = mdl.get_parent(item_handle)
                     rst_irrad = mdl.get_item("Rst Irrad", parent=comp_handle)
                     rst_temp = mdl.get_item("Rst Temp", parent=comp_handle)
@@ -1399,7 +1403,7 @@ library "OpenDSS" {
                         else:
                             tshape_time = [h*float(tshape_int) for h in range(ast.literal_eval(tshape_npts))]
                     else:
-                        tshape_time = tshape_hour
+                        tshape_time = ast.literal_eval(tshape_hour)
 
                     if power_ref == "Time Series":
                         if t_mode == "Index":
@@ -1412,6 +1416,9 @@ library "OpenDSS" {
                             mdl.set_property_value(mdl.prop(rst_temp, "input_type"), "Hour")
                             temp_max = tshape_time[-1]
                             irrad_max = loadshape_time[-1]
+
+                    loadshape = ast.literal_eval(loadshape)
+                    tshape_temp = ast.literal_eval(tshape_temp)
 
                 ENDCODE
             }

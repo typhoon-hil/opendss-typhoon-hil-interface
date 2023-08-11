@@ -40,7 +40,7 @@ SETTINGS_DIR = get_settings_dir_path()
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_PA")/1e3
+displayValue = hil.read_analog_signal("Pgrid_Meter.POWER_PA")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PA]]></signal_name>
@@ -82,7 +82,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_PA")/1e3
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_PB")/1e3
+displayValue = hil.read_analog_signal("Pgrid_Meter.POWER_PB")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PB]]></signal_name>
@@ -124,7 +124,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_PB")/1e3
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_PC")/1e3
+displayValue = hil.read_analog_signal("Pgrid_Meter.POWER_PC")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PC]]></signal_name>
@@ -166,7 +166,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_PC")/1e3
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QA")/1e3
+displayValue = hil.read_analog_signal("Pgrid_Meter.POWER_QA")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QA]]></signal_name>
@@ -208,11 +208,11 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QA")/1e3
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QB")/1e3
+displayValue = hil.read_analog_signal("Pgrid_Meter.POWER_QB")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QB]]></signal_name>
-                <unit><![CDATA[VAr]]></unit>
+                <unit><![CDATA[kvar]]></unit>
                 <automatic_unit>True</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>500</updateRate>
@@ -250,11 +250,11 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QB")/1e3
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
+displayValue = hil.read_analog_signal("Pgrid_Meter.POWER_QC")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QC]]></signal_name>
-                <unit><![CDATA[VAr]]></unit>
+                <unit><![CDATA[kvar]]></unit>
                 <automatic_unit>True</automatic_unit>
                 <decimals><![CDATA[2]]></decimals>
                 <updateRate>500</updateRate>
@@ -297,10 +297,10 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                     <virtual_signals_definitions>
                     </virtual_signals_definitions>
                     <presets>
-                        <active_capture_preset><![CDATA[PV1]]></active_capture_preset>
+                        <active_capture_preset><![CDATA[PV]]></active_capture_preset>
                         <active_scope_preset><![CDATA[Default]]></active_scope_preset>
-                        <capture name="PV1">
-                            <time_interval>230.0</time_interval>
+                        <capture name="PV">
+                            <time_interval>60.0</time_interval>
                             <sample_rate>2000.0</sample_rate>
                             <background_color>white</background_color>
                             <layout>Vertical</layout>
@@ -308,7 +308,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                             <analog_signals>
                                 <analog>
                                     <channel>0</channel>
-                                    <name><![CDATA[Bus PV1.Measurements.POWER_PA]]></name>
+                                    <name><![CDATA[PV1_Meter.POWER_PA]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
@@ -320,7 +320,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                                </analog>
                                 <analog>
                                     <channel>1</channel>
-                                    <name><![CDATA[Bus PV1.Measurements.POWER_PB]]></name>
+                                    <name><![CDATA[PV1_Meter.POWER_PB]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
@@ -332,7 +332,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                                </analog>
                                 <analog>
                                     <channel>2</channel>
-                                    <name><![CDATA[Bus PV1.Measurements.POWER_PC]]></name>
+                                    <name><![CDATA[PV1_Meter.POWER_PC]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
@@ -344,12 +344,72 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                                </analog>
                                 <analog>
                                     <channel>3</channel>
-                                    <name><![CDATA[time_hour]]></name>
+                                    <name><![CDATA[PV2a_Meter.POWER_P]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
                                     <coupling>False</coupling>
                                     <row>3</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>4</channel>
+                                    <name><![CDATA[PV2b_Meter.POWER_P]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>4</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>5</channel>
+                                    <name><![CDATA[PV3_Meter.POWER_P]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>5</row>
+                                    <viewports>
+                                        <num_viewport>4</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>6</channel>
+                                    <name><![CDATA[Pgrid_Meter.POWER_PA]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>6</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>7</channel>
+                                    <name><![CDATA[Pgrid_Meter.POWER_PB]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>7</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                                <analog>
+                                    <channel>8</channel>
+                                    <name><![CDATA[Pgrid_Meter.POWER_PC]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>8</row>
                                     <viewports>
                                         <num_viewport>1</num_viewport>
                                    </viewports>
@@ -363,7 +423,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                                 <device>0</device>
                                 <is_force>True</is_force>
                                 <type>Analog</type>
-                                <source><![CDATA[Bus PV1.Measurements.POWER_PA]]></source>
+                                <source><![CDATA[PV1_Meter.POWER_PA]]></source>
                                 <edge>Rising edge</edge>
                                 <treshold>0.0</treshold>
                                 <offset>0.0</offset>
@@ -398,14 +458,14 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                         </scope>
                         </presets>
                     <capture>
-                        <time_interval>230.0</time_interval>
+                        <time_interval>60.0</time_interval>
                         <sample_rate>2000.0</sample_rate>
                         <background_color>white</background_color>
                         <layout>Vertical</layout>
                         <legend>True</legend>
                         <trigger>
                             <type>Analog</type>
-                            <source>Bus PV1.Measurements.POWER_PA</source>
+                            <source>PV1_Meter.POWER_PA</source>
                             <edge>Rising edge</edge>
                             <treshold>0.0</treshold>
                             <offset>0.0</offset>
@@ -414,7 +474,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                         <analog_signals>
                             <analog>
                                     <channel>0</channel>
-                                    <name><![CDATA[Bus PV1.Measurements.POWER_PA]]></name>
+                                    <name><![CDATA[PV1_Meter.POWER_PA]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
@@ -426,7 +486,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                                </analog>
                             <analog>
                                     <channel>1</channel>
-                                    <name><![CDATA[Bus PV1.Measurements.POWER_PB]]></name>
+                                    <name><![CDATA[PV1_Meter.POWER_PB]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
@@ -438,7 +498,7 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                                </analog>
                             <analog>
                                     <channel>2</channel>
-                                    <name><![CDATA[Bus PV1.Measurements.POWER_PC]]></name>
+                                    <name><![CDATA[PV1_Meter.POWER_PC]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
@@ -450,12 +510,72 @@ displayValue = hil.read_analog_signal("Bus1.Measurements.POWER_QC")/1e3
                                </analog>
                             <analog>
                                     <channel>3</channel>
-                                    <name><![CDATA[time_hour]]></name>
+                                    <name><![CDATA[PV2a_Meter.POWER_P]]></name>
                                     <is_locked>False</is_locked>
                                     <vertical_scale>Auto</vertical_scale>
                                     <vertical_offset>0</vertical_offset>
                                     <coupling>False</coupling>
                                     <row>3</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>4</channel>
+                                    <name><![CDATA[PV2b_Meter.POWER_P]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>4</row>
+                                    <viewports>
+                                        <num_viewport>3</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>5</channel>
+                                    <name><![CDATA[PV3_Meter.POWER_P]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>5</row>
+                                    <viewports>
+                                        <num_viewport>4</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>6</channel>
+                                    <name><![CDATA[Pgrid_Meter.POWER_PA]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>6</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>7</channel>
+                                    <name><![CDATA[Pgrid_Meter.POWER_PB]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>7</row>
+                                    <viewports>
+                                        <num_viewport>1</num_viewport>
+                                   </viewports>
+                               </analog>
+                            <analog>
+                                    <channel>8</channel>
+                                    <name><![CDATA[Pgrid_Meter.POWER_PC]]></name>
+                                    <is_locked>False</is_locked>
+                                    <vertical_scale>Auto</vertical_scale>
+                                    <vertical_offset>0</vertical_offset>
+                                    <coupling>False</coupling>
+                                    <row>8</row>
                                     <viewports>
                                         <num_viewport>1</num_viewport>
                                    </viewports>
@@ -521,11 +641,11 @@ data = {
     }
 displayValue = data
 ]]></code>
-                <analog_signals><![CDATA[['Bus1.Measurements.POWER_PA', 'Bus1.Measurements.POWER_PB', 'Bus1.Measurements.POWER_PC']]]></analog_signals>
+                <analog_signals><![CDATA[['Pgrid_Meter.POWER_PA', 'Pgrid_Meter.POWER_PB', 'Pgrid_Meter.POWER_PC']]]></analog_signals>
                 <digital_signals><![CDATA[[]]]></digital_signals>
                 <streaming_analog_signals><![CDATA[[]]]></streaming_analog_signals>
                 <streaming_digital_signals><![CDATA[[]]]></streaming_digital_signals>
-                <analog_signals_scaling_factors><![CDATA[{'Bus1.Measurements.POWER_PA': 0.001, 'Bus1.Measurements.POWER_PB': 0.001, 'Bus1.Measurements.POWER_PC': 0.001}]]></analog_signals_scaling_factors>
+                <analog_signals_scaling_factors><![CDATA[{'Pgrid_Meter.POWER_PA': 1.0, 'Pgrid_Meter.POWER_PB': 1.0, 'Pgrid_Meter.POWER_PC': 1.0}]]></analog_signals_scaling_factors>
                 <streaming_analog_signals_scaling_factors><![CDATA[{}]]></streaming_analog_signals_scaling_factors>
                 <update_rate>250</update_rate>
                 <execution_rate>None</execution_rate>
@@ -605,7 +725,7 @@ referenceCurves = [refCurveData1]
 # 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
 # This object can be used as an argument in SCADA API functions.
 
-element = "PV1"]]></initialization_code>
+element = "PV1_Meter"]]></initialization_code>
                 <widget_settings>
                     <x>0</x>
                     <y>280</y>
@@ -636,7 +756,7 @@ element = "PV1"]]></initialization_code>
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e3
+displayValue = hil.read_analog_signal(f"PV1_Meter.POWER_PC")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PC]]></signal_name>
@@ -653,7 +773,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PC Grid]]></label>
+                    <label><![CDATA[PC]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -678,7 +798,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e3
+displayValue = hil.read_analog_signal(f"PV1_Meter.POWER_PA")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PA]]></signal_name>
@@ -695,7 +815,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PA Grid ]]></label>
+                    <label><![CDATA[PA]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -720,7 +840,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QC")/1e3
+displayValue = hil.read_analog_signal(f"PV1_Meter.POWER_QC")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QC]]></signal_name>
@@ -737,7 +857,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QC")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QC Grid]]></label>
+                    <label><![CDATA[QC]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -762,7 +882,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QC")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QB")/1e3
+displayValue = hil.read_analog_signal(f"PV1_Meter.POWER_QB")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QB]]></signal_name>
@@ -779,7 +899,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QB")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QB Grid]]></label>
+                    <label><![CDATA[QB]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -804,7 +924,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QB")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e3
+displayValue = hil.read_analog_signal(f"PV1_Meter.POWER_PB")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PB]]></signal_name>
@@ -821,7 +941,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PB Grid]]></label>
+                    <label><![CDATA[PB]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -846,7 +966,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QA")/1e3
+displayValue = hil.read_analog_signal(f"PV1_Meter.POWER_QA")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QA]]></signal_name>
@@ -863,7 +983,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QA")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QA Grid]]></label>
+                    <label><![CDATA[QA]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -888,7 +1008,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QA")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IA_RMS")
+displayValue = hil.read_analog_signal(f"PV1_Meter.IA_RMS")
 
 ]]></code>
                 <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
@@ -930,7 +1050,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IA_RMS")
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IB_RMS")
+displayValue = hil.read_analog_signal(f"PV1_Meter.IB_RMS")
 
 ]]></code>
                 <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
@@ -972,7 +1092,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IB_RMS")
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IC_RMS")
+displayValue = hil.read_analog_signal(f"PV1_Meter.IC_RMS")
 
 ]]></code>
                 <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
@@ -1015,9 +1135,9 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IC_RMS")
 
 # mandatory variable used for storing values that will be displayed
 # specify data (one pairs of "names" and "values" parts are mandatory)
-PA = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e3
-PB = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e3
-PC = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e3
+PA = hil.read_analog_signal(f"PV1_Meter.POWER_PA")/1e3
+PB = hil.read_analog_signal(f"PV1_Meter.POWER_PB")/1e3
+PC = hil.read_analog_signal(f"PV1_Meter.POWER_PC")/1e3
 
 data = {
     # analog like signals/data names: ["Analog 1 name","Analog 2 name","Analog N name"]
@@ -1104,7 +1224,7 @@ referenceCurves = [refCurveData1]
                 <name><![CDATA[PV2]]></name>
                 <type>Group</type>
                 <description><![CDATA[]]></description>
-                <components_ids><![CDATA[['d385267d21a111ee92f6cc15312b2fd6', 'd385267e21a111ee9abacc15312b2fd6', 'd385267f21a111eeb67bcc15312b2fd6', 'd385268021a111ee9884cc15312b2fd6', 'd385268121a111eeb64fcc15312b2fd6', 'd385268221a111ee844ccc15312b2fd6', 'd385268321a111eea9e5cc15312b2fd6', 'd385268421a111ee9d54cc15312b2fd6', 'd385268521a111ee91b7cc15312b2fd6', 'd385268621a111ee8bc1cc15312b2fd6']]]></components_ids>
+                <components_ids><![CDATA[['d385267e21a111ee9abacc15312b2fd6', 'd385268021a111ee9884cc15312b2fd6', 'd385268121a111eeb64fcc15312b2fd6', 'd385268221a111ee844ccc15312b2fd6', 'd385268321a111eea9e5cc15312b2fd6', 'd385268421a111ee9d54cc15312b2fd6', 'd385268621a111ee8bc1cc15312b2fd6']]]></components_ids>
                 <canvas_bg_color>#ffffff</canvas_bg_color>
                 <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in
 # all Macro, Expression and handlers codes of components owned by this widget.
@@ -1135,48 +1255,6 @@ element = "PV2"]]></initialization_code>
                     </linked_model_components_settings>
             </component_data>
         <component_data>
-                <id>d385267d21a111ee92f6cc15312b2fd6</id>
-                <name><![CDATA[Bus1_Measurements_POWER_PC]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e3
-
-]]></code>
-                <signal_name><![CDATA[Bus1.Measurements.POWER_PC]]></signal_name>
-                <unit><![CDATA[kW]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>16</x>
-                    <y>104</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PC Grid]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
                 <id>d385267e21a111ee9abacc15312b2fd6</id>
                 <name><![CDATA[Bus1_Measurements_POWER_PA]]></name>
                 <type>DigitalDisplay</type>
@@ -1191,7 +1269,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e3
+displayValue = hil.read_analog_signal(f"PV2a_Meter.POWER_P")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PA]]></signal_name>
@@ -1208,49 +1286,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PA Grid ]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>d385267f21a111eeb67bcc15312b2fd6</id>
-                <name><![CDATA[Bus1_Measurements_POWER_QC]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QC")/1e3
-
-]]></code>
-                <signal_name><![CDATA[Bus1.Measurements.POWER_QC]]></signal_name>
-                <unit><![CDATA[kvar]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>160</x>
-                    <y>104</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QC Grid]]></label>
+                    <label><![CDATA[PA]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -1275,7 +1311,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QC")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QB")/1e3
+displayValue = hil.read_analog_signal(f"PV2b_Meter.POWER_Q")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QB]]></signal_name>
@@ -1292,7 +1328,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QB")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QB Grid]]></label>
+                    <label><![CDATA[QB]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -1317,7 +1353,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QB")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e3
+displayValue = hil.read_analog_signal(f"PV2b_Meter.POWER_P")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PB]]></signal_name>
@@ -1334,7 +1370,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PB Grid]]></label>
+                    <label><![CDATA[PB]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -1359,7 +1395,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QA")/1e3
+displayValue = hil.read_analog_signal(f"PV2a_Meter.POWER_Q")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QA]]></signal_name>
@@ -1376,7 +1412,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QA")/1e
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QA Grid]]></label>
+                    <label><![CDATA[QA]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -1401,7 +1437,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QA")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IA_RMS")
+displayValue = hil.read_analog_signal(f"PV2a_Meter.I_RMS")
 
 ]]></code>
                 <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
@@ -1443,7 +1479,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IA_RMS")
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IB_RMS")
+displayValue = hil.read_analog_signal(f"PV2b_Meter.I_RMS")
 
 ]]></code>
                 <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
@@ -1471,48 +1507,6 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IB_RMS")
                 </advance_widget_settings>
             </component_data>
         <component_data>
-                <id>d385268521a111ee91b7cc15312b2fd6</id>
-                <name><![CDATA[Bus PV1_Measurements_IA_RMS2]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IC_RMS")
-
-]]></code>
-                <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
-                <unit><![CDATA[A]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>296</x>
-                    <y>104</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[IC]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
                 <id>d385268621a111ee8bc1cc15312b2fd6</id>
                 <name><![CDATA[Trace graph]]></name>
                 <type>TraceDisplay</type>
@@ -1528,16 +1522,15 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IC_RMS")
 
 # mandatory variable used for storing values that will be displayed
 # specify data (one pairs of "names" and "values" parts are mandatory)
-PA = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e3
-PB = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e3
-PC = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e3
+PA = hil.read_analog_signal(f"PV2a_Meter.POWER_P")/1e3
+PB = hil.read_analog_signal(f"PV2b_Meter.POWER_P")/1e3
 
 data = {
     # analog like signals/data names: ["Analog 1 name","Analog 2 name","Analog N name"]
-    "analog_names": ["PA", "PB", "PC"],
+    "analog_names": ["PA", "PB"],
 
     # analog data values: [aVal1,aVal2,aVal3]
-    "analog_values": [PA, PB, PC],
+    "analog_values": [PA, PB],
 
     # digital like signals/data names: ["Digital 1 name","Digital 2 name","Digital 3 name"]
     "digital_names": [],
@@ -1617,7 +1610,7 @@ referenceCurves = [refCurveData1]
                 <name><![CDATA[PV3]]></name>
                 <type>Group</type>
                 <description><![CDATA[]]></description>
-                <components_ids><![CDATA[['d5fb2ea621a111eea6fccc15312b2fd6', 'd5fb2ea721a111ee863fcc15312b2fd6', 'd5fb2ea821a111ee8fe4cc15312b2fd6', 'd5fb2ea921a111ee8643cc15312b2fd6', 'd5fb2eaa21a111ee8b1acc15312b2fd6', 'd5fb2eab21a111eebab6cc15312b2fd6', 'd5fb2eac21a111eea5f4cc15312b2fd6', 'd5fb2ead21a111ee9f4fcc15312b2fd6', 'd5fb2eae21a111eeab21cc15312b2fd6', 'd5fb2eaf21a111ee974ecc15312b2fd6']]]></components_ids>
+                <components_ids><![CDATA[['d5fb2ea621a111eea6fccc15312b2fd6', 'd5fb2ea821a111ee8fe4cc15312b2fd6', 'd5fb2eae21a111eeab21cc15312b2fd6', 'd5fb2eaf21a111ee974ecc15312b2fd6']]]></components_ids>
                 <canvas_bg_color>#ffffff</canvas_bg_color>
                 <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in
 # all Macro, Expression and handlers codes of components owned by this widget.
@@ -1662,7 +1655,7 @@ element = "PV3"]]></initialization_code>
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e3
+displayValue = hil.read_analog_signal(f"PV3_Meter.POWER_P")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_PC]]></signal_name>
@@ -1673,55 +1666,13 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e
                 <scaling_factor>1.0</scaling_factor>
                 <widget_settings>
                     <x>16</x>
-                    <y>104</y>
+                    <y>88</y>
                     <width>128</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PC Grid]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>d5fb2ea721a111ee863fcc15312b2fd6</id>
-                <name><![CDATA[Bus1_Measurements_POWER_PA]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e3
-
-]]></code>
-                <signal_name><![CDATA[Bus1.Measurements.POWER_PA]]></signal_name>
-                <unit><![CDATA[kW]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>16</x>
-                    <y>8</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PA Grid ]]></label>
+                    <label><![CDATA[PC]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -1746,7 +1697,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QC")/1e3
+displayValue = hil.read_analog_signal(f"PV3_Meter.POWER_Q")/1e3
 
 ]]></code>
                 <signal_name><![CDATA[Bus1.Measurements.POWER_QC]]></signal_name>
@@ -1757,223 +1708,13 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QC")/1e
                 <scaling_factor>1.0</scaling_factor>
                 <widget_settings>
                     <x>160</x>
-                    <y>104</y>
+                    <y>88</y>
                     <width>128</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
                     <hierarchy_position><![CDATA[2]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QC Grid]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>d5fb2ea921a111ee8643cc15312b2fd6</id>
-                <name><![CDATA[Bus1_Measurements_POWER_QB]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QB")/1e3
-
-]]></code>
-                <signal_name><![CDATA[Bus1.Measurements.POWER_QB]]></signal_name>
-                <unit><![CDATA[kvar]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>160</x>
-                    <y>56</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QB Grid]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>d5fb2eaa21a111ee8b1acc15312b2fd6</id>
-                <name><![CDATA[Bus1_Measurements_POWER_PB]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e3
-
-]]></code>
-                <signal_name><![CDATA[Bus1.Measurements.POWER_PB]]></signal_name>
-                <unit><![CDATA[kW]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>16</x>
-                    <y>56</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[PB Grid]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>d5fb2eab21a111eebab6cc15312b2fd6</id>
-                <name><![CDATA[Bus1_Measurements_POWER_QA]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_QA")/1e3
-
-]]></code>
-                <signal_name><![CDATA[Bus1.Measurements.POWER_QA]]></signal_name>
-                <unit><![CDATA[kvar]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>160</x>
-                    <y>8</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[QA Grid]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>d5fb2eac21a111eea5f4cc15312b2fd6</id>
-                <name><![CDATA[Bus PV1_Measurements_IA_RMS]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IA_RMS")
-
-]]></code>
-                <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
-                <unit><![CDATA[A]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>296</x>
-                    <y>8</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[IA]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>d5fb2ead21a111ee9f4fcc15312b2fd6</id>
-                <name><![CDATA[Bus PV1_Measurements_IA_RMS1]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IB_RMS")
-
-]]></code>
-                <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
-                <unit><![CDATA[A]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[2]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>296</x>
-                    <y>56</y>
-                    <width>128</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[IB]]></label>
+                    <label><![CDATA[QC]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
@@ -1998,7 +1739,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IB_RMS")
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IC_RMS")
+displayValue = hil.read_analog_signal(f"PV3_Meter.I_RMS")
 
 ]]></code>
                 <signal_name><![CDATA[Bus PV1.Measurements.IA_RMS]]></signal_name>
@@ -2009,7 +1750,7 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IC_RMS")
                 <scaling_factor>1.0</scaling_factor>
                 <widget_settings>
                     <x>296</x>
-                    <y>104</y>
+                    <y>88</y>
                     <width>128</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -2041,16 +1782,14 @@ displayValue = hil.read_analog_signal(f"Bus {element}.Measurements.IC_RMS")
 
 # mandatory variable used for storing values that will be displayed
 # specify data (one pairs of "names" and "values" parts are mandatory)
-PA = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PA")/1e3
-PB = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PB")/1e3
-PC = hil.read_analog_signal(f"Bus {element}.Measurements.POWER_PC")/1e3
+PC = hil.read_analog_signal(f"PV3_Meter.POWER_P")/1e3
 
 data = {
     # analog like signals/data names: ["Analog 1 name","Analog 2 name","Analog N name"]
-    "analog_names": ["PA", "PB", "PC"],
+    "analog_names": ["PC"],
 
     # analog data values: [aVal1,aVal2,aVal3]
-    "analog_values": [PA, PB, PC],
+    "analog_values": [PC],
 
     # digital like signals/data names: ["Digital 1 name","Digital 2 name","Digital 3 name"]
     "digital_names": [],

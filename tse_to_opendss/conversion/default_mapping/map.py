@@ -55,6 +55,7 @@ def ignore_component(comp_type):
             {"a_in": ["a_out"], "b_in": ["b_out"], "c_in": ["c_out"], "d_in": ["d_out"]},
         "Four Phase TLM Device Coupling":
             {"a_in": ["a_out"], "b_in": ["b_out"], "c_in": ["c_out"], "d_in": ["d_out"]},
+        "Single-phase Meter": {"in": ["out"]}
     }
 
     return merge_dict.get(comp_type)

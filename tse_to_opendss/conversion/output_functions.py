@@ -14,10 +14,6 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
         * wires 1 and 2 swapped on busAB3
     [busAB1.1.2, busAB2.1.2, busAB3.2.1, busAC4.1.3]"""
 
-    print(f"{tse_component.name=}")
-    print(f"{num_phases=}")
-
-
     bus_connections = []
     # General objects are not connected to buses
     if num_phases == 0 or num_buses == 0:
@@ -54,11 +50,9 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
 
     # Go through each group (must be ordered) and find which bus is connected to it.
     for group, term_list in terminal_groups_dict.items():
-        print(f"{term_list=}")
         for bus in connected_buses:
             # Get the dictionary of connections between tse_component and bus
             connected_terminals_dict = tse_fns.connected_terminals(tse_component, bus, term_list)
-            print(f"{connected_terminals_dict=}")
             # Iterate over the terminals of the component and find the bus terminal it is connected to
             # This will determine the order of the connections
             if connected_terminals_dict:
@@ -84,7 +78,6 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
         for conn_bus in connected_buses:
             bus_connections.append(f"{conn_bus.name}.{p}.{p}.{p}")
 
-    print(f"{bus_connections=}")
     return bus_connections
 
 
@@ -174,12 +167,21 @@ def create_general_objects_from_saved_json(tse_model, output_circuit):
                     # and selected_object properties for the saved object name
                     for comp in tse_model.components:
                         properties_dict = {str(k): str(v.value) for k, v in comp.properties.items()}
-                        if properties_dict.get(converted_comp_type[:-1] + "_name", "").upper() == obj_name.upper():
-                            add_obj = True if obj_name not in added_objs else False
-                            break
-                        elif properties_dict.get("selected_object", "").upper() == obj_name.upper():
-                            add_obj = True if obj_name not in added_objs else False
-                            break
+                        if converted_comp_type == "xycurves":
+                            if properties_dict.get("xycurve_name_eff", "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
+                            if properties_dict.get("xycurve_name_cf", "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
+                        else:
+                            prop_name = converted_comp_type[:-1] + "_name"
+                            if properties_dict.get(prop_name, "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
+                            elif properties_dict.get("selected_object", "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
 
                     if add_obj:
                         # Remove blank property entries
