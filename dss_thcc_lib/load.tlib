@@ -184,7 +184,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.tp_connection_edited(mdl, container_handle, new_value)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
                 phases {
@@ -206,7 +206,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.tp_connection_dynamics(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -214,18 +214,20 @@ library "OpenDSS" {
                     label = "Rneut"
                     widget = edit
                     type = generic
-                    default_value = "0.0"
+                    default_value = "inf"
                     unit = "Ω"
                     group = "General:1"
+                    disabled
                 }
 
                 Xneut {
                     label = "Xneut"
                     widget = edit
                     type = generic
-                    default_value = "0.0"
+                    default_value = "inf"
                     unit = "Ω"
                     group = "General:1"
+                    disabled
                 }
 
                 global_basefreq {
@@ -289,12 +291,11 @@ library "OpenDSS" {
                         if new_value != old_value:
                             comp_script.topology_dynamics(mdl, container_handle)
                             mdl.refresh_icon(container_handle)
-                        #comp_script.set_pf_mode(mdl, container_handle, new_value)
                     ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
 
                 }
@@ -325,8 +326,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.tp_connection_dynamics(mdl, container_handle)
-                        comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -337,6 +337,7 @@ library "OpenDSS" {
                     default_value = "[0,0,1]"
                     unit = "Auto-Normalized"
                     group = "Load Parameters"
+                    nonvisible
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -352,6 +353,7 @@ library "OpenDSS" {
                     default_value = "[0,0,1]"
                     unit = "Auto-Normalized"
                     group = "Load Parameters"
+                    nonvisible
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
@@ -428,11 +430,11 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        #ports = comp_script.port_dynamics(mdl, container_handle)
                         if new_value != old_value:
                             comp_script.topology_dynamics(mdl, container_handle)
                             mdl.refresh_icon(container_handle)
-                        #comp_script.connections_pow_ref_dynamics(mdl, container_handle, ports)
+                        ports = comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.connections_pow_ref_dynamics(mdl, container_handle, ports)
                     ENDCODE
                 }
 
@@ -487,6 +489,7 @@ library "OpenDSS" {
                     default_value = "[0.95,1.05]"
                     unit = "[Vmin,Vmax] pu"
                     group = "CPL Parameters"
+                    disabled
 
                 }
 
@@ -497,6 +500,7 @@ library "OpenDSS" {
                     default_value = "1"
                     unit = "Cycles to reach zero to nominal"
                     group = "CPL Parameters"
+                    disabled
 
                 }
 
@@ -756,7 +760,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.t_mode_value_edited(mdl, container_handle, new_value)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -779,7 +783,7 @@ library "OpenDSS" {
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.s_ts_mode_value_edited(mdl, container_handle, new_value)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -1005,6 +1009,11 @@ library "OpenDSS" {
                 CODE define_icon
                     comp_script = return_comp_script(mdl, item_handle)
                     comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE model_loaded
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.mask_edit_restore_visibility(mdl, item_handle)
                 ENDCODE
 
                 CODE init
