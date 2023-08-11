@@ -1,5 +1,6 @@
 from ..default_mapping.component_classes import *
 
+
 def create_comp_instance(converted_comp_type, comp_data):
     """Instantiates the appropriate class depending on converted_comp_type."""
 
@@ -39,3 +40,9 @@ def create_comp_instance(converted_comp_type, comp_data):
         return Container(converted_comp_type, **comp_data)
     elif converted_comp_type == "COUPLING":
         return Switch(converted_comp_type, **comp_data)
+    elif converted_comp_type == "PVSYSTEM":
+        return PVSystem(converted_comp_type, **comp_data)
+    elif converted_comp_type == "XYCURVE":
+        return XYCurve(converted_comp_type, **comp_data)
+    elif converted_comp_type == "TSHAPE":
+        return TShape(converted_comp_type, **comp_data)
