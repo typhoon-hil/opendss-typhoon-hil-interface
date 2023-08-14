@@ -435,6 +435,7 @@ model "ieee_13bus" {
             XscArray = "[1.0]"
             band = "2"
             ctrl_winding = "Winding 2"
+            global_basefreq = "False"
             percentNoloadloss = "0.01"
             percentRs = "[0.1, 0.1]"
             ptratio = "20"
@@ -455,6 +456,7 @@ model "ieee_13bus" {
             XscArray = "[1.0]"
             band = "2"
             ctrl_winding = "Winding 2"
+            global_basefreq = "False"
             percentNoloadloss = "0.01"
             percentRs = "[0.1, 0.1]"
             ptratio = "20"
@@ -475,6 +477,7 @@ model "ieee_13bus" {
             XscArray = "[1.0]"
             band = "2"
             ctrl_winding = "Winding 2"
+            global_basefreq = "False"
             percentNoloadloss = "0.01"
             percentRs = "[0.1, 0.1]"
             ptratio = "20"
@@ -505,6 +508,7 @@ model "ieee_13bus" {
                 Vn_3ph = "0.48"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.82"
                 phases = "1"
@@ -529,6 +533,7 @@ model "ieee_13bus" {
                 Vn_3ph = "0.48"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.80"
                 phases = "1"
@@ -553,6 +558,7 @@ model "ieee_13bus" {
                 Vn_3ph = "0.48"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.80"
                 phases = "1"
@@ -627,6 +633,7 @@ model "ieee_13bus" {
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 pf_3ph = "0.87"
                 phases = "1"
                 tp_connection = "Δ"
@@ -697,6 +704,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.93"
                 phases = "1"
@@ -720,6 +728,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.75"
                 phases = "1"
@@ -743,6 +752,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.81"
                 phases = "1"
@@ -837,6 +847,7 @@ model "ieee_13bus" {
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 pf_3ph = "0.87"
                 phases = "1"
                 tp_connection = "Δ"
@@ -856,6 +867,7 @@ model "ieee_13bus" {
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 pf_3ph = "0.87"
                 phases = "1"
                 tp_connection = "Δ"
@@ -972,6 +984,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.86"
                 phases = "1"
@@ -995,6 +1008,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.87"
                 phases = "1"
@@ -1018,6 +1032,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.86"
                 phases = "1"
@@ -1094,6 +1109,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.86"
                 phases = "1"
@@ -1117,6 +1133,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.87"
                 phases = "1"
@@ -1140,6 +1157,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.86"
                 phases = "1"
@@ -1214,6 +1232,7 @@ model "ieee_13bus" {
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 pf_3ph = "0.75"
                 phases = "1"
                 tp_connection = "Δ"
@@ -1284,6 +1303,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.81"
                 phases = "1"
@@ -1345,6 +1365,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.90"
                 phases = "1"
@@ -1406,6 +1427,7 @@ model "ieee_13bus" {
                 T_mode = "Loadshape index"
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.83"
                 phases = "1"
@@ -1471,21 +1493,11 @@ model "ieee_13bus" {
 
         component "OpenDSS/Capacitor Bank" Cap_675 {
             Kv = "4.16"
+            global_basefreq = "False"
         }
         [
             position = 9352, 9048
             size = 96, 64
-        ]
-
-        component "OpenDSS/SimDSS" SimDSS {
-            powers = "kVA Elem"
-            sim_counter = "1"
-            sim_status = "Sim1 complete"
-            voltagebases = "[4.16, 0.48]"
-        }
-        [
-            position = 7936, 8072
-            size = 96, 96
         ]
 
         component "OpenDSS/Monitor" Vsource_Monitor {
@@ -1500,6 +1512,14 @@ model "ieee_13bus" {
             position = 8456, 7928
             rotation = right
             size = 48, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS {
+            voltagebases = "[4.16, 0.48]"
+        }
+        [
+            position = 7920, 8072
+            size = 96, 96
         ]
 
         junction Junction4 pe
