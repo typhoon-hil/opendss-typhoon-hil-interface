@@ -1,5 +1,6 @@
 from .constants import *
 
+
 def map_component(comp_type):
     """ Translate from TSE comp_type to corresponding component(s) in the output format """
 
@@ -18,6 +19,8 @@ def map_component(comp_type):
         DSS_GENERATOR: ["GENERATOR"],
         DSS_VSCONVERTER: ["VSCONVERTER"],
         DSS_STORAGE: ["STORAGE"],
+        DSS_CONTAINER: ["CONTAINER"],
+        DSS_PVSYSTEM: ["PVSYSTEM"],
         DSS_CONTAINER: ["CONTAINER"],
         DSS_COUPLING: ["COUPLING"]
     }
@@ -54,6 +57,7 @@ def ignore_component(comp_type):
             {"a_in": ["a_out"], "b_in": ["b_out"], "c_in": ["c_out"], "d_in": ["d_out"]},
         "Four Phase TLM Device Coupling":
             {"a_in": ["a_out"], "b_in": ["b_out"], "c_in": ["c_out"], "d_in": ["d_out"]},
+        "Single-phase Meter": {"in": ["out"]}
     }
 
     return merge_dict.get(comp_type)

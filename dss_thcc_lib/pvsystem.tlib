@@ -1,0 +1,1433 @@
+//
+// Saved by sw version: 2023.3 DEV
+//
+
+library "OpenDSS" {
+
+    component Subsystem Root {
+        component Subsystem "PV System" {
+            layout = static
+            label = "PV"
+            component "OpenDSS/InvControl" InvControl {
+                Iki = "Iki"
+                Ikp = "Ikp"
+                Lf = "rl1_inductance"
+                freq = "freq"
+                power = "power"
+                ts = "ts"
+                voltage = "voltage"
+            }
+            [
+                position = 7888, 7704
+                size = 96, 144
+            ]
+
+            component "core/Bus Split" "Bus Split mod" {
+                outputs = "3"
+            }
+            [
+                position = 7992, 7656
+            ]
+
+            component "core/Bus Join" Vlist {
+                inputs = "3"
+            }
+            [
+                position = 7704, 7656
+            ]
+
+            component "core/Bus Join" Ilist {
+                inputs = "3"
+            }
+            [
+                position = 7704, 7752
+            ]
+
+            component "core/Product" Pdc_prod {
+                signs = "3"
+            }
+            [
+                position = 7464, 7512
+            ]
+
+            component "core/1D look-up table" PvsT {
+                in_vec_x = "xycurve_xarray_cf"
+                out_vec_f_x = "xycurve_yarray_cf"
+                table_impl = "Non-equidistant"
+            }
+            [
+                position = 7384, 7576
+            ]
+
+            component "core/Gain" Pdc_pu {
+                gain = "1/power"
+            }
+            [
+                position = 7536, 7512
+            ]
+
+            component "core/1D look-up table" Eff {
+                in_vec_x = "xycurve_xarray_eff"
+                out_vec_f_x = "xycurve_yarray_eff"
+                table_impl = "Non-equidistant"
+            }
+            [
+                position = 7736, 7528
+            ]
+
+            component "core/Gain" Qref_pu {
+                gain = "1/power"
+            }
+            [
+                position = 7632, 7360
+            ]
+
+            component "core/Product" Product2 {
+            }
+            [
+                position = 7808, 7536
+                hide_name = True
+            ]
+
+            component "OpenDSS/Generic Leg Inverter (avg)" InvLeg_A {
+                rl1_inductance = "rl1_inductance"
+                rl1_resistance = "rl1_resistance"
+                sw_r = "pv_r"
+                ts = "ts"
+            }
+            [
+                position = 7696, 7984
+                size = 128, 56
+            ]
+
+            component "OpenDSS/Generic Leg Inverter (avg)" InvLeg_B {
+                rl1_inductance = "rl1_inductance"
+                rl1_resistance = "rl1_resistance"
+                sw_r = "pv_r"
+                ts = "ts"
+            }
+            [
+                position = 7696, 8128
+                size = 128, 56
+            ]
+
+            component "OpenDSS/Generic Leg Inverter (avg)" InvLeg_C {
+                rl1_inductance = "rl1_inductance"
+                rl1_resistance = "rl1_resistance"
+                sw_r = "pv_r"
+                ts = "ts"
+            }
+            [
+                position = 7696, 8280
+                size = 128, 56
+            ]
+
+            component "core/Gain" Pmpp_aux {
+            }
+            [
+                position = 7288, 7448
+            ]
+
+            component "core/Constant" Qref {
+                _tunable = "True"
+                execution_rate = "ts"
+                value = "0"
+            }
+            [
+                position = 7192, 7360
+            ]
+
+            component "core/Ground" gnd {
+            }
+            [
+                position = 7984, 8456
+            ]
+
+            component "core/Constant" Pmpp {
+                _tunable = "True"
+                execution_rate = "ts"
+                value = "pmpp"
+            }
+            [
+                position = 7192, 7448
+            ]
+
+            component "core/1D look-up table" Irrad_lut {
+                in_vec_x = "loadshape_time"
+                out_vec_f_x = "loadshape"
+                table_impl = "Non-equidistant"
+            }
+            [
+                position = 7288, 7512
+            ]
+
+            component "OpenDSS/TS Reset" "Rst Irrad" {
+                input_type = "Hour"
+                max = "irrad_max"
+            }
+            [
+                position = 7160, 7512
+                size = 64, 48
+            ]
+
+            component "core/1D look-up table" Temp_lut {
+                in_vec_x = "tshape_time"
+                out_vec_f_x = "tshape_temp"
+                table_impl = "Non-equidistant"
+            }
+            [
+                position = 7288, 7576
+            ]
+
+            component "OpenDSS/TS Reset" "Rst Temp" {
+                input_type = "Hour"
+                max = "temp_max"
+            }
+            [
+                position = 7160, 7576
+                size = 64, 48
+            ]
+
+            component "core/Hysteresis Function" Cutin-Cutout {
+                init_state = "high"
+                low_thr = "0.2"
+                up_thr = "0.2"
+            }
+            [
+                position = 7608, 7432
+                size = 32, 32
+            ]
+
+            component "core/Signal switch" "Signal switch1" {
+                criterion = "ctrl >= threshold"
+            }
+            [
+                position = 7648, 7528
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant1 {
+                execution_rate = "ts"
+                value = "0"
+            }
+            [
+                position = 7568, 7568
+                hide_name = True
+            ]
+
+            port A1 {
+                label = "A"
+                position = 40.0, -8.0
+                kind = pe
+            }
+            [
+                position = 7984, 7984
+                hide_name = True
+                scale = -1, 1
+            ]
+
+            port B1 {
+                label = "B"
+                position = 40.0, 24
+                kind = pe
+            }
+            [
+                position = 7984, 8128
+                hide_name = True
+                scale = -1, 1
+            ]
+
+            port C1 {
+                label = "C"
+                position = 40.0, 56.0
+                kind = pe
+            }
+            [
+                position = 7984, 8280
+                hide_name = True
+                scale = -1, 1
+            ]
+
+            port Time_p {
+                label = "t (h)"
+                position = -48.0, -48.0
+                kind = sp
+                direction =  out
+                sp_type {
+                    default = auto
+                    readonly = True
+                }
+            }
+            [
+                position = 7064, 7512
+            ]
+
+            tag from_modA {
+                value = "modA"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 7888
+                size = 60, 20
+            ]
+
+            tag from_modB {
+                value = "modB"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 8040
+                size = 60, 20
+            ]
+
+            tag from_modC {
+                value = "modC"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 8192
+                size = 60, 20
+            ]
+
+            tag goto_IA {
+                value = "ia"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7816, 7888
+                size = 60, 20
+            ]
+
+            tag goto_IB {
+                value = "ib"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7816, 8040
+                size = 60, 20
+            ]
+
+            tag goto_IC {
+                value = "ic"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7816, 8192
+                size = 60, 20
+            ]
+
+            tag gnd_src {
+                value = "Ground"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7872, 8408
+                size = 60, 20
+            ]
+
+            tag gnd_tag {
+                value = "Ground"
+                scope = local
+                kind = pe
+            }
+            [
+                position = 7360, 8128
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag goto_VA {
+                value = "va"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7816, 7920
+                size = 60, 20
+            ]
+
+            tag goto_VB {
+                value = "vb"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7816, 8072
+                size = 60, 20
+            ]
+
+            tag goto_VC {
+                value = "vc"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7816, 8224
+                size = 60, 20
+            ]
+
+            tag From4 {
+                value = "va"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7552, 7640
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From5 {
+                value = "vb"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7616, 7656
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From6 {
+                value = "vc"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7552, 7672
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From7 {
+                value = "ia"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7552, 7736
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From8 {
+                value = "ib"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7616, 7752
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From9 {
+                value = "ic"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7552, 7768
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag mod_va {
+                value = "modA"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8104, 7624
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag mod_vb {
+                value = "modB"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8104, 7656
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag mod_vc {
+                value = "modC"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8104, 7688
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag en_swA {
+                value = "enable"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 7920
+                size = 60, 20
+            ]
+
+            tag en_swB {
+                value = "enable"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 8072
+                size = 60, 20
+            ]
+
+            tag en_swC {
+                value = "enable"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7568, 8224
+                size = 60, 20
+            ]
+
+            tag Goto1 {
+                value = "enable"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8024, 7752
+                hide_name = True
+                size = 60, 20
+            ]
+
+            junction Junction2 sp
+            [
+                position = 7568, 7512
+            ]
+
+            junction Junction3 sp
+            [
+                position = 7696, 7528
+            ]
+
+            comment Comment22 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Calculation of PV array's output power</p></body></html> ENDCOMMENT
+            [
+                position = 7328, 7312
+            ]
+
+            connect InvControl.Vmeas Vlist.out as Connection2006
+            connect InvControl.Imeas Ilist.out as Connection2007
+            connect InvControl.Mod "Bus Split mod.in" as Connection2008
+            connect Product2.out InvControl.Pref_ext as Connection2011
+            connect Qref_pu.out InvControl.Qref_ext as Connection2012
+            connect "Bus Split mod.out" mod_va as Connection2001
+            connect "Bus Split mod.out1" mod_vb as Connection2002
+            connect "Bus Split mod.out2" mod_vc as Connection2003
+            connect Ilist.in From7 as Connection1932
+            connect Ilist.in1 From8 as Connection1933
+            connect Ilist.in2 From9 as Connection1934
+            connect Vlist.in From4 as Connection1935
+            connect Vlist.in1 From5 as Connection1936
+            connect Vlist.in2 From6 as Connection1937
+            connect Pdc_prod.out Pdc_pu.in as Connection1954
+            connect PvsT.value Pdc_prod.in2 as Connection1960
+            connect Eff.value Product2.in as Connection1965
+            connect InvLeg_A.N gnd_tag as Connection1977
+            connect from_modA InvLeg_A.mod as Connection1978
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect goto_IA InvLeg_A.Imeas as Connection1979
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect InvLeg_A.Vmeas goto_VA as Connection1980
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect from_modB InvLeg_B.mod as Connection1981
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect goto_IB InvLeg_B.Imeas as Connection1982
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect InvLeg_B.Vmeas goto_VB as Connection1983
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect InvLeg_C.Imeas goto_IC as Connection1984
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect InvLeg_C.Vmeas goto_VC as Connection1985
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect from_modC InvLeg_C.mod as Connection1986
+            [
+                position = 0, 0
+                hide_name = True
+            ]
+            connect InvLeg_B.N gnd_tag as Connection1987
+            connect InvLeg_C.N gnd_tag as Connection1988
+            connect A1 InvLeg_A.L as Connection1989
+            connect InvLeg_B.L B1 as Connection1990
+            connect InvLeg_C.L C1 as Connection1991
+            connect Pmpp_aux.out Pdc_prod.in as Connection2015
+            connect Qref.out Qref_pu.in as Connection2020
+            connect gnd_src gnd.node as Connection2021
+            connect Pmpp.out Pmpp_aux.in as Connection2022
+            connect en_swA InvLeg_A.sw as Connection2023
+            connect en_swB InvLeg_B.sw as Connection2024
+            connect en_swC InvLeg_C.sw as Connection2025
+            connect InvControl.en_inv Goto1 as Connection2026
+            connect "Rst Irrad.Out" Irrad_lut.addr as Connection2027
+            connect Irrad_lut.value Pdc_prod.in1 as Connection2028
+            connect "Rst Temp.Out" Temp_lut.addr as Connection2029
+            connect Temp_lut.value PvsT.addr as Connection2030
+            connect Time_p "Rst Irrad.In" as Connection2031
+            connect Time_p "Rst Temp.In" as Connection2032
+            connect Cutin-Cutout.out "Signal switch1.in2" as Connection2040
+            connect Pdc_pu.out Junction2 as Connection2041
+            connect Junction2 Cutin-Cutout.in as Connection2042
+            [
+                breakpoints = 7568, 7512; 7568, 7512; 7568, 7448
+            ]
+            connect "Signal switch1.in" Junction2 as Connection2043
+            [
+                breakpoints = 7616, 7512; 7568, 7512
+            ]
+            connect Constant1.out "Signal switch1.in1" as Connection2044
+            connect "Signal switch1.out" Junction3 as Connection2046
+            connect Junction3 Eff.addr as Connection2047
+            connect Product2.in1 Junction3 as Connection2048
+            [
+                breakpoints = 7760, 7544; 7760, 7576
+            ]
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It implements the PVSystem from the OpenDSS. The time-domain component comprises an average inverter model interfaced with the grid and supports only grid-forming mode.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A detailed explanation of the OpenDSS PVSystem model can be found by clicking the help button.</p><p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+                help_file = "help/PVSystem_InvControl.pdf"
+
+                power {
+                    label = "Power Rating"
+                    widget = edit
+                    type = generic
+                    default_value = "5.0"
+                    unit = "kVA"
+                    group = "PV Inverter:!"
+                }
+
+                voltage {
+                    label = "Nominal Voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "0.240"
+                    unit = "kV"
+                    group = "PV Inverter"
+                }
+
+                freq {
+                    label = "Frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    group = "PV Inverter"
+                }
+
+                phases {
+                    label = "Number of Phases"
+                    widget = combo
+                    combo_values = "3", "1"
+                    type = string
+                    default_value = "3"
+                    group = "PV Inverter"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                connection {
+                    label = "Connection"
+                    widget = combo
+                    combo_values = "Y", "Δ"
+                    type = string
+                    default_value = "Y"
+                    group = "PV Inverter"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                load_xycurve_eff {
+                    label = "Efficiency XYCurve object"
+                    widget = button
+                    type = generic
+                    default_value = "Choose"
+                    group = "PV Inverter"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_xycurve(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                xycurve_name_eff {
+                    label = "Eff. Curve Name"
+                    widget = edit
+                    type = generic
+                    default_value = "Eff"
+                    group = "PV Inverter"
+                    unit = "XYCurve"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                xycurve_npts_eff {
+                    label = "Efficiency Curve N. Points"
+                    widget = edit
+                    type = generic
+                    default_value = "4"
+                    group = "PV Inverter"
+                    unit = "(read only)"
+                    no_evaluate
+                    nonvisible
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                xycurve_xarray_eff {
+                    label = "Eff. Pdc values (X array)"
+                    widget = edit
+                    type = generic
+                    default_value = "[.1, .2, .4, 1.0]"
+                    group = "PV Inverter"
+                    unit = "pu"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                xycurve_yarray_eff {
+                    label = "Eff. η values (Y array)"
+                    widget = edit
+                    type = generic
+                    default_value = "[.86, .9, .93, .97]"
+                    group = "PV Inverter"
+                    unit = "pu"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                pmpp {
+                    label = "Array MPPT"
+                    widget = edit
+                    type = generic
+                    default_value = "5.0"
+                    unit = "kW"
+                    group = "PV Array:2"
+                }
+
+                irrad {
+                    label = "Irradiance"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    unit = "kW/m2"
+                    group = "PV Array"
+                }
+
+                temp {
+                    label = "Temperature"
+                    widget = edit
+                    type = generic
+                    default_value = "25"
+                    unit = "°C"
+                    group = "PV Array"
+                }
+
+                load_xycurve_cf {
+                    label = "Correction Factor XYCurve object"
+                    widget = button
+                    type = generic
+                    default_value = "Choose"
+                    group = "PV Array"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_xycurve(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                xycurve_name_cf {
+                    label = "CF Curve Name"
+                    widget = edit
+                    type = generic
+                    default_value = "FactorPvsT"
+                    group = "PV Array"
+                    unit = "XYCurve"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                xycurve_npts_cf {
+                    label = "Correction Factor XYCurve N. Points"
+                    widget = edit
+                    type = generic
+                    default_value = "4"
+                    group = "PV Array"
+                    unit = "(read only)"
+                    no_evaluate
+                    nonvisible
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                xycurve_xarray_cf {
+                    label = "CF Temperature points (x Array)"
+                    widget = edit
+                    type = generic
+                    default_value = "[0, 25, 75, 100]"
+                    group = "PV Array"
+                    unit = "°C"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                xycurve_yarray_cf {
+                    label = "CF Pmpp points (Y Array)"
+                    widget = edit
+                    type = generic
+                    default_value = "[1.2, 1.0, 0.8, 0.6]"
+                    group = "PV Array"
+                    unit = "pu"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                filter_type {
+                    label = "AC Filter Type"
+                    widget = combo
+                    combo_values = "L", "LC", "LCL"
+                    type = string
+                    default_value = "L"
+                    group = "Typhoon"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                rl1_resistance {
+                    label = "Resistance RL1 Branch"
+                    widget = edit
+                    type = generic
+                    default_value = "0.1"
+                    unit = "Ω"
+                    group = "Typhoon"
+                }
+
+                rl1_inductance {
+                    label = "Inductance RL1 Branch"
+                    widget = edit
+                    type = generic
+                    default_value = "0.68e-3"
+                    unit = "H"
+                    group = "Typhoon"
+                }
+
+                rc_resistance {
+                    label = "Resistance RC Branch"
+                    widget = edit
+                    type = generic
+                    default_value = "1e-3"
+                    unit = "Ω"
+                    group = "Typhoon"
+                }
+
+                rc_capacitance {
+                    label = "Capacitance RC Branch"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                    unit = "F"
+                    group = "Typhoon"
+                }
+
+                rl2_resistance {
+                    label = "Resistance RL2 Branch"
+                    widget = edit
+                    type = generic
+                    default_value = "1e-3"
+                    unit = "Ω"
+                    group = "Typhoon"
+                }
+
+                rl2_inductance {
+                    label = "Inductance RL2 Branch"
+                    widget = edit
+                    type = generic
+                    default_value = "1e-3"
+                    unit = "H"
+                    group = "Typhoon"
+                }
+
+                Ikp {
+                    label = "Current Controller Kp (Inner Loop)"
+                    widget = edit
+                    type = generic
+                    default_value = "0.5"
+                    group = "Typhoon"
+                }
+
+                Iki {
+                    label = "Current Controller Ki (Inner Loop)"
+                    widget = edit
+                    type = generic
+                    default_value = "5.0"
+                    group = "Typhoon"
+                }
+
+                ts {
+                    label = "Execution Rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                    group = "Typhoon:4"
+                }
+
+                power_ref {
+                    label = "Power reference source"
+                    widget = combo
+                    combo_values = "Internal Scada Input", "Time Series"
+                    type = string
+                    default_value = "Internal Scada Input"
+                    group = "Operating Conditions:3"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+                        comp_handle = mdl.get_parent(container_handle)
+                        comp_position = mdl.get_position(comp_handle)
+                        if old_value == "Internal Scada Input" and new_value == "Time Series":
+                            mdl.set_position(comp_handle, [comp_position[0], comp_position[1]-24])
+                        elif new_value == "Internal Scada Input" and old_value == "Time Series":
+                            mdl.set_position(comp_handle, [comp_position[0], comp_position[1]+24])
+
+                    ENDCODE
+                }
+
+                t_mode {
+                    label = "Time Series input mode"
+                    widget = combo
+                    combo_values = "Index", "Time value (h)"
+                    type = string
+                    default_value = "Time value (h)"
+                    group = "Operating Conditions"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                load_loadshape {
+                    label = "Irradiance loadshape object"
+                    widget = button
+                    type = generic
+                    default_value = "Choose"
+                    group = "Operating Conditions"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_loadshape(mdl, container_handle)
+                    ENDCODE
+                }
+
+                loadshape_name {
+                    label = "Irradiance curve name"
+                    widget = edit
+                    type = generic
+                    default_value = "Irrad"
+                    group = "Operating Conditions"
+                    unit = "Loadshape"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file {
+                    label = "From CSV file"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "Operating Conditions"
+                    disabled
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                useactual {
+                    label = "Actual value"
+                    widget = checkbox
+                    type = generic
+                    default_value = "False"
+                    group = "Operating Conditions"
+                    nonvisible
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_from_file_path {
+                    label = "Irradiance from file - path"
+                    widget = edit
+                    type = generic
+                    default_value = ""
+                    group = "Operating Conditions"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_column {
+                    label = "Irradiance from file - column"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Operating Conditions"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_header {
+                    label = "Irradiance from file - header"
+                    widget = checkbox
+                    type = generic
+                    default_value = "True"
+                    group = "Operating Conditions"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape {
+                    label = "Irradiance points"
+                    widget = edit
+                    type = generic
+                    default_value = "[0, 0, 0, 0, 0, 0, .1, .2, .3, .5, .8, .9, 1.0, 1.0, .99, .9, .7, .4, .1, 0, 0, 0, 0, 0]"
+                    unit = "kW/m2"
+                    group = "Operating Conditions"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_int {
+                    label = "Irradiance interval"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Operating Conditions"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_hour {
+                    label = "Irradiance hour"
+                    widget = edit
+                    type = generic
+                    default_value = "[]"
+                    group = "Operating Conditions"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                loadshape_npts{
+                    label = "Irrad N. Points"
+                    widget = edit
+                    type = generic
+                    default_value = "24"
+                    group = "Operating Conditions"
+                    unit = "(read only)"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                timespan {
+                    label = "Irradiance time span"
+                    widget = combo
+                    combo_values = "Daily", "Yearly"
+                    type = string
+                    default_value = "Daily"
+                    group = "Operating Conditions"
+                    nonvisible
+                    no_evaluate
+                }
+
+                load_tshape {
+                    label = "Temperature tshape object"
+                    widget = button
+                    type = generic
+                    default_value = "Choose"
+                    group = "Operating Conditions"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_tshape(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                tshape_name {
+                    label = "Temperature curve name"
+                    widget = edit
+                    type = generic
+                    default_value = "Temp"
+                    group = "Operating Conditions"
+                    unit = "TShape"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                tshape_temp {
+                    label = "Temperature values"
+                    widget = edit
+                    type = generic
+                    default_value = "[25, 25, 25, 25, 25, 25, 25, 25, 35, 40, 45, 50, 60, 60, 55, 40, 35, 30, 25, 25, 25, 25, 25, 25]"
+                    unit = "°C"
+                    group = "Operating Conditions"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                tshape_int {
+                    label = "Temperature interval"
+                    widget = edit
+                    type = generic
+                    default_value = "1"
+                    group = "Operating Conditions"
+                    unit = "h"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                tshape_npts{
+                    label = "TShape Temp N. Points"
+                    widget = edit
+                    type = generic
+                    default_value = "24"
+                    group = "Operating Conditions"
+                    unit = "(read only)"
+                    no_evaluate
+
+                     CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                tshape_hour {
+                    label = "Tshape hour"
+                    widget = edit
+                    type = generic
+                    default_value = "[]"
+                    group = "Operating Conditions"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                    ENDCODE
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring:5"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.read_loadshape_from_json(mdl, item_handle)
+                    comp_script.ini_general_objects_from_json(mdl, item_handle)
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    import dss_thcc_lib.component_scripts.comp_pvsystem as comp_script
+
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE pre_compile
+                    # HEADER START
+                    power = mdl.get_property_value(mdl.prop(item_handle, "power"))
+                    voltage = mdl.get_property_value(mdl.prop(item_handle, "voltage"))
+                    freq = mdl.get_property_value(mdl.prop(item_handle, "freq"))
+                    phases = mdl.get_property_value(mdl.prop(item_handle, "phases"))
+                    connection = mdl.get_property_value(mdl.prop(item_handle, "connection"))
+                    load_xycurve_eff = mdl.get_property_value(mdl.prop(item_handle, "load_xycurve_eff"))
+                    xycurve_name_eff = mdl.get_property_value(mdl.prop(item_handle, "xycurve_name_eff"))
+                    xycurve_npts_eff = mdl.get_property_value(mdl.prop(item_handle, "xycurve_npts_eff"))
+                    xycurve_xarray_eff = mdl.get_property_value(mdl.prop(item_handle, "xycurve_xarray_eff"))
+                    xycurve_yarray_eff = mdl.get_property_value(mdl.prop(item_handle, "xycurve_yarray_eff"))
+                    pmpp = mdl.get_property_value(mdl.prop(item_handle, "pmpp"))
+                    irrad = mdl.get_property_value(mdl.prop(item_handle, "irrad"))
+                    temp = mdl.get_property_value(mdl.prop(item_handle, "temp"))
+                    load_xycurve_cf = mdl.get_property_value(mdl.prop(item_handle, "load_xycurve_cf"))
+                    xycurve_name_cf = mdl.get_property_value(mdl.prop(item_handle, "xycurve_name_cf"))
+                    xycurve_npts_cf = mdl.get_property_value(mdl.prop(item_handle, "xycurve_npts_cf"))
+                    xycurve_xarray_cf = mdl.get_property_value(mdl.prop(item_handle, "xycurve_xarray_cf"))
+                    xycurve_yarray_cf = mdl.get_property_value(mdl.prop(item_handle, "xycurve_yarray_cf"))
+                    filter_type = mdl.get_property_value(mdl.prop(item_handle, "filter_type"))
+                    rl1_resistance = mdl.get_property_value(mdl.prop(item_handle, "rl1_resistance"))
+                    rl1_inductance = mdl.get_property_value(mdl.prop(item_handle, "rl1_inductance"))
+                    rc_resistance = mdl.get_property_value(mdl.prop(item_handle, "rc_resistance"))
+                    rc_capacitance = mdl.get_property_value(mdl.prop(item_handle, "rc_capacitance"))
+                    rl2_resistance = mdl.get_property_value(mdl.prop(item_handle, "rl2_resistance"))
+                    rl2_inductance = mdl.get_property_value(mdl.prop(item_handle, "rl2_inductance"))
+                    Ikp = mdl.get_property_value(mdl.prop(item_handle, "Ikp"))
+                    Iki = mdl.get_property_value(mdl.prop(item_handle, "Iki"))
+                    ts = mdl.get_property_value(mdl.prop(item_handle, "ts"))
+                    power_ref = mdl.get_property_value(mdl.prop(item_handle, "power_ref"))
+                    t_mode = mdl.get_property_value(mdl.prop(item_handle, "t_mode"))
+                    load_loadshape = mdl.get_property_value(mdl.prop(item_handle, "load_loadshape"))
+                    loadshape_name = mdl.get_property_value(mdl.prop(item_handle, "loadshape_name"))
+                    loadshape_from_file = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file"))
+                    useactual = mdl.get_property_value(mdl.prop(item_handle, "useactual"))
+                    loadshape_from_file_path = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_path"))
+                    loadshape_from_file_column = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_column"))
+                    loadshape_from_file_header = mdl.get_property_value(mdl.prop(item_handle, "loadshape_from_file_header"))
+                    loadshape = mdl.get_property_value(mdl.prop(item_handle, "loadshape"))
+                    loadshape_int = mdl.get_property_value(mdl.prop(item_handle, "loadshape_int"))
+                    loadshape_hour = mdl.get_property_value(mdl.prop(item_handle, "loadshape_hour"))
+                    timespan = mdl.get_property_value(mdl.prop(item_handle, "timespan"))
+                    load_tshape = mdl.get_property_value(mdl.prop(item_handle, "load_tshape"))
+                    tshape_name = mdl.get_property_value(mdl.prop(item_handle, "tshape_name"))
+                    tshape_temp = mdl.get_property_value(mdl.prop(item_handle, "tshape_temp"))
+                    tshape_int = mdl.get_property_value(mdl.prop(item_handle, "tshape_int"))
+                    tshape_npts = mdl.get_property_value(mdl.prop(item_handle, "tshape_npts"))
+                    tshape_hour = mdl.get_property_value(mdl.prop(item_handle, "tshape_hour"))
+                    loadshape_npts = mdl.get_property_value(mdl.prop(item_handle, "loadshape_npts"))
+                    # HEADER STOP
+                    import ast
+
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.ini_general_objects_from_json(mdl, item_handle)
+                    comp_script.read_loadshape_from_json(mdl, item_handle)
+
+                    comp_handle = mdl.get_parent(item_handle)
+                    rst_irrad = mdl.get_item("Rst Irrad", parent=comp_handle)
+                    rst_temp = mdl.get_item("Rst Temp", parent=comp_handle)
+
+                    scale = 0.01
+                    ts = 10e-6
+                    pv_z = 1e-3*(voltage*voltage/power)
+                    pv_r = pv_z*scale/(2*np.pi*freq)/ts
+
+                    loadshape_hour = loadshape_hour if loadshape_hour else '[]' # WorkAround
+                    if not ast.literal_eval(loadshape_hour):
+                        if t_mode == "Index":
+                            loadshape_time = [h for h in range(len(ast.literal_eval(loadshape)))]
+                        else:
+                            loadshape_time = [h*float(loadshape_int) for h in range(ast.literal_eval(loadshape_npts))]
+                    else:
+                        loadshape_time = loadshape_hour
+
+                    if not ast.literal_eval(tshape_hour):
+                        if t_mode == "Index":
+                            tshape_time = [h for h in range(len(ast.literal_eval(tshape_temp)))]
+                        else:
+                            tshape_time = [h*float(tshape_int) for h in range(ast.literal_eval(tshape_npts))]
+                    else:
+                        tshape_time = ast.literal_eval(tshape_hour)
+
+                    if power_ref == "Time Series":
+                        if t_mode == "Index":
+                            mdl.set_property_value(mdl.prop(rst_irrad, "input_type"), "Index")
+                            mdl.set_property_value(mdl.prop(rst_temp, "input_type"), "Index")
+                            irrad_max = len(loadshape_time)-1
+                            temp_max = len(tshape_time)-1
+                        else:
+                            mdl.set_property_value(mdl.prop(rst_irrad, "input_type"), "Hour")
+                            mdl.set_property_value(mdl.prop(rst_temp, "input_type"), "Hour")
+                            temp_max = tshape_time[-1]
+                            irrad_max = loadshape_time[-1]
+
+                    loadshape = ast.literal_eval(loadshape)
+                    tshape_temp = ast.literal_eval(tshape_temp)
+
+                ENDCODE
+            }
+        }
+        [
+            position = 8168, 8368
+            size = 96, 96
+        ]
+
+    }
+
+}

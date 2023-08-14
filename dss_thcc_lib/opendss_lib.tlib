@@ -252,7 +252,7 @@ library "OpenDSS" {
                                 comp_script.ground_sw_change(mdl, container_handle, False)
                             else:
                                 comp_script.ground_sw_change(mdl, container_handle, True)
-                            
+
                         ENDCODE
 
                         CODE property_value_edited
@@ -271,9 +271,9 @@ library "OpenDSS" {
 
                         CODE property_value_changed
                             comp_script = return_comp_script(mdl, container_handle)
-                        
+
                             comp_script.ground_sw_change(mdl, container_handle, new_value)
-                        
+
                             # code in comp_cil.py
                             '''
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
@@ -726,7 +726,7 @@ library "OpenDSS" {
                             comp_script = return_comp_script(mdl, container_handle)
                             comp_script.phase_value_changed(mdl, container_handle, new_value)
                             comp_script.phase_n_selector(mdl, container_handle, new_value)
-                        
+
                             # The following code is now on the file comp_cil.py
                             '''
                             from typhoon.api.schematic_editor.const import ITEM_JUNCTION, ITEM_CONNECTION, ITEM_PORT, ITEM_COMPONENT
@@ -985,7 +985,7 @@ library "OpenDSS" {
 
                     CODE init
                         import importlib
-                    
+
                         import dss_thcc_lib.component_scripts.comp_cil as comp_script
                         importlib.reload(comp_script)
                         def return_comp_script(mdl, item_handle):
@@ -2147,15 +2147,15 @@ library "OpenDSS" {
                             inv_ph = 1/3
                         else:
                             inv_ph = 1
-                    
+
                         if rate_lmt > 0:
                             rate_lmt_up = Freq * (SS/1000) / rate_lmt
                             rate_lmt_dwn = -Freq * (SS/1000) / rate_lmt
                         else:
                             rate_lmt_up = 10/Tfst
                             rate_lmt_dwn = -10/Tfst
-                    
-                    
+
+
                         mdl.set_property_value(mdl.prop(item_handle, "kVLine"), kVLine)
                         mdl.set_property_value(mdl.prop(item_handle, "kVLL"), kVLL)
                         mdl.set_property_value(mdl.prop(item_handle, "kP"), kP)
@@ -8856,7 +8856,7 @@ if (counter >= Ts) {
                             rate_trans3 = mdl.get_item("Rate Transition with Bypass3", parent=comp_handle, item_type="component")
                             Ts_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "execution_rate"))
                             Tfst_mask = mdl.get_property_disp_value(mdl.prop(container_handle, "Tfst"))
-                        
+
                             if new_value and not Ts_mask == Tfst_mask:
                                 mdl.set_property_value(mdl.prop(rate_trans1, "bypass_flag"), "False")
                                 mdl.set_property_value(mdl.prop(rate_trans2, "bypass_flag"), "False")
@@ -8966,7 +8966,7 @@ if (counter >= Ts) {
                             v0_port = mdl.get_item("v0", parent=comp_handle, item_type="port")
                             vph_port = mdl.get_item("vph_port", parent=comp_handle, item_type="port")
                             vph_tag = mdl.get_item("vph_tag", parent=comp_handle, item_type="tag")
-                        
+
                             if new_value:
                                 if len(mdl.find_connections(j2, j300)) > 0:
                                     for conn in mdl.find_connections(j2, j300):
@@ -9007,14 +9007,14 @@ if (counter >= Ts) {
 
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-                    
+
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
                             current_diagram=current_diagram
                         )
                         dialog.exec_()
-                        
+
                     ENDCODE
 
                     CODE pre_compile
@@ -9047,7 +9047,7 @@ if (counter >= Ts) {
                         from typhoon.api.schematic_editor.const import ITEM_COMPONENT
                         import numpy
                         import math
-                    
+
                         kVLL = kVLine/(3**0.5)
                         VLL = kVLL * 1000
                         kP = kP_tot / 3
@@ -9055,18 +9055,18 @@ if (counter >= Ts) {
                         P = kP * 1000
                         Q = kQ * 1000
                         SS = (P*P + Q*Q)**0.5
-                    
+
                         if SS==0:
                             Rsnb = 100000
                         else:
                             Rsnb = 30 * (VLL*VLL/(1.66*SS))
-                    
+
                         if Fast_con:
                             Tfast_en = 1
                         else:
                             Tfast_en = 0
-                    
-                    
+
+
                         mdl.set_property_value(mdl.prop(item_handle, "kVLine"), kVLine)
                         mdl.set_property_value(mdl.prop(item_handle, "kVLL"), kVLL)
                         mdl.set_property_value(mdl.prop(item_handle, "kP"), kP)
@@ -9079,10 +9079,10 @@ if (counter >= Ts) {
                         mdl.set_property_value(mdl.prop(item_handle, "kP_tot"), kP_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "kQ_tot"), kQ_tot)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfast_en"), Tfast_en)
-                    
-                    
+
+
                         mdl.set_property_value(mdl.prop(item_handle, "inv_ph"), inv_ph)
-                    
+
                         mdl.set_property_value(mdl.prop(item_handle, "Freq"), Freq)
                         mdl.set_property_value(mdl.prop(item_handle, "SS"), SS)
                         mdl.set_property_value(mdl.prop(item_handle, "Tfst"), Tfst)
@@ -9099,6 +9099,137 @@ if (counter >= Ts) {
                 position = 8216, 8256
                 size = 48, 48
             ]
+
+            component Subsystem "TS Reset" {
+                layout = dynamic
+                component "core/C function" "Division Remainder" {
+                    execution_rate = "execution_rate"
+                    input_terminals_dimensions = "inherit"
+                    input_terminals_feedthrough = "True"
+                    input_terminals_show_labels = "False"
+                    output_fnc = "/*Begin code section*/
+                    out = fmod(in, max);
+                    /*End code section*/"
+                    output_terminals_dimensions = "inherit"
+                    output_terminals_feedthrough = "True"
+                    output_terminals_show_labels = "False"
+                    parameters = "real max;"
+                }
+                [
+                    position = 7752, 8048
+                    size = 48, 48
+                ]
+
+                component "core/Round" round {
+                    execution_rate = "execution_rate"
+                }
+                [
+                    position = 7616, 8048
+                ]
+
+                port In {
+                    position = auto:auto
+                    kind = sp
+                    direction =  out
+                    sp_type {
+                        default = auto
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7496, 8048
+                ]
+
+                port Out {
+                    position = auto:auto
+                    kind = sp
+                    direction =  in
+                    sp_type {
+                        default = inherit
+                        readonly = True
+                    }
+                }
+                [
+                    position = 7944, 8048
+                ]
+
+                connect Out "Division Remainder.out" as Connection3
+                connect In round.in as Connection4
+                connect round.out "Division Remainder.in" as Connection5
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                    max {
+                        label = "max value"
+                        widget = edit
+                        type = generic
+                        default_value = "23"
+                    }
+
+                    input_type {
+                        label = "Input type"
+                        widget = combo
+                        combo_values = "Index", "Hour"
+                        type = string
+                        default_value = "Index"
+                        no_evaluate
+
+                        CODE property_value_changed
+                            comp_handle = mdl.get_parent(container_handle)
+                            round_handle = mdl.get_item("round", parent=comp_handle)
+                            inpunt_port_handle = mdl.get_item("In", parent=comp_handle, item_type="port")
+                            cfunction_handle = mdl.get_item("Division Remainder", parent=comp_handle)
+
+                            if new_value == "Index":
+                                round_pos = mdl.get_position(round_handle)
+                                mdl.delete_item(round_handle)
+                                round_handle = mdl.create_component("Round",
+                                                                    name="round",
+                                                                    parent=comp_handle,
+                                                                    position=round_pos)
+                                mdl.set_property_value(mdl.prop(round_handle, "execution_rate"), "execution_rate")
+                                mdl.create_connection(inpunt_port_handle, mdl.term(round_handle, "in"))
+                                mdl.create_connection(mdl.term(round_handle, "out"), mdl.term(cfunction_handle, "in"))
+                            else:
+                                round_pos = mdl.get_position(round_handle)
+                                mdl.delete_item(round_handle)
+                                round_handle = mdl.create_component("Gain",
+                                                                    name="round",
+                                                                    parent=comp_handle,
+                                                                    position=round_pos)
+                                mdl.set_property_value(mdl.prop(round_handle, "execution_rate"), "execution_rate")
+                                mdl.create_connection(inpunt_port_handle, mdl.term(round_handle, "in"))
+                                mdl.create_connection(mdl.term(round_handle, "out"), mdl.term(cfunction_handle, "in"))
+                        ENDCODE
+                    }
+
+                    execution_rate {
+                        label = "Execution rate"
+                        widget = edit
+                        type = generic
+                        default_value = "inherit"
+                        unit = "s"
+                    }
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+
+                    ENDCODE
+                }
+            }
+            [
+                position = 8384, 8256
+                size = 64, 48
+            ]
+
 
             component Subsystem "Ground Impedance" {
                 layout = dynamic
@@ -9180,22 +9311,22 @@ if (counter >= Ts) {
 
                     CODE open
                         from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
-                    
+
                         dialog = RegularComponentPropertiesDialog(
                             component=component,
                             property_container=component.masks[-1],
                             current_diagram=current_diagram
                         )
                         dialog.exec_()
-                        
+
                     ENDCODE
 
                     CODE init
                         import importlib
-                        
+
                         import dss_thcc_lib.component_scripts.comp_ground_impedance as comp_script
                         importlib.reload(comp_script)
-                        
+
                         def return_comp_script(mdl, item_handle):
                             return comp_script
                     ENDCODE

@@ -5,6 +5,7 @@ import json
 from .default_mapping import map
 from .default_mapping import constants
 
+
 def return_bus_connections(tse_component, num_buses, num_phases, floating_neutral):
     """ Returns a list of strings that define how the element is connected to buses.
     Example:
@@ -14,7 +15,6 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
     [busAB1.1.2, busAB2.1.2, busAB3.2.1, busAC4.1.3]"""
 
     bus_connections = []
-
     # General objects are not connected to buses
     if num_phases == 0 or num_buses == 0:
         return None
@@ -167,12 +167,21 @@ def create_general_objects_from_saved_json(tse_model, output_circuit):
                     # and selected_object properties for the saved object name
                     for comp in tse_model.components:
                         properties_dict = {str(k): str(v.value) for k, v in comp.properties.items()}
-                        if properties_dict.get(converted_comp_type[:-1] + "_name", "").upper() == obj_name.upper():
-                            add_obj = True if obj_name not in added_objs else False
-                            break
-                        elif properties_dict.get("selected_object", "").upper() == obj_name.upper():
-                            add_obj = True if obj_name not in added_objs else False
-                            break
+                        if converted_comp_type == "xycurves":
+                            if properties_dict.get("xycurve_name_eff", "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
+                            if properties_dict.get("xycurve_name_cf", "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
+                        else:
+                            prop_name = converted_comp_type[:-1] + "_name"
+                            if properties_dict.get(prop_name, "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
+                            elif properties_dict.get("selected_object", "").upper() == obj_name.upper():
+                                add_obj = True if obj_name not in added_objs else False
+                                break
 
                     if add_obj:
                         # Remove blank property entries

@@ -364,12 +364,12 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
         self.cfg_file_vi = self.dss_output_path.joinpath('plot_vi' + '.json')
         self.cfg_file_pq = self.dss_output_path.joinpath('plot_pq' + '.json')
 
-        self.current_plot_cfg_pq = {"signals": {" P1 (kW)": {"viewports": [1]},
-                                                " P2 (kW)": {"viewports": [1]},
-                                                " P3 (kW)": {"viewports": [1]},
-                                                " Q1 (kvar)": {"viewports": [2]},
-                                                " Q2 (kvar)": {"viewports": [2]},
-                                                " Q3 (kvar)": {"viewports": [2]}},
+        self.current_plot_cfg_pq = {"signals": {"P1 (kW)": {"viewports": [1]},
+                                                "P2 (kW)": {"viewports": [1]},
+                                                "P3 (kW)": {"viewports": [1]},
+                                                "Q1 (kvar)": {"viewports": [2]},
+                                                "Q2 (kvar)": {"viewports": [2]},
+                                                "Q3 (kvar)": {"viewports": [2]}},
                                     "viewports": {
                                         "1": {"x_label": "time (h)"},
                                         "2": {"x_label": "time (h)"},
@@ -378,18 +378,18 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
          }
          }
 
-        self.current_plot_cfg_vi = {"signals": {" V1": {"viewports": [1]},
-                                                " V2": {"viewports": [1]},
-                                                " V3": {"viewports": [1]},
-                                                " I1": {"viewports": [2]},
-                                                " I2": {"viewports": [2]},
-                                                " I3": {"viewports": [2]},
-                                                " VAngle1": {"viewports": [3]},
-                                                " VAngle2": {"viewports": [3]},
-                                                " VAngle3": {"viewports": [3]},
-                                                " IAngle1": {"viewports": [4]},
-                                                " IAngle2": {"viewports": [4]},
-                                                " IAngle3": {"viewports": [4]}
+        self.current_plot_cfg_vi = {"signals": {"V1": {"viewports": [1]},
+                                                "V2": {"viewports": [1]},
+                                                "V3": {"viewports": [1]},
+                                                "I1": {"viewports": [2]},
+                                                "I2": {"viewports": [2]},
+                                                "I3": {"viewports": [2]},
+                                                "VAngle1": {"viewports": [3]},
+                                                "VAngle2": {"viewports": [3]},
+                                                "VAngle3": {"viewports": [3]},
+                                                "IAngle1": {"viewports": [4]},
+                                                "IAngle2": {"viewports": [4]},
+                                                "IAngle3": {"viewports": [4]}
                                                 },
                                     "viewports": {
                                         "1": {"x_label": "time (h)"},

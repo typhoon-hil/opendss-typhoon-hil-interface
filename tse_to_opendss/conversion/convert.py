@@ -137,6 +137,10 @@ def generate_output_files(output_circuit):
         converted_component_types.add("LINECODE")
     if dss_data_path.joinpath("loadshapes.dss").is_file():
         converted_component_types.add("LOADSHAPE")
+    if dss_data_path.joinpath("xycurves.dss").is_file():
+        converted_component_types.add("XYCURVE")
+    if dss_data_path.joinpath("tshapes.dss").is_file():
+        converted_component_types.add("TSHAPE")
 
     # Write the output lines
     for converted_comp_type in converted_component_types:
@@ -156,11 +160,10 @@ def generate_output_files(output_circuit):
     for par, val in output_circuit.simulation_parameters.items():
         if type(val) == str:
             simulation_parameter_lines += f'set {par} = {val.replace(" ", "")} \n'
-
     # Redirect lines for each component type
     converted_component_types = [comp.lower() for comp in converted_component_types]
     # Some objects need to be in the correct order
-    converted_component_types.sort(key=lambda x: x in ['linecode', 'loadshape'], reverse=True)
+    converted_component_types.sort(key=lambda x: x in ['xycurve', 'tshape', 'linecode', 'loadshape'], reverse=True)
     if "regcontrol" in converted_component_types:
         converted_component_types.append(converted_component_types.pop(converted_component_types.index('regcontrol')))
     if "monitor" in converted_component_types:
