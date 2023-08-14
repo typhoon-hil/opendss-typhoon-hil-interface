@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.2
+// Saved by sw version: 2023.4 DEV
 //
 
 model "banshee" {
@@ -55,12 +55,13 @@ model "banshee" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        feedthrough_validation_error_level = warning
     }
 
     component Subsystem Root {
         component "OpenDSS/Bus" Bus101 {
-            i_inst_meas = "True"
-            i_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7864, 7792
@@ -69,6 +70,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus102 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7024, 8352
@@ -77,6 +80,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus103 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8792, 8352
@@ -95,6 +100,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -102,50 +108,55 @@ model "banshee" {
         [
             position = 7024, 8216
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Three-Phase Transformer" T101 {
             KVAs = "[500, 500]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.44951, 2.44951]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.4999, 0.4999]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 6904, 8696
+            position = 6888, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus102x3 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 6904, 8784
+            position = 6888, 8784
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_I1 {
+            Rneut = "0"
             Sn_3ph = "300"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 6904, 8872
+            position = 6888, 8928
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Three-Phase Transformer" T102 {
@@ -153,24 +164,24 @@ model "banshee" {
             KVs = "[13.8, 0.48]"
             XArray = "[2.84256, 2.84256]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.43069, 0.43069]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 7144, 8696
+            position = 7128, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus104 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 7144, 8984
+            position = 7128, 8984
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" C103 {
@@ -184,6 +195,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c11_4_0AWG-CU-15kV"
@@ -191,10 +203,12 @@ model "banshee" {
         [
             position = 8792, 8264
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus105 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7864, 8352
@@ -205,36 +219,41 @@ model "banshee" {
         component "OpenDSS/Bus" Bus106 {
         }
         [
-            position = 7648, 9176
+            position = 7632, 9176
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus107 {
         }
         [
-            position = 7648, 9560
+            position = 7632, 9560
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_C1 {
+            Rneut = "0"
             Sn_3ph = "1200"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 7296, 9160
+            position = 7296, 9232
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Line" C102 {
@@ -248,6 +267,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -255,7 +275,7 @@ model "banshee" {
         [
             position = 7864, 8208
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Three-Phase Transformer" T103 {
@@ -263,83 +283,96 @@ model "banshee" {
             KVs = "[13.8, 4.16]"
             XArray = "[2.36591, 2.36591]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.20754, 0.20754]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 7648, 8888
+            position = 7632, 8888
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T104 {
             KVAs = "[2000, 2000]"
             KVs = "[4.16, 0.48]"
             XArray = "[2.81205, 2.81205]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.59831, 0.59831]"
+            prim_conn = "Y - Grounded"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 7648, 9480
+            position = 7632, 9480
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T105 {
             KVAs = "[2000, 2000]"
             KVs = "[4.16, 0.48]"
             XArray = "[2.81205, 2.81205]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.59831, 0.59831]"
+            prim_conn = "Y - Grounded"
+            sec1_conn = "Y - Grounded"
         }
         [
             position = 7824, 9328
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T106 {
             KVAs = "[500, 500]"
             KVs = "[13.8, 0.208]"
             XArray = "[2.44951, 2.44951]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.49990, 0.49990]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 7864, 8696
+            position = 7848, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Load" Load_I2 {
+            Rneut = "0"
             Sn_3ph = "250"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.208"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 7864, 8888
+            position = 7848, 8936
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Bus" Bus105x6 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 7864, 8792
+            position = 7848, 8792
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB108 {
@@ -354,7 +387,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB101 {
         }
         [
-            position = 7024, 8016
+            position = 7024, 8024
             rotation = right
             size = 64, 96
         ]
@@ -362,7 +395,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB102 {
         }
         [
-            position = 7864, 8008
+            position = 7864, 8024
             rotation = right
             size = 64, 96
         ]
@@ -370,18 +403,14 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB103 {
         }
         [
-            position = 8592, 8016
+            position = 8592, 8024
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus101x1 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7024, 8096
@@ -390,12 +419,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus101x2 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7864, 8088
@@ -404,12 +429,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus101x3 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8592, 8096
@@ -426,6 +447,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus102x1 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 6904, 8608
@@ -442,6 +465,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus102x2 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7144, 8608
@@ -460,9 +485,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus102x4 {
         }
         [
-            position = 7144, 8784
+            position = 7128, 8784
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB109 {
@@ -491,6 +516,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus105x1 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7648, 8600
@@ -501,12 +528,14 @@ model "banshee" {
         component "OpenDSS/Bus" Bus105x2 {
         }
         [
-            position = 7864, 8600
+            position = 7848, 8600
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus105x3 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8104, 8600
@@ -517,9 +546,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus105x5 {
         }
         [
-            position = 7648, 8968
+            position = 7632, 8968
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB115 {
@@ -550,12 +579,14 @@ model "banshee" {
         component "OpenDSS/Bus" Bus106x2 {
         }
         [
-            position = 7648, 9400
+            position = 7632, 9400
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus106x1 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7480, 9400
@@ -564,32 +595,35 @@ model "banshee" {
         ]
 
         component "OpenDSS/Load" Load_C2 {
+            Rneut = "0"
             Sn_3ph = "1500"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 7824, 9488
+            position = 7824, 9536
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Bus" Bus106x3 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
             position = 7824, 9400
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB114 {
@@ -601,52 +635,62 @@ model "banshee" {
         ]
 
         component "OpenDSS/Load" Load_M1 {
+            Rneut = "0"
             Sn_3ph = "0.001"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 7528, 9888
+            position = 7512, 9888
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Load" Load_P1 {
+            Rneut = "0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 7768, 9888
+            position = 7752, 9944
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Bus" Bus107x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 7768, 9800
+            position = 7752, 9800
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus104x1 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7000, 9248
@@ -665,6 +709,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -672,7 +717,7 @@ model "banshee" {
         [
             position = 8416, 8264
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Three-Phase Transformer" T107 {
@@ -680,17 +725,21 @@ model "banshee" {
             KVs = "[13.8, 0.48]"
             XArray = "[2.84256, 2.84256]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.43069, 0.43069]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 8416, 8696
+            position = 8400, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus101x4 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8416, 8352
@@ -709,17 +758,17 @@ model "banshee" {
         component "OpenDSS/Bus" Bus101x5 {
         }
         [
-            position = 8416, 8592
+            position = 8400, 8592
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus101x6 {
         }
         [
-            position = 8416, 8800
+            position = 8400, 8800
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB113 {
@@ -740,30 +789,32 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus103x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8792, 8592
+            position = 8776, 8592
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Diesel {
+            Rneut = "0"
             Sn_3ph = "0.001"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 8792, 8696
+            position = 8776, 8696
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Manual Switch" CB1 {
@@ -772,18 +823,6 @@ model "banshee" {
             position = 7864, 7704
             rotation = right
             size = 64, 96
-        ]
-
-        component "OpenDSS/SimDSS" SimDSS1 {
-            powers = "kVA Elem"
-            sim_counter = "14"
-            sim_status = ""
-            voltagebases = "[13.8, 0.48, 0.208]"
-            voltages = "LL Nodes"
-        }
-        [
-            position = 10424, 7344
-            size = 96, 96
         ]
 
         component "OpenDSS/Line" C106 {
@@ -797,6 +836,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -804,10 +844,12 @@ model "banshee" {
         [
             position = 7648, 8696
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus105x4 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7648, 8792
@@ -816,8 +858,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus201 {
-            i_inst_meas = "True"
-            i_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 10424, 7800
@@ -826,6 +868,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus204 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 9592, 8360
@@ -844,6 +888,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c11_4_0AWG-CU-15kV"
@@ -851,50 +896,54 @@ model "banshee" {
         [
             position = 9592, 8216
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Three-Phase Transformer" T202 {
             KVAs = "[500, 500]"
             KVs = "[13.8, 0.208]"
             XArray = "[2.44951, 2.44951]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.49990, 0.49990]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 9328, 8696
+            position = 9312, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus204x2 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9328, 8784
+            position = 9312, 8784
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_I3 {
+            Rneut = "0"
             Sn_3ph = "300"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.208"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9328, 8872
+            position = 9312, 8936
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Three-Phase Transformer" T203 {
@@ -902,17 +951,21 @@ model "banshee" {
             KVs = "[13.8, 4.16]"
             XArray = "[2.36591, 2.36591]"
             embedded_cpl = "TLM"
+            global_basefreq = "False"
             percentNoloadloss = "0"
             percentRs = "[0.20754, 0.20754]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 9592, 8696
+            position = 9576, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus205 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 9592, 8984
@@ -921,6 +974,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus203 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 10424, 8360
@@ -929,22 +984,27 @@ model "banshee" {
         ]
 
         component "OpenDSS/Load" Load_P3 {
+            Rneut = "0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9768, 9488
+            position = 9752, 9536
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Line" C202 {
@@ -958,6 +1018,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -965,29 +1026,31 @@ model "banshee" {
         [
             position = 10424, 8216
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Three-Phase Transformer" T210 {
             KVs = "[13.8, 0.48]"
             XArray = "[2.79717, 2.79717]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.66441, 0.66441]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 10424, 8696
+            position = 10408, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus207 {
         }
         [
-            position = 10424, 8792
+            position = 10408, 8792
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB211 {
@@ -1001,7 +1064,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB201 {
         }
         [
-            position = 9592, 8016
+            position = 9592, 8048
             rotation = right
             size = 64, 96
         ]
@@ -1009,7 +1072,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB202 {
         }
         [
-            position = 10424, 8016
+            position = 10424, 8048
             rotation = right
             size = 64, 96
         ]
@@ -1017,49 +1080,37 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB203 {
         }
         [
-            position = 11280, 8032
+            position = 11280, 8048
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus201x1 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
-            position = 9592, 8096
+            position = 9592, 8120
             rotation = right
             size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus201x2 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
-            position = 10424, 8096
+            position = 10424, 8120
             rotation = right
             size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus201x3 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
-            position = 11280, 8112
+            position = 11280, 8120
             rotation = right
             size = 16, 96
         ]
@@ -1075,9 +1126,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus204x1 {
         }
         [
-            position = 9328, 8608
+            position = 9312, 8608
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB207 {
@@ -1091,9 +1142,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus204x3 {
         }
         [
-            position = 9592, 8608
+            position = 9576, 8608
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB222 {
@@ -1107,9 +1158,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus204x4 {
         }
         [
-            position = 9592, 8784
+            position = 9576, 8784
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB208 {
@@ -1139,70 +1190,73 @@ model "banshee" {
         component "OpenDSS/Bus" Bus203x1 {
         }
         [
-            position = 10160, 8600
+            position = 10144, 8600
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus203x2 {
         }
         [
-            position = 10424, 8608
+            position = 10408, 8608
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus203x3 {
         }
         [
-            position = 10720, 8608
+            position = 10704, 8616
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB219 {
         }
         [
-            position = 9984, 9248
+            position = 9984, 9312
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus206x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9984, 9320
+            position = 9968, 9384
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_P2 {
+            Rneut = "0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9984, 9408
+            position = 9968, 9536
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Bus" Bus205x1 {
         }
         [
-            position = 9424, 9248
+            position = 9408, 9248
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Three-Phase Transformer" T208 {
@@ -1210,14 +1264,16 @@ model "banshee" {
             KVs = "[13.8, 0.48]"
             XArray = "[2.81205, 2.81205]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.59831, 0.59830]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 11080, 8704
+            position = 11064, 8704
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Manual Switch" CB214 {
@@ -1231,9 +1287,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus208x1 {
         }
         [
-            position = 11080, 8608
+            position = 11064, 8608
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB215 {
@@ -1247,28 +1303,32 @@ model "banshee" {
         component "OpenDSS/Bus" Bus208x2 {
         }
         [
-            position = 11480, 8608
+            position = 11464, 8608
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_P5 {
+            Rneut = "0"
             Sn_3ph = "700"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 11368, 9376
+            position = 11352, 9440
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Manual Switch" CB2 {
@@ -1282,9 +1342,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus206 {
         }
         [
-            position = 10160, 8792
+            position = 10144, 8792
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB205 {
@@ -1306,129 +1366,139 @@ model "banshee" {
         component "OpenDSS/Bus" Bus205x3 {
         }
         [
-            position = 9768, 9248
+            position = 9752, 9248
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Three-Phase Transformer" T204 {
             KVs = "[4.16, 0.48]"
             XArray = "[2.79717, 2.79717]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.66441, 0.66441]"
+            prim_conn = "Y - Grounded"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 9424, 9328
+            position = 9408, 9328
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus205x2 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9424, 9408
+            position = 9408, 9408
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_I4 {
+            Rneut = "0"
             Sn_3ph = "600"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9424, 9496
+            position = 9408, 9568
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Three-Phase Transformer" T205 {
             KVAs = "[1500, 1500]"
             KVs = "[4.16, 0.48]"
             XArray = "[2.82003, 2.82003]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.55953, 0.55953]"
+            prim_conn = "Y - Grounded"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 9768, 9328
+            position = 9752, 9328
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus205x4 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9768, 9400
+            position = 9752, 9400
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus204x5 {
         }
         [
-            position = 9872, 8608
+            position = 9856, 8608
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Three-Phase Transformer" T201 {
             KVAs = "[2500, 2500]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.73547, 2.73547]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.49556, 0.49556]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 9872, 8696
+            position = 9856, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus202 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9872, 8784
+            position = 9856, 8784
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component Subsystem BESS {
             layout = dynamic
             component "OpenDSS/Load" BESS {
+                Rneut = "0"
                 Sn_3ph = "0.001"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "0.48"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
+                tp_connection = "Y - Grounded"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 7944, 8256
+                position = 7952, 8288
                 scale = -1, 1
-                size = 96, 64
+                size = 128, 48
             ]
 
             port A {
-                position = top:3
+                position = top:4
                 kind = pe
             }
             [
@@ -1436,7 +1506,7 @@ model "banshee" {
             ]
 
             port B {
-                position = top:2
+                position = top:3
                 kind = pe
             }
             [
@@ -1444,39 +1514,53 @@ model "banshee" {
             ]
 
             port C {
-                position = top:1
+                position = top:2
                 kind = pe
             }
             [
                 position = 7768, 8160
             ]
 
+            port N {
+                position = top:1
+                kind = pe
+            }
+            [
+                position = 7768, 8216
+            ]
+
             connect BESS.A1 A as Connection1
             connect BESS.B1 B as Connection2
             connect C BESS.C1 as Connection3
+            connect BESS.N1 N as Connection4
         }
         [
-            position = 9776, 8936
-            size = 112, 64
+            position = 9760, 8936
+            size = 136, 64
         ]
 
         component "OpenDSS/Load" Load_C3 {
+            Rneut = "0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 9960, 8944
+            position = 9968, 9008
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Three-Phase Transformer" T206 {
@@ -1484,14 +1568,16 @@ model "banshee" {
             KVs = "[13.8, 0.48]"
             XArray = "[2.84256, 2.84256]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.43069, 0.43069]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 10160, 8696
+            position = 10144, 8696
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Manual Switch" CB212 {
@@ -1503,32 +1589,35 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus207x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 10312, 9000
+            position = 10296, 9000
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_I5 {
+            Rneut = "0"
             Sn_3ph = "400"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 10312, 9072
+            position = 10296, 9120
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Manual Switch" CB213 {
@@ -1541,6 +1630,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus207x2 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 10544, 9000
@@ -1552,46 +1643,52 @@ model "banshee" {
             KVAs = "[5000, 5000]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.45880, 2.45880]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.451986, 0.451986]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 10720, 8704
+            position = 10704, 8712
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus203x4 {
         }
         [
-            position = 10720, 8792
+            position = 10704, 8800
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component Subsystem PV {
             layout = dynamic
             component "OpenDSS/Load" PV {
+                Rneut = "0"
                 Sn_3ph = "0.001"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "0.48"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 ground_connected = "True"
+                tp_connection = "Y - Grounded"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 7928, 8256
+                position = 7944, 8312
                 scale = -1, 1
-                size = 96, 64
+                size = 128, 48
             ]
 
             port A {
-                position = top:3
+                position = top:4
                 kind = pe
             }
             [
@@ -1599,7 +1696,7 @@ model "banshee" {
             ]
 
             port B {
-                position = top:2
+                position = top:3
                 kind = pe
             }
             [
@@ -1607,20 +1704,29 @@ model "banshee" {
             ]
 
             port C {
-                position = top:1
+                position = top:2
                 kind = pe
             }
             [
                 position = 7768, 8160
             ]
 
+            port N {
+                position = top:1
+                kind = pe
+            }
+            [
+                position = 7768, 8216
+            ]
+
             connect PV.A1 A as Connection1
             connect B PV.B1 as Connection2
             connect PV.C1 C as Connection3
+            connect N PV.N1 as Connection4
         }
         [
-            position = 10720, 8928
-            size = 112, 64
+            position = 10704, 8928
+            size = 144, 64
         ]
 
         component "OpenDSS/Line" C203 {
@@ -1634,6 +1740,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -1641,10 +1748,12 @@ model "banshee" {
         [
             position = 11280, 8224
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus208 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 11280, 8368
@@ -1653,40 +1762,43 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus209 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 11080, 9016
+            position = 11064, 9016
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus210 {
         }
         [
-            position = 11480, 9016
+            position = 11464, 9016
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_C4 {
+            Rneut = "0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 10968, 9208
+            position = 10976, 9248
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Manual Switch" CB217 {
@@ -1699,6 +1811,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus209x1 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 11176, 9280
@@ -1724,16 +1838,16 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus210x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 11368, 9280
+            position = 11352, 9280
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus210x2 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 11624, 9280
@@ -1742,8 +1856,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus301 {
-            i_inst_meas = "True"
-            i_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 13208, 7800
@@ -1754,7 +1868,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB301 {
         }
         [
-            position = 12320, 8032
+            position = 12320, 8064
             rotation = right
             size = 64, 96
         ]
@@ -1762,7 +1876,7 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB302 {
         }
         [
-            position = 12896, 8032
+            position = 12896, 8064
             rotation = right
             size = 64, 96
         ]
@@ -1770,49 +1884,37 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB304 {
         }
         [
-            position = 14064, 8032
+            position = 14064, 8064
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus301x1 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
-            position = 12320, 8112
+            position = 12320, 8144
             rotation = right
             size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus301x2 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
-            position = 12896, 8112
+            position = 12896, 8144
             rotation = right
             size = 16, 96
         ]
 
         component "OpenDSS/Bus" Bus301x4 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
-            position = 14064, 8112
+            position = 14064, 8144
             rotation = right
             size = 16, 96
         ]
@@ -1828,21 +1930,17 @@ model "banshee" {
         component "OpenDSS/Manual Switch" CB303 {
         }
         [
-            position = 13536, 8032
+            position = 13536, 8064
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus301x3 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
-            position = 13536, 8112
+            position = 13536, 8144
             rotation = right
             size = 16, 96
         ]
@@ -1858,6 +1956,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -1865,10 +1964,12 @@ model "banshee" {
         [
             position = 12320, 8224
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus302 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 12320, 8368
@@ -1895,25 +1996,25 @@ model "banshee" {
         component "OpenDSS/Bus" Bus302x1 {
         }
         [
-            position = 12096, 8632
+            position = 12080, 8632
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus302x2 {
         }
         [
-            position = 12536, 8632
+            position = 12520, 8632
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus302x3 {
         }
         [
-            position = 12096, 8840
+            position = 12080, 8840
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB310 {
@@ -1925,40 +2026,42 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus303 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 12096, 9016
+            position = 12080, 9016
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_C5 {
+            Rneut = "0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 12224, 9208
+            position = 12224, 9256
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Bus" Bus302x4 {
         }
         [
-            position = 12536, 8840
+            position = 12520, 8840
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB311 {
@@ -1970,6 +2073,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus304 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 12536, 9016
@@ -1978,22 +2083,27 @@ model "banshee" {
         ]
 
         component "OpenDSS/Load" Load_I6 {
+            Rneut = "0"
             Sn_3ph = "600"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 12672, 9360
+            position = 12656, 9424
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Manual Switch" CB308 {
@@ -2005,13 +2115,11 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus304x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 12672, 9280
+            position = 12656, 9280
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" C304 {
@@ -2025,6 +2133,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c11_4_0AWG-CU-15kV"
@@ -2032,42 +2141,46 @@ model "banshee" {
         [
             position = 12896, 8224
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus301x5 {
         }
         [
-            position = 12896, 8368
+            position = 12880, 8368
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus305 {
         }
         [
-            position = 12896, 8528
+            position = 12880, 8528
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_P4 {
+            Rneut = "0"
             Sn_3ph = "600"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 13032, 8904
+            position = 13016, 8960
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Manual Switch" CB307 {
@@ -2079,13 +2192,11 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus305x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 13032, 8824
+            position = 13016, 8824
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" C302 {
@@ -2099,6 +2210,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c11_4_0AWG-CU-15kV"
@@ -2106,42 +2218,44 @@ model "banshee" {
         [
             position = 13536, 8224
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus306 {
         }
         [
-            position = 13536, 8368
+            position = 13520, 8368
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus306x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 13392, 8624
+            position = 13376, 8624
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" CHP {
+            Rneut = "0"
             Sn_3ph = "0.001"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 13696, 8704
+            position = 13680, 8704
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Manual Switch" F3GCB {
@@ -2155,28 +2269,33 @@ model "banshee" {
         component "OpenDSS/Bus" Bus306x2 {
         }
         [
-            position = 13696, 8624
+            position = 13680, 8624
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_C6 {
+            Rneut = "0"
             Sn_3ph = "800"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 13392, 8704
+            position = 13376, 8776
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Line" C303 {
@@ -2190,6 +2309,7 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
@@ -2197,37 +2317,39 @@ model "banshee" {
         [
             position = 14064, 8224
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus301x6 {
         }
         [
-            position = 14064, 8368
+            position = 14048, 8368
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Three-Phase Transformer" T305 {
             KVAs = "[2500, 2500]"
             KVs = "[13.8, 0.48]"
             XArray = "[2.84256, 2.84256]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.43069, 0.43069]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 14064, 8456
+            position = 14048, 8456
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus301x7 {
         }
         [
-            position = 14064, 8536
+            position = 14048, 8536
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB312 {
@@ -2241,9 +2363,9 @@ model "banshee" {
         component "OpenDSS/Bus" Bus307 {
         }
         [
-            position = 14064, 8704
+            position = 14048, 8688
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" CB309 {
@@ -2255,49 +2377,56 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus307x1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 14064, 8944
+            position = 14048, 8944
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Load" Load_M6 {
+            Rneut = "0"
             Sn_3ph = "0.001"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 14232, 9040
+            position = 14256, 9040
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Load" Load_P6 {
+            Rneut = "0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            global_basefreq = "False"
             ground_connected = "True"
             load_model = "Constant Power"
+            tp_connection = "Y - Grounded"
             zip_internal = "[0.0, 0.0, 1.0]"
             zip_internal_Q = "[0.0, 0.0, 1.0]"
             zip_internal_n = "[0.0, 0.0, 1.0]"
             zip_internal_n_Q = "[0.0, 0.0, 1.0]"
         }
         [
-            position = 14064, 9040
+            position = 14048, 9080
             scale = -1, 1
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/Vsource" V2 {
@@ -2327,13 +2456,14 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
             position = 9024, 10064
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" C107 {
@@ -2347,13 +2477,14 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
             position = 9024, 10264
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" C204 {
@@ -2367,13 +2498,14 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
             position = 11808, 10064
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" C205 {
@@ -2387,13 +2519,14 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
             position = 11808, 10256
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" C206 {
@@ -2407,13 +2540,14 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
             position = 11808, 10440
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" C109 {
@@ -2427,13 +2561,14 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
             position = 10520, 10752
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" C108 {
@@ -2447,13 +2582,14 @@ model "banshee" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "symmetrical"
             selected_object = "c13_500kCMIL-CU-15kV"
         }
         [
             position = 9024, 10456
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Three-Phase Transformer" T209 {
@@ -2461,14 +2597,16 @@ model "banshee" {
             KVs = "[13.8, 0.48]"
             XArray = "[2.81205, 2.81205]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.59831, 0.59830]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 11480, 8704
+            position = 11464, 8704
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T301 {
@@ -2476,14 +2614,16 @@ model "banshee" {
             KVs = "[13.8, 0.48]"
             XArray = "[2.81205, 2.81205]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.59831, 0.59830]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 12096, 8736
+            position = 12080, 8736
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T302 {
@@ -2491,198 +2631,52 @@ model "banshee" {
             KVs = "[13.8, 0.48]"
             XArray = "[2.81205, 2.81205]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.59831, 0.59830]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 12536, 8736
+            position = 12520, 8736
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T303 {
             KVs = "[13.8, 0.48]"
             XArray = "[2.79717, 2.79717]"
             embedded_cpl = "TLM"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.66441, 0.66441]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 12896, 8448
+            position = 12880, 8448
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T304 {
             KVs = "[13.8, 0.48]"
             XArray = "[2.79717, 2.79717]"
-            percentNoloadloss = "0"
+            global_basefreq = "False"
+            percentNoloadloss = "0.01"
             percentRs = "[0.66441, 0.66441]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 13392, 8536
+            position = 13376, 8536
             rotation = right
-            size = 64, 96
-        ]
-
-        component "core/Ground" gnd20 {
-        }
-        [
-            position = 6832, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd21 {
-        }
-        [
-            position = 7072, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd22 {
-        }
-        [
-            position = 7576, 8944
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd23 {
-        }
-        [
-            position = 7768, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd24 {
-        }
-        [
-            position = 7728, 9376
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd25 {
-        }
-        [
-            position = 7552, 9528
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd26 {
-        }
-        [
-            position = 8336, 8760
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd27 {
-        }
-        [
-            position = 9248, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd28 {
-        }
-        [
-            position = 9528, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd29 {
-        }
-        [
-            position = 9800, 8760
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd30 {
-        }
-        [
-            position = 10088, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd31 {
-        }
-        [
-            position = 10352, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd32 {
-        }
-        [
-            position = 10648, 8752
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd33 {
-        }
-        [
-            position = 9336, 9376
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd34 {
-        }
-        [
-            position = 9664, 9376
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd35 {
-        }
-        [
-            position = 11008, 8760
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd36 {
-        }
-        [
-            position = 11408, 8760
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd37 {
-        }
-        [
-            position = 12024, 8792
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd38 {
-        }
-        [
-            position = 12464, 8792
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd39 {
-        }
-        [
-            position = 13320, 8592
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd40 {
-        }
-        [
-            position = 13992, 8512
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd41 {
-        }
-        [
-            position = 12824, 8504
-            hide_name = True
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus101x7 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8416, 8960
@@ -2691,6 +2685,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus3 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 13208, 7608
@@ -2699,6 +2695,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus1 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 7864, 7600
@@ -2708,6 +2706,8 @@ model "banshee" {
         ]
 
         component "OpenDSS/Bus" Bus2 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 10424, 7608
@@ -2905,6 +2905,444 @@ model "banshee" {
             position = 10512, 8792
         ]
 
+        component "OpenDSS/Monitor" Load_C1mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 7312, 9152
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_C2mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 7840, 9472
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_C3mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9984, 8928
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_C4mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 10992, 9176
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_C5mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 12240, 9168
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_C6mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 13392, 8696
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_I1mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 6904, 8856
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_I2mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 7864, 8864
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_I3mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9328, 8864
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_I4mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9424, 9496
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_I5mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 10312, 9056
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_I6mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 12672, 9352
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_M1mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 7528, 9808
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_M6mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 14272, 8944
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_P1mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 7768, 9872
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_P2mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9984, 9464
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_P3mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9768, 9464
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_P4mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 13032, 8896
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_P5mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 11368, 9360
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" Load_P6mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 14064, 9008
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB101_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 7024, 7952
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB102_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 7864, 7952
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB103_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8592, 7952
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB201_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9592, 7976
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB202_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 10424, 7976
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB203_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 11280, 7976
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB301_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 12320, 7992
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB302_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 12896, 7992
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB303_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 13536, 7992
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" CB304_Mon {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 14064, 7992
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS {
+            voltagebases = "[13.8, 0.48, 0.208]"
+        }
+        [
+            position = 10424, 7376
+            size = 96, 96
+        ]
+
         tag "Electric Tag1" {
             value = "Bus104a_C109"
             scope = local
@@ -3091,7 +3529,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 10224, 9256
+            position = 10224, 9320
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3103,7 +3541,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 10256, 9256
+            position = 10256, 9320
             rotation = left
             hide_name = True
             size = 83, 20
@@ -3115,7 +3553,7 @@ model "banshee" {
             kind = pe
         }
         [
-            position = 10288, 9256
+            position = 10288, 9320
             rotation = left
             hide_name = True
             size = 83, 20
@@ -4114,17 +4552,17 @@ model "banshee" {
 
         junction Junction100 pe
         [
-            position = 10128, 9176
+            position = 10128, 9240
         ]
 
         junction Junction101 pe
         [
-            position = 10160, 9152
+            position = 10160, 9216
         ]
 
         junction Junction102 pe
         [
-            position = 10192, 9128
+            position = 10192, 9192
         ]
 
         junction Junction103 pe
@@ -4352,26 +4790,6 @@ model "banshee" {
             position = 13504, 8480
         ]
 
-        junction Junction154 pe
-        [
-            position = 7728, 9352
-        ]
-
-        junction Junction155 pe
-        [
-            position = 7552, 9504
-        ]
-
-        junction Junction156 pe
-        [
-            position = 9344, 9328
-        ]
-
-        junction Junction157 pe
-        [
-            position = 9680, 9328
-        ]
-
         junction Junction164 pe
         [
             position = 7896, 7864
@@ -4470,6 +4888,11 @@ model "banshee" {
         junction Junction185 pe
         [
             position = 11512, 8808
+        ]
+
+        junction Junction186 pe
+        [
+            position = 9808, 8800
         ]
 
         comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">|</span></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt;">:</span></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html> ENDCOMMENT 
@@ -4694,7 +5117,7 @@ model "banshee" {
 
         comment Comment50 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
         [
-            position = 9736, 8992
+            position = 9720, 8992
         ]
 
         comment Comment51 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
@@ -4709,7 +5132,7 @@ model "banshee" {
 
         comment Comment53 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">Not Used</span></p></body></html> ENDCOMMENT 
         [
-            position = 14192, 9096
+            position = 14224, 9088
         ]
 
         connect C101.C2 Bus102.C1 as Connection4
@@ -4718,17 +5141,11 @@ model "banshee" {
         connect Bus102x3.C1 T101.C2 as Connection10
         connect Bus102x3.B1 T101.B2 as Connection11
         connect Bus102x3.A1 T101.A2 as Connection12
-        connect Bus102x3.C2 Load_I1.C1 as Connection13
-        connect Bus102x3.B2 Load_I1.B1 as Connection14
-        connect Bus102x3.A2 Load_I1.A1 as Connection15
         connect Bus105.B1 C102.B2 as Connection44
         connect Bus105.A1 C102.A2 as Connection45
         connect T106.C2 Bus105x6.C1 as Connection73
         connect T106.B2 Bus105x6.B1 as Connection74
         connect T106.A2 Bus105x6.A1 as Connection75
-        connect Bus105x6.C2 Load_I2.C1 as Connection76
-        connect Bus105x6.B2 Load_I2.B1 as Connection77
-        connect Bus105x6.A2 Load_I2.A1 as Connection78
         connect Bus101x1.C1 CB101.C2 as Connection184
         connect Bus101x1.B1 CB101.B2 as Connection185
         connect Bus101x1.A1 CB101.A2 as Connection186
@@ -4816,9 +5233,6 @@ model "banshee" {
         connect Bus106x3.C1 T105.C2 as Connection322
         connect Bus106x3.B1 T105.B2 as Connection323
         connect Bus106x3.A1 T105.A2 as Connection324
-        connect Bus106x3.C2 Load_C2.C1 as Connection325
-        connect Bus106x3.B2 Load_C2.B1 as Connection326
-        connect Bus106x3.A2 Load_C2.A1 as Connection327
         connect Bus106x2.C2 T104.C1 as Connection328
         connect Bus106x2.B2 T104.B1 as Connection329
         connect Bus106x2.A2 T104.A1 as Connection330
@@ -4829,32 +5243,16 @@ model "banshee" {
         connect Bus107x1.B1 CB114.B2 as Connection335
         connect Bus107x1.A1 CB114.A2 as Connection336
         connect Junction40 Bus107.C2 as Connection340
-        connect Junction40 Load_M1.C1 as Connection341
-        [
-            breakpoints = 7496, 9664; 7496, 9848
-        ]
         connect Junction40 CB114.C1 as Connection342
         connect Junction41 Bus107.B2 as Connection343
-        connect Junction41 Load_M1.B1 as Connection344
-        [
-            breakpoints = 7528, 9640; 7528, 9848
-        ]
         connect Junction41 CB114.B1 as Connection345
         connect Junction42 Bus107.A2 as Connection346
-        connect Junction42 Load_M1.A1 as Connection347
-        [
-            breakpoints = 7560, 9616; 7560, 9848
-        ]
         connect Junction42 CB114.A1 as Connection348
-        connect Bus107x1.C2 Load_P1.C1 as Connection349
-        connect Bus107x1.B2 Load_P1.B1 as Connection350
-        connect Bus107x1.A2 Load_P1.A1 as Connection351
         connect CB109.C2 Bus104x1.C1 as Connection352
         connect CB109.B2 Bus104x1.B1 as Connection353
         connect CB109.A2 Bus104x1.A1 as Connection354
         connect Bus105x2.C2 T106.C1 as Connection355
         connect Bus105x2.B2 T106.B1 as Connection356
-        connect Bus105x2.A2 T106.A1 as Connection357
         connect Bus104x1.C2 "Electric Tag3" as Connection358
         connect Bus104x1.B2 "Electric Tag2" as Connection359
         connect Bus104x1.A2 "Electric Tag1" as Connection360
@@ -4914,13 +5312,10 @@ model "banshee" {
         connect CB116.B2 Bus104.B1 as Connection433
         connect CB116.A2 Bus104.A1 as Connection434
         connect Junction46 Bus104.C2 as Connection435
-        connect Junction46 Load_C1.C1 as Connection436
         connect Junction46 CB109.C1 as Connection437
         connect Junction47 Bus104.B2 as Connection438
-        connect Junction47 Load_C1.B1 as Connection439
         connect Junction47 CB109.B1 as Connection440
         connect Junction48 Bus104.A2 as Connection441
-        connect Junction48 Load_C1.A1 as Connection442
         connect Junction48 CB109.A1 as Connection443
         connect Bus105x1.C2 C106.C1 as Connection444
         connect Bus105x1.B2 C106.B1 as Connection445
@@ -4936,37 +5331,22 @@ model "banshee" {
         connect Bus204x2.C1 T202.C2 as Connection456
         connect Bus204x2.B1 T202.B2 as Connection457
         connect Bus204x2.A1 T202.A2 as Connection458
-        connect Bus204x2.C2 Load_I3.C1 as Connection459
-        connect Bus204x2.B2 Load_I3.B1 as Connection460
-        connect Bus204x2.A2 Load_I3.A1 as Connection461
         connect Bus203.C1 C202.C2 as Connection462
         connect Bus203.B1 C202.B2 as Connection463
         connect T210.C2 Bus207.C1 as Connection465
         connect T210.B2 Bus207.B1 as Connection466
-        connect CB202.A1 Junction49 as Connection471
         connect Junction49 Bus201.A2 as Connection472
         [
             breakpoints = 10456, 7872
         ]
         connect Bus201.B2 Junction50 as Connection473
-        connect Junction50 CB202.B1 as Connection474
-        [
-            breakpoints = 10424, 7896
-        ]
-        connect CB202.C1 Junction51 as Connection475
         connect Junction51 Bus201.C2 as Connection476
         [
             breakpoints = 10392, 7920
         ]
-        connect CB203.A1 Junction52 as Connection477
         connect Junction52 Junction49 as Connection478
-        connect CB201.A1 Junction52 as Connection479
-        connect CB203.B1 Junction53 as Connection480
         connect Junction53 Junction50 as Connection481
-        connect CB201.B1 Junction53 as Connection482
-        connect CB203.C1 Junction54 as Connection483
         connect Junction54 Junction51 as Connection484
-        connect CB201.C1 Junction54 as Connection485
         connect Bus201x1.C1 CB201.C2 as Connection486
         connect Bus201x1.B1 CB201.B2 as Connection487
         connect Bus201x1.A1 CB201.A2 as Connection488
@@ -5054,18 +5434,12 @@ model "banshee" {
         connect T204.C2 Bus205x2.C1 as Connection744
         connect T204.B2 Bus205x2.B1 as Connection745
         connect T204.A2 Bus205x2.A1 as Connection746
-        connect Bus205x2.C2 Load_I4.C1 as Connection747
-        connect Bus205x2.B2 Load_I4.B1 as Connection748
-        connect Bus205x2.A2 Load_I4.A1 as Connection749
         connect Bus205x3.C2 T205.C1 as Connection750
         connect Bus205x3.B2 T205.B1 as Connection751
         connect Bus205x3.A2 T205.A1 as Connection752
         connect T205.C2 Bus205x4.C1 as Connection753
         connect T205.B2 Bus205x4.B1 as Connection754
         connect T205.A2 Bus205x4.A1 as Connection755
-        connect Bus205x4.C2 Load_P3.C1 as Connection756
-        connect Bus205x4.B2 Load_P3.B1 as Connection757
-        connect Bus205x4.A2 Load_P3.A1 as Connection758
         connect CB208.A1 Junction94 as Connection759
         connect "Electric Tag13" Junction94 as Connection761
         connect CB208.B1 Junction95 as Connection762
@@ -5083,21 +5457,15 @@ model "banshee" {
         connect Bus202.A1 T201.A2 as Connection776
         connect Junction97 Bus202.C2 as Connection780
         connect Junction97 BESS.C as Connection781
-        connect Junction97 Load_C3.C1 as Connection782
         connect Junction98 Bus202.B2 as Connection783
         connect Junction98 BESS.B as Connection784
-        connect Junction98 Load_C3.B1 as Connection785
         connect Junction99 Bus202.A2 as Connection786
         connect Junction99 BESS.A as Connection787
-        connect Junction99 Load_C3.A1 as Connection788
         connect Bus203x1.C2 T206.C1 as Connection789
         connect Bus203x1.B2 T206.B1 as Connection790
         connect Bus203x1.A2 T206.A1 as Connection791
         connect T206.C2 Bus206.C1 as Connection792
         connect T206.B2 Bus206.B1 as Connection793
-        connect Bus206x1.C2 Load_P2.C1 as Connection795
-        connect Bus206x1.B2 Load_P2.B1 as Connection796
-        connect Bus206x1.A2 Load_P2.A1 as Connection797
         connect Junction100 Bus206.C2 as Connection800
         connect Junction100 "Electric Tag16" as Connection801
         connect Junction100 CB219.C1 as Connection802
@@ -5110,9 +5478,6 @@ model "banshee" {
         connect Bus207x1.C1 CB212.C2 as Connection809
         connect Bus207x1.B1 CB212.B2 as Connection810
         connect Bus207x1.A1 CB212.A2 as Connection811
-        connect Bus207x1.C2 Load_I5.C1 as Connection812
-        connect Bus207x1.B2 Load_I5.B1 as Connection813
-        connect Bus207x1.A2 Load_I5.A1 as Connection814
         connect CB211.A1 Junction60 as Connection816
         connect Junction103 Bus203.C2 as Connection818
         connect Junction103 Junction58 as Connection819
@@ -5180,13 +5545,10 @@ model "banshee" {
         connect Junction111 CB214.A1 as Connection886
         connect Junction112 Bus209.C2 as Connection905
         connect Junction112 CB217.C1 as Connection906
-        connect Junction112 Load_C4.C1 as Connection907
         connect Junction113 Bus209.B2 as Connection908
         connect Junction113 CB217.B1 as Connection909
-        connect Junction113 Load_C4.B1 as Connection910
         connect Junction114 Bus209.A2 as Connection911
         connect Junction114 CB217.A1 as Connection912
-        connect Junction114 Load_C4.A1 as Connection913
         connect CB217.A2 Bus209x1.A1 as Connection914
         connect Bus209x1.A2 "Electric Tag22" as Connection915
         connect CB217.B2 Bus209x1.B1 as Connection916
@@ -5205,9 +5567,6 @@ model "banshee" {
         connect Bus210x1.C1 CB218.C2 as Connection935
         connect Bus210x1.B1 CB218.B2 as Connection936
         connect Bus210x1.A1 CB218.A2 as Connection937
-        connect Bus210x1.C2 Load_P5.C1 as Connection938
-        connect Bus210x1.B2 Load_P5.B1 as Connection939
-        connect Bus210x1.A2 Load_P5.A1 as Connection940
         connect Bus210x2.C1 CB216.C2 as Connection941
         connect Bus210x2.B1 CB216.B2 as Connection942
         connect Bus210x2.A1 CB216.A2 as Connection943
@@ -5229,18 +5588,6 @@ model "banshee" {
         connect Bus301x3.C1 CB303.C2 as Connection974
         connect Bus301x3.B1 CB303.B2 as Connection975
         connect Bus301x3.A1 CB303.A2 as Connection976
-        connect CB302.C1 Junction118 as Connection980
-        connect CB302.B1 Junction120 as Connection981
-        connect CB302.A1 Junction122 as Connection982
-        connect CB303.C1 Junction119 as Connection983
-        connect CB303.B1 Junction121 as Connection984
-        connect CB303.A1 Junction123 as Connection985
-        connect CB301.C1 Junction118 as Connection986
-        connect CB301.B1 Junction120 as Connection987
-        connect CB301.A1 Junction122 as Connection988
-        connect CB304.C1 Junction119 as Connection989
-        connect CB304.B1 Junction121 as Connection990
-        connect CB304.A1 Junction123 as Connection991
         connect Junction124 Bus301.C2 as Connection992
         connect Junction124 Junction118 as Connection993
         connect Junction124 Junction119 as Connection994
@@ -5276,19 +5623,16 @@ model "banshee" {
         connect CB310.C2 Bus303.C1 as Connection1037
         connect CB310.B2 Bus303.B1 as Connection1038
         connect CB310.A2 Bus303.A1 as Connection1039
-        connect Load_C5.A1 Junction130 as Connection1043
         connect Junction130 Bus303.A2 as Connection1044
         [
             breakpoints = 12128, 9072
         ]
         connect "Electric Tag34" Junction130 as Connection1045
-        connect Load_C5.B1 Junction131 as Connection1046
         connect Junction131 Bus303.B2 as Connection1047
         [
             breakpoints = 12096, 9096
         ]
         connect "Electric Tag35" Junction131 as Connection1048
-        connect Load_C5.C1 Junction132 as Connection1049
         connect Junction132 Bus303.C2 as Connection1050
         [
             breakpoints = 12064, 9120
@@ -5312,9 +5656,6 @@ model "banshee" {
         connect Bus304x1.C1 CB308.C2 as Connection1084
         connect Bus304x1.B1 CB308.B2 as Connection1085
         connect Bus304x1.A1 CB308.A2 as Connection1086
-        connect Bus304x1.C2 Load_I6.C1 as Connection1087
-        connect Bus304x1.B2 Load_I6.B1 as Connection1088
-        connect Bus304x1.A2 Load_I6.A1 as Connection1089
         connect Bus301x2.C2 C304.C1 as Connection1090
         connect Bus301x2.B2 C304.B1 as Connection1091
         connect Bus301x2.A2 C304.A1 as Connection1092
@@ -5323,9 +5664,6 @@ model "banshee" {
         connect Bus305x1.C1 CB307.C2 as Connection1108
         connect Bus305x1.B1 CB307.B2 as Connection1109
         connect Bus305x1.A1 CB307.A2 as Connection1110
-        connect Bus305x1.C2 Load_P4.C1 as Connection1111
-        connect Bus305x1.B2 Load_P4.B1 as Connection1112
-        connect Bus305x1.A2 Load_P4.A1 as Connection1113
         connect Junction139 Bus305.C2 as Connection1114
         connect Junction139 CB307.C1 as Connection1116
         connect Junction140 Bus305.B2 as Connection1117
@@ -5343,10 +5681,6 @@ model "banshee" {
         connect Bus306x2.A1 F3GCB.A2 as Connection1134
         connect Bus306x2.C2 CHP.C1 as Connection1135
         connect Bus306x2.B2 CHP.B1 as Connection1136
-        connect Bus306x2.A2 CHP.A1 as Connection1137
-        connect Bus306x1.C2 Load_C6.C1 as Connection1150
-        connect Bus306x1.B2 Load_C6.B1 as Connection1151
-        connect Bus306x1.A2 Load_C6.A1 as Connection1152
         connect C303.C2 Bus301x6.C1 as Connection1153
         connect C303.B2 Bus301x6.B1 as Connection1154
         connect C303.A2 Bus301x6.A1 as Connection1155
@@ -5395,16 +5729,10 @@ model "banshee" {
         [
             breakpoints = 14032, 8744
         ]
-        connect Bus307x1.C2 Load_P6.C1 as Connection1201
-        connect Bus307x1.B2 Load_P6.B1 as Connection1202
-        connect Bus307x1.A2 Load_P6.A1 as Connection1203
-        connect Load_M6.A1 Junction148 as Connection1204
         connect Junction148 Junction146 as Connection1205
         connect "Electric Tag43" Junction148 as Connection1206
-        connect Load_M6.B1 Junction149 as Connection1207
         connect Junction149 Junction145 as Connection1208
         connect "Electric Tag44" Junction149 as Connection1209
-        connect Load_M6.C1 Junction150 as Connection1210
         connect Junction150 Junction147 as Connection1211
         connect "Electric Tag45" Junction150 as Connection1212
         connect "Electric Tag52" C107.A1 as Connection1237
@@ -5485,39 +5813,6 @@ model "banshee" {
             breakpoints = 13504, 8480
         ]
         connect T304.C1 Junction153 as Connection1330
-        connect gnd20.node T101.N2 as Connection1331
-        connect gnd21.node T102.N2 as Connection1332
-        connect gnd22.node T103.N2 as Connection1333
-        connect gnd23.node T106.N2 as Connection1334
-        connect gnd24.node Junction154 as Connection1336
-        connect Junction154 T105.N2 as Connection1337
-        connect T105.N1 Junction154 as Connection1338
-        connect gnd25.node Junction155 as Connection1340
-        connect Junction155 T104.N1 as Connection1341
-        [
-            breakpoints = 7552, 9504; 7552, 9456
-        ]
-        connect T104.N2 Junction155 as Connection1342
-        connect gnd26.node T107.N2 as Connection1343
-        connect gnd27.node T202.N2 as Connection1344
-        connect gnd28.node T203.N2 as Connection1345
-        connect gnd29.node T201.N2 as Connection1346
-        connect gnd30.node T206.N2 as Connection1347
-        connect gnd31.node T210.N2 as Connection1348
-        connect gnd32.node T207.N2 as Connection1349
-        connect gnd33.node Junction156 as Connection1351
-        connect Junction156 T204.N2 as Connection1352
-        connect T204.N1 Junction156 as Connection1353
-        connect gnd34.node Junction157 as Connection1355
-        connect Junction157 T205.N2 as Connection1356
-        connect T205.N1 Junction157 as Connection1357
-        connect gnd35.node T208.N2 as Connection1358
-        connect gnd36.node T209.N2 as Connection1359
-        connect gnd37.node T301.N2 as Connection1360
-        connect T302.N2 gnd38.node as Connection1361
-        connect gnd39.node T304.N2 as Connection1362
-        connect gnd40.node T305.N2 as Connection1363
-        connect gnd41.node T303.N2 as Connection1364
         connect CB113.A2 Bus101x7.A1 as Connection1365
         connect Bus101x7.A2 "Electric Tag10" as Connection1366
         connect CB113.B2 Bus101x7.B1 as Connection1367
@@ -5601,30 +5896,18 @@ model "banshee" {
         connect C105.B1 "Coupling C105.B1" as Connection1690
         connect C105.C1 "Coupling C105.C1" as Connection1691
         connect Bus101.A2 Junction164 as Connection1717
-        connect Junction164 CB102.A1 as Connection1718
-        [
-            breakpoints = 7896, 7864
-        ]
-        connect CB102.B1 Junction165 as Connection1720
         connect Junction165 Bus101.B2 as Connection1721
         [
             breakpoints = 7864, 7888
         ]
-        connect CB102.C1 Junction166 as Connection1723
         connect Junction166 Bus101.C2 as Connection1724
         [
             breakpoints = 7832, 7912
         ]
-        connect CB101.A1 Junction167 as Connection1726
         connect Junction167 Junction164 as Connection1727
-        connect CB101.B1 Junction168 as Connection1729
         connect Junction168 Junction165 as Connection1730
-        connect CB103.B1 Junction168 as Connection1731
-        connect CB101.C1 Junction169 as Connection1732
         connect Junction169 Junction166 as Connection1733
-        connect CB103.C1 Junction169 as Connection1734
         connect Junction170 "Core Marker1.node" as Connection1743
-        connect Junction170 CB103.A1 as Connection1744
         connect Junction170 Junction167 as Connection1745
         connect Bus101x2.C2 C102.C1 as Connection1762
         connect C102.C2 Bus105.C1 as Connection1763
@@ -5682,9 +5965,6 @@ model "banshee" {
         connect Junction182 Junction88 as Connection1808
         connect Junction182 Junction87 as Connection1809
         connect Bus207.A1 T210.A2 as Connection1810
-        [
-            breakpoints = 10456, 8768; 10456, 8752
-        ]
         connect CB213.A1 Junction183 as Connection1811
         connect Junction183 Junction106 as Connection1812
         connect "Core Marker7.node" Junction183 as Connection1813
@@ -5697,6 +5977,251 @@ model "banshee" {
         connect T209.A2 Junction185 as Connection1819
         connect Junction185 Bus210.A1 as Connection1820
         connect "Core Marker6.node" Junction185 as Connection1821
+        connect Bus102x3.N2 Load_I1.N1 as Connection1822
+        connect T101.N2 Bus102x3.N1 as Connection1823
+        connect Bus102x4.N1 T102.N2 as Connection1824
+        connect Load_C1.N1 Bus104.N2 as Connection1825
+        connect Bus105x5.N1 T103.N2 as Connection1826
+        connect Bus106x2.N2 T104.N1 as Connection1827
+        connect T104.N2 Bus107.N1 as Connection1828
+        connect T105.N2 Bus106x3.N1 as Connection1829
+        connect Bus106x3.N2 Load_C2.N1 as Connection1830
+        connect T105.N1 Bus106.N2 as Connection1831
+        connect T106.N2 Bus105x6.N1 as Connection1832
+        connect T106.A1 Bus105x2.A2 as Connection1836
+        [
+            breakpoints = 7896, 8640
+        ]
+        connect Bus101x6.N1 T107.N2 as Connection1837
+        connect Bus202.N1 T201.N2 as Connection1838
+        connect T202.N2 Bus204x2.N1 as Connection1839
+        connect Bus204x4.N1 T203.N2 as Connection1840
+        connect Bus205x1.N2 T204.N1 as Connection1841
+        connect T204.N2 Bus205x2.N1 as Connection1842
+        connect Bus205x3.N2 T205.N1 as Connection1843
+        connect T205.N2 Bus205x4.N1 as Connection1844
+        connect T206.N2 Bus206.N1 as Connection1845
+        connect T207.N2 Bus203x4.N1 as Connection1846
+        connect T208.N2 Bus209.N1 as Connection1847
+        connect Bus210.N1 T209.N2 as Connection1848
+        connect T210.N2 Bus207.N1 as Connection1849
+        connect Bus302x3.N1 T301.N2 as Connection1850
+        connect T302.N2 Bus302x4.N1 as Connection1851
+        connect T303.N2 Bus305.N1 as Connection1852
+        connect T304.N2 Bus306x1.N1 as Connection1853
+        connect T305.N2 Bus301x7.N1 as Connection1854
+        connect Junction48 Load_C1mon.A1 as Connection1855
+        connect Load_C1mon.A2 Load_C1.A1 as Connection1856
+        connect Junction47 Load_C1mon.B1 as Connection1857
+        connect Load_C1mon.B2 Load_C1.B1 as Connection1858
+        connect Junction46 Load_C1mon.C1 as Connection1859
+        connect Load_C1mon.C2 Load_C1.C1 as Connection1860
+        connect Bus106x3.A2 Load_C2mon.A1 as Connection1861
+        connect Load_C2mon.A2 Load_C2.A1 as Connection1862
+        connect Bus106x3.B2 Load_C2mon.B1 as Connection1863
+        connect Load_C2mon.B2 Load_C2.B1 as Connection1864
+        connect Bus106x3.C2 Load_C2mon.C1 as Connection1865
+        connect Load_C2mon.C2 Load_C2.C1 as Connection1866
+        connect Junction99 Load_C3mon.A1 as Connection1867
+        connect Load_C3mon.A2 Load_C3.A1 as Connection1868
+        connect Junction98 Load_C3mon.B1 as Connection1869
+        connect Load_C3mon.B2 Load_C3.B1 as Connection1870
+        connect Junction97 Load_C3mon.C1 as Connection1871
+        connect Load_C3mon.C2 Load_C3.C1 as Connection1872
+        connect Junction114 Load_C4mon.A1 as Connection1874
+        connect Load_C4mon.A2 Load_C4.A1 as Connection1875
+        connect Junction113 Load_C4mon.B1 as Connection1876
+        connect Load_C4mon.B2 Load_C4.B1 as Connection1877
+        connect Junction112 Load_C4mon.C1 as Connection1878
+        connect Load_C4mon.C2 Load_C4.C1 as Connection1879
+        connect Load_C4.N1 Bus209.N2 as Connection1880
+        connect Load_C5.C1 Load_C5mon.C2 as Connection1881
+        connect Load_C5mon.C1 Junction132 as Connection1882
+        connect Load_C5.B1 Load_C5mon.B2 as Connection1883
+        connect Load_C5mon.B1 Junction131 as Connection1884
+        connect Load_C5.A1 Load_C5mon.A2 as Connection1885
+        connect Load_C5mon.A1 Junction130 as Connection1886
+        connect Load_C5.N1 Bus303.N2 as Connection1887
+        connect Bus306x1.A2 Load_C6mon.A1 as Connection1888
+        connect Load_C6mon.A2 Load_C6.A1 as Connection1889
+        connect Bus306x1.B2 Load_C6mon.B1 as Connection1890
+        connect Load_C6mon.B2 Load_C6.B1 as Connection1891
+        connect Bus306x1.C2 Load_C6mon.C1 as Connection1892
+        connect Load_C6mon.C2 Load_C6.C1 as Connection1893
+        connect Load_C6.N1 Bus306x1.N2 as Connection1894
+        connect Bus102x3.A2 Load_I1mon.A1 as Connection1895
+        connect Load_I1mon.A2 Load_I1.A1 as Connection1896
+        connect Bus102x3.B2 Load_I1mon.B1 as Connection1897
+        connect Load_I1mon.B2 Load_I1.B1 as Connection1898
+        connect Bus102x3.C2 Load_I1mon.C1 as Connection1899
+        connect Load_I1mon.C2 Load_I1.C1 as Connection1900
+        connect Bus105x6.A2 Load_I2mon.A1 as Connection1901
+        connect Load_I2mon.A2 Load_I2.A1 as Connection1902
+        connect Bus105x6.B2 Load_I2mon.B1 as Connection1903
+        connect Load_I2mon.B2 Load_I2.B1 as Connection1904
+        connect Bus105x6.C2 Load_I2mon.C1 as Connection1905
+        connect Load_I2mon.C2 Load_I2.C1 as Connection1906
+        connect Load_I2.N1 Bus105x6.N2 as Connection1907
+        connect Bus204x2.A2 Load_I3mon.A1 as Connection1908
+        connect Load_I3mon.A2 Load_I3.A1 as Connection1909
+        connect Bus204x2.B2 Load_I3mon.B1 as Connection1910
+        connect Load_I3mon.B2 Load_I3.B1 as Connection1911
+        connect Bus204x2.C2 Load_I3mon.C1 as Connection1912
+        connect Load_I3mon.C2 Load_I3.C1 as Connection1913
+        connect Load_I3.N1 Bus204x2.N2 as Connection1914
+        connect Bus205x2.C2 Load_I4mon.C1 as Connection1915
+        connect Load_I4mon.C2 Load_I4.C1 as Connection1916
+        connect Bus205x2.B2 Load_I4mon.B1 as Connection1917
+        connect Load_I4mon.B2 Load_I4.B1 as Connection1918
+        connect Bus205x2.A2 Load_I4mon.A1 as Connection1919
+        connect Load_I4mon.A2 Load_I4.A1 as Connection1920
+        connect Load_I4.N1 Bus205x2.N2 as Connection1921
+        connect Bus207x1.A2 Load_I5mon.A1 as Connection1922
+        connect Load_I5mon.A2 Load_I5.A1 as Connection1923
+        connect Bus207x1.B2 Load_I5mon.B1 as Connection1924
+        connect Load_I5mon.B2 Load_I5.B1 as Connection1925
+        connect Bus207x1.C2 Load_I5mon.C1 as Connection1926
+        connect Load_I5mon.C2 Load_I5.C1 as Connection1927
+        connect Load_I5.N1 Bus207x1.N2 as Connection1928
+        connect Bus304x1.A2 Load_I6mon.A1 as Connection1929
+        connect Load_I6mon.A2 Load_I6.A1 as Connection1930
+        connect Bus304x1.B2 Load_I6mon.B1 as Connection1931
+        connect Load_I6mon.B2 Load_I6.B1 as Connection1932
+        connect Bus304x1.C2 Load_I6mon.C1 as Connection1933
+        connect Load_I6mon.C2 Load_I6.C1 as Connection1934
+        connect Load_I6.N1 Bus304x1.N2 as Connection1935
+        connect Junction42 Load_M1mon.A1 as Connection1936
+        [
+            breakpoints = 7560, 9616; 7560, 9776
+        ]
+        connect Load_M1mon.A2 Load_M1.A1 as Connection1937
+        connect Junction41 Load_M1mon.B1 as Connection1938
+        [
+            breakpoints = 7528, 9640; 7528, 9776
+        ]
+        connect Load_M1mon.B2 Load_M1.B1 as Connection1939
+        connect Junction40 Load_M1mon.C1 as Connection1940
+        connect Load_M1mon.C2 Load_M1.C1 as Connection1941
+        connect Load_M1.N1 Bus107.N2 as Connection1942
+        connect Load_M6.C1 Load_M6mon.C2 as Connection1943
+        connect Load_M6mon.C1 Junction150 as Connection1944
+        connect Load_M6.B1 Load_M6mon.B2 as Connection1945
+        connect Load_M6mon.B1 Junction149 as Connection1946
+        connect Load_M6.A1 Load_M6mon.A2 as Connection1947
+        connect Load_M6mon.A1 Junction148 as Connection1948
+        connect Load_M6.N1 Bus307.N2 as Connection1949
+        connect Bus107x1.A2 Load_P1mon.A1 as Connection1950
+        connect Load_P1mon.A2 Load_P1.A1 as Connection1951
+        connect Bus107x1.B2 Load_P1mon.B1 as Connection1952
+        connect Load_P1mon.B2 Load_P1.B1 as Connection1953
+        connect Bus107x1.C2 Load_P1mon.C1 as Connection1954
+        connect Load_P1mon.C2 Load_P1.C1 as Connection1955
+        connect Bus107x1.N2 Load_P1.N1 as Connection1956
+        connect Bus206x1.A2 Load_P2mon.A1 as Connection1957
+        connect Load_P2mon.A2 Load_P2.A1 as Connection1958
+        connect Bus206x1.B2 Load_P2mon.B1 as Connection1959
+        connect Load_P2mon.B2 Load_P2.B1 as Connection1960
+        connect Bus206x1.C2 Load_P2mon.C1 as Connection1961
+        connect Load_P2mon.C2 Load_P2.C1 as Connection1962
+        connect Load_P2.N1 Bus206x1.N2 as Connection1963
+        connect Bus205x4.A2 Load_P3mon.A1 as Connection1964
+        connect Load_P3mon.A2 Load_P3.A1 as Connection1965
+        connect Bus205x4.B2 Load_P3mon.B1 as Connection1966
+        connect Load_P3mon.B2 Load_P3.B1 as Connection1967
+        connect Bus205x4.C2 Load_P3mon.C1 as Connection1968
+        connect Load_P3mon.C2 Load_P3.C1 as Connection1969
+        connect Load_P3.N1 Bus205x4.N2 as Connection1970
+        connect Bus305x1.A2 Load_P4mon.A1 as Connection1971
+        connect Load_P4mon.A2 Load_P4.A1 as Connection1972
+        connect Bus305x1.B2 Load_P4mon.B1 as Connection1973
+        connect Load_P4mon.B2 Load_P4.B1 as Connection1974
+        connect Bus305x1.C2 Load_P4mon.C1 as Connection1975
+        connect Load_P4mon.C2 Load_P4.C1 as Connection1976
+        connect Load_P4.N1 Bus305x1.N2 as Connection1977
+        connect Bus210x1.A2 Load_P5mon.A1 as Connection1978
+        connect Load_P5mon.A2 Load_P5.A1 as Connection1979
+        connect Bus210x1.B2 Load_P5mon.B1 as Connection1980
+        connect Load_P5mon.B2 Load_P5.B1 as Connection1981
+        connect Bus210x1.C2 Load_P5mon.C1 as Connection1982
+        connect Load_P5mon.C2 Load_P5.C1 as Connection1983
+        connect Bus210x1.N2 Load_P5.N1 as Connection1984
+        connect Bus307x1.A2 Load_P6mon.A1 as Connection1985
+        connect Load_P6mon.A2 Load_P6.A1 as Connection1986
+        connect Bus307x1.B2 Load_P6mon.B1 as Connection1987
+        connect Load_P6mon.B2 Load_P6.B1 as Connection1988
+        connect Bus307x1.C2 Load_P6mon.C1 as Connection1989
+        connect Load_P6mon.C2 Load_P6.C1 as Connection1990
+        connect Load_P6.N1 Bus307x1.N2 as Connection1991
+        connect CB101.C1 CB101_Mon.C2 as Connection1992
+        connect CB101_Mon.C1 Junction169 as Connection1993
+        connect CB101.B1 CB101_Mon.B2 as Connection1994
+        connect CB101_Mon.B1 Junction168 as Connection1995
+        connect CB101.A1 CB101_Mon.A2 as Connection1996
+        connect CB101_Mon.A1 Junction167 as Connection1997
+        connect Junction164 CB102_Mon.A1 as Connection1998
+        connect CB102_Mon.A2 CB102.A1 as Connection1999
+        connect CB102.C1 CB102_Mon.C2 as Connection2000
+        connect CB102_Mon.C1 Junction166 as Connection2001
+        connect CB102.B1 CB102_Mon.B2 as Connection2002
+        connect CB102_Mon.B1 Junction165 as Connection2003
+        connect Junction170 CB103_Mon.A1 as Connection2004
+        connect CB103_Mon.A2 CB103.A1 as Connection2005
+        connect CB103.C1 CB103_Mon.C2 as Connection2006
+        connect CB103_Mon.C1 Junction169 as Connection2007
+        connect CB103.B1 CB103_Mon.B2 as Connection2008
+        connect CB103_Mon.B1 Junction168 as Connection2009
+        connect CB201.A1 CB201_Mon.A2 as Connection2010
+        connect CB201_Mon.A1 Junction52 as Connection2011
+        connect CB201.B1 CB201_Mon.B2 as Connection2012
+        connect CB201_Mon.B1 Junction53 as Connection2013
+        connect CB201.C1 CB201_Mon.C2 as Connection2014
+        connect CB201_Mon.C1 Junction54 as Connection2015
+        connect Junction50 CB202_Mon.B1 as Connection2016
+        connect CB202_Mon.B2 CB202.B1 as Connection2017
+        connect CB202.C1 CB202_Mon.C2 as Connection2018
+        connect CB202_Mon.C1 Junction51 as Connection2019
+        connect CB202.A1 CB202_Mon.A2 as Connection2020
+        connect CB202_Mon.A1 Junction49 as Connection2021
+        connect CB203.C1 CB203_Mon.C2 as Connection2022
+        connect CB203_Mon.C1 Junction54 as Connection2023
+        connect CB203.B1 CB203_Mon.B2 as Connection2024
+        connect CB203_Mon.B1 Junction53 as Connection2025
+        connect CB203.A1 CB203_Mon.A2 as Connection2026
+        connect CB203_Mon.A1 Junction52 as Connection2027
+        connect CB301.A1 CB301_Mon.A2 as Connection2028
+        connect CB301_Mon.A1 Junction122 as Connection2029
+        connect CB301.B1 CB301_Mon.B2 as Connection2030
+        connect CB301_Mon.B1 Junction120 as Connection2031
+        connect CB301.C1 CB301_Mon.C2 as Connection2032
+        connect CB301_Mon.C1 Junction118 as Connection2033
+        connect CB302.A1 CB302_Mon.A2 as Connection2034
+        connect CB302_Mon.A1 Junction122 as Connection2035
+        connect CB302.B1 CB302_Mon.B2 as Connection2036
+        connect CB302_Mon.B1 Junction120 as Connection2037
+        connect CB302.C1 CB302_Mon.C2 as Connection2038
+        connect CB302_Mon.C1 Junction118 as Connection2039
+        connect CB303.A1 CB303_Mon.A2 as Connection2040
+        connect CB303_Mon.A1 Junction123 as Connection2041
+        connect CB303.B1 CB303_Mon.B2 as Connection2042
+        connect CB303_Mon.B1 Junction121 as Connection2043
+        connect CB303.C1 CB303_Mon.C2 as Connection2044
+        connect CB303_Mon.C1 Junction119 as Connection2045
+        connect CB304.A1 CB304_Mon.A2 as Connection2046
+        connect CB304_Mon.A1 Junction123 as Connection2047
+        connect CB304.B1 CB304_Mon.B2 as Connection2048
+        connect CB304_Mon.B1 Junction121 as Connection2049
+        connect CB304.C1 CB304_Mon.C2 as Connection2050
+        connect CB304_Mon.C1 Junction119 as Connection2051
+        connect PV.N Bus203x4.N2 as Connection2052
+        connect Bus306x2.A2 CHP.A1 as Connection2056
+        [
+            breakpoints = 13728, 8672
+        ]
+        connect CHP.N1 Bus306x2.N2 as Connection2057
+        connect Diesel.N1 Bus103x1.N2 as Connection2058
+        connect Load_C3.N1 Junction186 as Connection2059
+        connect Junction186 Bus202.N2 as Connection2060
+        connect BESS.N Junction186 as Connection2061
     }
 
     default {
@@ -5705,19 +6230,12 @@ model "banshee" {
         }
 
         "OpenDSS/Bus" {
-            type_prop = "ABC"
-            ground_prop = "False"
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
             conf = "on both sides"
-            i_rms_meas = "False"
-            i_inst_meas = "False"
-            v_line_rms_meas = "False"
-            v_line_inst_meas = "False"
-            v_phase_rms_meas = "False"
-            v_phase_inst_meas = "False"
-            freq_meas = "False"
-            power_meas = "False"
-            execution_rate = "100e-6"
-            enable_output = "False"
         }
 
         "core/Four Phase Core Coupling" {
@@ -5740,7 +6258,7 @@ model "banshee" {
             selected_object = ""
             Length = "100"
             global_basefreq = "True"
-            BaseFreq = "60"
+            baseFreq = "60"
             phases = "3"
             R1 = "0.1903"
             R0 = "0.5853"
@@ -5770,11 +6288,13 @@ model "banshee" {
         }
 
         "OpenDSS/Load" {
+            ground_connected = "False"
+            tp_connection = "Y"
+            phases = "3"
+            Rneut = "inf"
+            Xneut = "inf"
             global_basefreq = "True"
             fn = "60"
-            conn_type = "Y"
-            ground_connected = "False"
-            phases = "3"
             Vn_3ph = "4.16"
             Sn_3ph = "3500"
             pf_mode_3ph = "Lag"
@@ -5807,7 +6327,7 @@ model "banshee" {
             pf = "0"
             conn = "0"
             kVA = "0"
-            basefreq = "0"
+            baseFreq = "0"
             gen_ts_en = "True"
             load_loadshape = "Choose"
             loadshape_name = "Default"
@@ -5834,15 +6354,34 @@ model "banshee" {
             T_lim_high = "0"
             Ts_switch = "0"
             enable_monitoring = "False"
+            tp_connection_combo_values = ""
         }
 
         "OpenDSS/Manual Switch" {
             switch_status = "True"
         }
 
+        "OpenDSS/Monitor" {
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "False"
+            enable_output = "False"
+            execution_rate = "100e-6"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            ran_dynamics = "False"
+        }
+
         "OpenDSS/SimDSS" {
             sim_mode = "Snap"
-            basefrequency = "60"
+            baseFreq = "60"
             voltagebases = "[0.480, 12.47]"
             tsstp = "1"
             tspoints = "24"
@@ -5866,6 +6405,7 @@ model "banshee" {
             maxiter = "15"
             command = "show voltages LN"
             run = "Run"
+            stability_analysis = "Run"
         }
 
         "OpenDSS/Three-Phase Transformer" {
@@ -5880,17 +6420,21 @@ model "banshee" {
             XArray = "[1, 1]"
             XscArray = "[2.0, 2.0]"
             global_basefreq = "True"
-            Basefreq = "60"
+            baseFreq = "60"
             percentNoloadloss = "2"
             percentimag = "0"
             prim_conn = "Y"
-            grounded_prim = "False"
+            Rneut_prim = "0.0"
+            Xneut_prim = "0.0"
             sec1_conn = "Y"
-            grounded_sec1 = "False"
+            Rneut_sec1 = "0.0"
+            Xneut_sec1 = "0.0"
             sec2_conn = "Y"
-            grounded_sec2 = "False"
+            Rneut_sec2 = "0.0"
+            Xneut_sec2 = "0.0"
             sec3_conn = "Y"
-            grounded_sec3 = "False"
+            Rneut_sec3 = "0.0"
+            Xneut_sec3 = "0.0"
             regcontrol_on = "False"
             maxtap = "1.1"
             mintap = "0.9"
@@ -5908,9 +6452,9 @@ model "banshee" {
         "OpenDSS/Vsource" {
             basekv = "115.0"
             baseMVA = "100.0"
-            BaseFreq = "60"
             global_basefreq = "False"
-            ground_connected = "True"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
             pu = "1.0"
             Angle = "0"
             Frequency = "60"
@@ -5932,4 +6476,14 @@ model "banshee" {
             enable_monitoring = "False"
         }
     }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        ts = 100e-6
+    ENDCODE
 }
