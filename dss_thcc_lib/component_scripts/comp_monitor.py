@@ -486,7 +486,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             (power_meas, i_rms_meas)
         )
 
-        force_freq = any(power_meas, v_line_rms_meas, v_phase_rms_meas, i_rms_meas)
+        force_freq = any([power_meas, v_line_rms_meas, v_phase_rms_meas, i_rms_meas])
         force_rms_phase_voltage = power_meas
         force_rms_phase_current = power_meas
 
