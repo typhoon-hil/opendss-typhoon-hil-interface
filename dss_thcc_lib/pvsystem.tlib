@@ -92,6 +92,10 @@ library "OpenDSS" {
             component "OpenDSS/Generic Leg Inverter (avg)" InvLeg_A {
                 rl1_inductance = "rl1_inductance"
                 rl1_resistance = "rl1_resistance"
+                rc_capacitance = "rc_capacitance"
+                rc_resistance = "rc_resistance"
+                rl2_inductance = "rl2_inductance"
+                rl2_resistance = "rl2_resistance"
                 sw_r = "pv_r"
                 ts = "ts"
             }
@@ -103,6 +107,10 @@ library "OpenDSS" {
             component "OpenDSS/Generic Leg Inverter (avg)" InvLeg_B {
                 rl1_inductance = "rl1_inductance"
                 rl1_resistance = "rl1_resistance"
+                rc_capacitance = "rc_capacitance"
+                rc_resistance = "rc_resistance"
+                rl2_inductance = "rl2_inductance"
+                rl2_resistance = "rl2_resistance"
                 sw_r = "pv_r"
                 ts = "ts"
             }
@@ -114,6 +122,10 @@ library "OpenDSS" {
             component "OpenDSS/Generic Leg Inverter (avg)" InvLeg_C {
                 rl1_inductance = "rl1_inductance"
                 rl1_resistance = "rl1_resistance"
+                rc_capacitance = "rc_capacitance"
+                rc_resistance = "rc_resistance"
+                rl2_inductance = "rl2_inductance"
+                rl2_resistance = "rl2_resistance"
                 sw_r = "pv_r"
                 ts = "ts"
             }
