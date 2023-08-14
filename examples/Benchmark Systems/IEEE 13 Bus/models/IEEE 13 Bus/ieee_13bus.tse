@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.2
+// Saved by sw version: 2023.4 DEV
 //
 
 model "ieee_13bus" {
@@ -55,10 +55,11 @@ model "ieee_13bus" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        feedthrough_validation_error_level = warning
     }
 
     component Subsystem Root {
-        component "OpenDSS/Vsource" V1 {
+        component "OpenDSS/Vsource" Vsource {
             basekv = "4.16"
             global_basefreq = "True"
             pu = "1"
@@ -68,12 +69,14 @@ model "ieee_13bus" {
             x1 = "0.0001"
         }
         [
-            position = 8456, 7912
+            position = 8456, 7840
             rotation = right
             size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus_Reg {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8456, 8224
@@ -82,12 +85,8 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_650 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8456, 8008
@@ -101,6 +100,7 @@ model "ieee_13bus" {
             d_C = "[[9.3933e-09, -1.7829000000000001e-09, -2.7864000000000002e-09], [-1.7829000000000001e-09, 8.537100000000001e-09, -1.0859000000000001e-09], [-2.7864000000000002e-09, -1.0859000000000001e-09, 8.941100000000001e-09]]"
             d_R = "[[0.4676, 0.0982, 0.0969], [0.0982, 0.4345, 0.0954], [0.0969, 0.0954, 0.4621]]"
             d_X = "[[0.7341, 0.2632, 0.3117], [0.2632, 0.7446, 0.2392], [0.3117, 0.2392, 0.7526]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             rmatrix = "[0.4676 0.0982 0.0969 | 0.0982 0.4345 0.0954 | 0.0969 0.0954 0.4621]"
@@ -109,33 +109,27 @@ model "ieee_13bus" {
         }
         [
             position = 8712, 8520
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus_633 {
         }
         [
-            position = 8856, 8520
-            size = 16, 96
+            position = 8856, 8536
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus_634 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
         }
         [
-            position = 9248, 8520
-            size = 16, 96
+            position = 9248, 8536
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus_645 {
+            phase_a = "False"
+            phase_n = "False"
             type_prop = "BC"
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
         }
         [
             position = 8080, 8536
@@ -144,11 +138,9 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_646 {
+            phase_a = "False"
+            phase_n = "False"
             type_prop = "BC"
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
         }
         [
             position = 7688, 8536
@@ -162,6 +154,7 @@ model "ieee_13bus" {
             d_C = "[[7.7627e-09, -1.4833000000000002e-09], [-1.4833000000000002e-09, 7.690400000000001e-09]]"
             d_R = "[[0.8261, 0.1284], [0.1284, 0.8226]]"
             d_X = "[[0.8371, 0.2853], [0.2853, 0.8431]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             phases = "2"
@@ -172,7 +165,7 @@ model "ieee_13bus" {
         [
             position = 8272, 8536
             scale = -1, 1
-            size = 64, 80
+            size = 64, 64
         ]
 
         component "OpenDSS/Line" Line_645646 {
@@ -181,6 +174,7 @@ model "ieee_13bus" {
             d_C = "[[7.7627e-09, -1.4833000000000002e-09], [-1.4833000000000002e-09, 7.690400000000001e-09]]"
             d_R = "[[0.8261, 0.1284], [0.1284, 0.8226]]"
             d_X = "[[0.8371, 0.2853], [0.2853, 0.8431]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             phases = "2"
@@ -191,7 +185,7 @@ model "ieee_13bus" {
         [
             position = 7880, 8536
             scale = -1, 1
-            size = 64, 80
+            size = 64, 64
         ]
 
         component "OpenDSS/Line" Line_632671 {
@@ -200,6 +194,7 @@ model "ieee_13bus" {
             d_C = "[[1.03836e-08, -3.2896000000000003e-09, -2.0760000000000003e-09], [-3.2896000000000003e-09, 9.823000000000001e-09, -1.2225e-09], [-2.0760000000000003e-09, -1.2225e-09, 9.2938e-09]]"
             d_R = "[[0.2153, 0.0936, 0.0982], [0.0936, 0.2097, 0.0954], [0.0982, 0.0954, 0.2121]]"
             d_X = "[[0.6325, 0.3117, 0.0982], [0.3117, 0.6511, 0.2392], [0.0982, 0.2392, 0.643]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             rmatrix = "[0.2153 0.0936 0.0982 | 0.0936 0.2097 0.0954 | 0.0982 0.0954 0.2121]"
@@ -209,12 +204,12 @@ model "ieee_13bus" {
         [
             position = 8456, 8656
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus_671 {
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8456, 8808
@@ -228,6 +223,7 @@ model "ieee_13bus" {
             d_C = "[[1.596977e-07, 0.0, 0.0], [0.0, 1.596977e-07, 0.0], [0.0, 0.0, 1.596977e-07]]"
             d_R = "[[0.496, 0.1983, 0.177], [0.1983, 0.4903, 0.1983], [0.177, 0.1983, 0.496]]"
             d_X = "[[0.2773, 0.0204, -0.0089], [0.0204, 0.2511, 0.0204], [-0.0089, 0.0204, 0.2773]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             rmatrix = "[0.496 0.1983 0.177 | 0.1983 0.4903 0.1983 | 0.177 0.1983 0.496]"
@@ -236,14 +232,12 @@ model "ieee_13bus" {
         }
         [
             position = 9048, 8936
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus_692 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8856, 8936
@@ -251,10 +245,8 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_675 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 9248, 8936
@@ -269,9 +261,9 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_684 {
+            phase_b = "False"
+            phase_n = "False"
             type_prop = "AC"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
         }
         [
             position = 8080, 8920
@@ -280,11 +272,10 @@ model "ieee_13bus" {
         ]
 
         component "OpenDSS/Bus" Bus_611 {
+            phase_a = "False"
+            phase_b = "False"
+            phase_n = "False"
             type_prop = "C"
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
         }
         [
             position = 7688, 8936
@@ -298,6 +289,7 @@ model "ieee_13bus" {
             d_C = "[[7.690400000000001e-09, -1.4833000000000002e-09], [-1.4833000000000002e-09, 7.7627e-09]]"
             d_R = "[[0.8226, 0.1284], [0.1284, 0.8261]]"
             d_X = "[[0.8431, 0.2853], [0.2853, 0.8371]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             phases = "2"
@@ -308,7 +300,7 @@ model "ieee_13bus" {
         [
             position = 8272, 8920
             scale = -1, 1
-            size = 64, 80
+            size = 64, 64
         ]
 
         component "OpenDSS/Line" Line_684611 {
@@ -317,6 +309,7 @@ model "ieee_13bus" {
             d_C = "[[1.5969770000000003e-34, 0.0, 0.0], [0.0, 1.5969770000000003e-34, 0.0], [0.0, 0.0, 1.5969770000000003e-34]]"
             d_R = "[0.8259]"
             d_X = "[0.8373]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             phases = "1"
@@ -327,7 +320,7 @@ model "ieee_13bus" {
         [
             position = 7880, 8936
             scale = -1, 1
-            size = 64, 49
+            size = 64, 32
         ]
 
         component "OpenDSS/Line" Line_671680 {
@@ -336,6 +329,7 @@ model "ieee_13bus" {
             d_C = "[[1.03836e-08, -3.2896000000000003e-09, -2.0760000000000003e-09], [-3.2896000000000003e-09, 9.823000000000001e-09, -1.2225e-09], [-2.0760000000000003e-09, -1.2225e-09, 9.2938e-09]]"
             d_R = "[[0.2153, 0.0936, 0.0982], [0.0936, 0.2097, 0.0954], [0.0982, 0.0954, 0.2121]]"
             d_X = "[[0.6325, 0.3117, 0.0982], [0.3117, 0.6511, 0.2392], [0.0982, 0.2392, 0.643]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             rmatrix = "[0.2153 0.0936 0.0982 | 0.0936 0.2097 0.0954 | 0.0982 0.0954 0.2121]"
@@ -345,11 +339,13 @@ model "ieee_13bus" {
         [
             position = 8456, 9072
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus_680 {
             conf = "on one side"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8456, 9176
@@ -363,6 +359,7 @@ model "ieee_13bus" {
             d_C = "0.0"
             d_R = "[0.8343]"
             d_X = "[0.3184]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             phases = "1"
@@ -373,15 +370,14 @@ model "ieee_13bus" {
         [
             position = 7984, 9088
             rotation = right
-            size = 64, 49
+            size = 64, 32
         ]
 
         component "OpenDSS/Bus" Bus_652 {
+            phase_b = "False"
+            phase_c = "False"
+            phase_n = "False"
             type_prop = "A"
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
         }
         [
             position = 7984, 9184
@@ -392,14 +388,15 @@ model "ieee_13bus" {
         component "OpenDSS/Three-Phase Transformer" XFM1-1 {
             KVAs = "[500, 500]"
             KVs = "[4.16, 0.48]"
-            grounded_prim = "True"
-            grounded_sec1 = "True"
+            global_basefreq = "False"
             percentNoloadloss = "0.01"
             percentRs = "[0.55, 0.55]"
+            prim_conn = "Y - Grounded"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 9048, 8520
-            size = 64, 96
+            position = 9048, 8536
+            size = 64, 124
         ]
 
         component "OpenDSS/Line" Line_650632 {
@@ -408,6 +405,7 @@ model "ieee_13bus" {
             d_C = "[[1.03836e-08, -3.2896000000000003e-09, -2.0760000000000003e-09], [-3.2896000000000003e-09, 9.823000000000001e-09, -1.2225e-09], [-2.0760000000000003e-09, -1.2225e-09, 9.2938e-09]]"
             d_R = "[[0.2153, 0.0936, 0.0982], [0.0936, 0.2097, 0.0954], [0.0982, 0.0954, 0.2121]]"
             d_X = "[[0.6325, 0.3117, 0.0982], [0.3117, 0.6511, 0.2392], [0.0982, 0.2392, 0.643]]"
+            global_basefreq = "False"
             input_type = "LineCode"
             obj_mode = "matrix"
             rmatrix = "[0.2153 0.0936 0.0982 | 0.0936 0.2097 0.0954 | 0.0982 0.0954 0.2121]"
@@ -417,87 +415,17 @@ model "ieee_13bus" {
         [
             position = 8456, 8328
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus_632 {
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8456, 8424
             rotation = right
             size = 16, 96
-        ]
-
-        component "core/Ground" gnd1 {
-        }
-        [
-            position = 8280, 8352
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd2 {
-        }
-        [
-            position = 8696, 8664
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd4 {
-        }
-        [
-            position = 8288, 8656
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd5 {
-        }
-        [
-            position = 7896, 8664
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd6 {
-        }
-        [
-            position = 8288, 9024
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd7 {
-        }
-        [
-            position = 7880, 9136
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd8 {
-        }
-        [
-            position = 9032, 9080
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd9 {
-        }
-        [
-            position = 7896, 9016
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd10 {
-        }
-        [
-            position = 8360, 8704
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd11 {
-        }
-        [
-            position = 9352, 9160
-            hide_name = True
         ]
 
         component "OpenDSS/Single-Phase Transformer" Rega {
@@ -570,14 +498,18 @@ model "ieee_13bus" {
         component Subsystem "Load 634" {
             layout = dynamic
             component "OpenDSS/Load" Load_634a {
+                Rneut = "0"
                 Sn_3ph = "194.16"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "0.48"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.82"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -586,18 +518,22 @@ model "ieee_13bus" {
             [
                 position = 7800, 8296
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_634b {
+                Rneut = "0"
                 Sn_3ph = "150.0"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "0.48"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.80"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -606,18 +542,22 @@ model "ieee_13bus" {
             [
                 position = 7704, 8296
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_634c {
+                Rneut = "0"
                 Sn_3ph = "150"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "0.48"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.80"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -626,7 +566,19 @@ model "ieee_13bus" {
             [
                 position = 7608, 8296
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7704, 8168
+                rotation = right
+                size = 48, 96
             ]
 
             port C {
@@ -656,12 +608,15 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect C Load_634c.A1 as Connection1
-            connect B Load_634b.A1 as Connection2
-            connect Load_634a.A1 A as Connection3
+            connect A Monitor.A1 as Connection7
+            connect B Monitor.B1 as Connection8
+            connect C Monitor.C1 as Connection9
+            connect Load_634a.A1 Monitor.A2 as Connection10
+            connect Load_634b.A1 Monitor.B2 as Connection11
+            connect Load_634c.A1 Monitor.C2 as Connection12
         }
         [
-            position = 9344, 8624
+            position = 9352, 8656
             size = 104, 48
         ]
 
@@ -674,16 +629,35 @@ model "ieee_13bus" {
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 pf_3ph = "0.87"
                 phases = "1"
+                tp_connection = "Δ"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 7656, 8104
-                rotation = right
+                position = 7656, 8176
                 scale = -1, 1
-                size = 16, 64
+                size = 64, 32
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                i_inst_meas = "True"
+                i_rms_meas = "True"
+                phase_a = "False"
+                power_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7656, 8080
+                rotation = right
+                size = 48, 64
             ]
 
             port C {
@@ -704,14 +678,10 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect B Load_646.B1 as Connection14
-            [
-                breakpoints = 7712, 8104
-            ]
-            connect C Load_646.A1 as Connection13
-            [
-                breakpoints = 7600, 7992; 7600, 8104; 7600, 8104
-            ]
+            connect B Monitor.B1 as Connection1
+            connect C Monitor.C1 as Connection2
+            connect Load_646.B1 Monitor.C2 as Connection3
+            connect Load_646.A1 Monitor.B2 as Connection4
         }
         [
             position = 7592, 8624
@@ -721,13 +691,17 @@ model "ieee_13bus" {
         component Subsystem "Load 675" {
             layout = dynamic
             component "OpenDSS/Load" Load_675a {
+                Rneut = "0"
                 Sn_3ph = "520.89"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.93"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -736,17 +710,21 @@ model "ieee_13bus" {
             [
                 position = 7800, 8288
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_675b {
+                Rneut = "0"
                 Sn_3ph = "90.69"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.75"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -755,17 +733,21 @@ model "ieee_13bus" {
             [
                 position = 7704, 8288
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_675c {
+                Rneut = "0"
                 Sn_3ph = "359.23"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.81"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -774,7 +756,19 @@ model "ieee_13bus" {
             [
                 position = 7608, 8288
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7704, 8136
+                rotation = right
+                size = 48, 96
             ]
 
             port C {
@@ -804,9 +798,12 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect C Load_675c.A1 as Connection1
-            connect B Load_675b.A1 as Connection2
-            connect A Load_675a.A1 as Connection3
+            connect B Monitor.B1 as Connection4
+            connect Monitor.B2 Load_675b.A1 as Connection5
+            connect A Monitor.A1 as Connection6
+            connect C Monitor.C1 as Connection7
+            connect Load_675a.A1 Monitor.A2 as Connection8
+            connect Load_675c.A1 Monitor.C2 as Connection9
         }
         [
             position = 9488, 9056
@@ -820,8 +817,11 @@ model "ieee_13bus" {
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                global_basefreq = "False"
                 pf_3ph = "0.87"
                 phases = "1"
+                tp_connection = "Δ"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -829,8 +829,7 @@ model "ieee_13bus" {
             }
             [
                 position = 7800, 8296
-                scale = -1, 1
-                size = 16, 64
+                size = 64, 32
             ]
 
             component "OpenDSS/Load" Load_671b {
@@ -840,6 +839,8 @@ model "ieee_13bus" {
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 pf_3ph = "0.87"
                 phases = "1"
+                tp_connection = "Δ"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -847,8 +848,7 @@ model "ieee_13bus" {
             }
             [
                 position = 7704, 8296
-                scale = -1, 1
-                size = 16, 64
+                size = 64, 32
             ]
 
             component "OpenDSS/Load" Load_671c {
@@ -858,6 +858,8 @@ model "ieee_13bus" {
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 pf_3ph = "0.87"
                 phases = "1"
+                tp_connection = "Δ"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -865,8 +867,19 @@ model "ieee_13bus" {
             }
             [
                 position = 7608, 8296
-                scale = -1, 1
-                size = 16, 64
+                size = 64, 32
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7688, 8120
+                rotation = right
+                size = 48, 96
             ]
 
             port C {
@@ -874,7 +887,7 @@ model "ieee_13bus" {
                 kind = pe
             }
             [
-                position = 7608, 7968
+                position = 7592, 7984
                 rotation = right
             ]
 
@@ -883,7 +896,7 @@ model "ieee_13bus" {
                 kind = pe
             }
             [
-                position = 7704, 7968
+                position = 7688, 7984
                 rotation = right
             ]
 
@@ -892,43 +905,58 @@ model "ieee_13bus" {
                 kind = pe
             }
             [
-                position = 7800, 7968
+                position = 7784, 7984
                 rotation = right
-            ]
-
-            junction Junction1 pe
-            [
-                position = 7608, 8224
             ]
 
             junction Junction2 pe
             [
-                position = 7704, 8224
+                position = 7688, 8248
             ]
 
             junction Junction3 pe
             [
-                position = 7800, 8224
+                position = 7784, 8248
             ]
 
-            connect Load_671c.A1 Junction1 as Connection29
-            connect Junction1 Load_671a.B1 as Connection30
+            junction Junction4 pe
             [
-                breakpoints = 7608, 8224; 7608, 8224; 7560, 8224; 7560, 8400; 7800, 8400
+                position = 7592, 8248
             ]
-            connect C Junction1 as Connection31
-            connect Load_671b.A1 Junction2 as Connection32
-            connect Junction2 Load_671c.B1 as Connection33
+
+            connect Load_671b.A1 Junction2 as Connection11
+            connect Junction2 Load_671c.B1 as Connection12
             [
-                breakpoints = 7704, 8224; 7704, 8224; 7664, 8224; 7664, 8376; 7616, 8376
+                breakpoints = 7624, 8248; 7624, 8248
             ]
-            connect B Junction2 as Connection34
-            connect Load_671a.A1 Junction3 as Connection35
-            connect Junction3 Load_671b.B1 as Connection36
+            connect Monitor.B2 Junction2 as Connection18
+            connect Load_671b.B1 Junction3 as Connection21
             [
-                breakpoints = 7800, 8224; 7800, 8224; 7752, 8224; 7752, 8376; 7704, 8376
+                breakpoints = 7720, 8248
             ]
-            connect A Junction3 as Connection37
+            connect Junction3 Load_671a.A1 as Connection22
+            [
+                breakpoints = 7784, 8248
+            ]
+            connect Monitor.A2 Junction3 as Connection23
+            [
+                breakpoints = 7720, 8152; 7784, 8152
+            ]
+            connect Load_671a.B1 Junction4 as Connection25
+            [
+                breakpoints = 7824, 8248; 7864, 8248; 7864, 8368; 7864, 8368; 7544, 8352; 7552, 8248
+            ]
+            connect Junction4 Load_671c.A1 as Connection26
+            [
+                breakpoints = 7592, 8248; 7592, 8248
+            ]
+            connect Monitor.C2 Junction4 as Connection27
+            [
+                breakpoints = 7656, 8152; 7592, 8152; 7592, 8248
+            ]
+            connect A Monitor.A1 as Connection28
+            connect B Monitor.B1 as Connection29
+            connect C Monitor.C1 as Connection30
         }
         [
             position = 8576, 9056
@@ -938,14 +966,17 @@ model "ieee_13bus" {
         component Subsystem "Dist Load 671" {
             layout = dynamic
             component "OpenDSS/Load" Load_d671a {
+                Rneut = "0"
                 Sn_3ph = "19.72/2"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.86"
-                pf_mode_3ph = "Unit"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -954,17 +985,21 @@ model "ieee_13bus" {
             [
                 position = 7800, 8304
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_d671b {
+                Rneut = "0"
                 Sn_3ph = "76.16/2"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.87"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -973,17 +1008,21 @@ model "ieee_13bus" {
             [
                 position = 7704, 8304
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_d671c {
+                Rneut = "0"
                 Sn_3ph = "135.33/2"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.86"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -992,7 +1031,19 @@ model "ieee_13bus" {
             [
                 position = 7608, 8304
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7704, 8128
+                rotation = right
+                size = 48, 96
             ]
 
             port C {
@@ -1022,9 +1073,12 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect C Load_d671c.A1 as Connection1
-            connect B Load_d671b.A1 as Connection2
-            connect A Load_d671a.A1 as Connection3
+            connect A Monitor.A1 as Connection1
+            connect B Monitor.B1 as Connection2
+            connect C Monitor.C1 as Connection3
+            connect Monitor.B2 Load_d671b.A1 as Connection4
+            connect Load_d671a.A1 Monitor.A2 as Connection5
+            connect Load_d671c.A1 Monitor.C2 as Connection6
         }
         [
             position = 8584, 8816
@@ -1034,13 +1088,17 @@ model "ieee_13bus" {
         component Subsystem "Dist Load 632" {
             layout = dynamic
             component "OpenDSS/Load" Load_d671a {
+                Rneut = "0"
                 Sn_3ph = "19.72/2"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.86"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1049,17 +1107,21 @@ model "ieee_13bus" {
             [
                 position = 7800, 8304
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_d671b {
+                Rneut = "0"
                 Sn_3ph = "76.16/2"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.87"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1068,17 +1130,21 @@ model "ieee_13bus" {
             [
                 position = 7704, 8304
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
             ]
 
             component "OpenDSS/Load" Load_d671c {
+                Rneut = "0"
                 Sn_3ph = "135.33/2"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.86"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1087,7 +1153,19 @@ model "ieee_13bus" {
             [
                 position = 7608, 8304
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7704, 8120
+                rotation = right
+                size = 48, 96
             ]
 
             port C {
@@ -1117,12 +1195,15 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect C Load_d671c.A1 as Connection1
-            connect B Load_d671b.A1 as Connection2
-            connect A Load_d671a.A1 as Connection3
+            connect A Monitor.A1 as Connection1
+            connect B Monitor.B1 as Connection2
+            connect C Monitor.C1 as Connection3
+            connect Load_d671a.A1 Monitor.A2 as Connection4
+            connect Load_d671b.A1 Monitor.B2 as Connection5
+            connect Load_d671c.A1 Monitor.C2 as Connection6
         }
         [
-            position = 8584, 8608
+            position = 8584, 8656
             size = 104, 48
         ]
 
@@ -1135,16 +1216,35 @@ model "ieee_13bus" {
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 pf_3ph = "0.75"
                 phases = "1"
+                tp_connection = "Δ"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 7656, 8096
-                rotation = left
+                position = 7656, 8176
                 scale = -1, 1
-                size = 16, 64
+                size = 64, 32
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                i_inst_meas = "True"
+                i_rms_meas = "True"
+                phase_b = "False"
+                power_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7656, 8072
+                rotation = right
+                size = 48, 64
             ]
 
             port C {
@@ -1165,14 +1265,10 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect C Load_692.B1 as Connection21
-            [
-                breakpoints = 7600, 7992; 7600, 8096
-            ]
-            connect Load_692.A1 A as Connection22
-            [
-                breakpoints = 7712, 8096
-            ]
+            connect Load_692.B1 Monitor.C2 as Connection1
+            connect Load_692.A1 Monitor.A2 as Connection2
+            connect A Monitor.A1 as Connection3
+            connect C Monitor.C1 as Connection4
         }
         [
             position = 8944, 9056
@@ -1182,22 +1278,45 @@ model "ieee_13bus" {
         component Subsystem "Load 645" {
             layout = dynamic
             component "OpenDSS/Load" Load_645 {
+                Rneut = "0"
                 Sn_3ph = "211.01"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.81"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 7704, 8104
+                position = 7704, 8152
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                i_inst_meas = "True"
+                i_rms_meas = "True"
+                phase_a = "False"
+                phase_c = "False"
+                power_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7704, 8056
+                rotation = right
+                size = 48, 32
             ]
 
             port B {
@@ -1209,10 +1328,8 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect Load_645.A1 B as Connection7
-            [
-                breakpoints = 7704, 8040
-            ]
+            connect B Monitor.B1 as Connection1
+            connect Monitor.B2 Load_645.A1 as Connection2
         }
         [
             position = 8000, 8608
@@ -1222,22 +1339,45 @@ model "ieee_13bus" {
         component Subsystem "Load 611" {
             layout = dynamic
             component "OpenDSS/Load" Load_611 {
+                Rneut = "0"
                 Sn_3ph = "187.88"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.90"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 7704, 8104
+                position = 7704, 8136
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                i_inst_meas = "True"
+                i_rms_meas = "True"
+                phase_a = "False"
+                phase_b = "False"
+                power_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7704, 8048
+                rotation = right
+                size = 48, 32
             ]
 
             port C {
@@ -1249,10 +1389,8 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect Load_611.A1 C as Connection15
-            [
-                breakpoints = 7704, 8040; 7704, 8040
-            ]
+            connect C Monitor.C1 as Connection1
+            connect Monitor.C2 Load_611.A1 as Connection2
         }
         [
             position = 7488, 9040
@@ -1262,13 +1400,17 @@ model "ieee_13bus" {
         component Subsystem "Load 652" {
             layout = dynamic
             component "OpenDSS/Load" Load_652 {
+                Rneut = "0"
                 Sn_3ph = "154.21"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 ground_connected = "True"
                 pf_3ph = "0.83"
                 phases = "1"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1277,7 +1419,26 @@ model "ieee_13bus" {
             [
                 position = 7704, 8104
                 scale = -1, 1
-                size = 16, 64
+                size = 32, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                i_inst_meas = "True"
+                i_rms_meas = "True"
+                phase_b = "False"
+                phase_c = "False"
+                power_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7704, 8040
+                rotation = right
+                size = 48, 32
             ]
 
             port A {
@@ -1289,10 +1450,8 @@ model "ieee_13bus" {
                 rotation = right
             ]
 
-            connect Load_652.A1 A as Connection23
-            [
-                breakpoints = 7704, 8040
-            ]
+            connect Load_652.A1 Monitor.A2 as Connection1
+            connect Monitor.A1 A as Connection2
         }
         [
             position = 7984, 9264
@@ -1302,8 +1461,8 @@ model "ieee_13bus" {
         component "OpenDSS/Capacitor Bank" Cap_611 {
             Kv = "4.16"
             Kvar = "100"
+            global_basefreq = "False"
             phases = "1"
-            tp_connection = "Y-grounded"
         }
         [
             position = 7600, 9048
@@ -1312,27 +1471,35 @@ model "ieee_13bus" {
 
         component "OpenDSS/Capacitor Bank" Cap_675 {
             Kv = "4.16"
-            tp_connection = "Y-grounded"
         }
         [
             position = 9352, 9048
             size = 96, 64
         ]
 
-        component "core/Ground" gnd23 {
-        }
-        [
-            position = 8312, 9120
-            hide_name = True
-        ]
-
         component "OpenDSS/SimDSS" SimDSS {
             powers = "kVA Elem"
+            sim_counter = "1"
+            sim_status = "Sim1 complete"
             voltagebases = "[4.16, 0.48]"
         }
         [
             position = 7936, 8072
             size = 96, 96
+        ]
+
+        component "OpenDSS/Monitor" Vsource_Monitor {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8456, 7928
+            rotation = right
+            size = 48, 96
         ]
 
         junction Junction4 pe
@@ -1563,15 +1730,6 @@ model "ieee_13bus" {
         [
             breakpoints = 8936, 8936
         ]
-        connect gnd1.node Line_650632.N as Connection345
-        connect gnd2.node Line_632633.N as Connection346
-        connect gnd4.node Line_632645.N as Connection351
-        connect gnd5.node Line_645646.N as Connection352
-        connect Line_671684.N gnd6.node as Connection353
-        connect gnd7.node Line_684652.N as Connection354
-        connect gnd8.node Line_692675.N as Connection355
-        connect gnd9.node Line_684611.N as Connection368
-        connect gnd10.node Line_632671.N as Connection387
         connect Bus_Reg.C2 Line_650632.C1 as Connection507
         connect Bus_Reg.B2 Line_650632.B1 as Connection508
         connect Bus_Reg.A2 Line_650632.A1 as Connection509
@@ -1688,7 +1846,6 @@ model "ieee_13bus" {
             breakpoints = 7624, 8936; 7648, 8936
         ]
         connect Cap_611.A1 Junction82 as Connection680
-        connect Cap_675.N1 gnd11.node as Connection684
         connect Junction83 Bus_675.A2 as Connection686
         connect Cap_675.A1 Junction83 as Connection687
         connect Junction84 Bus_675.B2 as Connection689
@@ -1698,7 +1855,6 @@ model "ieee_13bus" {
         connect Cap_675.B1 Junction84 as Connection690
         connect Junction85 Bus_675.C2 as Connection692
         connect Cap_675.C1 Junction85 as Connection693
-        connect gnd23.node Line_671680.N as Connection694
         connect Bus_680.C1 Line_671680.C2 as Connection695
         connect Bus_680.B1 Line_671680.B2 as Connection705
         [
@@ -1723,32 +1879,30 @@ model "ieee_13bus" {
         connect Line_692675.A2 Bus_675.A1 as Connection743
         connect Line_692675.B2 Bus_675.B1 as Connection744
         connect Line_692675.C2 Bus_675.C1 as Connection745
-        connect V1.C1 Bus_650.C1 as Connection746
-        connect V1.B1 Bus_650.B1 as Connection747
-        connect V1.A1 Bus_650.A1 as Connection748
+        connect Bus_633.N2 XFM1-1.N1 as Connection749
+        connect XFM1-1.N2 Bus_634.N1 as Connection750
+        connect Vsource.A1 Vsource_Monitor.A1 as Connection751
+        connect Vsource_Monitor.A2 Bus_650.A1 as Connection752
+        connect Vsource.B1 Vsource_Monitor.B1 as Connection753
+        connect Vsource_Monitor.B2 Bus_650.B1 as Connection754
+        connect Vsource.C1 Vsource_Monitor.C1 as Connection755
+        connect Vsource_Monitor.C2 Bus_650.C1 as Connection756
     }
 
     default {
         "OpenDSS/Bus" {
-            type_prop = "ABC"
-            ground_prop = "False"
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
             conf = "on both sides"
-            i_rms_meas = "False"
-            i_inst_meas = "False"
-            v_line_rms_meas = "False"
-            v_line_inst_meas = "False"
-            v_phase_rms_meas = "False"
-            v_phase_inst_meas = "False"
-            freq_meas = "False"
-            power_meas = "False"
-            execution_rate = "100e-6"
-            enable_output = "False"
         }
 
         "OpenDSS/Capacitor Bank" {
-            tp_connection = "Y"
+            tp_connection = "Y - Grounded"
             global_basefreq = "True"
-            BaseFreq = "60"
+            baseFreq = "60"
             phases = "3"
             Kv = "12.47"
             Kvar = "600"
@@ -1762,7 +1916,7 @@ model "ieee_13bus" {
             selected_object = ""
             Length = "100"
             global_basefreq = "True"
-            BaseFreq = "60"
+            baseFreq = "60"
             phases = "3"
             R1 = "0.1903"
             R0 = "0.5853"
@@ -1792,11 +1946,13 @@ model "ieee_13bus" {
         }
 
         "OpenDSS/Load" {
+            ground_connected = "False"
+            tp_connection = "Y"
+            phases = "3"
+            Rneut = "inf"
+            Xneut = "inf"
             global_basefreq = "True"
             fn = "60"
-            conn_type = "Y"
-            ground_connected = "False"
-            phases = "3"
             Vn_3ph = "4.16"
             Sn_3ph = "3500"
             pf_mode_3ph = "Lag"
@@ -1829,7 +1985,7 @@ model "ieee_13bus" {
             pf = "0"
             conn = "0"
             kVA = "0"
-            basefreq = "0"
+            baseFreq = "0"
             gen_ts_en = "True"
             load_loadshape = "Choose"
             loadshape_name = "Default"
@@ -1856,15 +2012,34 @@ model "ieee_13bus" {
             T_lim_high = "0"
             Ts_switch = "0"
             enable_monitoring = "False"
+            tp_connection_combo_values = ""
         }
 
         "OpenDSS/Manual Switch" {
             switch_status = "True"
         }
 
+        "OpenDSS/Monitor" {
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "False"
+            enable_output = "False"
+            execution_rate = "100e-6"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            ran_dynamics = "False"
+        }
+
         "OpenDSS/SimDSS" {
             sim_mode = "Snap"
-            basefrequency = "60"
+            baseFreq = "60"
             voltagebases = "[0.480, 12.47]"
             tsstp = "1"
             tspoints = "24"
@@ -1888,6 +2063,7 @@ model "ieee_13bus" {
             maxiter = "15"
             command = "show voltages LN"
             run = "Run"
+            stability_analysis = "Run"
         }
 
         "OpenDSS/Single-Phase Transformer" {
@@ -1907,7 +2083,7 @@ model "ieee_13bus" {
             XArray = "[1, 1]"
             XscArray = "[1]"
             global_basefreq = "True"
-            Basefreq = "60"
+            baseFreq = "60"
             percentNoloadloss = "1"
             percentimag = "0"
             regcontrol_on = "False"
@@ -1936,17 +2112,21 @@ model "ieee_13bus" {
             XArray = "[1, 1]"
             XscArray = "[2.0, 2.0]"
             global_basefreq = "True"
-            Basefreq = "60"
+            baseFreq = "60"
             percentNoloadloss = "2"
             percentimag = "0"
             prim_conn = "Y"
-            grounded_prim = "False"
+            Rneut_prim = "0.0"
+            Xneut_prim = "0.0"
             sec1_conn = "Y"
-            grounded_sec1 = "False"
+            Rneut_sec1 = "0.0"
+            Xneut_sec1 = "0.0"
             sec2_conn = "Y"
-            grounded_sec2 = "False"
+            Rneut_sec2 = "0.0"
+            Xneut_sec2 = "0.0"
             sec3_conn = "Y"
-            grounded_sec3 = "False"
+            Rneut_sec3 = "0.0"
+            Xneut_sec3 = "0.0"
             regcontrol_on = "False"
             maxtap = "1.1"
             mintap = "0.9"
@@ -1964,9 +2144,9 @@ model "ieee_13bus" {
         "OpenDSS/Vsource" {
             basekv = "115.0"
             baseMVA = "100.0"
-            BaseFreq = "60"
             global_basefreq = "False"
-            ground_connected = "True"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
             pu = "1.0"
             Angle = "0"
             Frequency = "60"
@@ -1988,4 +2168,14 @@ model "ieee_13bus" {
             enable_monitoring = "False"
         }
     }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        ts = 100e-6
+    ENDCODE
 }
