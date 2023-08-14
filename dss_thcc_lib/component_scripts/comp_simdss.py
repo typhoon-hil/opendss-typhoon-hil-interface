@@ -459,6 +459,7 @@ def run_stability_analysis(mdl, mask_handle):
     dss_to_thcc_compensation(mdl, dss, "VSConverter", ts, restore_names_dict)
     dss_to_thcc_compensation(mdl, dss, "Isource", ts, restore_names_dict)
     dss_to_thcc_compensation(mdl, dss, "Single-Phase Transformer", ts, restore_names_dict)
+    dss_to_thcc_compensation(mdl, dss, "PV System", ts, restore_names_dict)
 
     tse_cpl_elements = []
     dss_cpl_elements = []
@@ -1574,25 +1575,93 @@ def dss_to_thcc_compensation(mdl, dss, element_type, ts, restore_dict):
                      "The results might not be trustable.")
 
     elif element_type == "VSConverter":
-        mdl.info("Fault Compensation Stage...") if debug else None
+        mdl.info("VSConverter Compensation Stage...") if debug else None
         fault_elements = get_all_dss_elements(mdl, comp_type=["VSConverter"])
         if fault_elements:
             mdl.info("The current version of the MPA doesn't support VSConverter elements."
                      "The results might not be trustable.")
 
     elif element_type == "Isource":
-        mdl.info("Fault Compensation Stage...") if debug else None
+        mdl.info("Isource Compensation Stage...") if debug else None
         fault_elements = get_all_dss_elements(mdl, comp_type=["Isource"])
         if fault_elements:
             mdl.info("The current version of the MPA doesn't support Isource elements."
                      "The results might not be trustable.")
 
     elif element_type == "Single-Phase Transformer":
-        mdl.info("Fault Compensation Stage...") if debug else None
+        mdl.info("Single-Phase Transformer Compensation Stage...") if debug else None
         fault_elements = get_all_dss_elements(mdl, comp_type=["Single-Phase Transformer"])
         if fault_elements:
             mdl.info("The current version of the MPA doesn't support Single-Phase Transformer elements."
                      "The results might not be trustable.")
+
+    elif element_type == "PV System":
+        # Disable the Generator and create One Reactor (Generator Impedance)
+        mdl.info("PVSystem Compensation Stage...") if debug else None
+        for pv_handle in get_all_dss_elements(mdl, comp_type=["PV System"]):
+            dss_pv_name = mdl.get_fqn(pv_handle).replace(".", "_").upper()
+            mdl.info(f"PVSystem: {pv_handle}") if debug else None
+            dss.Circuit.SetActiveElement(f"PVSYSTEM.{dss_pv_name}")
+            pv_bus = dss.Properties.Value("bus1")
+            pv_phases = int(dss.Properties.Value("phases"))
+            connection = mdl.get_property_value(mdl.prop(pv_handle, "connection"))
+            filter_type = mdl.get_property_value(mdl.prop(pv_handle, "filter_type"))
+
+            # Not considering the non-Ideal Switch (resistance is very slow)
+            if filter_type == "L":
+                rl1_resistance = mdl.get_property_value(mdl.prop(pv_handle, "rl1_resistance"))
+                rl1_inductance = mdl.get_property_value(mdl.prop(pv_handle, "rl1_inductance"))
+                mdl.info(f"{rl1_resistance=}")
+                mdl.info(f"{rl1_inductance=}")
+                r_pv = rl1_resistance + (1 / ts) * rl1_inductance
+            elif filter_type == "LC":
+                rl1_resistance = mdl.get_property_value(mdl.prop(pv_handle, "rl1_resistance"))
+                rl1_inductance = mdl.get_property_value(mdl.prop(pv_handle, "rl1_inductance"))
+                rc_resistance = mdl.get_property_value(mdl.prop(pv_handle, "rc_resistance"))
+                rc_capacitance = mdl.get_property_value(mdl.prop(pv_handle, "rc_capacitance"))
+                rl1_eq = rl1_resistance + (1 / ts) * rl1_inductance
+                rc_eq = rc_resistance + ts / rc_capacitance
+                r_pv = rl1_eq * rc_eq / (rl1_eq + rc_eq)
+            elif filter_type == "LCL":
+                rl1_resistance = mdl.get_property_value(mdl.prop(pv_handle, "rl1_resistance"))
+                rl1_inductance = mdl.get_property_value(mdl.prop(pv_handle, "rl1_inductance"))
+                rc_resistance = mdl.get_property_value(mdl.prop(pv_handle, "rc_resistance"))
+                rc_capacitance = mdl.get_property_value(mdl.prop(pv_handle, "rc_capacitance"))
+                rl2_resistance = mdl.get_property_value(mdl.prop(pv_handle, "rl2_resistance"))
+                rl2_inductance = mdl.get_property_value(mdl.prop(pv_handle, "rl2_inductance"))
+                rl1_eq = rl1_resistance + (1 / ts) * rl1_inductance
+                rc_eq = rc_resistance + ts / rc_capacitance
+                rl2_eq = rl2_resistance + (1 / ts) * rl2_inductance
+                r_pv = (rl1_eq * rc_eq / (rl1_eq + rc_eq)) + rl2_eq
+
+            if pv_phases == 3:
+                bus1_pv = pv_bus
+                bus2_pv = pv_bus.split(".")[0] + ".0.0.0"
+            else:
+                if connection == "Y":
+                    bus1_pv = pv_bus
+                    bus2_pv = pv_bus.split(".")[0] + ".0"
+                else:
+                    bus1_pv = f"{pv_bus.split('.')[0]}.{pv_bus.split('.')[1]}"
+                    bus2_pv = f"{pv_bus.split('.')[0]}.{pv_bus.split('.')[2]}"
+
+            dss.CktElement.Enabled(False)
+            # Creating an equivalent PV
+            pv_req_prop = {}
+            pv_req_prop["bus1"] = bus1_pv
+            pv_req_prop["bus2"] = bus2_pv
+            pv_req_prop["phases"] = pv_phases
+            pv_req_prop["R"] = r_pv
+            pv_req_prop["X"] = 1e-9
+            params = [f'{param}={pv_req_prop.get(param)}' for param in pv_req_prop]
+            cmd_string = "new" + f" REACTOR.{dss_pv_name}_eq " + " ".join(params)
+            mdl.info(cmd_string) if debug else None
+            dss.run_command(cmd_string)
+            dss.run_command("calcv")
+            restore_dict[f"REACTOR.{dss_pv_name.upper()}_EQ"] = f"PVSystem.{dss_pv_name.upper()}"
+
+            #mdl.info(f"{dss.CktElement.AllPropertyNames()=}")
+            #mdl.info(f"{pv_bus=}")
 
 
 def sc_notation(val, num_decimals=2, exponent_pad=2):
@@ -1850,7 +1919,7 @@ def check_topological_conflicts(mdl, dss, cpl_handle, restore_names_dict):
 
     dss_tse_dict_handles = {}
     supported_components = ["Bus", "Line", "Generator", "Vsource", "Capacitor Bank",
-                            "Three-Phase Transformer", "Single-Phase Transformer"]
+                            "Three-Phase Transformer", "Single-Phase Transformer", "PV System"]
     for comp_handle in get_all_dss_elements(mdl, comp_type=supported_components):
         comp_name = mdl.get_fqn(comp_handle).replace(".", "_").upper()
         dss_tse_dict_handles.update({f"{comp_name}": comp_handle})
@@ -1913,7 +1982,7 @@ def check_topological_conflicts(mdl, dss, cpl_handle, restore_names_dict):
             if elem_handle:
                 elem_fqn = mdl.get_fqn(elem_handle)
 
-            if elem_type in ["VSOURCE", "GENERATOR"]:
+            if elem_type in ["VSOURCE", "GENERATOR", "PVSystem"]:
                 cs_topological_components.append(elem_fqn)
             # Transformer Check
             if elem_type in ["TRANSFORMER"]:
