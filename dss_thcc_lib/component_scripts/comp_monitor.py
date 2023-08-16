@@ -40,6 +40,7 @@ def topology_dynamics(mdl, mask_handle):
     phase_a = new_prop_values.get("phase_a") in ("True", True)
     phase_b = new_prop_values.get("phase_b") in ("True", True)
     phase_c = new_prop_values.get("phase_c") in ("True", True)
+    phase_n = new_prop_values.get("phase_n") in ("True", True)
 
     #
     # Port altering properties
@@ -98,8 +99,9 @@ def topology_dynamics(mdl, mask_handle):
         "A2": phase_a,
         "B2": phase_b,
         "C2": phase_c,
+        "N": phase_n
     }
-    create_out_ports = new_prop_values.get("enable_output") == "True"
+    create_out_ports = new_prop_values.get("enable_output") in ("True", True)
 
     # Measurement components
     meas_components = []
@@ -219,8 +221,10 @@ def topology_dynamics(mdl, mask_handle):
             "freq_meas": ["freq"],
             "power_meas": ["P_meas"],
         }
+        # Set RMS Power based mode to get phase measurements (before set the "power_meas" prop)
+        mdl.set_property_value(mdl.prop(meter_abc, "P_method"), "RMS based")
         for prop_name, inner_prop_name_list in prop_mapping.items():
-            prop_bool = new_prop_values.get(prop_name) == "True"
+            prop_bool = new_prop_values.get(prop_name) in ("True", True)
             for inner_prop_name in inner_prop_name_list:
                 prop = mdl.prop(meter_abc, inner_prop_name)
                 mdl.set_property_value(prop, prop_bool)
@@ -286,6 +290,15 @@ def topology_dynamics(mdl, mask_handle):
 
         # Create elements for each phase
         for idx, phase in enumerate(phases_str):
+
+            # Delete measurements out from the phases_str
+            for sp_meter_phase in ["A", "B", "C"]:
+                sp_meter_handle = mdl.get_item(f"meter_{sp_meter_phase}", parent=comp_handle)
+                if (sp_meter_phase not in phases_str) and sp_meter_handle:
+                    mdl.delete_item(sp_meter_handle)
+                    sp_tag_handle = mdl.get_item(f"tag_{sp_meter_phase}", parent=comp_handle, item_type="tag")
+                    mdl.delete_item(sp_tag_handle) if sp_tag_handle else None
+
             # Create measurement component
             new_meter = mdl.get_item(f"meter_{phase}", parent=comp_handle)
             if not new_meter:
@@ -367,6 +380,40 @@ def topology_dynamics(mdl, mask_handle):
                 en_out_prop = mdl.prop(new_meter, "enable_out")
                 mdl.set_property_value(en_out_prop, False)
 
+    # Neutral Port (Future)
+    if new_ports["N"]:
+        ground_handle = mdl.get_item("gnd", parent=comp_handle)
+        gnd_tag_handle = mdl.get_item("gnd_tag", parent=comp_handle, item_type="tag")
+        # Calculate terminal position
+        image_size = 32 * num_phases
+        term_pos = 0, image_size / 2
+        if ground_handle:
+            ground_position = mdl.get_position(ground_handle)
+            mdl.delete_item(ground_handle)
+
+            ground_handle = mdl.create_port(name="N",
+                                            parent=comp_handle,
+                                            position=ground_position,
+                                            rotation="left",
+                                            terminal_position=term_pos)
+            mdl.create_connection(gnd_tag_handle, ground_handle)
+        else:
+            # Update position
+            ground_handle = mdl.get_item("N", parent=comp_handle, item_type="port")
+            mdl.set_port_properties(ground_handle, terminal_position=term_pos)
+    else:
+        ground_handle = mdl.get_item("N", parent=comp_handle, item_type="port")
+        gnd_tag_handle = mdl.get_item("gnd_tag", parent=comp_handle, item_type="tag")
+        if ground_handle:
+            ground_position = mdl.get_position(ground_handle)
+            mdl.delete_item(ground_handle)
+            ground_handle = mdl.create_component("core/Ground",
+                                                 name="gnd",
+                                                 parent=comp_handle,
+                                                 position=ground_position
+                                                 )
+            mdl.create_connection(gnd_tag_handle, mdl.term(ground_handle, "node"))
+
     old_state[comp_handle] = new_prop_values
 
     return
@@ -429,7 +476,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
         # RMS demands instantaneous
         # Frequency demands instantaneous voltage
-        # Power demands instantaneous current and phase voltage
+        # Power demands all phase properties
 
         force_inst_line_voltage = v_line_rms_meas
         force_inst_phase_voltage = any(
@@ -438,6 +485,10 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         force_inst_current = any(
             (power_meas, i_rms_meas)
         )
+
+        force_freq = power_meas
+        force_rms_phase_voltage = power_meas
+        force_rms_phase_current = power_meas
 
         # Mark and disable checkboxes
         if force_inst_line_voltage:
@@ -458,6 +509,24 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         else:
             mdl.enable_property(v_phase_inst_meas_prop)
 
+        if force_freq:
+            mdl.disable_property(freq_meas_prop)
+            mdl.set_property_disp_value(freq_meas_prop, True)
+        else:
+            mdl.enable_property(freq_meas_prop)
+
+        if force_rms_phase_voltage:
+            mdl.disable_property(v_phase_rms_meas_prop)
+            mdl.set_property_disp_value(v_phase_rms_meas_prop, True)
+        else:
+            mdl.enable_property(v_phase_rms_meas_prop)
+
+        if force_rms_phase_current:
+            mdl.disable_property(i_rms_meas_prop)
+            mdl.set_property_disp_value(i_rms_meas_prop, True)
+        else:
+            mdl.enable_property(i_rms_meas_prop)
+
     #
     # Single phase meter currently doesn't allow customization of measurements
     #
@@ -466,6 +535,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         for prop in all_meas_props:
             mdl.disable_property(prop)
             mdl.set_property_disp_value(prop, True)
+
 
 def pre_compilation(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
