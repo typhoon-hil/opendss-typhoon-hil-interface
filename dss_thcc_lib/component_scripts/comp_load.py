@@ -1691,8 +1691,14 @@ def dialog_close(mdl, mask_handle, reason):
 def retro_compatibility(mdl, mask_handle):
 
     tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
+    rneut_prop = mdl.prop(mask_handle, "Rneut")
+    xneut_prop = mdl.prop(mask_handle, "Xneut")
     old_ground_connected = mdl.get_property_value(
         mdl.prop(mask_handle, "ground_connected")
     )
     if old_ground_connected in ("True", True):
         mdl.set_property_value(tp_connection_prop, "Y - Grounded")
+        if mdl.get_property_value(rneut_prop) == "inf":
+            mdl.set_property_value(rneut_prop, "0")
+        if mdl.get_property_value(xneut_prop) == "inf":
+            mdl.set_property_value(xneut_prop, "0")

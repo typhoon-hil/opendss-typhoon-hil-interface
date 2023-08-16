@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.2
+// Saved by sw version: 2023.3
 //
 
 model "cigre_european_mv" {
@@ -20,7 +20,7 @@ model "cigre_european_mv" {
         reset_analog_outputs_on_sim_stop = True
         reset_digital_outputs_on_sim_stop = True
         vhil_adio_loopback = False
-        cpl_stb = False
+        cpl_stb = True
         enb_dep_sw_detect = False
         code_section = "internal memory"
         data_section = "internal memory"
@@ -55,26 +55,25 @@ model "cigre_european_mv" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        feedthrough_validation_error_level = warning
     }
 
     component Subsystem Root {
         component "OpenDSS/Bus" Bus1 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8552, 8104
+            position = 8536, 8104
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" Line_1 {
-            BaseFreq = "50"
             Length = "2.82"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -84,12 +83,14 @@ model "cigre_european_mv" {
             selected_object = "Conductor_ID2"
         }
         [
-            position = 8552, 8256
+            position = 8552, 8288
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus2 {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8552, 8408
@@ -98,12 +99,12 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Line" Line_2 {
-            BaseFreq = "50"
             Length = "4.42"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -115,26 +116,24 @@ model "cigre_european_mv" {
         [
             position = 8552, 8560
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus3 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8552, 8712
+            position = 8536, 8712
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" Line_3 {
-            BaseFreq = "50"
             Length = "0.61"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -146,26 +145,24 @@ model "cigre_european_mv" {
         [
             position = 8136, 8952
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus4 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8136, 9104
+            position = 8120, 9104
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" Line_4 {
-            BaseFreq = "50"
             Length = "0.56"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -177,17 +174,15 @@ model "cigre_european_mv" {
         [
             position = 7928, 9376
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus5 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 7928, 9512
+            position = 7912, 9512
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Manual Switch" S3 {
@@ -199,71 +194,59 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus6 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8968, 10680
+            position = 8952, 10680
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus7 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8968, 10208
+            position = 8952, 10208
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus8 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8968, 9752
+            position = 8952, 9704
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus9 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8624, 9952
-            size = 16, 96
+            position = 8624, 9968
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus10 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8344, 9752
+            position = 8328, 9752
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Bus" Bus11 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 8344, 9512
+            position = 8328, 9512
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" Line_10 {
-            BaseFreq = "50"
             Length = "0.33"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -273,18 +256,18 @@ model "cigre_european_mv" {
             selected_object = "Conductor_ID2"
         }
         [
-            position = 8344, 9648
+            position = 8344, 9672
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" Line_12 {
-            BaseFreq = "50"
             Length = "1.3"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -296,26 +279,24 @@ model "cigre_european_mv" {
         [
             position = 8968, 8952
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus13 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9696, 8728
+            position = 9680, 8728
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" Line_5 {
-            BaseFreq = "50"
             Length = "1.54"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -326,16 +307,16 @@ model "cigre_european_mv" {
         }
         [
             position = 8512, 10832
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" Line_9 {
-            BaseFreq = "50"
             Length = "0.77"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -346,16 +327,16 @@ model "cigre_european_mv" {
         }
         [
             position = 8512, 9952
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" Line_8 {
-            BaseFreq = "50"
             Length = "0.32"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -366,16 +347,16 @@ model "cigre_european_mv" {
         }
         [
             position = 8816, 9952
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" Line_7 {
-            BaseFreq = "50"
             Length = "1.67"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -387,7 +368,7 @@ model "cigre_european_mv" {
         [
             position = 8968, 10072
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Manual Switch" S4 {
@@ -408,22 +389,20 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Bus" Bus14 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9696, 9528
+            position = 9680, 9528
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" Line_15 {
-            BaseFreq = "50"
             Length = "2.00"
             R0 = "0.658"
             R1 = "0.510"
             X0 = "1.611"
             X1 = "0.366"
+            baseFreq = "50"
             dC0 = "4.0743"
             dC1 = "10.097"
             d_C = "0.0"
@@ -433,17 +412,17 @@ model "cigre_european_mv" {
             selected_object = "Conductor_ID1"
         }
         [
-            position = 9560, 9952
-            size = 64, 112
+            position = 9568, 9952
+            size = 64, 96
         ]
 
         component "OpenDSS/Line" Line_14 {
-            BaseFreq = "50"
             Length = "2.99"
             R0 = "0.658"
             R1 = "0.510"
             X0 = "1.611"
             X1 = "0.366"
+            baseFreq = "50"
             dC0 = "4.0743"
             dC1 = "10.097"
             d_C = "0.0"
@@ -455,26 +434,24 @@ model "cigre_european_mv" {
         [
             position = 9696, 9112
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus12 {
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
         }
         [
-            position = 9696, 8104
+            position = 9680, 8104
             rotation = right
-            size = 16, 96
+            size = 16, 128
         ]
 
         component "OpenDSS/Line" Line_13 {
-            BaseFreq = "50"
             Length = "4.89"
             R0 = "0.658"
             R1 = "0.510"
             X0 = "1.611"
             X1 = "0.366"
+            baseFreq = "50"
             dC0 = "4.0743"
             dC1 = "10.097"
             d_C = "0.0"
@@ -484,50 +461,46 @@ model "cigre_european_mv" {
             selected_object = "Conductor_ID1"
         }
         [
-            position = 9696, 8408
+            position = 9696, 8288
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Three-Phase Transformer" T1 {
             KVAs = "[25000, 25000]"
             KVs = "[110, 20*1.0625]"
             XArray = "[6, 6]"
-            grounded_sec1 = "True"
+            global_basefreq = "False"
             percentNoloadloss = "0.05"
             percentRs = "[.05, .05]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 8552, 7920
+            position = 8536, 7920
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Three-Phase Transformer" T2 {
             KVAs = "[25000, 25000]"
             KVs = "[110, 20*1.03125]"
             XArray = "[6, 6]"
-            grounded_sec1 = "True"
+            global_basefreq = "False"
             percentNoloadloss = "0.05"
             percentRs = "[.05, .05]"
             prim_conn = "Δ"
+            sec1_conn = "Y - Grounded"
         }
         [
-            position = 9696, 7920
+            position = 9680, 7920
             rotation = right
-            size = 64, 96
+            size = 64, 124
         ]
 
         component "OpenDSS/Bus" Bus0 {
-            freq_meas = "True"
-            i_inst_meas = "True"
-            i_rms_meas = "True"
-            power_meas = "True"
-            v_line_inst_meas = "True"
-            v_line_rms_meas = "True"
-            v_phase_inst_meas = "True"
-            v_phase_rms_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 9096, 7616
@@ -535,59 +508,13 @@ model "cigre_european_mv" {
             size = 16, 96
         ]
 
-        component "OpenDSS/SimDSS" SimDSS {
-            basefrequency = "50"
-            powers = "kVA Elem"
-            sim_status = ""
-            voltagebases = "[110, 20]"
-        }
-        [
-            position = 8712, 7392
-            size = 96, 96
-        ]
-
-        component "core/Ground" gnd1 {
-        }
-        [
-            position = 8440, 8304
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd2 {
-        }
-        [
-            position = 8448, 8608
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd3 {
-        }
-        [
-            position = 8032, 9000
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd4 {
-        }
-        [
-            position = 7824, 9424
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd5 {
-        }
-        [
-            position = 8496, 10960
-            hide_name = True
-        ]
-
         component "OpenDSS/Line" Line_6 {
-            BaseFreq = "50"
             Length = "0.24"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -599,10 +526,12 @@ model "cigre_european_mv" {
         [
             position = 8968, 10560
             rotation = right
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus6_aux {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8968, 10456
@@ -610,42 +539,9 @@ model "cigre_european_mv" {
             size = 16, 96
         ]
 
-        component "core/Ground" gnd6 {
-        }
-        [
-            position = 8864, 10608
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd7 {
-        }
-        [
-            position = 8864, 10120
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd8 {
-        }
-        [
-            position = 8800, 10064
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd9 {
-        }
-        [
-            position = 8496, 10064
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd10 {
-        }
-        [
-            position = 8232, 9696
-            hide_name = True
-        ]
-
         component "OpenDSS/Bus" Bus11_aux {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8344, 9328
@@ -654,12 +550,12 @@ model "cigre_european_mv" {
         ]
 
         component "OpenDSS/Line" Line_11 {
-            BaseFreq = "50"
             Length = "0.49"
             R0 = "0.817"
             R1 = "0.501"
             X0 = "1.598"
             X1 = "0.716"
+            baseFreq = "50"
             dC0 = "151.175"
             dC1 = "151.175"
             d_C = "0.0"
@@ -671,49 +567,16 @@ model "cigre_european_mv" {
         [
             position = 8344, 9424
             rotation = right
-            size = 64, 112
-        ]
-
-        component "core/Ground" gnd11 {
-        }
-        [
-            position = 8232, 9464
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd12 {
-        }
-        [
-            position = 8856, 9000
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd13 {
-        }
-        [
-            position = 9584, 8456
-            hide_name = True
-        ]
-
-        component "core/Ground" gnd14 {
-        }
-        [
-            position = 9584, 9152
-            hide_name = True
+            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus14_aux {
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 9408, 9952
             size = 16, 96
-        ]
-
-        component "core/Ground" gnd15 {
-        }
-        [
-            position = 9544, 10064
-            hide_name = True
         ]
 
         component "OpenDSS/Vsource" Grid {
@@ -727,7 +590,7 @@ model "cigre_european_mv" {
             x1 = "0.24"
         }
         [
-            position = 9096, 7536
+            position = 9096, 7464
             rotation = right
             size = 64, 96
         ]
@@ -735,46 +598,66 @@ model "cigre_european_mv" {
         component Subsystem Load_1 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "15300"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.98"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                position = 8096, 8344
+                size = 128, 48
             ]
 
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "5100"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.95"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                position = 8232, 8344
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7872, 8160
+                size = 48, 96
             ]
 
             port A {
-                position = top:3
+                position = top:4
                 kind = pe
             }
             [
@@ -782,7 +665,7 @@ model "cigre_european_mv" {
             ]
 
             port B {
-                position = top:2
+                position = top:3
                 kind = pe
             }
             [
@@ -790,71 +673,83 @@ model "cigre_european_mv" {
             ]
 
             port C {
-                position = top:1
+                position = top:2
                 kind = pe
             }
             [
                 position = 7768, 8208
             ]
 
+            port N {
+                position = top:1
+                kind = pe
+            }
+            [
+                position = 7768, 8264
+            ]
+
             junction Junction1 pe
             [
-                position = 8064, 8192
+                position = 8144, 8264
             ]
 
             junction Junction2 pe
             [
-                position = 8096, 8160
+                position = 8112, 8192
             ]
 
             junction Junction3 pe
             [
-                position = 8128, 8128
+                position = 8080, 8160
             ]
 
-            connect Commercial_Industrial.C1 Junction1 as Connection44
+            junction Junction4 pe
             [
-                breakpoints = 8128, 8192
+                position = 8048, 8128
             ]
-            connect Junction1 Residential.C1 as Connection45
+
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Commercial_Industrial.N1 Junction1 as Connection8
+            connect Junction1 N as Connection9
+            connect Residential.N1 Junction1 as Connection10
+            connect Monitor.C2 Junction2 as Connection11
+            connect Junction2 Commercial_Industrial.C1 as Connection12
+            connect Residential.C1 Junction2 as Connection13
+            connect Monitor.B2 Junction3 as Connection14
+            connect Junction3 Commercial_Industrial.B1 as Connection15
             [
-                breakpoints = 8064, 8192
+                breakpoints = 8080, 8160; 8216, 8160
             ]
-            connect C Junction1 as Connection46
+            connect Residential.B1 Junction3 as Connection16
+            connect Monitor.A2 Junction4 as Connection17
+            connect Junction4 Commercial_Industrial.A1 as Connection18
             [
-                breakpoints = 7816, 8192
+                breakpoints = 8048, 8128; 8184, 8128
             ]
-            connect Commercial_Industrial.B1 Junction2 as Connection47
-            connect Junction2 Residential.B1 as Connection48
-            [
-                breakpoints = 8096, 8160
-            ]
-            connect B Junction2 as Connection49
-            connect Residential.A1 Junction3 as Connection50
-            connect Junction3 Commercial_Industrial.A1 as Connection51
-            [
-                breakpoints = 8128, 8128
-            ]
-            connect A Junction3 as Connection52
-            [
-                breakpoints = 7808, 8128
-            ]
+            connect Residential.A1 Junction4 as Connection19
         }
         [
-            position = 8704, 8248
-            size = 112, 48
+            position = 8360, 8248
+            size = 136, 48
         ]
 
         component Subsystem Load_3 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "285"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -862,18 +757,22 @@ model "cigre_european_mv" {
             }
             [
                 position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
             ]
 
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "265"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.85"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -881,131 +780,199 @@ model "cigre_european_mv" {
             }
             [
                 position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7888, 8112
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7784, 8064
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7784, 8112
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7784, 8160
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7784, 8208
             ]
 
             junction Junction1 pe
             [
-                position = 8064, 8208
+                position = 8144, 8208
             ]
 
             junction Junction2 pe
             [
-                position = 8096, 8160
+                position = 8112, 8144
             ]
 
             junction Junction3 pe
             [
-                position = 8128, 8112
+                position = 8080, 8112
             ]
 
-            connect Junction1 Commercial_Industrial.C1 as Connection3
-            connect Junction1 C as Connection4
-            connect Junction1 Residential.C1 as Connection5
-            connect Junction2 Commercial_Industrial.B1 as Connection6
-            connect Junction2 Residential.B1 as Connection7
-            connect Junction2 B as Connection8
-            connect Junction3 Commercial_Industrial.A1 as Connection9
+            junction Junction4 pe
             [
-                breakpoints = 8128, 8112; 8264, 8112
+                position = 8048, 8080
             ]
-            connect Junction3 A as Connection10
-            connect Junction3 Residential.A1 as Connection11
+
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect N Junction1 as Connection8
+            connect Junction1 Commercial_Industrial.N1 as Connection9
+            connect Residential.N1 Junction1 as Connection10
+            connect Monitor.C2 Junction2 as Connection11
+            connect Junction2 Commercial_Industrial.C1 as Connection12
+            connect Residential.C1 Junction2 as Connection13
+            connect Monitor.B2 Junction3 as Connection14
+            connect Junction3 Commercial_Industrial.B1 as Connection15
+            [
+                breakpoints = 8080, 8112; 8216, 8112
+            ]
+            connect Residential.B1 Junction3 as Connection16
+            connect Monitor.A2 Junction4 as Connection17
+            connect Junction4 Commercial_Industrial.A1 as Connection18
+            [
+                breakpoints = 8048, 8080; 8184, 8080
+            ]
+            connect Residential.A1 Junction4 as Connection19
         }
         [
-            position = 8552, 8944
-            size = 112, 48
+            position = 8536, 8944
+            size = 136, 48
         ]
 
         component Subsystem Load_4 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "445"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                position = 7920, 8280
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7752, 8120
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7648, 8072
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7648, 8120
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7648, 8168
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7648, 8216
             ]
 
-            connect A Residential.A1 as Connection1
-            connect Residential.B1 B as Connection2
-            connect C Residential.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Residential.A1 Monitor.A2 as Connection4
+            connect Monitor.B2 Residential.B1 as Connection5
+            connect Residential.C1 Monitor.C2 as Connection6
+            connect Residential.N1 N as Connection7
         }
         [
-            position = 8136, 9336
-            size = 112, 48
+            position = 8120, 9336
+            size = 136, 48
         ]
 
         component Subsystem Load_5 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "750"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1013,53 +980,82 @@ model "cigre_european_mv" {
             }
             [
                 position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7864, 8144
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7760, 8096
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7760, 8144
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7760, 8192
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7760, 8240
             ]
 
-            connect A Residential.A1 as Connection1
-            connect Residential.B1 B as Connection2
-            connect C Residential.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Residential.A1 Monitor.A2 as Connection4
+            connect Monitor.B2 Residential.B1 as Connection5
+            connect Residential.C1 Monitor.C2 as Connection6
+            connect Residential.N1 N as Connection7
         }
         [
-            position = 8048, 9720
-            size = 112, 48
+            position = 7752, 9704
+            size = 136, 48
         ]
 
         component Subsystem Load_6 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "565"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1067,107 +1063,165 @@ model "cigre_european_mv" {
             }
             [
                 position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7928, 8104
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7824, 8056
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7824, 8104
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7824, 8152
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7824, 8200
             ]
 
-            connect A Residential.A1 as Connection1
-            connect Residential.B1 B as Connection2
-            connect C Residential.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Residential.A1 Monitor.A2 as Connection4
+            connect Monitor.B2 Residential.B1 as Connection5
+            connect Residential.C1 Monitor.C2 as Connection6
+            connect Residential.N1 N as Connection7
         }
         [
-            position = 8968, 10936
-            size = 112, 48
+            position = 8952, 10936
+            size = 136, 48
         ]
 
         component Subsystem Load_7 {
             layout = dynamic
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "90"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.85"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                position = 8224, 8296
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 8040, 8144
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7936, 8096
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7936, 8144
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7936, 8192
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7936, 8240
             ]
 
-            connect A Commercial_Industrial.A1 as Connection1
-            connect Commercial_Industrial.B1 B as Connection2
-            connect C Commercial_Industrial.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Commercial_Industrial.A1 Monitor.A2 as Connection4
+            connect Monitor.B2 Commercial_Industrial.B1 as Connection5
+            connect Commercial_Industrial.C1 Monitor.C2 as Connection6
+            connect Commercial_Industrial.N1 N as Connection7
         }
         [
-            position = 9136, 10360
-            size = 112, 48
+            position = 8808, 10336
+            size = 136, 48
         ]
 
         component Subsystem Load_8 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "605"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1175,107 +1229,165 @@ model "cigre_european_mv" {
             }
             [
                 position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7944, 8128
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7840, 8080
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7840, 8128
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7840, 8176
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7840, 8224
             ]
 
-            connect A Residential.A1 as Connection1
-            connect Residential.B1 B as Connection2
-            connect C Residential.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Monitor.A2 Residential.A1 as Connection4
+            connect Residential.B1 Monitor.B2 as Connection5
+            connect Monitor.C2 Residential.C1 as Connection6
+            connect Residential.N1 N as Connection7
         }
         [
-            position = 9112, 10064
-            size = 112, 48
+            position = 8848, 9856
+            size = 136, 48
         ]
 
         component Subsystem Load_9 {
             layout = dynamic
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "675"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.85"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                position = 8232, 8336
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 8040, 8168
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7936, 8120
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7936, 8168
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7936, 8216
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7936, 8264
             ]
 
-            connect A Commercial_Industrial.A1 as Connection1
-            connect Commercial_Industrial.B1 B as Connection2
-            connect C Commercial_Industrial.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Monitor.A2 Commercial_Industrial.A1 as Connection4
+            connect Commercial_Industrial.B1 Monitor.B2 as Connection5
+            connect Monitor.C2 Commercial_Industrial.C1 as Connection6
+            connect Commercial_Industrial.N1 N as Connection7
         }
         [
-            position = 8696, 10056
-            size = 112, 48
+            position = 8696, 10096
+            size = 136, 48
         ]
 
         component Subsystem Load_10 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "490"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1283,18 +1395,22 @@ model "cigre_european_mv" {
             }
             [
                 position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
             ]
 
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "80"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.85"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1302,131 +1418,196 @@ model "cigre_european_mv" {
             }
             [
                 position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7840, 8112
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7736, 8064
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7736, 8112
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7736, 8160
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7736, 8208
             ]
 
             junction Junction1 pe
             [
-                position = 8064, 8208
+                position = 8048, 8080
             ]
 
             junction Junction2 pe
             [
-                position = 8096, 8160
+                position = 8080, 8112
             ]
 
             junction Junction3 pe
             [
-                position = 8128, 8112
+                position = 8112, 8144
             ]
 
-            connect Junction1 Commercial_Industrial.C1 as Connection3
-            connect Junction1 Residential.C1 as Connection4
-            connect Junction1 C as Connection5
-            connect Junction2 Commercial_Industrial.B1 as Connection6
-            connect Junction2 B as Connection7
-            connect Junction2 Residential.B1 as Connection8
-            connect Junction3 Commercial_Industrial.A1 as Connection9
+            junction Junction4 pe
             [
-                breakpoints = 8128, 8112; 8264, 8112
+                position = 8144, 8208
             ]
-            connect Junction3 Residential.A1 as Connection10
-            connect Junction3 A as Connection11
+
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Commercial_Industrial.A1 Junction1 as Connection8
+            connect Junction1 Monitor.A2 as Connection9
+            connect Residential.A1 Junction1 as Connection10
+            connect Monitor.B2 Junction2 as Connection11
+            connect Junction2 Commercial_Industrial.B1 as Connection12
+            [
+                breakpoints = 8080, 8112; 8216, 8112
+            ]
+            connect Residential.B1 Junction2 as Connection13
+            connect Commercial_Industrial.C1 Junction3 as Connection14
+            connect Junction3 Monitor.C2 as Connection15
+            connect Residential.C1 Junction3 as Connection16
+            connect Commercial_Industrial.N1 Junction4 as Connection17
+            connect Junction4 N as Connection18
+            connect Residential.N1 Junction4 as Connection19
         }
         [
-            position = 8344, 10056
-            size = 112, 48
+            position = 8328, 10096
+            size = 136, 48
         ]
 
         component Subsystem Load_11 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "340"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
                 zip_internal_n_Q = "[0.0, 0.0, 1.0]"
             }
             [
-                position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                position = 8144, 8336
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7944, 8152
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7840, 8104
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7840, 8152
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7840, 8200
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7840, 8248
             ]
 
-            connect A Residential.A1 as Connection1
-            connect Residential.B1 B as Connection2
-            connect C Residential.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Monitor.A2 Residential.A1 as Connection4
+            connect Residential.B1 Monitor.B2 as Connection5
+            connect Residential.C1 Monitor.C2 as Connection6
+            connect Residential.N1 N as Connection7
         }
         [
-            position = 8480, 9672
-            size = 112, 48
+            position = 8168, 9640
+            size = 136, 48
         ]
 
         component Subsystem Load_12 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "15300"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.98"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1434,18 +1615,22 @@ model "cigre_european_mv" {
             }
             [
                 position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
             ]
 
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "5280"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.95"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1453,77 +1638,110 @@ model "cigre_european_mv" {
             }
             [
                 position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7912, 8120
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7808, 8072
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7808, 8120
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7808, 8168
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7808, 8216
             ]
 
             junction Junction1 pe
             [
-                position = 8064, 8208
+                position = 8048, 8088
             ]
 
             junction Junction2 pe
             [
-                position = 8096, 8160
+                position = 8080, 8120
             ]
 
             junction Junction3 pe
             [
-                position = 8128, 8112
+                position = 8112, 8152
             ]
 
-            connect Junction1 Commercial_Industrial.C1 as Connection5
-            connect Junction1 Residential.C1 as Connection6
-            connect Junction1 C as Connection7
-            connect Junction2 Commercial_Industrial.B1 as Connection8
-            connect Junction2 Residential.B1 as Connection9
-            connect Junction2 B as Connection10
-            connect Junction3 Commercial_Industrial.A1 as Connection11
+            junction Junction4 pe
             [
-                breakpoints = 8128, 8112; 8264, 8112
+                position = 8144, 8216
             ]
-            connect Junction3 A as Connection12
-            connect Junction3 Residential.A1 as Connection13
+
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Residential.A1 Junction1 as Connection8
+            connect Junction1 Monitor.A2 as Connection9
+            connect Commercial_Industrial.A1 Junction1 as Connection10
+            connect Monitor.B2 Junction2 as Connection11
+            connect Junction2 Residential.B1 as Connection12
+            connect Commercial_Industrial.B1 Junction2 as Connection13
+            connect Residential.C1 Junction3 as Connection14
+            connect Junction3 Monitor.C2 as Connection15
+            connect Commercial_Industrial.C1 Junction3 as Connection16
+            connect Residential.N1 Junction4 as Connection17
+            connect Junction4 N as Connection18
+            connect Commercial_Industrial.N1 Junction4 as Connection19
         }
         [
-            position = 9864, 8312
-            size = 112, 48
+            position = 9520, 8264
+            size = 136, 48
         ]
 
         component Subsystem Load_14 {
             layout = dynamic
             component "OpenDSS/Load" Residential {
+                Rneut = "0"
                 Sn_3ph = "215"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.97"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1531,18 +1749,22 @@ model "cigre_european_mv" {
             }
             [
                 position = 8096, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
             ]
 
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "390"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.85"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1550,77 +1772,110 @@ model "cigre_european_mv" {
             }
             [
                 position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 7952, 8072
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7848, 8024
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7848, 8072
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7848, 8120
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7848, 8168
             ]
 
             junction Junction1 pe
             [
-                position = 8064, 8208
+                position = 8048, 8040
             ]
 
             junction Junction2 pe
             [
-                position = 8096, 8160
+                position = 8080, 8072
             ]
 
             junction Junction3 pe
             [
-                position = 8128, 8112
+                position = 8112, 8104
             ]
 
-            connect Junction1 Commercial_Industrial.C1 as Connection3
-            connect Junction1 C as Connection4
-            connect Junction1 Residential.C1 as Connection5
-            connect Junction2 Commercial_Industrial.B1 as Connection6
-            connect Junction2 Residential.B1 as Connection7
-            connect Junction2 B as Connection8
-            connect Junction3 Commercial_Industrial.A1 as Connection9
+            junction Junction4 pe
             [
-                breakpoints = 8128, 8112; 8264, 8112
+                position = 8144, 8168
             ]
-            connect Junction3 A as Connection10
-            connect Junction3 Residential.A1 as Connection11
+
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Residential.A1 Junction1 as Connection8
+            connect Junction1 Monitor.A2 as Connection9
+            connect Commercial_Industrial.A1 Junction1 as Connection10
+            connect Monitor.B2 Junction2 as Connection11
+            connect Junction2 Residential.B1 as Connection12
+            connect Commercial_Industrial.B1 Junction2 as Connection13
+            connect Residential.C1 Junction3 as Connection14
+            connect Junction3 Monitor.C2 as Connection15
+            connect Commercial_Industrial.C1 Junction3 as Connection16
+            connect Residential.N1 Junction4 as Connection17
+            connect Junction4 N as Connection18
+            connect Commercial_Industrial.N1 Junction4 as Connection19
         }
         [
-            position = 9856, 9688
-            size = 112, 48
+            position = 9544, 9688
+            size = 136, 48
         ]
 
         component Subsystem Load_13 {
             layout = dynamic
             component "OpenDSS/Load" Commercial_Industrial {
+                Rneut = "0"
                 Sn_3ph = "40"
                 T_Ts = "[0, 6, 12, 18, 24]"
                 T_mode = "Loadshape index"
                 Vn_3ph = "20.0"
+                Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+                fn = "50"
                 ground_connected = "True"
                 pf_3ph = "0.85"
+                tp_connection = "Y - Grounded"
+                tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
                 zip_internal = "[0.0, 0.0, 1.0]"
                 zip_internal_Q = "[0.0, 0.0, 1.0]"
                 zip_internal_n = "[0.0, 0.0, 1.0]"
@@ -1628,41 +1883,91 @@ model "cigre_european_mv" {
             }
             [
                 position = 8232, 8296
-                scale = -1, 1
-                size = 96, 64
+                size = 128, 48
+            ]
+
+            component "OpenDSS/Monitor" Monitor {
+                execution_rate = "ts"
+                freq_meas = "True"
+                v_line_inst_meas = "True"
+                v_line_rms_meas = "True"
+                v_phase_inst_meas = "True"
+                v_phase_rms_meas = "True"
+            }
+            [
+                position = 8056, 8144
+                size = 48, 96
             ]
 
             port A {
+                position = top:4
+                kind = pe
+            }
+            [
+                position = 7952, 8096
+            ]
+
+            port B {
                 position = top:3
                 kind = pe
             }
             [
-                position = 7768, 8112
+                position = 7952, 8144
             ]
 
-            port B {
+            port C {
                 position = top:2
                 kind = pe
             }
             [
-                position = 7768, 8160
+                position = 7952, 8192
             ]
 
-            port C {
+            port N {
                 position = top:1
                 kind = pe
             }
             [
-                position = 7768, 8208
+                position = 7952, 8240
             ]
 
-            connect A Commercial_Industrial.A1 as Connection1
-            connect B Commercial_Industrial.B1 as Connection2
-            connect C Commercial_Industrial.C1 as Connection3
+            connect Monitor.A1 A as Connection1
+            connect Monitor.B1 B as Connection2
+            connect Monitor.C1 C as Connection3
+            connect Commercial_Industrial.A1 Monitor.A2 as Connection4
+            connect Monitor.B2 Commercial_Industrial.B1 as Connection5
+            connect Commercial_Industrial.C1 Monitor.C2 as Connection6
+            connect Commercial_Industrial.N1 N as Connection7
         }
         [
-            position = 9864, 8968
-            size = 112, 48
+            position = 9544, 8880
+            size = 136, 48
+        ]
+
+        component "OpenDSS/Monitor" Grid_Monitor {
+            execution_rate = "ts"
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9096, 7544
+            rotation = right
+            size = 48, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS {
+            baseFreq = "50"
+            voltagebases = "[110, 20]"
+        }
+        [
+            position = 8712, 7392
+            size = 96, 96
         ]
 
         junction Junction11 pe
@@ -1740,199 +2045,199 @@ model "cigre_european_mv" {
             position = 9128, 7712
         ]
 
-        junction Junction31 pe
+        junction Junction70 pe
         [
-            position = 8520, 8800
+            position = 8584, 8200
         ]
 
-        junction Junction32 pe
+        junction Junction71 pe
         [
-            position = 8552, 8832
+            position = 8552, 8176
         ]
 
-        junction Junction33 pe
+        junction Junction72 pe
+        [
+            position = 8520, 8152
+        ]
+
+        junction Junction73 pe
         [
             position = 8584, 8864
         ]
 
-        junction Junction34 pe
+        junction Junction74 pe
         [
-            position = 8520, 8144
+            position = 8552, 8832
         ]
 
-        junction Junction35 pe
+        junction Junction75 pe
         [
-            position = 8552, 8168
+            position = 8520, 8800
         ]
 
-        junction Junction36 pe
-        [
-            position = 8584, 8192
-        ]
-
-        junction Junction37 pe
-        [
-            position = 9664, 8216
-        ]
-
-        junction Junction38 pe
-        [
-            position = 9696, 8240
-        ]
-
-        junction Junction39 pe
-        [
-            position = 9728, 8264
-        ]
-
-        junction Junction40 pe
-        [
-            position = 9664, 8880
-        ]
-
-        junction Junction41 pe
-        [
-            position = 9696, 8904
-        ]
-
-        junction Junction42 pe
-        [
-            position = 9728, 8928
-        ]
-
-        junction Junction43 pe
-        [
-            position = 8312, 9544
-        ]
-
-        junction Junction44 pe
-        [
-            position = 8344, 9568
-        ]
-
-        junction Junction45 pe
-        [
-            position = 8376, 9592
-        ]
-
-        junction Junction46 pe
+        junction Junction76 pe
         [
             position = 8168, 9208
         ]
 
-        junction Junction47 pe
+        junction Junction77 pe
         [
             position = 8136, 9240
         ]
 
-        junction Junction48 pe
+        junction Junction78 pe
         [
             position = 8104, 9272
         ]
 
-        junction Junction49 pe
+        junction Junction79 pe
         [
-            position = 7960, 9632
+            position = 7896, 9560
         ]
 
-        junction Junction50 pe
+        junction Junction80 pe
         [
-            position = 7928, 9656
+            position = 7928, 9584
         ]
 
-        junction Junction51 pe
+        junction Junction81 pe
         [
-            position = 7896, 9680
+            position = 7960, 9608
         ]
 
-        junction Junction52 pe
+        junction Junction82 pe
         [
             position = 8312, 9984
         ]
 
-        junction Junction53 pe
+        junction Junction83 pe
         [
             position = 8344, 9952
         ]
 
-        junction Junction54 pe
+        junction Junction84 pe
         [
             position = 8376, 9920
         ]
 
-        junction Junction55 pe
+        junction Junction85 pe
         [
-            position = 8728, 9920
+            position = 8744, 9920
         ]
 
-        junction Junction56 pe
+        junction Junction86 pe
         [
-            position = 8696, 9952
+            position = 8712, 9952
         ]
 
-        junction Junction57 pe
+        junction Junction87 pe
         [
-            position = 8664, 9984
+            position = 8680, 9984
         ]
 
-        junction Junction58 pe
+        junction Junction88 pe
         [
-            position = 9144, 9920
+            position = 8936, 9744
         ]
 
-        junction Junction59 pe
+        junction Junction89 pe
         [
-            position = 9112, 9952
+            position = 8968, 9768
         ]
 
-        junction Junction60 pe
+        junction Junction90 pe
         [
-            position = 9080, 9984
+            position = 9000, 9792
         ]
 
-        junction Junction61 pe
-        [
-            position = 9664, 9648
-        ]
-
-        junction Junction62 pe
-        [
-            position = 9696, 9624
-        ]
-
-        junction Junction63 pe
-        [
-            position = 9728, 9600
-        ]
-
-        junction Junction64 pe
+        junction Junction91 pe
         [
             position = 8936, 10248
         ]
 
-        junction Junction65 pe
+        junction Junction92 pe
         [
             position = 8968, 10272
         ]
 
-        junction Junction66 pe
+        junction Junction93 pe
         [
             position = 9000, 10296
         ]
 
-        junction Junction67 pe
+        junction Junction94 pe
         [
             position = 9000, 10800
         ]
 
-        junction Junction68 pe
+        junction Junction95 pe
         [
             position = 8968, 10832
         ]
 
-        junction Junction69 pe
+        junction Junction96 pe
         [
             position = 8936, 10864
+        ]
+
+        junction Junction97 pe
+        [
+            position = 8312, 9560
+        ]
+
+        junction Junction98 pe
+        [
+            position = 8344, 9584
+        ]
+
+        junction Junction99 pe
+        [
+            position = 8376, 9608
+        ]
+
+        junction Junction100 pe
+        [
+            position = 9664, 8152
+        ]
+
+        junction Junction101 pe
+        [
+            position = 9696, 8176
+        ]
+
+        junction Junction102 pe
+        [
+            position = 9728, 8200
+        ]
+
+        junction Junction103 pe
+        [
+            position = 9664, 8776
+        ]
+
+        junction Junction104 pe
+        [
+            position = 9696, 8800
+        ]
+
+        junction Junction105 pe
+        [
+            position = 9728, 8824
+        ]
+
+        junction Junction106 pe
+        [
+            position = 9664, 9576
+        ]
+
+        junction Junction107 pe
+        [
+            position = 9696, 9600
+        ]
+
+        junction Junction108 pe
+        [
+            position = 9728, 9624
         ]
 
         comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-weight:600;">CIGRE EUR MV FEEDER</span> </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Comments:</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">- Taps of the transformers T1 and T2</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">are set mannually on the rated winding</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">voltage</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">- All loads are represented as </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">constant impedances              </p></body></html> ENDCOMMENT 
@@ -1962,9 +2267,6 @@ model "cigre_european_mv" {
             breakpoints = 8552, 8336
         ]
         connect Line_1.C2 Bus2.C1 as Connection158
-        [
-            breakpoints = 8520, 8304
-        ]
         connect Junction11 S3.B1 as Connection162
         [
             breakpoints = 8136, 9240; 8136, 9240; 8136, 9240
@@ -2009,11 +2311,8 @@ model "cigre_european_mv" {
         connect Line_12.C1 Junction21 as Connection260
         connect Bus8.C1 Line_12.C2 as Connection261
         connect Junction22 Junction16 as Connection263
-        connect Junction22 Bus8.A2 as Connection264
         connect Junction23 Junction17 as Connection266
-        connect Junction23 Bus8.B2 as Connection267
         connect Junction24 Junction18 as Connection269
-        connect Junction24 Bus8.C2 as Connection270
         connect Line_14.C2 Bus14.C1 as Connection296
         connect Line_14.B2 Bus14.B1 as Connection298
         connect Line_14.A2 Bus14.A1 as Connection300
@@ -2050,11 +2349,6 @@ model "cigre_european_mv" {
         connect Bus1.C1 T1.C2 as Connection357
         connect Bus1.B1 T1.B2 as Connection358
         connect Bus1.A1 T1.A2 as Connection359
-        connect gnd1.node Line_1.N as Connection360
-        connect gnd2.node Line_2.N as Connection361
-        connect Line_3.N gnd3.node as Connection362
-        connect gnd4.node Line_4.N as Connection363
-        connect gnd5.node Line_5.N as Connection364
         connect Line_6.A2 Bus6.A1 as Connection366
         connect Line_6.B2 Bus6.B1 as Connection368
         connect Line_6.C2 Bus6.C1 as Connection370
@@ -2064,11 +2358,6 @@ model "cigre_european_mv" {
         connect Bus6_aux.B2 Line_6.B1 as Connection374
         connect S4.A2 Bus6_aux.A1 as Connection375
         connect Bus6_aux.A2 Line_6.A1 as Connection376
-        connect gnd6.node Line_6.N as Connection377
-        connect gnd7.node Line_7.N as Connection378
-        connect gnd8.node Line_8.N as Connection379
-        connect gnd9.node Line_9.N as Connection380
-        connect gnd10.node Line_10.N as Connection381
         connect S3.A2 Bus11_aux.A1 as Connection382
         connect S3.B2 Bus11_aux.B1 as Connection384
         connect S3.C2 Bus11_aux.C1 as Connection386
@@ -2078,17 +2367,12 @@ model "cigre_european_mv" {
         connect Line_11.B2 Bus11.B1 as Connection390
         connect Bus11_aux.A2 Line_11.A1 as Connection391
         connect Line_11.A2 Bus11.A1 as Connection392
-        connect gnd11.node Line_11.N as Connection393
-        connect gnd12.node Line_12.N as Connection394
-        connect gnd13.node Line_13.N as Connection395
-        connect gnd14.node Line_14.N as Connection396
         connect Line_15.C1 Bus14_aux.C2 as Connection397
         connect Bus14_aux.C1 S1.C2 as Connection398
         connect Line_15.B1 Bus14_aux.B2 as Connection399
         connect Bus14_aux.B1 S1.B2 as Connection400
         connect Line_15.A1 Bus14_aux.A2 as Connection401
         connect Bus14_aux.A1 S1.A2 as Connection402
-        connect gnd15.node Line_15.N as Connection403
         connect Bus4.A2 Junction13 as Connection681
         [
             breakpoints = 8168, 9208
@@ -2105,177 +2389,6 @@ model "cigre_european_mv" {
         [
             breakpoints = 8584, 8864; 8584, 8864
         ]
-        connect Junction31 Load_3.C as Connection688
-        connect Junction31 Bus3.C2 as Connection689
-        connect Junction31 Junction21 as Connection690
-        connect Junction32 Load_3.B as Connection691
-        connect Junction32 Bus3.B2 as Connection692
-        connect Junction32 Junction20 as Connection693
-        connect Junction33 Load_3.A as Connection694
-        connect Junction33 Junction19 as Connection695
-        connect Junction33 Bus3.A2 as Connection696
-        connect Junction34 Load_1.C as Connection697
-        connect Junction34 Line_1.C1 as Connection698
-        connect Junction34 Bus1.C2 as Connection699
-        connect Junction35 Load_1.B as Connection700
-        connect Junction35 Line_1.B1 as Connection701
-        connect Junction35 Bus1.B2 as Connection702
-        connect Junction36 Load_1.A as Connection703
-        connect Junction36 Bus1.A2 as Connection704
-        connect Junction36 Line_1.A1 as Connection705
-        connect Junction37 Load_12.C as Connection718
-        connect Junction37 Bus12.C2 as Connection719
-        connect Junction37 Line_13.C1 as Connection720
-        connect Junction38 Load_12.B as Connection721
-        connect Junction38 Line_13.B1 as Connection722
-        connect Junction38 Bus12.B2 as Connection723
-        connect Junction39 Load_12.A as Connection724
-        connect Junction39 Bus12.A2 as Connection725
-        connect Junction39 Line_13.A1 as Connection726
-        connect Junction40 Load_13.C as Connection727
-        connect Junction40 Bus13.C2 as Connection728
-        connect Junction40 Line_14.C1 as Connection729
-        connect Junction41 Load_13.B as Connection730
-        connect Junction41 Line_14.B1 as Connection731
-        connect Junction41 Bus13.B2 as Connection732
-        connect Junction42 Load_13.A as Connection733
-        connect Junction42 Line_14.A1 as Connection734
-        connect Junction42 Bus13.A2 as Connection735
-        connect Junction43 Load_11.C as Connection736
-        connect Junction43 Line_10.C1 as Connection737
-        connect Junction43 Bus11.C2 as Connection738
-        connect Junction44 Load_11.B as Connection739
-        connect Junction44 Line_10.B1 as Connection740
-        connect Junction44 Bus11.B2 as Connection741
-        connect Junction45 Load_11.A as Connection742
-        connect Junction45 Bus11.A2 as Connection743
-        connect Junction45 Line_10.A1 as Connection744
-        connect Junction13 Junction46 as Connection745
-        connect Junction46 Line_4.A1 as Connection746
-        [
-            breakpoints = 8168, 9208; 8168, 9208; 8168, 9208
-        ]
-        connect Load_4.A Junction46 as Connection747
-        connect Line_4.B1 Junction47 as Connection748
-        connect Junction47 Junction11 as Connection749
-        connect Load_4.B Junction47 as Connection750
-        connect S3.C1 Junction48 as Connection751
-        connect Junction48 Junction15 as Connection752
-        connect Load_4.C Junction48 as Connection753
-        connect Bus5.A2 Junction49 as Connection754
-        [
-            breakpoints = 7960, 9584
-        ]
-        connect Junction49 Line_5.A1 as Connection755
-        connect Load_5.A Junction49 as Connection756
-        connect Line_5.B1 Junction50 as Connection757
-        connect Junction50 Bus5.B2 as Connection758
-        [
-            breakpoints = 7928, 9616
-        ]
-        connect Load_5.B Junction50 as Connection759
-        connect Line_5.C1 Junction51 as Connection760
-        connect Junction51 Bus5.C2 as Connection761
-        [
-            breakpoints = 7896, 9648
-        ]
-        connect Load_5.C Junction51 as Connection762
-        connect Junction52 Load_10.C as Connection763
-        connect Junction52 Bus10.C2 as Connection764
-        connect Junction52 Line_9.C1 as Connection765
-        connect Junction53 Load_10.B as Connection766
-        connect Junction53 Bus10.B2 as Connection767
-        connect Junction53 Line_9.B1 as Connection768
-        connect Junction54 Load_10.A as Connection769
-        connect Junction54 Bus10.A2 as Connection770
-        connect Junction54 Line_9.A1 as Connection771
-        connect Bus9.A2 Junction55 as Connection772
-        connect Junction55 Line_8.A1 as Connection773
-        [
-            breakpoints = 8728, 9920
-        ]
-        connect Load_9.A Junction55 as Connection774
-        connect Line_8.B1 Junction56 as Connection775
-        connect Junction56 Bus9.B2 as Connection776
-        [
-            breakpoints = 8696, 9952
-        ]
-        connect Load_9.B Junction56 as Connection777
-        connect Line_8.C1 Junction57 as Connection778
-        connect Junction57 Bus9.C2 as Connection779
-        [
-            breakpoints = 8664, 9984
-        ]
-        connect Load_9.C Junction57 as Connection780
-        connect Junction22 Junction58 as Connection781
-        [
-            breakpoints = 9000, 9920
-        ]
-        connect Junction58 S1.A1 as Connection782
-        [
-            breakpoints = 9144, 9920
-        ]
-        connect Load_8.A Junction58 as Connection783
-        connect S1.B1 Junction59 as Connection784
-        connect Junction59 Junction23 as Connection785
-        [
-            breakpoints = 9112, 9952
-        ]
-        connect Load_8.B Junction59 as Connection786
-        connect Junction24 Junction60 as Connection787
-        [
-            breakpoints = 8936, 9984
-        ]
-        connect Junction60 S1.C1 as Connection788
-        [
-            breakpoints = 9080, 9984
-        ]
-        connect Load_8.C Junction60 as Connection789
-        connect Line_15.C2 Junction61 as Connection790
-        connect Junction61 Bus14.C2 as Connection791
-        [
-            breakpoints = 9664, 9648
-        ]
-        connect Load_14.C Junction61 as Connection792
-        connect Line_15.B2 Junction62 as Connection793
-        connect Junction62 Bus14.B2 as Connection794
-        [
-            breakpoints = 9696, 9616
-        ]
-        connect Load_14.B Junction62 as Connection795
-        connect Line_15.A2 Junction63 as Connection796
-        connect Junction63 Bus14.A2 as Connection797
-        [
-            breakpoints = 9728, 9584
-        ]
-        connect Load_14.A Junction63 as Connection798
-        connect Junction64 Load_7.C as Connection799
-        connect Junction64 S4.C1 as Connection800
-        connect Junction64 Bus7.C2 as Connection801
-        connect Junction65 Load_7.B as Connection802
-        connect Junction65 S4.B1 as Connection803
-        connect Junction65 Bus7.B2 as Connection804
-        connect Junction66 Load_7.A as Connection805
-        connect Junction66 Bus7.A2 as Connection806
-        connect Junction66 S4.A1 as Connection807
-        connect Line_5.A2 Junction67 as Connection808
-        connect Junction67 Bus6.A2 as Connection809
-        [
-            breakpoints = 9000, 10800; 9000, 10792
-        ]
-        connect Load_6.A Junction67 as Connection810
-        connect Line_5.B2 Junction68 as Connection811
-        connect Junction68 Bus6.B2 as Connection812
-        [
-            breakpoints = 8968, 10832; 8968, 10824
-        ]
-        connect Load_6.B Junction68 as Connection813
-        connect Line_5.C2 Junction69 as Connection814
-        connect Junction69 Bus6.C2 as Connection815
-        [
-            breakpoints = 8936, 10864; 8936, 10856
-        ]
-        connect Load_6.C Junction69 as Connection816
         connect Bus13.C1 Line_13.C2 as Connection835
         [
             breakpoints = 9664, 8624
@@ -2288,26 +2401,283 @@ model "cigre_european_mv" {
         [
             breakpoints = 9728, 8560
         ]
-        connect Grid.C1 Bus0.C1 as Connection837
-        connect Grid.B1 Bus0.B1 as Connection838
-        connect Grid.A1 Bus0.A1 as Connection839
+        connect T1.N2 Bus1.N1 as Connection840
+        connect Bus1.A2 Junction70 as Connection903
+        [
+            breakpoints = 8584, 8144
+        ]
+        connect Junction70 Line_1.A1 as Connection904
+        connect Load_1.A Junction70 as Connection905
+        connect Line_1.B1 Junction71 as Connection906
+        connect Junction71 Bus1.B2 as Connection907
+        [
+            breakpoints = 8552, 8168
+        ]
+        connect Load_1.B Junction71 as Connection908
+        connect Bus1.C2 Junction72 as Connection909
+        connect Junction72 Line_1.C1 as Connection910
+        [
+            breakpoints = 8520, 8192
+        ]
+        connect Load_1.C Junction72 as Connection911
+        connect Load_1.N Bus1.N2 as Connection912
+        [
+            breakpoints = 8312, 8128; 8488, 8128
+        ]
+        connect Load_3.N Bus3.N2 as Connection913
+        connect Junction19 Junction73 as Connection920
+        connect Junction73 Bus3.A2 as Connection921
+        [
+            breakpoints = 8584, 8864; 8584, 8864
+        ]
+        connect Load_3.A Junction73 as Connection922
+        connect Bus3.B2 Junction74 as Connection923
+        connect Junction74 Junction20 as Connection924
+        [
+            breakpoints = 8552, 8832
+        ]
+        connect Load_3.B Junction74 as Connection925
+        connect Bus3.C2 Junction75 as Connection926
+        connect Junction75 Junction21 as Connection927
+        [
+            breakpoints = 8520, 8800
+        ]
+        connect Load_3.C Junction75 as Connection928
+        connect Junction76 Line_4.A1 as Connection930
+        [
+            breakpoints = 8168, 9208; 8168, 9208; 8168, 9208
+        ]
+        connect Load_4.A Junction76 as Connection931
+        connect Junction77 Junction11 as Connection933
+        connect Load_4.B Junction77 as Connection934
+        connect Junction78 Junction15 as Connection936
+        connect Load_4.C Junction78 as Connection937
+        connect Load_4.N Bus4.N2 as Connection938
+        connect Junction13 Junction76 as Connection939
+        [
+            breakpoints = 8168, 9208; 8168, 9208
+        ]
+        connect Junction78 S3.C1 as Connection941
+        [
+            breakpoints = 8104, 9272; 8104, 9272
+        ]
+        connect Line_4.B1 Junction77 as Connection940
+        [
+            breakpoints = 8136, 9240
+        ]
+        connect Bus5.N2 Load_5.N as Connection945
+        [
+            breakpoints = 7864, 9536; 7704, 9536
+        ]
+        connect Bus5.C2 Junction79 as Connection946
+        connect Junction79 Line_5.C1 as Connection947
+        connect Load_5.C Junction79 as Connection948
+        connect Bus5.B2 Junction80 as Connection949
+        connect Junction80 Line_5.B1 as Connection950
+        connect Load_5.B Junction80 as Connection951
+        connect Bus5.A2 Junction81 as Connection952
+        connect Junction81 Line_5.A1 as Connection953
+        connect Load_5.A Junction81 as Connection954
+        [
+            breakpoints = 7800, 9608; 7960, 9608
+        ]
+        connect Load_10.N Bus10.N2 as Connection958
+        connect Junction82 Load_10.C as Connection959
+        connect Junction82 Bus10.C2 as Connection960
+        connect Junction82 Line_9.C1 as Connection961
+        connect Junction83 Load_10.B as Connection962
+        connect Junction83 Bus10.B2 as Connection963
+        connect Junction83 Line_9.B1 as Connection964
+        connect Junction84 Load_10.A as Connection965
+        connect Junction84 Bus10.A2 as Connection966
+        connect Junction84 Line_9.A1 as Connection967
+        connect Bus9.N2 Load_9.N as Connection971
+        connect Bus9.A2 Junction85 as Connection972
+        connect Junction85 Line_8.A1 as Connection973
+        connect Load_9.A Junction85 as Connection974
+        connect Bus9.B2 Junction86 as Connection975
+        connect Junction86 Line_8.B1 as Connection976
+        connect Load_9.B Junction86 as Connection977
+        connect Bus9.C2 Junction87 as Connection978
+        connect Junction87 Line_8.C1 as Connection979
+        connect Load_9.C Junction87 as Connection980
+        connect Junction22 S1.A1 as Connection983
+        [
+            breakpoints = 9000, 9920; 9000, 9920; 9144, 9920; 9144, 9920
+        ]
+        connect Junction24 S1.C1 as Connection982
+        [
+            breakpoints = 8936, 9984; 8936, 9984; 9080, 9984; 9080, 9984
+        ]
+        connect S1.B1 Junction23 as Connection981
+        [
+            breakpoints = 9112, 9952; 9112, 9952
+        ]
+        connect Load_8.N Bus8.N2 as Connection984
+        connect Junction24 Junction88 as Connection985
+        connect Junction88 Bus8.C2 as Connection986
+        connect Load_8.C Junction88 as Connection987
+        connect Junction23 Junction89 as Connection988
+        connect Junction89 Bus8.B2 as Connection989
+        connect Load_8.B Junction89 as Connection990
+        connect Junction22 Junction90 as Connection991
+        connect Junction90 Bus8.A2 as Connection992
+        connect Load_8.A Junction90 as Connection993
+        connect Load_7.N Bus7.N2 as Connection997
+        connect S4.C1 Junction91 as Connection998
+        connect Junction91 Bus7.C2 as Connection999
+        [
+            breakpoints = 8936, 10248
+        ]
+        connect Load_7.C Junction91 as Connection1000
+        connect Bus7.B2 Junction92 as Connection1001
+        connect Junction92 S4.B1 as Connection1002
+        [
+            breakpoints = 8968, 10272
+        ]
+        connect Load_7.B Junction92 as Connection1003
+        connect S4.A1 Junction93 as Connection1004
+        [
+            breakpoints = 9000, 10296
+        ]
+        connect Junction93 Bus7.A2 as Connection1005
+        connect Load_7.A Junction93 as Connection1006
+        [
+            breakpoints = 8856, 10296; 9000, 10296
+        ]
+        connect Load_6.N Bus6.N2 as Connection1010
+        connect Line_5.A2 Junction94 as Connection1011
+        connect Junction94 Bus6.A2 as Connection1012
+        [
+            breakpoints = 9000, 10800; 9000, 10800; 9000, 10792
+        ]
+        connect Load_6.A Junction94 as Connection1013
+        connect Line_5.B2 Junction95 as Connection1014
+        connect Junction95 Bus6.B2 as Connection1015
+        [
+            breakpoints = 8968, 10832; 8968, 10832; 8968, 10824
+        ]
+        connect Load_6.B Junction95 as Connection1016
+        connect Bus6.C2 Junction96 as Connection1017
+        connect Junction96 Line_5.C2 as Connection1018
+        [
+            breakpoints = 8936, 10856; 8936, 10864; 8936, 10864
+        ]
+        connect Load_6.C Junction96 as Connection1019
+        connect Load_11.N Bus11.N2 as Connection1023
+        [
+            breakpoints = 8120, 9536; 8280, 9536
+        ]
+        connect Bus11.C2 Junction97 as Connection1024
+        [
+            breakpoints = 8312, 9544
+        ]
+        connect Junction97 Line_10.C1 as Connection1025
+        connect Load_11.C Junction97 as Connection1026
+        connect Line_10.B1 Junction98 as Connection1027
+        connect Junction98 Bus11.B2 as Connection1028
+        [
+            breakpoints = 8344, 9568
+        ]
+        connect Load_11.B Junction98 as Connection1029
+        connect Bus11.A2 Junction99 as Connection1030
+        [
+            breakpoints = 8376, 9592
+        ]
+        connect Junction99 Line_10.A1 as Connection1031
+        connect Load_11.A Junction99 as Connection1032
+        connect Bus12.N1 T2.N2 as Connection1036
+        connect Bus12.N2 Load_12.N as Connection1037
+        [
+            breakpoints = 9632, 8128; 9472, 8128
+        ]
+        connect Line_13.C1 Junction100 as Connection1038
+        [
+            breakpoints = 9664, 8216
+        ]
+        connect Junction100 Bus12.C2 as Connection1039
+        connect Load_12.C Junction100 as Connection1040
+        [
+            breakpoints = 9504, 8152; 9664, 8152
+        ]
+        connect Bus12.B2 Junction101 as Connection1041
+        connect Junction101 Line_13.B1 as Connection1042
+        [
+            breakpoints = 9696, 8240
+        ]
+        connect Load_12.B Junction101 as Connection1043
+        connect Bus12.A2 Junction102 as Connection1044
+        connect Junction102 Line_13.A1 as Connection1045
+        [
+            breakpoints = 9728, 8264
+        ]
+        connect Load_12.A Junction102 as Connection1046
+        connect Load_13.N Bus13.N2 as Connection1050
+        [
+            breakpoints = 9496, 8752; 9632, 8752
+        ]
+        connect Bus13.C2 Junction103 as Connection1051
+        connect Junction103 Line_14.C1 as Connection1052
+        [
+            breakpoints = 9664, 8880
+        ]
+        connect Load_13.C Junction103 as Connection1053
+        [
+            breakpoints = 9528, 8776; 9664, 8776
+        ]
+        connect Line_14.B1 Junction104 as Connection1054
+        [
+            breakpoints = 9696, 8904
+        ]
+        connect Junction104 Bus13.B2 as Connection1055
+        connect Load_13.B Junction104 as Connection1056
+        [
+            breakpoints = 9560, 8800; 9696, 8800
+        ]
+        connect Line_14.A1 Junction105 as Connection1057
+        [
+            breakpoints = 9728, 8928
+        ]
+        connect Junction105 Bus13.A2 as Connection1058
+        connect Load_13.A Junction105 as Connection1059
+        connect Load_14.N Bus14.N2 as Connection1063
+        [
+            breakpoints = 9496, 9552; 9632, 9552
+        ]
+        connect Bus14.C2 Junction106 as Connection1064
+        connect Junction106 Line_15.C2 as Connection1065
+        [
+            breakpoints = 9664, 9648; 9664, 9648
+        ]
+        connect Load_14.C Junction106 as Connection1066
+        connect Line_15.B2 Junction107 as Connection1067
+        [
+            breakpoints = 9696, 9624; 9696, 9616
+        ]
+        connect Junction107 Bus14.B2 as Connection1068
+        connect Load_14.B Junction107 as Connection1069
+        connect Bus14.A2 Junction108 as Connection1070
+        [
+            breakpoints = 9728, 9584; 9728, 9600
+        ]
+        connect Junction108 Line_15.A2 as Connection1071
+        connect Load_14.A Junction108 as Connection1072
+        connect Grid.A1 Grid_Monitor.A1 as Connection1073
+        connect Grid_Monitor.A2 Bus0.A1 as Connection1074
+        connect Grid.B1 Grid_Monitor.B1 as Connection1075
+        connect Grid_Monitor.B2 Bus0.B1 as Connection1076
+        connect Grid.C1 Grid_Monitor.C1 as Connection1077
+        connect Grid_Monitor.C2 Bus0.C1 as Connection1078
     }
 
     default {
         "OpenDSS/Bus" {
-            type_prop = "ABC"
-            ground_prop = "False"
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
             conf = "on both sides"
-            i_rms_meas = "False"
-            i_inst_meas = "False"
-            v_line_rms_meas = "False"
-            v_line_inst_meas = "False"
-            v_phase_rms_meas = "False"
-            v_phase_inst_meas = "False"
-            freq_meas = "False"
-            power_meas = "False"
-            execution_rate = "100e-6"
-            enable_output = "False"
         }
 
         "OpenDSS/Line" {
@@ -2316,7 +2686,7 @@ model "cigre_european_mv" {
             selected_object = ""
             Length = "100"
             global_basefreq = "True"
-            BaseFreq = "60"
+            baseFreq = "60"
             phases = "3"
             R1 = "0.1903"
             R0 = "0.5853"
@@ -2346,11 +2716,13 @@ model "cigre_european_mv" {
         }
 
         "OpenDSS/Load" {
+            ground_connected = "False"
+            tp_connection = "Y"
+            phases = "3"
+            Rneut = "inf"
+            Xneut = "inf"
             global_basefreq = "True"
             fn = "60"
-            conn_type = "Y"
-            ground_connected = "False"
-            phases = "3"
             Vn_3ph = "4.16"
             Sn_3ph = "3500"
             pf_mode_3ph = "Lag"
@@ -2383,7 +2755,7 @@ model "cigre_european_mv" {
             pf = "0"
             conn = "0"
             kVA = "0"
-            basefreq = "0"
+            baseFreq = "0"
             gen_ts_en = "True"
             load_loadshape = "Choose"
             loadshape_name = "Default"
@@ -2410,15 +2782,34 @@ model "cigre_european_mv" {
             T_lim_high = "0"
             Ts_switch = "0"
             enable_monitoring = "False"
+            tp_connection_combo_values = ""
         }
 
         "OpenDSS/Manual Switch" {
             switch_status = "True"
         }
 
+        "OpenDSS/Monitor" {
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "False"
+            enable_output = "False"
+            execution_rate = "100e-6"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            ran_dynamics = "False"
+        }
+
         "OpenDSS/SimDSS" {
             sim_mode = "Snap"
-            basefrequency = "60"
+            baseFreq = "60"
             voltagebases = "[0.480, 12.47]"
             tsstp = "1"
             tspoints = "24"
@@ -2442,6 +2833,7 @@ model "cigre_european_mv" {
             maxiter = "15"
             command = "show voltages LN"
             run = "Run"
+            stability_analysis = "Run"
         }
 
         "OpenDSS/Three-Phase Transformer" {
@@ -2456,17 +2848,21 @@ model "cigre_european_mv" {
             XArray = "[1, 1]"
             XscArray = "[2.0, 2.0]"
             global_basefreq = "True"
-            Basefreq = "60"
+            baseFreq = "60"
             percentNoloadloss = "2"
             percentimag = "0"
             prim_conn = "Y"
-            grounded_prim = "False"
+            Rneut_prim = "0.0"
+            Xneut_prim = "0.0"
             sec1_conn = "Y"
-            grounded_sec1 = "False"
+            Rneut_sec1 = "0.0"
+            Xneut_sec1 = "0.0"
             sec2_conn = "Y"
-            grounded_sec2 = "False"
+            Rneut_sec2 = "0.0"
+            Xneut_sec2 = "0.0"
             sec3_conn = "Y"
-            grounded_sec3 = "False"
+            Rneut_sec3 = "0.0"
+            Xneut_sec3 = "0.0"
             regcontrol_on = "False"
             maxtap = "1.1"
             mintap = "0.9"
@@ -2484,9 +2880,9 @@ model "cigre_european_mv" {
         "OpenDSS/Vsource" {
             basekv = "115.0"
             baseMVA = "100.0"
-            BaseFreq = "60"
             global_basefreq = "False"
-            ground_connected = "True"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
             pu = "1.0"
             Angle = "0"
             Frequency = "60"
@@ -2508,4 +2904,14 @@ model "cigre_european_mv" {
             enable_monitoring = "False"
         }
     }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        ts = 100e-6
+    ENDCODE
 }

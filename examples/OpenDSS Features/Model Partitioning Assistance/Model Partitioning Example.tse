@@ -1,10 +1,10 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.4 DEV
+// Saved by sw version: 2023.3
 //
 
-model "Model Partitioning Example" {
+model "model partitioning example" {
     configuration {
         hil_device = "HIL604"
         hil_configuration_id = 1
@@ -103,10 +103,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_I3 {
+            Rneut = "0.0"
             Sn_3ph = "300"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.208"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             rate_lmt = "100"
@@ -158,10 +160,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_P3 {
+            Rneut = "0.0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             rate_lmt = "100"
@@ -393,10 +397,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_P2 {
+            Rneut = "0.0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             rate_lmt = "100"
@@ -465,10 +471,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_P5 {
+            Rneut = "0.0"
             Sn_3ph = "700"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             rate_lmt = "100"
@@ -541,10 +549,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_I4 {
+            Rneut = "0.0"
             Sn_3ph = "600"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             rate_lmt = "100"
@@ -618,10 +628,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_C3 {
+            Rneut = "0.0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             tp_connection = "Y - Grounded"
@@ -668,10 +680,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_I5 {
+            Rneut = "0.0"
             Sn_3ph = "400"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             rate_lmt = "100"
@@ -738,10 +752,12 @@ model "Model Partitioning Example" {
         ]
 
         component "OpenDSS/Load" Load_C4 {
+            Rneut = "0.0"
             Sn_3ph = "1000"
             T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
             Vn_3ph = "0.48"
+            Xneut = "0.0"
             ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
             global_basefreq = "False"
             rate_lmt = "100"
@@ -920,15 +936,6 @@ model "Model Partitioning Example" {
             size = 16, 128
         ]
 
-        component "OpenDSS/SimDSS" SimDSS {
-            sim_counter = "69"
-            sim_status = "Sim69 complete"
-        }
-        [
-            position = 8320, 6520
-            size = 96, 96
-        ]
-
         component "OpenDSS/Controlled Switch" SW1 {
         }
         [
@@ -988,6 +995,13 @@ model "Model Partitioning Example" {
             position = 7488, 7368
             rotation = right
             size = 64, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS {
+        }
+        [
+            position = 8320, 6512
+            size = 96, 96
         ]
 
         junction Junction49 pe
@@ -1582,8 +1596,8 @@ model "Model Partitioning Example" {
             ground_connected = "False"
             tp_connection = "Y"
             phases = "3"
-            Rneut = "0.0"
-            Xneut = "0.0"
+            Rneut = "inf"
+            Xneut = "inf"
             global_basefreq = "True"
             fn = "60"
             Vn_3ph = "4.16"

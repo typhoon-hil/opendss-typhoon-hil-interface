@@ -1,6 +1,6 @@
 <ui_settings>
     <version>2.8</version>
-    <model_locked>False</model_locked>
+    <model_locked>True</model_locked>
     <canvas_bg_color>#ffffff</canvas_bg_color>
     <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be
 # available for use in all Macro and Expression scripts.
@@ -62,7 +62,7 @@ SETTINGS_DIR = get_settings_dir_path()
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 277.128
-displayValue = hil.read_analog_signal(name="Bus_634.Measurements.VAn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 634.Monitor.meter_ABC.VAn_RMS")/Vbase
 
 
 ]]></code>
@@ -106,7 +106,7 @@ displayValue = hil.read_analog_signal(name="Bus_634.Measurements.VAn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 277.128
-displayValue = hil.read_analog_signal(name="Bus_634.Measurements.VBn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 634.Monitor.meter_ABC.VBn_RMS")/Vbase
 
 
 ]]></code>
@@ -150,7 +150,7 @@ displayValue = hil.read_analog_signal(name="Bus_634.Measurements.VBn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 277.128
-displayValue = hil.read_analog_signal(name="Bus_634.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 634.Monitor.meter_ABC.VCn_RMS")/Vbase
 
 
 ]]></code>
@@ -194,7 +194,7 @@ displayValue = hil.read_analog_signal(name="Bus_634.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_675.Measurements.VBn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 675.Monitor.meter_ABC.VBn_RMS")/Vbase
 
 
 ]]></code>
@@ -238,7 +238,7 @@ displayValue = hil.read_analog_signal(name="Bus_675.Measurements.VBn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_675.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 675.Monitor.meter_ABC.VCn_RMS")/Vbase
 
 
 ]]></code>
@@ -282,7 +282,7 @@ displayValue = hil.read_analog_signal(name="Bus_675.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_675.Measurements.VAn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 675.Monitor.meter_ABC.VAn_RMS")/Vbase
 
 
 ]]></code>
@@ -326,7 +326,7 @@ displayValue = hil.read_analog_signal(name="Bus_675.Measurements.VAn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_692.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 692.Monitor.meter_C.V_RMS")/Vbase
 
 
 ]]></code>
@@ -338,7 +338,7 @@ displayValue = hil.read_analog_signal(name="Bus_692.Measurements.VCn_RMS")/Vbase
                 <scaling_factor>1.0</scaling_factor>
                 <widget_settings>
                     <x>920</x>
-                    <y>672</y>
+                    <y>624</y>
                     <width>104</width>
                     <height>48</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -370,7 +370,7 @@ displayValue = hil.read_analog_signal(name="Bus_692.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_692.Measurements.VAn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 692.Monitor.meter_A.V_RMS")/Vbase
 
 
 ]]></code>
@@ -414,7 +414,7 @@ displayValue = hil.read_analog_signal(name="Bus_692.Measurements.VAn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_611.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 611.Monitor.meter_C.V_RMS")/Vbase
 
 
 ]]></code>
@@ -458,7 +458,7 @@ displayValue = hil.read_analog_signal(name="Bus_611.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_652.Measurements.VAn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 652.Monitor.meter_A.V_RMS")/Vbase
 
 
 ]]></code>
@@ -502,7 +502,7 @@ displayValue = hil.read_analog_signal(name="Bus_652.Measurements.VAn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_671.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Dist Load 671.Monitor.meter_ABC.VCn_RMS")/Vbase
 
 
 ]]></code>
@@ -546,7 +546,7 @@ displayValue = hil.read_analog_signal(name="Bus_671.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_671.Measurements.VBn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Dist Load 671.Monitor.meter_ABC.VBn_RMS")/Vbase
 
 
 ]]></code>
@@ -590,7 +590,7 @@ displayValue = hil.read_analog_signal(name="Bus_671.Measurements.VBn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_671.Measurements.VAn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Dist Load 671.Monitor.meter_ABC.VAn_RMS")/Vbase
 
 
 ]]></code>
@@ -634,7 +634,7 @@ displayValue = hil.read_analog_signal(name="Bus_671.Measurements.VAn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_646.Measurements.VBn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 646.Monitor.meter_B.V_RMS")/Vbase
 
 
 ]]></code>
@@ -678,7 +678,7 @@ displayValue = hil.read_analog_signal(name="Bus_646.Measurements.VBn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_646.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 646.Monitor.meter_C.V_RMS")/Vbase
 
 
 ]]></code>
@@ -722,7 +722,7 @@ displayValue = hil.read_analog_signal(name="Bus_646.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_645.Measurements.VBn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Load 645.Monitor.meter_B.V_RMS")/Vbase
 
 
 ]]></code>
@@ -766,7 +766,7 @@ displayValue = hil.read_analog_signal(name="Bus_645.Measurements.VBn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_632.Measurements.VBn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Dist Load 632.Monitor.meter_ABC.VBn_RMS")/Vbase
 
 
 ]]></code>
@@ -810,7 +810,7 @@ displayValue = hil.read_analog_signal(name="Bus_632.Measurements.VBn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_632.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Dist Load 632.Monitor.meter_ABC.VCn_RMS")/Vbase
 
 
 ]]></code>
@@ -854,7 +854,7 @@ displayValue = hil.read_analog_signal(name="Bus_632.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_632.Measurements.VAn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Dist Load 632.Monitor.meter_ABC.VAn_RMS")/Vbase
 
 
 ]]></code>
@@ -898,7 +898,7 @@ displayValue = hil.read_analog_signal(name="Bus_632.Measurements.VAn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_650.Measurements.VAn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Vsource_Monitor.meter_ABC.VAn_RMS")/Vbase
 
 
 ]]></code>
@@ -942,7 +942,7 @@ displayValue = hil.read_analog_signal(name="Bus_650.Measurements.VAn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_650.Measurements.VCn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Vsource_Monitor.meter_ABC.VCn_RMS")/Vbase
 
 
 ]]></code>
@@ -986,7 +986,7 @@ displayValue = hil.read_analog_signal(name="Bus_650.Measurements.VCn_RMS")/Vbase
 
 # mandatory variable used for storing value that will be displayed
 Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_650.Measurements.VBn_RMS")/Vbase
+displayValue = hil.read_analog_signal(name="Vsource_Monitor.meter_ABC.VBn_RMS")/Vbase
 
 
 ]]></code>
@@ -1029,7 +1029,7 @@ displayValue = hil.read_analog_signal(name="Bus_650.Measurements.VBn_RMS")/Vbase
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PA')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_PA')/1000
 
 
 ]]></code>
@@ -1072,7 +1072,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PA')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_QA')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_QA')/1000
 
 
 ]]></code>
@@ -1115,7 +1115,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_QA')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_SA')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_SA')/1000
 
 
 ]]></code>
@@ -1158,7 +1158,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_SA')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PFA')
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_PFA')
 
 
 ]]></code>
@@ -1201,7 +1201,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PFA')
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_QB')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_QB')/1000
 
 
 ]]></code>
@@ -1244,7 +1244,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_QB')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PB')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_PB')/1000
 
 
 ]]></code>
@@ -1287,7 +1287,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PB')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_SB')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_SB')/1000
 
 
 ]]></code>
@@ -1330,7 +1330,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_SB')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PFB')
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_PFB')
 
 
 ]]></code>
@@ -1373,7 +1373,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PFB')
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PC')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_PC')/1000
 
 
 ]]></code>
@@ -1416,7 +1416,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PC')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_SC')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_SC')/1000
 
 
 ]]></code>
@@ -1459,7 +1459,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_SC')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_QC')/1000
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_QC')/1000
 
 
 ]]></code>
@@ -1502,7 +1502,7 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_QC')/1000
 # This object can be used as an argument in SCADA API functions.
 
 # mandatory variable used for storing value that will be displayed
-displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PFC')
+displayValue = hil.read_analog_signal(name='Vsource_Monitor.meter_ABC.POWER_PFC')
 
 
 ]]></code>
@@ -1521,94 +1521,6 @@ displayValue = hil.read_analog_signal(name='Bus_650.Measurements.POWER_PFC')
                     <hierarchy_position><![CDATA[1]]></hierarchy_position>
                     <is_background><![CDATA[False]]></is_background>
                     <label><![CDATA[PFC]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>10be28c6dac711eda2b7cc15312b2fd6</id>
-                <name><![CDATA[Load 645_Meter_VCn_RMS]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_645.Measurements.VCn_RMS")/Vbase
-
-
-]]></code>
-                <signal_name><![CDATA[Load 634.Meter.VAn_RMS]]></signal_name>
-                <unit><![CDATA[]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[4]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>616</x>
-                    <y>432</y>
-                    <width>104</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[VBn pu]]></label>
-                    <use_label>True</use_label>
-                </widget_settings>
-                <advance_widget_settings>
-                    <color_range>False</color_range>
-                    <green_range>(0, 0, 0, 0)</green_range>
-                    <orange_range>(0, 0, 0, 0)</orange_range>
-                    <red_range>(0, 0, 0, 0)</red_range>
-                </advance_widget_settings>
-            </component_data>
-        <component_data>
-                <id>1fd1fd33dac811edbd90cc15312b2fd6</id>
-                <name><![CDATA[Load 692_Meter_VBn_RMS]]></name>
-                <type>DigitalDisplay</type>
-                <description><![CDATA[]]></description>
-                <data_type>Expression</data_type>
-                <code><![CDATA[# HIL API is imported as 'hil'
-# NOTE: Only read functions are available from the HIL API
-
-# SCADA API is imported as 'panel'
-# SCADA API constants are imported as 'api_const'
-# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-# mandatory variable used for storing value that will be displayed
-Vbase = 2401.78
-displayValue = hil.read_analog_signal(name="Bus_692.Measurements.VBn_RMS")/Vbase
-
-
-]]></code>
-                <signal_name><![CDATA[Load 634.Meter.VAn_RMS]]></signal_name>
-                <unit><![CDATA[]]></unit>
-                <automatic_unit>True</automatic_unit>
-                <decimals><![CDATA[4]]></decimals>
-                <updateRate>500</updateRate>
-                <scaling_factor>1.0</scaling_factor>
-                <widget_settings>
-                    <x>920</x>
-                    <y>624</y>
-                    <width>104</width>
-                    <height>48</height>
-                    <appearance><![CDATA[Flat]]></appearance>
-                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
-                    <is_background><![CDATA[False]]></is_background>
-                    <label><![CDATA[VAn pu]]></label>
                     <use_label>True</use_label>
                 </widget_settings>
                 <advance_widget_settings>
