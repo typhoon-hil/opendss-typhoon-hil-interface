@@ -119,7 +119,7 @@ def initialization_function_calls(mdl, mask_handle):
 
     if comp_type == "Line":
         import dss_thcc_lib.component_scripts.comp_line as comp_line
-        comp_line.show_hide_param_inputs(mdl, mask_handle, "Symmetrical")
+        comp_line.mask_edit_restore_visibility(mdl, mask_handle)
 
 
 def define_icon(mdl, mask_handle):

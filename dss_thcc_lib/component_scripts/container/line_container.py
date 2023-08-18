@@ -62,9 +62,9 @@ def update_properties(mdl, _Line_mask):
         tab_name="Line Parameters",
         unit=""
     )
-    _Line_mask_BaseFreq = mdl.create_property(
+    _Line_mask_baseFreq = mdl.create_property(
         item_handle=_Line_mask,
-        name="BaseFreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -79,7 +79,7 @@ def update_properties(mdl, _Line_mask):
         name="phases",
         label="Phases",
         widget="combo",
-        combo_values=['3', '2', '1'],
+        combo_values=['4', '3', '2', '1'],
         evaluate=False,
         enabled=False,
         visible=True,
@@ -395,7 +395,7 @@ def update_properties(mdl, _Line_mask):
     mdl.set_property_value(mdl.prop(_Line_mask, "selected_object"), "")
     mdl.set_property_value(mdl.prop(_Line_mask, "Length"), "100")
     mdl.set_property_value(mdl.prop(_Line_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Line_mask, "BaseFreq"), "60")
+    mdl.set_property_value(mdl.prop(_Line_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Line_mask, "phases"), "3")
     mdl.set_property_value(mdl.prop(_Line_mask, "R1"), "0.1903")
     mdl.set_property_value(mdl.prop(_Line_mask, "R0"), "0.5853")
@@ -519,7 +519,7 @@ def ports_initialization(mdl, _Line_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, -32.0),
+        terminal_position=(-32, -32),
         rotation="up",
         flip="flip_none",
         hide_name=True,
@@ -531,7 +531,7 @@ def ports_initialization(mdl, _Line_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, 0.0),
+        terminal_position=(-32, 0),
         rotation="up",
         flip="flip_none",
         hide_name=True,
@@ -543,7 +543,7 @@ def ports_initialization(mdl, _Line_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, 32.0),
+        terminal_position=(-32, 32),
         rotation="up",
         flip="flip_none",
         hide_name=True,
@@ -555,7 +555,7 @@ def ports_initialization(mdl, _Line_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(32.0, -32.0),
+        terminal_position=(32, -32),
         rotation="down",
         flip="flip_none",
         hide_name=True,
@@ -567,7 +567,7 @@ def ports_initialization(mdl, _Line_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(32.0, 0.0),
+        terminal_position=(32, 0),
         rotation="down",
         flip="flip_none",
         hide_name=True,
@@ -579,21 +579,9 @@ def ports_initialization(mdl, _Line_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(32.0, 32.0),
+        terminal_position=(32, 32),
         rotation="down",
         flip="flip_none",
         hide_name=True,
         position=(8008, 8128)
-    )
-    _Line_N = mdl.create_port(
-        name="N",
-        parent=_Line,
-        label="",
-        kind="pe",
-        dimension=(1,),
-        terminal_position=('bottom', 'left'),
-        rotation="up",
-        flip="flip_none",
-        hide_name=False,
-        position=(7728, 8144)
     )

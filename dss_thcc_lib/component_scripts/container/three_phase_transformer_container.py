@@ -133,9 +133,9 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         tab_name="",
         unit=""
     )
-    _Three_Phase_Transformer_mask_Basefreq = mdl.create_property(
+    _Three_Phase_Transformer_mask_baseFreq = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
-        name="Basefreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -174,96 +174,144 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         name="prim_conn",
         label="Primary",
         widget="combo",
-        combo_values=['Y', 'Δ'],
+        combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
         visible=True,
         tab_name="Winding connections:2",
         unit=""
     )
-    _Three_Phase_Transformer_mask_grounded_prim = mdl.create_property(
+    _Three_Phase_Transformer_mask_Rneut_prim = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
-        name="grounded_prim",
-        label="Grounded Primary",
-        widget="checkbox",
+        name="Rneut_prim",
+        label="Rneut prim",
+        widget="edit",
         combo_values=[],
-        evaluate=False,
+        evaluate=True,
         enabled=True,
         visible=True,
         tab_name="Winding connections",
-        unit=""
+        unit="Ω"
+    )
+    _Three_Phase_Transformer_mask_Xneut_prim = mdl.create_property(
+        item_handle=_Three_Phase_Transformer_mask,
+        name="Xneut_prim",
+        label="Xneut prim",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=True,
+        visible=True,
+        tab_name="Winding connections",
+        unit="Ω"
     )
     _Three_Phase_Transformer_mask_sec1_conn = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
         name="sec1_conn",
         label="Secondary 1",
         widget="combo",
-        combo_values=['Y', 'Δ'],
+        combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
         visible=True,
         tab_name="Winding connections",
         unit=""
     )
-    _Three_Phase_Transformer_mask_grounded_sec1 = mdl.create_property(
+    _Three_Phase_Transformer_mask_Rneut_sec1 = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
-        name="grounded_sec1",
-        label="Grounded Secondary 1",
-        widget="checkbox",
+        name="Rneut_sec1",
+        label="Rneut sec 1",
+        widget="edit",
         combo_values=[],
-        evaluate=False,
+        evaluate=True,
         enabled=True,
         visible=True,
         tab_name="Winding connections",
-        unit=""
+        unit="Ω"
+    )
+    _Three_Phase_Transformer_mask_Xneut_sec1 = mdl.create_property(
+        item_handle=_Three_Phase_Transformer_mask,
+        name="Xneut_sec1",
+        label="Xneut sec 1",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=True,
+        visible=True,
+        tab_name="Winding connections",
+        unit="Ω"
     )
     _Three_Phase_Transformer_mask_sec2_conn = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
         name="sec2_conn",
         label="Secondary 2",
         widget="combo",
-        combo_values=['Y', 'Δ'],
+        combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
-        visible=False,
+        visible=True,
         tab_name="Winding connections",
         unit=""
     )
-    _Three_Phase_Transformer_mask_grounded_sec2 = mdl.create_property(
+    _Three_Phase_Transformer_mask_Rneut_sec2 = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
-        name="grounded_sec2",
-        label="Grounded Secondary 2",
-        widget="checkbox",
+        name="Rneut_sec2",
+        label="Rneut sec 2",
+        widget="edit",
         combo_values=[],
-        evaluate=False,
+        evaluate=True,
         enabled=True,
-        visible=False,
+        visible=True,
         tab_name="Winding connections",
-        unit=""
+        unit="Ω"
+    )
+    _Three_Phase_Transformer_mask_Xneut_sec2 = mdl.create_property(
+        item_handle=_Three_Phase_Transformer_mask,
+        name="Xneut_sec2",
+        label="Xneut sec 2",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=True,
+        visible=True,
+        tab_name="Winding connections",
+        unit="Ω"
     )
     _Three_Phase_Transformer_mask_sec3_conn = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
         name="sec3_conn",
         label="Secondary 3",
         widget="combo",
-        combo_values=['Y', 'Δ'],
+        combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
-        visible=False,
+        visible=True,
         tab_name="Winding connections",
         unit=""
     )
-    _Three_Phase_Transformer_mask_grounded_sec3 = mdl.create_property(
+    _Three_Phase_Transformer_mask_Rneut_sec3 = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
-        name="grounded_sec3",
-        label="Grounded Secondary 3",
-        widget="checkbox",
+        name="Rneut_sec3",
+        label="Rneut sec 3",
+        widget="edit",
         combo_values=[],
-        evaluate=False,
+        evaluate=True,
         enabled=True,
-        visible=False,
+        visible=True,
         tab_name="Winding connections",
-        unit=""
+        unit="Ω"
+    )
+    _Three_Phase_Transformer_mask_Xneut_sec3 = mdl.create_property(
+        item_handle=_Three_Phase_Transformer_mask,
+        name="Xneut_sec3",
+        label="Xneut sec 3",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=True,
+        visible=True,
+        tab_name="Winding connections",
+        unit="Ω"
     )
     _Three_Phase_Transformer_mask_regcontrol_on = mdl.create_property(
         item_handle=_Three_Phase_Transformer_mask,
@@ -424,17 +472,21 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "XArray"), "[1, 1]")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "XscArray"), "[2.0, 2.0]")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Basefreq"), "60")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "percentNoloadloss"), "2")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "percentimag"), "0")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "prim_conn"), "Y")
-    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "grounded_prim"), "False")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Rneut_prim"), "0.0")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Xneut_prim"), "0.0")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "sec1_conn"), "Y")
-    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "grounded_sec1"), "False")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Rneut_sec1"), "0.0")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Xneut_sec1"), "0.0")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "sec2_conn"), "Y")
-    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "grounded_sec2"), "False")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Rneut_sec2"), "0.0")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Xneut_sec2"), "0.0")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "sec3_conn"), "Y")
-    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "grounded_sec3"), "False")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Rneut_sec3"), "0.0")
+    mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "Xneut_sec3"), "0.0")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "regcontrol_on"), "False")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "maxtap"), "1.1")
     mdl.set_property_value(mdl.prop(_Three_Phase_Transformer_mask, "mintap"), "0.9")
@@ -452,35 +504,46 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     ## EDITED HANDLERS
 
     _Three_Phase_Transformer_mask_num_windings_property_value_edited = """
+    num_windings = int(new_value)
+    
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.show_hide_conn(mdl, container_handle)
+    comp_script.enable_disable_conn(mdl, container_handle)
     comp_script.show_hide_couplings(mdl, container_handle)
-    comp_script.enable_disable_grounds(mdl, container_handle)
+    comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
     comp_script.update_regctrl_combo(mdl, container_handle)
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_num_windings, "property_value_edited", _Three_Phase_Transformer_mask_num_windings_property_value_edited)
     _Three_Phase_Transformer_mask_embedded_cpl_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.enable_disable_grounds(mdl, container_handle)
+    num_windings_prop = mdl.prop(container_handle, "num_windings")
+    num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+    
+    comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_embedded_cpl, "property_value_edited", _Three_Phase_Transformer_mask_embedded_cpl_property_value_edited)
     _Three_Phase_Transformer_mask_embedded_cpl_12_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.enable_disable_grounds(mdl, container_handle)
+    num_windings_prop = mdl.prop(container_handle, "num_windings")
+    num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+    comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_embedded_cpl_12, "property_value_edited", _Three_Phase_Transformer_mask_embedded_cpl_12_property_value_edited)
     _Three_Phase_Transformer_mask_embedded_cpl_13_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.enable_disable_grounds(mdl, container_handle)
+    num_windings_prop = mdl.prop(container_handle, "num_windings")
+    num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+    comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_embedded_cpl_13, "property_value_edited", _Three_Phase_Transformer_mask_embedded_cpl_13_property_value_edited)
     _Three_Phase_Transformer_mask_embedded_cpl_14_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.enable_disable_grounds(mdl, container_handle)
+    num_windings_prop = mdl.prop(container_handle, "num_windings")
+    num_windings = int(mdl.get_property_disp_value(num_windings_prop))
+    comp_script.enable_disable_grounds(mdl, container_handle, num_windings)
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_embedded_cpl_14, "property_value_edited", _Three_Phase_Transformer_mask_embedded_cpl_14_property_value_edited)
@@ -492,25 +555,29 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     mdl.set_handler_code(_Three_Phase_Transformer_mask_global_basefreq, "property_value_edited", _Three_Phase_Transformer_mask_global_basefreq_property_value_edited)
     _Three_Phase_Transformer_mask_prim_conn_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+    comp_script.enable_disable_conn(mdl, container_handle)
+    
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_prim_conn, "property_value_edited", _Three_Phase_Transformer_mask_prim_conn_property_value_edited)
     _Three_Phase_Transformer_mask_sec1_conn_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+    comp_script.enable_disable_conn(mdl, container_handle)
+    
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_sec1_conn, "property_value_edited", _Three_Phase_Transformer_mask_sec1_conn_property_value_edited)
     _Three_Phase_Transformer_mask_sec2_conn_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+    comp_script.enable_disable_conn(mdl, container_handle)
+    
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_sec2_conn, "property_value_edited", _Three_Phase_Transformer_mask_sec2_conn_property_value_edited)
     _Three_Phase_Transformer_mask_sec3_conn_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.show_hide_ground(mdl, prop_handle, container_handle)
+    #comp_script.enable_disable_z_neut(mdl, container_handle)
+    comp_script.enable_disable_conn(mdl, container_handle)
     
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_sec3_conn, "property_value_edited", _Three_Phase_Transformer_mask_sec3_conn_property_value_edited)
@@ -564,15 +631,6 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     mdl.set_handler_code(_Three_Phase_Transformer_mask_prim_conn, "property_value_changed",
                          _Three_Phase_Transformer_mask_prim_conn_property_value_changed)
 
-    _Three_Phase_Transformer_mask_grounded_prim_property_value_changed = """
-    comp_script = return_comp_script(mdl, container_handle)
-    if not new_value == old_value: # If the model is not being loaded.
-        comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-    mdl.refresh_icon(container_handle)
-    """
-    mdl.set_handler_code(_Three_Phase_Transformer_mask_grounded_prim, "property_value_changed",
-                         _Three_Phase_Transformer_mask_grounded_prim_property_value_changed)
-
     _Three_Phase_Transformer_mask_sec1_conn_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
     if not new_value == old_value: # If the model is not being loaded.
@@ -581,15 +639,6 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_sec1_conn, "property_value_changed",
                          _Three_Phase_Transformer_mask_sec1_conn_property_value_changed)
-
-    _Three_Phase_Transformer_mask_grounded_sec1_property_value_changed = """
-    comp_script = return_comp_script(mdl, container_handle)
-    if not new_value == old_value: # If the model is not being loaded.
-        comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-    mdl.refresh_icon(container_handle)
-    """
-    mdl.set_handler_code(_Three_Phase_Transformer_mask_grounded_sec1, "property_value_changed",
-                         _Three_Phase_Transformer_mask_grounded_sec1_property_value_changed)
 
     _Three_Phase_Transformer_mask_sec2_conn_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
@@ -600,15 +649,6 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     mdl.set_handler_code(_Three_Phase_Transformer_mask_sec2_conn, "property_value_changed",
                          _Three_Phase_Transformer_mask_sec2_conn_property_value_changed)
 
-    _Three_Phase_Transformer_mask_grounded_sec2_property_value_changed = """
-    comp_script = return_comp_script(mdl, container_handle)
-    if not new_value == old_value: # If the model is not being loaded.
-        comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-    mdl.refresh_icon(container_handle)
-    """
-    mdl.set_handler_code(_Three_Phase_Transformer_mask_grounded_sec2, "property_value_changed",
-                         _Three_Phase_Transformer_mask_grounded_sec2_property_value_changed)
-
     _Three_Phase_Transformer_mask_sec3_conn_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
     if not new_value == old_value: # If the model is not being loaded.
@@ -617,15 +657,6 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
     """
     mdl.set_handler_code(_Three_Phase_Transformer_mask_sec3_conn, "property_value_changed",
                          _Three_Phase_Transformer_mask_sec3_conn_property_value_changed)
-
-    _Three_Phase_Transformer_mask_grounded_sec3_property_value_changed = """
-    comp_script = return_comp_script(mdl, container_handle)
-    if not new_value == old_value: # If the model is not being loaded.
-        comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-    mdl.refresh_icon(container_handle)
-    """
-    mdl.set_handler_code(_Three_Phase_Transformer_mask_grounded_sec3, "property_value_changed",
-                         _Three_Phase_Transformer_mask_grounded_sec3_property_value_changed)
 
 def ports_initialization(mdl, _Three_Phase_Transformer_mask):
     _Three_Phase_Transformer = mdl.get_parent(_Three_Phase_Transformer_mask)
@@ -639,10 +670,10 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, -32.0),
+        terminal_position=(-32.0, -48.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8056, 8088)
     )
     _Three_Phase_Transformer_B1 = mdl.create_port(
@@ -651,10 +682,10 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, 0.0),
+        terminal_position=(-32.0, -16.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8056, 8160)
     )
     _Three_Phase_Transformer_C1 = mdl.create_port(
@@ -663,10 +694,10 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, 32.0),
+        terminal_position=(-32.0, 16.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8056, 8232)
     )
     _Three_Phase_Transformer_N1 = mdl.create_port(
@@ -676,11 +707,11 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(-24.0, 48.0),
+        terminal_position=(-32.0, 48.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
-        position=(8224, 8496)
+        hide_name=True,
+        position=(8224, 8528)
     )
     _Three_Phase_Transformer_N2 = mdl.create_port(
         name="N2",
@@ -689,11 +720,11 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(24.0, 48.0),
+        terminal_position=(32, 48),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
-        position=(8496, 8496)
+        hide_name=True,
+        position=(8600, 8520)
     )
     _Three_Phase_Transformer_A2 = mdl.create_port(
         name="A2",
@@ -702,10 +733,10 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, -32.0),
+        terminal_position=(32, -48),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(9376, 8144)
     )
     _Three_Phase_Transformer_B2 = mdl.create_port(
@@ -715,10 +746,10 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, 0.0),
+        terminal_position=(32, -16),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(9376, 8240)
     )
     _Three_Phase_Transformer_C2 = mdl.create_port(
@@ -728,9 +759,9 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, 32.0),
+        terminal_position=(32, 16),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(9376, 8336)
     )

@@ -6,7 +6,7 @@ def update_properties(mdl, _Capacitor_Bank_mask):
         name="tp_connection",
         label="Connection",
         widget="combo",
-        combo_values=['Y', 'Y-grounded', 'Δ', 'Series'],
+        combo_values=['Y - Grounded', 'Y', 'Δ', 'In series'],
         evaluate=False,
         enabled=True,
         visible=True,
@@ -25,9 +25,9 @@ def update_properties(mdl, _Capacitor_Bank_mask):
         tab_name="",
         unit=""
     )
-    _Capacitor_Bank_mask_BaseFreq = mdl.create_property(
+    _Capacitor_Bank_mask_baseFreq = mdl.create_property(
         item_handle=_Capacitor_Bank_mask,
-        name="BaseFreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -101,9 +101,9 @@ def update_properties(mdl, _Capacitor_Bank_mask):
 
     ## SET PROPERTIES TO DEFAULT VALUES
 
-    mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "tp_connection"), "Y")
+    mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "tp_connection"), "Y - Grounded")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "BaseFreq"), "60")
+    mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "phases"), "3")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "Kv"), "12.47")
     mdl.set_property_value(mdl.prop(_Capacitor_Bank_mask, "Kvar"), "600")
@@ -170,7 +170,7 @@ def ports_initialization(mdl, _Capacitor_Bank_mask):
         terminal_position=(-32.0, -32.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8392, 8096)
     )
     _Capacitor_Bank_B1 = mdl.create_port(
@@ -182,7 +182,7 @@ def ports_initialization(mdl, _Capacitor_Bank_mask):
         terminal_position=(0.0, -32.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8392, 8192)
     )
     _Capacitor_Bank_C1 = mdl.create_port(
@@ -194,6 +194,6 @@ def ports_initialization(mdl, _Capacitor_Bank_mask):
         terminal_position=(32.0, -32.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8392, 8288)
     )

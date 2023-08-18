@@ -1,6 +1,66 @@
 def update_properties(mdl, _Load_mask):
     ## PROPERTIES
 
+    _Load_mask_ground_connected = mdl.create_property(
+        item_handle=_Load_mask,
+        name="ground_connected",
+        label="Old ground connection property (retro-compatibility)",
+        widget="checkbox",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="General",
+        unit=""
+    )
+    _Load_mask_tp_connection = mdl.create_property(
+        item_handle=_Load_mask,
+        name="tp_connection",
+        label="Connection type",
+        widget="combo",
+        combo_values=['Y - Grounded', 'Y', 'Δ'],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="General",
+        unit=""
+    )
+    _Load_mask_phases = mdl.create_property(
+        item_handle=_Load_mask,
+        name="phases",
+        label="Number of Phases",
+        widget="combo",
+        combo_values=['3', '1'],
+        evaluate=False,
+        enabled=True,
+        visible=True,
+        tab_name="General",
+        unit=""
+    )
+    _Load_mask_Rneut = mdl.create_property(
+        item_handle=_Load_mask,
+        name="Rneut",
+        label="Rneut",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=False,
+        visible=True,
+        tab_name="General:1",
+        unit="Ω"
+    )
+    _Load_mask_Xneut = mdl.create_property(
+        item_handle=_Load_mask,
+        name="Xneut",
+        label="Xneut",
+        widget="edit",
+        combo_values=[],
+        evaluate=True,
+        enabled=False,
+        visible=True,
+        tab_name="General:1",
+        unit="Ω"
+    )
     _Load_mask_global_basefreq = mdl.create_property(
         item_handle=_Load_mask,
         name="global_basefreq",
@@ -24,42 +84,6 @@ def update_properties(mdl, _Load_mask):
         visible=False,
         tab_name="General:1",
         unit="Hz"
-    )
-    _Load_mask_conn_type = mdl.create_property(
-        item_handle=_Load_mask,
-        name="conn_type",
-        label="Connection type",
-        widget="combo",
-        combo_values=['Y', 'Δ'],
-        evaluate=False,
-        enabled=True,
-        visible=True,
-        tab_name="General",
-        unit=""
-    )
-    _Load_mask_ground_connected = mdl.create_property(
-        item_handle=_Load_mask,
-        name="ground_connected",
-        label="Ground-connected",
-        widget="checkbox",
-        combo_values=[],
-        evaluate=False,
-        enabled=True,
-        visible=True,
-        tab_name="General",
-        unit=""
-    )
-    _Load_mask_phases = mdl.create_property(
-        item_handle=_Load_mask,
-        name="phases",
-        label="Number of Phases",
-        widget="combo",
-        combo_values=['3', '1'],
-        evaluate=False,
-        enabled=True,
-        visible=True,
-        tab_name="General",
-        unit=""
     )
     _Load_mask_Vn_3ph = mdl.create_property(
         item_handle=_Load_mask,
@@ -141,7 +165,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Load Parameters",
         unit="Auto-Normalized"
     )
@@ -153,7 +177,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
-        visible=True,
+        visible=False,
         tab_name="Load Parameters",
         unit="Auto-Normalized"
     )
@@ -308,7 +332,7 @@ def update_properties(mdl, _Load_mask):
         widget="edit",
         combo_values=[],
         evaluate=True,
-        enabled=True,
+        enabled=False,
         visible=True,
         tab_name="CPL Parameters",
         unit="[Vmin,Vmax] pu"
@@ -320,7 +344,7 @@ def update_properties(mdl, _Load_mask):
         widget="edit",
         combo_values=[],
         evaluate=True,
-        enabled=True,
+        enabled=False,
         visible=True,
         tab_name="CPL Parameters",
         unit="Cycles to reach zero to nominal"
@@ -445,9 +469,9 @@ def update_properties(mdl, _Load_mask):
         tab_name="",
         unit=""
     )
-    _Load_mask_basefreq = mdl.create_property(
+    _Load_mask_baseFreq = mdl.create_property(
         item_handle=_Load_mask,
-        name="basefreq",
+        name="baseFreq",
         label="",
         widget="edit",
         combo_values=[],
@@ -770,15 +794,29 @@ def update_properties(mdl, _Load_mask):
         tab_name="Monitoring",
         unit=""
     )
+    _Load_mask_tp_connection_combo_values = mdl.create_property(
+        item_handle=_Load_mask,
+        name="tp_connection_combo_values",
+        label="",
+        widget="edit",
+        combo_values=[],
+        evaluate=False,
+        enabled=True,
+        visible=False,
+        tab_name="",
+        unit=""
+    )
 
 
     ## SET PROPERTIES TO DEFAULT VALUES
 
+    mdl.set_property_value(mdl.prop(_Load_mask, "ground_connected"), "False")
+    mdl.set_property_value(mdl.prop(_Load_mask, "tp_connection"), "Y")
+    mdl.set_property_value(mdl.prop(_Load_mask, "phases"), "3")
+    mdl.set_property_value(mdl.prop(_Load_mask, "Rneut"), "inf")
+    mdl.set_property_value(mdl.prop(_Load_mask, "Xneut"), "inf")
     mdl.set_property_value(mdl.prop(_Load_mask, "global_basefreq"), "True")
     mdl.set_property_value(mdl.prop(_Load_mask, "fn"), "60")
-    mdl.set_property_value(mdl.prop(_Load_mask, "conn_type"), "Y")
-    mdl.set_property_value(mdl.prop(_Load_mask, "ground_connected"), "False")
-    mdl.set_property_value(mdl.prop(_Load_mask, "phases"), "3")
     mdl.set_property_value(mdl.prop(_Load_mask, "Vn_3ph"), "4.16")
     mdl.set_property_value(mdl.prop(_Load_mask, "Sn_3ph"), "3500")
     mdl.set_property_value(mdl.prop(_Load_mask, "pf_mode_3ph"), "Lag")
@@ -811,7 +849,7 @@ def update_properties(mdl, _Load_mask):
     mdl.set_property_value(mdl.prop(_Load_mask, "pf"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "conn"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "kVA"), "0")
-    mdl.set_property_value(mdl.prop(_Load_mask, "basefreq"), "0")
+    mdl.set_property_value(mdl.prop(_Load_mask, "baseFreq"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "gen_ts_en"), "True")
     mdl.set_property_value(mdl.prop(_Load_mask, "load_loadshape"), "Choose")
     mdl.set_property_value(mdl.prop(_Load_mask, "loadshape_name"), "Default")
@@ -838,46 +876,41 @@ def update_properties(mdl, _Load_mask):
     mdl.set_property_value(mdl.prop(_Load_mask, "T_lim_high"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "Ts_switch"), "0")
     mdl.set_property_value(mdl.prop(_Load_mask, "enable_monitoring"), "False")
+    mdl.set_property_value(mdl.prop(_Load_mask, "tp_connection_combo_values"), "")
 
 
     ## EDITED HANDLERS
 
+    _Load_mask_tp_connection_property_value_edited = """
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+    
+    """
+    mdl.set_handler_code(_Load_mask_tp_connection, "property_value_edited", _Load_mask_tp_connection_property_value_edited)
+    _Load_mask_phases_property_value_edited = """
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+    
+    """
+    mdl.set_handler_code(_Load_mask_phases, "property_value_edited", _Load_mask_phases_property_value_edited)
     _Load_mask_global_basefreq_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
     comp_script.toggle_frequency_prop(mdl, container_handle)
     
     """
     mdl.set_handler_code(_Load_mask_global_basefreq, "property_value_edited", _Load_mask_global_basefreq_property_value_edited)
-    _Load_mask_conn_type_property_value_edited = """
-    comp_script = return_comp_script(mdl, container_handle)
-    comp_script.conn_type_value_edited_fnc(mdl, container_handle, new_value)
-    
-    """
-    mdl.set_handler_code(_Load_mask_conn_type, "property_value_edited", _Load_mask_conn_type_property_value_edited)
-    _Load_mask_phases_property_value_edited = """
-    comp_script = return_comp_script(mdl, container_handle)
-    comp_script.phase_value_edited_fnc(mdl, container_handle, new_value)
-    
-    """
-    mdl.set_handler_code(_Load_mask_phases, "property_value_edited", _Load_mask_phases_property_value_edited)
     _Load_mask_pf_mode_3ph_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.pf_mode_3ph_value_edited(mdl, container_handle, new_value)
+    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
     
     """
     mdl.set_handler_code(_Load_mask_pf_mode_3ph, "property_value_edited", _Load_mask_pf_mode_3ph_property_value_edited)
     _Load_mask_load_model_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.load_model_value_edited_fnc(mdl, container_handle, new_value)
+    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
     
     """
     mdl.set_handler_code(_Load_mask_load_model, "property_value_edited", _Load_mask_load_model_property_value_edited)
-    _Load_mask_gen_ts_en_property_value_edited = """
-    comp_script = return_comp_script(mdl, container_handle)
-    # comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
-    
-    """
-    mdl.set_handler_code(_Load_mask_gen_ts_en, "property_value_edited", _Load_mask_gen_ts_en_property_value_edited)
     _Load_mask_loadshape_name_property_value_edited = """
     old_value = mdl.get_property_value(prop_handle)
     mdl.set_property_value(prop_handle, old_value)
@@ -910,13 +943,13 @@ def update_properties(mdl, _Load_mask):
     mdl.set_handler_code(_Load_mask_loadshape_int, "property_value_edited", _Load_mask_loadshape_int_property_value_edited)
     _Load_mask_T_mode_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.t_mode_value_edited(mdl, container_handle, new_value)
+    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
     
     """
     mdl.set_handler_code(_Load_mask_T_mode, "property_value_edited", _Load_mask_T_mode_property_value_edited)
     _Load_mask_S_Ts_mode_property_value_edited = """
     comp_script = return_comp_script(mdl, container_handle)
-    comp_script.s_ts_mode_value_edited(mdl, container_handle, new_value)
+    comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
     
     """
     mdl.set_handler_code(_Load_mask_S_Ts_mode, "property_value_edited", _Load_mask_S_Ts_mode_property_value_edited)
@@ -934,13 +967,13 @@ def update_properties(mdl, _Load_mask):
 
     ## CHANGED HANDLERS
 
-    _Load_mask_conn_type_property_value_changed = """
+    _Load_mask_tp_connection_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
     comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
     mdl.refresh_icon(container_handle)
     """
-    mdl.set_handler_code(_Load_mask_conn_type, "property_value_changed",
-                         _Load_mask_conn_type_property_value_changed)
+    mdl.set_handler_code(_Load_mask_tp_connection, "property_value_changed",
+                         _Load_mask_tp_connection_property_value_changed)
 
     _Load_mask_ground_connected_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
@@ -949,6 +982,14 @@ def update_properties(mdl, _Load_mask):
     """
     mdl.set_handler_code(_Load_mask_ground_connected, "property_value_changed",
                          _Load_mask_ground_connected_property_value_changed)
+
+    _Load_mask_pf_mode_3ph_property_value_changed = """
+    comp_script = return_comp_script(mdl, container_handle)
+    comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+    mdl.refresh_icon(container_handle)
+    """
+    mdl.set_handler_code(_Load_mask_pf_mode_3ph, "property_value_changed",
+                         _Load_mask_pf_mode_3ph_property_value_changed)
 
     _Load_mask_phases_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
@@ -974,13 +1015,6 @@ def update_properties(mdl, _Load_mask):
     mdl.set_handler_code(_Load_mask_S_Ts_mode, "property_value_changed",
                          _Load_mask_S_Ts_mode_property_value_changed)
 
-    _Load_mask_Ts_switch_property_value_changed = """
-    comp_script = return_comp_script(mdl, container_handle)
-    mdl.refresh_icon(container_handle)
-    """
-    mdl.set_handler_code(_Load_mask_Ts_switch, "property_value_changed",
-                         _Load_mask_Ts_switch_property_value_changed)
-
 def ports_initialization(mdl, _Load_mask):
     _Load = mdl.get_parent(_Load_mask)
 
@@ -994,10 +1028,10 @@ def ports_initialization(mdl, _Load_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(-30.0, -32.0),
+        terminal_position=(-48, -24),
         rotation="right",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7800, 7864)
     )
     _Load_B1 = mdl.create_port(
@@ -1007,10 +1041,10 @@ def ports_initialization(mdl, _Load_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(0.0, -32.0),
+        terminal_position=(-16, -24),
         rotation="right",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7920, 7864)
     )
     _Load_C1 = mdl.create_port(
@@ -1020,10 +1054,10 @@ def ports_initialization(mdl, _Load_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(30.0, -32.0),
+        terminal_position=(16, -24),
         rotation="right",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8056, 7864)
     )
     _Load_N1 = mdl.create_port(
@@ -1033,9 +1067,9 @@ def ports_initialization(mdl, _Load_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(0.0, 30.0),
+        terminal_position=(48, -24),
         rotation="left",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7920, 8384)
     )

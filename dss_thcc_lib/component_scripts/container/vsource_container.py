@@ -25,22 +25,10 @@ def update_properties(mdl, _Vsource_mask):
         tab_name="General",
         unit="MVA"
     )
-    _Vsource_mask_BaseFreq = mdl.create_property(
-        item_handle=_Vsource_mask,
-        name="BaseFreq",
-        label="Base Freq",
-        widget="edit",
-        combo_values=[],
-        evaluate=True,
-        enabled=True,
-        visible=True,
-        tab_name="General",
-        unit="Hz"
-    )
     _Vsource_mask_global_basefreq = mdl.create_property(
         item_handle=_Vsource_mask,
         name="global_basefreq",
-        label="Global base freq",
+        label="Global base frequency",
         widget="checkbox",
         combo_values=[],
         evaluate=False,
@@ -49,12 +37,24 @@ def update_properties(mdl, _Vsource_mask):
         tab_name="General",
         unit=""
     )
-    _Vsource_mask_ground_connected = mdl.create_property(
+    _Vsource_mask_baseFreq = mdl.create_property(
         item_handle=_Vsource_mask,
-        name="ground_connected",
-        label="Ground-connected",
-        widget="checkbox",
+        name="baseFreq",
+        label="Base frequency",
+        widget="edit",
         combo_values=[],
+        evaluate=True,
+        enabled=True,
+        visible=True,
+        tab_name="General",
+        unit="Hz"
+    )
+    _Vsource_mask_tp_connection = mdl.create_property(
+        item_handle=_Vsource_mask,
+        name="tp_connection",
+        label="Connection method",
+        widget="combo",
+        combo_values=['Y - Grounded', 'In series'],
         evaluate=False,
         enabled=True,
         visible=True,
@@ -295,9 +295,9 @@ def update_properties(mdl, _Vsource_mask):
 
     mdl.set_property_value(mdl.prop(_Vsource_mask, "basekv"), "115.0")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "baseMVA"), "100.0")
-    mdl.set_property_value(mdl.prop(_Vsource_mask, "BaseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "global_basefreq"), "False")
-    mdl.set_property_value(mdl.prop(_Vsource_mask, "ground_connected"), "True")
+    mdl.set_property_value(mdl.prop(_Vsource_mask, "baseFreq"), "60")
+    mdl.set_property_value(mdl.prop(_Vsource_mask, "tp_connection"), "Y - Grounded")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "pu"), "1.0")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "Angle"), "0")
     mdl.set_property_value(mdl.prop(_Vsource_mask, "Frequency"), "60")
@@ -341,9 +341,15 @@ def update_properties(mdl, _Vsource_mask):
 
     ## CHANGED HANDLERS
 
-    _Vsource_mask_ground_connected_property_value_changed = """
+    _Vsource_mask_to_connection_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
     comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+    """
+    mdl.set_handler_code(_Vsource_mask_to_connection, "property_value_changed",
+                         _Vsource_mask_to_connection_property_value_changed)
+
+    _Vsource_mask_ground_connected_property_value_changed = """
+    comp_script = return_comp_script(mdl, container_handle)
     mdl.refresh_icon(container_handle)
     """
     mdl.set_handler_code(_Vsource_mask_ground_connected, "property_value_changed",
@@ -361,10 +367,10 @@ def ports_initialization(mdl, _Vsource_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(32.0, -32.0),
+        terminal_position=(32, -32),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8496, 8096)
     )
     _Vsource_B1 = mdl.create_port(
@@ -373,10 +379,10 @@ def ports_initialization(mdl, _Vsource_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(32.0, 0.0),
+        terminal_position=(32, 0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8496, 8192)
     )
     _Vsource_C1 = mdl.create_port(
@@ -385,9 +391,9 @@ def ports_initialization(mdl, _Vsource_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(32.0, 32.0),
+        terminal_position=(32, 32),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8496, 8288)
     )

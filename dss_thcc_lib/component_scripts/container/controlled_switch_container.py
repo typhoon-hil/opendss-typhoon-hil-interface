@@ -117,6 +117,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
     _Controlled_Switch_mask_enable_fb_out_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
     comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+    mdl.refresh_icon(container_handle)
     """
     mdl.set_handler_code(_Controlled_Switch_mask_enable_fb_out, "property_value_changed",
                          _Controlled_Switch_mask_enable_fb_out_property_value_changed)
@@ -128,13 +129,6 @@ def update_properties(mdl, _Controlled_Switch_mask):
     """
     mdl.set_handler_code(_Controlled_Switch_mask_phases, "property_value_changed",
                          _Controlled_Switch_mask_phases_property_value_changed)
-
-    _Controlled_Switch_mask_initial_state_property_value_changed = """
-    comp_script = return_comp_script(mdl, container_handle)
-    mdl.refresh_icon(container_handle)
-    """
-    mdl.set_handler_code(_Controlled_Switch_mask_initial_state, "property_value_changed",
-                         _Controlled_Switch_mask_initial_state_property_value_changed)
 
 def ports_initialization(mdl, _Controlled_Switch_mask):
     _Controlled_Switch = mdl.get_parent(_Controlled_Switch_mask)
@@ -149,7 +143,7 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="sp",
         direction="in",
         dimension=(1,),
-        terminal_position=('top', 'center'),
+        terminal_position=(0, -48),
         rotation="right",
         flip="flip_none",
         hide_name=True,
@@ -162,7 +156,7 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(-32.0, -32.0),
+        terminal_position=(-32, -32),
         rotation="up",
         flip="flip_none",
         hide_name=True,
@@ -175,7 +169,7 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(-32.0, 0.0),
+        terminal_position=(-32, 0),
         rotation="up",
         flip="flip_none",
         hide_name=True,
@@ -188,7 +182,7 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(-32.0, 32.0),
+        terminal_position=(-32, 32),
         rotation="up",
         flip="flip_none",
         hide_name=True,
@@ -201,7 +195,7 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, -32.0),
+        terminal_position=(32, -32),
         rotation="up",
         flip="flip_horizontal",
         hide_name=True,
@@ -214,7 +208,7 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, 0.0),
+        terminal_position=(32, 0),
         rotation="up",
         flip="flip_horizontal",
         hide_name=True,
@@ -227,7 +221,7 @@ def ports_initialization(mdl, _Controlled_Switch_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, 32.0),
+        terminal_position=(32, 36),
         rotation="up",
         flip="flip_horizontal",
         hide_name=True,
