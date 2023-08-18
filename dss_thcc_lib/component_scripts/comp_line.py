@@ -751,6 +751,29 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     return created_ports, deleted_ports
 
 
+def mask_edit_restore_visibility(mdl, mask_handle):
+    # Restore properties' visual status on load
+    prop_list = [
+        "Load",
+        "selected_object",
+        "xmatrix",
+        "rmatrix",
+        "cmatrix",
+        "R1",
+        "R0",
+        "dC1",
+        "dC0",
+        "X1",
+        "X0",
+        "phases",
+    ]
+
+    for prop_name in prop_list:
+        prop_handle = mdl.prop(mask_handle, prop_name)
+        prop_value = mdl.get_property_value(prop_handle)
+        mask_dialog_dynamics(mdl, mask_handle, prop_handle, prop_value)
+
+
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     comp_handle = mdl.get_parent(mask_handle)
 

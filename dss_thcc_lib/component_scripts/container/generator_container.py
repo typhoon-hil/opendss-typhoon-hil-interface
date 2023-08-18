@@ -61,9 +61,9 @@ def update_properties(mdl, _Generator_mask):
         tab_name="General",
         unit=""
     )
-    _Generator_mask_basefreq = mdl.create_property(
+    _Generator_mask_baseFreq = mdl.create_property(
         item_handle=_Generator_mask,
-        name="basefreq",
+        name="baseFreq",
         label="Nominal Frequency",
         widget="edit",
         combo_values=[],
@@ -1223,7 +1223,7 @@ def update_properties(mdl, _Generator_mask):
     mdl.set_property_value(mdl.prop(_Generator_mask, "kvar"), "0")
     mdl.set_property_value(mdl.prop(_Generator_mask, "kv"), "1")
     mdl.set_property_value(mdl.prop(_Generator_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Generator_mask, "basefreq"), "60")
+    mdl.set_property_value(mdl.prop(_Generator_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Generator_mask, "nom_rpm"), "1800")
     mdl.set_property_value(mdl.prop(_Generator_mask, "kVA"), "1000")
     mdl.set_property_value(mdl.prop(_Generator_mask, "pf"), ".96")
@@ -1427,10 +1427,10 @@ def ports_initialization(mdl, _Generator_mask):
         label="A1",
         kind="pe",
         dimension=(1,),
-        terminal_position=(88.0, -32.0),
+        terminal_position=(48.0, -32.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(5176, 8280)
     )
     _Generator_B1 = mdl.create_port(
@@ -1439,10 +1439,10 @@ def ports_initialization(mdl, _Generator_mask):
         label="B1",
         kind="pe",
         dimension=(1,),
-        terminal_position=(88.0, 0.0),
+        terminal_position=(48.0, 0.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(5176, 8376)
     )
     _Generator_C1 = mdl.create_port(
@@ -1451,10 +1451,10 @@ def ports_initialization(mdl, _Generator_mask):
         label="C1",
         kind="pe",
         dimension=(1,),
-        terminal_position=(88.0, 32.0),
+        terminal_position=(48.0, 32.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(5176, 8472)
     )
     _Generator_Vfd_in = mdl.create_port(
@@ -1464,7 +1464,7 @@ def ports_initialization(mdl, _Generator_mask):
         kind="sp",
         direction="in",
         dimension=(1,),
-        terminal_position=(-88.0, -1.0),
+        terminal_position=(-32.0, -80.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,
@@ -1477,7 +1477,7 @@ def ports_initialization(mdl, _Generator_mask):
         kind="sp",
         direction="in",
         dimension=(1,),
-        terminal_position=(-36.0, -88.0),
+        terminal_position=(-16.0, -80.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,
@@ -1490,7 +1490,7 @@ def ports_initialization(mdl, _Generator_mask):
         kind="sp",
         direction="out",
         dimension=(1,),
-        terminal_position=(-50.0, -88.0),
+        terminal_position=(32.0, -80.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,
@@ -1503,7 +1503,7 @@ def ports_initialization(mdl, _Generator_mask):
         kind="sp",
         direction="out",
         dimension=(1,),
-        terminal_position=(-88.0, -80.0),
+        terminal_position=(16.0, -80.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,
@@ -1516,7 +1516,7 @@ def ports_initialization(mdl, _Generator_mask):
         kind="sp",
         direction="out",
         dimension=(1,),
-        terminal_position=(-88.0, -51.0),
+        terminal_position=(-48.0, 64.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,
@@ -1529,7 +1529,7 @@ def ports_initialization(mdl, _Generator_mask):
         kind="sp",
         direction="out",
         dimension=(1,),
-        terminal_position=(-88.0, -65.0),
+        terminal_position=(-48.0, 48.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,

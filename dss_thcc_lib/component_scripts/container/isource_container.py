@@ -49,9 +49,9 @@ def update_properties(mdl, _Isource_mask):
         tab_name="",
         unit=""
     )
-    _Isource_mask_BaseFreq = mdl.create_property(
+    _Isource_mask_baseFreq = mdl.create_property(
         item_handle=_Isource_mask,
-        name="BaseFreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -81,7 +81,7 @@ def update_properties(mdl, _Isource_mask):
     mdl.set_property_value(mdl.prop(_Isource_mask, "Angle"), "0")
     mdl.set_property_value(mdl.prop(_Isource_mask, "Frequency"), "60")
     mdl.set_property_value(mdl.prop(_Isource_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Isource_mask, "BaseFreq"), "60")
+    mdl.set_property_value(mdl.prop(_Isource_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Isource_mask, "enable_monitoring"), "False")
 
 
@@ -116,7 +116,7 @@ def ports_initialization(mdl, _Isource_mask):
         terminal_position=(32.0, -32.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8496, 8096)
     )
     _Isource_B1 = mdl.create_port(
@@ -128,7 +128,7 @@ def ports_initialization(mdl, _Isource_mask):
         terminal_position=(32.0, 0.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8496, 8192)
     )
     _Isource_C1 = mdl.create_port(
@@ -140,6 +140,6 @@ def ports_initialization(mdl, _Isource_mask):
         terminal_position=(32.0, 32.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(8496, 8288)
     )

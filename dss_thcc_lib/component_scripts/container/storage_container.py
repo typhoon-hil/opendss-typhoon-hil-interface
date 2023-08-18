@@ -61,15 +61,15 @@ def update_properties(mdl, _Storage_mask):
         tab_name="Ratings:3",
         unit=""
     )
-    _Storage_mask_basefreq = mdl.create_property(
+    _Storage_mask_baseFreq = mdl.create_property(
         item_handle=_Storage_mask,
-        name="basefreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
         evaluate=True,
         enabled=True,
-        visible=False,
+        visible=True,
         tab_name="Ratings:3",
         unit="Hz"
     )
@@ -539,7 +539,7 @@ def update_properties(mdl, _Storage_mask):
     mdl.set_property_value(mdl.prop(_Storage_mask, "snap_status"), "Charging")
     mdl.set_property_value(mdl.prop(_Storage_mask, "kv"), "115")
     mdl.set_property_value(mdl.prop(_Storage_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Storage_mask, "basefreq"), "60")
+    mdl.set_property_value(mdl.prop(_Storage_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Storage_mask, "kwrated"), "25")
     mdl.set_property_value(mdl.prop(_Storage_mask, "kwhrated"), "50")
     mdl.set_property_value(mdl.prop(_Storage_mask, "chargetrigger"), "0.2")
@@ -666,10 +666,10 @@ def ports_initialization(mdl, _Storage_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, -32.0),
+        terminal_position=(-40.0, -32.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7104, 8216)
     )
     _Storage_B1 = mdl.create_port(
@@ -678,10 +678,10 @@ def ports_initialization(mdl, _Storage_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, 0.0),
+        terminal_position=(-40.0, 0.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7104, 8312)
     )
     _Storage_C1 = mdl.create_port(
@@ -690,10 +690,10 @@ def ports_initialization(mdl, _Storage_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, 32.0),
+        terminal_position=(-40.0, 32.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7104, 8408)
     )
     _Storage_Load_point = mdl.create_port(
@@ -703,7 +703,7 @@ def ports_initialization(mdl, _Storage_mask):
         kind="sp",
         direction="in",
         dimension=(1,),
-        terminal_position=(-8.0, -44.0),
+        terminal_position=(0.0, -48.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,

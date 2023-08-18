@@ -455,7 +455,7 @@ def define_icon(mdl, mask_handle):
                                          size=8, trim_factor=2)
 
 
-def port_dynamics(mdl, mask_handle):
+def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     comp_handle = mdl.get_parent(mask_handle)
     # deleted_ports = []
     created_ports = {}

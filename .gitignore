@@ -9,3 +9,4 @@ pytest_results/*
 release_zip
 /dist/
 /build/
+**/api_calls_generation/output.txt

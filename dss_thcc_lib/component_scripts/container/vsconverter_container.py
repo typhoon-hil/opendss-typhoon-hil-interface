@@ -469,9 +469,9 @@ def update_properties(mdl, _VSConverter_mask):
         tab_name="",
         unit=""
     )
-    _VSConverter_mask_basefreq = mdl.create_property(
+    _VSConverter_mask_baseFreq = mdl.create_property(
         item_handle=_VSConverter_mask,
-        name="basefreq",
+        name="baseFreq",
         label="",
         widget="edit",
         combo_values=[],
@@ -933,7 +933,7 @@ def update_properties(mdl, _VSConverter_mask):
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "kw"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "pf"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "model"), "0")
-    mdl.set_property_value(mdl.prop(_VSConverter_mask, "basefreq"), "0")
+    mdl.set_property_value(mdl.prop(_VSConverter_mask, "baseFreq"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "r0"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "r1"), "0")
     mdl.set_property_value(mdl.prop(_VSConverter_mask, "x0"), "0")
@@ -1054,10 +1054,10 @@ def ports_initialization(mdl, _VSConverter_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(110.0, -32.0),
+        terminal_position=(32.0, -32.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(9224, 9424)
     )
     _VSConverter_B1 = mdl.create_port(
@@ -1066,10 +1066,10 @@ def ports_initialization(mdl, _VSConverter_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(110.0, 0.0),
+        terminal_position=(32.0, 0.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(9224, 9504)
     )
     _VSConverter_C1 = mdl.create_port(
@@ -1078,10 +1078,10 @@ def ports_initialization(mdl, _VSConverter_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(110.0, 32.0),
+        terminal_position=(32.0, 32.0),
         rotation="down",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(9224, 9584)
     )
     _VSConverter_DC_ = mdl.create_port(
@@ -1090,7 +1090,7 @@ def ports_initialization(mdl, _VSConverter_mask):
         label="DC+",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-110.0, -35.0),
+        terminal_position=(-32.0, -32.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,
@@ -1102,7 +1102,7 @@ def ports_initialization(mdl, _VSConverter_mask):
         label="DC-",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-110.0, 35.0),
+        terminal_position=(-32.0, 32.0),
         rotation="up",
         flip="flip_none",
         hide_name=False,

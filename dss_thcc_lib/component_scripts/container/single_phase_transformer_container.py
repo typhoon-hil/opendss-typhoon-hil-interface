@@ -193,9 +193,9 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
         tab_name="",
         unit=""
     )
-    _Single_Phase_Transformer_mask_Basefreq = mdl.create_property(
+    _Single_Phase_Transformer_mask_baseFreq = mdl.create_property(
         item_handle=_Single_Phase_Transformer_mask,
-        name="Basefreq",
+        name="baseFreq",
         label="Base frequency",
         widget="edit",
         combo_values=[],
@@ -393,7 +393,7 @@ def update_properties(mdl, _Single_Phase_Transformer_mask):
     mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "XArray"), "[1, 1]")
     mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "XscArray"), "[1]")
     mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "global_basefreq"), "True")
-    mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "Basefreq"), "60")
+    mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "baseFreq"), "60")
     mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "percentNoloadloss"), "1")
     mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "percentimag"), "0")
     mdl.set_property_value(mdl.prop(_Single_Phase_Transformer_mask, "regcontrol_on"), "False")
@@ -481,7 +481,7 @@ def ports_initialization(mdl, _Single_Phase_Transformer_mask):
         terminal_position=(-32.0, -16.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7992, 8104)
     )
     _Single_Phase_Transformer_B1 = mdl.create_port(
@@ -493,7 +493,7 @@ def ports_initialization(mdl, _Single_Phase_Transformer_mask):
         terminal_position=(-32.0, 16.0),
         rotation="up",
         flip="flip_none",
-        hide_name=False,
+        hide_name=True,
         position=(7992, 8296)
     )
     _Single_Phase_Transformer_A2 = mdl.create_port(
@@ -503,10 +503,10 @@ def ports_initialization(mdl, _Single_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, -16.0),
+        terminal_position=(32, -16),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(9376, 8192)
     )
     _Single_Phase_Transformer_B2 = mdl.create_port(
@@ -516,9 +516,9 @@ def ports_initialization(mdl, _Single_Phase_Transformer_mask):
         kind="pe",
         direction="out",
         dimension=(1,),
-        terminal_position=(32.0, 16.0),
+        terminal_position=(32, 16),
         rotation="up",
         flip="flip_horizontal",
-        hide_name=False,
+        hide_name=True,
         position=(9376, 8288)
     )
