@@ -348,6 +348,10 @@ def define_icon(mdl, mask_handle):
 def run_stability_analysis(mdl, mask_handle):
     import opendssdirect as dss
 
+    if len(get_all_dss_elements(mdl, comp_type=["Coupling"])) == 0:
+        mdl.info("There are no DSS Coupling elements in the model.")
+        return
+
     debug = False
     stability_data = {}
 
