@@ -2,6 +2,9 @@ from . import output_functions
 import pathlib
 import os
 
+from ..tse2tpt_base_converter import tse_functions as tse_fns
+import json
+
 # Use default mapping
 from .default_mapping import constants
 from .default_mapping import class_picker
@@ -50,6 +53,15 @@ def convert(tse_model, input_json_path, simulation_parameters):
 
     # Merge terminals of ignored components
     remove_list = []
+
+    for component in components:
+        if component.comp_type == "OpenDSS/Monitor":
+            connected_to_mon = tse_fns.connected_components(component, comp_type="all")
+            for comp_mon in connected_to_mon:
+                if not comp_mon.comp_type == constants.DSS_BUS:
+                    if "enable_monitoring" in comp_mon.properties:
+                        comp_mon.properties.get("enable_monitoring").value = True
+
     for component in components:
         if map.ignore_component(component.comp_type):
             output_functions.merge_terminals(component)
