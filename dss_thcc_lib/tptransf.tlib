@@ -801,6 +801,26 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
+                enable_partitioning {
+                    label = "Auto Partitioning Candidate (Beta)"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "Typhoon HIL:6"
+                    no_evaluate
+                }
+
+                coupling_type {
+                    label = "Coupling Type"
+                    widget = combo
+                    combo_values = "None", "Core", "Device"
+                    type = string
+                    default_value = "None"
+                    group = "Typhoon HIL"
+                    no_evaluate
+                    nonvisible
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 

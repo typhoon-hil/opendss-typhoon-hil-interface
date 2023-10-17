@@ -2057,3 +2057,149 @@ def check_topological_conflicts(mdl, dss, cpl_handle, restore_names_dict):
                 vs_topological_components.append(elem_fqn)
 
     return cs_topological_components, vs_topological_components
+
+
+def run_auto_partitioning(mdl, mask_handle):
+
+    import opendssdirect as dss
+    import networkx as nx
+    import matplotlib.pyplot as plt
+    from sklearn.cluster import SpectralClustering
+
+    debug = True
+
+    reset_auto_partitioning(mdl, mask_handle)
+
+    circ_graph = nx.Graph()
+
+    mdl.info(f"Running the Power Flow")
+    sim_with_opendss(mdl, mask_handle)
+    # Get the path to the exported JSON
+    mdlfile = mdl.get_model_file_path()
+    mdlfile_name = pathlib.Path(mdlfile).stem
+    mdlfile_folder = pathlib.Path(mdlfile).parents[0]
+    mdlfile_target_folder = mdlfile_folder.joinpath(mdlfile_name + ' Target files')
+    dss_folder = mdlfile_target_folder.joinpath('dss')
+    dss_file = mdlfile_target_folder.joinpath(dss_folder).joinpath(mdlfile_name + '_master.dss')
+
+    # Load DSS
+    dss.run_command(f'Compile "{dss_file}"')
+    dss.Solution.Solve()
+    dss.run_command("calcv")
+    dss.run_command("calcincmatrix")
+
+    incmatrix = dss.Solution.IncMatrix()
+    incmatrix_cols = dss.Solution.IncMatrixCols()
+    incmatrix_rows = dss.Solution.IncMatrixRows()
+    rows_index = np.array(incmatrix[0:-2:3])
+    cols_index = np.array(incmatrix[1:-1:3])
+    vals = np.array(incmatrix[2::3])
+    circ_matrix = np.zeros((len(rows_index), len(cols_index)))
+    for cnt in range(int((len(incmatrix)-1)/3)):
+        i = int(rows_index[cnt])
+        j = int(cols_index[cnt])
+        circ_matrix[i][j] = vals[cnt]
+
+    mdl.info(f"{incmatrix=}") if debug else None
+    mdl.info(f"{incmatrix_cols=}") if debug else None
+    mdl.info(f"{incmatrix_rows=}") if debug else None
+    mdl.info(f"{circ_matrix=}") if debug else None
+
+    # Pensar em uma estratégia para formar os grafos
+
+    # Create Nodes using bus elements
+    pos_bus = {}
+    for cnt, bus in enumerate(incmatrix_cols):
+        circ_graph.add_node(cnt, bus_name=bus)
+        mdl.info(f"Add Node {cnt}: {bus}") if debug else None
+        # Getting position (initial/simple logic)
+        bus_handle = mdl.get_item(bus)
+        bus_position_x = (mdl.get_position(bus_handle)[0] / 8192 - 1) * 200
+        bus_position_y = (mdl.get_position(bus_handle)[1] / 8192 - 1)
+        pos_bus.update({cnt: (bus_position_x, bus_position_y)})
+
+    # Create Edges
+    for j in range(len(incmatrix_cols)):
+        bus_from_name = incmatrix_cols[j]
+        bus_from_num = j
+        for i in range(len(incmatrix_rows)):
+            pd_name = incmatrix_rows[i]
+            if circ_matrix[i][j] == 1:
+                for aux_j in range(len(incmatrix_cols)):
+                    if circ_matrix[i][aux_j] == -1:
+                        bus_to_name = incmatrix_cols[aux_j]
+                        bus_to_num = aux_j
+                        mdl.info(f"Create Node {pd_name} between {bus_from_name} - {bus_to_name}") if debug else None
+                        circ_graph.add_edge(bus_from_num, bus_to_num, element=pd_name)
+
+    edge_labels = nx.get_edge_attributes(circ_graph, name="element")
+    node_labels = nx.get_node_attributes(circ_graph, name="bus_name")
+
+    # Convert the graph to its adjacency matrix
+    adj_matrix = nx.adjacency_matrix(circ_graph).toarray()
+    num_partitions = 3
+
+    # Use spectral clustering to perform balanced partitioning
+    sc = SpectralClustering(n_clusters=num_partitions, affinity='precomputed', random_state=0)
+    labels = sc.fit_predict(adj_matrix)
+    mdl.info(f"{labels=}")
+
+    partitioned_graphs = []
+    for i in range(num_partitions):
+        subgraph_nodes = [node for node, label in enumerate(labels) if label == i]
+        subgraph = circ_graph.subgraph(subgraph_nodes)
+        partitioned_graphs.append(subgraph)
+
+    # You now have the partitioned subgraphs in the `partitioned_graphs` list
+    for i, subgraph in enumerate(partitioned_graphs):
+        mdl.info(f"Partition {i + 1}: Nodes {subgraph.nodes()}")
+
+    # Getting Interface Edges
+    mdl.info(f"Interface Edges")
+    interface_edges = []
+    edge_config = {}
+    for i, subgraph in enumerate(partitioned_graphs):
+        cpl_id = 0
+        for node in subgraph.nodes():
+            neighbors = circ_graph.neighbors(node)
+            for neighbor in neighbors:
+                mdl.info(f"{node=} - {neighbor=}")
+                if neighbor not in partitioned_graphs[i].nodes():
+                    edge = circ_graph[node][neighbor]["element"]
+                    if edge not in interface_edges:
+                        cpl_id = cpl_id + 1
+                        interface_edges.append(edge)
+                        edge_config.update({f"{edge}": {"from_id": cpl_id, "to_id": cpl_id + 1}})
+
+    for cpl_element, config in edge_config.items():
+        cpl_name = cpl_element.split(".")[-1]
+        cpl_handle = mdl.get_item(cpl_name)
+        if cpl_handle:
+            if mdl.get_property_value(mdl.prop(cpl_handle, "enable_partitioning")):
+                mdl.set_property_value(mdl.prop(cpl_handle, "coupling_type"), "Core")
+
+
+    # Figure
+    fig, ax = plt.subplots(2, 1)
+    ax = ax.flat
+    nx.draw(circ_graph, pos=pos_bus, ax=ax[0])
+    nx.draw_networkx_labels(circ_graph, pos=pos_bus, ax=ax[0], labels=node_labels, verticalalignment="bottom")
+    #nx.draw_networkx_edge_labels(circ_graph, pos=pos_bus, edge_labels=edge_labels, verticalalignment="top", label_pos=0.5)
+
+    #options = {"edgecolors": "tab:gray", "node_size": 800, "alpha": 0.9}
+    colors = ["tab:red", "tab:blue", "tab:green", "tab:cyan", "tab:magenta", "tab:black"]
+    nx.draw(circ_graph, pos=pos_bus, ax=ax[1], label=True)
+    nx.draw_networkx_labels(circ_graph, pos=pos_bus, ax=ax[1], labels=node_labels, verticalalignment="bottom")
+    for i, subgraph in enumerate(partitioned_graphs):
+        mdl.info(f"Partition {i + 1}: Nodes {subgraph.nodes()}")
+        nx.draw_networkx_nodes(circ_graph,  pos=pos_bus, ax=ax[1], nodelist=partitioned_graphs[i], node_color=colors[i], label=True)
+        #nx.draw_networkx_nodes(circ_graph,  pos=pos_bus, ax=ax[1], nodelist=partitioned_graphs[1], node_color="tab:blue")
+
+    plt.show()
+
+
+def reset_auto_partitioning(mdl, mask_handle):
+
+    for int_cpl_handle in get_all_dss_elements(mdl, comp_type=["Line", "Three-Phase Transformer"]):
+
+        mdl.set_property_value(mdl.prop(int_cpl_handle, "coupling_type"), "None")

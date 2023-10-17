@@ -841,6 +841,53 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
 
 def define_icon(mdl, mask_handle):
-    phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
 
-    mdl.set_component_icon_image(mask_handle, f'images/transmission_line_{phases}.svg')
+    phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
+    cpl = mdl.get_property_value(mdl.prop(mask_handle, "coupling_type"))
+    cpl_image = "_cpl" if cpl != "None" else ""
+
+    mdl.set_component_icon_image(mask_handle, f'images/transmission_line_{phases}{cpl_image}.svg')
+
+
+def amp_coupling(mdl, mask_handle, caller_prop_handle=None):
+
+    comp_handle = mdl.get_parent(mask_handle)
+    new_value = mdl.get_property_value(caller_prop_handle)
+
+    comp_port_names = ["A2", "B2", "C2"]
+    comp_port_handles = [mdl.get_item(pname, parent=comp_handle, item_type="port") for pname in comp_port_names]
+    tline_handle = mdl.get_item("TL", parent=comp_handle)
+    tline_port_names = ["a_out", "b_out", "c_out"]
+    tline_port_handles = [mdl.term(tline_handle, tname) for tname in tline_port_names]
+
+    x_pos = mdl.get_position(comp_port_handles[1])[0] - 64
+    y_pos = mdl.get_position(comp_port_handles[1])[1]
+
+    if new_value == "None":
+        coupling_handle = mdl.get_item("Coupling", parent=comp_handle)
+        if coupling_handle:
+            mdl.delete_item(coupling_handle)
+            [mdl.create_connection(tline_port, comp_port) for tline_port, comp_port in zip(tline_port_handles, comp_port_handles)]
+
+    elif new_value == "Core":
+        coupling_handle = mdl.get_item("Coupling", parent=comp_handle)
+        if not coupling_handle:
+            [mdl.delete_item(mdl.find_connections(phandle)[0]) for phandle in comp_port_handles]
+            coupling_handle = mdl.create_component("OpenDSS/Internal Coupling",
+                                                   name="Coupling",
+                                                   parent=comp_handle,
+                                                   position=(x_pos, y_pos))
+            cpl_port_handles = [mdl.term(coupling_handle, pname) for pname in ["A+", "B+", "C+"]]
+            [mdl.create_connection(tline_port, cpl_port) for tline_port, cpl_port in zip(tline_port_handles, cpl_port_handles)]
+            cpl_port_handles = [mdl.term(coupling_handle, pname) for pname in ["A-", "B-", "C-"]]
+            [mdl.create_connection(cpl_port, comp_port) for cpl_port, comp_port in zip(cpl_port_handles, comp_port_handles)]
+            mdl.set_property_value(mdl.prop(coupling_handle, "itm_csnb_type"), "R1")
+            mdl.set_property_value(mdl.prop(coupling_handle, "itm_csnb_r"), "100e4")
+            mdl.set_property_value(mdl.prop(coupling_handle, "itm_vsnb_type"), "R2")
+            mdl.set_property_value(mdl.prop(coupling_handle, "itm_vsnb_r"), "1e-3")
+
+    elif new_value == "Device":
+        pass
+
+    mdl.refresh_icon(comp_handle)
+

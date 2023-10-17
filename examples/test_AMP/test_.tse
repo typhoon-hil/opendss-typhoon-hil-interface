@@ -1,0 +1,449 @@
+version = 4.2
+
+//
+// Saved by sw version: 2023.4 DEV
+//
+
+model "test_" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = True
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = warning
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/SimDSS" SimDSS1 {
+            sim_counter = "137"
+            sim_status = "Sim137 complete"
+        }
+        [
+            position = 8688, 8008
+            size = 96, 96
+        ]
+
+        component "OpenDSS/Vsource" V1 {
+        }
+        [
+            position = 8128, 8176
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Line" line1 {
+        }
+        [
+            position = 8296, 8176
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Line" line2 {
+        }
+        [
+            position = 8464, 8176
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Load" load1 {
+        }
+        [
+            position = 9368, 8328
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Bus" bus1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8208, 8176
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" bus2 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8376, 8176
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" bus3 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8552, 8176
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" line3 {
+        }
+        [
+            position = 8648, 8176
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" bus4 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8736, 8176
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" line4 {
+        }
+        [
+            position = 8840, 8176
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" bus5 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8936, 8176
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" line5 {
+        }
+        [
+            position = 9032, 8176
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" bus6 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9112, 8176
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" line6 {
+        }
+        [
+            position = 9208, 8176
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" bus7 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9288, 8176
+            size = 16, 96
+        ]
+
+        connect V1.A1 bus1.A1 as Connection1
+        connect V1.B1 bus1.B1 as Connection2
+        connect V1.C1 bus1.C1 as Connection3
+        connect bus1.C2 line1.C1 as Connection6
+        connect line1.A2 bus2.A1 as Connection7
+        connect line1.B2 bus2.B1 as Connection8
+        connect line1.C2 bus2.C1 as Connection9
+        connect bus2.A2 line2.A1 as Connection10
+        connect bus2.B2 line2.B1 as Connection11
+        connect bus2.C2 line2.C1 as Connection12
+        connect line2.A2 bus3.A1 as Connection39
+        [
+            breakpoints = 8536, 8144
+        ]
+        connect bus1.B2 line1.B1 as Connection40
+        [
+            breakpoints = 8248, 8176
+        ]
+        connect line1.A1 bus1.A2 as Connection38
+        [
+            breakpoints = 8240, 8144
+        ]
+        connect bus3.B1 line2.B2 as Connection41
+        [
+            breakpoints = 8520, 8176
+        ]
+        connect bus3.C1 line2.C2 as Connection42
+        [
+            breakpoints = 8544, 8208
+        ]
+        connect line3.A2 bus4.A1 as Connection43
+        [
+            breakpoints = 8736, 8144
+        ]
+        connect bus4.B1 line3.B2 as Connection44
+        [
+            breakpoints = 8720, 8176
+        ]
+        connect bus4.C1 line3.C2 as Connection45
+        [
+            breakpoints = 8736, 8208
+        ]
+        connect line4.A2 bus5.A1 as Connection46
+        connect bus5.B1 line4.B2 as Connection47
+        connect bus5.C1 line4.C2 as Connection48
+        connect line5.A2 bus6.A1 as Connection49
+        connect bus6.B1 line5.B2 as Connection50
+        connect bus6.C1 line5.C2 as Connection51
+        connect bus3.A2 line3.A1 as Connection52
+        connect bus3.B2 line3.B1 as Connection53
+        connect bus3.C2 line3.C1 as Connection54
+        connect bus4.A2 line4.A1 as Connection55
+        connect bus4.B2 line4.B1 as Connection56
+        connect bus4.C2 line4.C1 as Connection57
+        connect bus5.A2 line5.A1 as Connection58
+        connect bus5.B2 line5.B1 as Connection59
+        connect bus5.C2 line5.C1 as Connection60
+        connect line6.A2 bus7.A1 as Connection61
+        connect bus7.B1 line6.B2 as Connection62
+        connect bus7.C1 line6.C2 as Connection63
+        connect bus6.A2 line6.A1 as Connection64
+        connect bus6.B2 line6.B1 as Connection65
+        connect bus6.C2 line6.C1 as Connection66
+        connect load1.A1 bus7.A2 as Connection67
+        connect load1.B1 bus7.B2 as Connection68
+        connect load1.C1 bus7.C2 as Connection69
+    }
+
+    default {
+        "OpenDSS/Bus" {
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
+            conf = "on both sides"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            baseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+            enable_partitioning = "True"
+            coupling_type = "None"
+        }
+
+        "OpenDSS/Load" {
+            ground_connected = "False"
+            tp_connection = "Y"
+            phases = "3"
+            Rneut = "inf"
+            Xneut = "inf"
+            global_basefreq = "True"
+            fn = "60"
+            Vn_3ph = "4.16"
+            Sn_3ph = "3500"
+            pf_mode_3ph = "Lag"
+            pf_3ph = "0.9"
+            pf_3ph_set = "0"
+            load_model = "Constant Impedance"
+            zip_vector = "[0,0,1]"
+            zip_vector_Q = "[0,0,1]"
+            zip_internal = "[0,0,1]"
+            zip_internal_Q = "[0,0,1]"
+            zip_internal_n = "[0,0,1]"
+            zip_internal_n_Q = "[0,0,1]"
+            ZIPV = "[0,0,1,0,0,1,0]"
+            Vmaxpu = "1.05"
+            Vminpu = "0.95"
+            model = "2"
+            Pow_ref_s = "Fixed"
+            execution_rate = "300e-6"
+            Tfast = "100e-6"
+            CPL_LMT = "2"
+            v_min_max = "[0.95,1.05]"
+            rate_lmt = "1"
+            zero_seq_remove = "False"
+            q_gain_k = "0.5"
+            r_gain_k = "20"
+            Vn_3ph_CPL = "0"
+            P_CPL = "0"
+            Q_CPL = "0"
+            kV = "0"
+            pf = "0"
+            conn = "0"
+            kVA = "0"
+            baseFreq = "0"
+            gen_ts_en = "True"
+            load_loadshape = "Choose"
+            loadshape_name = "Default"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+            loadshape_int = "1"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            T_Ts = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            T_mode = "Time"
+            S_Ts_mode = "Manual input"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "5"
+            T_Ts_max = "10"
+            del_Ts = "20"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+            tp_connection_combo_values = ""
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            baseFreq = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+            stability_analysis = "Run"
+            stability_analysis = "Run"
+            stability_analysis_reset = "Reset"
+        }
+
+        "OpenDSS/Vsource" {
+            basekv = "115.0"
+            baseMVA = "100.0"
+            global_basefreq = "False"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
+            pu = "1.0"
+            Angle = "0"
+            Frequency = "60"
+            input_method = "Z"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
+            enable_monitoring = "False"
+        }
+    }
+}
