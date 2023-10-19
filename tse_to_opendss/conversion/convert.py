@@ -2,6 +2,9 @@ from . import output_functions
 import pathlib
 import os
 
+from ..tse2tpt_base_converter import tse_functions as tse_fns
+import json
+
 # Use default mapping
 from .default_mapping import constants
 from .default_mapping import class_picker
@@ -48,8 +51,19 @@ def convert(tse_model, input_json_path, simulation_parameters):
             c.comp_type = constants.DSS_CONTAINER
             tse_model.add_component(c)
 
+    """
+    Search for components connected to the monitor component in Schematic editor and set their Monitoring flags
+    """
+    for monitor in (comp for comp in components if comp.comp_type == "OpenDSS/Monitor"):
+        components_connected_to_monitor = tse_fns.connected_components(monitor, comp_type="all")
+        for connected_comp in components_connected_to_monitor:
+            enable_monitoring_prop = connected_comp.properties.get("enable_monitoring")
+            if enable_monitoring_prop:
+                enable_monitoring_prop.value = True
+
     # Merge terminals of ignored components
     remove_list = []
+
     for component in components:
         if map.ignore_component(component.comp_type):
             output_functions.merge_terminals(component)
