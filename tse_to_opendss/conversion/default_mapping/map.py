@@ -10,6 +10,7 @@ def map_component(comp_type):
         DSS_ISOURCE: ["ISOURCE"],
         DSS_FAULT: ["FAULT"],
         DSS_CAPACITOR: ["CAPACITOR"],
+        DSS_REACTOR: ["REACTOR"],
         DSS_LINE: ["LINE"],
         DSS_MANUAL_SWITCH: ["SWLINE"],
         DSS_CTRL_SWITCH: ["CSWLINE"],

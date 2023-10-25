@@ -12,6 +12,8 @@ def create_comp_instance(converted_comp_type, comp_data):
         return Fault(converted_comp_type, **comp_data)
     elif converted_comp_type == "CAPACITOR":
         return Capacitor(converted_comp_type, **comp_data)
+    elif converted_comp_type == "REACTOR":
+        return Reactor(converted_comp_type, **comp_data)
     elif converted_comp_type == "LINE":
         return Line(converted_comp_type, **comp_data)
     elif converted_comp_type == "SWLINE":

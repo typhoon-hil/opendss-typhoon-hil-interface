@@ -157,6 +157,55 @@ def capacitor(obj_name: str) -> dict:
     return mask_properties
 
 
+def reactor(obj_name: str) -> dict:
+    prop_name = "Reactor"
+    mask_properties = {}
+    properties_map = {
+        "kv": "Kv",
+        "kvar": "Kvar",
+        "phases": "phases",
+        "basefreq": "baseFreq",
+    }
+
+    obj_properties = dss.utils.class_to_dataframe("Reactor").transpose()[
+        "Reactor." + obj_name
+    ]
+
+    for prop in properties_map:
+        typhoon_property = properties_map[prop]
+        mask_properties[typhoon_property] = obj_properties[prop]
+
+    #
+    # Check bus 2 for series, grounded or floating connection
+    #
+    bus_2 = obj_properties["bus2"]
+    if not bus_2:
+        # No second bus in Delta case
+        tp_connection = "Δ"
+    else:
+        bus_2_split = bus_2.split(".")
+
+        # Only the Bus name and no numbers means a Series connection
+        if len(bus_2_split) == 1:
+            tp_connection = "Series"
+
+        # There are explicit bus numbers
+        else:
+            bus_2_numbers = bus_2_split[1:]
+            # Grounded connection is all zeros
+            if all(int(n) == 0 for n in bus_2_numbers):
+                tp_connection = "Y - Grounded"
+            else:
+                tp_connection = "Y"
+
+    mask_properties["tp_connection"] = tp_connection
+
+    # Global base frequency checkbox
+    set_global_basefrequency(mask_properties)
+
+    return mask_properties
+
+
 def fault(obj_name: str) -> dict:
     prop_name = "Fault"
     mask_properties = {}
@@ -653,6 +702,7 @@ def convert_mask_properties(opendss_class: str, obj_name: str) -> dict:
 
     component_processing_functions = {
         "Capacitor": capacitor,
+        "Reactor": reactor,
         "Generator": generator,
         "Vsource": vsource,
         "Isource": isource,
