@@ -1,4 +1,7 @@
-import os, pathlib
+import os
+import sys
+import pathlib
+import traceback
 
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
@@ -169,64 +172,61 @@ def sim_with_opendss(mdl, mask_handle):
 
     import opendssdirect as dss
 
-    # try:
-    from tse_to_opendss.tse2tpt_base_converter import tse2tpt
-    import tse_to_opendss
-    # except:
-    #     # If running from development folder instead of installed package
-    #     dss_module_folder = str(pathlib.Path(__file__).parent.parent.parent.parent)
-    #     if not dss_module_folder in sys.path:
-    #         sys.path.append(dss_module_folder)
-    #
-    #     from tse_to_opendss.tse2tpt_base_converter import tse2tpt
-    #     import tse_to_opendss
+    try:
+        from tse_to_opendss.tse2tpt_base_converter import tse2tpt
+        import tse_to_opendss
 
-    mdlfile = mdl.get_model_file_path()
+        mdlfile = mdl.get_model_file_path()
 
-    if mdlfile:
-        mdl.export_model_to_json()
-    else:
-        save_dialog = FileDialog(mdl, mask_handle)
-        mdlfile = save_dialog.save_file()
-        if not mdlfile:
-            raise Exception("The model must be saved to allow the OpenDSS simulation")
-
-    # Get the path to the exported JSON
-    mdlfile_name = pathlib.Path(mdlfile).stem
-    mdlfile_folder = pathlib.Path(mdlfile).parents[0]
-    mdlfile_target_folder = mdlfile_folder.joinpath(mdlfile_name + ' Target files')
-    dss_folder = mdlfile_target_folder.joinpath('dss')
-    json_file_path = mdlfile_target_folder.joinpath(mdlfile_name + '.json')
-    dss_file = mdlfile_target_folder.joinpath(dss_folder).joinpath(mdlfile_name + '_master.dss')
-
-    # Simulation parameters
-    sim_parameters = {}
-    sim_parameters["sim_mode"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "sim_mode"))
-    sim_parameters["algorithm"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "algorithm"))
-    sim_parameters["voltagebases"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "voltagebases"))
-    sim_parameters["basefrequency"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "baseFreq"))
-    sim_parameters["maxiter"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "maxiter"))
-    sim_parameters["miniterations"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "miniterations"))
-    sim_parameters["loadmodel"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "loadmodel"))
-    sim_parameters["stepsize"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tsstp"))
-    sim_parameters["number"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tspoints"))
-
-    if tse2tpt.start_conversion(json_file_path, tse_to_opendss, simulation_parameters=sim_parameters):
-        # Compile dss model
-        comp_result = dss.utils.run_command(f'Compile "{str(dss_file)}"')
-        mdl.info(f"Converting and solving {str(mdlfile_name)}...")
-        stat_prop = mdl.prop(mask_handle, 'sim_status')
-        counter_prop = mdl.prop(mask_handle, 'sim_counter')
-        cur_count = int(mdl.get_property_value(counter_prop))
-        mdl.set_property_value(counter_prop, str(cur_count + 1))
-        if not comp_result:
-            mdl.set_property_value(stat_prop, f"Sim{cur_count + 1} complete")
-            mdl.info("Done.")
-
+        if mdlfile:
+            mdl.export_model_to_json()
         else:
-            mdl.set_property_value(stat_prop, f"Sim{cur_count + 1} failed")
-            mdl.error(str(comp_result), context=comp_handle)
+            save_dialog = FileDialog(mdl, mask_handle)
+            mdlfile = save_dialog.save_file()
+            if not mdlfile:
+                raise Exception("The model must be saved to allow the OpenDSS simulation")
 
+        # Get the path to the exported JSON
+        mdlfile_name = pathlib.Path(mdlfile).stem
+        mdlfile_folder = pathlib.Path(mdlfile).parents[0]
+        mdlfile_target_folder = mdlfile_folder.joinpath(mdlfile_name + ' Target files')
+        dss_folder = mdlfile_target_folder.joinpath('dss')
+        json_file_path = mdlfile_target_folder.joinpath(mdlfile_name + '.json')
+        dss_file = mdlfile_target_folder.joinpath(dss_folder).joinpath(mdlfile_name + '_master.dss')
+
+        # Simulation parameters
+        sim_parameters = {}
+        sim_parameters["sim_mode"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "sim_mode"))
+        sim_parameters["algorithm"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "algorithm"))
+        sim_parameters["voltagebases"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "voltagebases"))
+        sim_parameters["basefrequency"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "baseFreq"))
+        sim_parameters["maxiter"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "maxiter"))
+        sim_parameters["miniterations"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "miniterations"))
+        sim_parameters["loadmodel"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "loadmodel"))
+        sim_parameters["stepsize"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tsstp"))
+        sim_parameters["number"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tspoints"))
+
+        if tse2tpt.start_conversion(json_file_path, tse_to_opendss, simulation_parameters=sim_parameters):
+            # Compile dss model
+            comp_result = dss.utils.run_command(f'Compile "{str(dss_file)}"')
+            mdl.info(f"Converting and solving {str(mdlfile_name)}...")
+            stat_prop = mdl.prop(mask_handle, 'sim_status')
+            counter_prop = mdl.prop(mask_handle, 'sim_counter')
+            cur_count = int(mdl.get_property_value(counter_prop))
+            mdl.set_property_value(counter_prop, str(cur_count + 1))
+            if not comp_result:
+                mdl.set_property_value(stat_prop, f"Sim{cur_count + 1} complete")
+                mdl.info("Done.")
+
+            else:
+                mdl.set_property_value(stat_prop, f"Sim{cur_count + 1} failed")
+                mdl.error(str(comp_result), context=comp_handle)
+
+    except Exception as exc:
+        _, _, tb = sys.exc_info()
+        extracted_tb = traceback.extract_tb(tb)
+        raise type(exc)(
+            f"{exc} (File: '{extracted_tb[-1].filename}', Line: {extracted_tb[-1].lineno})")
 
 def run_command(mdl, mask_handle):
     import opendssdirect as dss
