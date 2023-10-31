@@ -1,24 +1,82 @@
 import numpy as np
 import ast
 import re
+import dss_thcc_lib.component_scripts.util as util
 
+
+def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""):
+
+    num_phases = props_state.get("phases")
+
+    #
+    # Which ports are expected
+    #
+    bus_port_1_name = "1"
+    multiline_ports_1 = ["A1", "B1", "C1", "N1"][:int(num_phases)]
+    bus_port_2_name = "2"
+    multiline_ports_2 = ["A2", "B2", "C2", "N2"][:int(num_phases)]
+
+    port_config_dict = {
+        bus_port_1_name: {
+            "multiline_ports": multiline_ports_1,
+            "side": "left",
+            "bus_terminal_position": (-32, 0),
+            "hide_name": True,
+        },
+        bus_port_2_name: {
+            "multiline_ports": multiline_ports_2,
+            "side": "right",
+            "bus_terminal_position": (32, 0),
+            "hide_name": True,
+        },
+    }
+
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    if num_phases == "4":
+        terminal_positions = {
+            "A1": (-32, -48),
+            "A2": (32, -48),
+            "B1": (-32, -16),
+            "B2": (32, -16),
+            "C1": (-32, 16),
+            "C2": (32, 16),
+            "N1": (-32, 48),
+            "N2": (32, 48),
+        }
+    elif num_phases == "3":
+        terminal_positions = {
+            "A1": (-32, -32),
+            "A2": (32, -32),
+            "B1": (-32, 0),
+            "B2": (32, 0),
+            "C1": (-32, 32),
+            "C2": (32, 32),
+        }
+    elif num_phases == "2":
+        terminal_positions = {
+            "A1": (-32, -16),
+            "A2": (32, -16),
+            "B1": (-32, 16),
+            "B2": (32, 16),
+        }
+    elif num_phases == "1":
+        terminal_positions = {
+            "A1": (-32, 0),
+            "A2": (32, 0),
+        }
+
+    return port_config_dict, tag_config_dict, terminal_positions
 
 def load_line_parameters(mdl, container_handle):
     import os
-    #import sys
     import pathlib
-
-    # try:
-    #from tse_to_opendss.tse2tpt_base_converter import tse2tpt
-    #import tse_to_opendss
-    # except:
-        # If running from development folder instead of installed package
-        # dss_module_folder = str(pathlib.Path(__file__).parent.parent.parent.parent)
-        # if not dss_module_folder in sys.path:
-        #     sys.path.append(dss_module_folder)
-        #
-        # from tse_to_opendss.tse2tpt_base_converter import tse2tpt
-        # import tse_to_opendss
 
     import dss_thcc_lib.gui_scripts.load_object as load_obj
 
@@ -41,7 +99,6 @@ def load_line_parameters(mdl, container_handle):
         getname = "linecodes"
     elif obj_type == "LineGeometry":
         getname = "linegeometries"
-    obj_dicts = {getname: {}}
 
     try:
         with open(fname, 'r') as f:
@@ -346,6 +403,55 @@ def compute_sequence_values(mdl, mask_handle, zseq, mode):
     elif mode == "matrix":
         return [rseq, xseq, xcoup]
 
+def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+    #
+    # Get new property values to be applied
+    #
+    new_prop_values = {}
+    current_pass_prop_values = {k: str(v) for k, v in mdl.get_property_values(comp_handle).items()}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = str(mdl.get_property_value(p))
+
+    #
+    # If just toggling between multiline/sld, stop right after it's done
+    #
+    if calling_prop_name == "sld_mode":
+        sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
+        if new_value:
+            if new_value != old_value:
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+        else:
+            util.convert_to_multiline(mdl, mask_handle, sld_info)
+        return
+
+    # Topology dynamics need to be applied on multiline format
+    currently_sld = mdl.get_item("1", parent=comp_handle, item_type="port")
+    if currently_sld:
+        # The terminal related to the current property hasn't been created yet
+        modified_prop_values = dict(current_pass_prop_values)
+        modified_prop_values[calling_prop_name] = old_value
+        sld_info = get_sld_conversion_info(mdl, mask_handle, modified_prop_values)
+        util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+    #
+    # Perform the port / connection changes
+    #
+    created_ports, _ = port_dynamics(mdl, mask_handle)
+    toggle_coupling(mdl, mask_handle, created_ports)
+
+    # When property values reached the final state, return to single-line if needed
+    if new_prop_values == current_pass_prop_values:
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
+            util.convert_to_sld(mdl, mask_handle, sld_info)
 
 def toggle_coupling(mdl, mask_handle, created_ports):
     """

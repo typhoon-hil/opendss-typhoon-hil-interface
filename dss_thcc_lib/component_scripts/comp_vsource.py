@@ -1,8 +1,58 @@
 import numpy as np
 from math import log10, floor
-
+import dss_thcc_lib.component_scripts.util as util
 
 x0, y0 = (8192, 8192)
+
+
+def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""):
+
+    tp_connection = props_state.get("tp_connection")
+
+    multiline_ports_1 = ["A1", "B1", "C1"]
+
+    if tp_connection == "In series":
+        multiline_ports_2 = ["A2", "B2", "C2"]
+
+    port_config_dict = {
+        "1": {
+            "multiline_ports": multiline_ports_1,
+            "side": "right",
+            "bus_terminal_position": (32, 0),
+            "hide_name": True,
+        },
+    }
+
+    if tp_connection == "In series":
+        port_config_dict.update(
+            {
+                "2": {
+                    "multiline_ports": multiline_ports_2,
+                    "side": "left",
+                    "bus_terminal_position": (-32, 0),
+                    "hide_name": True,
+                }
+            }
+        )
+
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    terminal_positions = {
+        "A1": (32, -32),
+        "B1": (32, 0),
+        "C1": (32, 32),
+        "A2": (0, -32),
+        "B2": (0, 0),
+        "C2": (0, 32),
+    }
+
+    return port_config_dict, tag_config_dict, terminal_positions
 
 
 def toggle_frequency_prop(mdl, container_handle, init=False):
@@ -36,6 +86,57 @@ def update_frequency_property(mdl, mask_handle, init=False):
             else:
                 mdl.set_property_value(global_frequency_prop, False)
         toggle_frequency_prop(mdl, mask_handle, init)
+
+
+def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+    #
+    # Get new property values to be applied
+    #
+    new_prop_values = {}
+    current_pass_prop_values = {k: str(v) for k, v in mdl.get_property_values(comp_handle).items()}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = str(mdl.get_property_value(p))
+
+    #
+    # If just toggling between multiline/sld, stop right after it's done
+    #
+    if calling_prop_name == "sld_mode":
+        sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
+        if new_value:
+            if new_value != old_value:
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+        else:
+            util.convert_to_multiline(mdl, mask_handle, sld_info)
+        return
+
+    # Topology dynamics need to be applied on multiline format
+    currently_sld = mdl.get_item("1", parent=comp_handle, item_type="port")
+    if currently_sld:
+        # The terminal related to the current property hasn't been created yet
+        modified_prop_values = dict(current_pass_prop_values)
+        modified_prop_values[calling_prop_name] = old_value
+        sld_info = get_sld_conversion_info(mdl, mask_handle, modified_prop_values)
+        util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+    #
+    # Perform the port / connection changes
+    #
+    ports, _ = port_dynamics(mdl, mask_handle)
+    update_connections(mdl, mask_handle, ports)
+
+    # When property values reached the final state, return to single-line if needed
+    if new_prop_values == current_pass_prop_values:
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
+            util.convert_to_sld(mdl, mask_handle, sld_info)
 
 
 def update_connections(mdl, container_handle, ports):
@@ -97,6 +198,7 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
     created_ports = {}
 
     tp_connection = mdl.get_property_value(mdl.prop(container_handle, "tp_connection"))
+
     if tp_connection == "Y - Grounded":
         # Delete A2-C2 ports
         a2 = mdl.get_item("A2", parent=comp_handle, item_type="port")
@@ -114,7 +216,6 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
                 mdl.delete_item(port)
 
     else:
-
         a2 = mdl.create_port(
             name="A2",
             parent=comp_handle,
@@ -151,11 +252,7 @@ def port_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
     a1 = mdl.get_item("A1", parent=comp_handle, item_type="port")
     b1 = mdl.get_item("B1", parent=comp_handle, item_type="port")
     c1 = mdl.get_item("C1", parent=comp_handle, item_type="port")
-    # if tp_connection == "Neutral point accessible":
-    #     mdl.set_port_properties(a1, terminal_position=(32, -48))
-    #     mdl.set_port_properties(b1, terminal_position=(32, -16))
-    #     mdl.set_port_properties(c1, terminal_position=(32, 16))
-    # else:
+
     mdl.set_port_properties(a1, terminal_position=(32, -32))
     mdl.set_port_properties(b1, terminal_position=(32, 0))
     mdl.set_port_properties(c1, terminal_position=(32, 32))

@@ -147,7 +147,7 @@ library "OpenDSS" {
                 ENDCODE
 
                 CODE define_icon
-                    comp_script = return_comp_script(mdl, item_handle)
+                    import dss_thcc_lib.component_scripts.comp_fault as comp_script
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 
