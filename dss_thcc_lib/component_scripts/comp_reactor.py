@@ -398,13 +398,13 @@ def define_icon(mdl, mask_handle):
     #
     # Set image
     #
-    filenames = {"1": {"In series": "cap_1S",
-                       "Y - Grounded": "cap_1Y_g"},
-                 "2": {"In series": "cap_2S"},
-                 "3": {"In series": "cap_3S",
-                       "Y - Grounded": "cap_3Y_g",
-                       "Y - Neutral point accessible": "cap_3Y_n",
-                       "Δ": "cap_3D"},
+    filenames = {"1": {"In series": "ind_1S",
+                       "Y - Grounded": "ind_1Y_g"},
+                 "2": {"In series": "ind_2S"},
+                 "3": {"In series": "ind_3S",
+                       "Y - Grounded": "ind_3Y_g",
+                       "Y - Neutral point accessible": "ind_3Y_n",
+                       "Δ": "ind_3D"},
                  }
 
     if filenames[phases].get(tp_connection):

@@ -108,4 +108,4 @@ class Capacitor(TwoTerminal):
     def created_component_instances(self):
         """ Some TSE components may result in multiple converted components. """
 
-        return [self]
+        return self.created_instances_list
