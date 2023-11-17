@@ -1,15 +1,21 @@
 import dss_thcc_lib.component_scripts.util as util
+import importlib
+import re
+
+importlib.reload(util)
 old_state = {}
 
+def update_library_version_info(mdl, mask_handle):
+    util.set_component_library_version(mdl, mask_handle)
 
 def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""):
 
-    phase_a = props_state.get("phase_a")
-    phase_b = props_state.get("phase_b")
-    phase_c = props_state.get("phase_c")
-    phase_n = props_state.get("phase_n")
+    phase_a = props_state.get("phase_a") == "True"
+    phase_b = props_state.get("phase_b") == "True"
+    phase_c = props_state.get("phase_c") == "True"
+    phase_n = props_state.get("phase_n") == "True"
     sides_conf = props_state.get("conf")
-    second_side_is_multiline = props_state.get("second_side_is_multiline")
+    second_side_is_multiline = props_state.get("second_side_is_multiline") == "True"
     num_phases = sum((phase_a, phase_b, phase_c, phase_n))
 
     #
@@ -17,6 +23,8 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
     #
     if apply_modification == "second_side_is_multiline":
         bus_port_1_name = "2"
+        bus_port_1_side = "right"
+        bus_port_1_term_pos = (8, 0)
         new_ports_1 = {
             "A2": phase_a,
             "B2": phase_b,
@@ -25,6 +33,8 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
         }
     else:
         bus_port_1_name = "1"
+        bus_port_1_side = "left"
+        bus_port_1_term_pos = (-8, 0)
         new_ports_1 = {
             "A1": phase_a,
             "B1": phase_b,
@@ -46,9 +56,8 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
     port_config_dict = {
         bus_port_1_name: {
             "multiline_ports": multiline_ports_1,
-            "side": "left",
-            "bus_terminal_position": (-8, 0),
-            "hide_name": True,
+            "side": bus_port_1_side,
+            "bus_terminal_position": bus_port_1_term_pos
         },
     }
 
@@ -58,8 +67,7 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
                 bus_port_2_name: {
                     "multiline_ports": multiline_ports_2,
                     "side": "right",
-                    "bus_terminal_position": (8, 0),
-                    "hide_name": True,
+                    "bus_terminal_position": (8, 0)
                 }
             }
         )
@@ -80,7 +88,7 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
         return term_x, term_y
 
     terminal_positions = {
-        term_name: calc_term_position("left", term_name, idx)
+        term_name: calc_term_position(bus_port_1_side, term_name, idx)
         for idx, term_name in enumerate(multiline_ports_1)
     }
     if sides_conf == "on both sides" and not second_side_is_multiline:
@@ -92,7 +100,6 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
         )
 
     return port_config_dict, tag_config_dict, terminal_positions
-
 
 def pos_offset(pos):
     """
@@ -117,65 +124,72 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
     # Get new property values to be applied
     #
     new_prop_values = {}
-    current_pass_prop_values = mdl.get_property_values(comp_handle)
+    current_pass_prop_values = {k: str(v) for k, v in mdl.get_property_values(comp_handle).items()}
     for prop in mdl.get_property_values(comp_handle):
         p = mdl.prop(mask_handle, prop)
-        new_prop_values[prop] = mdl.get_property_disp_value(p)
+        new_prop_values[prop] = str(mdl.get_property_value(p))
 
     global old_state
 
-    if calling_prop_name == "init_code":
-        sld_mode = current_pass_prop_values["sld_mode"]
-        second_side_is_multiline = current_pass_prop_values["second_side_is_multiline"]
-        if sld_mode and second_side_is_multiline:
+    currently_sld = mdl.get_item("1", parent=comp_handle, item_type="port")
+
+    if calling_prop_name == "sld_mode":
+        old_state[comp_handle] = current_pass_prop_values
+        sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
+        if new_value in (True, "True"):
+            if not currently_sld:
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+        elif currently_sld:
+            util.convert_to_multiline(mdl, mask_handle, sld_info, hide_names=False)
+        return
+
+    if calling_prop_name == "second_side_is_multiline":
+        old_state[comp_handle] = current_pass_prop_values
+        if current_pass_prop_values["sld_mode"] in (True, "True"):
             sld_info = get_sld_conversion_info(
                 mdl,
                 mask_handle,
                 current_pass_prop_values,
                 apply_modification="second_side_is_multiline"
             )
-            util.convert_to_multiline(mdl, mask_handle, sld_info)
-        else:
+            if current_pass_prop_values["second_side_is_multiline"] in (True, "True"):
+                util.convert_to_multiline(mdl, mask_handle, sld_info, hide_names=False)
+            else:
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+        return
+
+    if calling_prop_name == "init_code":
+        sld_mode = current_pass_prop_values["sld_mode"] in (True, "True")
+        second_side_is_multiline = current_pass_prop_values["second_side_is_multiline"] in (True, "True")
+        if sld_mode:
+            if not currently_sld:
+                sld_info = get_sld_conversion_info(
+                    mdl,
+                    mask_handle,
+                    current_pass_prop_values,
+                    apply_modification="second_side_is_multiline" if second_side_is_multiline else None
+                )
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+        elif currently_sld:
             sld_info = get_sld_conversion_info(
                 mdl,
                 mask_handle,
                 current_pass_prop_values
             )
-            util.convert_to_multiline(mdl, mask_handle, sld_info)
-        return
+            util.convert_to_multiline(mdl, mask_handle, sld_info, hide_names=False)
+        if not new_value:
+            # new_value holds the _called_during_load flag
+            return
 
-    if calling_prop_name == "sld_mode":
-        old_state[comp_handle] = current_pass_prop_values
-        sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
-        if new_value:
-            if new_value != old_value:
-                util.convert_to_sld(mdl, mask_handle, sld_info)
-        else:
-            util.convert_to_multiline(mdl, mask_handle, sld_info)
-        return
-
-    if calling_prop_name == "second_side_is_multiline_prop":
-        old_state[comp_handle] = current_pass_prop_values
-        if new_value != old_value:
-            if current_pass_prop_values["sld_mode"]:
-                if current_pass_prop_values["second_side_is_multiline_prop"]:
-                    sld_info = get_sld_conversion_info(
-                        mdl,
-                        mask_handle,
-                        current_pass_prop_values,
-                        apply_modification="second_side_is_multiline"
-                    )
-                    util.convert_to_multiline(mdl, mask_handle, sld_info)
-        return
-
+    mdl.info(f"{calling_prop_name=}")
+    mdl.info(f"{old_value=}")
     # Topology dynamics need to be applied on multiline format
-    currently_sld = mdl.get_item("1", parent=comp_handle, item_type="port")
     if currently_sld:
         # The terminal related to the current property hasn't been created yet
         modified_prop_values = dict(current_pass_prop_values)
         modified_prop_values[calling_prop_name] = old_value
         sld_info = get_sld_conversion_info(mdl, mask_handle, modified_prop_values)
-        util.convert_to_multiline(mdl, mask_handle, sld_info)
+        util.convert_to_multiline(mdl, mask_handle, sld_info, hide_names=False)
 
     #
     # If the property values are the same as on the previous run, stop
@@ -306,6 +320,7 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
 
     # When property values reached the final state, return to single-line if needed
     if new_prop_values == current_pass_prop_values:
+        mdl.info(f"{current_pass_prop_values=}")
         if new_prop_values.get("sld_mode") in ("True", True):
             sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
             util.convert_to_sld(mdl, mask_handle, sld_info)
@@ -364,6 +379,8 @@ def define_icon(mdl, mask_handle):
 
 
 def retro_compatibility(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
     phase_a_prop = mdl.prop(mask_handle, "phase_a")
     phase_b_prop = mdl.prop(mask_handle, "phase_b")
     phase_c_prop = mdl.prop(mask_handle, "phase_c")
@@ -385,3 +402,12 @@ def retro_compatibility(mdl, mask_handle):
             mdl.set_property_value(prop_mapping[letter], True)
         else:
             mdl.set_property_value(prop_mapping[letter], False)
+
+
+    sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+    libver_prop = mdl.prop(mask_handle, "library_version")
+    lib_version = mdl.get_property_value(libver_prop)
+
+    # Pre-SLD compatibility
+    if lib_version < 51:
+        mdl.set_property_value(sld_mode_prop, False)

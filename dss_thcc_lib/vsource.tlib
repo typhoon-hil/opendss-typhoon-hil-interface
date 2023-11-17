@@ -43,7 +43,7 @@ library "OpenDSS" {
             component "core/Ground" gnd1 {
             }
             [
-                position = 7888, 8192
+                position = 7892, 8192
                 rotation = right
             ]
 
@@ -54,95 +54,41 @@ library "OpenDSS" {
                 R_metric = "r_matrix"
                 model_def = "RLC"
                 unit_sys = "metric"
+                num_of_phases = "3"
             }
             [
                 position = 8304, 8192
                 size = 256, 72
             ]
 
-            component "core/el_bus" 1_bus {
-            }
-            [
-                position = 8688, 8192
-            ]
-
-            port 1 {
-                position = 32, 0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 8784, 8192
-                scale = -1, 1
-            ]
-
-            tag A1_repl_1 {
-                value = "A1_repl"
-                scope = local
+            port A1 {
+                position = 32.0, -32.0
                 kind = pe
             }
             [
                 position = 8496, 8096
-                rotation = down
                 hide_name = True
-                size = 60, 20
+                rotation = down
             ]
 
-            tag B1_repl_1 {
-                value = "B1_repl"
-                scope = local
+            port B1 {
+                position = 32.0, 0.0
                 kind = pe
             }
             [
                 position = 8496, 8192
-                rotation = down
                 hide_name = True
-                size = 60, 20
+                rotation = down
             ]
 
-            tag C1_repl_1 {
-                value = "C1_repl"
-                scope = local
+            port C1 {
+                position = 32.0, 32.0
                 kind = pe
             }
             [
                 position = 8496, 8288
+                hide_name = True
                 rotation = down
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag A1_repl_2 {
-                value = "A1_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 8592, 8144
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag B1_repl_2 {
-                value = "B1_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 8592, 8192
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag C1_repl_2 {
-                value = "C1_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 8592, 8240
-                hide_name = True
-                size = 60, 20
             ]
 
             junction junction_abc pe
@@ -153,17 +99,13 @@ library "OpenDSS" {
             connect Vb.p_node TL1.b_in as Connection25
             connect Va.p_node TL1.a_in as Connection26
             connect Vc.p_node TL1.c_in as Connection27
+            connect TL1.a_out A1 as Connection28
+            connect B1 TL1.b_out as Connection29
+            connect TL1.c_out C1 as Connection30
             connect gnd1.node junction_abc as Connection31
             connect Vc.n_node junction_abc as Connection32
             connect Vb.n_node junction_abc as Connection33
             connect Va.n_node junction_abc as Connection34
-            connect A1_repl_2 1_bus.t1 as Connection35
-            connect B1_repl_2 1_bus.t2 as Connection36
-            connect C1_repl_2 1_bus.t3 as Connection37
-            connect 1 1_bus.multi_dim as Connection38
-            connect TL1.a_out A1_repl_1 as Connection39
-            connect TL1.b_out B1_repl_1 as Connection40
-            connect TL1.c_out C1_repl_1 as Connection41
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A Vsource object is a voltage source behind an impedance. The most common way to use a voltage source object is with the first terminal connected to one bus with the second terminal connected to ground or neutral point. </p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> It is possible to connect it to two different buses by selecting “In series” on the connection method property.</p></body></html>"
@@ -176,8 +118,11 @@ library "OpenDSS" {
                     default_value = True
 
                     CODE property_value_changed
+                        import importlib
+                        import dss_thcc_lib.component_scripts.comp_vsource as comp_script
+                        importlib.reload(comp_script)
+
                         if new_value != old_value:
-                            comp_script = return_comp_script(mdl, container_handle)
                             comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
@@ -461,6 +406,14 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
+                library_version {
+                    label = "OpenDSS library version number"
+                    widget = edit
+                    type = real
+                    default_value = 0
+                    nonvisible
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
@@ -481,15 +434,18 @@ library "OpenDSS" {
 
                 CODE init
                     import importlib
-
                     import dss_thcc_lib.component_scripts.comp_vsource as comp_script
+
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    if _called_during_load:
+                        comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.update_library_version_info(mdl, item_handle)
+
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
                     comp_script.define_icon(mdl, item_handle)
-                    comp_script.retro_compatibility(mdl, item_handle)
-                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value="init", old_value="")
                 ENDCODE
 
                 CODE pre_compile

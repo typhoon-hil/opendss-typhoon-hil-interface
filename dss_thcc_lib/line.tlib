@@ -462,6 +462,14 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
+                library_version {
+                    label = "OpenDSS library version number"
+                    widget = edit
+                    type = real
+                    default_value = 0
+                    nonvisible
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
@@ -541,15 +549,17 @@ library "OpenDSS" {
 
                 CODE init
                     import importlib
-
                     import dss_thcc_lib.component_scripts.comp_line as comp_script
+
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
-                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value="init", old_value="")
+                    if _called_during_load:
+                        comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.update_library_version_info(mdl, item_handle)
 
-                    print("topology_dynamics finished")
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
 
                     hil_device = mdl.core_model.configuration.hil_device
                     prop_handle = mdl.prop(item_handle, "coupling")
@@ -559,8 +569,6 @@ library "OpenDSS" {
                     else:
                         new_combo_values = ["None", "Core coupling", "Device coupling"]
                     mdl.set_property_combo_values(prop_handle, new_combo_values)
-
-                    print("init finished")
                 ENDCODE
 
                 CODE configuration_changed

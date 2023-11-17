@@ -4,6 +4,8 @@ import dss_thcc_lib.component_scripts.util as util
 
 x0, y0 = (8192, 8192)
 
+def update_library_version_info(mdl, mask_handle):
+    util.set_component_library_version(mdl, mask_handle)
 
 def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""):
 
@@ -409,6 +411,13 @@ def get_source_values(mdl, container_handle):
 
 
 def retro_compatibility(mdl, mask_handle):
+    sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+    libver_prop = mdl.prop(mask_handle, "library_version")
+    lib_version = mdl.get_property_value(libver_prop)
+
+    # Pre-SLD compatibility
+    if lib_version < 51:
+        mdl.set_property_value(sld_mode_prop, False)
 
     prop_handle = mdl.prop(mask_handle, "tp_connection")
     ground_connected = mdl.get_property_value(prop_handle)

@@ -5,191 +5,86 @@ library "OpenDSS" {
     component Subsystem Root {
         component Subsystem Bus {
             layout = static
-            component "core/el_bus" 1_bus {
-            }
-            [
-                position = 7800, 8192
-                scale = -1, 1
-            ]
-
-            component "core/el_bus" 2_bus {
-            }
-            [
-                position = 8584, 8192
-            ]
-
-            port 1 {
-                position = -8, 0
+            port A1 {
+                position = -8, -48.0
                 kind = pe
                 direction =  in
-            }
-            [
-                position = 7704, 8192
-            ]
-
-            port 2 {
-                position = 8, 0
-                kind = pe
-                direction =  in
-            }
-            [
-                position = 8680, 8192
-                scale = -1, 1
-            ]
-
-            tag A1_repl_1 {
-                value = "A1_repl"
-                scope = local
-                kind = pe
             }
             [
                 position = 7992, 7992
-                hide_name = True
-                size = 60, 20
             ]
 
-            tag B1_repl_1 {
-                value = "B1_repl"
-                scope = local
+            port B1 {
+                position = -8, -16.0
                 kind = pe
+                direction =  in
             }
             [
                 position = 7992, 8192
-                hide_name = True
-                size = 60, 20
             ]
 
-            tag C1_repl_1 {
-                value = "C1_repl"
-                scope = local
+            port C1 {
+                position = -8, 16.0
                 kind = pe
+                direction =  in
             }
             [
                 position = 7992, 8392
-                hide_name = True
-                size = 60, 20
             ]
 
-            tag A2_repl_1 {
-                value = "A2_repl"
-                scope = local
+            port A2 {
+                position = 8, -48.0
                 kind = pe
+                direction =  in
             }
             [
                 position = 8392, 7992
-                hide_name = True
                 scale = -1, 1
-                size = 60, 20
             ]
 
-            tag B2_repl_1 {
-                value = "B2_repl"
-                scope = local
+            port B2 {
+                position = 8, -16.0
                 kind = pe
+                direction =  in
             }
             [
                 position = 8392, 8192
-                hide_name = True
                 scale = -1, 1
-                size = 60, 20
             ]
 
-            tag C2_repl_1 {
-                value = "C2_repl"
-                scope = local
+            port C2 {
+                position = 8, 16.0
                 kind = pe
+                direction =  in
             }
             [
                 position = 8392, 8392
-                hide_name = True
                 scale = -1, 1
-                size = 60, 20
             ]
 
-            tag A1_repl_2 {
-                value = "A1_repl"
-                scope = local
+            port N1 {
+                position = -8, 48.0
                 kind = pe
+                direction =  in
             }
             [
-                position = 7896, 8144
-                hide_name = True
+                position = 7992, 8592
+            ]
+
+            port N2 {
+                position = 8, 48.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 8592
                 scale = -1, 1
-                size = 60, 20
             ]
 
-            tag B1_repl_2 {
-                value = "B1_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 7896, 8192
-                hide_name = True
-                scale = -1, 1
-                size = 60, 20
-            ]
-
-            tag C1_repl_2 {
-                value = "C1_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 7896, 8240
-                hide_name = True
-                scale = -1, 1
-                size = 60, 20
-            ]
-
-            tag A2_repl_2 {
-                value = "A2_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 8488, 8144
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag B2_repl_2 {
-                value = "B2_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 8488, 8192
-                hide_name = True
-                size = 60, 20
-            ]
-
-            tag C2_repl_2 {
-                value = "C2_repl"
-                scope = local
-                kind = pe
-            }
-            [
-                position = 8488, 8240
-                hide_name = True
-                size = 60, 20
-            ]
-
-            connect A2_repl_1 A1_repl_1 as Connection4
-            connect B2_repl_1 B1_repl_1 as Connection5
-            connect C2_repl_1 C1_repl_1 as Connection6
-            connect A1_repl_2 1_bus.t1 as Connection7
-            connect B1_repl_2 1_bus.t2 as Connection8
-            connect C1_repl_2 1_bus.t3 as Connection9
-            connect 1 1_bus.multi_dim as Connection10
-            connect A2_repl_2 2_bus.t1 as Connection11
-            connect B2_repl_2 2_bus.t2 as Connection12
-            connect C2_repl_2 2_bus.t3 as Connection13
-            connect 2 2_bus.multi_dim as Connection14
-
-            phase_n = "False"
-            sld_mode = "True"
-            type_prop = "ABC"
+            connect A1 A2 as Connection1
+            connect B1 B2 as Connection2
+            connect C1 C2 as Connection3
+            connect N1 N2 as Connection4
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be connected directly.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has internal meters from which electrical measurements can be accessed. At this moment only the three-phase meter is available, thus, measurements are only available when the phases \'ABC\' are selected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
@@ -201,7 +96,10 @@ library "OpenDSS" {
                     default_value = "True"
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
+                        import importlib
+                        import dss_thcc_lib.component_scripts.comp_bus as comp_script
+                        importlib.reload(comp_script)
+
                         if new_value != old_value:
                             comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                         mdl.refresh_icon(container_handle)
@@ -333,10 +231,19 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
+                }
+
+                library_version {
+                    label = "OpenDSS library version number"
+                    widget = edit
+                    type = real
+                    default_value = 0
+                    nonvisible
                 }
 
                 CODE open
@@ -360,17 +267,20 @@ library "OpenDSS" {
 
                 CODE init
                     import importlib
-
                     import dss_thcc_lib.component_scripts.comp_bus as comp_script
 
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
-                    comp_script.retro_compatibility(mdl, item_handle)
-                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value="init", old_value="")
+                    if _called_during_load:
+                        comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.update_library_version_info(mdl, item_handle)
+
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
+
             }
         }
         [

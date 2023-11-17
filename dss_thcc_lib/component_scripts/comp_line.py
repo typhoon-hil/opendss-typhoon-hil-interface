@@ -3,6 +3,8 @@ import ast
 import re
 import dss_thcc_lib.component_scripts.util as util
 
+def update_library_version_info(mdl, mask_handle):
+    util.set_component_library_version(mdl, mask_handle)
 
 def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""):
 
@@ -403,6 +405,7 @@ def compute_sequence_values(mdl, mask_handle, zseq, mode):
     elif mode == "matrix":
         return [rseq, xseq, xcoup]
 
+
 def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
     comp_handle = mdl.get_parent(mask_handle)
 
@@ -420,20 +423,40 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
         p = mdl.prop(mask_handle, prop)
         new_prop_values[prop] = str(mdl.get_property_value(p))
 
+    currently_sld = mdl.get_item("1", parent=comp_handle, item_type="port")
+
     #
     # If just toggling between multiline/sld, stop right after it's done
     #
     if calling_prop_name == "sld_mode":
         sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
-        if new_value:
-            if new_value != old_value:
-                util.convert_to_sld(mdl, mask_handle, sld_info)
-        else:
+        if new_value and not currently_sld:
+            util.convert_to_sld(mdl, mask_handle, sld_info)
+        elif currently_sld:
             util.convert_to_multiline(mdl, mask_handle, sld_info)
         return
 
+    if calling_prop_name == "init_code":
+        sld_mode = current_pass_prop_values["sld_mode"] in (True, "True")
+        sld_info = get_sld_conversion_info(
+            mdl,
+            mask_handle,
+            current_pass_prop_values
+        )
+        if sld_mode:
+            if not currently_sld:
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+                for bus_port_name in sld_info[0]:
+                    mdl.info(bus_port_name)
+                    bus_port_handle = mdl.get_item(bus_port_name + "_bus", parent=comp_handle)
+                    mdl.set_property_value(mdl.prop(bus_port_handle, "bus_size"), 4)
+        elif currently_sld:
+            util.convert_to_multiline(mdl, mask_handle, sld_info, hide_names=False)
+        if not new_value:
+            # new_value holds the _called_during_load flag
+            return
+
     # Topology dynamics need to be applied on multiline format
-    currently_sld = mdl.get_item("1", parent=comp_handle, item_type="port")
     if currently_sld:
         # The terminal related to the current property hasn't been created yet
         modified_prop_values = dict(current_pass_prop_values)
@@ -452,6 +475,9 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
         if new_prop_values.get("sld_mode") in (True, "True"):
             sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
             util.convert_to_sld(mdl, mask_handle, sld_info)
+            for bus_port_name in sld_info:
+                bus_port_handle = mdl.get_item(bus_port_name, parent=comp_handle)
+                mdl.set_property_value(mdl.prop(bus_port_handle, "bus_size"), 4)
 
 def toggle_coupling(mdl, mask_handle, created_ports):
     """
@@ -950,3 +976,12 @@ def define_icon(mdl, mask_handle):
     phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
 
     mdl.set_component_icon_image(mask_handle, f'images/transmission_line_{phases}.svg')
+
+def retro_compatibility(mdl, mask_handle):
+    sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+    libver_prop = mdl.prop(mask_handle, "library_version")
+    lib_version = mdl.get_property_value(libver_prop)
+
+    # Pre-SLD compatibility
+    if lib_version < 51:
+        mdl.set_property_value(sld_mode_prop, False)

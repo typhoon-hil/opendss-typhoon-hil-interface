@@ -1,7 +1,6 @@
-// Replace the Placeholder component with the code of the component you want to edit,
-// and open the tlib file with the Schematic Editor.
-// When finished, paste the generated code into the respective component tlib file.
-// Always rollback this file before committing.
+//
+// Saved by sw version: 2024.1 DEV
+//
 
 library "OpenDSS" {
     configuration {
@@ -17,6 +16,7 @@ library "OpenDSS" {
         show_modes = False
         device_ao_limit_enable = False
         reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
         reset_digital_outputs_on_sim_stop = True
         vhil_adio_loopback = False
         cpl_stb = False
@@ -40,6 +40,11 @@ library "OpenDSS" {
         cce_type_mapping_real = "double"
         cce_type_mapping_uint = "unsigned int"
         cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
         cce_directory = ""
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
@@ -54,23 +59,292 @@ library "OpenDSS" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = warning
     }
 
     component Subsystem Root {
+        component Subsystem Bus {
+            layout = static
 
-            // Replace
-            component Subsystem Placeholder {
-                layout = dynamic
-                visible = "dev"
+            port A1 {
+                position = -8, -48.0
+                kind = pe
+                direction =  in
             }
             [
-                position = 8192, 8192
-                size = 64, 64
+                position = 7992, 7992
             ]
-            // Replace
 
+            port B1 {
+                position = -8, -16.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7992, 8192
+            ]
+
+            port C1 {
+                position = -8, 16.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7992, 8392
+            ]
+
+            port A2 {
+                position = 8, -48.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 7992
+                scale = -1, 1
+            ]
+
+            port B2 {
+                position = 8, -16.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 8192
+                scale = -1, 1
+            ]
+
+            port C2 {
+                position = 8, 16.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 8392
+                scale = -1, 1
+            ]
+
+            port N1 {
+                position = -8, 48.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 7992, 8592
+            ]
+
+            port N2 {
+                position = 8, 48.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 8592
+                scale = -1, 1
+            ]
+
+            connect A1 A2 as Connection1
+            connect B1 B2 as Connection2
+            connect C1 C2 as Connection3
+            connect N1 N2 as Connection4
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be connected directly.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has internal meters from which electrical measurements can be accessed. At this moment only the three-phase meter is available, thus, measurements are only available when the phases \'ABC\' are selected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                type_prop {
+                    label = "Type"
+                    widget = combo
+                    combo_values = "ABC", "AB", "AC", "BC", "A", "B", "C", "ABCN", "ABN", "ACN", "BCN", "AN", "BN", "CN", "N"
+                    type = string
+                    default_value = "ABCN"
+                    nonvisible
+                    disabled
+                    no_evaluate
+                }
+
+                phase_a {
+                    label = "Phase A"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                phase_b {
+                    label = "Phase B"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                phase_c {
+                    label = "Phase C"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                phase_n {
+                    label = "Phase N"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                conf {
+                    label = "Configuration"
+                    widget = combo
+                    combo_values = "on both sides", "on one side"
+                    type = string
+                    default_value = "on both sides"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                second_side_is_multiline {
+                    label = "Second side is multiline"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    nonvisible
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+                
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.mask_dialog_dynamics(mdl, item_handle, "", "")
+                
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+                ENDCODE
+
+                CODE define_icon
+                    import dss_thcc_lib.component_scripts.comp_bus as comp_script
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+                
+                    import dss_thcc_lib.component_scripts.comp_bus as comp_script
+                
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+                
+                    print(mdl.get_property_default_value(mdl.prop(item_handle, "sld_mode")))
+                
+                    comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value="init", old_value="")
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4496, 4032
+            size = 16, 128
+        ]
     }
-
 }
-
-
