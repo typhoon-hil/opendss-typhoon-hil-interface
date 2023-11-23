@@ -35,6 +35,8 @@ def pick_comp_script(mdl, mask_handle, caller):
         import dss_thcc_lib.component_scripts.comp_storage as comp_script
     elif identifier == "VSConverter":
         import dss_thcc_lib.component_scripts.comp_vsc as comp_script
+    elif identifier == "Reactor":
+        import dss_thcc_lib.component_scripts.comp_reactor as comp_script
 
     return comp_script
 
@@ -66,6 +68,8 @@ def pick_contained_comp_calls(mdl, mask_handle):
         import dss_thcc_lib.component_scripts.container.storage_container as contained_comp_calls
     elif identifier == "VSConverter":
         import dss_thcc_lib.component_scripts.container.vsconverter_container as contained_comp_calls
+    elif identifier == "Reactor":
+        import dss_thcc_lib.component_scripts.container.reactor_container as contained_comp_calls
 
     importlib.reload(contained_comp_calls)
     return contained_comp_calls

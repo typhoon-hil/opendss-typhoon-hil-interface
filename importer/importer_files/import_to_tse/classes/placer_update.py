@@ -662,7 +662,7 @@ def set_rotation(n: PNode) -> None:
             not feed_fwd and n.orientation == DOWN
         ):
             settings_dict["flip"] = "flip_vertical"
-    if n.comp.comp.type_name in ["OpenDSS/Load", "OpenDSS/Capacitor Bank"]:
+    if n.comp.comp.type_name in ["OpenDSS/Load", "OpenDSS/Capacitor Bank", "OpenDSS/Reactor"]:
         settings_dict = {
             LEFT: {"rotation": "right", "flip": "flip_none"},
             RIGHT: {"rotation": "right", "flip": "flip_horizontal"},

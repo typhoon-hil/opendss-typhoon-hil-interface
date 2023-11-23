@@ -22,7 +22,8 @@ def get_component_conversion_dict(opendss_class, obj_name):
         "Isource": {"type_name": "OpenDSS/Isource"},
         "Fault": {"type_name": "OpenDSS/Fault"},
         "Storage": {"type_name": "OpenDSS/Storage"},
-        "Capacitor": {"type_name": "OpenDSS/Capacitor Bank"}
+        "Capacitor": {"type_name": "OpenDSS/Capacitor Bank"},
+        "Reactor": {"type_name": "OpenDSS/Reactor"}
     }
 
     return_dict = supported_components.get(opendss_class, {})

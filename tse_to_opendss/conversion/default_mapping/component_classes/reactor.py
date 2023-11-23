@@ -2,7 +2,7 @@ from .base import *
 from ...output_functions import *
 
 
-class Capacitor(TwoTerminal):
+class Reactor(TwoTerminal):
     """ Converted component class. """
 
     def __init__(self, converted_comp_type, name, circuit, tse_properties, tse_component):

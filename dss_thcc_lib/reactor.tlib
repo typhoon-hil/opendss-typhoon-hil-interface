@@ -1,0 +1,228 @@
+// Edit only the code, do not open and save from TSE.
+// See the file "tse_component_edit.tlib" if you want to edit this component on TSE.
+library "OpenDSS" {
+
+    component Subsystem Root {
+
+        component Subsystem "Reactor" {
+            layout = static
+            label = "L"
+            component "core/Inductor" La {
+                inductance = "L"
+            }
+            [
+                position = 8112, 8096
+                rotation = down
+            ]
+
+            component "core/Inductor" Lb {
+                inductance = "L"
+            }
+            [
+                position = 8112, 8192
+                rotation = down
+            ]
+
+            component "core/Inductor" Lc {
+                inductance = "L"
+            }
+            [
+                position = 8112, 8288
+                rotation = down
+            ]
+
+            port A1 {
+                position = -32, -32
+                kind = pe
+            }
+            [
+                position = 8392, 8096
+                hide_name = True
+                rotation = down
+            ]
+
+            port B1 {
+                position = 0, -32
+                kind = pe
+            }
+            [
+                position = 8392, 8192
+                hide_name = True
+                rotation = down
+            ]
+
+            port C1 {
+                position = 32, -32
+                kind = pe
+            }
+            [
+                position = 8392, 8288
+                hide_name = True
+                rotation = down
+            ]
+
+            junction j pe
+            [
+                position = 7992, 8192
+            ]
+
+            connect La.p_node A1 as Connection26
+            connect j La.n_node as Connection27
+            connect j Lb.n_node as Connection28
+            connect j Lc.n_node as Connection29
+            connect B1 Lb.p_node as b1_conn
+            connect Lc.p_node C1 as Connection30
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br>Ideal Reactor</br></p></body></html>"
+                help_file = "help/OpenDSSManual.pdf#page=171"
+
+                tp_connection {
+                    label = "Connection"
+                    widget = combo
+                    combo_values = "Y - Grounded", "Y", "Δ", "In series"
+                    type = string
+                    default_value = "Y - Grounded"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.redo_connections(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_frequency_property(mdl, container_handle)
+                    ENDCODE
+                }
+
+                baseFreq {
+                    label = "Base frequency"
+                    previous_names = "BaseFreq"
+                    widget = edit
+                    type = generic
+                    default_value = "60"
+                    unit = "Hz"
+                    nonvisible
+                }
+
+                phases {
+                    label = "Phases"
+                    widget = combo
+                    combo_values = "3", "2", "1"
+                    type = string
+                    default_value = "3"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.port_dynamics(mdl, container_handle)
+                        comp_script.redo_connections(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                Kv {
+                    label = "kV"
+                    widget = edit
+                    type = generic
+                    default_value = "12.47"
+                    unit = "kV"
+                }
+
+                Kvar {
+                    label = "kVar"
+                    widget = edit
+                    type = generic
+                    default_value = "600"
+                    unit = "kVAr"
+                }
+
+                L {
+                    label = "L"
+                    widget = edit
+                    type = generic
+                    default_value = "0.69"
+                    nonvisible
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    dialog.exec_()
+
+                ENDCODE
+
+                CODE init
+                    import importlib
+
+                    import dss_thcc_lib.component_scripts.comp_reactor as comp_script
+
+                    importlib.reload(comp_script)
+                    def return_comp_script(mdl, item_handle):
+                        return comp_script
+
+                    comp_script.define_icon(mdl, item_handle)
+
+                ENDCODE
+
+                CODE pre_compile
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.update_frequency_property(mdl, item_handle)
+                    comp_script.calculate_l(mdl, item_handle)
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+            }
+        }
+        [
+            position = 4472, 4320
+            scale = 1, 1
+            size = 96, 64
+        ]
+
+    }
+
+}

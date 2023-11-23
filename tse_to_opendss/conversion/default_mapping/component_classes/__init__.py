@@ -3,6 +3,7 @@ from .vsource import Vsource
 from .isource import Isource
 from .fault import Fault
 from .capacitor import Capacitor
+from .reactor import Reactor
 from .line import Line
 from .switch import Switch
 from .transformer_1p import SinglePhaseTransformer

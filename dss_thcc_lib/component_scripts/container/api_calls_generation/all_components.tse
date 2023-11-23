@@ -64,6 +64,13 @@ model "all_components" {
             size = 96, 64
         ]
 
+        component "OpenDSS/Reactor" "Reactor" {
+        }
+        [
+            position = 4648, 6848
+            size = 96, 64
+        ]
+
         component "OpenDSS/Controlled Switch" "Controlled Switch" {
         }
         [
@@ -203,6 +210,17 @@ model "all_components" {
             Kv = "12.47"
             Kvar = "600"
             C = "1e-6"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Reactor" {
+            tp_connection = "Y"
+            global_basefreq = "True"
+            BaseFreq = "60"
+            phases = "3"
+            Kv = "12.47"
+            Kvar = "600"
+            L = "0.69"
             enable_monitoring = "False"
         }
 
