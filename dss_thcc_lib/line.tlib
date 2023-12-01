@@ -462,6 +462,7 @@ library "OpenDSS" {
                     default_value = "None"
                     group = "Typhoon HIL"
                     no_evaluate
+                    nonvisible
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)

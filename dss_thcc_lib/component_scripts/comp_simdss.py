@@ -2115,7 +2115,7 @@ def run_auto_partitioning(mdl, mask_handle):
         # Getting position (initial/simple logic)
         bus_handle = mdl.get_item(bus)
         bus_position_x = (mdl.get_position(bus_handle)[0] / 8192 - 1) * 200
-        bus_position_y = (mdl.get_position(bus_handle)[1] / 8192 - 1)
+        bus_position_y = -1*(mdl.get_position(bus_handle)[1] / 8192 - 1)
         pos_bus.update({cnt: (bus_position_x, bus_position_y)})
 
     # Create Edges
@@ -2138,7 +2138,6 @@ def run_auto_partitioning(mdl, mask_handle):
     # Convert the graph to its adjacency matrix
     adj_matrix = nx.adjacency_matrix(circ_graph).toarray()
     num_partitions = 3
-
     # Use spectral clustering to perform balanced partitioning
     sc = SpectralClustering(n_clusters=num_partitions, affinity='precomputed', random_state=0)
     labels = sc.fit_predict(adj_matrix)

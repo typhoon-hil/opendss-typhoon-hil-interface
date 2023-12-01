@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.4 DEV
+// Saved by sw version: 2024.1 DEV
 //
 
 model "test_" {
@@ -74,40 +74,41 @@ model "test_" {
     }
 
     component Subsystem Root {
-        component "OpenDSS/SimDSS" SimDSS1 {
-            sim_counter = "137"
-            sim_status = "Sim137 complete"
+        component "OpenDSS/SimDSS" SimDSS {
+            sim_counter = "152"
+            sim_status = "Sim152 complete"
         }
         [
-            position = 8688, 8008
+            position = 8688, 8024
             size = 96, 96
         ]
 
         component "OpenDSS/Vsource" V1 {
         }
         [
-            position = 8128, 8176
+            position = 7928, 8176
             size = 64, 96
         ]
 
         component "OpenDSS/Line" line1 {
+            coupling_type = "Core"
         }
         [
-            position = 8296, 8176
-            size = 64, 96
+            position = 8192, 8176
+            size = 65, 96
         ]
 
         component "OpenDSS/Line" line2 {
         }
         [
-            position = 8464, 8176
+            position = 8360, 8176
             size = 64, 96
         ]
 
         component "OpenDSS/Load" load1 {
         }
         [
-            position = 9368, 8328
+            position = 9528, 8328
             scale = -1, 1
             size = 128, 48
         ]
@@ -117,7 +118,7 @@ model "test_" {
             type_prop = "ABC"
         }
         [
-            position = 8208, 8176
+            position = 8008, 8176
             size = 16, 96
         ]
 
@@ -126,7 +127,7 @@ model "test_" {
             type_prop = "ABC"
         }
         [
-            position = 8376, 8176
+            position = 8272, 8176
             size = 16, 96
         ]
 
@@ -135,15 +136,16 @@ model "test_" {
             type_prop = "ABC"
         }
         [
-            position = 8552, 8176
+            position = 8448, 8176
             size = 16, 96
         ]
 
         component "OpenDSS/Line" line3 {
+            coupling_type = "Core"
         }
         [
             position = 8648, 8176
-            size = 64, 96
+            size = 65, 96
         ]
 
         component "OpenDSS/Bus" bus4 {
@@ -172,10 +174,11 @@ model "test_" {
         ]
 
         component "OpenDSS/Line" line5 {
+            coupling_type = "Core"
         }
         [
             position = 9032, 8176
-            size = 64, 96
+            size = 65, 96
         ]
 
         component "OpenDSS/Bus" bus6 {
@@ -190,7 +193,7 @@ model "test_" {
         component "OpenDSS/Line" line6 {
         }
         [
-            position = 9208, 8176
+            position = 9336, 8176
             size = 64, 96
         ]
 
@@ -199,14 +202,136 @@ model "test_" {
             type_prop = "ABC"
         }
         [
-            position = 9288, 8176
+            position = 9432, 8176
             size = 16, 96
+        ]
+
+        component "OpenDSS/Line" line7 {
+        }
+        [
+            position = 9216, 8312
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Load" load2 {
+        }
+        [
+            position = 9200, 8504
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Bus" bus8 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9216, 8408
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" line8 {
+        }
+        [
+            position = 8528, 8312
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Load" load3 {
+        }
+        [
+            position = 8512, 8504
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Bus" bus9 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8528, 8408
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" line9 {
+        }
+        [
+            position = 8096, 8320
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Load" load4 {
+        }
+        [
+            position = 8080, 8504
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Bus" bus10 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8096, 8416
+            rotation = right
+            size = 16, 96
+        ]
+
+        junction Junction7 pe
+        [
+            position = 8064, 8208
+        ]
+
+        junction Junction8 pe
+        [
+            position = 8096, 8176
+        ]
+
+        junction Junction9 pe
+        [
+            position = 8128, 8144
+        ]
+
+        junction Junction10 pe
+        [
+            position = 8496, 8208
+        ]
+
+        junction Junction11 pe
+        [
+            position = 8528, 8176
+        ]
+
+        junction Junction12 pe
+        [
+            position = 8560, 8144
+        ]
+
+        junction Junction13 pe
+        [
+            position = 9184, 8208
+        ]
+
+        junction Junction14 pe
+        [
+            position = 9216, 8176
+        ]
+
+        junction Junction15 pe
+        [
+            position = 9248, 8144
         ]
 
         connect V1.A1 bus1.A1 as Connection1
         connect V1.B1 bus1.B1 as Connection2
         connect V1.C1 bus1.C1 as Connection3
-        connect bus1.C2 line1.C1 as Connection6
         connect line1.A2 bus2.A1 as Connection7
         connect line1.B2 bus2.B1 as Connection8
         connect line1.C2 bus2.C1 as Connection9
@@ -215,23 +340,15 @@ model "test_" {
         connect bus2.C2 line2.C1 as Connection12
         connect line2.A2 bus3.A1 as Connection39
         [
-            breakpoints = 8536, 8144
-        ]
-        connect bus1.B2 line1.B1 as Connection40
-        [
-            breakpoints = 8248, 8176
-        ]
-        connect line1.A1 bus1.A2 as Connection38
-        [
-            breakpoints = 8240, 8144
+            breakpoints = 8432, 8144
         ]
         connect bus3.B1 line2.B2 as Connection41
         [
-            breakpoints = 8520, 8176
+            breakpoints = 8416, 8176
         ]
         connect bus3.C1 line2.C2 as Connection42
         [
-            breakpoints = 8544, 8208
+            breakpoints = 8440, 8208
         ]
         connect line3.A2 bus4.A1 as Connection43
         [
@@ -251,9 +368,6 @@ model "test_" {
         connect line5.A2 bus6.A1 as Connection49
         connect bus6.B1 line5.B2 as Connection50
         connect bus6.C1 line5.C2 as Connection51
-        connect bus3.A2 line3.A1 as Connection52
-        connect bus3.B2 line3.B1 as Connection53
-        connect bus3.C2 line3.C1 as Connection54
         connect bus4.A2 line4.A1 as Connection55
         connect bus4.B2 line4.B1 as Connection56
         connect bus4.C2 line4.C1 as Connection57
@@ -263,12 +377,54 @@ model "test_" {
         connect line6.A2 bus7.A1 as Connection61
         connect bus7.B1 line6.B2 as Connection62
         connect bus7.C1 line6.C2 as Connection63
-        connect bus6.A2 line6.A1 as Connection64
-        connect bus6.B2 line6.B1 as Connection65
-        connect bus6.C2 line6.C1 as Connection66
         connect load1.A1 bus7.A2 as Connection67
         connect load1.B1 bus7.B2 as Connection68
         connect load1.C1 bus7.C2 as Connection69
+        connect Junction7 line9.C1 as Connection118
+        connect Junction7 line1.C1 as Connection119
+        connect Junction7 bus1.C2 as Connection120
+        connect Junction8 line9.B1 as Connection121
+        connect Junction8 bus1.B2 as Connection122
+        connect Junction8 line1.B1 as Connection123
+        connect Junction9 line9.A1 as Connection124
+        connect Junction9 line1.A1 as Connection125
+        connect Junction9 bus1.A2 as Connection126
+        connect line9.C2 bus10.C1 as Connection127
+        connect line9.B2 bus10.B1 as Connection128
+        connect line9.A2 bus10.A1 as Connection129
+        connect load4.A1 bus10.A2 as Connection130
+        connect load4.B1 bus10.B2 as Connection131
+        connect load4.C1 bus10.C2 as Connection132
+        connect Junction10 line8.C1 as Connection135
+        connect Junction10 bus3.C2 as Connection136
+        connect Junction10 line3.C1 as Connection137
+        connect Junction11 line8.B1 as Connection138
+        connect Junction11 bus3.B2 as Connection139
+        connect Junction11 line3.B1 as Connection140
+        connect Junction12 line8.A1 as Connection141
+        connect Junction12 bus3.A2 as Connection142
+        connect Junction12 line3.A1 as Connection143
+        connect bus9.C1 line8.C2 as Connection144
+        connect bus9.B1 line8.B2 as Connection145
+        connect bus9.A1 line8.A2 as Connection146
+        connect bus9.A2 load3.A1 as Connection147
+        connect bus9.B2 load3.B1 as Connection148
+        connect bus9.C2 load3.C1 as Connection149
+        connect Junction13 line7.C1 as Connection153
+        connect Junction13 bus6.C2 as Connection154
+        connect Junction13 line6.C1 as Connection155
+        connect Junction14 line7.B1 as Connection156
+        connect Junction14 line6.B1 as Connection157
+        connect Junction14 bus6.B2 as Connection158
+        connect Junction15 line7.A1 as Connection159
+        connect Junction15 line6.A1 as Connection160
+        connect Junction15 bus6.A2 as Connection161
+        connect line7.C2 bus8.C1 as Connection162
+        connect line7.B2 bus8.B1 as Connection163
+        connect line7.A2 bus8.A1 as Connection164
+        connect load2.A1 bus8.A2 as Connection165
+        connect bus8.B2 load2.B1 as Connection166
+        connect bus8.C2 load2.C1 as Connection167
     }
 
     default {

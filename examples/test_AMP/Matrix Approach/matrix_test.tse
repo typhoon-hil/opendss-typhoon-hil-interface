@@ -1,0 +1,298 @@
+version = 4.2
+
+//
+// Saved by sw version: 2024.1 DEV
+//
+
+model "matrix_test" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 2
+        simulation_method = exact
+        simulation_time_step = 10e-6
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = True
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = error
+    }
+
+    component Subsystem Root {
+        component "core/Voltage Source" Vs1 {
+        }
+        [
+            position = 8184, 8272
+            rotation = right
+        ]
+
+        component "core/Resistor" R1 {
+            resistance = "10"
+        }
+        [
+            position = 8360, 8272
+            rotation = right
+        ]
+
+        component "core/Voltage Measurement" Va1 {
+        }
+        [
+            position = 8440, 8272
+            rotation = right
+            size = 64, 32
+        ]
+
+        component "core/Inductor" L1 {
+            inductance = "1"
+            signal_access = "Inherit"
+        }
+        [
+            position = 8648, 8216
+        ]
+
+        component "core/Resistor" R2 {
+        }
+        [
+            position = 8736, 8272
+            rotation = right
+        ]
+
+        component "core/Inductor" L2 {
+            inductance = "1"
+            signal_access = "Inherit"
+        }
+        [
+            position = 8824, 8216
+        ]
+
+        component "core/Resistor" R3 {
+        }
+        [
+            position = 8912, 8272
+            rotation = right
+        ]
+
+        component "core/Ground" gnd1 {
+        }
+        [
+            position = 8440, 8384
+        ]
+
+        component "core/Current Measurement" Ia1 {
+        }
+        [
+            position = 8272, 8216
+            size = 64, 32
+        ]
+
+        component "core/Resistor" R4 {
+            resistance = "10"
+        }
+        [
+            position = 8552, 8272
+            rotation = right
+        ]
+
+        junction Junction1 pe
+        [
+            position = 8360, 8328
+        ]
+
+        junction Junction2 pe
+        [
+            position = 8360, 8216
+        ]
+
+        junction Junction4 pe
+        [
+            position = 8440, 8328
+        ]
+
+        junction Junction6 pe
+        [
+            position = 8736, 8216
+        ]
+
+        junction Junction7 pe
+        [
+            position = 8440, 8216
+        ]
+
+        connect Junction1 R1.n_node as Connection4
+        connect Junction1 Vs1.n_node as Connection5
+        connect Junction2 R1.p_node as Connection7
+        connect Junction1 Junction4 as Connection13
+        connect Junction4 Va1.n_node as Connection14
+        connect L2.n_node R3.p_node as Connection16
+        connect R2.p_node Junction6 as Connection20
+        connect Junction6 L1.n_node as Connection21
+        connect L2.p_node Junction6 as Connection22
+        connect Junction2 Ia1.n_node as Connection26
+        connect Ia1.p_node Vs1.p_node as Connection27
+        connect gnd1.node Junction4 as Connection30
+        [
+            breakpoints = 8440, 8328
+        ]
+        connect R3.n_node R2.n_node as Connection29
+        [
+            breakpoints = 8736, 8328
+        ]
+        connect R4.n_node Junction4 as Connection31
+        connect Junction7 R4.p_node as Connection32
+        connect Junction7 Va1.p_node as Connection33
+        connect Junction7 Junction2 as Connection34
+    }
+
+    logically_deleted {
+        "L1"
+        "R2"
+        "L2"
+        "R3"
+        "Connection16"
+        "Junction6"
+        "Connection20"
+        "Connection21"
+        "Connection22"
+        "Connection29"
+    }
+
+    default {
+        "core/Inductor" {
+            signal_access = "inherit"
+            inductance = "1e-3"
+            initial_current = "0.0"
+            pole_shift_ignore = "False"
+            visible = "True"
+        }
+
+        "core/Resistor" {
+            resistance = "1"
+            param_set = ""
+        }
+
+        "core/Voltage Source" {
+            sig_input = "False"
+            type = "signal generator"
+            param_set = "1phase"
+            parent_label = ""
+            addr = "0"
+            spc_nb = "0"
+            execution_rate = "100e-6"
+            cpd_visible = "True"
+            enable_snb = "False"
+            snb_type = "R2"
+            R2 = "0.0"
+            L1 = "0.1"
+            override_signal_name = "False"
+            signal_name = ""
+            init_source_nature = "Constant"
+            init_const_value = "0.0"
+            init_rms_value = "0.0"
+            init_frequency = "50.0"
+            init_phase = "0.0"
+        }
+
+        "core/Current Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+
+        "core/Voltage Measurement" {
+            signal_access = "inherit"
+            bw_limit = "False"
+            frequency = "10e3"
+            comparator_enable = "False"
+            operator = "greater"
+            threshold = "0"
+            cmp_abs_value = "False"
+            feed_forward = "false"
+            sig_output = "False"
+            sig_output_filt_and_full_bw = "False"
+            execution_rate = "100e-6"
+            addr = "0"
+            nd_msr_estimation = "false"
+            dev_cpl_msr = "false"
+            host_device = "0"
+            output_to_device = "0"
+            dev_cpl_index = "0"
+            dev_cpl_var_nb = "0"
+            visible = "True"
+            override_signal_name = "False"
+            signal_name = ""
+        }
+    }
+}

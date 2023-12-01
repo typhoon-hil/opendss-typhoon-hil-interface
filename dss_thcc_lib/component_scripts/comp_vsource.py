@@ -294,6 +294,11 @@ def get_r_l_matrices(mdl, container_handle):
     lmatrix = [[ls, lm, lm], [lm, ls, lm], [lm, lm, ls]]
     # For two-phase systems, we can use just the 2x2 matrix from that
 
+    mdl.info(f"{r1=}")
+    mdl.info(f"{r0=}")
+    mdl.info(f"{x1=}")
+    mdl.info(f"{x0=}")
+
     return rmatrix, lmatrix
 
 
