@@ -25,5 +25,9 @@ def get_port_mapping(opendss_class, obj_name, component_properties):
         tp_connection = mask_properties.get("tp_connection")
         if tp_connection is not "Series":
             port_mapping.pop(2)
+    elif opendss_class == "Reactor":
+        tp_connection = mask_properties.get("tp_connection")
+        if tp_connection is not "Series":
+            port_mapping.pop(2)
 
     return port_mapping

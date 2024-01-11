@@ -45,6 +45,13 @@ def get_schematic_properties(opendss_class, obj_name, mask_properties):
         position = None
         hide_name = False
 
+    elif opendss_class == "Reactor":
+        name = obj_name
+        rotation = None
+        flip = None
+        position = None
+        hide_name = False
+
     schematic_properties = {
         "name": helper_functions.fix_name(name, opendss_class),
         "rotation": rotation,
@@ -64,6 +71,11 @@ def get_terminal_number_side_dict(opendss_class, mask_properties):
     elif opendss_class == "Vsource":
         return {1: "right", 2: "left"}
     elif opendss_class == "Capacitor":
+        if mask_properties["tp_connection"] == "In Series":
+            return {1: "right", 2: "left"}
+        else:
+            return {1: "top", 2: "bottom"}
+    elif opendss_class == "Reactor":
         if mask_properties["tp_connection"] == "In Series":
             return {1: "right", 2: "left"}
         else:

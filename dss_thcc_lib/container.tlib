@@ -13,7 +13,7 @@ library "OpenDSS" {
                 dss_container_mask_type {
                     label = "Component type"
                     widget = combo
-                    combo_values = "Capacitor Bank", "Controlled Switch", "Fault", "Isource", "Line", "Single-Phase Transformer", "Three-Phase Transformer", "Storage", "Generator", "Load", "Vsource", "VSConverter"
+                    combo_values = "Capacitor Bank", "Controlled Switch", "Fault", "Generator", "Isource", "Line", "Load", "Reactor", "Single-Phase Transformer", "Storage", "Three-Phase Transformer", "Vsource", "VSConverter"
                     type = string
                     default_value = "Line"
                     no_evaluate
