@@ -94,6 +94,7 @@ library "OpenDSS" {
                     widget = checkbox
                     type = bool
                     default_value = "True"
+                    no_evaluate
 
                     CODE property_value_changed
                         import importlib
@@ -280,7 +281,6 @@ library "OpenDSS" {
                     comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
-
             }
         }
         [

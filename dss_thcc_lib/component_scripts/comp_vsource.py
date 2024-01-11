@@ -1,13 +1,16 @@
 import numpy as np
 from math import log10, floor
 import dss_thcc_lib.component_scripts.util as util
+import importlib
 
 x0, y0 = (8192, 8192)
+
 
 def update_library_version_info(mdl, mask_handle):
     util.set_component_library_version(mdl, mask_handle)
 
-def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""):
+
+def get_sld_conversion_info(mdl, mask_handle, props_state):
 
     tp_connection = props_state.get("tp_connection")
 
@@ -17,10 +20,10 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
         multiline_ports_2 = ["A2", "B2", "C2"]
 
     port_config_dict = {
-        "1": {
+        "SLD1": {
             "multiline_ports": multiline_ports_1,
             "side": "right",
-            "bus_terminal_position": (32, 0),
+            "bus_terminal_position": (24, 0),
             "hide_name": True,
         },
     }
@@ -28,10 +31,10 @@ def get_sld_conversion_info(mdl, mask_handle, props_state, apply_modification=""
     if tp_connection == "In series":
         port_config_dict.update(
             {
-                "2": {
+                "SLD2": {
                     "multiline_ports": multiline_ports_2,
                     "side": "left",
-                    "bus_terminal_position": (-32, 0),
+                    "bus_terminal_position": (-24, 0),
                     "hide_name": True,
                 }
             }
@@ -100,27 +103,22 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
 
     #
     # Get new property values to be applied
+    # If multiple properties are changed, there is a temporary mismatch between
+    # display values (the final values) and current values.
     #
     new_prop_values = {}
-    current_pass_prop_values = {k: str(v) for k, v in mdl.get_property_values(comp_handle).items()}
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
     for prop in mdl.get_property_values(comp_handle):
         p = mdl.prop(mask_handle, prop)
-        new_prop_values[prop] = str(mdl.get_property_value(p))
+        disp_value = str(mdl.get_property_disp_value(p))
+        new_prop_values[prop] = disp_value
 
     #
-    # If just toggling between multiline/sld, stop right after it's done
-    #
-    if calling_prop_name == "sld_mode":
-        sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
-        if new_value:
-            if new_value != old_value:
-                util.convert_to_sld(mdl, mask_handle, sld_info)
-        else:
-            util.convert_to_multiline(mdl, mask_handle, sld_info)
-        return
-
     # Topology dynamics need to be applied on multiline format
-    currently_sld = mdl.get_item("1", parent=comp_handle, item_type="port")
+    #
+    currently_sld = mdl.get_item("SLD1", parent=comp_handle, item_type="port")
     if currently_sld:
         # The terminal related to the current property hasn't been created yet
         modified_prop_values = dict(current_pass_prop_values)
@@ -134,11 +132,48 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
     ports, _ = port_dynamics(mdl, mask_handle)
     update_connections(mdl, mask_handle, ports)
 
-    # When property values reached the final state, return to single-line if needed
-    if new_prop_values == current_pass_prop_values:
+    #
+    # When property values reach the final state, return to single-line if needed
+    #
+    values_equal = []
+    for prop_name in new_prop_values:
+        cur_pass_value = current_pass_prop_values[prop_name]
+        new_value = new_prop_values[prop_name]
+        if util.is_float(cur_pass_value) or util.is_float(new_value):
+            if float(cur_pass_value) == float(new_value):
+                values_equal.append(True)
+                continue
+        else:
+            if current_pass_prop_values[prop_name] == new_prop_values[prop_name]:
+                values_equal.append(True)
+                continue
+        values_equal.append(False)
+
+    final_state = all(values_equal)
+
+    if final_state:
         if new_prop_values.get("sld_mode") in (True, "True"):
+            importlib.reload(util)
             sld_info = get_sld_conversion_info(mdl, mask_handle, current_pass_prop_values)
             util.convert_to_sld(mdl, mask_handle, sld_info)
+
+    sld_post_processing(mdl, mask_handle)
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    bus1 = mdl.get_item("SLD1_bus", parent=comp_handle)
+    if bus1:
+        bus1_size_prop = mdl.prop(bus1, "bus_size")
+        mdl.set_property_value(bus1_size_prop, 4)
+
+    bus2 = mdl.get_item("SLD2_bus", parent=comp_handle)
+    if bus2:
+        bus2_size_prop = mdl.prop(bus2, "bus_size")
+        mdl.set_property_value(bus2_size_prop, 4)
 
 
 def update_connections(mdl, container_handle, ports):
@@ -313,12 +348,22 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
             [mdl.hide_property(prop) for prop in si_props + pu_props + mvasc_props]
 
 
-def define_icon(mdl, container_handle):
-    tp_connection = mdl.get_property_value(mdl.prop(container_handle, "tp_connection"))
+def define_icon(mdl, mask_handle):
+    tp_connection = mdl.get_property_value(mdl.prop(mask_handle, "tp_connection"))
+    sld_mode = mdl.get_property_value(mdl.prop(mask_handle, "sld_mode"))
+
     if tp_connection == "Y - Grounded":
-        mdl.set_component_icon_image(container_handle, 'images/vsource_y_3ph.svg')
+        if sld_mode:
+            image_path = 'images/vsource_gnd__sld.svg'
+        else:
+            image_path = 'images/vsource_y_3ph.svg'
     else:
-        mdl.set_component_icon_image(container_handle, 'images/vsource_s_3ph.svg')
+        if sld_mode:
+            image_path = 'images/vsource__sld.svg'
+        else:
+            image_path = 'images/vsource_s_3ph.svg'
+
+    mdl.set_component_icon_image(mask_handle, image_path)
 
 
 def sc_notation(val, num_decimals=2, exponent_pad=2):
