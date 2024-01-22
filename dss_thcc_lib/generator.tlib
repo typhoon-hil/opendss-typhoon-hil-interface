@@ -509,6 +509,7 @@ Te_mem = Te;
             ]
 
             component "core/Discrete Transfer Function" "Discrete Transfer Function1" {
+                b_coeff = "[1]"
                 a_coeff = "[0.1,1]"
                 domain = "S-domain"
                 method = "Euler"
