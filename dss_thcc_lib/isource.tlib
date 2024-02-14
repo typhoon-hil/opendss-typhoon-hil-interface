@@ -87,6 +87,23 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The most common use of a current source is to represent harmonic sources and to be used in frequency response scans of circuit models.<br>Note that if the device you are trying to model produces or consumes power, it is generally better to model it with a Load or Generator object.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=168"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = False
+
+                    CODE property_value_changed
+                        import importlib
+                        import dss_thcc_lib.component_scripts.comp_isource as comp_script
+                        importlib.reload(comp_script)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
                 amps {
                     label = "Current"
                     widget = edit
@@ -188,6 +205,7 @@ library "OpenDSS" {
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 
