@@ -151,6 +151,51 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Three-phase/Single-phase constant-impedance/constant-power Load component.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=192"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = False
+                    group = "General"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                sld_1ph_pick {
+                    label = "connected phase"
+                    widget = combo
+                    combo_values = "A", "B", "C"
+                    type = string
+                    default_value = "A"
+                    group = "General"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
                 ground_connected {
                     label = "Old ground connection property (retro-compatibility)"
                     widget = checkbox
@@ -178,7 +223,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                             mdl.refresh_icon(container_handle)
                     ENDCODE
 
@@ -200,8 +245,8 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
-                            mdl.refresh_icon(container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -289,7 +334,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                             mdl.refresh_icon(container_handle)
                     ENDCODE
 
@@ -323,6 +368,13 @@ library "OpenDSS" {
                     default_value = "Constant Impedance"
                     group = "Load Parameters"
                     no_evaluate
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
 
                     CODE property_value_edited
                         comp_script = return_comp_script(mdl, container_handle)
@@ -431,7 +483,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                             mdl.refresh_icon(container_handle)
                         ports = comp_script.port_dynamics(mdl, container_handle)
                         comp_script.connections_pow_ref_dynamics(mdl, container_handle, ports)
@@ -1025,7 +1077,7 @@ library "OpenDSS" {
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
-                    comp_script.topology_dynamics(mdl, item_handle)
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None)
                     comp_script.define_icon(mdl, item_handle)
 
                 ENDCODE

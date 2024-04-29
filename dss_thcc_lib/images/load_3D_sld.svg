@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg256"
+   width="64"
+   height="36"
+   viewBox="0 0 64 36"
+   version="1.1"
+   sodipodi:docname="load_3D_sld.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1089" />
+  <sodipodi:namedview
+     id="namedview1087"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="11.020833"
+     inkscape:cx="47.954631"
+     inkscape:cy="9.4820416"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg256" />
+  <line
+     x1="32.191525"
+     y1="5.0113716"
+     x2="32.218437"
+     y2="-0.1793965"
+     style="fill:none;stroke:#000000;stroke-width:0.776594;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1057" />
+  <line
+     x1="47.602879"
+     y1="31.776165"
+     x2="38.741165"
+     y2="31.776165"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1059" />
+  <rect
+     x="26.124628"
+     y="29.520176"
+     width="12.361582"
+     height="4.6355929"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-miterlimit:10"
+     id="rect1061" />
+  <line
+     x1="25.970106"
+     y1="31.807072"
+     x2="16.737551"
+     y2="31.776165"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1063" />
+  <line
+     x1="47.602879"
+     y1="31.776165"
+     x2="43.191334"
+     y2="24.065632"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1065" />
+  <rect
+     x="29.835224"
+     y="-27.615599"
+     width="12.361582"
+     height="4.6355929"
+     transform="rotate(60)"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-miterlimit:10"
+     id="rect1067" />
+  <line
+     x1="36.778767"
+     y1="13.025192"
+     x2="32.189529"
+     y2="5.0133686"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1069" />
+  <line
+     x1="16.737551"
+     y1="31.776165"
+     x2="21.187719"
+     y2="24.065632"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1071" />
+  <rect
+     x="-2.3517795"
+     y="-32.768806"
+     width="12.361582"
+     height="4.6355929"
+     transform="rotate(120)"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-miterlimit:10"
+     id="rect1073" />
+  <line
+     x1="27.592566"
+     y1="13.025192"
+     x2="32.189529"
+     y2="5.0133686"
+     style="fill:none;stroke:#000000;stroke-width:0.772599;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1075" />
+  <line
+     x1="52.323292"
+     y1="3.8275852"
+     x2="52.371624"
+     y2="27.0924"
+     style="fill:none;stroke:#000000;stroke-width:0.750739;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1077" />
+  <line
+     x1="12.047668"
+     x2="11.964087"
+     y2="26.993568"
+     style="fill:none;stroke:#000000;stroke-width:0.748902;stroke-linecap:round;stroke-miterlimit:10"
+     id="line1079"
+     y1="4.0523663" />
+  <line
+     x1="47.596474"
+     y1="31.873306"
+     x2="52.3745"
+     y2="27.095276"
+     style="fill:none;stroke:#000000;stroke-width:0.697;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:none"
+     id="line1083" />
+  <path
+     id="path304"
+     d="m 13.555766,8.5860086 c 0,1.1328141 0.914442,2.0472554 2.047259,2.0472554 1.132817,0 2.047259,-0.9144413 2.047259,-2.0472554 0,-1.132815 -0.914442,-2.0472571 -2.047259,-2.0472571 -1.132817,0 -2.047259,0.9144421 -2.047259,2.0472571"
+     style="fill:#0000ff;stroke-width:0.68242" />
+  <rect
+     style="fill:#000000;fill-opacity:1;stroke-width:1.37804;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
+     id="rect24770"
+     width="48.325924"
+     height="2.5989847"
+     x="7.9741316"
+     y="2.5819468" />
+  <line
+     x1="16.737551"
+     y1="31.776165"
+     x2="11.959521"
+     y2="26.998135"
+     style="fill:none;stroke:#000000;stroke-width:0.697;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:none"
+     id="line1083-5" />
+</svg>
