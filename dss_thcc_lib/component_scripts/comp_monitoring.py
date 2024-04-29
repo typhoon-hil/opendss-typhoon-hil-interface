@@ -580,7 +580,7 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
             #matplotlibwidget.generic_draw([0, 1, 2], [33, 45, 22], title="graph_title", x_label="x_label", y_label="y_label")
             #matplotlibLayoutWidget.exec_()
 
-            time_header = str(list(csvread)[0])
+            hours = csvread["Time"] + (csvread["t(sec)"] / 3600)
 
             if mode == "0":
                 p1ylabel = "Vrms (V)"
@@ -624,11 +624,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
 
             p1 = plt.subplot(subplotsize+1)
             # plt.ion()
-            plt.plot(csvread[time_header], csvread[p1keys[0]], label=p1label[0], color='blue', marker='o')
+            plt.plot(hours, csvread[p1keys[0]], label=p1label[0], color='blue', marker='o')
             if p1keys[1] in csvread.columns:
-                plt.plot(csvread[time_header], csvread[p1keys[1]], label=p1label[1], color='green', marker='o')
+                plt.plot(hours, csvread[p1keys[1]], label=p1label[1], color='green', marker='o')
             if p1keys[2] in csvread.columns:
-                plt.plot(csvread[time_header], csvread[p1keys[2]], label=p1label[2], color='red', marker='o')
+                plt.plot(hours, csvread[p1keys[2]], label=p1label[2], color='red', marker='o')
             if mode == "1":
                 plt.xlabel('time (h)')
             plt.ylabel(p1ylabel)
@@ -640,11 +640,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
             if mode == "0":
                 p3 = plt.subplot(subplotsize+3)
                 # plt.ion()
-                plt.plot(csvread[time_header], csvread["VAngle1"], label="V1 Angle", color='blue', marker='o')
+                plt.plot(hours, csvread["VAngle1"], label="V1 Angle", color='blue', marker='o')
                 if "VAngle2" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread["VAngle2"], label="V2 Angle", color='green', marker='o')
+                    plt.plot(hours, csvread["VAngle2"], label="V2 Angle", color='green', marker='o')
                 if "VAngle3" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread["VAngle3"], label="V3 Angle", color='red', marker='o')
+                    plt.plot(hours, csvread["VAngle3"], label="V3 Angle", color='red', marker='o')
                 #plt.plot(csvread["hour"], csvread[" VAngle2"], color='tab:green', marker='o')
                 #plt.plot(csvread["hour"], csvread[" VAngle2"], color='green')
                 #plt.plot(csvread["hour"], csvread[" VAngle3"], color='tab:red', marker='o')
@@ -658,11 +658,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
 
             p2 = plt.subplot(subplotsize+2)
             # plt.ion()
-            plt.plot(csvread[time_header], csvread[p2keys[0]], label=p2label[0], color='blue', marker='o')
+            plt.plot(hours, csvread[p2keys[0]], label=p2label[0], color='blue', marker='o')
             if p2keys[1] in csvread.columns:
-                plt.plot(csvread[time_header], csvread[p2keys[1]], label=p2label[1], color='green', marker='o')
+                plt.plot(hours, csvread[p2keys[1]], label=p2label[1], color='green', marker='o')
             if p2keys[2] in csvread.columns:
-                plt.plot(csvread[time_header], csvread[p2keys[2]], label=p2label[2], color='red', marker='o')
+                plt.plot(hours, csvread[p2keys[2]], label=p2label[2], color='red', marker='o')
             if mode == "1":
                 plt.xlabel('time (h)')
             plt.ylabel(p2ylabel)
@@ -674,11 +674,11 @@ class Mon_obj(QtWidgets.QDialog, Ui_objects):
             if mode == "0":
                 p4 = plt.subplot(subplotsize+4)
                 # plt.ion()
-                plt.plot(csvread[time_header], csvread["IAngle1"], label="I1 Angle", color='blue', marker='o')
+                plt.plot(hours, csvread["IAngle1"], label="I1 Angle", color='blue', marker='o')
                 if "IAngle2" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread["IAngle2"], label="I2 Angle", color='green', marker='o')
+                    plt.plot(hours, csvread["IAngle2"], label="I2 Angle", color='green', marker='o')
                 if "IAngle3" in csvread.columns:
-                    plt.plot(csvread[time_header], csvread["IAngle3"], label="I3 Angle", color='red', marker='o')
+                    plt.plot(hours, csvread["IAngle3"], label="I3 Angle", color='red', marker='o')
                 # plt.plot(csvread["hour"], csvread[" VAngle2"], color='tab:green', marker='o')
                 # plt.plot(csvread["hour"], csvread[" VAngle2"], color='green')
                 # plt.plot(csvread["hour"], csvread[" VAngle3"], color='tab:red', marker='o')
@@ -1019,6 +1019,7 @@ def report(mdl, mask_handle, mode="snap"):
         rep_successful = repf.generate_faultstudy_report(mdlfile_name)
     if not rep_successful[0]:
         mdl.info(rep_successful[1])
+
 
 def define_icon(mdl, mask_handle):
     mdl.set_component_icon_image(mask_handle, "images/monitoring.svg")
