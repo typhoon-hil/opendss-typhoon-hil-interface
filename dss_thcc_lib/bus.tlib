@@ -5,23 +5,73 @@ library "OpenDSS" {
     component Subsystem Root {
          component Subsystem Bus {
             layout = static
+            component Subsystem "Dummy Circuit" {
+                layout = dynamic
+                component "core/Open Circuit" "Open Circuit2" {
+                }
+                [
+                    position = 8080, 8096
+                    rotation = right
+                    hide_name = True
+                ]
 
-            component "core/Short Circuit" SCA {
+                component "core/Resistor" R1 {
+                }
+                [
+                    position = 7992, 8104
+                    rotation = right
+                ]
+
+                port Conn {
+                    position = bottom:auto
+                    kind = pe
+                }
+                [
+                    position = 8032, 8208
+                    rotation = left
+                ]
+
+                junction Junction1 pe
+                [
+                    position = 8032, 8152
+                ]
+
+                connect "Open Circuit2.n_node" Junction1 as Connection12
+                connect Junction1 Conn as Connection13
+                [
+                    breakpoints = 8032, 8152
+                ]
+                connect R1.n_node Junction1 as Connection14
+                connect R1.p_node "Open Circuit2.p_node" as Connection15
+
+                test = "999"
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                    test {
+                        label = "test"
+                        widget = edit
+                        type = generic
+                        default_value = "0"
+                    }
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+
+                    ENDCODE
+                }
             }
             [
-                position = 8192, 7992
-            ]
-
-            component "core/Short Circuit" SCB {
-            }
-            [
-                position = 8192, 8192
-            ]
-
-            component "core/Short Circuit" SCC {
-            }
-            [
-                position = 8192, 8392
+                position = 8192, 7864
+                size = 64, 72
             ]
 
             port A1 {
@@ -65,7 +115,7 @@ library "OpenDSS" {
             port C1 {
                 position = -8, 32.0
                 kind = pe
-                direction =  out
+                direction =  in
             }
             [
                 position = 7992, 8392
@@ -74,22 +124,28 @@ library "OpenDSS" {
             port C2 {
                 position = 8, 32.0
                 kind = pe
-                direction =  out
+                direction =  in
             }
             [
                 position = 8392, 8392
                 scale = -1, 1
             ]
 
-            connect A1 SCA.p_node as Connection1
-            connect SCA.n_node A2 as Connection2
-            connect B1 SCB.p_node as Connection3
-            connect SCB.n_node B2 as Connection4
-            connect C1 SCC.p_node as Connection5
-            connect SCC.n_node C2 as Connection6
+            comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">The compiler doesn't export the Empty</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Subsystems to JSON due</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to matrix optimization</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">       </p></body></html> ENDCOMMENT
+            [
+                position = 8040, 7752
+            ]
+
+            connect A1 A2 as Connection1
+            connect B1 B2 as Connection2
+            connect C1 C2 as Connection3
+            connect A1 "Dummy Circuit.Conn" as Connection4
+
+            phase_n = "False"
+            type_prop = "ABC"
 
             mask {
-                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be connected directly.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has internal meters from which electrical measurements can be accessed. At this moment only the three-phase meter is available, thus, measurements are only available when the phases 'ABC' are selected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be connected directly.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has internal meters from which electrical measurements can be accessed. At this moment only the three-phase meter is available, thus, measurements are only available when the phases \'ABC\' are selected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
 
                 type_prop {
                     label = "Type"
