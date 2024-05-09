@@ -136,12 +136,17 @@ def generate_output_files(output_circuit):
     # Solve mode
     number_sims = output_circuit.simulation_parameters.pop("number", None)
     sim_mode = output_circuit.simulation_parameters.pop("sim_mode")
+    stepsize = output_circuit.simulation_parameters.pop("stepsize")
+    stepsize_unit = output_circuit.simulation_parameters.pop("stepsize_unit")[0].lower()    # s, m or h
     if sim_mode == "Time Series":
         solve_mode = "daily"
+        solve_parameters = f"mode={solve_mode} number={number_sims} stepsize={stepsize}{stepsize_unit}"
     elif output_circuit.simulation_parameters["loadmodel"] == "Power flow":
         solve_mode = sim_mode
+        solve_parameters = f"mode={solve_mode}"
     else:
         solve_mode = "direct"
+        solve_parameters = f"mode={solve_mode}"
 
     # Set of component types after conversion
     converted_component_types = set(comp.type for comp in components if comp.type)
@@ -220,7 +225,7 @@ def generate_output_files(output_circuit):
         f'Calcv\n\n'
 
         f'// Solve the circuit model\n'
-        f'Solve mode={solve_mode}{" number=" + str(number_sims) if sim_mode=="Time Series" else ""}\n\n'
+        f'Solve {solve_parameters}\n\n'
 
         f'{"// User-appended commands from TSE after the solution" + chr(10) if append_commands_after else ""}'
         f'{append_commands_after}'

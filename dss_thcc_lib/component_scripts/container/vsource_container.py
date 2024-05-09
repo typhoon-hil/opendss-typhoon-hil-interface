@@ -341,19 +341,13 @@ def update_properties(mdl, _Vsource_mask):
 
     ## CHANGED HANDLERS
 
-    _Vsource_mask_to_connection_property_value_changed = """
+    _Vsource_mask_tp_connection_property_value_changed = """
     comp_script = return_comp_script(mdl, container_handle)
     comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-    """
-    mdl.set_handler_code(_Vsource_mask_to_connection, "property_value_changed",
-                         _Vsource_mask_to_connection_property_value_changed)
-
-    _Vsource_mask_ground_connected_property_value_changed = """
-    comp_script = return_comp_script(mdl, container_handle)
     mdl.refresh_icon(container_handle)
     """
-    mdl.set_handler_code(_Vsource_mask_ground_connected, "property_value_changed",
-                         _Vsource_mask_ground_connected_property_value_changed)
+    mdl.set_handler_code(_Vsource_mask_tp_connection, "property_value_changed",
+                         _Vsource_mask_tp_connection_property_value_changed)
 
 def ports_initialization(mdl, _Vsource_mask):
     _Vsource = mdl.get_parent(_Vsource_mask)

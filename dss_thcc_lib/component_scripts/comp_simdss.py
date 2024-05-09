@@ -11,6 +11,7 @@ from math import log10, floor
 import ast
 import itertools
 
+
 # Append commands dialog
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -198,13 +199,14 @@ def sim_with_opendss(mdl, mask_handle):
         sim_parameters = {}
         sim_parameters["sim_mode"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "sim_mode"))
         sim_parameters["algorithm"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "algorithm"))
-        sim_parameters["voltagebases"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "voltagebases"))
-        sim_parameters["basefrequency"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "baseFreq"))
+        sim_parameters["voltagebases"] = eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "voltagebases")))
+        sim_parameters["basefrequency"] = eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "baseFreq")))
         sim_parameters["maxiter"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "maxiter"))
         sim_parameters["miniterations"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "miniterations"))
         sim_parameters["loadmodel"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "loadmodel"))
-        sim_parameters["stepsize"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tsstp"))
-        sim_parameters["number"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tspoints"))
+        sim_parameters["stepsize"] = eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "tsstp")))
+        sim_parameters["stepsize_unit"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "tsstp_unit"))
+        sim_parameters["number"] = eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "tspoints")))
 
         if tse2tpt.start_conversion(json_file_path, tse_to_opendss, simulation_parameters=sim_parameters):
             # Compile dss model
