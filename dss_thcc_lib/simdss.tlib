@@ -28,6 +28,7 @@ library "OpenDSS" {
                     default_value = "60"
                     unit = "Hz"
                     group = "Simulation"
+                    no_evaluate
                 }
 
                 voltagebases {
@@ -37,6 +38,7 @@ library "OpenDSS" {
                     default_value = "[0.480, 12.47]"
                     unit = "kV"
                     group = "Simulation"
+                    no_evaluate
                 }
 
                 tsstp {
@@ -45,6 +47,7 @@ library "OpenDSS" {
                     type = generic
                     default_value = "1"
                     group = "Simulation"
+                    no_evaluate
                 }
 
                 tsstp_unit {
@@ -62,6 +65,7 @@ library "OpenDSS" {
                     type = generic
                     default_value = "24"
                     group = "Simulation"
+                    no_evaluate
                 }
 
                 append {
