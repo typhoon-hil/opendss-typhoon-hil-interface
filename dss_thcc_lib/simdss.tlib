@@ -44,7 +44,15 @@ library "OpenDSS" {
                     widget = edit
                     type = generic
                     default_value = "1"
-                    unit = "h"
+                    group = "Simulation"
+                }
+
+                tsstp_unit {
+                    label = "Time Series Step size unit"
+                    widget = combo
+                    combo_values = "Seconds", "Minutes", "Hours"
+                    type = string
+                    default_value = "Hours"
                     group = "Simulation"
                 }
 

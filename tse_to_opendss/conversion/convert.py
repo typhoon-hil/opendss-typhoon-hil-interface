@@ -137,9 +137,10 @@ def generate_output_files(output_circuit):
     number_sims = output_circuit.simulation_parameters.pop("number", None)
     sim_mode = output_circuit.simulation_parameters.pop("sim_mode")
     stepsize = output_circuit.simulation_parameters.pop("stepsize")
+    stepsize_unit = output_circuit.simulation_parameters.pop("stepsize_unit")[0].lower()    # s, m or h
     if sim_mode == "Time Series":
         solve_mode = "daily"
-        solve_parameters = f"mode={solve_mode} number={number_sims} stepsize={stepsize}"
+        solve_parameters = f"mode={solve_mode} number={number_sims} stepsize={stepsize}{stepsize_unit}"
     elif output_circuit.simulation_parameters["loadmodel"] == "Power flow":
         solve_mode = sim_mode
         solve_parameters = f"mode={solve_mode}"

@@ -1,0 +1,1 @@
+{"title": "EPC CHIL Example", "description": "Implements a Controller Hardware-in-the-Loop (C-HIL) example using Typhoon OpenDSS library and EPC HIL Compatible inverter", "model": "EPC HIL Example.tse", "images": ["EPC HIL Example.svg"], "tags": [], "app_note": ["EPC HIL Example.pdf"], "tests": []}
