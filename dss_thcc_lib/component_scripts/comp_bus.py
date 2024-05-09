@@ -1,4 +1,3 @@
-import numpy as np
 old_state = {}
 
 
@@ -137,26 +136,24 @@ def topology_dynamics(mdl, mask_handle):
         # Connect ports to each other
         for port_1_name, port_2_name in zip(all_port_names[1], all_port_names[2]):
             included = new_ports.get(port_1_name)
-            # WorkAround - When we have device marker, the bus is not exported to Json
-            sc_item = mdl.get_item(f"SC{port_1_name[0]}", parent=comp_handle)
-            if sc_item:
-                mdl.delete_item(sc_item)
             if included:
                 port_1 = mdl.get_item(port_1_name, parent=comp_handle, item_type="port")
                 port_2 = mdl.get_item(port_2_name, parent=comp_handle, item_type="port")
-                port_1_pos = mdl.get_position(port_1)
-                port_2_pos = mdl.get_position(port_2)
-                sc_pos_x = np.mean([port_1_pos[0], port_2_pos[0]])
-                sc_pos_y = np.mean([port_1_pos[1], port_2_pos[1]])
-                # WorkAround - When we have device marker, the bus is not exported to Json
-                sc_item = mdl.get_item(f"SC{port_1_name[0]}", parent=comp_handle)
-                if not sc_item:
-                    sc_item = mdl.create_component("core/Short Circuit",
-                                                   name=f"SC{port_1_name[0]}",
-                                                   position=(sc_pos_x, sc_pos_y),
-                                                   parent=comp_handle)
-                mdl.create_connection(port_1, mdl.term(sc_item, "p_node"))
-                mdl.create_connection(mdl.term(sc_item, "n_node"), port_2)
+                mdl.create_connection(port_1, port_2)
+
+
+    # WorkAround to ensure Json export - Connect a dummy circuit
+    dummy_circuit = mdl.get_item("Dummy Circuit", parent=comp_handle)
+    dummy_port = mdl.term(dummy_circuit, "Conn")
+    current_connections = mdl.find_connections(dummy_port)
+    if current_connections:
+        mdl.delete_item(current_connections[0])
+    port_items = [mdl.get_item(pname, parent=comp_handle, item_type="port")
+                  for pname in all_port_names[1] + all_port_names[2]]
+    for comp_port in port_items:
+        if comp_port:
+            mdl.create_connection(comp_port, dummy_port)
+            break
 
     old_state[comp_handle] = new_prop_values
 
@@ -167,7 +164,6 @@ def topology_dynamics(mdl, mask_handle):
     retro_string = ""
     retro_string += phase_a * "A" + phase_b * "B" + phase_c * "C" + phase_n * "N"
     mdl.set_property_value(type_prop, retro_string)
-
 
 def define_icon(mdl, mask_handle):
     """
