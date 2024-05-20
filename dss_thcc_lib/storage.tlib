@@ -2261,6 +2261,21 @@ out = out_value;
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p>A detailed explanation of the OpenDSS Storage model can be found by clicking on the help button.</p><p>The Storage component time-domain model is comprised of an ideal battery and a Simple Battery inverter (average) from the Microgrid library.</p></body></html>"
                 help_file = "help/Storage.pdf"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = False
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
                 dispatch_p {
                     label = "Dispatch P"
                     widget = combo

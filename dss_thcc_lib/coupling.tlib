@@ -115,6 +115,75 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The controlled switch is represented by a Line component in OpenDSS and by a Triple Pole Single Throw Contactor component in the Schematic Editor.<br><br>When simulating in the time domain within Typhoon’s environment, the control signal must be provided by signal processing elements or digital inputs.<br><br>If external control is not needed, a Manual Switch component can be used to allow fast double-click state toggling.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=173"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = False
+                    group = "General"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                sld_1ph_pick {
+                    label = "connected phase"
+                    widget = combo
+                    combo_values = "A", "B", "C"
+                    type = string
+                    default_value = "A"
+                    group = "General"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                sld_2ph_pick {
+                    label = "connected phases"
+                    widget = combo
+                    combo_values = "A and B", "B and C", "A and C"
+                    type = string
+                    default_value = "A and B"
+                    group = "General"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
                 coupling_type {
                     label = "Coupling Type"
                     widget = combo
@@ -126,7 +195,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 
@@ -141,7 +210,12 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 
@@ -166,7 +240,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
@@ -187,7 +261,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
@@ -244,7 +318,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 
@@ -259,7 +333,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
 
@@ -316,7 +390,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
                 }
@@ -340,7 +414,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 

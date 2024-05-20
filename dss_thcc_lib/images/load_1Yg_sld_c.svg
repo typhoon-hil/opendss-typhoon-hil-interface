@@ -5,7 +5,7 @@
    height="48"
    viewBox="0 0 32 48"
    version="1.1"
-   sodipodi:docname="load_1Yg_c.svg"
+   sodipodi:docname="load_1Yg_sld_c.svg"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -76,15 +76,16 @@
      id="rect958" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:8px;line-height:1.25;font-family:sans-serif;fill:#0000ff;fill-opacity:1;stroke:none"
-     x="20.561352"
-     y="11.980369"
-     id="text21086"><tspan
+     style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#0000ff;fill-opacity:1;stroke:none"
+     x="11.146742"
+     y="-21.268612"
+     id="text21086"
+     transform="rotate(90)"><tspan
        sodipodi:role="line"
        id="tspan21084"
-       x="20.561352"
-       y="11.980369"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#0000ff;fill-opacity:1">C</tspan></text>
+       x="11.146742"
+       y="-21.268612"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#0000ff;fill-opacity:1">C</tspan></text>
   <rect
      style="fill:#000000;fill-opacity:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
      id="rect24770"

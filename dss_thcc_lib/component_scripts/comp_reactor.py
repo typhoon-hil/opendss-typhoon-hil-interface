@@ -1,6 +1,10 @@
 import numpy as np
+import json
+import dss_thcc_lib.component_scripts.util as util
+import importlib
 
 x0, y0 = (8192, 8192)
+old_state = {}
 
 
 def calculate_l(mdl, mask_handle):
@@ -356,11 +360,32 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         tp_connection_prop = mdl.prop(mask_handle, 'tp_connection')
         tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
-        if mdl.get_name(caller_prop_handle) == "phases":
-            if new_value == "2":
+        if mdl.get_name(caller_prop_handle) in ["phases", "sld_mode"]:
+            phases_prop = mdl.prop(mask_handle, "phases")
+            phases_disp = mdl.get_property_disp_value(phases_prop)
+            sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+            sld_mode_disp = mdl.get_property_disp_value(sld_mode_prop)
+            if phases_disp == "2":
                 mdl.set_property_disp_value(tp_connection_prop, "In series")
-            elif new_value == "1" and tp_connection == "Y":
+            elif phases_disp == "1" and tp_connection == "Y":
                 mdl.set_property_disp_value(tp_connection_prop, "In series")
+
+            sld_1ph_pick_prop = mdl.prop(mask_handle, "sld_1ph_pick")
+            sld_2ph_pick_prop = mdl.prop(mask_handle, "sld_2ph_pick")
+            if sld_mode_disp in (True, "True"):
+                if phases_disp == "1":
+                    mdl.show_property(sld_1ph_pick_prop)
+                    mdl.hide_property(sld_2ph_pick_prop)
+                elif phases_disp == "2":
+                    mdl.show_property(sld_2ph_pick_prop)
+                    mdl.hide_property(sld_1ph_pick_prop)
+                else:
+                    mdl.hide_property(sld_1ph_pick_prop)
+                    mdl.hide_property(sld_2ph_pick_prop)
+            else:
+                mdl.hide_property(sld_1ph_pick_prop)
+                mdl.hide_property(sld_2ph_pick_prop)
+
         elif mdl.get_name(caller_prop_handle) == "global_basefreq":
             toggle_frequency_prop(mdl, mask_handle)
         elif mdl.get_name(caller_prop_handle) == "tp_connection":
@@ -384,6 +409,10 @@ def define_icon(mdl, mask_handle):
     phases_prop = mdl.prop(mask_handle, "phases")
     phases = mdl.get_property_disp_value(phases_prop)
 
+    sld_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_mode"))
+    sld_1ph_pick = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_1ph_pick"))
+    sld_2ph_pick = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_2ph_pick"))
+
     #
     # Backward compatibility
     #
@@ -399,7 +428,9 @@ def define_icon(mdl, mask_handle):
     # Set image
     #
     filenames = {"1": {"In series": "ind_1S",
-                       "Y - Grounded": "ind_1Y_g"},
+                       "Y - Grounded": "ind_1Y_g",
+                       "Y - Neutral point accessible": "ind_1Y_n",
+                       "Δ": "ind_1Y_n"},
                  "2": {"In series": "ind_2S"},
                  "3": {"In series": "ind_3S",
                        "Y - Grounded": "ind_3Y_g",
@@ -407,8 +438,13 @@ def define_icon(mdl, mask_handle):
                        "Δ": "ind_3D"},
                  }
 
-    if filenames[phases].get(tp_connection):
-        mdl.set_component_icon_image(mask_handle, f'images/{filenames[phases][tp_connection]}.svg')
+    if sld_mode in (True, "True"):
+        image_phases = "1"
+    else:
+        image_phases = phases
+
+    if filenames[image_phases].get(tp_connection):
+        mdl.set_component_icon_image(mask_handle, f'images/{filenames[image_phases][tp_connection]}.svg')
 
     #
     # Set text
@@ -416,13 +452,415 @@ def define_icon(mdl, mask_handle):
 
     mdl.set_color(mask_handle, "blue")
 
-    # Neutral
-    if tp_connection == "Y - Neutral point accessible":
-        if phases == "1":
-            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate", relpos_x=0.92, relpos_y=0.5,
+    if sld_mode in (True, "True"):
+        if phases == "3":
+            if tp_connection == "Δ":
+                mdl.disp_component_icon_text(mask_handle, "ABC", rotate="rotate", relpos_x=0.57, relpos_y=0.7,
+                                             size=8, trim_factor=2)
+                mdl.disp_component_icon_text(mask_handle, "Δ", rotate="rotate", relpos_x=0.7, relpos_y=0.15,
+                                             size=8, trim_factor=2)
+            elif tp_connection == "In series":
+                mdl.disp_component_icon_text(mask_handle, "ABC", rotate="rotate", relpos_x=0.75, relpos_y=0.8,
+                                             size=8, trim_factor=2)
+            else:
+                mdl.disp_component_icon_text(mask_handle, "ABC", rotate="rotate", relpos_x=0.57, relpos_y=0.7,
+                                             size=8, trim_factor=2)
+        elif phases == "2":
+            if sld_2ph_pick == "A and B":
+                sld_text = "AB"
+            elif sld_2ph_pick == "B and C":
+                sld_text = "BC"
+            elif sld_2ph_pick == "A and C":
+                sld_text = "AC"
+            else:
+                sld_text = "AB"
+            mdl.disp_component_icon_text(mask_handle, sld_text, rotate="rotate", relpos_x=0.7, relpos_y=0.8,
                                          size=8, trim_factor=2)
+        elif phases == "1":
+            if sld_1ph_pick == "A":
+                sld_text = "A"
+            elif sld_1ph_pick == "B":
+                sld_text = "B"
+            elif sld_1ph_pick == "C":
+                sld_text = "C"
+            else:
+                sld_text = "A"
+
+            if tp_connection == "In series":
+                mdl.disp_component_icon_text(mask_handle, sld_text, rotate="rotate", relpos_x=0.7, relpos_y=0.8,
+                                             size=8, trim_factor=2)
+            else:
+                mdl.disp_component_icon_text(mask_handle, sld_text, rotate="rotate", relpos_x=0.75, relpos_y=0.5,
+                                             size=8, trim_factor=2)
+
+        if tp_connection == "Y - Neutral point accessible":
+            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate", relpos_x=0.5, relpos_y=0.95,
+                                         size=8, trim_factor=2)
+    else:
+        # Neutral
+        if tp_connection == "Y - Neutral point accessible":
+            if phases == "1":
+                mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate", relpos_x=0.92, relpos_y=0.5,
+                                             size=8, trim_factor=2)
+            else:
+                mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate", relpos_x=0.81, relpos_y=0.12,
+                                             size=8, trim_factor=2)
+
+
+def get_sld_conversion_info(mdl, mask_handle, sld_name, multiline_ports, side, terminal_positions, sld_term_position):
+
+    # multiline_ports_1 = ["A1", "B1", "C1"]
+
+    port_config_dict = {
+        sld_name: {
+            "multiline_ports": multiline_ports,
+            "side": side,
+            "bus_terminal_position": sld_term_position,
+            "hide_name": True,
+        },
+    }
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    # terminal_positions = {
+    #     "A1": (-48, -24),
+    #     "B1": (-16, -24),
+    #     "C1": (16, -24),
+    # }
+
+    return port_config_dict, tag_config_dict, terminal_positions
+
+
+def topology_dynamics(mdl, mask_handle, prop_handle):
+    """
+    This function is called when the user changes the configuration on the mask
+    """
+
+    comp_handle = mdl.get_parent(mask_handle)
+
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
+
+    #
+    # Get new property values to be applied (display values)
+    #
+    current_values = {}
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+        current_values[prop] = mdl.get_property_value(p)
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle):
+        return
+
+    if calling_prop_name == "init_code":
+        define_icon(mdl, mask_handle)
+        port_dynamics(mdl, mask_handle)
+        redo_connections(mdl, mask_handle)
+
+    if calling_prop_name not in ["sld_mode", "init_code"]:
+
+        if old_state:
+            current_state = old_state[comp_handle]
         else:
-            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate", relpos_x=0.81, relpos_y=0.12,
-                                         size=8, trim_factor=2)
+            current_state = new_prop_values
+
+        tp_connection = current_state.get("tp_connection")
+        if tp_connection == "In series":
+            sld_bus_count = 2
+        else:
+            sld_bus_count = 1
+
+        for sld_idx in range(sld_bus_count):
+            sld_name = "SLD" + str(sld_idx+1)
+            currently_sld = mdl.get_item(sld_name, parent=comp_handle, item_type="port")
+            if currently_sld:
+                # The terminal related to the current property hasn't been created yet
+                sld_number = {}
+                importlib.reload(util)
+                phases = current_state.get("phases")
+                tp_connection = current_state.get("tp_connection")
+                sld_1ph_pick = current_state.get("sld_1ph_pick")
+                sld_2ph_pick = current_state.get("sld_2ph_pick")
+
+                multi_port_list = []
+                terminal_positions = {}
+                sld_term_position = (0, 0)
+                sld_side = "left"
+                if tp_connection == "In series":
+                    if sld_idx == 0:
+                        sld_side = "left"
+                        port_x = -32
+                    else:
+                        sld_side = "right"
+                        port_x = 32
+                    if phases == "3":
+                        multi_port_list = ["A" + str(sld_idx+1), "B" + str(sld_idx+1), "C" + str(sld_idx+1)]
+                        terminal_positions = {
+                            "A" + str(sld_idx+1): (port_x, -32),
+                            "B" + str(sld_idx+1): (port_x, 0),
+                            "C" + str(sld_idx+1): (port_x, 32),
+                        }
+                        sld_term_position = (port_x, 0)
+                    elif phases == "2":
+                        terminal_positions = {
+                            "A" + str(sld_idx + 1): (port_x, -16),
+                            "B" + str(sld_idx + 1): (port_x, 16),
+                        }
+                        sld_term_position = (port_x, 0)
+                        if sld_2ph_pick == "A and B":
+                            multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1)]
+                        elif sld_2ph_pick == "B and C":
+                            multi_port_list = [None, "A" + str(sld_idx + 1), "B" + str(sld_idx + 1)]
+                        elif sld_2ph_pick == "A and C":
+                            multi_port_list = ["A" + str(sld_idx + 1), None, "B" + str(sld_idx + 1)]
+                    elif phases == "1":
+                        terminal_positions = {
+                            "A" + str(sld_idx + 1): (port_x, 0),
+                        }
+                        sld_term_position = (port_x, 0)
+                        if sld_1ph_pick == "A":
+                            multi_port_list = ["A" + str(sld_idx + 1)]
+                        elif sld_1ph_pick == "B":
+                            multi_port_list = [None, "A" + str(sld_idx + 1)]
+                        elif sld_1ph_pick == "C":
+                            multi_port_list = [None, None, "A" + str(sld_idx + 1)]
+                elif tp_connection == "Δ":
+                    sld_side = "top"
+                    multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1), "C" + str(sld_idx + 1)]
+                    terminal_positions = {
+                        "A" + str(sld_idx + 1): (-32, -32),
+                        "B" + str(sld_idx + 1): (0, -32),
+                        "C" + str(sld_idx + 1): (32, -32),
+                    }
+                    sld_term_position = (0, -32)
+                elif tp_connection == "Y":
+                    sld_side = "top"
+                    multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1), "C" + str(sld_idx + 1), "N" + str(sld_idx + 1)]
+                    terminal_positions = {
+                        "A" + str(sld_idx + 1): (-48, -32),
+                        "B" + str(sld_idx + 1): (-16, -32),
+                        "C" + str(sld_idx + 1): (16, -32),
+                        "N" + str(sld_idx + 1): (48, -32),
+                    }
+                    sld_term_position = (0, -32)
+                elif tp_connection == "Y - Grounded":
+                    sld_side = "top"
+                    sld_term_position = (0, -32)
+                    if phases == "3":
+                        multi_port_list = ["A" + str(sld_idx+1), "B" + str(sld_idx+1), "C" + str(sld_idx+1)]
+                        terminal_positions = {
+                            "A" + str(sld_idx+1): (-32, -32),
+                            "B" + str(sld_idx+1): (0, -32),
+                            "C" + str(sld_idx+1): (32, -32),
+                        }
+                    elif phases == "1":
+                        terminal_positions = {
+                            "A" + str(sld_idx + 1): (0, -32),
+                        }
+                        if sld_1ph_pick == "A":
+                            multi_port_list = ["A" + str(sld_idx + 1)]
+                        elif sld_1ph_pick == "B":
+                            multi_port_list = [None, "A" + str(sld_idx + 1)]
+                        elif sld_1ph_pick == "C":
+                            multi_port_list = [None, None, "A" + str(sld_idx + 1)]
+
+                sld_number["port_names"] = multi_port_list
+                sld_number["side"] = sld_side
+                sld_number["multi_term_pos"] = terminal_positions
+                sld_number["sld_term_pos"] = sld_term_position
+
+                sld_info = get_sld_conversion_info(mdl, mask_handle, sld_name,
+                                                   sld_number.get("port_names"),
+                                                   sld_number.get("side"),
+                                                   sld_number.get("multi_term_pos"),
+                                                   sld_number.get("sld_term_pos")
+                                                   )
+
+                util.convert_to_multiline(mdl, mask_handle, sld_info)
 
 
+        define_icon(mdl, mask_handle)
+        port_dynamics(mdl, mask_handle)
+        redo_connections(mdl, mask_handle)
+        old_state[comp_handle] = current_values
+
+    good_for_sld = []
+    for prop_name in new_prop_values:
+        if prop_name in ["phases", "tp_connection", "sld_1ph_pick", "sld_2ph_pick"]:
+            cur_pass_value = current_pass_prop_values[prop_name]
+            new_value = new_prop_values[prop_name]
+            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
+                if float(cur_pass_value) == float(new_value):
+                    good_for_sld.append(True)
+                    continue
+            else:
+                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                    good_for_sld.append(True)
+                    continue
+            good_for_sld.append(False)
+
+    final_state = all(good_for_sld)
+    # final_state = True
+
+
+
+    #
+    # When property values reach the final state, return to single-line if needed
+    #
+
+
+    if final_state:
+        old_state[comp_handle] = new_prop_values
+        tp_connection = new_prop_values.get("tp_connection")
+        if tp_connection == "In series":
+            sld_bus_count = 2
+        else:
+            sld_bus_count = 1
+
+        sld_info = []
+        for sld_idx in range(sld_bus_count):
+            sld_name = "SLD" + str(sld_idx + 1)
+            sld_number = {}
+            importlib.reload(util)
+            phases = new_prop_values.get("phases")
+            tp_connection = new_prop_values.get("tp_connection")
+            sld_1ph_pick = new_prop_values.get("sld_1ph_pick")
+            sld_2ph_pick = new_prop_values.get("sld_2ph_pick")
+
+            multi_port_list = []
+            terminal_positions = {}
+            sld_term_position = (0, 0)
+            sld_side = "left"
+            if tp_connection == "In series":
+                if sld_idx == 0:
+                    sld_side = "left"
+                    port_x = -32
+                else:
+                    sld_side = "right"
+                    port_x = 32
+                if phases == "3":
+                    multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1), "C" + str(sld_idx + 1)]
+                    terminal_positions = {
+                        "A" + str(sld_idx + 1): (port_x, -32),
+                        "B" + str(sld_idx + 1): (port_x, 0),
+                        "C" + str(sld_idx + 1): (port_x, 32),
+                    }
+                    sld_term_position = (port_x, 0)
+                elif phases == "2":
+                    terminal_positions = {
+                        "A" + str(sld_idx + 1): (port_x, -16),
+                        "B" + str(sld_idx + 1): (port_x, 16),
+                    }
+                    sld_term_position = (port_x, 0)
+                    if sld_2ph_pick == "A and B":
+                        multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1)]
+                    elif sld_2ph_pick == "B and C":
+                        multi_port_list = [None, "A" + str(sld_idx + 1), "B" + str(sld_idx + 1)]
+                    elif sld_2ph_pick == "A and C":
+                        multi_port_list = ["A" + str(sld_idx + 1), None, "B" + str(sld_idx + 1)]
+                elif phases == "1":
+                    terminal_positions = {
+                        "A" + str(sld_idx + 1): (port_x, 0),
+                    }
+                    sld_term_position = (port_x, 0)
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A" + str(sld_idx + 1)]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A" + str(sld_idx + 1)]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = [None, None, "A" + str(sld_idx + 1)]
+            elif tp_connection == "Δ":
+                sld_side = "top"
+                multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1), "C" + str(sld_idx + 1)]
+                terminal_positions = {
+                    "A" + str(sld_idx + 1): (-32, -32),
+                    "B" + str(sld_idx + 1): (0, -32),
+                    "C" + str(sld_idx + 1): (32, -32),
+                }
+                sld_term_position = (0, -32)
+            elif tp_connection == "Y":
+                sld_side = "top"
+                multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1), "C" + str(sld_idx + 1),
+                                   "N" + str(sld_idx + 1)]
+                terminal_positions = {
+                    "A" + str(sld_idx + 1): (-48, -32),
+                    "B" + str(sld_idx + 1): (-16, -32),
+                    "C" + str(sld_idx + 1): (16, -32),
+                    "N" + str(sld_idx + 1): (48, -32),
+                }
+                sld_term_position = (0, -32)
+            elif tp_connection == "Y - Grounded":
+                sld_side = "top"
+                sld_term_position = (0, -32)
+                if phases == "3":
+                    multi_port_list = ["A" + str(sld_idx + 1), "B" + str(sld_idx + 1), "C" + str(sld_idx + 1)]
+                    terminal_positions = {
+                        "A" + str(sld_idx + 1): (-32, -32),
+                        "B" + str(sld_idx + 1): (0, -32),
+                        "C" + str(sld_idx + 1): (32, -32),
+                    }
+                elif phases == "1":
+                    terminal_positions = {
+                        "A" + str(sld_idx + 1): (0, -32),
+                    }
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A" + str(sld_idx + 1)]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A" + str(sld_idx + 1)]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = [None, None, "A" + str(sld_idx + 1)]
+
+            sld_number["port_names"] = multi_port_list
+            sld_number["side"] = sld_side
+            sld_number["multi_term_pos"] = terminal_positions
+            sld_number["sld_term_pos"] = sld_term_position
+
+            sld_info.append(get_sld_conversion_info(mdl, mask_handle, sld_name,
+                                               sld_number.get("port_names"),
+                                               sld_number.get("side"),
+                                               sld_number.get("multi_term_pos"),
+                                               sld_number.get("sld_term_pos")
+                                               )
+                            )
+
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            for sld_idx in range(sld_bus_count):
+                util.convert_to_sld(mdl, mask_handle, sld_info[sld_idx])
+        else:
+            for sld_idx in range(sld_bus_count):
+                sld_name = "SLD" + str(sld_idx + 1)
+                currently_sld = mdl.get_item(sld_name, parent=comp_handle, item_type="port")
+                if currently_sld:
+                    util.convert_to_multiline(mdl, mask_handle, sld_info[sld_idx])
+
+
+    sld_post_processing(mdl, mask_handle)
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    for bus_name in ["SLD1_bus", "SLD2_bus"]:
+        bus = mdl.get_item(bus_name, parent=comp_handle)
+        if bus:
+            bus_size_prop = mdl.prop(bus, "bus_size")
+            mdl.set_property_value(bus_size_prop, 4)

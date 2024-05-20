@@ -1,6 +1,10 @@
 import numpy as np
 from itertools import combinations
+import json
+import dss_thcc_lib.component_scripts.util as util
+import importlib
 
+old_state = {}
 x0, y0 = (8192, 8192)
 
 
@@ -463,6 +467,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
     return created_ports, deleted_ports
 
+
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
     if caller_prop_handle:
@@ -472,22 +477,65 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
         if mdl.get_name(caller_prop_handle) == "ptratio":
             calculate_winding_voltage(mdl, mask_handle)
 
+        if mdl.get_name(caller_prop_handle) in ["sld_mode", "num_windings"]:
+            sld_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_mode"))
+            num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
+            if sld_mode in (True, "True"):
+                for w_idx in range(10):
+                    if w_idx <= (num_windings - 1):
+                        winding_ph_sld = "w" + str(w_idx + 1) + "_ph_sld"
+                        winding_ph_sld_prop = mdl.prop(mask_handle, winding_ph_sld)
+                        mdl.show_property(winding_ph_sld_prop)
+                    else:
+                        winding_ph_sld = "w" + str(w_idx + 1) + "_ph_sld"
+                        winding_ph_sld_prop = mdl.prop(mask_handle, winding_ph_sld)
+                        mdl.hide_property(winding_ph_sld_prop)
+            else:
+                for w_idx in range(10):
+                    winding_ph_sld = "w" + str(w_idx + 1) + "_ph_sld"
+                    winding_ph_sld_prop = mdl.prop(mask_handle, winding_ph_sld)
+                    mdl.hide_property(winding_ph_sld_prop)
+
 
 def define_icon(mdl, mask_handle):
     images = {
-        2: "t_2p2w.svg",
-        3: "t_2p3w.svg",
-        4: "t_2p4w.svg",
-        5: "t_2p5w.svg",
-        6: "t_2p6w.svg",
-        7: "t_2p7w.svg",
-        8: "t_2p8w.svg",
-        9: "t_2p9w.svg",
-        10: "t_2p10w.svg",
+        2: "t_2p2w",
+        3: "t_2p3w",
+        4: "t_2p4w",
+        5: "t_2p5w",
+        6: "t_2p6w",
+        7: "t_2p7w",
+        8: "t_2p8w",
+        9: "t_2p9w",
+        10: "t_2p10w",
     }
     num_windings = int(mdl.get_property_value(mdl.prop(mask_handle, "num_windings")))
 
-    mdl.set_component_icon_image(mask_handle, "images/" + images[num_windings])
+    sld_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_mode"))
+
+    if sld_mode in (True, "True"):
+        sld = True
+    else:
+        sld = False
+
+    if sld:
+        size_y = 56 + 32 * (num_windings - 2)
+        mdl.set_component_icon_image(mask_handle, "images/" + images[num_windings] + "_sld.svg")
+        port_dist = 32
+        text_size = 6
+    else:
+        size_y = 64 + 96 * (num_windings - 2)
+        mdl.set_component_icon_image(mask_handle, "images/" + images[num_windings] + ".svg")
+        port_dist = 96
+        text_size = 8
+
+    w_ph_sld_props = []
+    w_ph_sld_pick_list = []
+    for w_idx in range(10):
+        w_ph_sld_props.append("w" + str(w_idx + 1) + "_ph_sld")
+        w_ph_sld_pick = mdl.get_property_disp_value(mdl.prop(mask_handle, w_ph_sld_props[w_idx]))
+        w_ph_sld_pick_list.append(w_ph_sld_pick)
+
 
     #
     # Set text
@@ -495,20 +543,32 @@ def define_icon(mdl, mask_handle):
     mdl.set_color(mask_handle, "blue")
 
     for wdg_number in range(1, num_windings + 1):
-        size_y = 64 + 96 * (num_windings - 2)
 
         # Winding number
         if wdg_number == 1:
+            if sld:
+                mdl.disp_component_icon_text(mask_handle, w_ph_sld_pick_list[wdg_number - 1], rotate="rotate",
+                                             relpos_x=0.14,
+                                             relpos_y=(18 + 0.5 * port_dist * (
+                                                     num_windings - 2)) / size_y,
+                                             size=text_size, trim_factor=2)
+
             mdl.disp_component_icon_text(mask_handle, "1", rotate="rotate",
                                          relpos_x=0.14,
-                                         relpos_y=(36 + 48 * (
+                                         relpos_y=(36 + 0.5 * port_dist * (
                                                      num_windings - 2)) / size_y,
-                                         size=8, trim_factor=2)
+                                         size=text_size, trim_factor=2)
         else:
+            if sld:
+                mdl.disp_component_icon_text(mask_handle, w_ph_sld_pick_list[wdg_number - 1], rotate="rotate",
+                                             relpos_x=0.88,
+                                             relpos_y=(18 + port_dist * (wdg_number - 2)) / size_y,
+                                             size=text_size, trim_factor=2)
+
             mdl.disp_component_icon_text(mask_handle, f"{wdg_number}", rotate="rotate",
                                          relpos_x=0.88,
-                                         relpos_y=(36 + 96 * (wdg_number - 2)) / size_y,
-                                         size=8, trim_factor=2)
+                                         relpos_y=(36 + port_dist * (wdg_number - 2)) / size_y,
+                                         size=text_size, trim_factor=2)
 
 
 def place_voltage_regulator(mdl, mask_handle, new_value):
@@ -562,3 +622,209 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
         for component in delete_list:
             if component:
                 mdl.delete_item(component)
+
+
+def topology_dynamics(mdl, mask_handle, prop_handle):
+    """
+    This call the functions to build the transformer configuration according
+    to the user selected parameters and configurations.
+    """
+
+    comp_handle = mdl.get_parent(mask_handle)
+
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
+
+    #
+    # Get new property values to be applied (display values)
+    #
+    current_values = {}
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+        current_values[prop] = mdl.get_property_value(p)
+
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle):
+        return
+
+    if calling_prop_name == "init_code":
+        mdl.refresh_icon(mask_handle)
+        created_ports, _ = port_dynamics(mdl, mask_handle)
+        update_subsystem_components(mdl, mask_handle, created_ports)
+
+    num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
+
+    sld_info_dict = {}
+    w_ph_sld_props = []
+    for w_idx in range(10):
+        w_ph_sld_props.append("w" + str(w_idx + 1) + "_ph_sld")
+
+    for w_idx in range(num_windings):
+        sld_dict = {}
+        port_names_dict = {
+            "AN": ["A" + str(w_idx + 1), None, None, "B" + str(w_idx + 1)],
+            "BN": [None, "A" + str(w_idx + 1), None, "B" + str(w_idx + 1)],
+            "CN": [None, None, "A" + str(w_idx + 1), "B" + str(w_idx + 1)],
+            "AB": ["A" + str(w_idx + 1), "B" + str(w_idx + 1), None, None],
+            "BC": [None, "A" + str(w_idx + 1), "B" + str(w_idx + 1), None],
+            "CA": ["B" + str(w_idx + 1), None, "A" + str(w_idx + 1), None],
+        }
+        w_ph_sld_pick = mdl.get_property_disp_value(mdl.prop(mask_handle, w_ph_sld_props[w_idx]))
+        port_names = port_names_dict.get(w_ph_sld_pick)
+        sld_bus_name = "SLD" + str(w_idx + 1)
+        phase_1_port = "A" + str(w_idx + 1)
+        phase_2_port = "B" + str(w_idx + 1)
+
+        if w_idx == 0:
+            port_side = "left"
+            multi_port_pos = {
+                phase_1_port: (-32, -16),
+                phase_2_port: (-32, 16),
+            }
+            sld_port_pos = (-32, 0)
+        else:
+            initial_port_a_y = -(48*(num_windings - 2)) - 16
+            port_side = "right"
+            port_1_y = initial_port_a_y + (w_idx - 1)*96
+            port_2_y = port_1_y + 32
+            port_sld_y = -(16*(num_windings - 2)) + (w_idx - 1)*32
+            multi_port_pos = {
+                phase_1_port: (32, port_1_y),
+                phase_2_port: (32, port_2_y),
+            }
+            sld_port_pos = (32, port_sld_y)
+
+        sld_dict["port_names"] = port_names
+        sld_dict["side"] = port_side
+        sld_dict["multi_term_pos"] = multi_port_pos
+        sld_dict["sld_term_pos"] = sld_port_pos
+
+        sld_info_dict[sld_bus_name] = sld_dict
+
+    if calling_prop_name not in w_ph_sld_props + ["sld_mode", "init_code"]:
+
+        for sld_winding in sld_info_dict.keys():
+            currently_sld = mdl.get_item(sld_winding, parent=comp_handle, item_type="port")
+            if currently_sld:
+                # The terminal related to the current property hasn't been created yet
+                importlib.reload(util)
+                sld_info = get_sld_conversion_info(mdl, mask_handle, sld_winding,
+                                                   sld_info_dict.get(sld_winding).get("port_names"),
+                                                   sld_info_dict.get(sld_winding).get("side"),
+                                                   sld_info_dict.get(sld_winding).get("multi_term_pos"),
+                                                   sld_info_dict.get(sld_winding).get("sld_term_pos")
+                                                   )
+
+                util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+        mdl.refresh_icon(mask_handle)
+        created_ports, _ = port_dynamics(mdl, mask_handle)
+        update_subsystem_components(mdl, mask_handle, created_ports)
+        old_state[comp_handle] = current_values
+
+    for sld_winding in sld_info_dict.keys():
+        currently_sld = mdl.get_item(sld_winding, parent=comp_handle, item_type="port")
+        if currently_sld:
+            # The terminal related to the current property hasn't been created yet
+            importlib.reload(util)
+            sld_info = get_sld_conversion_info(mdl, mask_handle, sld_winding,
+                                               sld_info_dict.get(sld_winding).get("port_names"),
+                                               sld_info_dict.get(sld_winding).get("side"),
+                                               sld_info_dict.get(sld_winding).get("multi_term_pos"),
+                                               sld_info_dict.get(sld_winding).get("sld_term_pos")
+                                               )
+
+            util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+    good_for_sld = []
+    for prop_name in new_prop_values:
+        if prop_name in ["num_windings"]:
+            cur_pass_value = current_pass_prop_values[prop_name]
+            new_value = new_prop_values[prop_name]
+            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
+                if float(cur_pass_value) == float(new_value):
+                    good_for_sld.append(True)
+                    continue
+            else:
+                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                    good_for_sld.append(True)
+                    continue
+            good_for_sld.append(False)
+
+    final_state = all(good_for_sld)
+
+    if final_state:
+        old_state[comp_handle] = new_prop_values
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            importlib.reload(util)
+            num_windings = int(new_prop_values.get("num_windings"))
+            sld_winding_list = []
+            for w_idx in range(num_windings):
+                sld_winding_list.append("SLD" + str(w_idx+1))
+
+            for sld_winding in sld_winding_list:
+                sld_info = get_sld_conversion_info(mdl, mask_handle, sld_winding,
+                                                   sld_info_dict.get(sld_winding).get("port_names"),
+                                                   sld_info_dict.get(sld_winding).get("side"),
+                                                   sld_info_dict.get(sld_winding).get("multi_term_pos"),
+                                                   sld_info_dict.get(sld_winding).get("sld_term_pos")
+                                                   )
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+
+    sld_post_processing(mdl, mask_handle)
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    sld_bus_list = []
+    for bus_idx in range(10):
+        sld_bus_list.append("SLD" + str(bus_idx+1) + "_bus")
+
+    for bus_name in sld_bus_list:
+        bus = mdl.get_item(bus_name, parent=comp_handle)
+        if bus:
+            bus_size_prop = mdl.prop(bus, "bus_size")
+            mdl.set_property_value(bus_size_prop, 4)
+
+
+def get_sld_conversion_info(mdl, mask_handle, sld_name, multiline_ports, side, terminal_positions, sld_term_position):
+
+    # multiline_ports_1 = ["A1", "B1", "C1"]
+
+    port_config_dict = {
+        sld_name: {
+            "multiline_ports": multiline_ports,
+            "side": side,
+            "bus_terminal_position": sld_term_position,
+            "hide_name": True,
+        },
+    }
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    # terminal_positions = {
+    #     "A1": (-48, -24),
+    #     "B1": (-16, -24),
+    #     "C1": (16, -24),
+    # }
+
+    return port_config_dict, tag_config_dict, terminal_positions

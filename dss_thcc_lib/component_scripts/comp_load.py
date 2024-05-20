@@ -10,36 +10,6 @@ got_loadshape_points_list = []
 old_state = {}
 
 
-def get_sld_conversion_info(mdl, mask_handle, multiline_ports, sld_con_seq, terminal_positions, sld_term_position):
-
-    # multiline_ports_1 = ["A1", "B1", "C1"]
-
-    port_config_dict = {
-        "SLD1": {
-            "multiline_ports": multiline_ports,
-            "SLD_bus_connection_sequence": sld_con_seq,
-            "side": "top",
-            "bus_terminal_position": sld_term_position,
-            "hide_name": True,
-        },
-    }
-    #
-    # Tag info
-    #
-    tag_config_dict = {}
-
-    #
-    # Terminal positions
-    #
-    # terminal_positions = {
-    #     "A1": (-48, -24),
-    #     "B1": (-16, -24),
-    #     "C1": (16, -24),
-    # }
-
-    return port_config_dict, tag_config_dict, terminal_positions
-
-
 def mask_edit_restore_visibility(mdl, mask_handle):
     # Restore properties' visual status on load
     prop_list = [
@@ -547,17 +517,17 @@ def define_icon(mdl, mask_handle):
     #
 
     mdl.set_color(mask_handle, "blue")
-
-    # Neutral
-    if tp_connection in ("Y", "Y - Grounded"):
-        if phases == "3":
-            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
-                                         relpos_x=0.81, relpos_y=0.12,
-                                         size=8, trim_factor=2)
-        elif tp_connection == "Y":
-            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
-                                         relpos_x=0.92, relpos_y=0.5,
-                                         size=8, trim_factor=2)
+    if sld_mode in (False, "False"):
+        # Neutral
+        if tp_connection in ("Y", "Y - Grounded"):
+            if phases == "3":
+                mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
+                                             relpos_x=0.81, relpos_y=0.12,
+                                             size=8, trim_factor=2)
+            elif tp_connection == "Y":
+                mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
+                                             relpos_x=0.92, relpos_y=0.5,
+                                             size=8, trim_factor=2)
 
 
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
@@ -1736,6 +1706,35 @@ def validate_execution_rate(mdl, mask_handle):
 #         mdl.disable_property(mdl.prop(mask_handle, "T_Ts"))
 
 
+def get_sld_conversion_info(mdl, mask_handle, multiline_ports, terminal_positions, sld_term_position):
+
+    # multiline_ports_1 = ["A1", "B1", "C1"]
+
+    port_config_dict = {
+        "SLD1": {
+            "multiline_ports": multiline_ports,
+            "side": "top",
+            "bus_terminal_position": sld_term_position,
+            "hide_name": True,
+        },
+    }
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    # terminal_positions = {
+    #     "A1": (-48, -24),
+    #     "B1": (-16, -24),
+    #     "C1": (16, -24),
+    # }
+
+    return port_config_dict, tag_config_dict, terminal_positions
+
+
 def topology_dynamics(mdl, mask_handle, prop_handle):
     """
     This function is called when the user changes the configuration on the mask
@@ -1792,9 +1791,8 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
             tp_connection = current_state.get("tp_connection")
             sld_1ph_pick = current_state.get("sld_1ph_pick")
             if phases == "3":
-                multi_port_list = ["A1", "B1", "C1"]
-                sld_con_seq = [1, 2, 3]
                 if tp_connection == "Δ":
+                    multi_port_list = ["A1", "B1", "C1"]
                     terminal_positions = {
                         "A1": (-32, -24),
                         "B1": (0, -24),
@@ -1802,59 +1800,58 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
                     }
                     sld_term_position = (0, -24)
                 else:
+                    multi_port_list = ["A1", "B1", "C1", "N1"]
                     terminal_positions = {
                         "A1": (-48, -24),
                         "B1": (-16, -24),
                         "C1": (16, -24),
+                        "N1": (48, -24),
                     }
-                    sld_term_position = (-16, -24)
+                    sld_term_position = (0, -24)
             elif phases == "1":
                 if tp_connection == "Y - Grounded":
-                    multi_port_list = ["A1"]
                     terminal_positions = {
                         "A1": (0, -24),
                     }
                     sld_term_position = (0, -24)
                     if sld_1ph_pick == "A":
-                        sld_con_seq = [1]
+                        multi_port_list = ["A1", None, None]
                     elif sld_1ph_pick == "B":
-                        sld_con_seq = [2]
+                        multi_port_list = [None, "A1", None]
                     elif sld_1ph_pick == "C":
-                        sld_con_seq = [3]
+                        multi_port_list = [None, None, "A1"]
                     else:
-                        sld_con_seq = [1]
+                        multi_port_list = ["A1", None, None]
                 elif tp_connection == "Y":
-                    multi_port_list = ["A1"]
-                    terminal_positions = {
-                        "A1": (-16, -12),
-                    }
-                    sld_term_position = (-16, -12)
-                    if sld_1ph_pick == "A":
-                        sld_con_seq = [1]
-                    elif sld_1ph_pick == "B":
-                        sld_con_seq = [2]
-                    elif sld_1ph_pick == "C":
-                        sld_con_seq = [3]
-                    else:
-                        sld_con_seq = [1]
-                else:
-                    multi_port_list = ["A1", "B1"]
                     terminal_positions = {
                         "A1": (-16, -12),
                         "B1": (16, -12),
                     }
-                    sld_term_position = (0, -12)
+                    sld_term_position = (0, -24)
                     if sld_1ph_pick == "A":
-                        sld_con_seq = [1, 2]
+                        multi_port_list = ["A1", None, None, "B1"]
                     elif sld_1ph_pick == "B":
-                        sld_con_seq = [2, 3]
+                        multi_port_list = [None, "A1", None, "B1"]
                     elif sld_1ph_pick == "C":
-                        sld_con_seq = [3, 1]
+                        multi_port_list = [None, None, "A1", "B1"]
                     else:
-                        sld_con_seq = [1, 2]
+                        multi_port_list = ["A1", None, None, "B1"]
+                else:
+                    terminal_positions = {
+                        "A1": (-16, -12),
+                        "B1": (16, -12),
+                    }
+                    sld_term_position = (0, -16)
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A1", "B1", None]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A1", "B1"]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = ["B1", None, "A1"]
+                    else:
+                        multi_port_list = ["A1", "B1", None]
             else:
                 multi_port_list = ["A1", "B1", "C1"]
-                sld_con_seq = [1, 2, 3]
                 terminal_positions = {
                     "A1": (-48, -24),
                     "B1": (-16, -24),
@@ -1862,7 +1859,7 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
                 }
                 sld_term_position = (0, -24)
 
-            sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, sld_con_seq, terminal_positions, sld_term_position)
+            sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, terminal_positions, sld_term_position)
             util.convert_to_multiline(mdl, mask_handle, sld_info)
 
         define_icon(mdl, mask_handle)
@@ -1881,9 +1878,8 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
         tp_connection = new_prop_values.get("tp_connection")
         sld_1ph_pick = new_prop_values.get("sld_1ph_pick")
         if phases == "3":
-            multi_port_list = ["A1", "B1", "C1"]
-            sld_con_seq = [1, 2, 3]
             if tp_connection == "Δ":
+                multi_port_list = ["A1", "B1", "C1"]
                 terminal_positions = {
                     "A1": (-32, -24),
                     "B1": (0, -24),
@@ -1891,59 +1887,58 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
                 }
                 sld_term_position = (0, -24)
             else:
+                multi_port_list = ["A1", "B1", "C1", "N1"]
                 terminal_positions = {
                     "A1": (-48, -24),
                     "B1": (-16, -24),
                     "C1": (16, -24),
+                    "N1": (48, -24),
                 }
-                sld_term_position = (-16, -24)
+                sld_term_position = (0, -24)
         elif phases == "1":
             if tp_connection == "Y - Grounded":
-                multi_port_list = ["A1"]
                 terminal_positions = {
                     "A1": (0, -24),
                 }
                 sld_term_position = (0, -24)
                 if sld_1ph_pick == "A":
-                    sld_con_seq = [1]
+                    multi_port_list = ["A1", None, None]
                 elif sld_1ph_pick == "B":
-                    sld_con_seq = [2]
+                    multi_port_list = [None, "A1", None]
                 elif sld_1ph_pick == "C":
-                    sld_con_seq = [3]
+                    multi_port_list = [None, None, "A1"]
                 else:
-                    sld_con_seq = [1]
+                    multi_port_list = ["A1", None, None]
             elif tp_connection == "Y":
-                multi_port_list = ["A1"]
-                terminal_positions = {
-                    "A1": (-16, -12),
-                }
-                sld_term_position = (-16, -12)
-                if sld_1ph_pick == "A":
-                    sld_con_seq = [1]
-                elif sld_1ph_pick == "B":
-                    sld_con_seq = [2]
-                elif sld_1ph_pick == "C":
-                    sld_con_seq = [3]
-                else:
-                    sld_con_seq = [1]
-            else:
-                multi_port_list = ["A1", "B1"]
                 terminal_positions = {
                     "A1": (-16, -12),
                     "B1": (16, -12),
                 }
-                sld_term_position = (0, -12)
+                sld_term_position = (0, -24)
                 if sld_1ph_pick == "A":
-                    sld_con_seq = [1, 2]
+                    multi_port_list = ["A1", None, None, "B1"]
                 elif sld_1ph_pick == "B":
-                    sld_con_seq = [2, 3]
+                    multi_port_list = [None, "A1", None, "B1"]
                 elif sld_1ph_pick == "C":
-                    sld_con_seq = [3, 1]
+                    multi_port_list = [None, None, "A1", "B1"]
                 else:
-                    sld_con_seq = [1, 2]
+                    multi_port_list = ["A1", None, None, "B1"]
+            else:
+                terminal_positions = {
+                    "A1": (-16, -12),
+                    "B1": (16, -12),
+                }
+                sld_term_position = (0, -16)
+                if sld_1ph_pick == "A":
+                    multi_port_list = ["A1", "B1", None]
+                elif sld_1ph_pick == "B":
+                    multi_port_list = [None, "A1", "B1"]
+                elif sld_1ph_pick == "C":
+                    multi_port_list = ["B1", None, "A1"]
+                else:
+                    multi_port_list = ["A1", "B1", None]
         else:
             multi_port_list = ["A1", "B1", "C1"]
-            sld_con_seq = [1, 2, 3]
             terminal_positions = {
                 "A1": (-48, -24),
                 "B1": (-16, -24),
@@ -1951,7 +1946,7 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
             }
             sld_term_position = (0, -24)
 
-        sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, sld_con_seq, terminal_positions, sld_term_position)
+        sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, terminal_positions, sld_term_position)
         util.convert_to_multiline(mdl, mask_handle, sld_info)
 
     #
@@ -1983,9 +1978,8 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
             tp_connection = new_prop_values.get("tp_connection")
             sld_1ph_pick = new_prop_values.get("sld_1ph_pick")
             if phases == "3":
-                multi_port_list = ["A1", "B1", "C1"]
-                sld_con_seq = [1, 2, 3]
                 if tp_connection == "Δ":
+                    multi_port_list = ["A1", "B1", "C1"]
                     terminal_positions = {
                         "A1": (-32, -24),
                         "B1": (0, -24),
@@ -1993,59 +1987,58 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
                     }
                     sld_term_position = (0, -24)
                 else:
+                    multi_port_list = ["A1", "B1", "C1", "N1"]
                     terminal_positions = {
                         "A1": (-48, -24),
                         "B1": (-16, -24),
                         "C1": (16, -24),
+                        "N1": (48, -24),
                     }
-                    sld_term_position = (-16, -24)
+                    sld_term_position = (0, -24)
             elif phases == "1":
                 if tp_connection == "Y - Grounded":
-                    multi_port_list = ["A1"]
                     terminal_positions = {
                         "A1": (0, -24),
                     }
                     sld_term_position = (0, -24)
                     if sld_1ph_pick == "A":
-                        sld_con_seq = [1]
+                        multi_port_list = ["A1", None, None]
                     elif sld_1ph_pick == "B":
-                        sld_con_seq = [2]
+                        multi_port_list = [None, "A1", None]
                     elif sld_1ph_pick == "C":
-                        sld_con_seq = [3]
+                        multi_port_list = [None, None, "A1"]
                     else:
-                        sld_con_seq = [1]
+                        multi_port_list = ["A1", None, None]
                 elif tp_connection == "Y":
-                    multi_port_list = ["A1"]
-                    terminal_positions = {
-                        "A1": (-16, -12),
-                    }
-                    sld_term_position = (-16, -12)
-                    if sld_1ph_pick == "A":
-                        sld_con_seq = [1]
-                    elif sld_1ph_pick == "B":
-                        sld_con_seq = [2]
-                    elif sld_1ph_pick == "C":
-                        sld_con_seq = [3]
-                    else:
-                        sld_con_seq = [1]
-                else:
-                    multi_port_list = ["A1", "B1"]
                     terminal_positions = {
                         "A1": (-16, -12),
                         "B1": (16, -12),
                     }
-                    sld_term_position = (0, -12)
+                    sld_term_position = (0, -24)
                     if sld_1ph_pick == "A":
-                        sld_con_seq = [1, 2]
+                        multi_port_list = ["A1", None, None, "B1"]
                     elif sld_1ph_pick == "B":
-                        sld_con_seq = [2, 3]
+                        multi_port_list = [None, "A1", None, "B1"]
                     elif sld_1ph_pick == "C":
-                        sld_con_seq = [3, 1]
+                        multi_port_list = [None, None, "A1", "B1"]
                     else:
-                        sld_con_seq = [1, 2]
+                        multi_port_list = ["A1", None, None, "B1"]
+                else:
+                    terminal_positions = {
+                        "A1": (-16, -12),
+                        "B1": (16, -12),
+                    }
+                    sld_term_position = (0, -16)
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A1", "B1", None]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A1", "B1"]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = ["B1", None, "A1"]
+                    else:
+                        multi_port_list = ["A1", "B1", None]
             else:
                 multi_port_list = ["A1", "B1", "C1"]
-                sld_con_seq = [1, 2, 3]
                 terminal_positions = {
                     "A1": (-48, -24),
                     "B1": (-16, -24),
@@ -2053,7 +2046,7 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
                 }
                 sld_term_position = (0, -24)
 
-            sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, sld_con_seq, terminal_positions, sld_term_position)
+            sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, terminal_positions, sld_term_position)
             util.convert_to_sld(mdl, mask_handle, sld_info)
 
     sld_post_processing(mdl, mask_handle)

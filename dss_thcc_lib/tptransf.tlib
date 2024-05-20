@@ -266,6 +266,22 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The Three-Phase Transfomer is implemented as a multi-terminal power delivery element and consists of two or more windings, with a default wye-wye connection.<br></br><br></br>Note that contrary to OpenDSS, individual reactances are defined in the mask. Reactances between windings will be calculated.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=179"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = False
+                    group = "General"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
                 num_windings {
                     label = "Number of windings"
                     widget = combo
@@ -276,7 +292,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.topology_dynamics(mdl, container_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
 
@@ -498,7 +514,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                             mdl.refresh_icon(container_handle)
                     ENDCODE
 
@@ -539,7 +555,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                             mdl.refresh_icon(container_handle)
                     ENDCODE
 
@@ -580,7 +596,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                             mdl.refresh_icon(container_handle)
                     ENDCODE
 
@@ -621,7 +637,7 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                             mdl.refresh_icon(container_handle)
                     ENDCODE
 
