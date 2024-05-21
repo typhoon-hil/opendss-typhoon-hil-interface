@@ -73,6 +73,22 @@ class Storage(TwoTerminal):
         elif tse_properties["dispatch_q"] == "Constant kVAr":
             new_format_properties["kvar"] = tse_properties['kvar']
 
+        # Work Around: Container as Storage doesn't compute the kva (once there is no pre_compile handler)
+        if new_format_properties["kva"] == "0":  # The default value is set to zero when the storage came from container
+            # This code I used from the storage comp_script
+            if tse_properties["dispatch_q"] == "Unit PF":
+                kwrated = new_format_properties["kwrated"]
+                kva = kwrated
+            elif tse_properties["dispatch_q"] == "Constant PF":
+                kwrated = new_format_properties["kwrated"]
+                pf = new_format_properties["pf"]
+                kva = float(kwrated) / float(pf)
+            elif tse_properties["dispatch_q"] == "Constant kVAr":
+                kwrated = new_format_properties["kwrated"]
+                kvar = new_format_properties["kvar"]
+                kva = (float(kwrated) ** 2 + float(kvar) ** 2) ** 0.5
+            new_format_properties["kva"] = kva
+
         return new_format_properties
 
     @staticmethod
