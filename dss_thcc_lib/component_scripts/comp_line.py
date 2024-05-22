@@ -129,7 +129,7 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
                 values_equal.append(True)
                 continue
         else:
-            if current_pass_prop_values[prop_name] == new_prop_values[prop_name]:
+            if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
                 values_equal.append(True)
                 continue
         values_equal.append(False)

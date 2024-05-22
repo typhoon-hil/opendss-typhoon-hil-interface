@@ -1776,7 +1776,7 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
         connections_gnd_dynamics(mdl, mask_handle, ports)
         connections_dynamics(mdl, mask_handle, ports)
 
-    if calling_prop_name not in ["sld_mode", "sld_1ph_pick", "init_code"]:
+    if calling_prop_name not in ["sld_mode", "init_code"]:
 
         if old_state:
             current_state = old_state[comp_handle]
@@ -1868,11 +1868,35 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
         load_dynamics(mdl, mask_handle, ports)
         connections_gnd_dynamics(mdl, mask_handle, ports)
         connections_dynamics(mdl, mask_handle, ports)
+        if calling_prop_name == "Pow_ref_s":
+            connections_pow_ref_dynamics(mdl, mask_handle, ports)
+        if calling_prop_name == "S_Ts_mode":
+            connections_ts_mode_dynamics(mdl, mask_handle, ports)
         old_state[comp_handle] = current_values
 
-    currently_sld = mdl.get_item("SLD1", parent=comp_handle, item_type="port")
-    if currently_sld:
-        # The terminal related to the current property hasn't been created yet
+    #
+    # When property values reach the final state, return to single-line if needed
+    #
+    good_for_sld = []
+    for prop_name in new_prop_values:
+        if prop_name in ["phases", "sld_1ph_pick", "tp_connection", "ground_connected"]:
+            cur_pass_value = current_pass_prop_values[prop_name]
+            new_value = new_prop_values[prop_name]
+            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
+                if float(cur_pass_value) == float(new_value):
+                    good_for_sld.append(True)
+                    continue
+            else:
+                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                    good_for_sld.append(True)
+                    continue
+            good_for_sld.append(False)
+
+    final_state = all(good_for_sld)
+    # final_state = True
+
+    if final_state:
+        old_state[comp_handle] = new_prop_values
         importlib.reload(util)
         phases = new_prop_values.get("phases")
         tp_connection = new_prop_values.get("tp_connection")
@@ -1947,107 +1971,13 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
             sld_term_position = (0, -24)
 
         sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, terminal_positions, sld_term_position)
-        util.convert_to_multiline(mdl, mask_handle, sld_info)
 
-    #
-    # When property values reach the final state, return to single-line if needed
-    #
-    good_for_sld = []
-    for prop_name in new_prop_values:
-        if prop_name in ["phases", "tp_connection", "ground_connected"]:
-            cur_pass_value = current_pass_prop_values[prop_name]
-            new_value = new_prop_values[prop_name]
-            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
-                if float(cur_pass_value) == float(new_value):
-                    good_for_sld.append(True)
-                    continue
-            else:
-                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
-                    good_for_sld.append(True)
-                    continue
-            good_for_sld.append(False)
-
-    final_state = all(good_for_sld)
-    # final_state = True
-
-    if final_state:
-        old_state[comp_handle] = new_prop_values
         if new_prop_values.get("sld_mode") in (True, "True"):
-            importlib.reload(util)
-            phases = new_prop_values.get("phases")
-            tp_connection = new_prop_values.get("tp_connection")
-            sld_1ph_pick = new_prop_values.get("sld_1ph_pick")
-            if phases == "3":
-                if tp_connection == "Δ":
-                    multi_port_list = ["A1", "B1", "C1"]
-                    terminal_positions = {
-                        "A1": (-32, -24),
-                        "B1": (0, -24),
-                        "C1": (32, -24),
-                    }
-                    sld_term_position = (0, -24)
-                else:
-                    multi_port_list = ["A1", "B1", "C1", "N1"]
-                    terminal_positions = {
-                        "A1": (-48, -24),
-                        "B1": (-16, -24),
-                        "C1": (16, -24),
-                        "N1": (48, -24),
-                    }
-                    sld_term_position = (0, -24)
-            elif phases == "1":
-                if tp_connection == "Y - Grounded":
-                    terminal_positions = {
-                        "A1": (0, -24),
-                    }
-                    sld_term_position = (0, -24)
-                    if sld_1ph_pick == "A":
-                        multi_port_list = ["A1", None, None]
-                    elif sld_1ph_pick == "B":
-                        multi_port_list = [None, "A1", None]
-                    elif sld_1ph_pick == "C":
-                        multi_port_list = [None, None, "A1"]
-                    else:
-                        multi_port_list = ["A1", None, None]
-                elif tp_connection == "Y":
-                    terminal_positions = {
-                        "A1": (-16, -12),
-                        "B1": (16, -12),
-                    }
-                    sld_term_position = (0, -24)
-                    if sld_1ph_pick == "A":
-                        multi_port_list = ["A1", None, None, "B1"]
-                    elif sld_1ph_pick == "B":
-                        multi_port_list = [None, "A1", None, "B1"]
-                    elif sld_1ph_pick == "C":
-                        multi_port_list = [None, None, "A1", "B1"]
-                    else:
-                        multi_port_list = ["A1", None, None, "B1"]
-                else:
-                    terminal_positions = {
-                        "A1": (-16, -12),
-                        "B1": (16, -12),
-                    }
-                    sld_term_position = (0, -16)
-                    if sld_1ph_pick == "A":
-                        multi_port_list = ["A1", "B1", None]
-                    elif sld_1ph_pick == "B":
-                        multi_port_list = [None, "A1", "B1"]
-                    elif sld_1ph_pick == "C":
-                        multi_port_list = ["B1", None, "A1"]
-                    else:
-                        multi_port_list = ["A1", "B1", None]
-            else:
-                multi_port_list = ["A1", "B1", "C1"]
-                terminal_positions = {
-                    "A1": (-48, -24),
-                    "B1": (-16, -24),
-                    "C1": (16, -24),
-                }
-                sld_term_position = (0, -24)
-
-            sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, terminal_positions, sld_term_position)
             util.convert_to_sld(mdl, mask_handle, sld_info)
+        else:
+            currently_sld = mdl.get_item("SLD1", parent=comp_handle, item_type="port")
+            if currently_sld:
+                util.convert_to_multiline(mdl, mask_handle, sld_info)
 
     sld_post_processing(mdl, mask_handle)
 

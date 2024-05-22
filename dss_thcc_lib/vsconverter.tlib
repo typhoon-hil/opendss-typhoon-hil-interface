@@ -4017,7 +4017,7 @@ if (Vdc<-2) {
                     label = "Single-line representation"
                     widget = checkbox
                     type = bool
-                    default_value = False
+                    default_value = True
                     group = "Inverter Parameters"
 
                     CODE property_value_changed
@@ -4883,6 +4883,8 @@ if (Vdc<-2) {
 
                     def return_comp_script_load():
                         return comp_script2
+
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
                 ENDCODE
             }
         }

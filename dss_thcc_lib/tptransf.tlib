@@ -270,7 +270,7 @@ library "OpenDSS" {
                     label = "Single-line representation"
                     widget = checkbox
                     type = bool
-                    default_value = False
+                    default_value = True
                     group = "General"
 
                     CODE property_value_changed

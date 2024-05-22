@@ -624,6 +624,60 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
                 mdl.delete_item(component)
 
 
+def get_sld_config(mdl, mask_handle, new_prop_dict, current_prop_dict):
+    num_windings = int(new_prop_dict["num_windings"])
+
+    sld_info_dict = {}
+    w_ph_sld_props = []
+    for w_idx in range(10):
+        w_ph_sld_props.append("w" + str(w_idx + 1) + "_ph_sld")
+
+    for w_idx in range(10):
+        sld_dict = {}
+        port_names_dict = {
+            "AN": ["A" + str(w_idx + 1), None, None, "B" + str(w_idx + 1)],
+            "BN": [None, "A" + str(w_idx + 1), None, "B" + str(w_idx + 1)],
+            "CN": [None, None, "A" + str(w_idx + 1), "B" + str(w_idx + 1)],
+            "AB": ["A" + str(w_idx + 1), "B" + str(w_idx + 1), None, None],
+            "BC": [None, "A" + str(w_idx + 1), "B" + str(w_idx + 1), None],
+            "CA": ["B" + str(w_idx + 1), None, "A" + str(w_idx + 1), None],
+        }
+        w_ph_sld_pick = new_prop_dict[w_ph_sld_props[w_idx]]
+        # w_ph_sld_pick = mdl.get_property_disp_value(mdl.prop(mask_handle, w_ph_sld_props[w_idx]))
+        port_names = port_names_dict.get(w_ph_sld_pick)
+        sld_bus_name = "SLD" + str(w_idx + 1)
+        phase_1_port = "A" + str(w_idx + 1)
+        phase_2_port = "B" + str(w_idx + 1)
+
+        if w_idx == 0:
+            port_side = "left"
+            multi_port_pos = {
+                phase_1_port: (-32, -16),
+                phase_2_port: (-32, 16),
+            }
+            sld_port_pos = (-32, 0)
+        else:
+            initial_port_a_y = -(48 * (num_windings - 2)) - 16
+            port_side = "right"
+            port_1_y = initial_port_a_y + (w_idx - 1) * 96
+            port_2_y = port_1_y + 32
+            port_sld_y = -(16 * (num_windings - 2)) + (w_idx - 1) * 32
+            multi_port_pos = {
+                phase_1_port: (32, port_1_y),
+                phase_2_port: (32, port_2_y),
+            }
+            sld_port_pos = (32, port_sld_y)
+
+        sld_dict["port_names"] = port_names
+        sld_dict["side"] = port_side
+        sld_dict["multi_term_pos"] = multi_port_pos
+        sld_dict["sld_term_pos"] = sld_port_pos
+
+        sld_info_dict[sld_bus_name] = sld_dict
+
+    return sld_info_dict
+
+
 def topology_dynamics(mdl, mask_handle, prop_handle):
     """
     This call the functions to build the transformer configuration according
@@ -663,54 +717,10 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
         created_ports, _ = port_dynamics(mdl, mask_handle)
         update_subsystem_components(mdl, mask_handle, created_ports)
 
-    num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
-
-    sld_info_dict = {}
+    sld_info_dict = get_sld_config(mdl, mask_handle, new_prop_values, current_values)
     w_ph_sld_props = []
     for w_idx in range(10):
         w_ph_sld_props.append("w" + str(w_idx + 1) + "_ph_sld")
-
-    for w_idx in range(num_windings):
-        sld_dict = {}
-        port_names_dict = {
-            "AN": ["A" + str(w_idx + 1), None, None, "B" + str(w_idx + 1)],
-            "BN": [None, "A" + str(w_idx + 1), None, "B" + str(w_idx + 1)],
-            "CN": [None, None, "A" + str(w_idx + 1), "B" + str(w_idx + 1)],
-            "AB": ["A" + str(w_idx + 1), "B" + str(w_idx + 1), None, None],
-            "BC": [None, "A" + str(w_idx + 1), "B" + str(w_idx + 1), None],
-            "CA": ["B" + str(w_idx + 1), None, "A" + str(w_idx + 1), None],
-        }
-        w_ph_sld_pick = mdl.get_property_disp_value(mdl.prop(mask_handle, w_ph_sld_props[w_idx]))
-        port_names = port_names_dict.get(w_ph_sld_pick)
-        sld_bus_name = "SLD" + str(w_idx + 1)
-        phase_1_port = "A" + str(w_idx + 1)
-        phase_2_port = "B" + str(w_idx + 1)
-
-        if w_idx == 0:
-            port_side = "left"
-            multi_port_pos = {
-                phase_1_port: (-32, -16),
-                phase_2_port: (-32, 16),
-            }
-            sld_port_pos = (-32, 0)
-        else:
-            initial_port_a_y = -(48*(num_windings - 2)) - 16
-            port_side = "right"
-            port_1_y = initial_port_a_y + (w_idx - 1)*96
-            port_2_y = port_1_y + 32
-            port_sld_y = -(16*(num_windings - 2)) + (w_idx - 1)*32
-            multi_port_pos = {
-                phase_1_port: (32, port_1_y),
-                phase_2_port: (32, port_2_y),
-            }
-            sld_port_pos = (32, port_sld_y)
-
-        sld_dict["port_names"] = port_names
-        sld_dict["side"] = port_side
-        sld_dict["multi_term_pos"] = multi_port_pos
-        sld_dict["sld_term_pos"] = sld_port_pos
-
-        sld_info_dict[sld_bus_name] = sld_dict
 
     if calling_prop_name not in w_ph_sld_props + ["sld_mode", "init_code"]:
 
@@ -765,6 +775,7 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
     final_state = all(good_for_sld)
 
     if final_state:
+        sld_info_dict = get_sld_config(mdl, mask_handle, new_prop_values, current_values)
         old_state[comp_handle] = new_prop_values
         if new_prop_values.get("sld_mode") in (True, "True"):
             importlib.reload(util)

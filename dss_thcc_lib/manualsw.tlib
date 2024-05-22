@@ -29,7 +29,7 @@ library "OpenDSS" {
 
             port A1 {
                 label = "A1"
-                position = left top
+                position = -32, -32
                 kind = pe
                 direction =  in
             }
@@ -40,7 +40,7 @@ library "OpenDSS" {
 
             port B1 {
                 label = "B1"
-                position = left center
+                position = -32, 0
                 kind = pe
                 direction =  in
             }
@@ -51,7 +51,7 @@ library "OpenDSS" {
 
             port C1 {
                 label = "C1"
-                position = left bottom
+                position = -32, 32
                 kind = pe
                 direction =  in
             }
@@ -62,7 +62,7 @@ library "OpenDSS" {
 
             port A2 {
                 label = "A2"
-                position = right top
+                position = 32, -32
                 kind = pe
                 direction =  in
             }
@@ -74,7 +74,7 @@ library "OpenDSS" {
 
             port B2 {
                 label = "B2"
-                position = right center
+                position = 32, 0
                 kind = pe
                 direction =  in
             }
@@ -86,7 +86,7 @@ library "OpenDSS" {
 
             port C2 {
                 label = "C2"
-                position = right bottom
+                position = 32, 32
                 kind = pe
                 direction =  in
             }

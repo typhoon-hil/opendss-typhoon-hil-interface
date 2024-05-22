@@ -121,7 +121,7 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     mdl.refresh_icon(comp_handle)
     c2 = mdl.get_item("C2", parent=comp_handle, item_type="port")
     if c2:
-        mdl.set_port_properties(c2, terminal_position=(32, 36))
+        mdl.set_port_properties(c2, terminal_position=(32, 32))
 
     return created_ports, deleted_ports
 

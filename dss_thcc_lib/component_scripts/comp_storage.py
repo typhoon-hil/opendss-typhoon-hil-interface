@@ -459,7 +459,7 @@ def get_sld_conversion_info(mdl, mask_handle, props_state):
     port_config_dict = {
         "SLD1": {
             "multiline_ports": multiline_ports_1,
-            "side": "right",
+            "side": "left",
             "bus_terminal_position": (-40, 0),
             "hide_name": True,
         },
