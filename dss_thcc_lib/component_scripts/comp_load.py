@@ -1893,7 +1893,6 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
             good_for_sld.append(False)
 
     final_state = all(good_for_sld)
-    # final_state = True
 
     if final_state:
         old_state[comp_handle] = new_prop_values
