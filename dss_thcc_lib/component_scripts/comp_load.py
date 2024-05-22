@@ -82,8 +82,6 @@ def mask_dialog_dynamics(mdl, mask_handle, prop_handle, new_value):
         phases_prop = mdl.prop(mask_handle, "phases")
         phases_disp = mdl.get_property_disp_value(phases_prop)
         sld_1ph_pick_prop = mdl.prop(mask_handle, "sld_1ph_pick")
-        load_model_prop = mdl.prop(mask_handle, "load_model")
-        load_model_disp = mdl.get_property_disp_value(load_model_prop)
 
         if new_value:
             if phases_disp == "1":
@@ -95,6 +93,8 @@ def mask_dialog_dynamics(mdl, mask_handle, prop_handle, new_value):
 
     elif prop_name == "phases":
         mask_edit_zero_sequence(mdl, mask_handle)
+        load_model_prop = mdl.prop(mask_handle, "load_model")
+        load_model_disp = mdl.get_property_disp_value(load_model_prop)
 
         # 3-phase CPL demands grounded connection
         tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
