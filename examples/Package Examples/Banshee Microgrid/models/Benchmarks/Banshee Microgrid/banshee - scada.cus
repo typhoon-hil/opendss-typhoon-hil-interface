@@ -1,0 +1,1902 @@
+<ui_settings>
+    <version>2.8</version>
+    <model_locked>False</model_locked>
+    <canvas_bg_color>#ffffff</canvas_bg_color>
+    <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be
+# available for use in all Macro and Expression scripts.
+# NOTE: This code is always executed prior to simulation start.
+
+# The variable 'SETTINGS_DIR' holds the directory where the loaded Panel .cus file is located.
+# Also you can call the 'get_settings_dir_path()' function in any
+# Macro and Expression script to get the same directory.
+SETTINGS_DIR = get_settings_dir_path()
+
+# The 'add_to_python_path(folder)' function can be used to add a custom folder
+# with Python files and packages to the PYTHONPATH. After a folder is added, all Python 
+# files and Python packages from it can be imported into the SCADA Namespace.
+
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# Numpy module is imported as 'np'
+# Scipy module is imported as 'sp'
+# Schematic Editor model namespace is imported as 'scm'
+# Function for printing to the HIL SCADA Message log is imported as 'printf'.
+
+]]></initialization_code>
+    <components>
+        <component_data>
+                <id>df7639afcc9911edb5e9cc15312b2fd6</id>
+                <name><![CDATA[Image]]></name>
+                <type>Image</type>
+                <description><![CDATA[]]></description>
+                <image><![CDATA[SingleLine.png]]></image>
+                <image_scaling><![CDATA[Without scaling]]></image_scaling>
+                <widget_settings>
+                    <x>128</x>
+                    <y>136</y>
+                    <width>1088</width>
+                    <height>648</height>
+                    <background_color><![CDATA[#f0f0f0]]></background_color>
+                    <background_type><![CDATA[Transparent]]></background_type>
+                    <is_background>True</is_background>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>1</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>fd0d1cbbcf1e11edbc2ecc15312b2fd6</id>
+                <name><![CDATA[PCC F1]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['1fb7d3f4cf1f11ed83b7cc15312b2fd6', '1fb7d3f5cf1f11ed9790cc15312b2fd6', '1fb7d3f6cf1f11ed9685cc15312b2fd6', '1fb7d3f7cf1f11ed850fcc15312b2fd6', '1fb7d3f8cf1f11ed98decc15312b2fd6', '1fb7d3f9cf1f11ed9604cc15312b2fd6', '4b8f9388cf1f11ed9b57cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x02f\x00\x00\x00\xe2\x00\x00\x05\xcf\x00\x00\x03\x1a\x00\x00\x02f\x00\x00\x00\xe2\x00\x00\x05\xcf\x00\x00\x03\x1a\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x02f\x00\x00\x00\xe2\x00\x00\x05\xcf\x00\x00\x03\x1a']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x03j\x00\x00\x01\xfe\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+]]></initialization_code>
+                <widget_settings>
+                    <x>144</x>
+                    <y>80</y>
+                    <width>104</width>
+                    <height>104</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>1fb7d3f4cf1f11ed83b7cc15312b2fd6</id>
+                <name><![CDATA[Bus101x2_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB102_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x2.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[MVAr]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>384</x>
+                    <y>360</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB102 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>1fb7d3f5cf1f11ed9790cc15312b2fd6</id>
+                <name><![CDATA[Bus101x3_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB103_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x3.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>544</x>
+                    <y>312</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB103 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>1fb7d3f6cf1f11ed9685cc15312b2fd6</id>
+                <name><![CDATA[Bus101x1_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB101_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x1.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>224</x>
+                    <y>312</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB101 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>1fb7d3f7cf1f11ed850fcc15312b2fd6</id>
+                <name><![CDATA[Bus101x1_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB101_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x1.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[MVAr]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>224</x>
+                    <y>360</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB101 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>1fb7d3f8cf1f11ed98decc15312b2fd6</id>
+                <name><![CDATA[Bus101x2_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB102_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x2.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>384</x>
+                    <y>312</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB102 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>1fb7d3f9cf1f11ed9604cc15312b2fd6</id>
+                <name><![CDATA[Bus101x3_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB103_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x3.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[MVAr]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>544</x>
+                    <y>360</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB103 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>4b8f9388cf1f11ed9b57cc15312b2fd6</id>
+                <name><![CDATA[Image]]></name>
+                <type>Image</type>
+                <description><![CDATA[]]></description>
+                <image><![CDATA[PCC F1.png]]></image>
+                <image_scaling><![CDATA[Without scaling]]></image_scaling>
+                <widget_settings>
+                    <x>112</x>
+                    <y>48</y>
+                    <width>600</width>
+                    <height>272</height>
+                    <background_color><![CDATA[#f0f0f0]]></background_color>
+                    <background_type><![CDATA[Transparent]]></background_type>
+                    <is_background>False</is_background>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>2</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>ec1cb365cf1f11edab5dcc15312b2fd6</id>
+                <name><![CDATA[PCC F2]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['3460d65fcf2011eda793cc15312b2fd6', '556ef016cf2011ed9fd8cc15312b2fd6', '556ef017cf2011ed9101cc15312b2fd6', '556ef018cf2011edbfc7cc15312b2fd6', '556ef019cf2011ed9fc9cc15312b2fd6', '556ef01acf2011ed9388cc15312b2fd6', '556ef01bcf2011edad10cc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x02j\x00\x00\x00\xae\x00\x00\x05\xd3\x00\x00\x02\xe6\x00\x00\x02j\x00\x00\x00\xae\x00\x00\x05\xd3\x00\x00\x02\xe6\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x02j\x00\x00\x00\xae\x00\x00\x05\xd3\x00\x00\x02\xe6']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x03j\x00\x00\x01\xfe\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+]]></initialization_code>
+                <widget_settings>
+                    <x>576</x>
+                    <y>88</y>
+                    <width>104</width>
+                    <height>104</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>3460d65fcf2011eda793cc15312b2fd6</id>
+                <name><![CDATA[Image]]></name>
+                <type>Image</type>
+                <description><![CDATA[]]></description>
+                <image><![CDATA[PCC F2.png]]></image>
+                <image_scaling><![CDATA[Without scaling]]></image_scaling>
+                <widget_settings>
+                    <x>128</x>
+                    <y>32</y>
+                    <width>536</width>
+                    <height>280</height>
+                    <background_color><![CDATA[#f0f0f0]]></background_color>
+                    <background_type><![CDATA[Transparent]]></background_type>
+                    <is_background>False</is_background>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>2</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>556ef016cf2011ed9fd8cc15312b2fd6</id>
+                <name><![CDATA[Bus201x1_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB201_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus201x1.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[MVAr]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>216</x>
+                    <y>368</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB201 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>556ef017cf2011ed9101cc15312b2fd6</id>
+                <name><![CDATA[Bus201x3_Measurements_POWER_Q1]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB203_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x3.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[MVAr]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>544</x>
+                    <y>368</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB203 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>556ef018cf2011edbfc7cc15312b2fd6</id>
+                <name><![CDATA[Bus201x2_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB202_Mon.meter_ABC.POWER_P")/1e6
+
+
+]]></code>
+                <signal_name><![CDATA[Bus201x2.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>376</x>
+                    <y>320</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB202 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>556ef019cf2011ed9fc9cc15312b2fd6</id>
+                <name><![CDATA[Bus201x2_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB202_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus201x2.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[MVAr]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>376</x>
+                    <y>368</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB202 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>556ef01acf2011ed9388cc15312b2fd6</id>
+                <name><![CDATA[Bus201x3_Measurements_POWER_P1]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB203_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus101x3.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>544</x>
+                    <y>320</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB203 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>556ef01bcf2011edad10cc15312b2fd6</id>
+                <name><![CDATA[Bus201x1_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB201_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus201x1.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>216</x>
+                    <y>320</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB201 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>c446c50acf2011eda839cc15312b2fd6</id>
+                <name><![CDATA[PCC F3]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['da684362cf2011edaa38cc15312b2fd6', 'dd81bac2cf2011eda418cc15312b2fd6', 'e2c20152cf2011eda711cc15312b2fd6', 'e4cf1790cf2011ed90a2cc15312b2fd6', 'ee4c0e8ecf2011ed9d1acc15312b2fd6', 'f099083dcf2011ed9ea0cc15312b2fd6', 'fa5a2276cf2011eda625cc15312b2fd6', 'fd15b25ecf2011edbae7cc15312b2fd6', 'c833d82acf2111ed919acc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x02j\x00\x00\x00\xae\x00\x00\x05\xd3\x00\x00\x02\xe6\x00\x00\x02j\x00\x00\x00\xae\x00\x00\x05\xd3\x00\x00\x02\xe6\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x02j\x00\x00\x00\xae\x00\x00\x05\xd3\x00\x00\x02\xe6']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x03j\x00\x00\x01\xfe\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+]]></initialization_code>
+                <widget_settings>
+                    <x>984</x>
+                    <y>88</y>
+                    <width>104</width>
+                    <height>104</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>da684362cf2011edaa38cc15312b2fd6</id>
+                <name><![CDATA[Bus301x1_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB301_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x1.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>120</x>
+                    <y>320</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB301 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>dd81bac2cf2011eda418cc15312b2fd6</id>
+                <name><![CDATA[Bus301x1_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB301_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x1.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[Mvar]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>120</x>
+                    <y>368</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB301 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>e2c20152cf2011eda711cc15312b2fd6</id>
+                <name><![CDATA[Bus301x2_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB302_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x2.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>280</x>
+                    <y>320</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB302 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>e4cf1790cf2011ed90a2cc15312b2fd6</id>
+                <name><![CDATA[Bus301x2_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB302_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x2.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[mvar]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>280</x>
+                    <y>368</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB302 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>ee4c0e8ecf2011ed9d1acc15312b2fd6</id>
+                <name><![CDATA[Bus301x3_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB303_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x3.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>440</x>
+                    <y>320</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB303 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>f099083dcf2011ed9ea0cc15312b2fd6</id>
+                <name><![CDATA[Bus301x3_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB303_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x3.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[mvar]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>440</x>
+                    <y>368</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB303 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>fa5a2276cf2011eda625cc15312b2fd6</id>
+                <name><![CDATA[Bus301x4_Measurements_POWER_P]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB304_Mon.meter_ABC.POWER_P")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x4.Measurements.POWER_P]]></signal_name>
+                <unit><![CDATA[MW]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>600</x>
+                    <y>320</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB304 P]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>fd15b25ecf2011edbae7cc15312b2fd6</id>
+                <name><![CDATA[Bus301x4_Measurements_POWER_Q]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("CB304_Mon.meter_ABC.POWER_Q")/1e6
+
+]]></code>
+                <signal_name><![CDATA[Bus301x4.Measurements.POWER_Q]]></signal_name>
+                <unit><![CDATA[mvar]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[2]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>600</x>
+                    <y>368</y>
+                    <width>136</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[CB304 Q]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>c833d82acf2111ed919acc15312b2fd6</id>
+                <name><![CDATA[Image]]></name>
+                <type>Image</type>
+                <description><![CDATA[]]></description>
+                <image><![CDATA[PCC F3.png]]></image>
+                <image_scaling><![CDATA[Without scaling]]></image_scaling>
+                <widget_settings>
+                    <x>56</x>
+                    <y>56</y>
+                    <width>672</width>
+                    <height>264</height>
+                    <background_color><![CDATA[#f0f0f0]]></background_color>
+                    <background_type><![CDATA[Transparent]]></background_type>
+                    <is_background>True</is_background>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position>2</hierarchy_position>
+                    <label><![CDATA[]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+            </component_data>
+        <component_data>
+                <id>d82dfeefcf2c11ed8e1ccc15312b2fd6</id>
+                <name><![CDATA[Loads]]></name>
+                <name_position><![CDATA[Top]]></name_position>
+                <type>SubPanel</type>
+                <description><![CDATA[]]></description>
+                <components_ids><![CDATA[['fac7ac9bcf2c11ed93decc15312b2fd6', '00e04641cf2d11ed97c4cc15312b2fd6', '0a71a7eecf2d11ed98d7cc15312b2fd6', '0fd1fb2ecf2d11edbac3cc15312b2fd6', '16cfcc52cf2d11ed95aecc15312b2fd6', '1e9de710cf2d11ed9379cc15312b2fd6', '25ca510ccf2d11edb9edcc15312b2fd6', '30d11c19cf2d11ed88b5cc15312b2fd6', '39389c23cf2d11edadf8cc15312b2fd6', '46a4cebfcf2d11ed8713cc15312b2fd6', '8c16b08ccf2d11edb6a7cc15312b2fd6', '95016673cf2d11ed938fcc15312b2fd6', 'a920abd3cf2d11edb230cc15312b2fd6', 'aedafff5cf2d11edb904cc15312b2fd6', 'b7b53796cf2d11ed8738cc15312b2fd6', 'be6b79decf2d11ed9701cc15312b2fd6', 'c60f2505cf2d11ed8ba5cc15312b2fd6', 'cb0f68eccf2d11ed8f5ecc15312b2fd6']]]></components_ids>
+                <working_mode>Windowed</working_mode>
+                <canvas_window_visible>False</canvas_window_visible>
+                <canvas_window_geometry><![CDATA[b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x01\xfa\x00\x00\x00\xa6\x00\x00\x06\xf9\x00\x00\x03\xd7\x00\x00\x01\xfa\x00\x00\x00\xa6\x00\x00\x06\xf9\x00\x00\x03\xd7\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x01\xfa\x00\x00\x00\xa6\x00\x00\x06\xf9\x00\x00\x03\xd7']]></canvas_window_geometry>
+                <canvas_window_state><![CDATA[b'\x00\x00\x00\xff\x00\x00\x00\x00\xfd\x00\x00\x00\x00\x00\x00\x05\x00\x00\x00\x02\xf7\x00\x00\x00\x04\x00\x00\x00\x04\x00\x00\x00\x08\x00\x00\x00\x08\xfc\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\xff\xff\xff\xff\x01\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00']]></canvas_window_state>
+                <canvas_window_in_fullscreen>False</canvas_window_in_fullscreen>
+                <canvas_bg_color>#ffffff</canvas_bg_color>
+                <use_background_image>True</use_background_image>
+                <image><![CDATA[:\ui\images\misc\subpanel_b_b.png]]></image>
+                <image_scaling><![CDATA[Keep aspect ratio]]></image_scaling>
+                <initialization_code><![CDATA[# NOTE: Variables and functions defined here will be available for use in 
+# all Macro, Expression and handlers codes of components owned by this widget.
+# This code is always executed prior simulation start. In case this is a 
+# Library Widget, this code is also executed on drag and drop, Panel load 
+# and widget paste.
+#
+# HIL API is imported as 'hil'
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+]]></initialization_code>
+                <widget_settings>
+                    <x>128</x>
+                    <y>720</y>
+                    <width>168</width>
+                    <height>152</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[1]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'Arial'; font-size:8pt; font-weight:400; font-style:normal;">
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>]]></label>
+                    <use_label>False</use_label>
+                </widget_settings>
+                
+                <linked_model_components_settings>
+                    </linked_model_components_settings>
+            </component_data>
+        <component_data>
+                <id>fac7ac9bcf2c11ed93decc15312b2fd6</id>
+                <name><![CDATA[Bus104_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_C1mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus104.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>192</x>
+                    <y>88</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load C1 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>00e04641cf2d11ed97c4cc15312b2fd6</id>
+                <name><![CDATA[Bus106x3_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_C2mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus106x3.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>192</x>
+                    <y>144</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load C2 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>0a71a7eecf2d11ed98d7cc15312b2fd6</id>
+                <name><![CDATA[Bus202_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_C3mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus202.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>192</x>
+                    <y>200</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load C3 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>0fd1fb2ecf2d11edbac3cc15312b2fd6</id>
+                <name><![CDATA[Bus209_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_C4mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus209.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>192</x>
+                    <y>256</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load C4 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>16cfcc52cf2d11ed95aecc15312b2fd6</id>
+                <name><![CDATA[Bus303_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_C5mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus303.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>192</x>
+                    <y>312</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load C5 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>1e9de710cf2d11ed9379cc15312b2fd6</id>
+                <name><![CDATA[Bus306x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_C6mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus306x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>192</x>
+                    <y>368</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load C6 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>25ca510ccf2d11edb9edcc15312b2fd6</id>
+                <name><![CDATA[Bus107x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_P1mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus107x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>352</x>
+                    <y>88</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load P1 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>30d11c19cf2d11ed88b5cc15312b2fd6</id>
+                <name><![CDATA[Bus206x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_P2mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus206x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>352</x>
+                    <y>144</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load P2 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>39389c23cf2d11edadf8cc15312b2fd6</id>
+                <name><![CDATA[Bus205x4_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_P3mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus205x4.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>352</x>
+                    <y>200</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load P3 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>46a4cebfcf2d11ed8713cc15312b2fd6</id>
+                <name><![CDATA[Bus305x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_P4mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus305x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>352</x>
+                    <y>256</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load P4 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>8c16b08ccf2d11edb6a7cc15312b2fd6</id>
+                <name><![CDATA[Bus210x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_P5mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus210x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>352</x>
+                    <y>312</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load P5 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>95016673cf2d11ed938fcc15312b2fd6</id>
+                <name><![CDATA[Bus307x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_P6mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus307x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>352</x>
+                    <y>368</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load P6 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>a920abd3cf2d11edb230cc15312b2fd6</id>
+                <name><![CDATA[Bus102x3_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_I1mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus102x3.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>512</x>
+                    <y>88</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load I1 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>aedafff5cf2d11edb904cc15312b2fd6</id>
+                <name><![CDATA[Bus105x6_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_I2mon.meter_ABC.VAB_RMS")/208
+
+]]></code>
+                <signal_name><![CDATA[Bus105x6.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>512</x>
+                    <y>144</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load I2 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>b7b53796cf2d11ed8738cc15312b2fd6</id>
+                <name><![CDATA[Bus204x2_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_I3mon.meter_ABC.VAB_RMS")/208
+
+]]></code>
+                <signal_name><![CDATA[Bus204x2.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>512</x>
+                    <y>200</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load I3 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>be6b79decf2d11ed9701cc15312b2fd6</id>
+                <name><![CDATA[Bus205x2_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_I4mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus205x2.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>512</x>
+                    <y>256</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load I4 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>c60f2505cf2d11ed8ba5cc15312b2fd6</id>
+                <name><![CDATA[Bus207x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_I5mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus207x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>512</x>
+                    <y>312</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load I5 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        <component_data>
+                <id>cb0f68eccf2d11ed8f5ecc15312b2fd6</id>
+                <name><![CDATA[Bus304x1_Measurements_VAB_RMS]]></name>
+                <type>DigitalDisplay</type>
+                <description><![CDATA[]]></description>
+                <data_type>Expression</data_type>
+                <code><![CDATA[# HIL API is imported as 'hil'
+# NOTE: Only read functions are available from the HIL API
+
+# SCADA API is imported as 'panel'
+# SCADA API constants are imported as 'api_const'
+# 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
+# This object can be used as an argument in SCADA API functions.
+
+# mandatory variable used for storing value that will be displayed
+displayValue = hil.read_analog_signal("Load_I6mon.meter_ABC.VAB_RMS")/480
+
+]]></code>
+                <signal_name><![CDATA[Bus304x1.Measurements.VAB_RMS]]></signal_name>
+                <unit><![CDATA[pu]]></unit>
+                <automatic_unit>True</automatic_unit>
+                <decimals><![CDATA[3]]></decimals>
+                <updateRate>500</updateRate>
+                <scaling_factor>1.0</scaling_factor>
+                <widget_settings>
+                    <x>512</x>
+                    <y>368</y>
+                    <width>128</width>
+                    <height>48</height>
+                    <appearance><![CDATA[Flat]]></appearance>
+                    <hierarchy_position><![CDATA[2]]></hierarchy_position>
+                    <is_background><![CDATA[False]]></is_background>
+                    <label><![CDATA[Load I6 - Voltage]]></label>
+                    <use_label>True</use_label>
+                </widget_settings>
+                <advance_widget_settings>
+                    <color_range>False</color_range>
+                    <green_range>(0, 0, 0, 0)</green_range>
+                    <orange_range>(0, 0, 0, 0)</orange_range>
+                    <red_range>(0, 0, 0, 0)</red_range>
+                </advance_widget_settings>
+            </component_data>
+        </components>
+</ui_settings>

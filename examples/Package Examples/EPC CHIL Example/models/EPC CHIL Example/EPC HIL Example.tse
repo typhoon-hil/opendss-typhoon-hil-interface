@@ -1,0 +1,2018 @@
+version = 4.2
+
+//
+// Saved by sw version: 2024.1
+//
+
+model "epc_opendss" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 2
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = error
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/SimDSS" SimDSS {
+            powers = "kVA Elem"
+            sim_counter = "84"
+            sim_mode = "Time Series"
+            sim_status = "Sim84 complete"
+            tspoints = "1"
+            voltagebases = "[0.480]"
+        }
+        [
+            position = 8408, 8200
+            size = 96, 96
+        ]
+
+        component "core/SCADA Input" "Enable Time" {
+            execution_rate = "ts"
+            format = "int"
+            max = "1"
+            min = "0"
+            signal_access = "Inherit"
+            signal_type = "int"
+            unit = ""
+        }
+        [
+            position = 8280, 8312
+        ]
+
+        component "core/Integrator" Integrator1 {
+        }
+        [
+            position = 8432, 8312
+            hide_name = True
+        ]
+
+        component "core/Probe" time_hour {
+        }
+        [
+            position = 8752, 8288
+        ]
+
+        component "core/Gain" time_scale {
+            gain = "0.2"
+        }
+        [
+            position = 8512, 8312
+        ]
+
+        component "core/Data Type Conversion" "Data Type Conversion1" {
+        }
+        [
+            position = 8352, 8312
+            hide_name = True
+        ]
+
+        component "OpenDSS/Vsource" Grid {
+            baseMVA = "100"
+            basekv = "0.48"
+            enable_monitoring = "True"
+            global_basefreq = "True"
+            input_method = "MVAsc"
+        }
+        [
+            position = 8328, 8512
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Monitoring" Monitoring {
+        }
+        [
+            position = 8320, 8200
+            size = 64, 64
+        ]
+
+        component Subsystem EPC {
+            layout = static
+            component "core/Voltage Source" Inverter1-Vbat {
+                init_const_value = "820.0"
+                param_set = ""
+            }
+            [
+                position = 7416, 8408
+                rotation = right
+                scale = -1, 1
+            ]
+
+            component "core/Resistor" R_bat1 {
+                resistance = "1e-4"
+            }
+            [
+                position = 7304, 8312
+                scale = -1, 1
+            ]
+
+            component "core/Probe" Pref {
+            }
+            [
+                position = 7528, 8000
+            ]
+
+            component "OpenDSS/TS Reset" "Time Rst" {
+                input_type = "Hour"
+            }
+            [
+                position = 6984, 8008
+                size = 64, 48
+            ]
+
+            component "core/1D look-up table" Irrad_lut {
+                in_vec_x = "T_Ts"
+                out_vec_f_x = "loadshape"
+                table_impl = "Non-equidistant"
+            }
+            [
+                position = 7112, 8008
+            ]
+
+            component "core/Gain" Gain1 {
+                gain = "1000"
+            }
+            [
+                position = 7200, 8008
+                hide_name = True
+            ]
+
+            component "core/Probe" Qref {
+            }
+            [
+                position = 7528, 8056
+            ]
+
+            component "core/Constant" Constant1 {
+                execution_rate = "execution_rate"
+                value = "0"
+            }
+            [
+                position = 7200, 8064
+                hide_name = True
+            ]
+
+            component "core/SCADA Input" "Enable Modbus" {
+                execution_rate = "execution_rate"
+                format = "int"
+                max = "1"
+                min = "0"
+                signal_access = "Inherit"
+                signal_type = "int"
+                unit = ""
+            }
+            [
+                position = 7744, 8024
+            ]
+
+            component "core/SCADA Input" Connect {
+                execution_rate = "execution_rate"
+                format = "int"
+                max = "1"
+                min = "0"
+                signal_access = "Inherit"
+                signal_type = "int"
+                unit = ""
+            }
+            [
+                position = 7784, 8648
+            ]
+
+            component "core/Constant" Constant2 {
+                execution_rate = "execution_rate"
+                signal_type = "int"
+            }
+            [
+                position = 7704, 8120
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant3 {
+                execution_rate = "execution_rate"
+                signal_type = "int"
+                value = "0"
+            }
+            [
+                position = 7704, 8168
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch1" {
+            }
+            [
+                position = 7800, 8144
+                hide_name = True
+            ]
+
+            component "core/SCADA Input" "Clear Faults" {
+                execution_rate = "execution_rate"
+                format = "int"
+                max = "1"
+                min = "0"
+                signal_access = "Inherit"
+                signal_type = "int"
+                unit = ""
+            }
+            [
+                position = 7784, 8584
+            ]
+
+            component "core/Probe" "Fault Flag" {
+            }
+            [
+                position = 8784, 8376
+            ]
+
+            component "core/Gain" Gain2 {
+                gain = "10"
+            }
+            [
+                position = 8072, 8496
+                hide_name = True
+            ]
+
+            component "core/Gain" Gain3 {
+                gain = "10"
+            }
+            [
+                position = 8072, 8536
+                hide_name = True
+            ]
+
+            component "core/Data Type Conversion" "Data Type Conversion1" {
+                output_type = "int"
+            }
+            [
+                position = 8144, 8496
+                hide_name = True
+            ]
+
+            component "core/Data Type Conversion" "Data Type Conversion2" {
+                output_type = "int"
+            }
+            [
+                position = 8144, 8536
+                hide_name = True
+            ]
+
+            component "core/Probe" modbus_state {
+            }
+            [
+                position = 8784, 8016
+            ]
+
+            component "core/Bus Split" "Bus Split1" {
+            }
+            [
+                position = 8544, 8376
+                hide_name = True
+            ]
+
+            component "core/Sum" Sum1 {
+            }
+            [
+                position = 8704, 8376
+                hide_name = True
+            ]
+
+            component "core/Mathematical function" "Mathematical function1" {
+                mathematical_fn = "power"
+            }
+            [
+                position = 8624, 8432
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant4 {
+                execution_rate = "execution_rate"
+                signal_type = "int"
+                value = "16"
+            }
+            [
+                position = 8560, 8440
+                hide_name = True
+            ]
+
+            component "core/Modbus Client" "EPC Client" {
+                client_ip_address = "192.168.32.104"
+                execution_rate = "execution_rate"
+                request_names_dict = "{\'EPC_status\': {\'rename\': \'EPC_status\', \'delete\': False, \'function_code\': \'read holding registers\', \'transmit_type\': \'on event\'}, \'EPC_Faults\': {\'rename\': \'EPC_Faults\', \'delete\': False, \'function_code\': \'read holding registers\', \'transmit_type\': \'on event\'}, \'Control_Source\': {\'rename\': \'Control_Source\', \'delete\': False, \'function_code\': \'write single register\', \'transmit_type\': \'on event\'}, \'Clear_Faults\': {\'rename\': \'Clear_Faults\', \'delete\': False, \'function_code\': \'write single register\', \'transmit_type\': \'on event\'}, \'Connect\': {\'rename\': \'Connect\', \'delete\': False, \'function_code\': \'write single register\', \'transmit_type\': \'on event\'}, \'Pref\': {\'rename\': \'Pref\', \'delete\': False, \'function_code\': \'write single register\', \'transmit_type\': \'on event\'}, \'request0\': {\'rename\': \'Qref\', \'delete\': False, \'function_code\': \'write single register\', \'transmit_type\': \'on event\'}}"
+                request_timeout = "5000"
+                requests = "[{\'name\': \'EPC_status\', \'function_code\': \'read holding registers\', \'read_address\': 123, \'number_of_registers_to_read\': 1, \'write_address\': 0, \'number_of_registers_to_write\': 1, \'transmit_type\': \'on event\', \'transmit_period\': 1000}, {\'name\': \'EPC_Faults\', \'function_code\': \'read holding registers\', \'read_address\': 3153, \'number_of_registers_to_read\': 2, \'write_address\': 0, \'number_of_registers_to_write\': 1, \'transmit_type\': \'on event\', \'transmit_period\': 1000}, {\'name\': \'Control_Source\', \'function_code\': \'write single register\', \'read_address\': 3230, \'number_of_registers_to_read\': 1, \'write_address\': 3230, \'number_of_registers_to_write\': 1, \'transmit_type\': \'on event\', \'transmit_period\': 1000}, {\'name\': \'Clear_Faults\', \'function_code\': \'write single register\', \'read_address\': 0, \'number_of_registers_to_read\': 1, \'write_address\': 3214, \'number_of_registers_to_write\': 1, \'transmit_type\': \'on event\', \'transmit_period\': 1000}, {\'name\': \'Connect\', \'function_code\': \'write single register\', \'read_address\': 0, \'number_of_registers_to_read\': 1, \'write_address\': 246, \'number_of_registers_to_write\': 1, \'transmit_type\': \'on event\', \'transmit_period\': 1000}, {\'name\': \'Pref\', \'function_code\': \'write single register\', \'read_address\': 0, \'number_of_registers_to_read\': 1, \'write_address\': 3215, \'number_of_registers_to_write\': 1, \'transmit_type\': \'on event\', \'transmit_period\': 1000}, {\'name\': \'Qref\', \'function_code\': \'write single register\', \'read_address\': 0, \'number_of_registers_to_read\': 1, \'write_address\': 3216, \'number_of_registers_to_write\': 1, \'transmit_type\': \'on event\', \'transmit_period\': 1000}]"
+                server_ip_address = "192.168.32.230"
+                slave_id = "1"
+            }
+            [
+                position = 8344, 8456
+                size = 288, 208
+            ]
+
+            component "core/Probe" "EPC Status" {
+            }
+            [
+                position = 8784, 8536
+            ]
+
+            component "core/Probe" "Enable Modbus pb" {
+            }
+            [
+                position = 8784, 8128
+            ]
+
+            component "core/Probe" "Connect pb" {
+            }
+            [
+                position = 8784, 8192
+            ]
+
+            component "EPC Power/CAB1K 2 LVL" EPC {
+                execution_rate = "execution_rate"
+                hil_compatible_conf_code = "FXXEIXXXXXXXXEIXX"
+                hil_compatible_version = "Version 1.3"
+                hil_device_id = "0"
+                io_position = "Row B (TOP)"
+            }
+            [
+                position = 7096, 8408
+                scale = -1, 1
+                size = 192, 240
+            ]
+
+            component "core/Probe" except_code {
+            }
+            [
+                position = 8784, 8072
+            ]
+
+            component "core/Constant" Constant6 {
+                execution_rate = "execution_rate"
+                value = "0"
+            }
+            [
+                position = 7704, 8320
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch2" {
+            }
+            [
+                position = 7800, 8296
+                hide_name = True
+            ]
+
+            component "core/Transport Delay" "Transport Delay1" {
+                time_delay = "1.5"
+            }
+            [
+                position = 7752, 8224
+                hide_name = True
+            ]
+
+            component "core/Square Wave Source" "Square Wave Source1" {
+                execution_rate = "execution_rate"
+                frequency = "1"
+                signal_type = "int"
+            }
+            [
+                position = 7704, 8280
+                hide_name = True
+            ]
+
+            component "core/Transport Delay" "Transport Delay2" {
+                time_delay = "0.2"
+            }
+            [
+                position = 8312, 8160
+                hide_name = True
+            ]
+
+            component "core/SCADA Input" "Clear Faults Event" {
+                execution_rate = "execution_rate"
+                format = "int"
+                max = "1"
+                min = "0"
+                signal_access = "Inherit"
+                signal_type = "int"
+                unit = ""
+            }
+            [
+                position = 8240, 8096
+            ]
+
+            component "core/Transport Delay" "Transport Delay3" {
+                time_delay = "0.2"
+            }
+            [
+                position = 8320, 8096
+                hide_name = True
+            ]
+
+            component "core/Constant" Constant7 {
+                execution_rate = "execution_rate"
+                value = "0"
+            }
+            [
+                position = 7704, 8512
+                hide_name = True
+            ]
+
+            component "core/Signal switch" "Signal switch3" {
+            }
+            [
+                position = 7800, 8488
+                hide_name = True
+            ]
+
+            component "core/Transport Delay" "Transport Delay4" {
+                time_delay = "1.5"
+            }
+            [
+                position = 7680, 8408
+                hide_name = True
+            ]
+
+            component "core/Square Wave Source" "Square Wave Source2" {
+                execution_rate = "execution_rate"
+                frequency = "2"
+                signal_type = "int"
+            }
+            [
+                position = 7704, 8472
+                hide_name = True
+            ]
+
+            component "core/Logical operator" "Logical operator1" {
+            }
+            [
+                position = 7760, 8392
+                hide_name = True
+            ]
+
+            port A1 {
+                position = -40.0, -32.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 6872, 8312
+                hide_name = True
+            ]
+
+            port B1 {
+                position = -40.0, 0.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 6872, 8408
+                hide_name = True
+            ]
+
+            port C1 {
+                position = -40.0, 32.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 6872, 8504
+                hide_name = True
+            ]
+
+            port "Load point" {
+                label = "t"
+                position = 0.0, -48.0
+                kind = sp
+                direction =  out
+                sp_type {
+                    default = auto
+                    readonly = True
+                }
+            }
+            [
+                position = 6880, 8008
+            ]
+
+            tag Goto1 {
+                value = "Pref"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7296, 8008
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto2 {
+                value = "Qref"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7296, 8064
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From1 {
+                value = "Pref"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7416, 8000
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From2 {
+                value = "Qref"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7416, 8056
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto3 {
+                value = "enable_mod"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7880, 8024
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From3 {
+                value = "enable_mod"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8232, 8160
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto4 {
+                value = "connect"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7880, 8648
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From4 {
+                value = "connect"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8096, 8456
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto5 {
+                value = "clear_faults"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7880, 8584
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From5 {
+                value = "clear_faults"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8096, 8416
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto6 {
+                value = "ctrl_src"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7880, 8144
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From7 {
+                value = "ctrl_src"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8096, 8376
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From8 {
+                value = "Pref"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7984, 8496
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From9 {
+                value = "Qref"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7984, 8536
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From10 {
+                value = "enable_mod"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8664, 8128
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From11 {
+                value = "connect"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8664, 8192
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto7 {
+                value = "general_evt"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7880, 8296
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From12 {
+                value = "enable_mod"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7672, 8224
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From13 {
+                value = "general_evt"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8232, 8224
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From14 {
+                value = "general_evt"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8232, 8192
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto8 {
+                value = "mod_state"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8248, 8288
+                rotation = left
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto9 {
+                value = "mod_excpt"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 8272, 8288
+                rotation = left
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From15 {
+                value = "mod_state"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8664, 8016
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From16 {
+                value = "mod_excpt"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8664, 8072
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From17 {
+                value = "general_evt"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8232, 8056
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag Goto10 {
+                value = "ref_evt"
+                scope = local
+                kind = sp
+                direction = in
+            }
+            [
+                position = 7880, 8488
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From18 {
+                value = "enable_mod"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7600, 8408
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From19 {
+                value = "ref_evt"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8232, 8024
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From20 {
+                value = "ref_evt"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 8232, 7992
+                hide_name = True
+                size = 60, 20
+            ]
+
+            tag From21 {
+                value = "connect"
+                scope = local
+                kind = sp
+                direction = out
+            }
+            [
+                position = 7664, 8368
+                hide_name = True
+                size = 60, 20
+            ]
+
+            junction Junction1 sp
+            [
+                position = 7800, 8024
+            ]
+
+            comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">	Monitoring		</p></body></html> ENDCOMMENT 
+            [
+                position = 7344, 7920
+            ]
+
+            comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">		Time Series Conversion		</p></body></html> ENDCOMMENT 
+            [
+                position = 6848, 7920
+            ]
+
+            comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">							Communication Layer							</p></body></html> ENDCOMMENT 
+            [
+                position = 7600, 7920
+            ]
+
+            comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">CAN</p></body></html> ENDCOMMENT 
+            [
+                position = 7632, 8152
+            ]
+
+            comment Comment5 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Modbus</p></body></html> ENDCOMMENT 
+            [
+                position = 7616, 8104
+            ]
+
+            comment Comment6 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">no Event</p></body></html> ENDCOMMENT 
+            [
+                position = 7608, 8304
+            ]
+
+            comment Comment7 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">no Event</p></body></html> ENDCOMMENT 
+            [
+                position = 7608, 8496
+            ]
+
+            comment Comment8 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">				Power Layer				  </p></body></html> ENDCOMMENT 
+            [
+                position = 6848, 8208
+            ]
+
+            connect R_bat1.p_node Inverter1-Vbat.p_node as Connection42
+            connect Irrad_lut.addr "Time Rst.Out" as Connection9
+            connect Gain1.in Irrad_lut.value as Connection11
+            connect "Load point" "Time Rst.In" as Connection48
+            connect Gain1.out Goto1 as Connection49
+            connect Constant1.out Goto2 as Connection50
+            connect From1 Pref.in as Connection51
+            connect From2 Qref.in as Connection52
+            connect Constant2.out "Signal switch1.in" as Connection54
+            connect Constant3.out "Signal switch1.in1" as Connection55
+            connect "Signal switch1.in2" Junction1 as Connection60
+            connect Junction1 "Enable Modbus.out" as Connection61
+            [
+                breakpoints = 7800, 8024
+            ]
+            connect Goto3 Junction1 as Connection62
+            connect Goto4 Connect.out as Connection66
+            connect "Clear Faults.out" Goto5 as Connection68
+            connect Goto6 "Signal switch1.out" as Connection72
+            connect From8 Gain2.in as Connection79
+            connect Gain2.out "Data Type Conversion1.in" as Connection83
+            connect Gain3.out "Data Type Conversion2.in" as Connection85
+            connect "Fault Flag.in" Sum1.out as Connection89
+            connect "Bus Split1.out" Sum1.in as Connection90
+            connect Constant4.out "Mathematical function1.in1" as Connection91
+            connect "Bus Split1.out1" "Mathematical function1.in" as Connection92
+            connect "Mathematical function1.out" Sum1.in1 as Connection93
+            connect Gain3.in From9 as Connection99
+            [
+                breakpoints = 8032, 8536
+            ]
+            connect From10 "Enable Modbus pb.in" as Connection112
+            connect From11 "Connect pb.in" as Connection113
+            connect "EPC.DC(+)" R_bat1.n_node as Connection127
+            connect Inverter1-Vbat.n_node "EPC.DC(-)" as Connection128
+            connect A1 EPC.A as Connection138
+            connect B1 EPC.B as Connection139
+            connect C1 EPC.C as Connection140
+            connect "EPC Status.in" "EPC Client.EPC_status_read" as Connection141
+            connect "EPC Client.EPC_Faults_read" "Bus Split1.in" as Connection142
+            connect Constant6.out "Signal switch2.in1" as Connection144
+            connect Goto7 "Signal switch2.out" as Connection145
+            connect From12 "Transport Delay1.in" as Connection146
+            connect "Transport Delay1.out" "Signal switch2.in2" as Connection147
+            connect "Square Wave Source1.out" "Signal switch2.in" as Connection148
+            connect From7 "EPC Client.Control_Source_write" as Connection151
+            connect Goto9 "EPC Client.exc_code" as Connection152
+            connect "EPC Client.state" Goto8 as Connection153
+            connect From15 modbus_state.in as Connection154
+            connect From16 except_code.in as Connection155
+            connect "Transport Delay2.in" From3 as Connection158
+            connect From5 "EPC Client.Clear_Faults_write" as Connection162
+            connect "Clear Faults Event.out" "Transport Delay3.in" as Connection163
+            connect From4 "EPC Client.Connect_write" as Connection165
+            connect From13 "EPC Client.EPC_status_event" as Connection166
+            connect From14 "EPC Client.EPC_Faults_event" as Connection167
+            connect "Transport Delay2.out" "EPC Client.Control_Source_event" as Connection168
+            connect "Transport Delay3.out" "EPC Client.Clear_Faults_event" as Connection169
+            connect From17 "EPC Client.Connect_event" as Connection170
+            connect Constant7.out "Signal switch3.in1" as Connection171
+            connect Goto10 "Signal switch3.out" as Connection172
+            connect From18 "Transport Delay4.in" as Connection173
+            connect "Square Wave Source2.out" "Signal switch3.in" as Connection175
+            connect "Data Type Conversion1.out" "EPC Client.Pref_write" as Connection176
+            connect "Data Type Conversion2.out" "EPC Client.Qref_write" as Connection177
+            connect From19 "EPC Client.Pref_event" as Connection178
+            connect From20 "EPC Client.Qref_event" as Connection179
+            connect "Transport Delay4.out" "Logical operator1.in1" as Connection180
+            connect From21 "Logical operator1.in" as Connection181
+            connect "Logical operator1.out" "Signal switch3.in2" as Connection182
+
+            T_Ts = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            T_mode = "Time"
+            baseFreq = "60"
+            chargetrigger = "0.2"
+            dischargetrigger = "0.6"
+            dispatch_p = "Follow"
+            dss_container_comp_identifier = "Storage"
+            execution_rate = "ts"
+            global_basefreq = "True"
+            inv_cf = "1.013e-3"
+            inv_ki = "0.03"
+            inv_kp = "0.0001"
+            inv_l = "100e-6"
+            inv_r = "1e-5"
+            inv_rf = "100e-3"
+            kv = "0.480"
+            kwhrated = "100e3"
+            kwrated = "1e3"
+            load_loadshape = "Choose"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.1, 0.1, -0.2, -0.3, -0.5, -0.5, -0.8, -1.0, -1.0, -1.0, -1.0, -0.5, 0.5, 1.0, 1.0, 1.0, 0.9, 0.7]"
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape_from_file_path = ""
+            loadshape_int = "1"
+            loadshape_name = "EPC"
+            pct_charge = "100"
+            pct_discharge = "100"
+            pct_effcharge = "100"
+            pct_effdischarge = "100"
+            pct_reserve = "2"
+            pct_stored = "50"
+            pf = "1"
+            snap_status = "Idling"
+            vmaxpu = "1.1"
+            vminpu = "0.9"
+
+            mask {
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The Container component is converted to the selected component type in OpenDSS, but is unlinked from the library.<br><br>This allows the user to create any HIL model to represent real-time behavior and still be able to convert the model to OpenDSS.<br><br>Mask parameters and port creation will behave similarly to the original library component, and the created PE ports should not be removed, as they are required for the conversion.</p></body></html>"
+
+                dss_container_comp_identifier {
+                    label = "Do not delete this property"
+                    widget = edit
+                    type = string
+                    default_value = "None"
+                    nonvisible
+                    no_evaluate
+                }
+
+                dispatch_p {
+                    label = "Dispatch P"
+                    widget = combo
+                    combo_values = "Default", "Follow"
+                    type = string
+                    default_value = "Default"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_dispatch_mode(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                        
+                        
+                    ENDCODE
+                }
+
+                dispatch_q {
+                    label = "Dispatch Q"
+                    widget = combo
+                    combo_values = "Unit PF", "Constant PF", "Constant kVAr"
+                    type = string
+                    default_value = "Unit PF"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.update_dispatch_mode(mdl, container_handle)
+                        mdl.refresh_icon(container_handle)
+                        
+                        
+                    ENDCODE
+                }
+
+                snap_status {
+                    label = "Snap solve status"
+                    widget = combo
+                    combo_values = "Charging", "Discharging", "Idling"
+                    type = string
+                    default_value = "Charging"
+                    no_evaluate
+                }
+
+                kv {
+                    label = "Nominal voltage"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "kV"
+                    group = "Ratings:3"
+                }
+
+                global_basefreq {
+                    label = "Global base frequency"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Ratings:3"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.toggle_frequency_prop(mdl, container_handle)
+                        
+                        
+                    ENDCODE
+                }
+
+                baseFreq {
+                    label = "Base frequency"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "Hz"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                kwrated {
+                    label = "Rated kW"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "kW"
+                    group = "Ratings:3"
+                }
+
+                kwhrated {
+                    label = "Rated kWh"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "kWh"
+                    group = "Ratings:3"
+                }
+
+                chargetrigger {
+                    label = "ChargeTrigger"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                dischargetrigger {
+                    label = "DischargeTrigger"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                pct_charge {
+                    label = "%Charge"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    nonvisible
+                }
+
+                pct_discharge {
+                    label = "%Discharge"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    nonvisible
+                }
+
+                pct_effcharge {
+                    label = "Charge efficiency"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                pct_effdischarge {
+                    label = "Discharge efficiency"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                kvar {
+                    label = "Reactive power"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "kVAr"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                pf {
+                    label = "Power factor"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                pct_idlingkvar {
+                    label = "%IdlingkVAr"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    group = "Ratings:3"
+                    nonvisible
+                }
+
+                pct_idlingkw {
+                    label = "Idling losses"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                pct_reserve {
+                    label = "Reserve mode SOC"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                    group = "Ratings:3"
+                }
+
+                load_loadshape {
+                    label = "LoadShape object"
+                    widget = button
+                    type = string
+                    default_value = ""
+                    group = "Time Series Settings:2"
+                    no_evaluate
+
+                    CODE button_clicked
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.load_loadshape(mdl, container_handle)
+                        
+                        
+                    ENDCODE
+                }
+
+                loadshape_name {
+                    label = "LoadShape name"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                        
+                        
+                    ENDCODE
+                }
+
+                loadshape_from_file {
+                    label = "From CSV file"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Time Series Settings"
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                        
+                        
+                    ENDCODE
+                }
+
+                useactual {
+                    label = "Actual value"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Time Series Settings"
+                    nonvisible
+                    disabled
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                        
+                        
+                    ENDCODE
+                }
+
+                loadshape_from_file_path {
+                    label = "LoadShape from file - path"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_column {
+                    label = "LoadShape from file - column"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape_from_file_header {
+                    label = "LoadShape from file - header"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                loadshape {
+                    label = "LoadShape points"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "pu"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                        
+                        
+                    ENDCODE
+                }
+
+                loadshape_int {
+                    label = "LoadShape interval"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        old_value = mdl.get_property_value(prop_handle)
+                        mdl.set_property_value(prop_handle, old_value)
+                        
+                        
+                    ENDCODE
+                }
+
+                timespan {
+                    label = "Loadshape time span"
+                    widget = combo
+                    combo_values = "Daily", "Yearly"
+                    type = string
+                    default_value = "Daily"
+                    group = "Time Series Settings"
+                    nonvisible
+                    no_evaluate
+                }
+
+                T_Ts {
+                    label = "LoadShape time range"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "h"
+                    group = "Time Series Settings"
+                    no_evaluate
+                }
+
+                T_mode {
+                    label = "LoadShape input mode"
+                    widget = combo
+                    combo_values = "Loadshape index", "Time"
+                    type = string
+                    default_value = "Loadshape index"
+                    group = "Time Series Settings"
+                    no_evaluate
+
+                    CODE property_value_edited
+                        if new_value == "Time":
+                            mdl.enable_property(mdl.prop(container_handle, "T_Ts"))
+                        else:
+                            mdl.disable_property(mdl.prop(container_handle, "T_Ts"))
+                        
+                        
+                    ENDCODE
+                }
+
+                pct_stored {
+                    label = "Initial SOC"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "%"
+                }
+
+                execution_rate {
+                    label = "Execution rate"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                }
+
+                vmaxpu {
+                    label = "vmaxpu"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                vminpu {
+                    label = "vminpu"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                kva {
+                    label = "kva"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                inv_r {
+                    label = "AC-side resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "Ω"
+                    group = "Inverter:4"
+                }
+
+                inv_l {
+                    label = "AC-side inductance"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "H"
+                    group = "Inverter:4"
+                }
+
+                inv_rf {
+                    label = "Filter resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "Ω"
+                    group = "Inverter:4"
+                }
+
+                inv_cf {
+                    label = "Filter capacitance"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    unit = "F"
+                    group = "Inverter:4"
+                }
+
+                inv_kp {
+                    label = "Controller Kp"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Inverter:4"
+                }
+
+                inv_ki {
+                    label = "Controller Ki"
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    group = "Inverter:4"
+                }
+
+                loadshape_n_points {
+                    widget = edit
+                    type = generic
+                    default_value = "0"
+                    nonvisible
+                }
+
+                enable_monitoring {
+                    label = "Enable monitoring"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    group = "Monitoring:5"
+                    no_evaluate
+                }
+
+                CODE open
+                    from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+                
+                    dialog = RegularComponentPropertiesDialog(
+                        component=component,
+                        property_container=component.masks[-1],
+                        current_diagram=current_diagram
+                    )
+                    mdl.set_ns_var("container_dialog_handler", dialog)
+                    dialog.exec_()
+                
+                ENDCODE
+
+                CODE model_loaded
+                    mdl.refresh_icon(mdl.get_parent(item_handle))
+                ENDCODE
+
+                CODE define_icon
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.define_icon(mdl, item_handle)
+                ENDCODE
+
+                CODE init
+                    import importlib
+                
+                    import dss_thcc_lib.component_scripts.comp_container as comp_container
+                    importlib.reload(comp_container)
+                
+                    comp_container.define_icon(mdl, item_handle)
+                
+                    def return_comp_script(mdl, item_handle):
+                        id_prop = mdl.prop(item_handle, "dss_container_comp_identifier")
+                        id = mdl.get_property_value(id_prop)
+                        comp_script = comp_container.pick_comp_script(mdl, item_handle, "init")
+                        importlib.reload(comp_script)
+                        return comp_script
+                ENDCODE
+            }
+        }
+        [
+            position = 8656, 8512
+            size = 80, 96
+        ]
+
+        component "OpenDSS/Bus" Bus1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8520, 8512
+            size = 16, 96
+        ]
+
+        component "core/Three-phase Meter" Grid_Meter {
+            I_rms = "True"
+            P_meas = "True"
+            P_method = "RMS based"
+            VLn_rms = "True"
+            enable_out = "False"
+            freq = "True"
+        }
+        [
+            position = 8408, 8512
+            scale = -1, 1
+            size = 48, 104
+        ]
+
+        component "core/Ground" gnd4 {
+        }
+        [
+            position = 8408, 8624
+            hide_name = True
+        ]
+
+        component "core/SCADA Input" Hour {
+            execution_rate = "ts"
+            max = "24*10"
+            min = "0"
+            signal_access = "Inherit"
+            unit = "h"
+        }
+        [
+            position = 8592, 8392
+        ]
+
+        component "core/Signal switch" "Signal switch1" {
+        }
+        [
+            position = 8664, 8352
+            hide_name = True
+        ]
+
+        component "core/SCADA Input" "Time Mode" {
+            def_value = "1"
+            execution_rate = "ts"
+            format = "int"
+            max = "1"
+            min = "0"
+            signal_access = "Inherit"
+            signal_type = "int"
+            unit = ""
+        }
+        [
+            position = 8608, 8240
+        ]
+
+        tag Goto1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8752, 8352
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8584, 8440
+            hide_name = True
+            size = 60, 20
+        ]
+
+        junction Junction1 sp
+        [
+            position = 8704, 8352
+        ]
+
+        comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">seconds -&gt; hour </p></body></html> ENDCOMMENT 
+        [
+            position = 8448, 8344
+        ]
+
+        comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Container as</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Storage</p></body></html> ENDCOMMENT 
+        [
+            position = 8704, 8480
+        ]
+
+        comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">0 - Manual</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">1 - Continuos</p></body></html> ENDCOMMENT 
+        [
+            position = 8480, 8216
+        ]
+
+        connect Integrator1.out time_scale.in as Connection31
+        connect "Enable Time.out" "Data Type Conversion1.in" as Connection105
+        connect "Data Type Conversion1.out" Integrator1.in as Connection106
+        connect From1 "EPC.Load point" as Connection252
+        connect Bus1.A2 EPC.A1 as Connection256
+        connect Bus1.B2 EPC.B1 as Connection257
+        connect Bus1.C2 EPC.C1 as Connection258
+        connect Grid.B1 Grid_Meter.B- as Connection259
+        connect Grid_Meter.B+ Bus1.B1 as Connection260
+        connect Grid.A1 Grid_Meter.A- as Connection261
+        connect Bus1.C1 Grid_Meter.C+ as Connection263
+        connect Grid_Meter.C- Grid.C1 as Connection264
+        connect Grid_Meter.GND gnd4.node as Connection265
+        connect Bus1.A1 Grid_Meter.A+ as Connection269
+        [
+            breakpoints = 8456, 8480
+        ]
+        connect time_scale.out "Signal switch1.in" as Connection270
+        connect Hour.out "Signal switch1.in1" as Connection271
+        connect "Time Mode.out" "Signal switch1.in2" as Connection272
+        connect "Signal switch1.out" Junction1 as Connection274
+        connect Junction1 Goto1 as Connection275
+        connect time_hour.in Junction1 as Connection276
+    }
+
+    default {
+        "core/1D look-up table" {
+            in_vec_x = "np.arange(-5,6)"
+            out_vec_f_x = "np.arange(-5,6)**2"
+            table_impl = "Equidistant"
+            ext_mode = "Clip"
+            execution_rate = "inherit"
+        }
+
+        "core/Bus Split" {
+            outputs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Constant" {
+            value = "1"
+            signal_type = "real"
+            execution_rate = "100e-6"
+            _tunable = "False"
+        }
+
+        "core/Data Type Conversion" {
+            output_type = "real"
+            execution_rate = "inherit"
+        }
+
+        "core/Gain" {
+            gain = "1"
+            multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
+            execution_rate = "inherit"
+        }
+
+        "core/Integrator" {
+            show_reset = "none"
+            reset_type = "asynchronous"
+            show_init_condition = "internal"
+            init_value = "0"
+            limit_output = "False"
+            limit_upper = "inf"
+            limit_lower = "-inf"
+            show_state = "False"
+            state_port_type = "inherit"
+            execution_rate = "inherit"
+        }
+
+        "core/Logical operator" {
+            operator = "AND"
+            inputs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Mathematical function" {
+            mathematical_fn = "exponential"
+            execution_rate = "inherit"
+        }
+
+        "core/Probe" {
+            signal_access = "inherit"
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        "core/Resistor" {
+            resistance = "1"
+            param_set = ""
+        }
+
+        "core/SCADA Input" {
+            signal_access = "inherit"
+            addr = "0"
+            format = "real"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "real"
+            min = "-1e6"
+            max = "1e6"
+            def_value = "0"
+            unit = " "
+            execution_rate = "100e-6"
+        }
+
+        "core/Signal switch" {
+            criterion = "ctrl > threshold"
+            threshold = "0.5"
+            execution_rate = "inherit"
+        }
+
+        "core/Square Wave Source" {
+            hs_output = "1"
+            ls_output = "0"
+            frequency = "50"
+            duty_cycle = "0.5"
+            phase = "0"
+            signal_type = "real"
+            execution_rate = "100e-6"
+            _tunable = "False"
+        }
+
+        "core/Sum" {
+            signs = "2"
+            execution_rate = "inherit"
+        }
+
+        "core/Transport Delay" {
+            time_delay = "0.1"
+            init_value = "0"
+            signal_out_type = "inherit"
+            execution_rate = "inherit"
+        }
+
+        "core/Voltage Source" {
+            sig_input = "False"
+            type = "signal generator"
+            param_set = "1phase"
+            parent_label = ""
+            addr = "0"
+            spc_nb = "0"
+            execution_rate = "100e-6"
+            cpd_visible = "True"
+            enable_snb = "False"
+            snb_type = "R2"
+            R2 = "0.0"
+            L1 = "0.1"
+            override_signal_name = "False"
+            signal_name = ""
+            init_source_nature = "Constant"
+            init_const_value = "0.0"
+            init_rms_value = "0.0"
+            init_frequency = "50.0"
+            init_phase = "0.0"
+        }
+
+        "OpenDSS/Bus" {
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
+            conf = "on both sides"
+        }
+
+        "EPC Power/CAB1K 2 LVL" {
+            hil_device_id = "dynamic"
+            io_position = "Row A (BOT)"
+            hil_compatible_version = "Typhoon Gen3"
+            hil_compatible_conf_code = "F3XX0EJ1XX0XX0XX0XX0EJ0XX0"
+            inv_number = "1 - Left"
+            execution_rate = "100e-6"
+            pre_charge_type = "DC"
+            Vrec_ACpc = "480"
+            lcl_coupling = "True"
+            dc_core_coupling = "False"
+            voltage_vab = ""
+            voltage_vbc = ""
+        }
+
+        "core/Modbus Client" {
+            hil_id = "0"
+            client_ip_address = "192.168.0.200"
+            client_netmask = "255.255.255.0"
+            client_gateway = "192.168.0.1"
+            client_gateway_enable = "False"
+            server_ip_address = "192.168.0.100"
+            server_port = "502"
+            slave_id = "255"
+            request_timeout = "1000"
+            requests = "[]"
+            request_names_dict = "{}"
+            execution_rate = "100e-6"
+            _supported_platforms = "[\'hil\']"
+        }
+
+        "OpenDSS/Monitoring" {
+            not_used = "0"
+            run = "Run"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            baseFreq = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tsstp_unit = "Hours"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+            stability_analysis = "Run"
+        }
+
+        "OpenDSS/TS Reset" {
+            max = "23"
+            input_type = "Index"
+            execution_rate = "inherit"
+        }
+
+        "core/Three-phase Meter" {
+            R = "1e5"
+            n_cycles = "1"
+            Ts = "100e-6"
+            enable_probes = "True"
+            enable_out = "True"
+            remove_snubber = "False"
+            enable_bandwidth = "False"
+            bandwidth = "10e3"
+            VAn = "True"
+            VBn = "True"
+            VCn = "True"
+            VAB = "False"
+            VBC = "False"
+            VCA = "False"
+            VN = "False"
+            IA = "True"
+            IB = "True"
+            IC = "True"
+            IN = "False"
+            freq = "False"
+            VLn_rms = "False"
+            VLL_rms = "False"
+            VLn_avg_rms = "False"
+            VLL_avg_rms = "False"
+            VN_rms = "False"
+            I_rms = "False"
+            I_avg_rms = "False"
+            IN_rms = "False"
+            P_method = "alpha-beta"
+            enable_extra_out = "False"
+            P_meas = "False"
+        }
+
+        "OpenDSS/Vsource" {
+            basekv = "115.0"
+            baseMVA = "100.0"
+            global_basefreq = "False"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
+            pu = "1.0"
+            Angle = "0"
+            Frequency = "60"
+            input_method = "Z"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
+            enable_monitoring = "False"
+        }
+    }
+
+    CODE model_init
+        # Numpy module is imported as 'np'
+        # Scipy module is imported as 'sp'
+        # The Schematic API is imported as 'mdl'
+        # To get the model file path, use 'mdl.get_model_file_path()'
+        # To print information to the console, use info()
+        
+        ts = 100e-6
+    ENDCODE
+}

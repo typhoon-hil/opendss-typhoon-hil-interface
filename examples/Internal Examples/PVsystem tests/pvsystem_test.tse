@@ -1,0 +1,753 @@
+version = 4.2
+
+//
+// Saved by sw version: 2024.1 DEV
+//
+
+model "pvsystem_test" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 1
+        simulation_method = exact
+        simulation_time_step = 2e-6
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "internal memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = warning
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/Vsource" V1 {
+            basekv = "0.240"
+            enable_monitoring = "True"
+            global_basefreq = "True"
+            input_method = "MVAsc"
+        }
+        [
+            position = 9016, 4128
+            rotation = right
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" Bus1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9016, 4312
+            rotation = right
+            size = 16, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS {
+            currents = "Elem"
+            powers = "kVA Elem"
+            sim_counter = "61"
+            sim_mode = "Time Series"
+            sim_status = "Sim61 complete"
+            voltagebases = "[0.240]"
+        }
+        [
+            position = 8664, 4088
+            size = 96, 96
+        ]
+
+        component "core/SCADA Input" "SCADA Input1" {
+            format = "int"
+            max = "1"
+            min = "0"
+            signal_type = "int"
+            unit = ""
+        }
+        [
+            position = 8480, 4248
+        ]
+
+        component "core/Integrator" Integrator1 {
+        }
+        [
+            position = 8632, 4248
+        ]
+
+        component "core/Probe" time_hour {
+        }
+        [
+            position = 8808, 4184
+        ]
+
+        component "core/Gain" scale {
+            gain = "0.5"
+        }
+        [
+            position = 8712, 4248
+        ]
+
+        component "OpenDSS/PV System" PV2 {
+            connection = "Δ"
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            phases = "1"
+            power_ref = "Time Series"
+            tshape_hour = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+        }
+        [
+            position = 8424, 4592
+            size = 96, 144
+        ]
+
+        component "OpenDSS/Bus" "Bus PV2" {
+            phase_b = "False"
+            phase_n = "False"
+            type_prop = "AC"
+        }
+        [
+            position = 8688, 4616
+            size = 16, 64
+        ]
+
+        component "OpenDSS/Line" Line2 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            cmatrix = "[[0, 0], [0,0]]"
+            dC0 = "0"
+            dC1 = "0"
+            input_type = "Matrix"
+            phases = "2"
+            rmatrix = "[[0.1903, 0], [0, 0.1903]]"
+            xmatrix = "[[0.3957, 0], [0, 0.3957]]"
+        }
+        [
+            position = 8824, 4616
+            size = 64, 64
+        ]
+
+        component "core/Data Type Conversion" "Data Type Conversion1" {
+        }
+        [
+            position = 8552, 4248
+            hide_name = True
+        ]
+
+        component "OpenDSS/Monitoring" Monitoring1 {
+        }
+        [
+            position = 8536, 4080
+            size = 64, 64
+        ]
+
+        component "OpenDSS/Bus" "Bus PV1" {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8688, 4400
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Line" Line1 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            dC0 = "0"
+            dC1 = "0"
+            global_basefreq = "False"
+        }
+        [
+            position = 8824, 4400
+            size = 64, 96
+        ]
+
+        component "OpenDSS/PV System" PV1 {
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            power_ref = "Time Series"
+            tshape_hour = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+        }
+        [
+            position = 8432, 4376
+            size = 96, 144
+        ]
+
+        component "OpenDSS/PV System" PV3 {
+            enable_monitoring = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
+            loadshape_hour = ""
+            phases = "1"
+            power_ref = "Time Series"
+            tshape_hour = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            voltage = "0.240/np.sqrt(3)"
+        }
+        [
+            position = 8432, 4800
+            size = 98, 144
+        ]
+
+        component "OpenDSS/Bus" "Bus PV3" {
+            phase_a = "False"
+            phase_b = "False"
+            phase_n = "False"
+            type_prop = "C"
+        }
+        [
+            position = 8696, 4792
+            size = 16, 32
+        ]
+
+        component "OpenDSS/Line" Line3 {
+            Length = "1"
+            R0 = "0.1903"
+            X0 = "0.3957"
+            cmatrix = "[[0]]"
+            dC0 = "0"
+            dC1 = "0"
+            global_basefreq = "False"
+            input_type = "Matrix"
+            phases = "1"
+            rmatrix = "[[0.1903]]"
+            xmatrix = "[[0.39570]]"
+        }
+        [
+            position = 8824, 4792
+            size = 64, 32
+        ]
+
+        component "core/Three-phase Meter" PV1_Meter {
+            I_rms = "True"
+            P_meas = "True"
+            P_method = "RMS based"
+            VLn_rms = "True"
+            enable_out = "False"
+            freq = "True"
+        }
+        [
+            position = 8568, 4400
+            size = 48, 104
+        ]
+
+        component "core/Ground" gnd1 {
+        }
+        [
+            position = 8568, 4504
+            hide_name = True
+        ]
+
+        component "core/Single-phase Meter" PV2a_Meter {
+            enable_out = "False"
+            fgrid = "60.0"
+            n_cycles = "1"
+        }
+        [
+            position = 8608, 4584
+            size = 56, 48
+        ]
+
+        component "core/Single-phase Meter" PV2b_Meter {
+            enable_out = "False"
+            fgrid = "60.0"
+            n_cycles = "1"
+        }
+        [
+            position = 8528, 4648
+            size = 56, 48
+        ]
+
+        component "core/Ground" gnd2 {
+        }
+        [
+            position = 8608, 4736
+            hide_name = True
+        ]
+
+        component "core/Single-phase Meter" PV3_Meter {
+            enable_out = "False"
+            fgrid = "60.0"
+            n_cycles = "1"
+        }
+        [
+            position = 8576, 4792
+            size = 56, 48
+        ]
+
+        component "core/Ground" gnd3 {
+        }
+        [
+            position = 8576, 4872
+            hide_name = True
+        ]
+
+        component "core/Three-phase Meter" Pgrid_Meter {
+            I_rms = "True"
+            P_meas = "True"
+            P_method = "RMS based"
+            VLn_rms = "True"
+            enable_out = "False"
+            freq = "True"
+        }
+        [
+            position = 9016, 4224
+            rotation = right
+            size = 48, 104
+        ]
+
+        component "core/Ground" gnd4 {
+        }
+        [
+            position = 8928, 4288
+            hide_name = True
+        ]
+
+        tag Goto1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = in
+        }
+        [
+            position = 8808, 4248
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From2 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8304, 4544
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From1 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8312, 4328
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag From3 {
+            value = "time"
+            scope = local
+            kind = sp
+            direction = out
+        }
+        [
+            position = 8320, 4752
+            hide_name = True
+            size = 60, 20
+        ]
+
+        junction Junction1 sp
+        [
+            position = 8752, 4248
+        ]
+
+        junction Junction2 pe
+        [
+            position = 8984, 4432
+        ]
+
+        junction Junction3 pe
+        [
+            position = 9048, 4368
+        ]
+
+        junction Junction4 pe
+        [
+            position = 8984, 4632
+        ]
+
+        junction Junction5 pe
+        [
+            position = 8608, 4696
+        ]
+
+        comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Time-Series</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">seconds -&gt; hour</p></body></html> ENDCOMMENT 
+        [
+            position = 8600, 4168
+        ]
+
+        connect Integrator1.out scale.in as Connection31
+        connect Junction1 Goto1 as Connection60
+        connect Junction1 time_hour.in as Connection61
+        connect Junction1 scale.out as Connection62
+        connect "SCADA Input1.out" "Data Type Conversion1.in" as Connection105
+        connect "Data Type Conversion1.out" Integrator1.in as Connection106
+        connect PV2.Time_p From2 as Connection109
+        connect "Bus PV2.C2" Line2.B1 as Connection121
+        connect Line2.A1 "Bus PV2.A2" as Connection128
+        [
+            breakpoints = 8696, 4600
+        ]
+        connect "Bus PV1.A2" Line1.A1 as Connection87
+        connect "Bus PV1.B2" Line1.B1 as Connection88
+        connect "Bus PV1.C2" Line1.C1 as Connection89
+        connect PV1.Time_p From1 as Connection113
+        connect "Bus PV3.C2" Line3.A1 as Connection101
+        connect PV3.Time_p From3 as Connection108
+        connect Bus1.C2 Junction2 as Connection141
+        connect Junction2 Line1.C2 as Connection142
+        connect Bus1.A2 Junction3 as Connection144
+        connect Junction3 Line1.A2 as Connection145
+        connect Line2.B2 Junction4 as Connection151
+        connect Line3.A2 Junction4 as Connection153
+        connect PV1.C1 PV1_Meter.C+ as Connection154
+        connect PV1_Meter.C- "Bus PV1.C1" as Connection155
+        connect PV1.B1 PV1_Meter.B+ as Connection156
+        connect PV1_Meter.B- "Bus PV1.B1" as Connection157
+        connect PV1.A1 PV1_Meter.A+ as Connection158
+        connect PV1_Meter.A- "Bus PV1.A1" as Connection159
+        connect PV1_Meter.GND gnd1.node as Connection160
+        connect PV2.A1 PV2a_Meter.in as Connection161
+        connect PV2a_Meter.out "Bus PV2.A1" as Connection162
+        connect PV2.B1 PV2b_Meter.in as Connection163
+        connect "Bus PV3.C1" PV3_Meter.out as Connection169
+        connect PV3_Meter.in PV3.A1 as Connection170
+        connect PV3_Meter.N gnd3.node as Connection171
+        connect PV2b_Meter.out "Bus PV2.C1" as Connection176
+        [
+            breakpoints = 8640, 4648; 8640, 4632
+        ]
+        connect gnd2.node Junction5 as Connection181
+        connect Junction5 PV2b_Meter.N as Connection182
+        [
+            breakpoints = 8608, 4696; 8608, 4696
+        ]
+        connect PV2a_Meter.N Junction5 as Connection183
+        connect Junction4 Junction2 as Connection196
+        [
+            breakpoints = 8984, 4632; 8984, 4608; 8984, 4432
+        ]
+        connect Junction3 Line2.A2 as Connection195
+        [
+            breakpoints = 9048, 4368; 9048, 4368
+        ]
+        connect Bus1.B2 Line1.B2 as Connection194
+        [
+            breakpoints = 9016, 4400
+        ]
+        connect V1.A1 Pgrid_Meter.A+ as Connection197
+        connect Pgrid_Meter.A- Bus1.A1 as Connection198
+        connect V1.B1 Pgrid_Meter.B+ as Connection199
+        connect Pgrid_Meter.B- Bus1.B1 as Connection200
+        connect V1.C1 Pgrid_Meter.C+ as Connection201
+        connect Pgrid_Meter.C- Bus1.C1 as Connection202
+        connect gnd4.node Pgrid_Meter.GND as Connection203
+    }
+
+    default {
+        "core/Data Type Conversion" {
+            output_type = "real"
+            execution_rate = "inherit"
+        }
+
+        "core/Gain" {
+            gain = "1"
+            multiplication = "Element-wise(K.*u)"
+            _tunable = "False"
+            execution_rate = "inherit"
+        }
+
+        "core/Integrator" {
+            show_reset = "none"
+            reset_type = "asynchronous"
+            show_init_condition = "internal"
+            init_value = "0"
+            limit_output = "False"
+            limit_upper = "inf"
+            limit_lower = "-inf"
+            show_state = "False"
+            state_port_type = "inherit"
+            execution_rate = "inherit"
+        }
+
+        "core/Probe" {
+            signal_access = "inherit"
+            addr = "0"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "generic"
+            streaming_en = "False"
+            streaming_er_idx = "0"
+            execution_rate = "inherit"
+        }
+
+        "core/SCADA Input" {
+            addr = "0"
+            format = "real"
+            override_signal_name = "False"
+            signal_name = ""
+            signal_type = "real"
+            min = "-1e6"
+            max = "1e6"
+            def_value = "0"
+            unit = " "
+            execution_rate = "100e-6"
+        }
+
+        "OpenDSS/Bus" {
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
+            conf = "on both sides"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            baseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Monitoring" {
+            not_used = "0"
+            run = "Run"
+        }
+
+        "OpenDSS/PV System" {
+            power = "5.0"
+            voltage = "0.240"
+            freq = "60"
+            phases = "3"
+            connection = "Y"
+            load_xycurve_eff = "Choose"
+            xycurve_name_eff = "Eff"
+            xycurve_npts_eff = "4"
+            xycurve_xarray_eff = "[.1, .2, .4, 1.0]"
+            xycurve_yarray_eff = "[.86, .9, .93, .97]"
+            pmpp = "5.0"
+            irrad = "1"
+            temp = "25"
+            load_xycurve_cf = "Choose"
+            xycurve_name_cf = "FactorPvsT"
+            xycurve_npts_cf = "4"
+            xycurve_xarray_cf = "[0, 25, 75, 100]"
+            xycurve_yarray_cf = "[1.2, 1.0, 0.8, 0.6]"
+            filter_type = "L"
+            rl1_resistance = "0.1"
+            rl1_inductance = "0.68e-3"
+            rc_resistance = "1e-3"
+            rc_capacitance = "100e-6"
+            rl2_resistance = "1e-3"
+            rl2_inductance = "1e-3"
+            Ikp = "0.5"
+            Iki = "5.0"
+            ts = "100e-6"
+            power_ref = "Internal Scada Input"
+            t_mode = "Time value (h)"
+            load_loadshape = "Choose"
+            loadshape_name = "Irrad"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0, 0, 0, 0, 0, 0, .1, .2, .3, .5, .8, .9, 1.0, 1.0, .99, .9, .7, .4, .1, 0, 0, 0, 0, 0]"
+            loadshape_int = "1"
+            loadshape_hour = "[]"
+            loadshape_npts = "24"
+            timespan = "Daily"
+            load_tshape = "Choose"
+            tshape_name = "Temp"
+            tshape_temp = "[25, 25, 25, 25, 25, 25, 25, 25, 35, 40, 45, 50, 60, 60, 55, 40, 35, 30, 25, 25, 25, 25, 25, 25]"
+            tshape_int = "1"
+            tshape_npts = "24"
+            tshape_hour = "[]"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            baseFreq = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+            stability_analysis = "Run"
+        }
+
+        "core/Single-phase Meter" {
+            fgrid = "0"
+            n_cycles = "0"
+            execution_rate = "100e-6"
+            enable_out = "True"
+        }
+
+        "core/Three-phase Meter" {
+            R = "1e5"
+            n_cycles = "1"
+            Ts = "100e-6"
+            enable_probes = "True"
+            enable_out = "True"
+            remove_snubber = "False"
+            enable_bandwidth = "False"
+            bandwidth = "10e3"
+            VAn = "True"
+            VBn = "True"
+            VCn = "True"
+            VAB = "False"
+            VBC = "False"
+            VCA = "False"
+            VN = "False"
+            IA = "True"
+            IB = "True"
+            IC = "True"
+            IN = "False"
+            freq = "False"
+            VLn_rms = "False"
+            VLL_rms = "False"
+            VLn_avg_rms = "False"
+            VLL_avg_rms = "False"
+            VN_rms = "False"
+            I_rms = "False"
+            I_avg_rms = "False"
+            IN_rms = "False"
+            P_method = "alpha-beta"
+            enable_extra_out = "False"
+            P_meas = "False"
+        }
+
+        "OpenDSS/Vsource" {
+            basekv = "115.0"
+            baseMVA = "100.0"
+            global_basefreq = "False"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
+            pu = "1.0"
+            Angle = "0"
+            Frequency = "60"
+            input_method = "Z"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
+            enable_monitoring = "False"
+        }
+    }
+}

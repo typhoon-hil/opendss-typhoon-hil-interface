@@ -1,0 +1,1 @@
+{"title": "Cigre European MV", "description": "Medium Voltage Distribution Network (European configuration)  from CIGRE Task Force C6.04.02 \"Benchamark Systems for Network Integration of Renewable and Distributed Energy Resources\"", "model": "cigre_european_mv.tse", "images": ["tse_cigre_european_mv.png"], "tags": [], "app_note": "CIGRE European MV.pdf", "tests": []}
