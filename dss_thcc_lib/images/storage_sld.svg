@@ -20,9 +20,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="12.177083"
-     inkscape:cx="40.034217"
-     inkscape:cy="48"
+     inkscape:zoom="6.0885415"
+     inkscape:cx="16.999145"
+     inkscape:cy="36.051327"
      inkscape:window-width="2560"
      inkscape:window-height="1377"
      inkscape:window-x="1912"
@@ -63,14 +63,6 @@
       }
     </style>
   </defs>
-  <line
-     class="cls-5"
-     x1="18.3"
-     y1="47.99"
-     x2="0"
-     y2="48.01"
-     id="line884"
-     style="stroke-width:2.26771654;stroke-miterlimit:10;stroke-dasharray:none" />
   <line
      class="cls-1"
      x1="62"
@@ -204,4 +196,8 @@
        y2="81.03"
        id="line928" />
   </g>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 18.320659,47.99374 H 0.02903433"
+     id="path8607" />
 </svg>
