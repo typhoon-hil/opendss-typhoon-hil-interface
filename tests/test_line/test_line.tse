@@ -1,8 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2022.1 SP1
-// Save timestamp: 21-Mar-2022 @ 01:48:55 PM
+// Saved by sw version: 2024.2 SP1
 //
 
 model "test_line" {
@@ -19,6 +18,7 @@ model "test_line" {
         show_modes = False
         device_ao_limit_enable = False
         reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
         reset_digital_outputs_on_sim_stop = True
         vhil_adio_loopback = False
         cpl_stb = False
@@ -36,6 +36,12 @@ model "test_line" {
         cpl_dynamics_analysis = False
         export_ss_to_pickle = False
         ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
         cce_platform = "generic"
         cce_use_relative_names = False
         cce_type_mapping_real = "double"
@@ -50,10 +56,21 @@ model "test_line" {
         sig_stim = "off"
         export_resource_list = ""
         export_dependency_list = ""
+        excluded_resource_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = warning
     }
 
     component Subsystem Root {
@@ -71,26 +88,34 @@ model "test_line" {
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
             enable_monitoring = "True"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Default"
         }
         [
             position = 8584, 8480
-            size = 64, 112
+            size = 64, 96
         ]
 
         component "OpenDSS/Load" Load1 {
-            Pow_ref_s = "Fixed"
+            Rneut = "0"
             Sn_3ph = "10"
+            T_Ts = "[0, 6, 12, 18, 24]"
             T_mode = "Loadshape index"
-            Ts = "600e-6"
             Vn_3ph = "10"
+            Xneut = "0"
+            execution_rate = "600e-6"
             global_basefreq = "False"
-            load_model = "Constant Impedance"
+            ground_connected = "True"
+            loadshape = "[0.5, 0.7, 1, 0.4, 0.5]"
+            loadshape_name = "loadsh01"
+            pf_mode_3ph = "Unit"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
         }
         [
             position = 8896, 8576
-            size = 96, 64
+            size = 128, 48
         ]
 
         component "OpenDSS/SimDSS" SimDSS1 {
@@ -98,6 +123,7 @@ model "test_line" {
             currents = "Elem"
             sim_counter = "101"
             sim_status = "Sim101 complete"
+            tspoints = "5"
             voltagebases = "[4.16, 12.47]"
             voltages = "LL"
         }
@@ -106,16 +132,9 @@ model "test_line" {
             size = 96, 96
         ]
 
-        component src_ground gnd1 {
-        }
-        [
-            position = 8568, 8576
-            hide_name = True
-        ]
-
         component "OpenDSS/Bus" Bus1 {
-            conf = "on both sides"
-            i_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8352, 8480
@@ -131,8 +150,8 @@ model "test_line" {
         ]
 
         component "OpenDSS/Bus" Bus2 {
-            conf = "on both sides"
-            i_meas = "True"
+            phase_n = "False"
+            type_prop = "ABC"
         }
         [
             position = 8712, 8480
@@ -141,6 +160,8 @@ model "test_line" {
 
         component "OpenDSS/Vsource" Vsource1 {
             basekv = "10"
+            global_basefreq = "True"
+            pu = "1"
             r0 = "0.0001"
             r1 = "0.01"
             x0 = "0.0001"
@@ -151,7 +172,6 @@ model "test_line" {
             size = 64, 96
         ]
 
-        connect gnd1.node Line1.N as Connection296
         connect Bus1.C2 Line1.C1 as Connection308
         connect Line1.B1 Bus1.B2 as Connection309
         connect Line1.C2 Bus2.C1 as Connection332
@@ -167,26 +187,18 @@ model "test_line" {
         connect Bus2.A2 Load1.A1 as Connection343
     }
 
-    logically_deleted {
-        "Line1.pisec"
-        "Load1.CPL"
-        "Load1.TS_module"
-        "Load1.T_switch"
-        "Load1.Constant1"
-        "Load1.Connection3"
-        "Load1.Connection4"
-    }
-
     default {
         "OpenDSS/Bus" {
-            type = "ABC"
-            ground = "False"
-            i_meas = "False"
-            v_meas = "False"
-            conf = "on one side"
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
+            conf = "on both sides"
         }
 
         "core/Current RMS" {
+            signal_access = "inherit"
             op_mode = "PLL based"
             frequency = "50"
             pin_to_system_cpu = "True"
@@ -204,7 +216,7 @@ model "test_line" {
             selected_object = ""
             Length = "100"
             global_basefreq = "True"
-            BaseFreq = "60"
+            baseFreq = "60"
             phases = "3"
             R1 = "0.1903"
             R0 = "0.5853"
@@ -234,22 +246,38 @@ model "test_line" {
         }
 
         "OpenDSS/Load" {
+            ground_connected = "False"
+            tp_connection = "Y"
+            phases = "3"
+            Rneut = "inf"
+            Xneut = "inf"
             global_basefreq = "True"
             fn = "60"
-            conn_type = "Y"
-            ground_connected = "True"
-            phases = "3"
-            Vn_3ph = "1"
-            Sn_3ph = "600"
-            pf_mode_3ph = "Unit"
+            Vn_3ph = "4.16"
+            Sn_3ph = "3500"
+            pf_mode_3ph = "Lag"
             pf_3ph = "0.9"
             pf_3ph_set = "0"
-            load_model = "Constant Power"
+            load_model = "Constant Impedance"
+            zip_vector = "[0,0,1]"
+            zip_vector_Q = "[0,0,1]"
+            zip_internal = "[0,0,1]"
+            zip_internal_Q = "[0,0,1]"
+            zip_internal_n = "[0,0,1]"
+            zip_internal_n_Q = "[0,0,1]"
+            ZIPV = "[0,0,1,0,0,1,0]"
+            Vmaxpu = "1.05"
+            Vminpu = "0.95"
             model = "2"
-            Pow_ref_s = "Time Series"
-            Ts = "300e-6"
+            Pow_ref_s = "Fixed"
+            execution_rate = "300e-6"
             Tfast = "100e-6"
             CPL_LMT = "2"
+            v_min_max = "[0.95,1.05]"
+            rate_lmt = "1"
+            zero_seq_remove = "False"
+            q_gain_k = "0.5"
+            r_gain_k = "20"
             Vn_3ph_CPL = "0"
             P_CPL = "0"
             Q_CPL = "0"
@@ -257,16 +285,22 @@ model "test_line" {
             pf = "0"
             conn = "0"
             kVA = "0"
-            basefreq = "0"
+            baseFreq = "0"
+            gen_ts_en = "True"
             load_loadshape = "Choose"
-            loadshape_name = "loadsh01"
-            loadshape = "[0.5, 0.7, 1, 0.4, 0.5]"
+            loadshape_name = "Default"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
             loadshape_int = "1"
             S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
             Q_Ts = "0"
+            T_Ts = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
             T_mode = "Time"
             S_Ts_mode = "Manual input"
-            T_Ts = "[0, 6, 12, 18, 24]"
             timespan = "Daily"
             T_Ts_internal = "0"
             dssT = "1"
@@ -278,14 +312,16 @@ model "test_line" {
             T_lim_high = "0"
             Ts_switch = "0"
             enable_monitoring = "False"
+            tp_connection_combo_values = ""
         }
 
         "OpenDSS/SimDSS" {
             sim_mode = "Snap"
-            basefrequency = "60"
+            baseFreq = "60"
             voltagebases = "[0.480, 12.47]"
             tsstp = "1"
-            tspoints = "5"
+            tsstp_unit = "Hours"
+            tspoints = "24"
             append = "Open"
             export_to_dss = "Run"
             sim_status = "None"
@@ -306,20 +342,33 @@ model "test_line" {
             maxiter = "15"
             command = "show voltages LN"
             run = "Run"
+            stability_analysis = "Run"
         }
 
         "OpenDSS/Vsource" {
-            ground_connected = "True"
-            basekv = "115"
-            pu = "1"
+            basekv = "115.0"
+            baseMVA = "100.0"
+            global_basefreq = "False"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
+            pu = "1.0"
             Angle = "0"
             Frequency = "60"
-            global_basefreq = "True"
-            BaseFreq = "60"
+            input_method = "Z"
             r1 = "1.65"
             x1 = "6.6"
             r0 = "1.9"
             x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
             enable_monitoring = "False"
         }
     }
