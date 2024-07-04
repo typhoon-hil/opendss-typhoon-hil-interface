@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2024.2 SP1
+// Saved by sw version: 2024.3 DEV
 //
 
 model "test_line" {
@@ -77,7 +77,7 @@ model "test_line" {
         component "OpenDSS/Line" Line1 {
             L0 = "4.1264e-3"
             L1 = "Lac"
-            Length = "10"
+            Length = "1"
             R0 = "0.3864"
             R1 = "0.01273"
             X0 = "4.1264"
@@ -93,7 +93,7 @@ model "test_line" {
             selected_object = "Default"
         }
         [
-            position = 8584, 8480
+            position = 8552, 8480
             size = 64, 96
         ]
 
@@ -114,21 +114,21 @@ model "test_line" {
             tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
         }
         [
-            position = 8896, 8576
+            position = 8956, 8576
             size = 128, 48
         ]
 
-        component "OpenDSS/SimDSS" SimDSS1 {
+        component "OpenDSS/SimDSS" SimDSS {
             command = "solve"
             currents = "Elem"
-            sim_counter = "101"
-            sim_status = "Sim101 complete"
+            sim_counter = "103"
+            sim_status = "Sim103 complete"
             tspoints = "5"
             voltagebases = "[4.16, 12.47]"
             voltages = "LL"
         }
         [
-            position = 8576, 8312
+            position = 8552, 8332
             size = 96, 96
         ]
 
@@ -141,20 +141,12 @@ model "test_line" {
             size = 16, 96
         ]
 
-        component "core/Current RMS" Irms1 {
-        }
-        [
-            position = 8448, 8448
-            hide_name = True
-            size = 64, 32
-        ]
-
         component "OpenDSS/Bus" Bus2 {
             phase_n = "False"
             type_prop = "ABC"
         }
         [
-            position = 8712, 8480
+            position = 8772, 8480
             size = 16, 96
         ]
 
@@ -172,19 +164,48 @@ model "test_line" {
             size = 64, 96
         ]
 
-        connect Bus1.C2 Line1.C1 as Connection308
-        connect Line1.B1 Bus1.B2 as Connection309
-        connect Line1.C2 Bus2.C1 as Connection332
+        component "OpenDSS/Monitor" "Bus1 Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8444, 8480
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" "Bus2 Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8672, 8480
+            size = 48, 96
+        ]
+
         connect Bus2.C2 Load1.C1 as Connection333
-        connect Line1.B2 Bus2.B1 as Connection334
         connect Bus2.B2 Load1.B1 as Connection335
-        connect Line1.A2 Bus2.A1 as Connection336
         connect Vsource1.A1 Bus1.A1 as Connection338
         connect Bus1.B1 Vsource1.B1 as Connection339
         connect Vsource1.C1 Bus1.C1 as Connection340
-        connect Bus1.A2 Irms1.p_node as Connection341
-        connect Irms1.n_node Line1.A1 as Connection342
         connect Bus2.A2 Load1.A1 as Connection343
+        connect Line1.A2 "Bus2 Monitor.A1" as Connection344
+        connect Line1.B2 "Bus2 Monitor.B1" as Connection345
+        connect Line1.C2 "Bus2 Monitor.C1" as Connection346
+        connect "Bus2 Monitor.A2" Bus2.A1 as Connection347
+        connect "Bus2 Monitor.B2" Bus2.B1 as Connection348
+        connect "Bus2 Monitor.C2" Bus2.C1 as Connection349
+        connect Bus1.A2 "Bus1 Monitor.A1" as Connection350
+        connect Bus1.B2 "Bus1 Monitor.B1" as Connection351
+        connect Bus1.C2 "Bus1 Monitor.C1" as Connection352
+        connect "Bus1 Monitor.A2" Line1.A1 as Connection353
+        connect "Bus1 Monitor.B2" Line1.B1 as Connection354
+        connect "Bus1 Monitor.C2" Line1.C1 as Connection355
     }
 
     default {
@@ -195,19 +216,6 @@ model "test_line" {
             phase_c = "True"
             phase_n = "True"
             conf = "on both sides"
-        }
-
-        "core/Current RMS" {
-            signal_access = "inherit"
-            op_mode = "PLL based"
-            frequency = "50"
-            pin_to_system_cpu = "True"
-            Tfast = "100e-6"
-            Tslow = "200e-6"
-            sig_output = "False"
-            execution_rate = "inherit"
-            feed_forward = "False"
-            nd_msr_estimation = "false"
         }
 
         "OpenDSS/Line" {
@@ -313,6 +321,24 @@ model "test_line" {
             Ts_switch = "0"
             enable_monitoring = "False"
             tp_connection_combo_values = ""
+        }
+
+        "OpenDSS/Monitor" {
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "False"
+            enable_output = "False"
+            execution_rate = "100e-6"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            ran_dynamics = "False"
         }
 
         "OpenDSS/SimDSS" {
