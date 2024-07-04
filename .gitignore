@@ -4,7 +4,7 @@ __pycache__
 * Target files
 *.egg-info
 allure-html
-allure-results/*
+allure-results
 open_allure-results.cmd
 importer_output
 pytest_results/*
