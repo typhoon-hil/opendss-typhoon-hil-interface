@@ -13,3 +13,4 @@ release_zip
 /build/
 **/api_calls_generation/output.txt
 *.tpkg
+Results_test.csv
