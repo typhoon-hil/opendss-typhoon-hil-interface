@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.3
+// Saved by sw version: 2024.3 DEV
 //
 
 model "cigre_european_mv" {
@@ -18,6 +18,7 @@ model "cigre_european_mv" {
         show_modes = False
         device_ao_limit_enable = False
         reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
         reset_digital_outputs_on_sim_stop = True
         vhil_adio_loopback = False
         cpl_stb = True
@@ -41,6 +42,11 @@ model "cigre_european_mv" {
         cce_type_mapping_real = "double"
         cce_type_mapping_uint = "unsigned int"
         cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
         cce_directory = ""
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
@@ -55,6 +61,15 @@ model "cigre_european_mv" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
         feedthrough_validation_error_level = warning
     }
 
@@ -79,6 +94,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -110,6 +126,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -139,6 +156,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -168,6 +186,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -252,6 +271,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -273,6 +293,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -302,6 +323,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -322,6 +344,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -342,6 +365,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -362,6 +386,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -408,6 +433,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID1"
         }
@@ -428,6 +454,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID1"
         }
@@ -457,6 +484,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID1"
         }
@@ -470,6 +498,7 @@ model "cigre_european_mv" {
             KVAs = "[25000, 25000]"
             KVs = "[110, 20*1.0625]"
             XArray = "[6, 6]"
+            baseFreq = "50"
             global_basefreq = "False"
             percentNoloadloss = "0.05"
             percentRs = "[.05, .05]"
@@ -486,6 +515,7 @@ model "cigre_european_mv" {
             KVAs = "[25000, 25000]"
             KVs = "[110, 20*1.03125]"
             XArray = "[6, 6]"
+            baseFreq = "50"
             global_basefreq = "False"
             percentNoloadloss = "0.05"
             percentRs = "[.05, .05]"
@@ -520,6 +550,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -561,6 +592,7 @@ model "cigre_european_mv" {
             d_C = "0.0"
             d_R = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
             d_X = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            global_basefreq = "False"
             obj_mode = "symmetrical"
             selected_object = "Conductor_ID2"
         }
@@ -606,6 +638,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.98"
                 tp_connection = "Y - Grounded"
@@ -629,6 +662,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.95"
                 tp_connection = "Y - Grounded"
@@ -746,6 +780,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -769,6 +804,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.85"
                 tp_connection = "Y - Grounded"
@@ -886,6 +922,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -969,6 +1006,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -1052,6 +1090,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -1135,6 +1174,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.85"
                 tp_connection = "Y - Grounded"
@@ -1218,6 +1258,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -1301,6 +1342,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.85"
                 tp_connection = "Y - Grounded"
@@ -1384,6 +1426,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -1407,6 +1450,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.85"
                 tp_connection = "Y - Grounded"
@@ -1521,6 +1565,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -1604,6 +1649,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.98"
                 tp_connection = "Y - Grounded"
@@ -1627,6 +1673,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.95"
                 tp_connection = "Y - Grounded"
@@ -1738,6 +1785,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.97"
                 tp_connection = "Y - Grounded"
@@ -1761,6 +1809,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.85"
                 tp_connection = "Y - Grounded"
@@ -1872,6 +1921,7 @@ model "cigre_european_mv" {
                 Xneut = "0"
                 ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
                 fn = "50"
+                global_basefreq = "False"
                 ground_connected = "True"
                 pf_3ph = "0.85"
                 tp_connection = "Y - Grounded"
@@ -1963,11 +2013,24 @@ model "cigre_european_mv" {
 
         component "OpenDSS/SimDSS" SimDSS {
             baseFreq = "50"
+            sim_counter = "6"
+            sim_status = "Sim6 complete"
             voltagebases = "[110, 20]"
         }
         [
             position = 8712, 7392
             size = 96, 96
+        ]
+
+        component "OpenDSS/Monitor" Bus2_Monitor {
+            freq_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8552, 8480
+            rotation = right
+            size = 48, 96
         ]
 
         junction Junction11 pe
@@ -2245,9 +2308,6 @@ model "cigre_european_mv" {
             position = 8592, 7464
         ]
 
-        connect Bus2.C2 Line_2.C1 as Connection13
-        connect Bus2.B2 Line_2.B1 as Connection14
-        connect Bus2.A2 Line_2.A1 as Connection15
         connect Line_2.C2 Bus3.C1 as Connection16
         connect Line_2.B2 Bus3.B1 as Connection17
         connect Line_2.A2 Bus3.A1 as Connection18
@@ -2301,6 +2361,9 @@ model "cigre_european_mv" {
         connect Line_7.A2 Bus7.A1 as Connection222
         connect Line_12.A2 Bus8.A1 as Connection249
         connect Line_12.B2 Bus8.B1 as Connection251
+        [
+            breakpoints = 8964, 8992; 8964, 9688
+        ]
         connect Line_12.A1 Junction19 as Connection254
         connect Line_3.B1 Junction20 as Connection255
         connect Line_12.B1 Junction20 as Connection257
@@ -2668,6 +2731,12 @@ model "cigre_european_mv" {
         connect Grid_Monitor.B2 Bus0.B1 as Connection1076
         connect Grid.C1 Grid_Monitor.C1 as Connection1077
         connect Grid_Monitor.C2 Bus0.C1 as Connection1078
+        connect Bus2.A2 Bus2_Monitor.A1 as Connection1079
+        connect Bus2_Monitor.A2 Line_2.A1 as Connection1080
+        connect Bus2.B2 Bus2_Monitor.B1 as Connection1081
+        connect Bus2_Monitor.B2 Line_2.B1 as Connection1082
+        connect Bus2.C2 Bus2_Monitor.C1 as Connection1083
+        connect Bus2_Monitor.C2 Line_2.C1 as Connection1084
     }
 
     default {
@@ -2812,6 +2881,7 @@ model "cigre_european_mv" {
             baseFreq = "60"
             voltagebases = "[0.480, 12.47]"
             tsstp = "1"
+            tsstp_unit = "Hours"
             tspoints = "24"
             append = "Open"
             export_to_dss = "Run"

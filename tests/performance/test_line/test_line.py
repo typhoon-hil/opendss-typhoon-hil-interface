@@ -92,12 +92,15 @@ def test_line_hil(load_and_compile_to_hil):
     dss_line1_vc_output = dss_line1_voltages_output.get("phase").get("mag_3")
 
     # Start capture
-    start_capture(duration=1.0,
-                  signals=[hil_ia_input, hil_ib_input, hil_ic_input,
-                           hil_va_input, hil_vb_input, hil_vc_input,
-                           hil_ia_output, hil_ib_output, hil_ic_output,
-                           hil_va_output, hil_vb_output, hil_vc_output],
-                  executeAt=1.0)
+    start_capture(
+        duration=1.0,
+        signals=[
+            hil_ia_input, hil_ib_input, hil_ic_input,
+            hil_va_input, hil_vb_input, hil_vc_input,
+            hil_ia_output, hil_ib_output, hil_ic_output,
+            hil_va_output, hil_vb_output, hil_vc_output],
+        executeAt=1.0,
+    )
 
     # Start simulation
     hil.start_simulation()

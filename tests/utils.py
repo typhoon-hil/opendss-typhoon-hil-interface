@@ -11,6 +11,7 @@ from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 # OpenDSS API
 from opendssdirect import dss
 
+
 ###################################################
 
 
@@ -153,6 +154,8 @@ def get_bus_voltages(busname):
         },
     }
     """
+    # TODO: Add per unit voltages
+    # TODO: Add line voltages
     voltages_dict = {}
 
     dss.Circuit.SetActiveBus(busname)
@@ -170,7 +173,6 @@ def get_bus_voltages(busname):
 
 
 def calculate_line_voltage(v1_mag, v1_phase, v2_mag, v2_phase):
-
     # Convert to cartesian
     v1_x, v1_y = pol2cart(v1_mag, v1_phase)
     v2_x, v2_y = pol2cart(v2_mag, v2_phase)
@@ -199,7 +201,3 @@ def pol2cart(rho, phi):
 
 def clear_opendss():
     dss.run_command('ClearAll')
-
-
-
-
