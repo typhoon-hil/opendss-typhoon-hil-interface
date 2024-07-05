@@ -12,6 +12,7 @@ print(f"All installed packages: {all_packages}")
 
 if os.path.exists(thub_package_folder):
     for package_file in os.listdir(thub_package_folder):
+        print(f"{package_file=}")
         pkm.install_package(package_file)
     mdl.reload_libraries()
     all_packages = pkm.get_installed_packages()
