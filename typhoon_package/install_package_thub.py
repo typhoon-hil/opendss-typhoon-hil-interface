@@ -14,8 +14,9 @@ for pkg in pkm.get_installed_packages():
 
 if os.path.exists(thub_package_folder):
     for package_file in os.listdir(thub_package_folder):
-        print(f"{package_file=}")
-        pkm.install_package(os.path.join(thub_package_folder, package_file))
+        if package_file.endswith(".tpkg"):
+            print(f"{package_file=}")
+            pkm.install_package(os.path.join(thub_package_folder, package_file))
     print(f"Reloading...")
     mdl.reload_libraries()
     print(f"Reloaded.")
