@@ -11,6 +11,10 @@ from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 # OpenDSS API
 from opendssdirect import dss
 
+from typhoon.test.reporting.messages import report_message as log_msg
+from typhoon.test.reporting.messages import report_step as log_step
+from typhoon.api.package_manager import package_manager as pkm
+
 
 ###################################################
 
@@ -201,3 +205,13 @@ def pol2cart(rho, phi):
 
 def clear_opendss():
     dss.run_command('ClearAll')
+
+
+def update_package(path_to_new):
+    with log_step("Updating Packages"):
+        # Removes and install all Model packages
+        for pkg in pkm.get_installed_packages():
+            log_msg(f"Removing: {pkg.package_name}")
+            pkm.uninstall_package(pkg.package_name)
+        pkm.install_package(path_to_new)
+        mdl.reload_libraries()
