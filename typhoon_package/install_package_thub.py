@@ -7,8 +7,10 @@ os.chdir(package_folder)
 opendss_folder = os.path.join(package_folder, "../")
 thub_package_folder = os.path.join(opendss_folder, 'package')
 
-all_packages = pkm.get_installed_packages()
-print(f"All installed packages: {all_packages}")
+
+for pkg in pkm.get_installed_packages():
+    print(f"Removing: {pkg.package_name}")
+    pkm.uninstall_package(pkg.package_name)
 
 if os.path.exists(thub_package_folder):
     for package_file in os.listdir(thub_package_folder):
