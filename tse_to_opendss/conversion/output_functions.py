@@ -1,6 +1,3 @@
-import tse_to_opendss
-print(dir(tse_to_opendss))
-from tse_to_opendss import tse2tpt_base_converter
 from ..tse2tpt_base_converter import tse_functions as tse_fns
 import json
 
