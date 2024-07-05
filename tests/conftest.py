@@ -20,7 +20,7 @@ def pytest_addoption(parser):
 def install_package(request):
     use_package = request.config.getoption("--use_package")
     if use_package:
-        package_path = os.path.abspath(os.path.join("package"))
+        package_path = os.path.abspath(os.path.join("package", "opendss_050.tpkg")))
         utils.update_package(package_path)
     else:
         utils.log_msg("Skipping installing package, using local library instead.")
