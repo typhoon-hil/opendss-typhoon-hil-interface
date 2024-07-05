@@ -27,7 +27,7 @@ def install_package(request):
 
 
 @pytest.fixture()
-def pre_cleanup(request):
+def pre_cleanup(request, install_package):
     clean_files_dict = request.param
     for filepath in clean_files_dict.values():
         if os.path.isfile(str(filepath)):
@@ -46,7 +46,7 @@ def reload_hil_libraries(request):
 
 
 @pytest.fixture(scope='module')
-def convert_to_tpt(request):
+def convert_to_tpt(request, install_package):
     parent_dir_path, filename = request.param
     # Name (stem) of the TSE file should be the same as the test file name
     tse_file = str(parent_dir_path.joinpath(f"{filename}.tse"))
@@ -55,7 +55,7 @@ def convert_to_tpt(request):
 
 
 @pytest.fixture(scope='module')
-def compile_tpt_model(request):
+def compile_tpt_model(request, install_package):
     tpt_file_path = request.param
     result = utils.compile_dss_model(tpt_file_path)
     return result
