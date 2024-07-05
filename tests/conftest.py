@@ -2,29 +2,13 @@
 from tests import utils
 import pytest
 from typhoon.api.schematic_editor import model as mdl
+import tse_to_opendss
+import pathlib
 import os
 
 
-def pytest_addoption(parser):
-    """
-    Example of usage:
-    typhoon-python -m pytest --test_coverage=complete
-    """
-    parser.addoption("--use_package", action='store_true', help="Uses installed package instead of local lib")
-
-
-@pytest.fixture(scope='session')
-def install_package(request):
-    use_package = request.config.getoption("--use_package")
-    if use_package:
-        package_path = os.path.abspath(os.path.join("package"))
-        utils.update_package(package_path)
-    else:
-        utils.log_msg("Skipping installing package, using local library instead.")
-
-
 @pytest.fixture()
-def pre_cleanup(request, install_package):
+def pre_cleanup(request):
     clean_files_dict = request.param
     for filepath in clean_files_dict.values():
         if os.path.isfile(str(filepath)):
@@ -43,7 +27,7 @@ def reload_hil_libraries(request):
 
 
 @pytest.fixture(scope='module')
-def convert_to_tpt(request, install_package):
+def convert_to_tpt(request):
     parent_dir_path, filename = request.param
     # Name (stem) of the TSE file should be the same as the test file name
     tse_file = str(parent_dir_path.joinpath(f"{filename}.tse"))
@@ -52,7 +36,7 @@ def convert_to_tpt(request, install_package):
 
 
 @pytest.fixture(scope='module')
-def compile_tpt_model(request, install_package):
+def compile_tpt_model(request):
     tpt_file_path = request.param
     result = utils.compile_dss_model(tpt_file_path)
     return result
@@ -69,7 +53,7 @@ def import_tpt_model(request):
 
 # Load and compile a TSE file
 @pytest.fixture(scope='module')
-def load_and_compile_to_hil(request, install_package):
+def load_and_compile_to_hil(request):
     parent_dir_path_and_filename, use_vhil = request.param
     parent_dir_path, filename = parent_dir_path_and_filename
     # Name (stem) of the TSE file should be the same as the test file name
