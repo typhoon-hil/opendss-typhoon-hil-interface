@@ -2,10 +2,7 @@
 from tests import utils
 import pytest
 from typhoon.api.schematic_editor import model as mdl
-import tse_to_opendss
-import pathlib
 import os
-from typhoon.test.reporting.messages import report_message as log_msg
 
 
 def pytest_addoption(parser):
@@ -20,7 +17,7 @@ def pytest_addoption(parser):
 def install_package(request):
     use_package = request.config.getoption("--use_package")
     if use_package:
-        package_path = os.path.abspath(os.path.join("package", "opendss_050.tpkg"))
+        package_path = os.path.abspath(os.path.join("package"))
         utils.update_package(package_path)
     else:
         utils.log_msg("Skipping installing package, using local library instead.")
