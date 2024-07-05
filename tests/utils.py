@@ -9,7 +9,7 @@ import tse_to_opendss
 from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 
 # OpenDSS API
-from opendssdirect import dss
+import opendssdirect as dss
 
 from typhoon.test.reporting.messages import report_message as log_msg
 from typhoon.test.reporting.messages import report_step as log_step
