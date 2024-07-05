@@ -20,7 +20,6 @@ dist_folder = os.path.join(python_packages_folder, 'dist')
 wheel_file = os.listdir(dist_folder)[0]
 os.chdir(package_folder)
 
-asdasdasd
 
 # -------------------------------------Parameters related to Package title and basic information------------------------
 package_name = "OpenDSS"
