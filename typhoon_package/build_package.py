@@ -71,13 +71,13 @@ try:
         os.remove(new_tpkg_name)
     os.rename(old_tpkg_name, new_tpkg_name)
 
-    # deleting wheel files
-    try:
-        shutil.rmtree(python_packages_folder)
-        print(f"2) Wheel files deleted successfully.")
-    except OSError as e:
-        # If an error occurs (e.g., file not found), handle it
-        print(f"2) Error deleting wheel files: {e}")
+    # # deleting wheel files
+    # try:
+    #     shutil.rmtree(python_packages_folder)
+    #     print(f"2) Wheel files deleted successfully.")
+    # except OSError as e:
+    #     # If an error occurs (e.g., file not found), handle it
+    #     print(f"2) Error deleting wheel files: {e}")
 
 except Exception as e:
     print(f"Exception occurred: {e}")
