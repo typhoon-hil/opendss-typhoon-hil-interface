@@ -251,6 +251,41 @@ def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
                 port_2 = mdl.get_item(port_2_name, parent=comp_handle, item_type="port")
                 mdl.create_connection(port_1, port_2)
 
+        #
+        # TAG names
+        #
+        all_tag_names = dict()
+        all_tag_names[1] = [f"{phase}1_repl" for phase in "ABCN"]
+        all_tag_names[2] = [f"{phase}2_repl" for phase in "ABCN"]
+
+        # WorkAround to ensure Json export - Connect a dummy circuit
+        dummy_circuit = mdl.get_item("Dummy Circuit", parent=comp_handle)
+        dummy_port = mdl.term(dummy_circuit, "Conn")
+        current_connections = mdl.find_connections(dummy_port)
+
+        if current_connections:
+            mdl.delete_item(current_connections[0])
+        dummy_con = 0
+
+        port_items = [mdl.get_item(pname, parent=comp_handle, item_type="port")
+                      for pname in all_port_names[1] + all_port_names[2]]
+
+        tag_items = [mdl.get_item(tname, parent=comp_handle, item_type="tag")
+                      for tname in all_tag_names[1] + all_tag_names[2]]
+
+        for comp_tag in tag_items:
+            if dummy_con == 0 and comp_tag:
+                mdl.create_connection(comp_tag, dummy_port)
+                dummy_con = 1
+                break
+
+        for comp_port in port_items:
+            if dummy_con == 0 and comp_port:
+                mdl.create_connection(comp_port, dummy_port)
+                dummy_con = 1
+                break
+
+
     #
     # Save value to the retro-compatibility property
     #

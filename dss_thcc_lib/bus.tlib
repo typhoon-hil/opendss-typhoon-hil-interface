@@ -5,6 +5,76 @@ library "OpenDSS" {
     component Subsystem Root {
         component Subsystem Bus {
             layout = static
+
+            component Subsystem "Dummy Circuit" {
+                layout = dynamic
+                component "core/Open Circuit" "Open Circuit2" {
+                }
+                [
+                    position = 8080, 8096
+                    rotation = right
+                    hide_name = True
+                ]
+
+                component "core/Resistor" R1 {
+                }
+                [
+                    position = 7992, 8104
+                    rotation = right
+                ]
+
+                port Conn {
+                    position = bottom:auto
+                    kind = pe
+                }
+                [
+                    position = 8032, 8208
+                    rotation = left
+                ]
+
+                junction Junction1 pe
+                [
+                    position = 8032, 8152
+                ]
+
+                connect "Open Circuit2.n_node" Junction1 as Connection12
+                connect Junction1 Conn as Connection13
+                [
+                    breakpoints = 8032, 8152
+                ]
+                connect R1.n_node Junction1 as Connection14
+                connect R1.p_node "Open Circuit2.p_node" as Connection15
+
+                test = "999"
+
+                mask {
+                    description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                    test {
+                        label = "test"
+                        widget = edit
+                        type = generic
+                        default_value = "0"
+                    }
+
+                    CODE open
+                        from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                        dialog = RegularComponentPropertiesDialog(
+                            component=component,
+                            property_container=component.masks[-1],
+                            current_diagram=current_diagram
+                        )
+                        dialog.exec_()
+
+                    ENDCODE
+                }
+            }
+            [
+                position = 8192, 7864
+                size = 64, 72
+            ]
+
             port A1 {
                 position = -8, -48.0
                 kind = pe
