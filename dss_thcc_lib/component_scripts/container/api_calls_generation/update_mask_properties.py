@@ -76,7 +76,7 @@ def generate_api_calls(component_list):
     }
 
     port_update_lists = {
-        "Vsource": ["to_connection"],
+        "Vsource": ["tp_connection"],
         "Line": [
             "input_type",
             "phases",
@@ -112,7 +112,7 @@ def generate_api_calls(component_list):
     }
 
     icon_update_lists = {
-        "Vsource": ["ground_connected"],
+        "Vsource": ["tp_connection"],
         "Line": ["phases"],
         "Load": [
             "tp_connection",

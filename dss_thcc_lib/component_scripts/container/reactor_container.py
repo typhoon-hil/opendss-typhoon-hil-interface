@@ -73,7 +73,7 @@ def update_properties(mdl, _Reactor_mask):
         tab_name="",
         unit="kVAr"
     )
-    _Reactor_mask_C = mdl.create_property(
+    _Reactor_mask_L = mdl.create_property(
         item_handle=_Reactor_mask,
         name="L",
         label="L",
@@ -167,7 +167,7 @@ def ports_initialization(mdl, _Reactor_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(-32.0, -32.0),
+        terminal_position=(-48, -32),
         rotation="down",
         flip="flip_none",
         hide_name=True,
@@ -179,7 +179,7 @@ def ports_initialization(mdl, _Reactor_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(0.0, -32.0),
+        terminal_position=(-16, -32),
         rotation="down",
         flip="flip_none",
         hide_name=True,
@@ -191,9 +191,22 @@ def ports_initialization(mdl, _Reactor_mask):
         label="",
         kind="pe",
         dimension=(1,),
-        terminal_position=(32.0, -32.0),
+        terminal_position=(16, -32),
         rotation="down",
         flip="flip_none",
         hide_name=True,
         position=(8392, 8288)
+    )
+    _Reactor_N1 = mdl.create_port(
+        name="N1",
+        parent=_Reactor,
+        label="",
+        kind="pe",
+        direction="out",
+        dimension=(1,),
+        terminal_position=(48, -32),
+        rotation="up",
+        flip="flip_none",
+        hide_name=True,
+        position=(7792, 8192)
     )

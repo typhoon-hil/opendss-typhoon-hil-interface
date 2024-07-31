@@ -28,6 +28,7 @@ library "OpenDSS" {
                     default_value = "60"
                     unit = "Hz"
                     group = "Simulation"
+                    no_evaluate
                 }
 
                 voltagebases {
@@ -37,6 +38,7 @@ library "OpenDSS" {
                     default_value = "[0.480, 12.47]"
                     unit = "kV"
                     group = "Simulation"
+                    no_evaluate
                 }
 
                 tsstp {
@@ -44,7 +46,16 @@ library "OpenDSS" {
                     widget = edit
                     type = generic
                     default_value = "1"
-                    unit = "h"
+                    group = "Simulation"
+                    no_evaluate
+                }
+
+                tsstp_unit {
+                    label = "Time Series Step size unit"
+                    widget = combo
+                    combo_values = "Seconds", "Minutes", "Hours"
+                    type = string
+                    default_value = "Hours"
                     group = "Simulation"
                 }
 
@@ -54,6 +65,7 @@ library "OpenDSS" {
                     type = generic
                     default_value = "24"
                     group = "Simulation"
+                    no_evaluate
                 }
 
                 append {
