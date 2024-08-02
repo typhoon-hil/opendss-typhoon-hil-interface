@@ -2,8 +2,8 @@
 from tests import utils
 import pytest
 from typhoon.api.schematic_editor import model as mdl
-import tse_to_opendss
-import pathlib
+# import tse_to_opendss
+# import pathlib
 import os
 
 
