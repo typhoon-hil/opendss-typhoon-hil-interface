@@ -27,8 +27,14 @@ else:
     print("There is no package folder")
 
 # Add DSS site-packages to the sys.path
+print(f"{sys.path=}")
 path_to_python = sys.executable
+print(f"{path_to_python=}")
 python_dir = os.path.dirname(path_to_python)
+print(f"{python_dir=}")
 typhoon_dir = os.path.join(python_dir, "../", "../")
+print(f"{typhoon_dir=}")
 dss_dir = os.path.join(typhoon_dir, "package-environments", "OpenDSS", "venv", "Lib", "site-packages")
+print(f"{dss_dir=}")
 sys.path.append(dss_dir)
+print(f"{sys.path=}")
