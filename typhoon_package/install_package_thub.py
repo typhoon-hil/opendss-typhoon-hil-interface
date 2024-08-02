@@ -1,6 +1,7 @@
 from typhoon.api.schematic_editor import model as mdl
 from typhoon.api.package_manager import package_manager as pkm
 import os
+import sys
 
 package_folder = os.path.dirname(os.path.abspath(__file__))
 os.chdir(package_folder)
@@ -24,3 +25,10 @@ if os.path.exists(thub_package_folder):
     print(f"All installed packages: {all_packages}")
 else:
     print("There is no package folder")
+
+# Add DSS site-packages to the sys.path
+path_to_python = sys.executable
+python_dir = os.path.dirname(path_to_python)
+typhoon_dir = os.path.join(python_dir, "../", "../")
+dss_dir = os.path.join(typhoon_dir, "package-environments", "OpenDSS", "venv", "Lib", "site-packages")
+sys.path.append(dss_dir)
