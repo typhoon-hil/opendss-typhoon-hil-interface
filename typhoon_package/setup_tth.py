@@ -14,7 +14,7 @@ for pkg in pkm.get_installed_packages():
 
 for package_file in os.listdir(thub_package_folder):
     if package_file.endswith(".tpkg"):
-        package_file = os.path.abspath(package_file)
+        package_file = os.path.join(thub_package_folder, package_file)
         print(f"{package_file=}")
         pkm.install_package(package_file)
 
