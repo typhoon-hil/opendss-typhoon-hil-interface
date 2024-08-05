@@ -18,7 +18,9 @@ for pkg in pkm.get_installed_packages():
 for package_file in os.listdir(thub_package_folder):
     if package_file.endswith(".tpkg"):
         print(f"{package_file=}")
-        pkm.install_package(package_file)
+        package_file_abs_path = os.path.abspath(package_file)
+        print(f"{package_file_abs_path=}")
+        pkm.install_package(packapackage_file_abs_pathge_file)
 
         # Installing required packages
         with zipfile.ZipFile(package_file, 'r') as zip_file:
