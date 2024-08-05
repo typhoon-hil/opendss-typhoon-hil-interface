@@ -6,6 +6,7 @@ import zipfile
 import subprocess
 
 thub_package_folder = os.path.abspath('package')
+print(f"{os.getcwd()=}")
 
 
 for pkg in pkm.get_installed_packages():
