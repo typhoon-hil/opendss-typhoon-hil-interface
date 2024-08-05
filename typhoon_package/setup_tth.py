@@ -6,6 +6,7 @@ import zipfile
 import subprocess
 
 
+os.chdir('..')
 os.chdir('package')
 
 for pkg in pkm.get_installed_packages():
