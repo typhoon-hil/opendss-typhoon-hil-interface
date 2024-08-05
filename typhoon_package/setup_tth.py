@@ -6,9 +6,6 @@ import zipfile
 import subprocess
 
 thub_package_folder = os.path.abspath('package')
-print(f"{os.getcwd()=}")
-os.chdir('package')
-print(f"{os.getcwd()=}")
 
 
 for pkg in pkm.get_installed_packages():
@@ -17,10 +14,9 @@ for pkg in pkm.get_installed_packages():
 
 for package_file in os.listdir(thub_package_folder):
     if package_file.endswith(".tpkg"):
+        package_file = os.path.abspath(package_file)
         print(f"{package_file=}")
-        package_file_abs_path = os.path.abspath(package_file)
-        print(f"{package_file_abs_path=}")
-        pkm.install_package(package_file_abs_path)
+        pkm.install_package(package_file)
 
         # Installing required packages
         with zipfile.ZipFile(package_file, 'r') as zip_file:
