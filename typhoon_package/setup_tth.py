@@ -5,14 +5,14 @@ import sys
 import zipfile
 import subprocess
 
+thub_package_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'package')
 
-os.chdir('package')
 
 for pkg in pkm.get_installed_packages():
     print(f"Removing: {pkg.package_name}")
     pkm.uninstall_package(pkg.package_name)
 
-for package_file in os.listdir():
+for package_file in os.listdir(thub_package_folder):
     if package_file.endswith(".tpkg"):
         print(f"{package_file=}")
         pkm.install_package(package_file)
