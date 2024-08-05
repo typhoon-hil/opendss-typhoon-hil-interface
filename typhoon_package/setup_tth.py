@@ -26,7 +26,7 @@ for package_file in os.listdir(thub_package_folder):
             for whl_file in os.listdir(os.path.join(zip_folder, 'python_packages')):
                 print(f"Installing package: {whl_file}")
                 whl_file_abs_path = os.path.join(zip_folder, whl_file)
-                subprocess.check_call([sys.executable, "-m", "pip", "install", whl_file])
+                subprocess.check_call([sys.executable, "-m", "pip", "install", whl_file_abs_path])
             print(f"Done Installing packages")
 
 print(f"Reloading...")
