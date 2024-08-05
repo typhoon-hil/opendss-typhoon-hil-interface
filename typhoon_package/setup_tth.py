@@ -36,7 +36,6 @@ print(f"Reloaded.")
 all_packages = pkm.get_installed_packages()
 print(f"All installed packages: {all_packages}")
 
-sys.path.append("/home/non-root/.local/lib/python3.11/site-packages")
 
 # # Add DSS site-packages to the sys.path
 # print(f"{sys.path=}")
@@ -48,4 +47,5 @@ sys.path.append("/home/non-root/.local/lib/python3.11/site-packages")
 # print(f"{typhoon_dir=}")
 # dss_dir = os.path.join(typhoon_dir, "package-environments", "OpenDSS", "venv", "Lib", "site-packages")
 # print(f"{dss_dir=}")
+# sys.path.append(dss_dir)
 # print(f"{sys.path=}")
