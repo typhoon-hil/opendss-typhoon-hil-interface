@@ -6,6 +6,8 @@ import zipfile
 import subprocess
 
 
+os.chdir('package')
+
 for pkg in pkm.get_installed_packages():
     print(f"Removing: {pkg.package_name}")
     pkm.uninstall_package(pkg.package_name)
