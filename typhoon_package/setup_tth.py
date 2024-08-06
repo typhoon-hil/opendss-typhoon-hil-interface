@@ -32,6 +32,7 @@ for package_file in os.listdir(thub_package_folder):
 
 import tse_to_opendss
 print(f"{tse_to_opendss.__file__=}")
+print(f"{dir(tse_to_opendss.tse2tpt_base_converter)=}")
 
 print(f"Reloading...")
 mdl.reload_libraries()
