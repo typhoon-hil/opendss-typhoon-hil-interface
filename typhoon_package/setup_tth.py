@@ -31,14 +31,14 @@ for package_file in os.listdir(thub_package_folder):
             print(f"Done Installing packages")
 
 import tse_to_opendss
-print(f"{tse_to_opendss.__file__=}")
+print(f"{tse_to_opendss.tse2tpt_base_converter.__file__=}")
 print(f"{dir(tse_to_opendss.tse2tpt_base_converter)=}")
 
 print(f"Reloading...")
-mdl.reload_libraries()
+# mdl.reload_libraries()
 print(f"Reloaded.")
-all_packages = pkm.get_installed_packages()
-print(f"All installed packages: {all_packages}")
+# all_packages = pkm.get_installed_packages()
+# print(f"All installed packages: {all_packages}")
 
 
 # # Add DSS site-packages to the sys.path
