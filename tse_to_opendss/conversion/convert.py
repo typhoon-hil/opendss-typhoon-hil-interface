@@ -1,4 +1,4 @@
-from . import output_functions
+from tse_to_opendss.conversion import output_functions
 import pathlib
 import os
 
