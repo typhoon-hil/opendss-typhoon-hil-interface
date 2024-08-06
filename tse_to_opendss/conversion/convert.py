@@ -1,4 +1,3 @@
-from tse_to_opendss import tse2tpt_base_converter
 import tse_to_opendss.tse2tpt_base_converter as tse2tpt_base_converter
 print(f"**{tse2tpt_base_converter.__file__=}")
 print(f"**{dir(tse2tpt_base_converter)=}")
