@@ -15,6 +15,7 @@ from typhoon.test.reporting.messages import report_message as log_msg
 from typhoon.test.reporting.messages import report_step as log_step
 from typhoon.api.package_manager import package_manager as pkm
 
+import sys
 
 ###################################################
 
@@ -98,11 +99,16 @@ def import_dss_model(dss_file_path):
 
 def load_tse_model(tse_file_path):
     # Open the converted tse file
+    print(f"Load Model {tse_file_path}")
+    print(f"{sys.path=}")
     mdl.load(tse_file_path)
 
 
 def compile_model_and_load_to_hil(tse_file_path, use_vhil=True):
     # Compile the model
+    print(f"Compile Model {tse_file_path}")
+    print(f"{sys.path=}")
+
     mdl.compile()
     # Load to HIL
     parent_folder = pathlib.Path(tse_file_path).parent
