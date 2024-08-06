@@ -31,6 +31,11 @@ for package_file in os.listdir(thub_package_folder):
             print(f"Done Installing packages")
 
 import tse_to_opendss
+import os
+import pathlib
+p = pathlib.Path(tse_to_opendss.tse2tpt_base_converter.__file__)
+print(os.listdir(p.parent))
+
 print(f"{tse_to_opendss.tse2tpt_base_converter.__file__=}")
 print(f"{dir(tse_to_opendss.tse2tpt_base_converter)=}")
 
