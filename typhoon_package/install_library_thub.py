@@ -6,6 +6,10 @@ os.chdir(package_folder)
 opendss_folder = os.path.join(package_folder, "../")
 dss_tlib_folder = os.path.join(opendss_folder, "/dss_thcc_lib")
 
+print(f"{package_folder=}")
+print(f"{opendss_folder=}")
+print(f"{dss_tlib_folder=}")
+
 # Get all current library paths and remove them
 old_paths = mdl.get_library_paths()
 print(f"Removing previous library paths...")
