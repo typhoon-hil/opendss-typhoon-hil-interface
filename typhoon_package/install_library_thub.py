@@ -4,7 +4,7 @@ import os
 package_folder = os.path.dirname(os.path.abspath(__file__))
 os.chdir(package_folder)
 opendss_folder = os.path.join(package_folder, "../")
-dss_tlib_folder = os.path.join(opendss_folder, "/dss_thcc_lib")
+dss_tlib_folder = os.path.join(opendss_folder, "dss_thcc_lib")
 
 print(f"{package_folder=}")
 print(f"{opendss_folder=}")
