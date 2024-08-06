@@ -1,3 +1,5 @@
+print(f"{tse_to_opendss.__file__=}")
+print(f"{dir(tse_to_opendss.tse2tpt_base_converter)=}")
 from tse_to_opendss.conversion import output_functions
 import pathlib
 import os
