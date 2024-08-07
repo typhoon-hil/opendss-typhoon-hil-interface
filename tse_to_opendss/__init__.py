@@ -1,3 +1,4 @@
+import tse_to_opendss.tse2tpt_base_converter
 from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 from tse_to_opendss.tse2tpt_base_converter import tse_functions
 from tse_to_opendss.conversion.convert import convert
