@@ -8,9 +8,9 @@ import subprocess
 thub_package_folder = os.path.abspath('package')
 
 
-# for pkg in pkm.get_installed_packages():
-#     print(f"Removing: {pkg.package_name}")
-#     pkm.uninstall_package(pkg.package_name)
+for pkg in pkm.get_installed_packages():
+    print(f"Removing: {pkg.package_name}")
+    pkm.uninstall_package(pkg.package_name)
 
 for package_file in os.listdir(thub_package_folder):
     if package_file.endswith(".tpkg"):
@@ -30,7 +30,7 @@ for package_file in os.listdir(thub_package_folder):
                 subprocess.check_call([sys.executable, "-m", "pip", "install", whl_file_abs_path])
             print(f"Done Installing packages")
 
-import tse_to_opendss
+# import tse_to_opendss
 print(f"Reloading...")
 mdl.reload_libraries()
 print(f"Reloaded.")
