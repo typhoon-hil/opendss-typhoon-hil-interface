@@ -23,8 +23,8 @@ def add_to_sys_path():
     handler_code = """
     import sys
     print(f"Previous Path {sys.path=}")
-    #if not new_value in sys.path:
-    #    sys.path.append(new_value)
+    if not new_value in sys.path:
+        sys.path.append(new_value)
     print(f"New Path {sys.path=}")
     """
     mdl.set_handler_code(path_prop, "property_value_changed", handler_code)
