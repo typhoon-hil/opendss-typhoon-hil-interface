@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tse_to_opendss',
-    version='0.5.0',
+    version='0.5.1',
     packages=find_packages(exclude=['tests', 'importer']),
     package_data={"images": [r'dss_thcc_lib/images/*.png']},
     install_requires=["opendssdirect.py==0.8.0", "dss-python==0.13.0"],
