@@ -12,6 +12,7 @@ from .default_mapping import map
 from .default_mapping.component_classes.base import Circuit
 from .default_mapping.component_classes import *
 
+
 def convert(tse_model, input_json_path, simulation_parameters):
     """
     Main conversion function.
@@ -51,9 +52,10 @@ def convert(tse_model, input_json_path, simulation_parameters):
             c.comp_type = constants.DSS_CONTAINER
             tse_model.add_component(c)
 
-    """
-    Search for components connected to the monitor component in Schematic editor and set their Monitoring flags
-    """
+    #
+    # Search for components connected to the monitor component
+    # in Schematic editor and set their Monitoring flags
+    #
     for monitor in (comp for comp in components if comp.comp_type == "OpenDSS/Monitor"):
         components_connected_to_monitor = tse_fns.connected_components(monitor, comp_type="all")
         for connected_comp in components_connected_to_monitor:
@@ -63,7 +65,6 @@ def convert(tse_model, input_json_path, simulation_parameters):
 
     # Merge terminals of ignored components
     remove_list = []
-
     for component in components:
         if map.ignore_component(component.comp_type):
             output_functions.merge_terminals(component)

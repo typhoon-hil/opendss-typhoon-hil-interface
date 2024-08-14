@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg256"
+   width="80"
+   height="96"
+   viewBox="0 0 80 96"
+   version="1.1"
+   sodipodi:docname="storage_sld.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview934"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="6.0885415"
+     inkscape:cx="16.999145"
+     inkscape:cy="36.051327"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg256" />
+  <defs
+     id="defs882">
+    <style
+       id="style880">
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: none;
+        stroke: #000;
+      }
+
+      .cls-1, .cls-2, .cls-5, .cls-6 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-6 {
+        stroke-linecap: round;
+      }
+
+      .cls-7 {
+        fill: blue;
+      }
+
+      .cls-3, .cls-4 {
+        stroke-linejoin: round;
+      }
+
+      .cls-4 {
+        stroke-dasharray: 0 0 1.85 1.85;
+      }
+
+      .cls-5, .cls-6 {
+        stroke-width: 1.07px;
+      }
+    </style>
+  </defs>
+  <line
+     class="cls-1"
+     x1="62"
+     y1="95.5"
+     x2="18"
+     y2="95.5"
+     id="line886" />
+  <line
+     class="cls-2"
+     x1="72.54"
+     y1="16.05"
+     x2="72.53"
+     y2="43.94"
+     id="line890" />
+  <line
+     class="cls-1"
+     x1="72.57"
+     y1="52.06"
+     x2="72.54"
+     y2="79.95"
+     id="line892" />
+  <line
+     class="cls-3"
+     x1="18.3"
+     y1="95.5"
+     x2="18.3"
+     y2=".5"
+     id="line896" />
+  <line
+     class="cls-3"
+     x1="62"
+     y1="95.5"
+     x2="62"
+     y2=".5"
+     id="line898" />
+  <line
+     class="cls-3"
+     x1="79.54"
+     y1="43.94"
+     x2="65.54"
+     y2="43.94"
+     id="line900" />
+  <line
+     class="cls-3"
+     x1="76.66"
+     y1="52.06"
+     x2="68.49"
+     y2="52.06"
+     id="line902" />
+  <line
+     class="cls-3"
+     x1="79.54"
+     y1="49.36"
+     x2="65.54"
+     y2="49.36"
+     id="line904" />
+  <line
+     class="cls-3"
+     x1="76.66"
+     y1="46.65"
+     x2="68.49"
+     y2="46.65"
+     id="line906" />
+  <line
+     class="cls-1"
+     x1="62"
+     y1=".5"
+     x2="18"
+     y2=".5"
+     id="line908" />
+  <line
+     class="cls-2"
+     x1="62"
+     y1="79.95"
+     x2="72.54"
+     y2="79.95"
+     id="line910" />
+  <line
+     class="cls-2"
+     x1="62"
+     y1="16.05"
+     x2="72.54"
+     y2="16.05"
+     id="line912" />
+  <line
+     class="cls-2"
+     x1="62"
+     y1=".5"
+     x2="18.3"
+     y2="95.5"
+     id="line914" />
+  <g
+     id="g920">
+    <path
+       class="cls-3"
+       d="M30.34,15.99c1.97-3.94,3.95-3.94,5.92,0"
+       id="path916" />
+    <path
+       class="cls-3"
+       d="M24.42,15.99c1.97,3.94,3.95,3.94,5.92,0"
+       id="path918" />
+  </g>
+  <line
+     class="cls-3"
+     x1="55.64"
+     y1="78"
+     x2="44.36"
+     y2="78"
+     id="line922" />
+  <g
+     id="g930">
+    <line
+       class="cls-3"
+       x1="55.64"
+       y1="81.03"
+       x2="54.64"
+       y2="81.03"
+       id="line924" />
+    <line
+       class="cls-4"
+       x1="52.78"
+       y1="81.03"
+       x2="46.29"
+       y2="81.03"
+       id="line926" />
+    <line
+       class="cls-3"
+       x1="45.36"
+       y1="81.03"
+       x2="44.36"
+       y2="81.03"
+       id="line928" />
+  </g>
+  <path
+     style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 18.320659,47.99374 H 0.02903433"
+     id="path8607" />
+</svg>

@@ -103,6 +103,21 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The OpenDSS Fault object is a resistor network, a two-terminal device in which the second terminal defaults to ground.<br><br>Only one Bus must be connected to either side this component.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=169"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = True
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
                 fault_type {
                     label = "Fault type"
                     previous_names = "type"
@@ -114,9 +129,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_inner_fault(mdl, container_handle, "fault_type", new_value)
-                        comp_script.update_inner_gnd(mdl, container_handle, created_ports)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
@@ -147,7 +160,7 @@ library "OpenDSS" {
                 ENDCODE
 
                 CODE define_icon
-                    comp_script = return_comp_script(mdl, item_handle)
+                    import dss_thcc_lib.component_scripts.comp_fault as comp_script
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 

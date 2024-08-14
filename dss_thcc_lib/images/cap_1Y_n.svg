@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg256"
+   width="32"
+   height="64"
+   viewBox="0 0 32 64"
+   version="1.1"
+   sodipodi:docname="cap_1Y_n.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs74138" />
+  <sodipodi:namedview
+     id="namedview74136"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="13.640625"
+     inkscape:cx="16.018328"
+     inkscape:cy="32"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg256" />
+  <path
+     id="path304"
+     d="M18.92,8c0,1.66,1.34,3,3,3s3-1.34,3-3c0-1.66-1.34-3-3-3-1.66,0-3,1.34-3,3"
+     style="fill: blue;" />
+  <line
+     x1="15.96"
+     y1="40.58"
+     x2="15.86"
+     y2="52.03"
+     style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"
+     id="line74125" />
+  <line
+     x1="22.87"
+     y1="22.94"
+     x2="8.95"
+     y2="22.94"
+     style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: .95px;"
+     id="line74127" />
+  <line
+     x1="22.98"
+     y1="17.52"
+     x2="9.06"
+     y2="17.52"
+     style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: .95px;"
+     id="line74129" />
+  <line
+     x1="15.97"
+     y1="22.94"
+     x2="15.96"
+     y2="40.58"
+     style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"
+     id="line74131" />
+  <line
+     x1="15.99"
+     y1="0"
+     x2="15.98"
+     y2="17.52"
+     style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10;"
+     id="line74133" />
+  <rect
+     style="fill:#000000;fill-opacity:1;stroke-width:0.356558;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
+     id="rect24770-0"
+     width="3.2353344"
+     height="2.5989847"
+     x="14.290694"
+     y="50.97084" />
+</svg>
