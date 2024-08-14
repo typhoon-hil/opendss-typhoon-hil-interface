@@ -9,12 +9,15 @@ import tse_to_opendss
 from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 
 # OpenDSS API
-import opendssdirect as dss
+from opendssdirect import dss
+
 
 ###################################################
 
+
 def reload_hil_libraries():
     mdl.reload_libraries()
+
 
 def convert_to_dss(tse_file_path):
     load_tse_model(tse_file_path)
@@ -31,27 +34,32 @@ def convert_to_dss(tse_file_path):
     simdss_found = False
     for comp in mdl.get_items():
         # SimDSS component must be on the top level and named SimDSS1, otherwise load default parameters
-        if mdl.get_name(comp) == "SimDSS1":
+        if mdl.get_component_type_name(comp) == "SimDSS":
             simdss_found = True
             break
 
     if simdss_found:
-        sim_parameters = {"sim_mode": mdl.get_property_disp_value(mdl.prop(comp, "sim_mode")),
-                          "algorithm": mdl.get_property_disp_value(mdl.prop(comp, "algorithm")),
-                          "voltagebases": mdl.get_property_disp_value(mdl.prop(comp, "voltagebases")),
-                          "basefrequency": mdl.get_property_disp_value(mdl.prop(comp, "basefrequency")),
-                          "maxiter": mdl.get_property_disp_value(mdl.prop(comp, "maxiter")),
-                          "miniterations": mdl.get_property_disp_value(mdl.prop(comp, "miniterations")),
-                          "loadmodel": mdl.get_property_disp_value(mdl.prop(comp, "loadmodel")),
-                          "stepsize": mdl.get_property_disp_value(mdl.prop(comp, "tsstp")),
-                          "number": mdl.get_property_disp_value(mdl.prop(comp, "tspoints"))}
+        sim_parameters = {
+            "sim_mode": mdl.get_property_disp_value(mdl.prop(comp, "sim_mode")),
+            "algorithm": mdl.get_property_disp_value(mdl.prop(comp, "algorithm")),
+            "voltagebases": mdl.get_property_disp_value(mdl.prop(comp, "voltagebases")),
+            "basefrequency": mdl.get_property_disp_value(mdl.prop(comp, "baseFreq")),
+            "maxiter": mdl.get_property_disp_value(mdl.prop(comp, "maxiter")),
+            "miniterations": mdl.get_property_disp_value(mdl.prop(comp, "miniterations")),
+            "loadmodel": mdl.get_property_disp_value(mdl.prop(comp, "loadmodel")),
+            "stepsize": mdl.get_property_disp_value(mdl.prop(comp, "tsstp")),
+            "number": mdl.get_property_disp_value(mdl.prop(comp, "tspoints")),
+            "stepsize_unit": mdl.get_property_disp_value(mdl.prop(comp, "tsstp_unit")),
+        }
     else:
-        sim_parameters = {"sim_mode": "Snap",
-                          "basefrequency": "60",
-                          "maxiter": "10",
-                          "miniterations": "2",
-                          "loadmodel": "Power flow",
-                          "voltagebases": "[0.480, 12.47]"}
+        sim_parameters = {
+            "sim_mode": "Snap",
+            "basefrequency": "60",
+            "maxiter": "10",
+            "miniterations": "2",
+            "loadmodel": "Power flow",
+            "voltagebases": "[0.480, 12.47]",
+        }
 
     tse2tpt.start_conversion(json_file_path, tse_to_opendss, simulation_parameters=sim_parameters)
 
@@ -59,7 +67,7 @@ def convert_to_dss(tse_file_path):
 
 
 def compile_dss_model(dss_file_path):
-    comp_result = dss.utils.run_command(f'Compile "{str(dss_file_path)}"')
+    comp_result = dss.run_command(f'Redirect "{str(dss_file_path)}"')
     return comp_result
 
 
@@ -88,6 +96,7 @@ def load_tse_model(tse_file_path):
     # Open the converted tse file
     mdl.load(tse_file_path)
 
+
 def compile_model_and_load_to_hil(tse_file_path, use_vhil=True):
     # Compile the model
     mdl.compile()
@@ -97,41 +106,73 @@ def compile_model_and_load_to_hil(tse_file_path, use_vhil=True):
     cpd_path = target_files_path.joinpath(str(pathlib.Path(tse_file_path).stem) + ".cpd")
     hil.load_model(file=cpd_path, offlineMode=False, vhil_device=use_vhil)
 
-def get_element_current(elem_name, elem_class):
-    dss.Circuit.SetActiveClass(elem_class)
-    dss.ActiveClass.First()
-    for _ in range(dss.ActiveClass.Count()):
-        if dss.CktElement.Name().upper() == f"{elem_class.upper()}.{elem_name.upper()}":
-            meas = dss.CktElement.CurrentsMagAng()
-            currents_dict = {}
-            phase_num_dict = {ph: chr(97 + ph//2) for ph in range(2*(dss.CktElement.NumConductors()))}  # {0: a, 1: a, 2: b, ... }
-            for idx, _ in enumerate(meas[0:dss.CktElement.NumConductors()]):
 
-                currents_dict.update(
-                    {
-                        f"mag_{phase_num_dict[2*idx]}": meas[2*idx],
-                        f"ang_{phase_num_dict[2*idx+1]}": meas[2*idx+1],
-                    }
-                )
-            return currents_dict
-        dss.ActiveClass.Next()
+def get_element_currents(elem_name, elem_class):
+    """"
+    Returns a Dict with the mag and ang currents from each terminal of the component
 
-def get_bus_voltage(busname):
-    dss.Circuit.SetActiveBus(busname)
-    meas = dss.Bus.VMagAngle()
-    phase_num_dict = {ph: chr(97 + ph//2) for ph in range(2*dss.Bus.NumNodes())}  # {0: a, 1: a, 2: b, ... }
+    currents_dict = {
+        "term1": {
+            mag_"node": value,
+            anf_"node": value,
+            ...
+        },
+        "term2": {
+            mag_"node": value,
+            anf_"node": value,
+            ...
+        },
+    }
+    """
+    currents_dict = {}
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{elem_name}")
+    current_meas = dss.CktElement.CurrentsMagAng()
+    buses = dss.CktElement.BusNames()
+
+    idx = 0
+    for term_num, bus in enumerate(buses):
+        term_dict = {}
+        for node in bus.split(".")[1:]:
+            term_dict.update({f"mag_{node}": current_meas[idx * 2]})
+            term_dict.update({f"ang_{node}": current_meas[(idx * 2) + 1]})
+            idx += 1
+        currents_dict.update({f"term{term_num + 1}": term_dict})
+
+    return currents_dict
+
+
+def get_bus_voltages(busname):
+    """"
+    Returns a Dict with the mag and ang voltages of the bus
+
+    voltages_dict = {
+        "phase": {
+            mag_"node": value,
+            anf_"node": value,
+            ...
+        },
+    }
+    """
+    # TODO: Add per unit voltages
+    # TODO: Add line voltages
     voltages_dict = {}
-    for idx, _ in enumerate(meas[0:dss.Bus.NumNodes()]):
-        voltages_dict.update(
-            {
-                f"mag_{phase_num_dict[2*idx]}": meas[2*idx],
-                f"ang_{phase_num_dict[2*idx+1]}": meas[2*idx+1],
-            }
-        )
+
+    dss.Circuit.SetActiveBus(busname)
+    nodes = dss.Bus.Nodes()
+    phase_meas = dss.Bus.VMagAngle()
+
+    phase_dict = {}
+    for idx, node in enumerate(nodes):
+        phase_dict.update({f"mag_{node}": phase_meas[2 * idx]})
+        phase_dict.update({f"ang_{node}": phase_meas[(2 * idx) + 1]})
+
+    voltages_dict.update({"phase": phase_dict})
+
     return voltages_dict
 
-def calculate_line_voltage(v1_mag, v1_phase, v2_mag, v2_phase):
 
+def calculate_line_voltage(v1_mag, v1_phase, v2_mag, v2_phase):
     # Convert to cartesian
     v1_x, v1_y = pol2cart(v1_mag, v1_phase)
     v2_x, v2_y = pol2cart(v2_mag, v2_phase)
@@ -150,6 +191,7 @@ def cart2pol(x, y):
     phi = np.arctan2(y, x)
     return (rho, phi)
 
+
 def pol2cart(rho, phi):
     # From polar to cartesian
     x = rho * np.cos(phi)
@@ -157,6 +199,5 @@ def pol2cart(rho, phi):
     return (x, y)
 
 
-
-
-
+def clear_opendss():
+    dss.run_command('ClearAll')
