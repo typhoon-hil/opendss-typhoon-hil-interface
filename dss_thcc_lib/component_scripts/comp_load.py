@@ -76,12 +76,17 @@ def mask_dialog_dynamics(mdl, mask_handle, prop_handle, new_value):
 
     elif prop_name == "phases":
         mask_edit_zero_sequence(mdl, mask_handle)
+        load_model_prop = mdl.prop(mask_handle, "load_model")
+        load_model_disp = mdl.get_property_disp_value(load_model_prop)
 
         # 3-phase CPL demands grounded connection
         tp_connection_prop = mdl.prop(mask_handle, "tp_connection")
         if new_value == "3":
-            mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
-            mdl.disable_property(tp_connection_prop)
+            if not load_model_disp == "Constant Impedance":
+                mdl.set_property_disp_value(tp_connection_prop, "Y - Grounded")
+                mdl.disable_property(tp_connection_prop)
+            else:
+                mdl.enable_property(tp_connection_prop)
         else:
             mdl.enable_property(tp_connection_prop)
         mask_edit_neutral_impedances(mdl, mask_handle)
@@ -810,13 +815,13 @@ def connections_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
 
     tp_connection_prop = mdl.prop(comp_handle, "tp_connection")
-    tp_connection = mdl.get_property_value(tp_connection_prop)
+    tp_connection = mdl.get_property_disp_value(tp_connection_prop)
 
     load_model_prop = mdl.prop(mask_handle, "load_model")
-    load_model = mdl.get_property_value(load_model_prop)
+    load_model = mdl.get_property_disp_value(load_model_prop)
 
     phases_prop = mdl.prop(mask_handle, "phases")
-    phases = mdl.get_property_value(phases_prop)
+    phases = mdl.get_property_disp_value(phases_prop)
 
     if load_model == "Constant Impedance":
         load = mdl.get_item("CIL", parent=comp_handle, item_type="component")
