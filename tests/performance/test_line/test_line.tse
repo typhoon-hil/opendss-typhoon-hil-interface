@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2024.3 DEV
+// Saved by sw version: 2024.2 SP1
 //
 
 model "test_line" {
@@ -121,8 +121,8 @@ model "test_line" {
         component "OpenDSS/SimDSS" SimDSS {
             command = "solve"
             currents = "Elem"
-            sim_counter = "103"
-            sim_status = "Sim103 complete"
+            sim_counter = "108"
+            sim_status = "Sim108 complete"
             tspoints = "5"
             voltagebases = "[4.16, 12.47]"
             voltages = "LL"
