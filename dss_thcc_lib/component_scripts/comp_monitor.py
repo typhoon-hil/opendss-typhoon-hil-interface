@@ -171,6 +171,7 @@ def topology_dynamics(mdl, mask_handle):
                 parent=comp_handle,
                 position=meter_positions["ABC"],
             )
+            mdl.set_property_value(mdl.prop(meter_abc, "R"), "snubber_val")
             # Create ground tag
             tag_3_ph = mdl.create_tag(
                 "gnd",
@@ -433,6 +434,16 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     phase_a = mdl.get_property_disp_value(phase_a_prop) in ("True", True)
     phase_b = mdl.get_property_disp_value(phase_b_prop) in ("True", True)
     phase_c = mdl.get_property_disp_value(phase_c_prop) in ("True", True)
+    # Enable Output
+    enable_output_prop = mdl.prop(mask_handle, "enable_output")
+    execution_rate_prop = mdl.prop(mask_handle, "execution_rate")
+    enable_output = mdl.get_property_disp_value(enable_output_prop)
+
+    #
+    if enable_output in ("True", True):
+        mdl.show_property(execution_rate_prop)
+    else:
+        mdl.hide_property(execution_rate_prop)
 
     #
     # Number of selected phases
@@ -466,6 +477,7 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     i_rms_meas = mdl.get_property_disp_value(i_rms_meas_prop)
     freq_meas = mdl.get_property_disp_value(freq_meas_prop)
     power_meas = mdl.get_property_disp_value(power_meas_prop)
+
 
     #
     # Customize measurements of 3-phase meter
@@ -562,6 +574,7 @@ def pre_compilation(mdl, mask_handle):
             # Set fgrid
             fgrid_prop = mdl.prop(meter, "fgrid")
             mdl.set_property_value(fgrid_prop, global_basefreq)
+
 
 def define_icon(mdl, mask_handle):
     """
