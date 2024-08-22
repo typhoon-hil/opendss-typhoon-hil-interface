@@ -7,6 +7,8 @@ import os
 @pytest.fixture(scope="session")
 def add_to_sys_path():
 
+    # TODO: Create a TRAC to run packages on Linux
+
     mdl.create_new_model()
 
     dss_comp = mdl.create_component("OpenDSS/SimDSS")
