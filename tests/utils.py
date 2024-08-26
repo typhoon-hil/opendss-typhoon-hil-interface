@@ -152,6 +152,36 @@ def get_element_currents(elem_name, elem_class):
     return currents_dict
 
 
+def get_load_powers(load_name, elem_class="Load"):
+    """"
+    Returns a Dict with P and Q from the terminal of the Load Component
+
+    currents_dict = {
+        "term1": {
+            P"node": value,
+            Q"node": value,
+            ...
+        }
+    }
+    """
+    powers_dict = {}
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{load_name}")
+    power_meas = dss.CktElement.Powers()
+    buses = dss.CktElement.BusNames()
+
+    idx = 0
+    for term_num, bus in enumerate(buses):
+        term_dict = {}
+        for node in bus.split(".")[1:]:
+            term_dict.update({f"P{node}": power_meas[idx * 2] * 1e3})
+            term_dict.update({f"Q{node}": power_meas[(idx * 2) + 1] * 1e3})
+            idx += 1
+        powers_dict.update({f"term{term_num + 1}": term_dict})
+
+    return powers_dict
+
+
 def get_bus_voltages(busname):
     """"
     Returns a Dict with the mag and ang voltages of the bus
@@ -180,6 +210,14 @@ def get_bus_voltages(busname):
     voltages_dict.update({"phase": phase_dict})
 
     return voltages_dict
+
+
+def set_grid_voltage(grid_name, pu_val, elem_class="VSource"):
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{grid_name}")
+    dss.Vsources.PU(pu_val)
+    dss.run_command("calcv")
+    dss.run_command("Solve Mode=Snap")
 
 
 def calculate_line_voltage(v1_mag, v1_phase, v2_mag, v2_phase):
