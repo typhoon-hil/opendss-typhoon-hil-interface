@@ -9,7 +9,7 @@ model "test_load" {
         hil_device = "HIL604"
         hil_configuration_id = 4
         simulation_method = exact
-        simulation_time_step = auto
+        simulation_time_step = 10e-6
         simulation_discret_scaling = 1.0
         dsp_timer_periods = 100e-6, 50e-3
         ss_calc_method = "systematic elimination"
@@ -270,7 +270,7 @@ model "test_load" {
             v_phase_rms_meas = "True"
         }
         [
-            position = 9184, 8388
+            position = 9200, 8388
             size = 48, 96
         ]
 
@@ -307,7 +307,7 @@ model "test_load" {
             v_phase_rms_meas = "True"
         }
         [
-            position = 9176, 8592
+            position = 9200, 8592
             size = 48, 96
         ]
 
@@ -344,7 +344,7 @@ model "test_load" {
             v_phase_rms_meas = "True"
         }
         [
-            position = 9176, 8808
+            position = 9200, 8808
             size = 48, 96
         ]
 
@@ -379,7 +379,7 @@ model "test_load" {
             v_phase_rms_meas = "True"
         }
         [
-            position = 9176, 9020
+            position = 9200, 9020
             size = 48, 96
         ]
 
@@ -416,7 +416,7 @@ model "test_load" {
             v_phase_rms_meas = "True"
         }
         [
-            position = 9172, 9228
+            position = 9200, 9228
             size = 48, 96
         ]
 
