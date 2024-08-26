@@ -1,0 +1,1222 @@
+version = 4.2
+
+//
+// Saved by sw version: 2024.3
+//
+
+model "test_load" {
+    configuration {
+        hil_device = "HIL604"
+        hil_configuration_id = 4
+        simulation_method = exact
+        simulation_time_step = auto
+        simulation_discret_scaling = 1.0
+        dsp_timer_periods = 100e-6, 50e-3
+        ss_calc_method = "systematic elimination"
+        enb_pole_shift = True
+        enb_gds_oversampling = True
+        show_modes = False
+        device_ao_limit_enable = False
+        reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
+        reset_digital_outputs_on_sim_stop = True
+        vhil_adio_loopback = False
+        cpl_stb = False
+        enb_dep_sw_detect = False
+        code_section = "external memory"
+        data_section = "internal memory"
+        sys_sp_rate_1 = 0.0001
+        sys_sp_rate_2 = 0.05
+        sys_real_type_precision = "default"
+        user_real_type_precision = "default"
+        sys_cpu_optimization = "high"
+        user_cpu_optimization = "high"
+        user_cpu_part_option = "default"
+        matrix_based_reduction = True
+        cpl_dynamics_analysis = False
+        export_ss_to_pickle = False
+        ground_scope_core = False
+        dss_num_tol = 1e-15
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
+        cce_directory = ""
+        cce_custom_type_int = ""
+        cce_custom_type_uint = ""
+        cce_custom_type_real = ""
+        tunable_params = "component defined"
+        sp_compiler_type = "C compiler"
+        sig_stim = "off"
+        export_resource_list = ""
+        export_dependency_list = ""
+        excluded_resource_list = ""
+        export_out_file = ""
+        export_lock_top_level = True
+        export_encrypt_library = True
+        export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
+        feedthrough_validation_error_level = error
+    }
+
+    component Subsystem Root {
+        component "OpenDSS/Vsource" Grid {
+            basekv = "4.16"
+            input_method = "MVAsc"
+        }
+        [
+            position = 8776, 8124
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Load" Load1 {
+            Rneut = "0"
+            Sn_3ph = "10"
+            Xneut = "0"
+            global_basefreq = "False"
+            pf_3ph = "0.92"
+            pf_mode_3ph = "Lead"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+        }
+        [
+            position = 8760, 8496
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load1 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8664, 8388
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Bus" Bus1 {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 8880, 8124
+            size = 16, 96
+        ]
+
+        component "OpenDSS/SimDSS" SimDSS {
+            voltagebases = "[4.16]"
+        }
+        [
+            position = 9112, 8124
+            size = 96, 96
+        ]
+
+        component "OpenDSS/Load" Load2 {
+            Sn_3ph = "20"
+            global_basefreq = "False"
+            pf_3ph = "0.85"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+        }
+        [
+            position = 8760, 8700
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load2 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8664, 8592
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Load" Load3 {
+            Sn_3ph = "30"
+            global_basefreq = "False"
+            tp_connection = "Δ"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+        }
+        [
+            position = 8760, 8916
+            scale = -1, 1
+            size = 96, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load3 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8664, 8808
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Monitor" "Load4 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            phase_c = "False"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8664, 9004
+            size = 48, 64
+        ]
+
+        component "OpenDSS/Load" Load4 {
+            Sn_3ph = "50"
+            phases = "1"
+            tp_connection = "Δ"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+        }
+        [
+            position = 8760, 9080
+            scale = -1, 1
+            size = 64, 32
+        ]
+
+        component "OpenDSS/Monitor" "Load5 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            phase_a = "False"
+            phase_b = "False"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_line_inst_meas = "True"
+            v_line_rms_meas = "True"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 8664, 9152
+            size = 48, 32
+        ]
+
+        component "OpenDSS/Load" Load5 {
+            Rneut = "0"
+            Sn_3ph = "20"
+            Xneut = "0"
+            pf_3ph = "0.8"
+            phases = "1"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+        }
+        [
+            position = 8760, 9224
+            scale = -1, 1
+            size = 32, 48
+        ]
+
+        component "OpenDSS/Load" Load6 {
+            Rneut = "0"
+            Sn_3ph = "10"
+            Xneut = "0"
+            load_model = "Constant Power"
+            pf_3ph = "0.92"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            v_min_max = "[0.85,1.15]"
+        }
+        [
+            position = 9492, 8496
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load6 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9184, 8388
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Load" Load7 {
+            Rneut = "0"
+            Sn_3ph = "10"
+            Xneut = "0"
+            ZIPV = "[1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0]"
+            load_model = "Constant Z,I,P"
+            pf_3ph = "0.92"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            v_min_max = "[0.85,1.15]"
+            zip_internal = "[1.0, 0.0, 0.0]"
+            zip_internal_Q = "[1.0, 0.0, 0.0]"
+            zip_internal_n = "[1.0, 0.0, 0.0]"
+            zip_internal_n_Q = "[1.0, 0.0, 0.0]"
+            zip_vector = "[1,0,0]"
+            zip_vector_Q = "[1,0,0]"
+        }
+        [
+            position = 9484, 8700
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load7 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9176, 8592
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Load" Load8 {
+            Rneut = "0"
+            Sn_3ph = "10"
+            Xneut = "0"
+            ZIPV = "[0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0]"
+            load_model = "Constant Z,I,P"
+            pf_3ph = "0.92"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            v_min_max = "[0.85,1.15]"
+            zip_internal = "[0.0, 1.0, 0.0]"
+            zip_internal_Q = "[0.0, 1.0, 0.0]"
+            zip_internal_n = "[0.0, 1.0, 0.0]"
+            zip_internal_n_Q = "[0.0, 1.0, 0.0]"
+            zip_vector = "[0,1,0]"
+            zip_vector_Q = "[0,1,0]"
+        }
+        [
+            position = 9484, 8912
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load8 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9176, 8808
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Load" Load9 {
+            Rneut = "0"
+            Sn_3ph = "10"
+            Xneut = "0"
+            ZIPV = "[0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0]"
+            load_model = "Constant Z,I,P"
+            pf_3ph = "0.92"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            v_min_max = "[0.85,1.15]"
+            zip_internal = "[0.0, 0.0, 1.0]"
+            zip_internal_Q = "[0.0, 0.0, 1.0]"
+            zip_internal_n = "[0.0, 0.0, 1.0]"
+            zip_internal_n_Q = "[0.0, 0.0, 1.0]"
+        }
+        [
+            position = 9484, 9124
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load9 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9176, 9020
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Load" Load10 {
+            Rneut = "0"
+            Sn_3ph = "10"
+            Xneut = "0"
+            ZIPV = "[0.4, 0.3, 0.3, 0.4, 0.3, 0.3, 0]"
+            load_model = "Constant Z,I,P"
+            pf_3ph = "0.92"
+            tp_connection = "Y - Grounded"
+            tp_connection_combo_values = "[\'Y - Grounded\', \'Y\', \'Δ\']"
+            v_min_max = "[0.85,1.15]"
+            zip_internal = "[0.4, 0.3, 0.3]"
+            zip_internal_Q = "[0.4, 0.3, 0.3]"
+            zip_internal_n = "[0.4, 0.3, 0.3]"
+            zip_internal_n_Q = "[0.4, 0.3, 0.3]"
+            zip_vector = "[0.4,0.3,0.3]"
+            zip_vector_Q = "[0.4,0.3,0.3]"
+        }
+        [
+            position = 9480, 9332
+            scale = -1, 1
+            size = 128, 48
+        ]
+
+        component "OpenDSS/Monitor" "Load10 - Monitor" {
+            freq_meas = "True"
+            i_inst_meas = "True"
+            i_rms_meas = "True"
+            power_meas = "True"
+            snubber_val = "1e7"
+            v_phase_inst_meas = "True"
+            v_phase_rms_meas = "True"
+        }
+        [
+            position = 9172, 9228
+            size = 48, 96
+        ]
+
+        component "OpenDSS/Line" Snubber {
+            Length = "1"
+            R0 = "1e-5"
+            R1 = "1e-5"
+            X0 = "1e-5"
+            X1 = "1e-5"
+            dC0 = "0"
+            dC1 = "0"
+        }
+        [
+            position = 9312, 8388
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Line" Snubber1 {
+            Length = "1"
+            R0 = "1e-5"
+            R1 = "1e-5"
+            X0 = "1e-5"
+            X1 = "1e-5"
+            dC0 = "0"
+            dC1 = "0"
+        }
+        [
+            position = 9312, 8592
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Line" Snubber2 {
+            Length = "1"
+            R0 = "1e-5"
+            R1 = "1e-5"
+            X0 = "1e-5"
+            X1 = "1e-5"
+            dC0 = "0"
+            dC1 = "0"
+        }
+        [
+            position = 9312, 8808
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Line" Snubber3 {
+            Length = "1"
+            R0 = "1e-5"
+            R1 = "1e-5"
+            X0 = "1e-5"
+            X1 = "1e-5"
+            dC0 = "0"
+            dC1 = "0"
+        }
+        [
+            position = 9316, 9020
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Line" Snubber4 {
+            Length = "1"
+            R0 = "1e-5"
+            R1 = "1e-5"
+            X0 = "1e-5"
+            X1 = "1e-5"
+            dC0 = "0"
+            dC1 = "0"
+        }
+        [
+            position = 9312, 9228
+            size = 64, 96
+        ]
+
+        component "OpenDSS/Bus" "Bus - Load6" {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9408, 8388
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" "Bus - Load7" {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9408, 8592
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" "Bus - Load8" {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9408, 8808
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" "Bus - Load9" {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9408, 9020
+            size = 16, 96
+        ]
+
+        component "OpenDSS/Bus" "Bus - Load10" {
+            phase_n = "False"
+            type_prop = "ABC"
+        }
+        [
+            position = 9408, 9228
+            size = 16, 96
+        ]
+
+        tag "Electric Tag1" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8976, 8092
+            hide_name = True
+            scale = -1, 1
+            size = 60, 20
+        ]
+
+        tag "Electric Tag2" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8976, 8124
+            hide_name = True
+            scale = -1, 1
+            size = 60, 20
+        ]
+
+        tag "Electric Tag3" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8976, 8156
+            hide_name = True
+            scale = -1, 1
+            size = 60, 20
+        ]
+
+        tag "Electric Tag4" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8356
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag5" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8388
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag6" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8420
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag7" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8560
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag8" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8592
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag9" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8624
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag10" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8776
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag11" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8808
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag12" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8840
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag13" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 8988
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag14" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 9020
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag16" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 8576, 9152
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag17" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9096, 8356
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag18" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9096, 8388
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag19" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9096, 8420
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag20" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 8560
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag21" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 8592
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag22" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 8624
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag23" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 8776
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag24" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 8808
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag25" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 8840
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag26" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 8988
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag27" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 9020
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag28" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9088, 9052
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag29" {
+            value = "phA"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9084, 9196
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag30" {
+            value = "phB"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9084, 9228
+            hide_name = True
+            size = 60, 20
+        ]
+
+        tag "Electric Tag31" {
+            value = "phC"
+            scope = local
+            kind = pe
+        }
+        [
+            position = 9084, 9260
+            hide_name = True
+            size = 60, 20
+        ]
+
+        comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 1:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Yg - 10 kVA</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.92 Lead</p></body></html> ENDCOMMENT 
+        [
+            position = 8820, 8440
+        ]
+
+        comment Comment2 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 2:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Y - 20 kVA </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.85 Lag</p></body></html> ENDCOMMENT 
+        [
+            position = 8824, 8644
+        ]
+
+        comment Comment3 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 3:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">D - 30 kVA </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.90 Lag</p></body></html> ENDCOMMENT 
+        [
+            position = 8824, 8860
+        ]
+
+        comment Comment4 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 4:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">D - 50 kVA</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.9 Lag</p></body></html> ENDCOMMENT 
+        [
+            position = 8824, 9072
+        ]
+
+        comment Comment5 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 5:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Y - 20 kVA </p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.8 Lag</p></body></html> ENDCOMMENT 
+        [
+            position = 8824, 9180
+        ]
+
+        comment Comment6 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 6:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Yg - 10 kVA</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.92 Lead</p></body></html> ENDCOMMENT 
+        [
+            position = 9556, 8456
+        ]
+
+        comment Comment7 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 7:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Yg - 10 kVA</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.92 Lead</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">ZIP = 1, 0, 0</p></body></html> ENDCOMMENT 
+        [
+            position = 9548, 8660
+        ]
+
+        comment Comment8 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 8:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Yg - 10 kVA</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.92 Lead</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">ZIP = 0, 1, 0</p></body></html> ENDCOMMENT 
+        [
+            position = 9548, 8872
+        ]
+
+        comment Comment9 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 9:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Yg - 10 kVA</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.92 Lead</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">ZIP = 0, 0, 1</p></body></html> ENDCOMMENT 
+        [
+            position = 9548, 9084
+        ]
+
+        comment Comment10 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Load 10:</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Yg - 10 kVA</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">FP = 0.92 Lead</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">ZIP = 0.4, 0.3, 0.3</p></body></html> ENDCOMMENT 
+        [
+            position = 9544, 9292
+        ]
+
+        scheme_area Area1 {
+            title = <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Tahoma'; font-size:14pt; font-weight:0; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt; font-weight:600;">Constant Impedance Loads</span></p></body></html>
+        }
+        [
+            position = 8764, 8780
+            size = 448, 1032
+            background_color = #0effff00
+        ]
+
+        scheme_area Area2 {
+            title = <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Tahoma'; font-size:14pt; font-weight:0; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:16pt; font-weight:600;">Constant Power Loads</span></p></body></html>
+        }
+        [
+            position = 9372, 8860
+            size = 664, 1192
+            background_color = #0effff00
+        ]
+
+        connect Load1.A1 "Load1 - Monitor.A2" as Connection1
+        connect "Load1 - Monitor.B2" Load1.B1 as Connection2
+        connect Load1.C1 "Load1 - Monitor.C2" as Connection3
+        connect Bus1.C1 Grid.C1 as Connection4
+        connect Bus1.B1 Grid.B1 as Connection5
+        connect Bus1.A1 Grid.A1 as Connection6
+        connect Bus1.A2 "Electric Tag1" as Connection7
+        connect Bus1.B2 "Electric Tag2" as Connection8
+        connect Bus1.C2 "Electric Tag3" as Connection9
+        connect "Load1 - Monitor.A1" "Electric Tag4" as Connection10
+        connect "Load1 - Monitor.B1" "Electric Tag5" as Connection11
+        connect "Load1 - Monitor.C1" "Electric Tag6" as Connection12
+        connect Load2.A1 "Load2 - Monitor.A2" as Connection13
+        connect "Load2 - Monitor.B2" Load2.B1 as Connection14
+        connect Load2.C1 "Load2 - Monitor.C2" as Connection15
+        connect "Load2 - Monitor.A1" "Electric Tag7" as Connection16
+        connect "Load2 - Monitor.B1" "Electric Tag8" as Connection17
+        connect "Load2 - Monitor.C1" "Electric Tag9" as Connection18
+        connect Load3.A1 "Load3 - Monitor.A2" as Connection19
+        connect "Load3 - Monitor.B2" Load3.B1 as Connection20
+        connect Load3.C1 "Load3 - Monitor.C2" as Connection21
+        connect "Load3 - Monitor.A1" "Electric Tag10" as Connection22
+        connect "Load3 - Monitor.B1" "Electric Tag11" as Connection23
+        connect "Load3 - Monitor.C1" "Electric Tag12" as Connection24
+        connect "Load4 - Monitor.A1" "Electric Tag13" as Connection28
+        connect "Load4 - Monitor.B1" "Electric Tag14" as Connection29
+        connect Load4.A1 "Load4 - Monitor.A2" as Connection30
+        connect Load4.B1 "Load4 - Monitor.B2" as Connection31
+        connect Load5.A1 "Load5 - Monitor.C2" as Connection32
+        connect "Electric Tag16" "Load5 - Monitor.C1" as Connection33
+        connect "Load6 - Monitor.A1" "Electric Tag17" as Connection34
+        connect "Load6 - Monitor.B1" "Electric Tag18" as Connection35
+        connect "Load6 - Monitor.C1" "Electric Tag19" as Connection36
+        connect "Load7 - Monitor.A1" "Electric Tag20" as Connection40
+        connect "Load7 - Monitor.B1" "Electric Tag21" as Connection41
+        connect "Load7 - Monitor.C1" "Electric Tag22" as Connection42
+        connect "Load8 - Monitor.A1" "Electric Tag23" as Connection46
+        connect "Load8 - Monitor.B1" "Electric Tag24" as Connection47
+        connect "Load8 - Monitor.C1" "Electric Tag25" as Connection48
+        connect "Load9 - Monitor.A1" "Electric Tag26" as Connection52
+        connect "Load9 - Monitor.B1" "Electric Tag27" as Connection53
+        connect "Load9 - Monitor.C1" "Electric Tag28" as Connection54
+        connect "Load10 - Monitor.A1" "Electric Tag29" as Connection58
+        connect "Load10 - Monitor.B1" "Electric Tag30" as Connection59
+        connect "Load10 - Monitor.C1" "Electric Tag31" as Connection60
+        connect "Load6 - Monitor.A2" Snubber.A1 as Connection61
+        connect "Load6 - Monitor.B2" Snubber.B1 as Connection62
+        connect "Load6 - Monitor.C2" Snubber.C1 as Connection63
+        connect "Load7 - Monitor.A2" Snubber1.A1 as Connection67
+        connect "Load7 - Monitor.B2" Snubber1.B1 as Connection68
+        connect "Load7 - Monitor.C2" Snubber1.C1 as Connection69
+        connect Snubber2.A1 "Load8 - Monitor.A2" as Connection73
+        connect Snubber2.B1 "Load8 - Monitor.B2" as Connection74
+        connect Snubber2.C1 "Load8 - Monitor.C2" as Connection75
+        connect Snubber3.A1 "Load9 - Monitor.A2" as Connection79
+        connect Snubber3.B1 "Load9 - Monitor.B2" as Connection80
+        connect Snubber3.C1 "Load9 - Monitor.C2" as Connection81
+        connect Snubber4.A1 "Load10 - Monitor.A2" as Connection85
+        connect Snubber4.B1 "Load10 - Monitor.B2" as Connection86
+        connect Snubber4.C1 "Load10 - Monitor.C2" as Connection87
+        connect Snubber.C2 "Bus - Load6.C1" as Connection91
+        connect "Bus - Load6.C2" Load6.C1 as Connection92
+        connect Snubber.B2 "Bus - Load6.B1" as Connection93
+        connect "Bus - Load6.B2" Load6.B1 as Connection94
+        connect Snubber.A2 "Bus - Load6.A1" as Connection95
+        connect "Bus - Load6.A2" Load6.A1 as Connection96
+        connect Snubber1.C2 "Bus - Load7.C1" as Connection97
+        connect "Bus - Load7.C2" Load7.C1 as Connection98
+        connect Snubber1.B2 "Bus - Load7.B1" as Connection99
+        connect "Bus - Load7.B2" Load7.B1 as Connection100
+        connect Snubber1.A2 "Bus - Load7.A1" as Connection101
+        connect "Bus - Load7.A2" Load7.A1 as Connection102
+        connect Snubber2.C2 "Bus - Load8.C1" as Connection103
+        connect "Bus - Load8.C2" Load8.C1 as Connection104
+        connect Snubber2.B2 "Bus - Load8.B1" as Connection105
+        connect "Bus - Load8.B2" Load8.B1 as Connection106
+        connect Snubber2.A2 "Bus - Load8.A1" as Connection107
+        connect "Bus - Load8.A2" Load8.A1 as Connection108
+        connect "Bus - Load9.A1" Snubber3.A2 as Connection110
+        connect "Bus - Load9.B1" Snubber3.B2 as Connection112
+        connect "Bus - Load9.C1" Snubber3.C2 as Connection114
+        connect Snubber4.C2 "Bus - Load10.C1" as Connection115
+        connect "Bus - Load10.C2" Load10.C1 as Connection116
+        connect Snubber4.B2 "Bus - Load10.B1" as Connection117
+        connect "Bus - Load10.B2" Load10.B1 as Connection118
+        connect Snubber4.A2 "Bus - Load10.A1" as Connection119
+        connect "Bus - Load10.A2" Load10.A1 as Connection120
+        connect Load9.A1 "Bus - Load9.A2" as Connection121
+        connect "Bus - Load9.B2" Load9.B1 as Connection122
+        connect Load9.C1 "Bus - Load9.C2" as Connection123
+    }
+
+    default {
+        "OpenDSS/Bus" {
+            type_prop = "ABCN"
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "True"
+            conf = "on both sides"
+        }
+
+        "OpenDSS/Line" {
+            input_type = "Symmetrical"
+            Load = "Choose"
+            selected_object = ""
+            Length = "100"
+            global_basefreq = "True"
+            baseFreq = "60"
+            phases = "3"
+            R1 = "0.1903"
+            R0 = "0.5853"
+            X1 = "0.3957"
+            X0 = "1.3278"
+            dC1 = "11.155"
+            dC0 = "5.2493"
+            rmatrix = "[[0.0981, 0.0401, 0.0401], [0.0401, 0.0981, 0.0401], [0.0401, 0.0401, 0.0981]]"
+            xmatrix = "[[0.2153, 0.0947, 0.0947], [0.0947, 0.2153, 0.0947], [0.0947, 0.0947, 0.2153]]"
+            cmatrix = "[[2.8, -0.6, -0.6], [-0.6, 2.8, -0.6], [-0.6, -0.6, 2.8]]"
+            obj_mode = ""
+            Len = "0"
+            Fr = "0"
+            d_R = "0"
+            d_L = "0"
+            d_C = "0"
+            d_X = "0"
+            C1 = "12.74e-9"
+            C0 = "7.751e-9"
+            L1 = "99999"
+            L0 = "99999"
+            R1_one = "0.01"
+            L1_one = "0.01e-3"
+            C1_one = "0.1e-6"
+            coupling = "None"
+            enable_monitoring = "False"
+        }
+
+        "OpenDSS/Load" {
+            ground_connected = "False"
+            tp_connection = "Y"
+            phases = "3"
+            Rneut = "inf"
+            Xneut = "inf"
+            global_basefreq = "True"
+            fn = "60"
+            Vn_3ph = "4.16"
+            Sn_3ph = "3500"
+            pf_mode_3ph = "Lag"
+            pf_3ph = "0.9"
+            pf_3ph_set = "0"
+            load_model = "Constant Impedance"
+            zip_vector = "[0,0,1]"
+            zip_vector_Q = "[0,0,1]"
+            zip_internal = "[0,0,1]"
+            zip_internal_Q = "[0,0,1]"
+            zip_internal_n = "[0,0,1]"
+            zip_internal_n_Q = "[0,0,1]"
+            ZIPV = "[0,0,1,0,0,1,0]"
+            Vmaxpu = "1.05"
+            Vminpu = "0.95"
+            model = "2"
+            Pow_ref_s = "Fixed"
+            execution_rate = "300e-6"
+            Tfast = "100e-6"
+            CPL_LMT = "2"
+            v_min_max = "[0.95,1.05]"
+            rate_lmt = "1"
+            zero_seq_remove = "False"
+            q_gain_k = "0.5"
+            r_gain_k = "20"
+            Vn_3ph_CPL = "0"
+            P_CPL = "0"
+            Q_CPL = "0"
+            kV = "0"
+            pf = "0"
+            conn = "0"
+            kVA = "0"
+            baseFreq = "0"
+            gen_ts_en = "True"
+            load_loadshape = "Choose"
+            loadshape_name = "Default"
+            loadshape_from_file = "False"
+            useactual = "False"
+            loadshape_from_file_path = ""
+            loadshape_from_file_column = "1"
+            loadshape_from_file_header = "True"
+            loadshape = "[0.4, 0.3, 0.2, 0.2, 0.2, 0.2, 0.3, 0.5, 0.6, 0.7, 0.7, 0.8, 0.7, 0.7, 0.8, 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, 0.9, 0.7, 0.5]"
+            loadshape_int = "1"
+            S_Ts = "[0.2,0.28,0.5,0.32,0.2]"
+            Q_Ts = "0"
+            T_Ts = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]"
+            T_mode = "Time"
+            S_Ts_mode = "Manual input"
+            timespan = "Daily"
+            T_Ts_internal = "0"
+            dssT = "1"
+            dssnpts = "5"
+            T_Ts_max = "10"
+            del_Ts = "20"
+            Slen = "0"
+            T_lim_low = "0"
+            T_lim_high = "0"
+            Ts_switch = "0"
+            enable_monitoring = "False"
+            tp_connection_combo_values = ""
+        }
+
+        "OpenDSS/Monitor" {
+            phase_a = "True"
+            phase_b = "True"
+            phase_c = "True"
+            phase_n = "False"
+            i_rms_meas = "False"
+            i_inst_meas = "False"
+            v_line_rms_meas = "False"
+            v_line_inst_meas = "False"
+            v_phase_rms_meas = "False"
+            v_phase_inst_meas = "False"
+            freq_meas = "False"
+            power_meas = "False"
+            snubber_val = "1e5"
+            enable_output = "False"
+            execution_rate = "100e-6"
+            ran_dynamics = "False"
+        }
+
+        "OpenDSS/SimDSS" {
+            sim_mode = "Snap"
+            baseFreq = "60"
+            voltagebases = "[0.480, 12.47]"
+            tsstp = "1"
+            tsstp_unit = "Hours"
+            tspoints = "24"
+            append = "Open"
+            export_to_dss = "Run"
+            sim_status = "None"
+            sim_counter = "0"
+            voltages = "LN Nodes"
+            show_v = "Show voltages"
+            currents = "Seq"
+            show_c = "Show currents"
+            powers = "kVA"
+            show_p = "Show powers"
+            misc = "Buses"
+            show_misc = "Show misc"
+            report_snap = "Generate"
+            report_fault = "Generate"
+            algorithm = "Normal"
+            loadmodel = "Power flow"
+            miniterations = "2"
+            maxiter = "15"
+            command = "show voltages LN"
+            run = "Run"
+            stability_analysis = "Run"
+        }
+
+        "OpenDSS/Vsource" {
+            basekv = "115.0"
+            baseMVA = "100.0"
+            global_basefreq = "False"
+            baseFreq = "60"
+            tp_connection = "Y - Grounded"
+            pu = "1.0"
+            Angle = "0"
+            Frequency = "60"
+            input_method = "Z"
+            r1 = "1.65"
+            x1 = "6.6"
+            r0 = "1.9"
+            x0 = "5.7"
+            r1_pu = "0.0121"
+            x1_pu = "0.0485"
+            r0_pu = "0.0136"
+            x0_pu = "0.0407"
+            mva_sc3 = "2000"
+            mva_sc1 = "2100"
+            i_sc3 = "10000"
+            i_sc1 = "10500"
+            x1r1 = "4.0"
+            x0r0 = "3.0"
+            enable_monitoring = "False"
+        }
+    }
+}
