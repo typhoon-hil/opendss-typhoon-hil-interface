@@ -81,7 +81,7 @@ def import_tpt_model(request):
 
 
 # Load and compile a TSE file
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def load_and_compile_to_hil(request):
     parent_dir_path_and_filename, use_vhil = request.param
     parent_dir_path, filename = parent_dir_path_and_filename
