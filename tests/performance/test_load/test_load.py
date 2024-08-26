@@ -83,7 +83,7 @@ def test_load_hil(grid_voltage_pu, load_and_compile_to_hil):
     # Start simulation
     hil.start_simulation()
 
-    hil.wait_sec(10)
+    hil.wait_sec(5)
 
     load_data = {}
     for load_name in load_names:
