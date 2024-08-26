@@ -140,9 +140,6 @@ def get_element_currents(elem_name, elem_class):
     current_meas = dss.CktElement.CurrentsMagAng()
     buses = dss.CktElement.BusNames()
 
-    print(f"{dss.CktElement.Name()} connected to {buses}")
-    print(f"{current_meas=}")
-
     idx = 0
     for term_num, bus in enumerate(buses):
         term_dict = {}
