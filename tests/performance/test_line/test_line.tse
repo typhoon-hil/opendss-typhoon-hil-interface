@@ -1,13 +1,13 @@
 version = 4.2
 
 //
-// Saved by sw version: 2024.3 DEV
+// Saved by sw version: 2024.4 DEV
 //
 
 model "test_line" {
     configuration {
-        hil_device = "HIL402"
-        hil_configuration_id = 1
+        hil_device = "HIL604"
+        hil_configuration_id = 4
         simulation_method = exact
         simulation_time_step = auto
         simulation_discret_scaling = 1.0
@@ -57,6 +57,7 @@ model "test_line" {
         export_resource_list = ""
         export_dependency_list = ""
         excluded_resource_list = ""
+        excluded_component_from_locking_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
@@ -121,8 +122,8 @@ model "test_line" {
         component "OpenDSS/SimDSS" SimDSS {
             command = "solve"
             currents = "Elem"
-            sim_counter = "103"
-            sim_status = "Sim103 complete"
+            sim_counter = "110"
+            sim_status = "Sim110 complete"
             tspoints = "5"
             voltagebases = "[4.16, 12.47]"
             voltages = "LL"
@@ -168,6 +169,7 @@ model "test_line" {
             freq_meas = "True"
             i_inst_meas = "True"
             i_rms_meas = "True"
+            snubber_val = "1e7"
             v_phase_inst_meas = "True"
             v_phase_rms_meas = "True"
         }
@@ -180,6 +182,7 @@ model "test_line" {
             freq_meas = "True"
             i_inst_meas = "True"
             i_rms_meas = "True"
+            snubber_val = "1e7"
             v_phase_inst_meas = "True"
             v_phase_rms_meas = "True"
         }
@@ -328,8 +331,6 @@ model "test_line" {
             phase_b = "True"
             phase_c = "True"
             phase_n = "False"
-            enable_output = "False"
-            execution_rate = "100e-6"
             i_rms_meas = "False"
             i_inst_meas = "False"
             v_line_rms_meas = "False"
@@ -338,6 +339,9 @@ model "test_line" {
             v_phase_inst_meas = "False"
             freq_meas = "False"
             power_meas = "False"
+            snubber_val = "1e5"
+            enable_output = "False"
+            execution_rate = "100e-6"
             ran_dynamics = "False"
         }
 

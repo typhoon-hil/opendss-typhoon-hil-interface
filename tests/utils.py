@@ -9,8 +9,13 @@ import tse_to_opendss
 from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 
 # OpenDSS API
-from opendssdirect import dss
+import opendssdirect as dss
 
+from typhoon.test.reporting.messages import report_message as log_msg
+from typhoon.test.reporting.messages import report_step as log_step
+from typhoon.api.package_manager import package_manager as pkm
+
+import sys
 
 ###################################################
 
@@ -94,11 +99,16 @@ def import_dss_model(dss_file_path):
 
 def load_tse_model(tse_file_path):
     # Open the converted tse file
+    print(f"Load Model {tse_file_path}")
+    print(f"{sys.path=}")
     mdl.load(tse_file_path)
 
 
 def compile_model_and_load_to_hil(tse_file_path, use_vhil=True):
     # Compile the model
+    print(f"Compile Model {tse_file_path}")
+    print(f"{sys.path=}")
+
     mdl.compile()
     # Load to HIL
     parent_folder = pathlib.Path(tse_file_path).parent
@@ -142,6 +152,36 @@ def get_element_currents(elem_name, elem_class):
     return currents_dict
 
 
+def get_load_powers(load_name, elem_class="Load"):
+    """"
+    Returns a Dict with P and Q from the terminal of the Load Component
+
+    currents_dict = {
+        "term1": {
+            P"node": value,
+            Q"node": value,
+            ...
+        }
+    }
+    """
+    powers_dict = {}
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{load_name}")
+    power_meas = dss.CktElement.Powers()
+    buses = dss.CktElement.BusNames()
+
+    idx = 0
+    for term_num, bus in enumerate(buses):
+        term_dict = {}
+        for node in bus.split(".")[1:]:
+            term_dict.update({f"P{node}": power_meas[idx * 2] * 1e3})
+            term_dict.update({f"Q{node}": power_meas[(idx * 2) + 1] * 1e3})
+            idx += 1
+        powers_dict.update({f"term{term_num + 1}": term_dict})
+
+    return powers_dict
+
+
 def get_bus_voltages(busname):
     """"
     Returns a Dict with the mag and ang voltages of the bus
@@ -170,6 +210,14 @@ def get_bus_voltages(busname):
     voltages_dict.update({"phase": phase_dict})
 
     return voltages_dict
+
+
+def set_grid_voltage(grid_name, pu_val, elem_class="VSource"):
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{grid_name}")
+    dss.Vsources.PU(pu_val)
+    dss.run_command("calcv")
+    dss.run_command("Solve Mode=Snap")
 
 
 def calculate_line_voltage(v1_mag, v1_phase, v2_mag, v2_phase):
@@ -201,3 +249,13 @@ def pol2cart(rho, phi):
 
 def clear_opendss():
     dss.run_command('ClearAll')
+
+
+def update_package(path_to_new):
+    with log_step("Updating Packages"):
+        # Removes and install all Model packages
+        for pkg in pkm.get_installed_packages():
+            log_msg(f"Removing: {pkg.package_name}")
+            pkm.uninstall_package(pkg.package_name)
+        pkm.install_package(path_to_new)
+        mdl.reload_libraries()
