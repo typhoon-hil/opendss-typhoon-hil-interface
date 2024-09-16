@@ -182,6 +182,39 @@ def get_load_powers(load_name, elem_class="Load"):
     return powers_dict
 
 
+def get_load_voltages(load_name, elem_class="Load"):
+    """"
+    Returns a Dict with the mag and ang voltages of the bus
+
+    voltages_dict = {
+        "phase": {
+            mag_"node": value,
+            anf_"node": value,
+            ...
+        },
+    }
+    """
+    voltages_dict = {}
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{load_name.lower()}")
+    busname = dss.CktElement.BusNames()[0]
+    load_phases = busname.split(".")[1:]
+
+    dss.Circuit.SetActiveBus(busname)
+    nodes = dss.Bus.Nodes()
+    phase_meas = dss.Bus.VMagAngle()
+
+    phase_dict = {}
+    for idx, node in enumerate(nodes):
+        if str(node) in load_phases:
+            phase_dict.update({f"mag_{node}": phase_meas[2 * idx]})
+            phase_dict.update({f"ang_{node}": phase_meas[(2 * idx) + 1]})
+
+    voltages_dict.update({"phase": phase_dict})
+
+    return voltages_dict
+
+
 def get_bus_voltages(busname):
     """"
     Returns a Dict with the mag and ang voltages of the bus
@@ -218,6 +251,40 @@ def set_grid_voltage(grid_name, pu_val, elem_class="VSource"):
     dss.Vsources.PU(pu_val)
     dss.run_command("calcv")
     dss.run_command("Solve Mode=Snap")
+
+
+def get_all_dss_elements(mdl, comp_type, parent_comp=None):
+
+    component_list = []
+    if parent_comp:  # Component inside a subsystem (recursive function)
+        all_components = mdl.get_items(parent_comp)
+    else:  # Top level call
+        all_components = mdl.get_items()
+
+    for comp in all_components:
+        try:
+            type_name = mdl.get_component_type_name(comp)
+            if type_name and type_name in comp_type and mdl.is_enabled(comp):
+                component_list.append(comp)
+            elif not type_name:  # Component is a subsystem
+                component_list.extend(get_all_dss_elements(mdl, comp_type, parent_comp=comp))
+        except:
+            # Some components (such as ports and connections) cannot be used with
+            # get_component_type_name
+            pass
+    # Return the list of component handles
+    return component_list
+
+
+def get_item_by_fqn(mdl, fqn, parent=None):
+
+    item_fqn_names = fqn.split(".")
+    for item_name in item_fqn_names.copy():
+        item_handle = mdl.get_item(item_name, parent=parent)
+        item_fqn_names.remove(item_name)
+        if item_fqn_names:
+            item_handle = get_item_by_fqn(mdl, ".".join(item_fqn_names), parent=item_handle)
+        return item_handle
 
 
 def calculate_line_voltage(v1_mag, v1_phase, v2_mag, v2_phase):

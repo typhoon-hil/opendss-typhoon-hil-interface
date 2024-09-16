@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2023.3
+// Saved by sw version: 2024.3
 //
 
 model "ieee_13bus" {
@@ -18,6 +18,7 @@ model "ieee_13bus" {
         show_modes = False
         device_ao_limit_enable = False
         reset_analog_outputs_on_sim_stop = True
+        reset_analog_outputs_on_sim_stop_mode = Offset values
         reset_digital_outputs_on_sim_stop = True
         vhil_adio_loopback = False
         cpl_stb = False
@@ -41,6 +42,11 @@ model "ieee_13bus" {
         cce_type_mapping_real = "double"
         cce_type_mapping_uint = "unsigned int"
         cce_type_mapping_int = "int"
+        cce_platform = "generic"
+        cce_use_relative_names = False
+        cce_type_mapping_real = "double"
+        cce_type_mapping_uint = "unsigned int"
+        cce_type_mapping_int = "int"
         cce_directory = ""
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
@@ -55,6 +61,15 @@ model "ieee_13bus" {
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
+        dae_solver = "BDF"
+        max_sim_step = 1e-4
+        simulation_time = 1.0
+        abs_tol = 1e-3
+        rel_tol = 1e-3
+        init_sim_step = 1e-6
+        r_on_sw = 1e-3
+        v_on_diode = 0.2
+        data_sampling_rate = 0
         feedthrough_validation_error_level = warning
     }
 
@@ -578,6 +593,7 @@ model "ieee_13bus" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e7"
                 v_phase_inst_meas = "True"
                 v_phase_rms_meas = "True"
             }
@@ -656,6 +672,7 @@ model "ieee_13bus" {
                 i_rms_meas = "True"
                 phase_a = "False"
                 power_meas = "True"
+                snubber_val = "1e7"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -772,6 +789,7 @@ model "ieee_13bus" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e7"
                 v_phase_inst_meas = "True"
                 v_phase_rms_meas = "True"
             }
@@ -885,6 +903,7 @@ model "ieee_13bus" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e7"
                 v_phase_inst_meas = "True"
                 v_phase_rms_meas = "True"
             }
@@ -1052,6 +1071,7 @@ model "ieee_13bus" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e7"
                 v_phase_inst_meas = "True"
                 v_phase_rms_meas = "True"
             }
@@ -1177,6 +1197,7 @@ model "ieee_13bus" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e7"
                 v_phase_inst_meas = "True"
                 v_phase_rms_meas = "True"
             }
@@ -1255,6 +1276,7 @@ model "ieee_13bus" {
                 i_rms_meas = "True"
                 phase_b = "False"
                 power_meas = "True"
+                snubber_val = "1e7"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1328,6 +1350,7 @@ model "ieee_13bus" {
                 phase_a = "False"
                 phase_c = "False"
                 power_meas = "True"
+                snubber_val = "1e7"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1390,6 +1413,7 @@ model "ieee_13bus" {
                 phase_a = "False"
                 phase_b = "False"
                 power_meas = "True"
+                snubber_val = "1e7"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1452,6 +1476,7 @@ model "ieee_13bus" {
                 phase_b = "False"
                 phase_c = "False"
                 power_meas = "True"
+                snubber_val = "1e7"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1505,6 +1530,7 @@ model "ieee_13bus" {
             i_inst_meas = "True"
             i_rms_meas = "True"
             power_meas = "True"
+            snubber_val = "1e7"
             v_phase_inst_meas = "True"
             v_phase_rms_meas = "True"
         }
@@ -2044,8 +2070,6 @@ model "ieee_13bus" {
             phase_b = "True"
             phase_c = "True"
             phase_n = "False"
-            enable_output = "False"
-            execution_rate = "100e-6"
             i_rms_meas = "False"
             i_inst_meas = "False"
             v_line_rms_meas = "False"
@@ -2054,6 +2078,9 @@ model "ieee_13bus" {
             v_phase_inst_meas = "False"
             freq_meas = "False"
             power_meas = "False"
+            snubber_val = "1e5"
+            enable_output = "False"
+            execution_rate = "100e-6"
             ran_dynamics = "False"
         }
 
@@ -2062,6 +2089,7 @@ model "ieee_13bus" {
             baseFreq = "60"
             voltagebases = "[0.480, 12.47]"
             tsstp = "1"
+            tsstp_unit = "Hours"
             tspoints = "24"
             append = "Open"
             export_to_dss = "Run"
