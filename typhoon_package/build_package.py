@@ -23,7 +23,7 @@ os.chdir(package_folder)
 
 # -------------------------------------Parameters related to Package title and basic information------------------------
 package_name = "OpenDSS"
-version = "0.5.0"
+version = "0.5.1"
 author = "Typhoon HIL"
 author_website = "https://github.com/typhoon-hil/opendss-typhoon-hil-interface"
 description = ("A library of special components that can be automatically converted to the OpenDSS format and simulated. "
