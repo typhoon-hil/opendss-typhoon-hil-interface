@@ -31,7 +31,7 @@ description = ("A library of special components that can be automatically conver
                "The program basically supports all RMS steady-state (frequency domain) analyses commonly performed for utility distribution systems."
                "More information can be found on: <a href=\"https://www.epri.com/pages/sa/opendss\">https://www.epri.com/pages/sa/opendss.</a><br><br>\n\n"
                "The current version of the package supports Power Flow and Fault Study analyses.<br><br>\n\n"
-               "This package is open-source and maintained on GitHub: <a href=\"https://www.epri.com/pages/sa/opendss\">https://github.com/typhoon-hil/opendss-typhoon-hil-interface</a>")
+               "This package is open-source and maintained on GitHub: <a href=\"https://github.com/typhoon-hil/opendss-typhoon-hil-interface\">https://github.com/typhoon-hil/opendss-typhoon-hil-interface</a>")
 
 library_paths = [os.path.join(package_folder, "../dss_thcc_lib")]
 resource_paths = []
