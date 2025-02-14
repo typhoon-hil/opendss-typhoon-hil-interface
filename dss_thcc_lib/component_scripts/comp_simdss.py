@@ -2,9 +2,15 @@ import os
 import sys
 import pathlib
 import traceback
+import importlib
+pyside6_exists = importlib.find_loader("PySide6")
+if pyside6_exists:
+    from PySide6 import QtGui, QtWidgets, QtCore
+    from PySide6.QtWidgets import QDialog, QFileDialog, QWidget
+else:
+    from PyQt5 import QtGui, QtWidgets, QtCore
+    from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 
-from PyQt5 import QtGui, QtWidgets, QtCore
-from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 import numpy as np
 import re
 from math import log10, floor

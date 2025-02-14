@@ -4,13 +4,15 @@ from tqdm import tqdm
 import random
 from import_to_tse import aux_functions
 import itertools
+import importlib
 from import_to_tse.constants import CANVAS_CENTER
 
 import sys
-import PyQt5
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+pyside6_exists = importlib.find_loader("PySide6")
+if pyside6_exists:
+    from PySide6 import QtCore, QtGui, QtWidgets
+else:
+    from PyQt5 import QtCore, QtGui, QtWidgets
 
 import pyqtgraph as pg
 import time
@@ -206,8 +208,8 @@ class ChargeGraph(pg.GraphItem):
 
         text_item = pg.TextItem(f"{self.texts[data_list.index(mypoint)]}")
         text_item.setParentItem(self)
-        text_item.setPos(PyQt5.QtCore.QPointF(mypoint[0], mypoint[1]))
-        text_item.setFont(PyQt5.QtGui.QFont("Times", 20, QFont.Bold))
+        text_item.setPos(QtCore.QPointF(mypoint[0], mypoint[1]))
+        text_item.setFont(QtGui.QFont("Times", 20, QFont.Bold))
         self.displayed_text = text_item
 
 class AutoPlacerGUI(QMainWindow):
@@ -675,7 +677,7 @@ class ComponentPlacer:
 
     def grow_tree(self, tree):
 
-        app = PyQt5.QtWidgets.QApplication(sys.argv)
+        app = QtWidgets.QApplication(sys.argv)
         def count_future_splits(branch):
 
             def sum_branches(b, total_splits, total_levels):
