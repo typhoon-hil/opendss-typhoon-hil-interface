@@ -9,6 +9,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
         combo_values=['True', 'False'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General:1",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
         combo_values=['real', 'int', 'uint'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="General:1",
         unit=""
@@ -33,6 +35,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
         combo_values=['1', '2', '3'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit=""
@@ -45,6 +48,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit=""
@@ -57,6 +61,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
         combo_values=['off', 'on'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Initial state:2",
         unit=""
@@ -69,6 +74,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Timing:3",
         unit="s"
@@ -81,6 +87,7 @@ def update_properties(mdl, _Controlled_Switch_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Timing",
         unit="s"

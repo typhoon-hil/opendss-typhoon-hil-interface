@@ -9,6 +9,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['2', '3', '4'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Core coupling:3",
         unit=""
@@ -33,6 +35,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Core coupling",
         unit=""
@@ -45,6 +48,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Core coupling",
         unit=""
@@ -57,6 +61,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['None', 'Ideal Transformer', 'TLM'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Core coupling",
         unit=""
@@ -69,6 +74,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="kV"
@@ -81,6 +87,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="kVA"
@@ -93,6 +100,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="%"
@@ -105,6 +113,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="%"
@@ -117,6 +126,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit="%"
@@ -129,6 +139,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -141,6 +152,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit="Hz"
@@ -153,6 +165,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="%"
@@ -165,6 +178,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="%"
@@ -177,6 +191,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections:2",
         unit=""
@@ -189,6 +204,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -201,6 +217,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -213,6 +230,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit=""
@@ -225,6 +243,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -237,6 +256,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -249,6 +269,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit=""
@@ -261,6 +282,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -273,6 +295,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -285,6 +308,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit=""
@@ -297,6 +321,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -309,6 +334,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Winding connections",
         unit="Ω"
@@ -321,6 +347,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit=""
@@ -333,6 +360,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="pu"
@@ -345,6 +373,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="pu"
@@ -357,6 +386,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit=""
@@ -369,6 +399,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=['Winding 1', 'Winding 2'],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit=""
@@ -381,6 +412,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="V"
@@ -393,6 +425,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="V"
@@ -405,6 +438,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="V"
@@ -417,6 +451,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="V"
@@ -429,6 +464,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="s"
@@ -441,6 +477,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="RegControl:4",
         unit="s"
@@ -453,6 +490,7 @@ def update_properties(mdl, _Three_Phase_Transformer_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring:5",
         unit=""
@@ -737,7 +775,7 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         rotation="up",
         flip="flip_horizontal",
         hide_name=True,
-        position=(9376, 8144)
+        position=(9372, 8144)
     )
     _Three_Phase_Transformer_B2 = mdl.create_port(
         name="B2",
@@ -750,7 +788,7 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         rotation="up",
         flip="flip_horizontal",
         hide_name=True,
-        position=(9376, 8240)
+        position=(9372, 8240)
     )
     _Three_Phase_Transformer_C2 = mdl.create_port(
         name="C2",
@@ -763,5 +801,5 @@ def ports_initialization(mdl, _Three_Phase_Transformer_mask):
         rotation="up",
         flip="flip_horizontal",
         hide_name=True,
-        position=(9376, 8336)
+        position=(9372, 8336)
     )
