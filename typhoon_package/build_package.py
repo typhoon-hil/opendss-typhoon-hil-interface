@@ -3,8 +3,11 @@ import os
 import shutil
 import distutils.core
 
+# Remember to run this after changing/creating a component
+"""
 from dss_thcc_lib.component_scripts.container.api_calls_generation import update_mask_properties
 update_mask_properties.generate_api_calls()
+"""
 
 package_folder = os.path.dirname(os.path.abspath(__file__))
 os.chdir(package_folder)
