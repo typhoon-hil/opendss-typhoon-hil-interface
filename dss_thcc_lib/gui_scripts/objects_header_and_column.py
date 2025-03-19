@@ -1,4 +1,10 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+import importlib
+
+pyside6_exists = importlib.find_loader("PySide6")
+if pyside6_exists:
+    from PySide6 import QtCore, QtWidgets
+else:
+    from PyQt5 import QtCore, QtWidgets
 
 
 class Ui_header_and_column(object):
