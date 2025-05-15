@@ -1,12 +1,12 @@
 version = 4.2
 
 //
-// Saved by sw version: 2024.3
+// Saved by sw version: 2025.2 DEV
 //
 
 model "ieee_13bus" {
     configuration {
-        hil_device = "VHIL+"
+        hil_device = "HIL606"
         hil_configuration_id = 1
         simulation_method = exact
         simulation_time_step = 10e-6
@@ -47,6 +47,7 @@ model "ieee_13bus" {
         cce_type_mapping_real = "double"
         cce_type_mapping_uint = "unsigned int"
         cce_type_mapping_int = "int"
+        cce_term_var_location = "local"
         cce_directory = ""
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
@@ -57,11 +58,13 @@ model "ieee_13bus" {
         export_resource_list = ""
         export_dependency_list = ""
         excluded_resource_list = ""
+        excluded_component_from_locking_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
-        dae_solver = "BDF"
+        solver_type = "DAE"
+        integration_method = "BDF"
         max_sim_step = 1e-4
         simulation_time = 1.0
         abs_tol = 1e-3
@@ -454,7 +457,6 @@ model "ieee_13bus" {
             percentNoloadloss = "0.01"
             percentRs = "[0.1, 0.1]"
             ptratio = "20"
-            regcontrol_on = "True"
             vreg = "127.5"
             winding_voltage = "2550.0"
         }
@@ -475,7 +477,6 @@ model "ieee_13bus" {
             percentNoloadloss = "0.01"
             percentRs = "[0.1, 0.1]"
             ptratio = "20"
-            regcontrol_on = "True"
             vreg = "127.5"
             winding_voltage = "2550.0"
         }
@@ -496,7 +497,6 @@ model "ieee_13bus" {
             percentNoloadloss = "0.01"
             percentRs = "[0.1, 0.1]"
             ptratio = "20"
-            regcontrol_on = "True"
             vreg = "127.5"
             winding_voltage = "2550.0"
         }
