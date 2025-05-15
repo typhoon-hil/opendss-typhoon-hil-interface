@@ -1,6 +1,6 @@
 {
   "title": "EPC CHIL Example",
-  "description": "Implements a Controller Hardware-in-the-Loop (C-HIL) example using Typhoon OpenDSS library and EPC HIL Compatible inverter",
+  "description": "This example implements a Controller Hardware-in-the-Loop (C-HIL) using the Typhoon OpenDSS library and an actual EPC inverter. As this model works with a real OEM controller, it requires the proper Typhoon HIL Compatible toolbox licensing and hardware.",
   "model": "EPC HIL Example.tse",
   "images": ["EPC HIL Example.svg"],
   "tags": [],
