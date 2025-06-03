@@ -3,6 +3,12 @@ import os
 import shutil
 import distutils.core
 
+# Remember to run this after changing/creating a component
+"""
+from dss_thcc_lib.component_scripts.container.api_calls_generation import update_mask_properties
+update_mask_properties.generate_api_calls()
+"""
+
 package_folder = os.path.dirname(os.path.abspath(__file__))
 os.chdir(package_folder)
 opendss_folder = os.path.join(package_folder, "../")
@@ -20,9 +26,10 @@ dist_folder = os.path.join(python_packages_folder, 'dist')
 wheel_file = os.listdir(dist_folder)[0]
 os.chdir(package_folder)
 
+
 # -------------------------------------Parameters related to Package title and basic information------------------------
 package_name = "OpenDSS"
-version = "0.5.0"
+version = "0.5.1"
 author = "Typhoon HIL"
 author_website = "https://github.com/typhoon-hil/opendss-typhoon-hil-interface"
 description = ("A library of special components that can be automatically converted to the OpenDSS format and simulated. "
@@ -70,13 +77,13 @@ try:
         os.remove(new_tpkg_name)
     os.rename(old_tpkg_name, new_tpkg_name)
 
-    # deleting wheel files
-    try:
-        shutil.rmtree(python_packages_folder)
-        print(f"2) Wheel files deleted successfully.")
-    except OSError as e:
-        # If an error occurs (e.g., file not found), handle it
-        print(f"2) Error deleting wheel files: {e}")
+    # # deleting wheel files
+    # try:
+    #     shutil.rmtree(python_packages_folder)
+    #     print(f"2) Wheel files deleted successfully.")
+    # except OSError as e:
+    #     # If an error occurs (e.g., file not found), handle it
+    #     print(f"2) Error deleting wheel files: {e}")
 
 except Exception as e:
     print(f"Exception occurred: {e}")

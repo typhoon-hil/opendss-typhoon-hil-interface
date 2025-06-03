@@ -9,6 +9,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=['Default', 'Follow'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=['Unit PF', 'Constant PF', 'Constant kVAr'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -33,6 +35,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=['Charging', 'Discharging', 'Idling'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -45,6 +48,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="kV"
@@ -57,6 +61,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit=""
@@ -69,6 +74,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="Hz"
@@ -81,6 +87,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="kW"
@@ -93,6 +100,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="kWh"
@@ -105,6 +113,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -117,6 +126,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -129,6 +139,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="%"
@@ -141,6 +152,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="%"
@@ -153,6 +165,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="%"
@@ -165,6 +178,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="%"
@@ -177,6 +191,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Ratings:3",
         unit="kVAr"
@@ -189,6 +204,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Ratings:3",
         unit=""
@@ -201,6 +217,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Ratings:3",
         unit="%"
@@ -213,6 +230,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="%"
@@ -225,6 +243,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Ratings:3",
         unit="%"
@@ -237,6 +256,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:2",
         button_label="Choose",
@@ -250,6 +270,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -262,6 +283,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -274,6 +296,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -286,6 +309,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -298,6 +322,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -310,6 +335,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -322,6 +348,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit="pu"
@@ -334,6 +361,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -346,6 +374,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=['Daily', 'Yearly'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -358,6 +387,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit="h"
@@ -370,6 +400,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=['Loadshape index', 'Time'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -382,6 +413,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="%"
@@ -394,6 +426,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -406,6 +439,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -418,6 +452,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -430,6 +465,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -442,6 +478,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter:4",
         unit="Ω"
@@ -454,6 +491,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter:4",
         unit="H"
@@ -466,6 +504,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter:4",
         unit="Ω"
@@ -478,6 +517,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter:4",
         unit="F"
@@ -490,6 +530,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter:4",
         unit=""
@@ -502,6 +543,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter:4",
         unit=""
@@ -514,6 +556,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -526,6 +569,7 @@ def update_properties(mdl, _Storage_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring:5",
         unit=""

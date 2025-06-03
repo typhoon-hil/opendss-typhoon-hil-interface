@@ -9,8 +9,13 @@ import tse_to_opendss
 from tse_to_opendss.tse2tpt_base_converter import tse2tpt
 
 # OpenDSS API
-from opendssdirect import dss
+import opendssdirect as dss
 
+from typhoon.test.reporting.messages import report_message as log_msg
+from typhoon.test.reporting.messages import report_step as log_step
+from typhoon.api.package_manager import package_manager as pkm
+
+import sys
 
 ###################################################
 
@@ -94,11 +99,16 @@ def import_dss_model(dss_file_path):
 
 def load_tse_model(tse_file_path):
     # Open the converted tse file
+    print(f"Load Model {tse_file_path}")
+    print(f"{sys.path=}")
     mdl.load(tse_file_path)
 
 
 def compile_model_and_load_to_hil(tse_file_path, use_vhil=True):
     # Compile the model
+    print(f"Compile Model {tse_file_path}")
+    print(f"{sys.path=}")
+
     mdl.compile()
     # Load to HIL
     parent_folder = pathlib.Path(tse_file_path).parent
@@ -142,6 +152,69 @@ def get_element_currents(elem_name, elem_class):
     return currents_dict
 
 
+def get_load_powers(load_name, elem_class="Load"):
+    """"
+    Returns a Dict with P and Q from the terminal of the Load Component
+
+    currents_dict = {
+        "term1": {
+            P"node": value,
+            Q"node": value,
+            ...
+        }
+    }
+    """
+    powers_dict = {}
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{load_name}")
+    power_meas = dss.CktElement.Powers()
+    buses = dss.CktElement.BusNames()
+
+    idx = 0
+    for term_num, bus in enumerate(buses):
+        term_dict = {}
+        for node in bus.split(".")[1:]:
+            term_dict.update({f"P{node}": power_meas[idx * 2] * 1e3})
+            term_dict.update({f"Q{node}": power_meas[(idx * 2) + 1] * 1e3})
+            idx += 1
+        powers_dict.update({f"term{term_num + 1}": term_dict})
+
+    return powers_dict
+
+
+def get_load_voltages(load_name, elem_class="Load"):
+    """"
+    Returns a Dict with the mag and ang voltages of the bus
+
+    voltages_dict = {
+        "phase": {
+            mag_"node": value,
+            anf_"node": value,
+            ...
+        },
+    }
+    """
+    voltages_dict = {}
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{load_name.lower()}")
+    busname = dss.CktElement.BusNames()[0]
+    load_phases = busname.split(".")[1:]
+
+    dss.Circuit.SetActiveBus(busname)
+    nodes = dss.Bus.Nodes()
+    phase_meas = dss.Bus.VMagAngle()
+
+    phase_dict = {}
+    for idx, node in enumerate(nodes):
+        if str(node) in load_phases:
+            phase_dict.update({f"mag_{node}": phase_meas[2 * idx]})
+            phase_dict.update({f"ang_{node}": phase_meas[(2 * idx) + 1]})
+
+    voltages_dict.update({"phase": phase_dict})
+
+    return voltages_dict
+
+
 def get_bus_voltages(busname):
     """"
     Returns a Dict with the mag and ang voltages of the bus
@@ -170,6 +243,48 @@ def get_bus_voltages(busname):
     voltages_dict.update({"phase": phase_dict})
 
     return voltages_dict
+
+
+def set_grid_voltage(grid_name, pu_val, elem_class="VSource"):
+
+    dss.Circuit.SetActiveElement(f"{elem_class.upper()}.{grid_name}")
+    dss.Vsources.PU(pu_val)
+    dss.run_command("calcv")
+    dss.run_command("Solve Mode=Snap")
+
+
+def get_all_dss_elements(mdl, comp_type, parent_comp=None):
+
+    component_list = []
+    if parent_comp:  # Component inside a subsystem (recursive function)
+        all_components = mdl.get_items(parent_comp)
+    else:  # Top level call
+        all_components = mdl.get_items()
+
+    for comp in all_components:
+        try:
+            type_name = mdl.get_component_type_name(comp)
+            if type_name and type_name in comp_type and mdl.is_enabled(comp):
+                component_list.append(comp)
+            elif not type_name:  # Component is a subsystem
+                component_list.extend(get_all_dss_elements(mdl, comp_type, parent_comp=comp))
+        except:
+            # Some components (such as ports and connections) cannot be used with
+            # get_component_type_name
+            pass
+    # Return the list of component handles
+    return component_list
+
+
+def get_item_by_fqn(mdl, fqn, parent=None):
+
+    item_fqn_names = fqn.split(".")
+    for item_name in item_fqn_names.copy():
+        item_handle = mdl.get_item(item_name, parent=parent)
+        item_fqn_names.remove(item_name)
+        if item_fqn_names:
+            item_handle = get_item_by_fqn(mdl, ".".join(item_fqn_names), parent=item_handle)
+        return item_handle
 
 
 def calculate_line_voltage(v1_mag, v1_phase, v2_mag, v2_phase):
@@ -201,3 +316,13 @@ def pol2cart(rho, phi):
 
 def clear_opendss():
     dss.run_command('ClearAll')
+
+
+def update_package(path_to_new):
+    with log_step("Updating Packages"):
+        # Removes and install all Model packages
+        for pkg in pkm.get_installed_packages():
+            log_msg(f"Removing: {pkg.package_name}")
+            pkm.uninstall_package(pkg.package_name)
+        pkm.install_package(path_to_new)
+        mdl.reload_libraries()

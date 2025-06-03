@@ -40,6 +40,7 @@ def pick_comp_script(mdl, mask_handle, caller):
 
     return comp_script
 
+
 def pick_contained_comp_calls(mdl, mask_handle):
     id_prop = mdl.prop(mask_handle, "dss_container_comp_identifier")
     identifier = mdl.get_property_value(id_prop)
@@ -113,7 +114,7 @@ def apply_mask_button_handler(mdl, mask_handle):
 
     # Close the dialog
     mask_dialog = mdl.get_ns_var("container_dialog_handler")
-    mask_dialog.reject()
+    mask_dialog.accept()
 
 
 def initialization_function_calls(mdl, mask_handle):

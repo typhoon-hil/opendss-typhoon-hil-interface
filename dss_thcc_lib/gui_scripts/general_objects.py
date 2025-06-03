@@ -3,12 +3,17 @@ import math
 import dss_thcc_lib.gui_scripts.objects_header_and_column as objects_header_and_column
 import pandas as pd
 import pathlib
+import importlib
 import dss_thcc_lib.extra.dss_parser as dss_parser
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+pyside6_exists = importlib.find_loader("PySide6")
+if pyside6_exists:
+    from PySide6 import QtCore, QtGui, QtWidgets
+else:
+    from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_objects(object):
-
     def setupUi(self, objects):
         objects.setObjectName("objects")
         objects.resize(589, 549)
@@ -146,75 +151,83 @@ class Ui_objects(object):
         self.tabWidget.addTab(self.tab_linegeometry, "")
         self.tab_loadshape = QtWidgets.QWidget()
         self.tab_loadshape.setObjectName("tab_loadshape")
+
+
+        # Loadshape parameters
         self.group_loadshape_parameters = QtWidgets.QGroupBox(self.tab_loadshape)
+        self.group_loadshape_parameters.setLayout(QtWidgets.QGridLayout())
         self.group_loadshape_parameters.setGeometry(QtCore.QRect(150, 40, 401, 401))
         self.group_loadshape_parameters.setObjectName("group_loadshape_parameters")
-        self.button_loadshape_save = QtWidgets.QPushButton(self.group_loadshape_parameters)
-        self.button_loadshape_save.setGeometry(QtCore.QRect(163, 370, 75, 23))
-        self.button_loadshape_save.setObjectName("button_loadshape_save")
-        self.label_npts = QtWidgets.QLabel(self.group_loadshape_parameters)
-        self.label_npts.setGeometry(QtCore.QRect(20, 90, 41, 20))
-        self.label_npts.setObjectName("label_npts")
-        self.label_npts_unit = QtWidgets.QLabel(self.group_loadshape_parameters)
-        self.label_npts_unit.setGeometry(QtCore.QRect(110, 90, 31, 20))
-        self.label_npts_unit.setObjectName("label_npts_unit")
-        self.edit_npts = QtWidgets.QLineEdit(self.group_loadshape_parameters)
-        self.edit_npts.setGeometry(QtCore.QRect(50, 90, 51, 20))
-        self.edit_npts.setObjectName("edit_npts")
-        self.edit_interval = QtWidgets.QLineEdit(self.group_loadshape_parameters)
-        self.edit_interval.setGeometry(QtCore.QRect(260, 90, 51, 20))
-        self.edit_interval.setObjectName("edit_interval")
-        self.label_interval = QtWidgets.QLabel(self.group_loadshape_parameters)
-        self.label_interval.setGeometry(QtCore.QRect(215, 90, 41, 20))
-        self.label_interval.setObjectName("label_interval")
-        self.edit_mult = QtWidgets.QLineEdit(self.group_loadshape_parameters)
-        self.edit_mult.setGeometry(QtCore.QRect(50, 120, 261, 20))
-        self.edit_mult.setObjectName("edit_mult")
-        self.label_mult = QtWidgets.QLabel(self.group_loadshape_parameters)
-        self.label_mult.setGeometry(QtCore.QRect(20, 120, 41, 20))
-        self.label_mult.setObjectName("label_mult")
-        self.edit_hour = QtWidgets.QLineEdit(self.group_loadshape_parameters)
-        self.edit_hour.setGeometry(QtCore.QRect(50, 150, 261, 20))
-        self.edit_hour.setObjectName("edit_hour")
-        self.label_hour = QtWidgets.QLabel(self.group_loadshape_parameters)
-        self.label_hour.setGeometry(QtCore.QRect(20, 150, 41, 20))
-        self.label_hour.setObjectName("label_hour")
-        self.loadshape_plot = QtWidgets.QWidget(self.group_loadshape_parameters)
-        self.loadshape_plot.setGeometry(QtCore.QRect(10, 180, 381, 181))
-        self.loadshape_plot.setObjectName("loadshape_plot")
-        self.combo_interval = QtWidgets.QComboBox(self.group_loadshape_parameters)
-        self.combo_interval.setGeometry(QtCore.QRect(315, 90, 71, 20))
-        self.combo_interval.setObjectName("combo_interval")
-        self.combo_interval.addItem("")
-        self.combo_interval.addItem("")
-        self.combo_interval.addItem("")
-        self.checkbox_useactual = QtWidgets.QCheckBox(self.group_loadshape_parameters)
-        self.checkbox_useactual.setGeometry(QtCore.QRect(315, 120, 70, 20))
-        self.checkbox_useactual.setObjectName("checkbox_useactual")
-        self.checkbox_external_file = QtWidgets.QCheckBox(self.group_loadshape_parameters)
-        self.checkbox_external_file.setGeometry(QtCore.QRect(50, 30, 81, 20))
-        self.checkbox_external_file.setObjectName("checkbox_external_file")
-        self.edit_external_file_path = QtWidgets.QLineEdit(self.group_loadshape_parameters)
-        self.edit_external_file_path.setEnabled(True)
-        self.edit_external_file_path.setGeometry(QtCore.QRect(50, 60, 261, 20))
-        self.edit_external_file_path.setObjectName("edit_external_file_path")
-        self.combo_column = QtWidgets.QComboBox(self.group_loadshape_parameters)
-        self.combo_column.setEnabled(False)
-        self.combo_column.setGeometry(QtCore.QRect(315, 30, 71, 20))
-        self.combo_column.setObjectName("combo_column")
-        self.combo_column.addItem("")
-        self.label_external_file_path = QtWidgets.QLabel(self.group_loadshape_parameters)
-        self.label_external_file_path.setEnabled(True)
-        self.label_external_file_path.setGeometry(QtCore.QRect(20, 60, 41, 20))
-        self.label_external_file_path.setObjectName("label_external_file_path")
-        self.label_external_file_column = QtWidgets.QLabel(self.group_loadshape_parameters)
-        self.label_external_file_column.setEnabled(False)
-        self.label_external_file_column.setGeometry(QtCore.QRect(275, 30, 41, 20))
-        self.label_external_file_column.setObjectName("label_external_file_column")
-        self.checkbox_has_headers = QtWidgets.QCheckBox(self.group_loadshape_parameters)
+        parameters_layout = self.group_loadshape_parameters.layout()
+
+        # First row
+        self.checkbox_external_file = QtWidgets.QCheckBox()
+        self.checkbox_has_headers = QtWidgets.QCheckBox()
         self.checkbox_has_headers.setEnabled(False)
-        self.checkbox_has_headers.setGeometry(QtCore.QRect(180, 30, 81, 20))
-        self.checkbox_has_headers.setObjectName("checkbox_has_headers")
+        self.label_external_file_column = QtWidgets.QLabel()
+        self.label_external_file_column.setEnabled(False)
+        self.combo_column = QtWidgets.QComboBox()
+        self.combo_column.setEnabled(False)
+
+        parameters_layout.addWidget(self.checkbox_external_file, 1, 2, 1, 2)
+        parameters_layout.addWidget(self.checkbox_has_headers, 1, 4, 1, 2)
+        parameters_layout.addWidget(self.label_external_file_column, 1, 7, 1, 2)
+        parameters_layout.addWidget(self.combo_column, 1, 8, 1, 2)
+
+        # Second row
+        self.label_external_file_path = QtWidgets.QLabel()
+        self.edit_external_file_path = QtWidgets.QLineEdit()
+        parameters_layout.addWidget(self.label_external_file_path, 2, 1, 1, 1)
+        parameters_layout.addWidget(self.edit_external_file_path, 2, 2, 1, 8)
+
+        # Third row
+        self.label_npts = QtWidgets.QLabel()
+        self.edit_npts = QtWidgets.QLineEdit()
+        self.label_npts_unit = QtWidgets.QLabel()
+        self.label_interval = QtWidgets.QLabel()
+        self.edit_interval = QtWidgets.QLineEdit()
+        self.combo_interval = QtWidgets.QComboBox()
+
+        parameters_layout.addWidget(self.label_npts, 3, 1, 1, 1)
+        parameters_layout.addWidget(self.edit_npts, 3, 2, 1, 1)
+        parameters_layout.addWidget(self.label_npts_unit, 3, 3, 1, 1)
+        parameters_layout.addWidget(self.label_interval, 3, 7, 1, 1)
+        parameters_layout.addWidget(self.edit_interval, 3, 8, 1, 1)
+        parameters_layout.addWidget(self.combo_interval, 3, 9, 1, 1)
+
+        # Third and fourth rows
+        points_widget = QtWidgets.QWidget()
+        points_layout = QtWidgets.QGridLayout()
+        points_widget.setLayout(points_layout)
+        points_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.label_mult = QtWidgets.QLabel()
+        self.edit_mult = QtWidgets.QLineEdit()
+        self.label_mult.setFixedWidth(25)
+        self.checkbox_useactual = QtWidgets.QCheckBox()
+        self.label_hour = QtWidgets.QLabel()
+        self.label_hour.setFixedWidth(25)
+        self.edit_hour = QtWidgets.QLineEdit()
+
+        points_layout.addWidget(self.label_mult, 1, 1, 1, 1)
+        points_layout.addWidget(self.edit_mult, 1, 2, 1, 7)
+        points_layout.addWidget(self.checkbox_useactual, 1, 9, 1, 1)
+        points_layout.addWidget(self.label_hour, 2, 1, 1, 1)
+        points_layout.addWidget(self.edit_hour, 2, 2, 1, 7)
+
+        parameters_layout.addWidget(points_widget, 4, 1, 2, 9)
+
+        # Plot
+        self.loadshape_plot = QtWidgets.QWidget()
+        size_policy = QtWidgets.QSizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Policy.Minimum)
+        self.loadshape_plot.setSizePolicy(size_policy)
+        parameters_layout.addWidget(self.loadshape_plot, 6, 1, 1, 9)
+
+        # Save button
+        self.button_loadshape_save = QtWidgets.QPushButton()
+        parameters_layout.addWidget(self.button_loadshape_save, 7, 4, 1, 3)
+
         self.label_loadshapes = QtWidgets.QLabel(self.tab_loadshape)
         self.label_loadshapes.setGeometry(QtCore.QRect(10, 40, 61, 16))
         self.label_loadshapes.setObjectName("label_loadshapes")
@@ -230,10 +243,18 @@ class Ui_objects(object):
         self.list_loadshapes = QtWidgets.QListWidget(self.tab_loadshape)
         self.list_loadshapes.setGeometry(QtCore.QRect(10, 60, 121, 271))
         self.list_loadshapes.setObjectName("list_loadshapes")
-        self.button_loadshapes_new_csv_folder = QtWidgets.QPushButton(self.tab_loadshape)
-        self.button_loadshapes_new_csv_folder.setGeometry(QtCore.QRect(150, 10, 121, 23))
-        self.button_loadshapes_new_csv_folder.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
-        self.button_loadshapes_new_csv_folder.setObjectName("button_loadshapes_new_csv_folder")
+        self.button_loadshapes_new_csv_folder = QtWidgets.QPushButton(
+            self.tab_loadshape
+        )
+        self.button_loadshapes_new_csv_folder.setGeometry(
+            QtCore.QRect(150, 10, 121, 23)
+        )
+        self.button_loadshapes_new_csv_folder.setLocale(
+            QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        )
+        self.button_loadshapes_new_csv_folder.setObjectName(
+            "button_loadshapes_new_csv_folder"
+        )
         self.tabWidget.addTab(self.tab_loadshape, "")
         self.button_ok = QtWidgets.QPushButton(objects)
         self.button_ok.setGeometry(QtCore.QRect(190, 520, 75, 23))
@@ -339,6 +360,8 @@ class Ui_objects(object):
         self.tabWidget.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(objects)
 
+        # Add objects to the layout
+
     def retranslateUi(self, objects):
         _translate = QtCore.QCoreApplication.translate
         objects.setWindowTitle(_translate("objects", "General objects"))
@@ -368,11 +391,23 @@ class Ui_objects(object):
         self.radio_matrix.setText(_translate("objects", "Matrix"))
         self.button_newlinecode.setText(_translate("objects", "New"))
         self.button_copylinecode.setText(_translate("objects", "Copy selected"))
-        self.button_linecodesfromdss.setText(_translate("objects", "Add from .dss file"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_linecode), _translate("objects", "LineCode"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_wiredata), _translate("objects", "WireData"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_linespacing), _translate("objects", "LineSpacing"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_linegeometry), _translate("objects", "LineGeometry"))
+        self.button_linecodesfromdss.setText(
+            _translate("objects", "Add from .dss file")
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_linecode), _translate("objects", "LineCode")
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_wiredata), _translate("objects", "WireData")
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_linespacing),
+            _translate("objects", "LineSpacing"),
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_linegeometry),
+            _translate("objects", "LineGeometry"),
+        )
         self.group_loadshape_parameters.setTitle(_translate("objects", "Parameters"))
         self.button_loadshape_save.setText(_translate("objects", "Save"))
         self.label_npts.setText(_translate("objects", "npts"))
@@ -380,29 +415,51 @@ class Ui_objects(object):
         self.label_interval.setText(_translate("objects", "interval"))
         self.label_mult.setText(_translate("objects", "mult"))
         self.label_hour.setText(_translate("objects", "hour"))
-        self.combo_interval.setItemText(0, _translate("objects", "h"))
-        self.combo_interval.setItemText(1, _translate("objects", "min"))
-        self.combo_interval.setItemText(2, _translate("objects", "s"))
-        self.checkbox_useactual.setToolTip(_translate("objects", "Values are not multipliers, but absolute."))
+        self.combo_interval.addItem(_translate("objects", "h"))
+        self.combo_interval.addItem(_translate("objects", "min"))
+        self.combo_interval.addItem(_translate("objects", "s"))
+        self.checkbox_useactual.setToolTip(
+            _translate("objects", "Values are not multipliers, but absolute.")
+        )
         self.checkbox_useactual.setText(_translate("objects", "UseActual"))
-        self.checkbox_external_file.setToolTip(_translate("objects", "Data points are defined by a CSV file."))
+        self.checkbox_external_file.setToolTip(
+            _translate("objects", "Data points are defined by a CSV file.")
+        )
         self.checkbox_external_file.setText(_translate("objects", "External File"))
         self.combo_column.setItemText(1, _translate("objects", "1"))
         self.combo_column.setCurrentText("1")
         self.label_external_file_path.setText(_translate("objects", "Path"))
         self.label_external_file_column.setText(_translate("objects", "Column"))
-        self.checkbox_has_headers.setToolTip(_translate("objects", "The first line of the CSV is not a data point."))
-        self.checkbox_has_headers.setText(_translate("objects", "Has headers"))
+        self.checkbox_has_headers.setToolTip(
+            _translate("objects", "The first line of the CSV is not a data point.")
+        )
+        self.checkbox_has_headers.setText(_translate("objects", "Headers"))
         self.label_loadshapes.setText(_translate("objects", "LoadShapes"))
         self.button_newloadshape.setText(_translate("objects", "New"))
         self.button_loadshapesfromdss.setText(_translate("objects", "Add from file"))
         self.button_copyloadshape.setText(_translate("objects", "Copy selected"))
-        self.button_loadshapes_new_csv_folder.setToolTip(_translate("objects", "Many CSV files are missing. If they were moved, or the model was shared, choose another base folder."))
-        self.button_loadshapes_new_csv_folder.setText(_translate("objects", "Fix CSVs base folder"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_loadshape), _translate("objects", "LoadShape"))
+        self.button_loadshapes_new_csv_folder.setToolTip(
+            _translate(
+                "objects",
+                "Many CSV files are missing. If they were moved, or the model was shared, choose another base folder.",
+            )
+        )
+        self.button_loadshapes_new_csv_folder.setText(
+            _translate("objects", "Fix CSVs base folder")
+        )
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_loadshape),
+            _translate("objects", "LoadShape"),
+        )
         self.button_ok.setText(_translate("objects", "Save"))
         self.button_cancel.setText(_translate("objects", "Cancel"))
-        self.label_savewarning.setText(_translate("objects", "Warning: changes are independent from the schematic model and cannot be restored once saved."))
+        self.label_savewarning.setText(
+            _translate(
+                "objects",
+                "Warning: changes are independent from the schematic model "
+                "and cannot be restored once saved.",
+            )
+        )
 
         # XYCurve Widgets
         self.button_newxycurve.setText(_translate("objects", "New"))
@@ -425,21 +482,21 @@ class Ui_objects(object):
         self.label_npts_tshape.setText(_translate("objects", "npts"))
 
     def edited(self):
-
         self.linecode_pars = {
-            "symmetrical":
-                {"r1": self.edit_r1,
-                 "r0": self.edit_r0,
-                 "x1": self.edit_x1,
-                 "x0": self.edit_x0,
-                 "c1": self.edit_c1,
-                 "c0": self.edit_c0},
-            "matrix":
-                {"nphases": self.edit_phases,
-                 "rmatrix": self.edit_rmatrix,
-                 "xmatrix": self.edit_xmatrix,
-                 "cmatrix": self.edit_cmatrix,
-                 }
+            "symmetrical": {
+                "r1": self.edit_r1,
+                "r0": self.edit_r0,
+                "x1": self.edit_x1,
+                "x0": self.edit_x0,
+                "c1": self.edit_c1,
+                "c0": self.edit_c0,
+            },
+            "matrix": {
+                "nphases": self.edit_phases,
+                "rmatrix": self.edit_rmatrix,
+                "xmatrix": self.edit_xmatrix,
+                "cmatrix": self.edit_cmatrix,
+            },
         }
 
         self.loadshape_pars = {
@@ -452,19 +509,19 @@ class Ui_objects(object):
             "csv_file": self.checkbox_external_file,
             "csv_path": self.edit_external_file_path,
             "headers": self.checkbox_has_headers,
-            "column": self.combo_column
+            "column": self.combo_column,
         }
 
         self.xycurve_pars = {
             "npts": self.edit_npts_xycurve,
             "xarray": self.edit_xarray,
-            "yarray": self.edit_yarray
+            "yarray": self.edit_yarray,
         }
 
         self.tshape_pars = {
             "npts": self.edit_npts_tshape,
             "temp": self.edit_temp_tshape,
-            "interval": self.edit_interval_tshape
+            "interval": self.edit_interval_tshape,
         }
 
         self.double_validator = QtGui.QDoubleValidator()
@@ -497,7 +554,7 @@ class Ui_objects(object):
         from matplotlib.backends.backend_qt5agg import FigureCanvas
 
         # Font
-        rc('font', **{'size': 8})
+        rc("font", **{"size": 8})
 
         self.loadshape_plot_grid = QtWidgets.QGridLayout()
         self.loadshape_plot.setLayout(self.loadshape_plot_grid)
@@ -509,7 +566,9 @@ class Ui_objects(object):
 
         # self.addToolBar(QtCore.Qt.BottomToolBarArea, self.toolbar)
 
-        self.loadshape_subplot = self.figure_loadshape.add_subplot(111, position=[0.12, 0.2, 0.76, 0.7])
+        self.loadshape_subplot = self.figure_loadshape.add_subplot(
+            111, position=[0.12, 0.2, 0.76, 0.7]
+        )
         self.loadshape_subplot.set_xlim([0, 4])
         self.loadshape_subplot.set_ylim([0, 4])
         self.loadshape_subplot.grid(which="both")
@@ -520,13 +579,15 @@ class Ui_objects(object):
         from matplotlib.backends.backend_qt5agg import FigureCanvas
 
         # Font
-        rc('font', **{'size': 8})       # XYCurve
+        rc("font", **{"size": 8})  # XYCurve
         self.xycurve_plot_grid = QtWidgets.QGridLayout()
         self.xycurve_plot.setLayout(self.xycurve_plot_grid)
         self.figure_xycurve = matplotlib.figure.Figure()
         self.canvas_xycurve = FigureCanvas(self.figure_xycurve)
         self.xycurve_plot_grid.addWidget(self.canvas_xycurve)
-        self.xycurve_subplot = self.figure_xycurve.add_subplot(111, position=[0.12, 0.2, 0.76, 0.7])
+        self.xycurve_subplot = self.figure_xycurve.add_subplot(
+            111, position=[0.12, 0.2, 0.76, 0.7]
+        )
         self.xycurve_subplot.set_xlim([0, 4])
         self.xycurve_subplot.set_ylim([0, 4])
         self.xycurve_subplot.grid(which="both")
@@ -537,13 +598,15 @@ class Ui_objects(object):
         from matplotlib.backends.backend_qt5agg import FigureCanvas
 
         # Font
-        rc('font', **{'size': 8})       # XYCurve
+        rc("font", **{"size": 8})  # XYCurve
         self.tshape_plot_grid = QtWidgets.QGridLayout()
         self.tshape_plot.setLayout(self.tshape_plot_grid)
         self.figure_tshape = matplotlib.figure.Figure()
         self.canvas_tshape = FigureCanvas(self.figure_tshape)
         self.tshape_plot_grid.addWidget(self.canvas_tshape)
-        self.tshape_subplot = self.figure_tshape.add_subplot(111, position=[0.12, 0.2, 0.76, 0.7])
+        self.tshape_subplot = self.figure_tshape.add_subplot(
+            111, position=[0.12, 0.2, 0.76, 0.7]
+        )
         self.tshape_subplot.set_xlim([0, 4])
         self.tshape_subplot.set_ylim([0, 4])
         self.tshape_subplot.grid(which="both")
@@ -551,6 +614,7 @@ class Ui_objects(object):
     def return_list_of_floats(self, str_input):
         try:
             import ast
+
             evaluated_input = ast.literal_eval(str_input)
             return_list = []
             if type(evaluated_input) == list:
@@ -566,7 +630,6 @@ class Ui_objects(object):
 
 
 class GeneralObjects(QtWidgets.QDialog, Ui_objects):
-
     def __init__(self, obj_type, obj_dicts={}, mdl=None):
         super().__init__()
         self.setupUi(self)
@@ -601,40 +664,65 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
         # Auxiliary vars
         self.old_listitem_name = ""
-        self.valid_characters = list(string.ascii_lowercase + string.ascii_uppercase + string.digits + "_<>:-")
+        self.valid_characters = list(
+            string.ascii_lowercase + string.ascii_uppercase + string.digits + "_<>:-"
+        )
         self.list_loadshapes_not_found = []
 
         ## Signals
 
         # Lists
-        self.old_listitem_name = ''
-        self.new_listitem_name = ''
+        self.old_listitem_name = ""
+        self.new_listitem_name = ""
         self.changing_listitem = None
         self.list_linecodes.itemDoubleClicked.connect(self.rename_object_step1)
         self.linecodes_delegate = self.list_linecodes.itemDelegate()
-        self.linecodes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
-        self.linecodes_delegate.closeEditor.connect(lambda _: self.rename_object_step3("linecode"))
-        self.list_linecodes.itemSelectionChanged.connect(lambda: self.update_parameters_from_dict(self.list_linecodes))
+        self.linecodes_delegate.commitData.connect(
+            lambda txt: self.rename_object_step2(txt.text())
+        )
+        self.linecodes_delegate.closeEditor.connect(
+            lambda _: self.rename_object_step3("linecode")
+        )
+        self.list_linecodes.itemSelectionChanged.connect(
+            lambda: self.update_parameters_from_dict(self.list_linecodes)
+        )
 
         self.list_loadshapes.itemDoubleClicked.connect(self.rename_object_step1)
         self.loadshapes_delegate = self.list_loadshapes.itemDelegate()
-        self.loadshapes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
-        self.loadshapes_delegate.closeEditor.connect(lambda _: self.rename_object_step3("loadshape"))
+        self.loadshapes_delegate.commitData.connect(
+            lambda txt: self.rename_object_step2(txt.text())
+        )
+        self.loadshapes_delegate.closeEditor.connect(
+            lambda _: self.rename_object_step3("loadshape")
+        )
         self.list_loadshapes.itemSelectionChanged.connect(
-            lambda: self.update_parameters_from_dict(self.list_loadshapes))
+            lambda: self.update_parameters_from_dict(self.list_loadshapes)
+        )
         self.list_loadshapes.itemSelectionChanged.connect(self.update_csv_parameters)
 
         self.list_xycurves.itemDoubleClicked.connect(self.rename_object_step1)
         self.xycurves_delegate = self.list_xycurves.itemDelegate()
-        self.xycurves_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
-        self.xycurves_delegate.closeEditor.connect(lambda _: self.rename_object_step3("xycurve"))
-        self.list_xycurves.itemSelectionChanged.connect(lambda: self.update_parameters_from_dict(self.list_xycurves))
+        self.xycurves_delegate.commitData.connect(
+            lambda txt: self.rename_object_step2(txt.text())
+        )
+        self.xycurves_delegate.closeEditor.connect(
+            lambda _: self.rename_object_step3("xycurve")
+        )
+        self.list_xycurves.itemSelectionChanged.connect(
+            lambda: self.update_parameters_from_dict(self.list_xycurves)
+        )
 
         self.list_tshapes.itemDoubleClicked.connect(self.rename_object_step1)
         self.tshapes_delegate = self.list_tshapes.itemDelegate()
-        self.tshapes_delegate.commitData.connect(lambda txt: self.rename_object_step2(txt.text()))
-        self.tshapes_delegate.closeEditor.connect(lambda _: self.rename_object_step3("tshape"))
-        self.list_tshapes.itemSelectionChanged.connect(lambda: self.update_parameters_from_dict(self.list_tshapes))
+        self.tshapes_delegate.commitData.connect(
+            lambda txt: self.rename_object_step2(txt.text())
+        )
+        self.tshapes_delegate.closeEditor.connect(
+            lambda _: self.rename_object_step3("tshape")
+        )
+        self.list_tshapes.itemSelectionChanged.connect(
+            lambda: self.update_parameters_from_dict(self.list_tshapes)
+        )
 
         # Keyboard shortcuts
         if self.obj_type == "linecode":
@@ -646,23 +734,36 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         elif self.obj_type == "tshape":
             del_list_widget = self.list_tshapes
 
-        self.delete_shortcut = QtWidgets.QShortcut("Delete", del_list_widget)
-        self.delete_shortcut.activated.connect(lambda: self.delete_object(del_list_widget))
+        shortcut_module = QtGui if pyside6_exists else QtWidgets
+        self.delete_shortcut = shortcut_module.QShortcut("Delete", del_list_widget)
+        self.delete_shortcut.activated.connect(
+            lambda: self.delete_object(del_list_widget)
+        )
 
         # Buttons
         self.button_newlinecode.clicked.connect(lambda: self.new_object("linecode"))
         self.button_copylinecode.clicked.connect(lambda: self.copy_object("linecode"))
-        self.button_linecode_save.clicked.connect(lambda: self.save_parameters("linecode"))
-        self.button_linecodesfromdss.clicked.connect(lambda: self.add_from_file("linecode"))
+        self.button_linecode_save.clicked.connect(
+            lambda: self.save_parameters("linecode")
+        )
+        self.button_linecodesfromdss.clicked.connect(
+            lambda: self.add_from_file("linecode")
+        )
 
         self.button_newloadshape.clicked.connect(lambda: self.new_object("loadshape"))
         self.button_copyloadshape.clicked.connect(lambda: self.copy_object("loadshape"))
-        self.button_loadshape_save.clicked.connect(lambda: self.save_parameters("loadshape"))
-        self.button_loadshapesfromdss.clicked.connect(lambda: self.add_from_file("loadshape"))
+        self.button_loadshape_save.clicked.connect(
+            lambda: self.save_parameters("loadshape")
+        )
+        self.button_loadshapesfromdss.clicked.connect(
+            lambda: self.add_from_file("loadshape")
+        )
 
         self.button_newxycurve.clicked.connect(lambda: self.new_object("xycurve"))
         self.button_copyxycurve.clicked.connect(lambda: self.copy_object("xycurve"))
-        self.button_xycurve_save.clicked.connect(lambda: self.save_parameters("xycurve"))
+        self.button_xycurve_save.clicked.connect(
+            lambda: self.save_parameters("xycurve")
+        )
 
         self.button_newtshape.clicked.connect(lambda: self.new_object("tshape"))
         self.button_copytshape.clicked.connect(lambda: self.copy_object("tshape"))
@@ -674,41 +775,69 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.button_loadshapes_new_csv_folder.clicked.connect(self.fix_csv_base_folder)
 
         # Radio buttons
-        self.radio_symmetrical.toggled.connect(lambda: self.radio_button_status("linecode"))
+        self.radio_symmetrical.toggled.connect(
+            lambda: self.radio_button_status("linecode")
+        )
         self.radio_matrix.toggled.connect(lambda: self.radio_button_status("linecode"))
-        self.radio_matrix.toggled.connect(lambda txt: self.parameter_pending_save(txt, self.list_linecodes))
+        self.radio_matrix.toggled.connect(
+            lambda txt: self.parameter_pending_save(txt, self.list_linecodes)
+        )
 
         # Highlight parameters changed but not saved
         # LineCode
         for param, widget in self.linecode_pars.get("symmetrical").items():
-            widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_linecodes))
+            widget.textEdited.connect(
+                lambda txt: self.parameter_pending_save(txt, self.list_linecodes)
+            )
         for param, widget in self.linecode_pars.get("matrix").items():
-            widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_linecodes))
+            widget.textEdited.connect(
+                lambda txt: self.parameter_pending_save(txt, self.list_linecodes)
+            )
         # LoadShape
         self.edit_npts.textEdited.connect(self.npts_validation)
         for param, widget in self.loadshape_pars.items():
             if isinstance(widget, QtWidgets.QComboBox):
-                widget.currentIndexChanged.connect(lambda txt: self.parameter_pending_save(txt, self.list_loadshapes))
+                widget.currentIndexChanged.connect(
+                    lambda txt: self.parameter_pending_save(txt, self.list_loadshapes)
+                )
                 if widget == self.combo_column:
                     widget.currentIndexChanged.connect(self.update_csv_parameters)
             elif isinstance(widget, QtWidgets.QCheckBox):
-                widget.clicked.connect(lambda txt: self.parameter_pending_save(txt, self.list_loadshapes))
+                widget.clicked.connect(
+                    lambda txt: self.parameter_pending_save(txt, self.list_loadshapes)
+                )
                 if widget == self.checkbox_external_file:
-                    widget.clicked.connect((lambda _: self.keep_ext_state(self.checkbox_external_file.isChecked())))
+                    widget.clicked.connect(
+                        (
+                            lambda _: self.keep_ext_state(
+                                self.checkbox_external_file.isChecked()
+                            )
+                        )
+                    )
                 if widget == self.checkbox_has_headers:
                     widget.clicked.connect(self.update_csv_parameters)
             else:
-                widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_loadshapes))
-                widget.textEdited.connect(lambda txt: self.update_plot(self.loadshape_subplot))
+                widget.textEdited.connect(
+                    lambda txt: self.parameter_pending_save(txt, self.list_loadshapes)
+                )
+                widget.textEdited.connect(
+                    lambda txt: self.update_plot(self.loadshape_subplot)
+                )
         # XYCurve
         self.edit_npts_xycurve.textEdited.connect(self.npts_validation)
         for param, widget in self.xycurve_pars.items():
-            widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_xycurves))
-            widget.textEdited.connect(lambda txt: self.update_plot(self.xycurve_subplot))
+            widget.textEdited.connect(
+                lambda txt: self.parameter_pending_save(txt, self.list_xycurves)
+            )
+            widget.textEdited.connect(
+                lambda txt: self.update_plot(self.xycurve_subplot)
+            )
         # TShape
         self.edit_npts_tshape.textEdited.connect(self.npts_validation)
         for param, widget in self.tshape_pars.items():
-            widget.textEdited.connect(lambda txt: self.parameter_pending_save(txt, self.list_tshapes))
+            widget.textEdited.connect(
+                lambda txt: self.parameter_pending_save(txt, self.list_tshapes)
+            )
             widget.textEdited.connect(lambda txt: self.update_plot(self.tshape_subplot))
 
         # Phases limit
@@ -736,12 +865,11 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.update_plot(self.tshape_subplot)
 
     def npts_validation(self):
-
         mult_points = self.return_list_of_floats(self.edit_mult.text())
         max = len(mult_points) if mult_points else 0
 
         self.npts_validator.setTop(max)
-        result, _, _ =self.npts_validator.validate(self.edit_npts.text(), 0)
+        result, _, _ = self.npts_validator.validate(self.edit_npts.text(), 0)
 
         if not self.edit_npts.text() == "":
             if not result == 2:
@@ -751,7 +879,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.checkbox_external_file.setChecked(not new)
 
     def get_obj_defaults(self, obj_type):
-
         if obj_type == "linecode":
             linecode_def = {
                 "mode": "symmetrical",
@@ -776,28 +903,29 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 "csv_file": "False",
                 "csv_path": "",
                 "headers": "False",
-                "column": "1"
+                "column": "1",
             }
 
             return loadshape_def
 
         elif obj_type == "xycurve":
-            xycurve_def = {"npts": "5",
-                           "yarray": "[0.2, 0.4, 0.6, 0.8, 1.0]",
-                           "xarray": "[1.0, 2.0, 3.0, 4.0, 5.0]"}
+            xycurve_def = {
+                "npts": "5",
+                "yarray": "[0.2, 0.4, 0.6, 0.8, 1.0]",
+                "xarray": "[1.0, 2.0, 3.0, 4.0, 5.0]",
+            }
 
             return xycurve_def
 
         elif obj_type == "tshape":
-            tshape_def = {"npts": "24",
-                          "temp": "[25, 25, 25, 25, 25, 25, 25, 25, 35, 40, 45, 50, 60, 60, 55, 40, 35, 30, 25, 25, 25, 25, 25, 25]",
-                          "interval": "1"
-                          }
+            tshape_def = {
+                "npts": "24",
+                "temp": "[25, 25, 25, 25, 25, 25, 25, 25, 35, 40, 45, 50, 60, 60, 55, 40, 35, 30, 25, 25, 25, 25, 25, 25]",
+                "interval": "1",
+            }
             return tshape_def
 
-
     def update_plot(self, plot_object):
-
         if self.obj_type == "loadshape":
             canvas_obj = self.canvas_loadshape
             mult_values = self.return_list_of_floats(self.edit_mult.text())
@@ -818,7 +946,7 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             interval = "1"
             npts = self.edit_npts_tshape.text()
 
-        if npts and not npts == '-' and interval and not interval == '-':
+        if npts and not npts == "-" and interval and not interval == "-":
             npts = int(npts)
             interval = float(interval)
 
@@ -826,13 +954,13 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 if interval == 0:
                     if hour_values:
                         xdata = hour_values[:npts]
-                        ydata = mult_values[:len(xdata)]
+                        ydata = mult_values[: len(xdata)]
                         ydata.extend([0] * (len(xdata) - len(ydata)))  # Zero padding
                     else:
                         xdata = None
                 else:
                     xdata = [0] + [n * interval for n in list(range(1, npts))]
-                    ydata = mult_values[:len(xdata)]
+                    ydata = mult_values[: len(xdata)]
                     ydata.extend([0] * (len(xdata) - len(ydata)))  # Zero padding
 
                 plot_object.cla()
@@ -841,13 +969,15 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     min_y = math.floor(min(ydata))
                     max_y = math.ceil(max(ydata))
                     y_tick_num = (max_y - min_y) / 4
-                    plot_object.set_ylim([min_y - (y_tick_num * 0.2), max_y + (y_tick_num * 0.2)])
+                    plot_object.set_ylim(
+                        [min_y - (y_tick_num * 0.2), max_y + (y_tick_num * 0.2)]
+                    )
                     plot_object.set_yticks([min_y + y_tick_num * n for n in range(5)])
                     min_x = min(xdata)
                     max_x = max(xdata)
                     x_tick_num = (max_x - min_x) / 4
                     plot_object.set_xticks([min_x + x_tick_num * n for n in range(5)])
-                    plot_object.plot(xdata, ydata, 'r')
+                    plot_object.plot(xdata, ydata, "r")
                     plot_object.grid(which="both")
                 canvas_obj.draw()
 
@@ -865,7 +995,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             canvas_obj.draw()
 
     def get_object_dicts(self):
-
         linecode_def = {"Default": self.get_obj_defaults("linecode")}
         loadshape_def = {"Default": self.get_obj_defaults("loadshape")}
         xycurve_def = {"Default": self.get_obj_defaults("xycurve")}
@@ -898,7 +1027,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.tshape_dict.update(tshape_def)
 
     def update_lists_with_names(self, start=False):
-
         # LineCodes
         self.list_linecodes.clear()
         linecode_names = list(self.linecodes_dict.keys())
@@ -952,7 +1080,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.list_tshapes.setCurrentRow(0)
 
     def update_parameters_from_dict(self, obj_list):
-
         # Linecode
         if obj_list == self.list_linecodes:
             self.radio_button_status("linecode")
@@ -971,13 +1098,23 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 for par in self.linecode_pars.get(mode):
                     par_value = self.linecodes_dict.get(linecode_name).get(par)
                     if par_value:
-                        if isinstance(self.linecode_pars.get(mode).get(par), QtWidgets.QLineEdit):
-                            self.linecode_pars.get(mode).get(par).setText(f"{par_value}")
-                            self.linecode_pars.get(mode).get(par).setStyleSheet("color: black;")
+                        if isinstance(
+                            self.linecode_pars.get(mode).get(par), QtWidgets.QLineEdit
+                        ):
+                            self.linecode_pars.get(mode).get(par).setText(
+                                f"{par_value}"
+                            )
+                            self.linecode_pars.get(mode).get(par).setStyleSheet(
+                                "color: black;"
+                            )
                     else:
-                        if isinstance(self.linecode_pars.get(mode).get(par), QtWidgets.QLineEdit):
+                        if isinstance(
+                            self.linecode_pars.get(mode).get(par), QtWidgets.QLineEdit
+                        ):
                             self.linecode_pars.get(mode).get(par).setText(f"")
-                            self.linecode_pars.get(mode).get(par).setStyleSheet("color: black;")
+                            self.linecode_pars.get(mode).get(par).setStyleSheet(
+                                "color: black;"
+                            )
             else:
                 # Blank out the parameters
                 mode = "symmetrical" if self.radio_symmetrical.isChecked() else "matrix"
@@ -986,24 +1123,33 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
         # LoadShape
         elif obj_list == self.list_loadshapes:
-
             if obj_list.currentItem():
                 loadshape_name = obj_list.currentItem().text()
 
-                use_external_file = self.loadshape_dict.get(loadshape_name).get("csv_file") == "True"
+                use_external_file = (
+                    self.loadshape_dict.get(loadshape_name).get("csv_file") == "True"
+                )
                 if use_external_file:
                     headers = self.loadshape_dict.get(loadshape_name).get("headers")
                     column = self.loadshape_dict.get(loadshape_name).get("column")
-                    external_file_path = self.loadshape_dict.get(loadshape_name).get("csv_path")
-                    datapoints, columns = self.get_points_from_csv(external_file_path, headers, column)
+                    external_file_path = self.loadshape_dict.get(loadshape_name).get(
+                        "csv_path"
+                    )
+                    datapoints, columns = self.get_points_from_csv(
+                        external_file_path, headers, column
+                    )
 
                     current_selected_combo = self.combo_column.currentText()
                     self.combo_column.clear()
                     self.combo_column.addItems(columns)
                     if current_selected_combo in columns:
-                        self.combo_column.setCurrentText(current_selected_combo) if headers == "True" else None
+                        self.combo_column.setCurrentText(
+                            current_selected_combo
+                        ) if headers == "True" else None
                     else:
-                        self.combo_column.setCurrentText("1") if headers == "True" else None
+                        self.combo_column.setCurrentText(
+                            "1"
+                        ) if headers == "True" else None
                 else:
                     self.combo_column.clear()
 
@@ -1022,17 +1168,25 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     else:
                         par_value = self.loadshape_dict.get(loadshape_name).get(par)
                     if par_value:
-                        if isinstance(self.loadshape_pars.get(par), QtWidgets.QLineEdit):
+                        if isinstance(
+                            self.loadshape_pars.get(par), QtWidgets.QLineEdit
+                        ):
                             self.loadshape_pars.get(par).setText(f"{par_value}")
                             self.loadshape_pars.get(par).setStyleSheet("color: black;")
                         elif self.loadshape_pars.get(par) == self.combo_interval:
                             idx_dict = {"h": 0, "min": 1, "s": 2}
-                            self.loadshape_pars.get(par).setCurrentIndex(idx_dict.get(par_value))
+                            self.loadshape_pars.get(par).setCurrentIndex(
+                                idx_dict.get(par_value)
+                            )
                             self.loadshape_pars.get(par).setStyleSheet("color: black;")
-                        elif isinstance(self.loadshape_pars.get(par), QtWidgets.QComboBox):
+                        elif isinstance(
+                            self.loadshape_pars.get(par), QtWidgets.QComboBox
+                        ):
                             self.loadshape_pars.get(par).setCurrentText(par_value)
                             self.loadshape_pars.get(par).setStyleSheet("color: black;")
-                        elif isinstance(self.loadshape_pars.get(par), QtWidgets.QCheckBox):
+                        elif isinstance(
+                            self.loadshape_pars.get(par), QtWidgets.QCheckBox
+                        ):
                             self.loadshape_pars.get(par).setChecked(par_value == "True")
                             self.loadshape_pars.get(par).setStyleSheet("color: black;")
 
@@ -1041,15 +1195,16 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     if not par == "interval_unit":
                         self.loadshape_pars.get(par).setText(f"")
 
-            if hasattr(self, 'loadshape_subplot'):
+            if hasattr(self, "loadshape_subplot"):
                 self.update_plot(self.loadshape_subplot)
 
         elif obj_list == self.list_xycurves:
-
             if obj_list.currentItem():
                 xycurve_name = obj_list.currentItem().text()
 
-                use_external_file = self.xycurve_dict.get(xycurve_name).get("csv_file") == "True"
+                use_external_file = (
+                    self.xycurve_dict.get(xycurve_name).get("csv_file") == "True"
+                )
                 self.checkbox_has_headers.setEnabled(use_external_file)
                 self.label_external_file_column.setEnabled(use_external_file)
                 self.combo_column.setEnabled(use_external_file)
@@ -1067,7 +1222,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                             self.xycurve_pars.get(par).setStyleSheet("color: black;")
 
         elif obj_list == self.list_tshapes:
-
             if obj_list.currentItem():
                 tshape_name = obj_list.currentItem().text()
 
@@ -1082,7 +1236,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.edit_mult.setCursorPosition(0)
 
     def radio_button_status(self, obj_type):
-
         if obj_type == "linecode":
             if self.radio_matrix.isChecked():
                 for param_editbox in self.linecode_pars.get("symmetrical").values():
@@ -1096,9 +1249,7 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     param_editbox.setEnabled(False)
 
     def parameter_pending_save(self, _, list_widget):
-
         if list_widget == self.list_linecodes:
-
             if self.radio_symmetrical.isChecked():
                 mode = "symmetrical"
                 not_mode = "matrix"
@@ -1109,7 +1260,10 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 not_mode = "symmetrical"
                 radio = self.radio_matrix
                 not_radio = self.radio_symmetrical
-            if not (self.linecodes_dict.get(list_widget.currentItem().text()).get("mode") == mode):
+            if not (
+                self.linecodes_dict.get(list_widget.currentItem().text()).get("mode")
+                == mode
+            ):
                 radio.setStyleSheet("color: red;")
                 not_radio.setStyleSheet("color: black;")
             else:
@@ -1120,7 +1274,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
             pending = []
             for param, widget in self.linecode_pars.get(mode).items():
-                current_value = self.linecodes_dict.get(list_widget.currentItem().text()).get(param)
+                current_value = self.linecodes_dict.get(
+                    list_widget.currentItem().text()
+                ).get(param)
                 if not widget.text() == current_value:
                     widget.setStyleSheet("color: red;")
                     pending.append(True)
@@ -1135,8 +1291,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         elif list_widget == self.list_loadshapes:
             pending = []
             for param, widget in self.loadshape_pars.items():
-
-                current_value = self.loadshape_dict.get(list_widget.currentItem().text()).get(param)
+                current_value = self.loadshape_dict.get(
+                    list_widget.currentItem().text()
+                ).get(param)
                 if isinstance(widget, QtWidgets.QComboBox):
                     current_text = widget.currentText()
                 elif isinstance(widget, QtWidgets.QCheckBox):
@@ -1162,7 +1319,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         elif list_widget == self.list_xycurves:
             pending = []
             for param, widget in self.xycurve_pars.items():
-                current_value = self.xycurve_dict.get(list_widget.currentItem().text()).get(param)
+                current_value = self.xycurve_dict.get(
+                    list_widget.currentItem().text()
+                ).get(param)
                 current_text = widget.text()
 
                 if not current_text == current_value:
@@ -1180,7 +1339,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         elif list_widget == self.list_tshapes:
             pending = []
             for param, widget in self.tshape_pars.items():
-                current_value = self.tshape_dict.get(list_widget.currentItem().text()).get(param)
+                current_value = self.tshape_dict.get(
+                    list_widget.currentItem().text()
+                ).get(param)
                 current_text = widget.text()
 
                 if not current_text == current_value:
@@ -1196,7 +1357,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 self.button_tshape_save.setEnabled(False)
 
     def new_object(self, obj_type):
-
         for k in range(10000):
             if k == 0:
                 new_name = "Default"
@@ -1208,30 +1368,44 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     # If the new name already exists, count k + 1
                     pass
                 else:
-                    self.linecodes_dict.update({new_name: self.get_obj_defaults("linecode")})
+                    self.linecodes_dict.update(
+                        {new_name: self.get_obj_defaults("linecode")}
+                    )
                     self.update_lists_with_names()
                     self.list_linecodes.setCurrentItem(
-                        self.list_linecodes.findItems(new_name, QtCore.Qt.MatchFixedString)[0])
+                        self.list_linecodes.findItems(
+                            new_name, QtCore.Qt.MatchFixedString
+                        )[0]
+                    )
                     break
             elif obj_type == "loadshape":
                 if self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchFixedString):
                     # If the new name already exists, count k + 1
                     pass
                 else:
-                    self.loadshape_dict.update({new_name: self.get_obj_defaults("loadshape")})
+                    self.loadshape_dict.update(
+                        {new_name: self.get_obj_defaults("loadshape")}
+                    )
                     self.update_lists_with_names()
                     self.list_loadshapes.setCurrentItem(
-                        self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchFixedString)[0])
+                        self.list_loadshapes.findItems(
+                            new_name, QtCore.Qt.MatchFixedString
+                        )[0]
+                    )
                     break
             elif obj_type == "xycurve":
                 if self.list_xycurves.findItems(new_name, QtCore.Qt.MatchFixedString):
                     # If the new name already exists, count k+1
                     pass
                 else:
-                    self.xycurve_dict.update({new_name: self.get_obj_defaults("xycurve")})
+                    self.xycurve_dict.update(
+                        {new_name: self.get_obj_defaults("xycurve")}
+                    )
                     self.update_lists_with_names()
                     self.list_xycurves.setCurrentItem(
-                        self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[0]
+                        self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[
+                            0
+                        ]
                     )
                     break
             elif obj_type == "tshape":
@@ -1247,7 +1421,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     break
 
     def copy_object(self, obj_type):
-
         if obj_type == "linecode":
             if self.list_linecodes.currentItem():
                 selected_object = self.list_linecodes.currentItem()
@@ -1272,38 +1445,58 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     # If the new name already exists, count k + 1
                     pass
                 else:
-                    self.linecodes_dict.update({new_name: self.linecodes_dict.get(selected_object.text())})
+                    self.linecodes_dict.update(
+                        {new_name: self.linecodes_dict.get(selected_object.text())}
+                    )
                     self.update_lists_with_names()
                     self.list_linecodes.setCurrentItem(
-                        self.list_linecodes.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                        self.list_linecodes.findItems(new_name, QtCore.Qt.MatchExactly)[
+                            0
+                        ]
+                    )
                     break
             elif obj_type == "loadshape":
                 if self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchExactly):
                     # If the new name already exists, count k + 1
                     pass
                 else:
-                    self.loadshape_dict.update({new_name: self.loadshape_dict.get(selected_object.text())})
+                    self.loadshape_dict.update(
+                        {new_name: self.loadshape_dict.get(selected_object.text())}
+                    )
                     self.update_lists_with_names()
                     self.list_loadshapes.setCurrentItem(
-                        self.list_loadshapes.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                        self.list_loadshapes.findItems(
+                            new_name, QtCore.Qt.MatchExactly
+                        )[0]
+                    )
                     break
             elif obj_type == "xycurve":
                 if self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly):
                     # If the new name already exists, count k + 1
                     pass
                 else:
-                    self.xycurve_dict.update({new_name: self.xycurve_dict.get(selected_object.text())})
+                    self.xycurve_dict.update(
+                        {new_name: self.xycurve_dict.get(selected_object.text())}
+                    )
                     self.update_lists_with_names()
-                    self.list_xycurves.setCurrentItem(self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                    self.list_xycurves.setCurrentItem(
+                        self.list_xycurves.findItems(new_name, QtCore.Qt.MatchExactly)[
+                            0
+                        ]
+                    )
                     break
             elif obj_type == "tshape":
                 if self.list_tshapes.findItems(new_name, QtCore.Qt.MatchExactly):
                     # If the new name already exists, count k + 1
                     pass
                 else:
-                    self.tshape_dict.update({new_name: self.tshape_dict.get(selected_object.text())})
+                    self.tshape_dict.update(
+                        {new_name: self.tshape_dict.get(selected_object.text())}
+                    )
                     self.update_lists_with_names()
-                    self.list_tshapes.setCurrentItem(self.list_tshapes.findItems(new_name, QtCore.Qt.MatchExactly)[0])
+                    self.list_tshapes.setCurrentItem(
+                        self.list_tshapes.findItems(new_name, QtCore.Qt.MatchExactly)[0]
+                    )
                     break
 
     def rename_object_step1(self, list_item):
@@ -1328,22 +1521,34 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         if obj_type == "linecode":
             for row in range(self.list_linecodes.count()):
                 current_item = self.list_linecodes.item(row)
-                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                if (
+                    not current_item == self.changing_listitem
+                    and current_item.text().lower() == new_name.lower()
+                ):
                     duplicate = True
         elif obj_type == "loadshape":
             for row in range(self.list_loadshapes.count()):
                 current_item = self.list_loadshapes.item(row)
-                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                if (
+                    not current_item == self.changing_listitem
+                    and current_item.text().lower() == new_name.lower()
+                ):
                     duplicate = True
         elif obj_type == "xycurve":
             for row in range(self.list_xycurves.count()):
                 current_item = self.list_xycurves.item(row)
-                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                if (
+                    not current_item == self.changing_listitem
+                    and current_item.text().lower() == new_name.lower()
+                ):
                     duplicate = True
         elif obj_type == "tshape":
             for row in range(self.list_tshapes.count()):
                 current_item = self.list_tshapes.item(row)
-                if not current_item == self.changing_listitem and current_item.text().lower() == new_name.lower():
+                if (
+                    not current_item == self.changing_listitem
+                    and current_item.text().lower() == new_name.lower()
+                ):
                     duplicate = True
 
         if duplicate:
@@ -1357,24 +1562,38 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         for c in new_name:
             if c not in self.valid_characters:
                 msgbox_invchar = QtWidgets.QMessageBox(self)
-                msgbox_invchar.warning(self, "Invalid name", "The object name contains invalid characters")
+                msgbox_invchar.warning(
+                    self, "Invalid name", "The object name contains invalid characters"
+                )
                 self.changing_listitem.setText(self.old_listitem_name)
                 return
 
         if obj_type == "linecode":
-            self.linecodes_dict.update({new_name: self.linecodes_dict.pop(self.old_listitem_name)})
+            self.linecodes_dict.update(
+                {new_name: self.linecodes_dict.pop(self.old_listitem_name)}
+            )
         elif obj_type == "loadshape":
-            self.loadshape_dict.update({new_name: self.loadshape_dict.pop(self.old_listitem_name)})
+            self.loadshape_dict.update(
+                {new_name: self.loadshape_dict.pop(self.old_listitem_name)}
+            )
         elif obj_type == "xycurve":
-            self.xycurve_dict.update({new_name: self.xycurve_dict.pop(self.old_listitem_name)})
+            self.xycurve_dict.update(
+                {new_name: self.xycurve_dict.pop(self.old_listitem_name)}
+            )
         elif obj_type == "tshape":
-            self.tshape_dict.update({new_name: self.tshape_dict.pop(self.old_listitem_name)})
+            self.tshape_dict.update(
+                {new_name: self.tshape_dict.pop(self.old_listitem_name)}
+            )
 
     def delete_object(self, list_widget):
         msgbox = QtWidgets.QMessageBox()
         selected_item_name = list_widget.currentItem().text()
-        ans = msgbox.question(self, 'Remove', f"Are you sure you want to remove {selected_item_name}?",
-                              msgbox.Yes | msgbox.No)
+        ans = msgbox.question(
+            self,
+            "Remove",
+            f"Are you sure you want to remove {selected_item_name}?",
+            msgbox.Yes | msgbox.No,
+        )
         if ans == msgbox.Yes:
             list_widget.takeItem(list_widget.currentRow())
 
@@ -1388,17 +1607,17 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 self.tshape_dict.pop(selected_item_name)
 
     def save_parameters(self, obj_type):
-
         new_param_values = {}
 
         if obj_type == "linecode":
-
             mode = "symmetrical" if self.radio_symmetrical.isChecked() else "matrix"
             for param_name, param_widget in self.linecode_pars.get(mode).items():
                 new_param_values.update({param_name: param_widget.text()})
             new_param_values.update({"mode": mode})
 
-            self.linecodes_dict.update({self.list_linecodes.currentItem().text(): new_param_values})
+            self.linecodes_dict.update(
+                {self.list_linecodes.currentItem().text(): new_param_values}
+            )
 
             self.radio_matrix.setStyleSheet("color: black;")
             self.radio_symmetrical.setStyleSheet("color: black;")
@@ -1409,7 +1628,6 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.button_linecode_save.setDisabled(True)
 
         if obj_type == "loadshape":
-
             for param_name, param_widget in self.loadshape_pars.items():
                 if isinstance(param_widget, QtWidgets.QComboBox):
                     new_param_values.update({param_name: param_widget.currentText()})
@@ -1418,29 +1636,33 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 else:
                     new_param_values.update({param_name: param_widget.text()})
 
-            self.loadshape_dict.update({self.list_loadshapes.currentItem().text(): new_param_values})
+            self.loadshape_dict.update(
+                {self.list_loadshapes.currentItem().text(): new_param_values}
+            )
 
             for param, widget in self.loadshape_pars.items():
                 widget.setStyleSheet("color: black;")
             self.button_loadshape_save.setDisabled(True)
 
         if obj_type == "xycurve":
-
             for param_name, param_widget in self.xycurve_pars.items():
                 new_param_values.update({param_name: param_widget.text()})
 
-            self.xycurve_dict.update({self.list_xycurves.currentItem().text(): new_param_values})
+            self.xycurve_dict.update(
+                {self.list_xycurves.currentItem().text(): new_param_values}
+            )
 
             for param, widget in self.xycurve_pars.items():
                 widget.setStyleSheet("color: black;")
             self.button_xycurve_save.setDisabled(True)
 
         if obj_type == "tshape":
-
             for param_name, param_widget in self.tshape_pars.items():
                 new_param_values.update({param_name: param_widget.text()})
 
-            self.tshape_dict.update({self.list_tshapes.currentItem().text(): new_param_values})
+            self.tshape_dict.update(
+                {self.list_tshapes.currentItem().text(): new_param_values}
+            )
 
             for param, widget in self.tshape_pars.items():
                 widget.setStyleSheet("color: black;")
@@ -1466,29 +1688,37 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
 
     def return_updated_dict(self):
         msgbox = QtWidgets.QMessageBox()
-        ans = msgbox.question(self, 'Save changes',
-                              f"Are you sure you want to save the new parameters? Changes cannot be undone.",
-                              msgbox.Yes | msgbox.No)
+        ans = msgbox.question(
+            self,
+            "Save changes",
+            f"Are you sure you want to save the new parameters?"
+            f" Changes cannot be undone.",
+            msgbox.Yes | msgbox.No,
+        )
 
         if ans == msgbox.Yes:
-            self.obj_dicts.update({
-                "linecodes": self.linecodes_dict,
-                "loadshapes": self.loadshape_dict,
-                "xycurves": self.xycurve_dict,
-                "tshapes": self.tshape_dict,
-            })
+            self.obj_dicts.update(
+                {
+                    "linecodes": self.linecodes_dict,
+                    "loadshapes": self.loadshape_dict,
+                    "xycurves": self.xycurve_dict,
+                    "tshapes": self.tshape_dict,
+                }
+            )
             self.accept()
 
     def update_csv_parameters(self):
         loadshape_name = self.list_loadshapes.currentItem().text()
-        use_external_file = self.loadshape_dict.get(loadshape_name).get("csv_file") == "True"
+        use_external_file = (
+            self.loadshape_dict.get(loadshape_name).get("csv_file") == "True"
+        )
         if use_external_file:
             external_file_path = self.loadshape_dict.get(loadshape_name).get("csv_path")
 
             headers = "True" if self.checkbox_has_headers.isChecked() else "False"
 
             try:
-                with open(external_file_path, 'r', encoding='utf-8-sig') as f:
+                with open(external_file_path, "r", encoding="utf-8-sig") as f:
                     if headers == "True":
                         df = pd.read_csv(f)
                     else:
@@ -1506,14 +1736,16 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                 column = self.combo_column.currentText()
                 self.combo_column.blockSignals(False)
 
-                datapoints, columns = self.get_points_from_csv(external_file_path, headers, column)
+                datapoints, columns = self.get_points_from_csv(
+                    external_file_path, headers, column
+                )
 
                 self.edit_mult.setText(str(datapoints))
                 self.edit_mult.setCursorPosition(0)
                 self.loadshape_dict.get(loadshape_name)["mult"] = str(datapoints)
 
                 self.parameter_pending_save(None, self.list_loadshapes)
-                if hasattr(self, 'loadshape_subplot'):
+                if hasattr(self, "loadshape_subplot"):
                     self.update_plot(self.loadshape_subplot)
 
             except FileNotFoundError:
@@ -1522,7 +1754,7 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             self.test_csv_files()
 
     def test_csv_files(self):
-        """ Helps when sharing Typhoon OpenDSS models. """
+        """Helps when sharing Typhoon OpenDSS models."""
 
         not_found = []
         bg_color = QtGui.QColor()
@@ -1532,7 +1764,9 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
             list_item = self.list_loadshapes.item(idx)
             loadshape_name = list_item.text()
             bg_color.setNamedColor("#FFFFFF")
-            use_external_file = self.loadshape_dict.get(loadshape_name).get("csv_file") == "True"
+            use_external_file = (
+                self.loadshape_dict.get(loadshape_name).get("csv_file") == "True"
+            )
             if use_external_file:
                 csv_path = self.loadshape_dict.get(loadshape_name).get("csv_path")
                 if not pathlib.Path(csv_path).is_file():
@@ -1544,11 +1778,12 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         self.list_loadshapes_not_found = not_found
 
     def fix_csv_base_folder(self):
-
         fixed_loadshapes = {}
 
         folder_dialog = QtWidgets.QFileDialog()
-        folder_path = str(folder_dialog.getExistingDirectory(self, "Select the CSV files folder"))
+        folder_path = str(
+            folder_dialog.getExistingDirectory(self, "Select the CSV files folder")
+        )
         if folder_path:
             for loadshape_name in self.list_loadshapes_not_found:
                 old_csv_path = self.loadshape_dict.get(loadshape_name).get("csv_path")
@@ -1558,10 +1793,13 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     fixed_loadshapes.update({loadshape_name: str(new_csv_path)})
 
         if len(fixed_loadshapes) > 0:
-            msg = f"Found {len(fixed_loadshapes)} of {len(self.list_loadshapes_not_found)} missing files in the " \
-                  f"specified folder.\n\nSave the new path to the loadshapes?"
+            msg = (
+                f"Found {len(fixed_loadshapes)} of {len(self.list_loadshapes_not_found)}"
+                f"missing files in the "
+                f"specified folder.\n\nSave the new path to the loadshapes?"
+            )
             msgbox = QtWidgets.QMessageBox()
-            ans = msgbox.question(self, 'Save changes', msg, msgbox.Ok | msgbox.Cancel)
+            ans = msgbox.question(self, "Save changes", msg, msgbox.Ok | msgbox.Cancel)
 
             if ans == msgbox.Ok:
                 for loadshape_name, new_path in fixed_loadshapes.items():
@@ -1572,16 +1810,17 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
         else:
             msgbox = QtWidgets.QMessageBox()
             msgbox.setIcon(QtWidgets.QMessageBox.Question)
-            msgbox.setText(f"Couldn't find any CSV files in the selected folder with the names defined on the loadshapes.")
-            msgbox.setWindowTitle('No files found')
-            msgbox.addButton('OK', QtWidgets.QMessageBox.YesRole)
+            msgbox.setText(
+                f"Couldn't find any CSV files in the selected folder with the names defined on the loadshapes."
+            )
+            msgbox.setWindowTitle("No files found")
+            msgbox.addButton("OK", QtWidgets.QMessageBox.YesRole)
 
             msgbox.exec()
 
     def get_points_from_csv(self, loaded_file_path, headers=None, column=None):
-
         try:
-            with open(loaded_file_path, 'r', encoding='utf-8-sig') as f:
+            with open(loaded_file_path, "r", encoding="utf-8-sig") as f:
                 df = pd.read_csv(f)
                 df = df.fillna(0)
                 if headers and column:
@@ -1599,27 +1838,36 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                             f.seek(0)
                             df = pd.read_csv(f, header=None)
                             df = df.fillna(0)
-                        datapoints = list(df.iloc[:, int(hc_dialog.selected_column) - 1])
+                        datapoints = list(
+                            df.iloc[:, int(hc_dialog.selected_column) - 1]
+                        )
 
-                    return datapoints, hc_dialog.has_headers, hc_dialog.selected_column, df.columns
+                    return (
+                        datapoints,
+                        hc_dialog.has_headers,
+                        hc_dialog.selected_column,
+                        df.columns,
+                    )
 
         except FileNotFoundError:
             self.edit_mult.setText("File not found.")
             return ("File not found.", ["1"])
 
     def add_from_file(self, obj_type):
-
         if obj_type == "linecode" or obj_type == "loadshape":
             filter = "(*.csv *.dss);"
             file_name = QtWidgets.QFileDialog()
             file_name.setFileMode(QtWidgets.QFileDialog.ExistingFile)
             if self.mdl:
-                located_file = file_name.getOpenFileName(self, "Select a file", self.mdl.get_model_file_path(), filter=filter)
+                located_file = file_name.getOpenFileName(
+                    self, "Select a file", self.mdl.get_model_file_path(), filter=filter
+                )
             else:
-                located_file = file_name.getOpenFileName(self, "Select a file", "C:/", filter=filter)
+                located_file = file_name.getOpenFileName(
+                    self, "Select a file", "C:/", filter=filter
+                )
 
             if located_file[0]:
-
                 duplicate = False
                 csv_loaded = False
                 if obj_type == "linecode":
@@ -1628,32 +1876,46 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                     added_items = dss_parser.parse_linecodes(located_file[0])
                     if added_items:
                         for linecode in list(added_items.keys()):
-                            if self.list_linecodes.findItems(linecode, QtCore.Qt.MatchFixedString):
+                            if self.list_linecodes.findItems(
+                                linecode, QtCore.Qt.MatchFixedString
+                            ):
                                 duplicate = True
                 elif obj_type == "loadshape":
                     obj_dict = self.loadshape_dict
                     obj_list = self.list_loadshapes
                     if located_file[0][-3:].lower() == "dss":
-                        added_items = dss_parser.parse_loadshapes(located_file[0], from_gui=True)
+                        added_items = dss_parser.parse_loadshapes(
+                            located_file[0], from_gui=True
+                        )
                     elif located_file[0][-3:].lower() == "csv":
                         added_items = None
                         csv_loaded = True
                     if added_items:
                         for loadshape in list(added_items.keys()):
-                            if self.list_loadshapes.findItems(loadshape, QtCore.Qt.MatchFixedString):
+                            if self.list_loadshapes.findItems(
+                                loadshape, QtCore.Qt.MatchFixedString
+                            ):
                                 duplicate = True
 
                 if added_items:
                     if duplicate:
                         msgbox = QtWidgets.QMessageBox()
                         msgbox.setIcon(QtWidgets.QMessageBox.Question)
-                        msgbox.setText("The selected file contains LineCodes with names matching existing ones.\n\n"
-                                       "Select Replace to update the parameter values from the selected file.\n\n"
-                                       "Select Keep to add the new LineCodes with a different name.")
-                        msgbox.setWindowTitle('Duplicate names detected')
-                        replace_btn = msgbox.addButton('Replace', QtWidgets.QMessageBox.YesRole)
-                        keep_btn = msgbox.addButton('Keep', QtWidgets.QMessageBox.NoRole)
-                        cancel_btn = msgbox.addButton('Cancel', QtWidgets.QMessageBox.RejectRole)
+                        msgbox.setText(
+                            "The selected file contains LineCodes with names matching existing ones.\n\n"
+                            "Select Replace to update the parameter values from the selected file.\n\n"
+                            "Select Keep to add the new LineCodes with a different name."
+                        )
+                        msgbox.setWindowTitle("Duplicate names detected")
+                        replace_btn = msgbox.addButton(
+                            "Replace", QtWidgets.QMessageBox.YesRole
+                        )
+                        keep_btn = msgbox.addButton(
+                            "Keep", QtWidgets.QMessageBox.NoRole
+                        )
+                        cancel_btn = msgbox.addButton(
+                            "Cancel", QtWidgets.QMessageBox.RejectRole
+                        )
 
                         msgbox.exec()
 
@@ -1666,8 +1928,10 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                                     if k == 0:
                                         new_name = item
                                     else:
-                                        new_name = item + '-' + str(k)
-                                    if obj_list.findItems(new_name, QtCore.Qt.MatchFixedString):
+                                        new_name = item + "-" + str(k)
+                                    if obj_list.findItems(
+                                        new_name, QtCore.Qt.MatchFixedString
+                                    ):
                                         # If the new name already exists, count k + 1
                                         pass
                                     else:
@@ -1681,50 +1945,68 @@ class GeneralObjects(QtWidgets.QDialog, Ui_objects):
                             self.linecodes_dict.update(added_items)
                             self.update_lists_with_names()
                             self.list_linecodes.setCurrentItem(
-                                self.list_linecodes.findItems(list(added_items.keys())[0],
-                                                                QtCore.Qt.MatchFixedString)[0])
+                                self.list_linecodes.findItems(
+                                    list(added_items.keys())[0],
+                                    QtCore.Qt.MatchFixedString,
+                                )[0]
+                            )
                         elif obj_type == "loadshape":
                             self.loadshape_dict.update(added_items)
                             self.update_lists_with_names()
                             self.list_loadshapes.setCurrentItem(
-                                self.list_loadshapes.findItems(list(added_items.keys())[0],
-                                                                QtCore.Qt.MatchFixedString)[0])
+                                self.list_loadshapes.findItems(
+                                    list(added_items.keys())[0],
+                                    QtCore.Qt.MatchFixedString,
+                                )[0]
+                            )
                 elif csv_loaded:
                     from pathlib import Path
-                    points, headers, column, columns = self.get_points_from_csv(located_file[0])
+
+                    points, headers, column, columns = self.get_points_from_csv(
+                        located_file[0]
+                    )
 
                     for k in range(10000):
                         if k == 0:
                             new_name = f"{Path(located_file[0]).stem}"
                         else:
-                            new_name = f'{Path(located_file[0]).stem}-' + str(k)
+                            new_name = f"{Path(located_file[0]).stem}-" + str(k)
                         if obj_list.findItems(new_name, QtCore.Qt.MatchFixedString):
                             # If the new name already exists, count k + 1
                             pass
                         else:
-                            obj_dict.update({new_name: {"interval": "1",
-                                                        "npts": str(len(points)),
-                                                        "hour": "",
-                                                        "interval_unit": "h",
-                                                        "useactual": "False",
-                                                        "csv_file": "True",
-                                                        "csv_path": located_file[0],
-                                                        "headers": str(headers),
-                                                        "column": str(column)
-                                                        }})
+                            obj_dict.update(
+                                {
+                                    new_name: {
+                                        "interval": "1",
+                                        "npts": str(len(points)),
+                                        "hour": "",
+                                        "interval_unit": "h",
+                                        "useactual": "False",
+                                        "csv_file": "True",
+                                        "csv_path": located_file[0],
+                                        "headers": str(headers),
+                                        "column": str(column),
+                                    }
+                                }
+                            )
                             break
 
-
                     self.update_lists_with_names()
-                    self.list_loadshapes.setCurrentItem(self.list_loadshapes.findItems(new_name,
-                                                                                       QtCore.Qt.MatchFixedString)[0])
+                    self.list_loadshapes.setCurrentItem(
+                        self.list_loadshapes.findItems(
+                            new_name, QtCore.Qt.MatchFixedString
+                        )[0]
+                    )
 
                 else:
                     msgbox = QtWidgets.QMessageBox()
                     msgbox.setIcon(QtWidgets.QMessageBox.Question)
-                    msgbox.setText(f"Couldn't parse any {obj_type}s from the selected file.")
-                    msgbox.setWindowTitle('No items found,')
-                    ok_btn = msgbox.addButton('OK', QtWidgets.QMessageBox.YesRole)
+                    msgbox.setText(
+                        f"Couldn't parse any {obj_type}s from the selected file."
+                    )
+                    msgbox.setWindowTitle("No items found,")
+                    ok_btn = msgbox.addButton("OK", QtWidgets.QMessageBox.YesRole)
 
                     msgbox.exec()
 
@@ -1733,25 +2015,24 @@ if __name__ == "__main__":
     import sys
     import traceback
 
-    # Show tracebacks #
-    if QtCore.QT_VERSION >= 0x50501:
-        def excepthook(type_, value, traceback_):
-            traceback.print_exception(type_, value, traceback_)
-            QtCore.qFatal('')
-    sys.excepthook = excepthook
-
     app = QtWidgets.QApplication(sys.argv)
-    bla = {"linecodes": {"aaa": {
-        "mode": "symmetrical",
-        "r1": "0.01273",
-        "r0": "0.3864",
-        "x1": "0.9337e-3",
-        "x0": "4.1264e-3",
-        "c1": "12.74e-9",
-        "c0": "7.751e-9",
-    }}}
+    app.setStyle("fusion")
+    app.styleHints().setColorScheme(QtCore.Qt.ColorScheme.Light)
+    bla = {
+        "loadshapes": {
+            "aaa": {
+                "mode": "symmetrical",
+                "r1": "0.01273",
+                "r0": "0.3864",
+                "x1": "0.9337e-3",
+                "x0": "4.1264e-3",
+                "c1": "12.74e-9",
+                "c0": "7.751e-9",
+            }
+        }
+    }
 
-    mainwindow = GeneralObjects("tshape")
+    mainwindow = GeneralObjects("loadshape")
     mainwindow.show()
     app.exec()
     print(mainwindow.obj_dicts)

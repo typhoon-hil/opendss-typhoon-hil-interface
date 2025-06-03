@@ -9,6 +9,7 @@ def update_properties(mdl, _Fault_mask):
         combo_values=['A-B-C-GND', 'A-B-GND', 'A-C-GND', 'B-C-GND', 'A-GND', 'B-GND', 'C-GND', 'A-B-C', 'A-B', 'A-C', 'B-C', 'None'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _Fault_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="Ω"

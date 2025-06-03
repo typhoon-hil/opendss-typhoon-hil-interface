@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2024.3 DEV
+// Saved by sw version: 2024.3
 //
 
 model "cigre_european_mv" {
@@ -680,6 +680,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -822,6 +823,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -940,6 +942,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1024,6 +1027,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1108,6 +1112,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1192,6 +1197,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1276,6 +1282,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1360,6 +1367,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1468,6 +1476,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1583,6 +1592,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1691,6 +1701,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1827,6 +1838,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -1939,6 +1951,7 @@ model "cigre_european_mv" {
             component "OpenDSS/Monitor" Monitor {
                 execution_rate = "ts"
                 freq_meas = "True"
+                snubber_val = "1e6"
                 v_line_inst_meas = "True"
                 v_line_rms_meas = "True"
                 v_phase_inst_meas = "True"
@@ -2000,6 +2013,7 @@ model "cigre_european_mv" {
             i_inst_meas = "True"
             i_rms_meas = "True"
             power_meas = "True"
+            snubber_val = "1e6"
             v_line_inst_meas = "True"
             v_line_rms_meas = "True"
             v_phase_inst_meas = "True"
@@ -2024,6 +2038,7 @@ model "cigre_european_mv" {
 
         component "OpenDSS/Monitor" Bus2_Monitor {
             freq_meas = "True"
+            snubber_val = "1e6"
             v_phase_inst_meas = "True"
             v_phase_rms_meas = "True"
         }
@@ -2863,8 +2878,6 @@ model "cigre_european_mv" {
             phase_b = "True"
             phase_c = "True"
             phase_n = "False"
-            enable_output = "False"
-            execution_rate = "100e-6"
             i_rms_meas = "False"
             i_inst_meas = "False"
             v_line_rms_meas = "False"
@@ -2873,6 +2886,9 @@ model "cigre_european_mv" {
             v_phase_inst_meas = "False"
             freq_meas = "False"
             power_meas = "False"
+            snubber_val = "1e5"
+            enable_output = "False"
+            execution_rate = "100e-6"
             ran_dynamics = "False"
         }
 

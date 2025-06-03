@@ -9,6 +9,7 @@ def update_properties(mdl, _Isource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="A"
@@ -21,6 +22,7 @@ def update_properties(mdl, _Isource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="°"
@@ -33,6 +35,7 @@ def update_properties(mdl, _Isource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="Hz"
@@ -45,6 +48,7 @@ def update_properties(mdl, _Isource_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -57,6 +61,7 @@ def update_properties(mdl, _Isource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit="Hz"
@@ -69,6 +74,7 @@ def update_properties(mdl, _Isource_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring",
         unit=""

@@ -94,6 +94,7 @@ def test_line_hil(load_and_compile_to_hil):
     # Start capture
     start_capture(
         duration=1.0,
+        rate=1e3,
         signals=[
             hil_ia_input, hil_ib_input, hil_ic_input,
             hil_va_input, hil_vb_input, hil_vc_input,

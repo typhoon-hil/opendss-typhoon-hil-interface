@@ -9,6 +9,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['PQ', 'PV', 'Vdc-Vac', 'Vdc-Q', 'Grid Forming', 'External Control'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Control mode:2",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -33,6 +35,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -45,6 +48,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['External input', 'Converter nominal'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Control mode",
         unit=""
@@ -57,6 +61,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -69,6 +74,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['External input', 'Converter nominal'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Control mode",
         unit=""
@@ -81,6 +87,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -93,6 +100,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['External input', 'Converter nominal'],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Control mode",
         unit=""
@@ -105,6 +113,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -117,6 +126,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['External input', 'Converter nominal'],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Control mode",
         unit=""
@@ -129,6 +139,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['External input', 'Converter nominal'],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Control mode",
         unit=""
@@ -141,6 +152,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -153,6 +165,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Controller settings:3",
         unit=""
@@ -165,6 +178,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Controller settings",
         unit=""
@@ -177,6 +191,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Controller settings",
         unit=""
@@ -189,6 +204,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Controller settings",
         unit=""
@@ -201,6 +217,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Controller settings",
         unit=""
@@ -213,6 +230,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Controller settings",
         unit=""
@@ -225,6 +243,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Controller settings",
         unit=""
@@ -237,6 +256,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Controller settings",
         unit=""
@@ -249,6 +269,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters:1",
         unit="kV"
@@ -261,6 +282,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit=""
@@ -273,6 +295,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit="F"
@@ -285,6 +308,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit="Ω"
@@ -297,6 +321,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit="kV"
@@ -309,6 +334,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit=""
@@ -321,6 +347,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Inverter Parameters",
         unit="Hz"
@@ -333,6 +360,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit="kW"
@@ -345,6 +373,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit="kVAR"
@@ -357,6 +386,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit="Ω"
@@ -369,6 +399,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Inverter Parameters",
         unit="H"
@@ -381,6 +412,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Execution Rate:5",
         unit="s"
@@ -393,6 +425,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Initialization:4",
         unit="s"
@@ -405,6 +438,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['Fixed', 'PacVac', 'PacQac', 'VdcVac', 'VdcQac'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="OpenDSS Setting:6",
         unit=""
@@ -417,6 +451,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -429,6 +464,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -441,6 +477,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -453,6 +490,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -465,6 +503,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -477,6 +516,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -489,6 +529,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -501,6 +542,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -513,6 +555,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -525,6 +568,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -537,6 +581,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -549,6 +594,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -561,6 +607,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -573,6 +620,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -585,6 +633,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:6",
         unit=""
@@ -597,6 +646,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         button_label="Choose",
@@ -610,6 +660,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -622,6 +673,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -634,6 +686,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -646,6 +699,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -658,6 +712,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -670,6 +725,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -682,6 +738,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -694,6 +751,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit="h"
@@ -706,6 +764,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -718,6 +777,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit="h"
@@ -730,6 +790,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['Loadshape index', 'Time'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -742,6 +803,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -754,6 +816,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -766,6 +829,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=['Daily', 'Yearly'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -778,6 +842,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -790,6 +855,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -802,6 +868,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -814,6 +881,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -826,6 +894,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -838,6 +907,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -850,6 +920,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -862,6 +933,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -874,6 +946,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -886,6 +959,7 @@ def update_properties(mdl, _VSConverter_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring",
         unit=""
