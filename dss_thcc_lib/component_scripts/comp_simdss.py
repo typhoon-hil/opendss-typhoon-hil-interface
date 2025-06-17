@@ -2,9 +2,15 @@ import os
 import sys
 import pathlib
 import traceback
+import importlib
+pyside6_exists = importlib.find_loader("PySide6")
+if pyside6_exists:
+    from PySide6 import QtGui, QtWidgets, QtCore
+    from PySide6.QtWidgets import QDialog, QFileDialog, QWidget
+else:
+    from PyQt5 import QtGui, QtWidgets, QtCore
+    from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 
-from PyQt5 import QtGui, QtWidgets, QtCore
-from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 import numpy as np
 import re
 from math import log10, floor
@@ -199,8 +205,8 @@ def sim_with_opendss(mdl, mask_handle):
         sim_parameters = {}
         sim_parameters["sim_mode"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "sim_mode"))
         sim_parameters["algorithm"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "algorithm"))
-        sim_parameters["voltagebases"] = eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "voltagebases")))
-        sim_parameters["basefrequency"] = eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "baseFreq")))
+        sim_parameters["voltagebases"] = str(eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "voltagebases"))))
+        sim_parameters["basefrequency"] = str(eval(mdl.get_property_disp_value(mdl.prop(comp_handle, "baseFreq"))))
         sim_parameters["maxiter"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "maxiter"))
         sim_parameters["miniterations"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "miniterations"))
         sim_parameters["loadmodel"] = mdl.get_property_disp_value(mdl.prop(comp_handle, "loadmodel"))

@@ -9,6 +9,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=['Symmetrical', 'Matrix', 'LineCode'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters:1",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         button_label="Choose",
@@ -34,6 +36,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit=""
@@ -46,6 +49,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters:1",
         unit="km"
@@ -58,6 +62,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit=""
@@ -70,6 +75,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Line Parameters",
         unit="Hz"
@@ -82,6 +88,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=['4', '3', '2', '1'],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit=""
@@ -94,6 +101,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="Ω/km"
@@ -106,6 +114,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="Ω/km"
@@ -118,6 +127,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="Ω/km"
@@ -130,6 +140,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="Ω/km"
@@ -142,6 +153,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="nF/km"
@@ -154,6 +166,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="nF/km"
@@ -166,6 +179,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="Ω/km"
@@ -178,6 +192,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="Ω/km"
@@ -190,6 +205,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Line Parameters",
         unit="nF/km"
@@ -202,6 +218,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -214,6 +231,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -226,6 +244,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -238,6 +257,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -250,6 +270,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -262,6 +283,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -274,6 +296,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -286,6 +309,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -298,6 +322,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -310,6 +335,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -322,6 +348,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -334,6 +361,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -346,6 +374,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -358,6 +387,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -370,6 +400,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=['None', 'Core coupling', 'Device coupling'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Coupling:2",
         unit=""
@@ -382,6 +413,7 @@ def update_properties(mdl, _Line_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring",
         unit=""

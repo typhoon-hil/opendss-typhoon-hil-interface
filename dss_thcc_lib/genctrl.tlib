@@ -307,7 +307,7 @@ library "OpenDSS" {
                 signal_type = "active power"
             }
             [
-                position = 7320, 7296
+                position = 7400, 7296
                 rotation = left
             ]
 
@@ -1636,7 +1636,7 @@ else {
 
             junction Junction23 sp
             [
-                position = 7320, 7344
+                position = 7400, 7344
             ]
 
             junction Junction28 sp
@@ -1745,7 +1745,7 @@ else {
             connect From14 Sum11.in1 as Connection215
             connect Sum10.out Gain15.in as Connection231
             connect V_gen.in Junction23 as Connection251
-            connect Junction23 Gain23.out as Connection252
+            connect Gain23.out Gain33.in as Connection252
             connect Gain23.in "Mathematical function1.out" as Connection253
             connect Gain25.out "Signal switch13.in1" as Connection283
             connect "Signal switch4.out" Junction28 as Connection284
@@ -1790,8 +1790,8 @@ else {
             connect Sum14.out "Signal switch17.in1" as Connection409
             connect Sum11.out "Signal switch12.in1" as Connection414
             connect Goto12 "Bus Split2.out5" as Connection426
-            connect Goto13 Gain33.out as Connection427
-            connect Gain33.in Junction23 as Connection428
+            connect Goto13 Junction23 as Connection427
+            connect Gain33.out Junction23 as Connection428
             connect Gain21.in Gain9.out as Connection429
             connect P_gen.in Junction36 as Connection430
             connect Junction36 Gain21.out as Connection431
@@ -1918,7 +1918,7 @@ else {
             execution_rate = "100e-6"
 
             mask {
-                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Generator Control module.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This module is used in conjuction with the Generator component (with enabled initializtion) to implement multiple modes of steady state operations.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">When external control mode is selected, the operation mode can be selected and changed in real time using the following inputs to \"Generator control mode\" input:</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">0 = PV operation mode</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">1 = PQ operation mode</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">2 = Grid forming operation mode</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Active power P (in Watts), Reactive power Q (In VARs), Line RMS voltage (in Volts), and Line frequency (in Hz) can be controlled individually depending on mode of operation. Controller coefficients for above variables can be set in \"Controller settings\" tab.</p></body></html>"
+                description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Generator Control module.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This module is used in conjuction with the Generator component (with enabled initializtion) to implement multiple modes of steady state operations.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">When external control mode is selected, the operation mode can be selected and changed in real time using the following inputs to \"Generator control mode\" input:</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">0 = PV operation mode</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">1 = PQ operation mode</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">2 = Grid forming operation mode</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Active power P (in kW), Reactive power Q (In kVAR), Line RMS voltage (in kV), and Line frequency (in Hz) can be controlled individually depending on mode of operation. Controller coefficients for above variables can be set in \"Controller settings\" tab.</p></body></html>"
 
                 ctrl_mode_str {
                     label = "Generator control mode"

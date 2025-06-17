@@ -4,10 +4,15 @@ __pycache__
 * Target files
 *.egg-info
 allure-html
+allure-results
+open_allure-results.cmd
 importer_output
 pytest_results/*
 release_zip
 /dist/
 /build/
+/typhoon_package/python_packages/
+/typhoon_package/output/
 **/api_calls_generation/output.txt
 *.tpkg
+Results_test.csv

@@ -9,6 +9,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="General",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Y - Grounded', 'Y', 'Δ'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit=""
@@ -33,6 +35,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['3', '1'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit=""
@@ -45,6 +48,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="General:1",
         unit="Ω"
@@ -57,6 +61,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="General:1",
         unit="Ω"
@@ -69,6 +74,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General:1",
         unit=""
@@ -81,6 +87,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="General:1",
         unit="Hz"
@@ -93,6 +100,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Load Parameters:2",
         unit="kV"
@@ -105,6 +113,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Load Parameters",
         unit="kVA"
@@ -117,6 +126,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Lag', 'Lead', 'Unit'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Load Parameters",
         unit=""
@@ -129,6 +139,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Load Parameters",
         unit=""
@@ -141,6 +152,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -153,6 +165,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Constant Impedance', 'Constant Power', 'Constant Z,I,P'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Load Parameters",
         unit=""
@@ -165,6 +178,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Load Parameters",
         unit="Auto-Normalized"
@@ -177,6 +191,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Load Parameters",
         unit="Auto-Normalized"
@@ -189,6 +204,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -201,6 +217,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -213,6 +230,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -225,6 +243,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -237,6 +256,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -249,6 +269,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -261,6 +282,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -273,6 +295,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -285,6 +308,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Fixed', 'External input', 'Time Series'],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters:3",
         unit=""
@@ -297,6 +321,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit="s"
@@ -309,6 +334,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit="s"
@@ -321,6 +347,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit="pu"
@@ -333,6 +360,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit="[Vmin,Vmax] pu"
@@ -345,6 +373,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit="Cycles to reach zero to nominal"
@@ -357,6 +386,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit=""
@@ -369,6 +399,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit=""
@@ -381,6 +412,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="CPL Parameters",
         unit=""
@@ -393,6 +425,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -405,6 +438,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -417,6 +451,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -429,6 +464,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -441,6 +477,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -453,6 +490,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -465,6 +503,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -477,6 +516,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -489,6 +529,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings:4",
         unit=""
@@ -501,6 +542,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:4",
         button_label="Choose",
@@ -514,6 +556,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:4",
         unit=""
@@ -526,6 +569,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:4",
         unit=""
@@ -538,6 +582,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=False,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:4",
         unit=""
@@ -550,6 +595,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings:4",
         unit=""
@@ -562,6 +608,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings:4",
         unit=""
@@ -574,6 +621,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings:4",
         unit=""
@@ -586,6 +634,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:4",
         unit=""
@@ -598,6 +647,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings:4",
         unit=""
@@ -610,6 +660,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings:4",
         unit="pu"
@@ -622,6 +673,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit="kVAR"
@@ -634,6 +686,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit="h"
@@ -646,6 +699,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Loadshape index', 'Time'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Time Series Settings",
         unit=""
@@ -658,6 +712,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Manual input'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -670,6 +725,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=['Daily', 'Yearly'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -682,6 +738,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -694,6 +751,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit="h"
@@ -706,6 +764,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -718,6 +777,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit="s"
@@ -730,6 +790,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=False,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit="s"
@@ -742,6 +803,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -754,6 +816,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -766,6 +829,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -778,6 +842,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Time Series Settings",
         unit=""
@@ -790,6 +855,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring",
         unit=""
@@ -802,6 +868,7 @@ def update_properties(mdl, _Load_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""

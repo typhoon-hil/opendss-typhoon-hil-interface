@@ -4,7 +4,24 @@ import re
 from typhoon.api.schematic_editor import SchematicAPI
 
 
-def generate_api_calls(component_list):
+def generate_api_calls():
+    component_list = [c.replace(" ", "_").replace("-", "_") for c in [
+        "Vsource",
+        "Load",
+        "Line",
+        "Capacitor Bank",
+        "Reactor",
+        "Controlled Switch",
+        "Fault",
+        "Isource",
+        "Three-Phase Transformer",
+        "Single-Phase Transformer",
+        "Generator",
+        "Storage",
+        "VSConverter"
+    ]]
+
+
     # Path to example model
     model_path = str(pathlib.Path(__file__).parent.joinpath("all_components.tse"))
 
@@ -140,6 +157,7 @@ def generate_api_calls(component_list):
         "VSConverter": []
     }
 
+    start_path = str(os.path.dirname(__file__))
     for comp_type in component_list:
         # create_property
         results_create = re.findall(
@@ -175,8 +193,7 @@ def generate_api_calls(component_list):
                                  f'    mdl.set_handler_code(_{comp_type}_mask_{prop}, "property_value_changed",\n'
                                  f'                         _{comp_type}_mask_{prop}_property_value_changed)\n\n')
 
-
-        with open(f"../{comp_type.lower()}_container.py", 'w', encoding="utf-8") as f:
+        with open(f"{start_path}/../{comp_type.lower()}_container.py", 'w', encoding="utf-8") as f:
             f.write(f"def update_properties(mdl, _{comp_type}_mask):\n")
 
             f.write("    ## PROPERTIES\n\n")
@@ -206,21 +223,5 @@ def generate_api_calls(component_list):
 
     mdl.close_model()
 
-
-component_list = [c.replace(" ", "_").replace("-", "_") for c in [
-    "Vsource",
-    "Load",
-    "Line",
-    "Capacitor Bank",
-    "Reactor",
-    "Controlled Switch",
-    "Fault",
-    "Isource",
-    "Three-Phase Transformer",
-    "Single-Phase Transformer",
-    "Generator",
-    "Storage",
-    "VSConverter"
-]]
-
-generate_api_calls(component_list)
+if __name__ == "__main__":
+    generate_api_calls()

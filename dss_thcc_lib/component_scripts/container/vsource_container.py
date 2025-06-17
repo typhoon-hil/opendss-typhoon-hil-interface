@@ -9,6 +9,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General:1",
         unit="kV"
@@ -21,6 +22,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit="MVA"
@@ -33,6 +35,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit=""
@@ -45,6 +48,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit="Hz"
@@ -57,6 +61,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=['Y - Grounded', 'In series'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="General",
         unit=""
@@ -69,6 +74,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters:2",
         unit=""
@@ -81,6 +87,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters",
         unit=""
@@ -93,6 +100,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters",
         unit=""
@@ -105,6 +113,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=['Z', 'Zpu', 'MVAsc', 'Isc'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters",
         unit=""
@@ -117,6 +126,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters",
         unit="Ω"
@@ -129,6 +139,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters",
         unit="Ω"
@@ -141,6 +152,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters",
         unit="Ω"
@@ -153,6 +165,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Parameters",
         unit="Ω"
@@ -165,6 +178,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="pu"
@@ -177,6 +191,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="pu"
@@ -189,6 +204,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="pu"
@@ -201,6 +217,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="pu"
@@ -213,6 +230,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="MVA"
@@ -225,6 +243,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="MVA"
@@ -237,6 +256,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="A"
@@ -249,6 +269,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit="A"
@@ -261,6 +282,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit=""
@@ -273,6 +295,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="Parameters",
         unit=""
@@ -285,6 +308,7 @@ def update_properties(mdl, _Vsource_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring:3",
         unit=""

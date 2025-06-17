@@ -30,33 +30,130 @@
 
 import sys, os
 
+
 solve_counter = 0
 cosim_component_name = ""
-dss = ""
-added_sources = []
+added_sources = {}
 text_command = ""
 free_to_solve = True
 previous_total_time = 0
-initialized = False
+use_other_model = False
+other_model_path = ""
 
 dss_model_path = hil.get_ns_var("dsscosim-dss_model_path")
 printf("The interface will load the following OpenDSS model:")
 printf(dss_model_path)
 
+import opendssdirect as dss
 
-def append_cosim_software_to_path():
-    
-    global sys, os
-    
-    SW_VERS = hil.get_sw_version()
-    appdata_path = os.getenv('APPDATA')
-    dss_direct_path = fr"{appdata_path}\typhoon\{SW_VERS}\python_portables\python3_portable\Lib\site-packages"
-    if not dss_direct_path in sys.path:
-        sys.path.append(dss_direct_path)
 
+def dss_initialized():
+    try:
+        dss.Circuit.Name()
+        return True
+    except Exception as e:
+        return False
+
+def get_dss():
+    global dss
+    return dss
+            
+def add_current_sources_dss():
+    
+    global dss
+    global cosim_component_name
+    global added_sources
+    import ast
+    
+    try:
+        isource_buses = ast.literal_eval(hil.get_ns_var("dsscosim-saved_selected_interface_points"))
+    except:
+        isource_buses = [hil.get_ns_var("dsscosim-saved_selected_interface_points")]
+    position_dict = ast.literal_eval(hil.get_ns_var("dsscosim-saved_position_dict"))
+    
+    all_bus_names = dss.Circuit.AllBusNames()
+
+    added_sources = {}
+    for bus in isource_buses:
+        if not bus in all_bus_names:
+            printf(f"Interface point {bus} was not found in the selected OpenDSS model.")
+            return None
+        # Add sources per phase.
+        for phase_id in position_dict.keys():
+            phase = phase_id.split(f'{bus}-')
+            if len(phase) == 2: # Incorrect buses will return length 1
+                phase = phase[1]
+                dss.utils.run_command(f"new Isource.{bus}_interface_{phase} Bus1={bus}.{phase} phases=1 amps=0")
+                dss.utils.run_command(f"new Load.{bus}_interface_{phase} Bus1={bus}.{phase} phases=1 kw=0.1")
+                added_sources.update({f"{bus}_interface_{phase}": {"phase": phase, "bus": bus}})
+                hil.model_write(f'{cosim_component_name}.Vph {bus}-{phase}', 0)
+                hil.model_write(f'{cosim_component_name}.Vmag {bus}-{phase}', 0)
+    return added_sources
+        
+def update_isource_values_dss():
+    global dss
+    global cosim_component_name
+    global added_sources
+    
+    all_source_names = dss.Isource.AllNames()
+    updated_values = []
+    
+    dss.Isource.First()
+    for source in dss.Isource.AllNames():
+        for isource, phase_dict in added_sources.items():
+            if isource == source:
+                bus = phase_dict.get("bus")
+                phase = phase_dict.get("phase")
+                
+                # Get current value from the HIL simulation
+                i_mag = hil.model_read(f'{cosim_component_name}.Imag {bus}-{phase}') # Magnitude
+                i_ph = hil.model_read(f'{cosim_component_name}.Iph {bus}-{phase}') # Angle
+                updated_values.append(str(i_mag))
+                dss.Isource.Amps(i_mag)
+                dss.Isource.AngleDeg(i_ph)
+        dss.Isource.Next()
+    
+    return updated_values
+        
+def update_vsource_values_dss(disable=False):
+    global dss
+    global cosim_component_name
+    global added_sources
+    
+    if disable:
+        for isource, phase_dict in added_sources.items():
+            bus = phase_dict.get("bus")
+            phase = phase_dict.get("phase")
+            vmag = 0
+            vph = 0
+            hil.model_write(f'{cosim_component_name}.Vph {bus}-{phase}', vph)
+            hil.model_write(f'{cosim_component_name}.Vmag {bus}-{phase}', vmag)
+    else:
+        try:
+            dss.Solution.Solve()
+            updated_values = []
+            for isource, phase_dict in added_sources.items():
+                bus = phase_dict.get("bus")
+                phase = phase_dict.get("phase")
+                dss.Circuit.SetActiveElement(isource)
+                vmagangle = dss.CktElement.VoltagesMagAng()
+                vmag = vmagangle[0]
+                vph = vmagangle[1]
+                updated_values.append(str)
+                hil.model_write(f'{cosim_component_name}.Vph {bus}-{phase}', vph)
+                hil.model_write(f'{cosim_component_name}.Vmag {bus}-{phase}', vmag)
+                
+            return updated_values
+        except Exception as e:
+            if str(e) == "(99, '')": # Workaround for unknown error
+                dss.Text.Command("visualize currents")
+                
+                
 def initialize_cosim_model(use_other_model, other_model_path):
     
+    global dss
     global dss_model_path
+    global cosim_component_name
     
     if use_other_model:
         model_path = other_model_path
@@ -65,8 +162,6 @@ def initialize_cosim_model(use_other_model, other_model_path):
 
     # OpenDSS Cosimulation
     cosim_component_name = hil.get_ns_var("dsscosim-component_name")
-
-    import opendssdirect as dss
     
     dss.Basic.ClearAll()
     dss.Basic.NewCircuit('init')
@@ -77,99 +172,17 @@ def initialize_cosim_model(use_other_model, other_model_path):
     try:
         dss.Circuit.Name()
     except Exception as e:
-        dss = False
         print(f"Unable to load the OpenDSS model from the specified path: {model_path}\n{e}")
     
-    return [cosim_component_name, dss]
-            
-def add_current_sources_dss(dss, cosim_component_name):
-    if dss:
-        import ast
-        
-        try:
-            isource_buses = ast.literal_eval(hil.get_ns_var("dsscosim-saved_selected_interface_points"))
-        except:
-            isource_buses = [hil.get_ns_var("dsscosim-saved_selected_interface_points")]
-        position_dict = ast.literal_eval(hil.get_ns_var("dsscosim-saved_position_dict"))
-        
-        all_bus_names = dss.Circuit.AllBusNames()
-
-        added_sources = {}
-        for bus in isource_buses:
-            if not bus in all_bus_names:
-                printf(f"Interface point {bus} was not found in the selected OpenDSS model.")
-                return None
-            # Add sources per phase.
-            for phase_id in position_dict.keys():
-                phase = phase_id.split(f'{bus}-')
-                if len(phase) == 2: # Incorrect buses will return length 1
-                    phase = phase[1]
-                    dss.utils.run_command(f"new Isource.{bus}_interface_{phase} Bus1={bus}.{phase} phases=1 amps=0")
-                    dss.utils.run_command(f"new Load.{bus}_interface_{phase} Bus1={bus}.{phase} phases=1 kw=0.1")
-                    added_sources.update({f"{bus}_interface_{phase}": {"phase": phase, "bus": bus}})
-                    hil.model_write(f'{cosim_component_name}.Vph {bus}-{phase}', 0)
-                    hil.model_write(f'{cosim_component_name}.Vmag {bus}-{phase}', 0)
-        return added_sources
-        
-def update_isource_values_dss(dss, cosim_component_name, added_sources):
-    if dss:
-        all_source_names = dss.Isource.AllNames()
-        updated_values = ""
-        
-        dss.Isource.First()
-        for source in dss.Isource.AllNames():
-            for isource, phase_dict in added_sources.items():
-                if isource == source:
-                    bus = phase_dict.get("bus")
-                    phase = phase_dict.get("phase")
-                    
-                    # Get current value from the HIL simulation
-                    i_mag = hil.model_read(f'{cosim_component_name}.Imag {bus}-{phase}') # Magnitude
-                    i_ph = hil.model_read(f'{cosim_component_name}.Iph {bus}-{phase}') # Angle
-                    updated_values += str(i_mag)
-                    dss.Isource.Amps(i_mag)
-                    dss.Isource.AngleDeg(i_ph)
-            dss.Isource.Next()
-        return updated_values
-        
-def update_vsource_values_dss(dss, cosim_component_name, added_sources, disable=False):
-
-    if disable:
-        for isource, phase_dict in added_sources.items():
-            bus = phase_dict.get("bus")
-            phase = phase_dict.get("phase")
-            vmag = 0
-            vph = 0
-            hil.model_write(f'{cosim_component_name}.Vph {bus}-{phase}', vph)
-            hil.model_write(f'{cosim_component_name}.Vmag {bus}-{phase}', vmag)
-    else:
-        if dss:
-            try:
-                dss.Solution.Solve()
-                updated_values = ""
-                for isource, phase_dict in added_sources.items():
-                    bus = phase_dict.get("bus")
-                    phase = phase_dict.get("phase")
-                    dss.Circuit.SetActiveElement(isource)
-                    vmagangle = dss.CktElement.VoltagesMagAng()
-                    vmag = vmagangle[0]
-                    vph = vmagangle[1]
-                    updated_values += str(vmag)
-                    hil.model_write(f'{cosim_component_name}.Vph {bus}-{phase}', vph)
-                    hil.model_write(f'{cosim_component_name}.Vmag {bus}-{phase}', vmag)
-                return updated_values
-            except Exception as e:
-                if str(e) == "(99, '')": # Workaround for unknown error
-                    dss.Text.Command("visualize currents")
-
-append_cosim_software_to_path()
-use_other_model = False
-other_model_path = "other_path"]]></initialization_code>
+    return cosim_component_name
+    
+dss.Basic.ClearAll()]]></initialization_code>
+                <library_widget_help><![CDATA[None]]></library_widget_help>
                 <widget_settings>
-                    <x>208</x>
-                    <y>96</y>
-                    <width>688</width>
-                    <height>208</height>
+                    <x>184</x>
+                    <y>88</y>
+                    <width>704</width>
+                    <height>232</height>
                     <appearance><![CDATA[Flat]]></appearance>
                     <collapsed>False</collapsed>
                     <hierarchy_position>1</hierarchy_position>
@@ -195,31 +208,8 @@ other_model_path = "other_path"]]></initialization_code>
 
 # specify Text Display options ('text' part is mandatory)
 
-global dss, cosim_component_name, added_sources, solve_counter, text_command
-global update_isource_values_dss, update_vsource_values_dss
-global previous_total_time, free_to_solve, upd_isources, v_string
+global solve_counter
 
-if dss:
-    if dss.Solution.TotalTime() > previous_total_time:
-        # Execute command in the queue
-        if text_command:
-            dss.Basic.AllowEditor(1)
-            try:
-                dss.Text.Command(f"{text_command}")
-            except Exception as e:
-                print(e)
-            text_command = None    
-            dss.Basic.AllowEditor(0)
-        else:
-            free_to_solve = True
-    if free_to_solve:
-        upd_isources = update_isource_values_dss(dss, cosim_component_name, added_sources)
-        
-        if upd_isources:
-            v_string = update_vsource_values_dss(dss, cosim_component_name, added_sources)
-            solve_counter += 1
-            free_to_solve = False
-    
 textDisplayData = {
 
     # label text
@@ -232,10 +222,10 @@ textDisplayData = {
 # mandatory variable used for storing value that will be displayed
 displayValue = textDisplayData
 ]]></code>
-                <updateRate>1000</updateRate>
+                <updateRate>250</updateRate>
                 <widget_settings>
                     <x>512</x>
-                    <y>68</y>
+                    <y>72</y>
                     <width>154</width>
                     <height>50</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -257,51 +247,56 @@ displayValue = textDisplayData
 # 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
 # This object can be used as an argument in SCADA API functions.
 
-global initialize_cosim_model, add_current_sources_dss, dss, initialized, free_to_solve
-global cosim_component_name, added_sources, use_other_model, other_model_path
+global use_other_model
+global other_model_path
 
-if free_to_solve and initialized:
-    dss = None
-    update_vsource_values_dss(dss, cosim_component_name, added_sources, disable=True)
-    initialized = False
+dss = get_dss()
+
+if free_to_solve and dss_initialized():
+    update_vsource_values_dss(disable=True)
 else:
-    cosim_component_name, dss = initialize_cosim_model(use_other_model, other_model_path)
-
-    try:
-        dss.Circuit.Name()
-        added_sources = None
-        if dss:
-            added_sources = add_current_sources_dss(dss, cosim_component_name)
-        if added_sources:
-            initialized = True
-            free_to_solve = True
-        else:
-            dss = None
-    except:
-        dss = None
-        pass
+    cosim_component_name = initialize_cosim_model(use_other_model, other_model_path)
+    add_current_sources_dss()
         
                 
 
 ]]></on_click_code>
-                <on_start_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed on simulation start.
+                <on_start_code active="True"><![CDATA[# NOTE: The code specified in this handler will be executed on simulation start.
 # NOTE: Variables specified here will be available in other handlers.
 # HIL API is imported as 'hil'
 # SCADA API is imported as 'panel'
 # SCADA API constants are imported as 'api_const'
 # 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
-# This object can be used as an argument in SCADA API functions.
-
-]]></on_start_code>
-                <on_timer_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed on timer event.
+# This object can be used as an argument in SCADA API functions.]]></on_start_code>
+                <on_timer_code active="True"><![CDATA[# NOTE: The code specified in this handler will be executed on timer event.
 # HIL API is imported as 'hil'
 # SCADA API is imported as 'panel'
 # SCADA API constants are imported as 'api_const'
 # 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
 # This object can be used as an argument in SCADA API functions.
 
-]]></on_timer_code>
-                <run_each>250</run_each>
+dss = get_dss()
+global solve_counter
+global text_command
+
+if dss_initialized():
+    # Execute command in the queue
+    if text_command:
+        dss.Basic.AllowEditor(1)
+        dss.Text.Command(f"{text_command}")
+        text_command = None    
+        dss.Basic.AllowEditor(0)
+        free_to_solve = False
+    else:
+        free_to_solve = True
+            
+    if free_to_solve:
+        upd_isources = update_isource_values_dss()
+        if upd_isources:
+            v_string = update_vsource_values_dss()
+            solve_counter += 1
+    ]]></on_timer_code>
+                <run_each>1000</run_each>
                 <on_stop_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed after simulation is stopped.
 # HIL API is imported as 'hil'
 # SCADA API is imported as 'panel'
@@ -311,8 +306,8 @@ else:
 
 ]]></on_stop_code>
                 <widget_settings>
-                    <x>24.0</x>
-                    <y>64.0</y>
+                    <x>16</x>
+                    <y>64</y>
                     <width>200</width>
                     <height>40</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -342,17 +337,16 @@ else:
 # mandatory variable used for storing LED indicator state
 # True -> On, False -> Off
 
-global dss
-
-if dss:
+dss = get_dss()
+if dss_initialized():
     displayValue = True
 else:
     displayValue = False
 ]]></code>
                 <updateRate>250</updateRate>
                 <widget_settings>
-                    <x>432.0</x>
-                    <y>68.0</y>
+                    <x>432</x>
+                    <y>72</y>
                     <width>48</width>
                     <height>32</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -377,15 +371,11 @@ else:
 
 # specify Text Display options ('text' part is mandatory)
 
-global dss
-
-try:
-    if dss:
-        dss_circuit_name = dss.Circuit.Name()
-    else:
-        dss_circuit_name = ""
-except:
-    dss_circuit_name = ""
+dss = get_dss()
+if dss_initialized():
+    dss_circuit_name = dss.Circuit.Name()
+else:
+    dss_circuit_name = "None"    
     
 textDisplayData = {
 
@@ -401,8 +391,8 @@ displayValue = textDisplayData
 ]]></code>
                 <updateRate>250</updateRate>
                 <widget_settings>
-                    <x>256.0</x>
-                    <y>68.0</y>
+                    <x>256</x>
+                    <y>72</y>
                     <width>200</width>
                     <height>50</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -471,8 +461,8 @@ widgetValue = None
                 <inputValueType>string</inputValueType>
                 <unit><![CDATA[]]></unit>
                 <widget_settings>
-                    <x>2128.0</x>
-                    <y>2128.0</y>
+                    <x>1432</x>
+                    <y>16</y>
                     <width>456</width>
                     <height>32</height>
                     <inputWidgetWidth>400</inputWidgetWidth>
@@ -494,9 +484,8 @@ widgetValue = None
 # This object can be used as an argument in SCADA API functions.
 # NOTE: entered value is available through variable 'inputValue'
 
-global use_other_model
-
 path_widget_handle = panel.get_widget_by_fqn("Co-simulation.Path")
+global use_other_model
 
 if inputValue:
     # do something when checkbox is checked
@@ -505,7 +494,7 @@ if inputValue:
 else:
     # do something when checkbox is unchecked
     use_other_model = False
-    panel.set_property_value(path_widget_handle, "position", [2128, 2128]) # Hide
+    panel.set_property_value(path_widget_handle, "position", [800, 16]) # Hide
 
 ]]></on_use_code>
                 <on_start_code active="True"><![CDATA[# NOTE: The code specified in this handler will be executed on simulation start.
@@ -518,9 +507,9 @@ else:
 
 # Change widget value by setting this variable.
 # NOTE: If you not specify 'widgetValue' variable or assign 'None' to it, widget value won't be changed.
-global use_other_model
-
+    
 path_widget_handle = panel.get_widget_by_fqn("Co-simulation.Path")
+global use_other_model
 
 if inputValue:
     # do something when checkbox is checked
@@ -529,9 +518,7 @@ if inputValue:
 else:
     # do something when checkbox is unchecked
     use_other_model = False
-    panel.set_property_value(path_widget_handle, "position", [2128, 2128]) # Hide
-    
-]]></on_start_code>
+    panel.set_property_value(path_widget_handle, "position", [800, 16]) # Hide]]></on_start_code>
                 <on_stop_code active="False"><![CDATA[# NOTE: The code specified in this handler will be executed after simulation is stopped.
 # HIL API is imported as 'hil'
 # SCADA API is imported as 'panel'
@@ -558,8 +545,8 @@ widgetValue = None
                 <on_start_code_source><![CDATA[Custom code]]></on_start_code_source>
                 <inputValue><![CDATA[False]]></inputValue>
                 <widget_settings>
-                    <x>24.0</x>
-                    <y>16.0</y>
+                    <x>24</x>
+                    <y>16</y>
                     <width>184</width>
                     <height>32</height>
                     <appearance><![CDATA[Flat]]></appearance>
@@ -579,8 +566,6 @@ widgetValue = None
 # SCADA API constants are imported as 'api_const'
 # 'WIDGET_HANDLE' constant holds the WidgetHandle object of this widget.
 # This object can be used as an argument in SCADA API functions.# NOTE: entered value is available through variable 'inputValue'
-
-global text_command, dss
 
 if text_command and f"ERROR: " in text_command:
     print(f"last error: {text_command}")
@@ -629,8 +614,8 @@ widgetValue = None
                 <inputValueType>string</inputValueType>
                 <unit><![CDATA[]]></unit>
                 <widget_settings>
-                    <x>120.0</x>
-                    <y>128.0</y>
+                    <x>120</x>
+                    <y>128</y>
                     <width>432</width>
                     <height>32</height>
                     <inputWidgetWidth>345</inputWidgetWidth>

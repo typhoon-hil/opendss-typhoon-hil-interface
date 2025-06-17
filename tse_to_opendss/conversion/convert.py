@@ -1,9 +1,8 @@
-from . import output_functions
+from tse_to_opendss.conversion import output_functions
 import pathlib
 import os
 
-from ..tse2tpt_base_converter import tse_functions as tse_fns
-import json
+from tse_to_opendss.tse2tpt_base_converter import tse_functions as tse_fns
 
 # Use default mapping
 from .default_mapping import constants

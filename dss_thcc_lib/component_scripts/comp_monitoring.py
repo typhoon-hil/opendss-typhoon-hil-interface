@@ -1,7 +1,13 @@
 import typhoon.api.hil as hil
 import string, os, sys, pathlib
-from PyQt5 import QtGui, QtWidgets, QtCore
-from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget, QApplication, QVBoxLayout, QLabel
+import importlib
+pyside6_exists = importlib.find_loader("PySide6")
+if pyside6_exists:
+    from PySide6 import QtGui, QtWidgets, QtCore
+    from PySide6.QtWidgets import QDialog, QFileDialog, QWidget, QApplication, QVBoxLayout, QLabel
+else:
+    from PyQt5 import QtGui, QtWidgets, QtCore
+    from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget, QApplication, QVBoxLayout, QLabel
 import csv
 import pandas as pd
 import matplotlib.pyplot as plt

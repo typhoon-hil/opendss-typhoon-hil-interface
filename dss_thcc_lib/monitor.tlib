@@ -167,35 +167,6 @@ library "OpenDSS" {
                     ENDCODE
                 }
 
-
-                enable_output {
-                    label = "Enable signal output"
-                    widget = checkbox
-                    type = bool
-                    default_value = "False"
-                    no_evaluate
-
-                    CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
-                            mdl.refresh_icon(container_handle)
-                    ENDCODE
-
-                    CODE property_value_edited
-                        comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                    ENDCODE
-                }
-
-                execution_rate {
-                    label = "Execution Rate"
-                    widget = edit
-                    type = generic
-                    default_value = "100e-6"
-                    keepline
-                }
-
                 i_rms_meas {
                     label = "Currents               RMS"
                     widget = checkbox
@@ -357,6 +328,45 @@ library "OpenDSS" {
                         comp_script = return_comp_script(mdl, container_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                     ENDCODE
+                }
+
+                snubber_val {
+                    label = "Snubber resistance"
+                    widget = edit
+                    type = generic
+                    default_value = "1e5"
+                    group = "Meter Properties"
+                }
+
+                enable_output {
+                    label = "Enable signal output"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+                    group = "Meter Properties"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle)
+                            mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
+                    ENDCODE
+                }
+
+                execution_rate {
+                    label = "Execution Rate"
+                    widget = edit
+                    type = generic
+                    default_value = "100e-6"
+                    group = "Meter Properties"
+                    nonvisible
                 }
 
                 ran_dynamics {

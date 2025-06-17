@@ -9,6 +9,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=['Y - Grounded', 'Y', 'Δ', 'In series'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -21,6 +22,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -33,6 +35,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit="Hz"
@@ -45,6 +48,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=['3', '2', '1'],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit=""
@@ -57,6 +61,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="kV"
@@ -69,6 +74,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="",
         unit="kVAr"
@@ -81,6 +87,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=[],
         evaluate=True,
         enabled=True,
+        supported=True,
         visible=False,
         tab_name="",
         unit=""
@@ -93,6 +100,7 @@ def update_properties(mdl, _Reactor_mask):
         combo_values=[],
         evaluate=False,
         enabled=True,
+        supported=True,
         visible=True,
         tab_name="Monitoring",
         unit=""

@@ -379,7 +379,6 @@ def sc_notation(val, num_decimals=2, exponent_pad=2):
 
 
 def get_r_l_matrices(mdl, container_handle):
-
     comp_handle = mdl.get_parent(container_handle)
     z_si_names = ["r1", "x1", "r0", "x0"]
     z_si_props = [mdl.prop(container_handle, prop_name) for prop_name in z_si_names]
@@ -394,7 +393,7 @@ def get_r_l_matrices(mdl, container_handle):
     if input_method == "Z":
         r1, x1, r0, x0 = [mdl.get_property_value(prop) for prop in z_si_props]
     elif input_method == "Zpu":
-        r1, x1, r0, x0 = [mdl.get_property_value(prop) * z_base for prop in z_si_props]
+        r1, x1, r0, x0 = [mdl.get_property_value(prop) * z_base for prop in z_pu_props]
     elif input_method == "MVAsc":
         mva_sc3 = mdl.get_property_value(mdl.prop(container_handle, "mva_sc3"))
         mva_sc1 = mdl.get_property_value(mdl.prop(container_handle, "mva_sc1"))
@@ -436,7 +435,12 @@ def get_r_l_matrices(mdl, container_handle):
 
     rmatrix = [[rs, rm, rm], [rm, rs, rm], [rm, rm, rs]]
     lmatrix = [[ls, lm, lm], [lm, ls, lm], [lm, lm, ls]]
-    # For two-phase systems, we can use just the 2x2 matrix from that
+    # TODO: Workaround to bypass np.float() issue on THCC 25.2
+    # np.set_printoptions(legacy='1.25')  # More intrusive workaround: https://stackoverflow.com/questions/78630047/how-to-stop-numpy-floats-being-displayed-as-np-float64
+    rmatrix = f"[[{rs}, {rm}, {rm}], [{rm}, {rs}, {rm}], [{rm}, {rm}, {rs}]]"
+    lmatrix = f"[[{ls}, {lm}, {lm}], [{lm}, {ls}, {lm}], [{lm}, {lm}, {ls}]]"
+
+    # TODO: Comment: For two-phase systems, we can use just the 2x2 matrix from that
 
     return rmatrix, lmatrix
 

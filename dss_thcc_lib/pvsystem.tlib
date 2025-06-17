@@ -672,7 +672,7 @@ library "OpenDSS" {
                     type = generic
                     default_value = "5.0"
                     unit = "kVA"
-                    group = "PV Inverter:!"
+                    group = "PV Inverter:1"
                 }
 
                 voltage {
