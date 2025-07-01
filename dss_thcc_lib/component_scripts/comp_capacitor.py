@@ -172,7 +172,7 @@ def redo_connections(mdl, mask_handle):
 
         if phases == "1":
             a2 = mdl.get_item('A2', parent=comp_handle, item_type="port")
-            if not mdl.get_connected_items(a2):
+            if not mdl.find_connections(a2):
                 mdl.create_connection(a2, mdl.term(cap_a, "n_node"))
         elif phases == "2":
             a2 = mdl.get_item('A2', parent=comp_handle, item_type="port")
@@ -183,9 +183,9 @@ def redo_connections(mdl, mask_handle):
             if not b1_conn:
                 mdl.create_connection(b1, mdl.term(cap_b, "p_node"), name="b1_conn")
 
-            if not mdl.get_connected_items(a2):
+            if not mdl.find_connections(a2):
                 mdl.create_connection(a2, mdl.term(cap_a, "n_node"))
-            if not mdl.get_connected_items(b2):
+            if not mdl.find_connections(b2):
                 mdl.create_connection(b2, mdl.term(cap_b, "n_node"))
         else:
             a2 = mdl.get_item('A2', parent=comp_handle, item_type="port")
@@ -202,11 +202,11 @@ def redo_connections(mdl, mask_handle):
             if not mdl.find_connections(c1, mdl.term(cap_c, "p_node")):
                 mdl.create_connection(c1, mdl.term(cap_c, "p_node"))
 
-            if not mdl.get_connected_items(a2):
+            if not mdl.find_connections(a2):
                 mdl.create_connection(a2, mdl.term(cap_a, "n_node"))
-            if not mdl.get_connected_items(b2):
+            if not mdl.find_connections(b2):
                 mdl.create_connection(b2, mdl.term(cap_b, "n_node"))
-            if not mdl.get_connected_items(c2):
+            if not mdl.find_connections(c2):
                 mdl.create_connection(c2, mdl.term(cap_c, "n_node"))
 
     else:
@@ -417,8 +417,8 @@ def define_icon(mdl, mask_handle):
     # Backward compatibility
     #
     map_dict = {"Y": "Y - Neutral point accessible",
-                "Y-grounded": "Y - Grounded",
-                "Series": "In series",
+                "Y - Grounded": "Y - Grounded",
+                "In series": "In series",
                 "Δ": "Δ"}
 
     if tp_connection in map_dict.keys():

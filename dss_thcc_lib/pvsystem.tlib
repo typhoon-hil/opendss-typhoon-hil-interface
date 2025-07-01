@@ -666,13 +666,82 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It implements the PVSystem from the OpenDSS. The time-domain component comprises an average inverter model interfaced with the grid and supports only grid-forming mode.</p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A detailed explanation of the OpenDSS PVSystem model can be found by clicking the help button.</p><p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
                 help_file = "help/PVSystem_InvControl.pdf"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = True
+                    group = "PV Inverter:1"
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                sld_1ph_pick {
+                    label = "connected phase"
+                    widget = combo
+                    combo_values = "A", "B", "C"
+                    type = string
+                    default_value = "A"
+                    group = "PV Inverter"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
+                sld_2ph_pick {
+                    label = "connected phases"
+                    widget = combo
+                    combo_values = "A and B", "B and C", "C and A"
+                    type = string
+                    default_value = "A and B"
+                    group = "PV Inverter"
+                    no_evaluate
+                    nonvisible
+
+                    CODE property_value_changed
+                        comp_script = return_comp_script(mdl, container_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                    ENDCODE
+                }
+
                 power {
                     label = "Power Rating"
                     widget = edit
                     type = generic
                     default_value = "5.0"
                     unit = "kVA"
-                    group = "PV Inverter:1"
+                    group = "PV Inverter"
                 }
 
                 voltage {
@@ -703,8 +772,11 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -723,7 +795,14 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
                     ENDCODE
                 }
 
@@ -776,7 +855,7 @@ library "OpenDSS" {
                     label = "Eff. Pdc values (X array)"
                     widget = edit
                     type = generic
-                    default_value = "[.1, .2, .4, 1.0]"
+                    default_value = "[0.1, 0.2, 0.4, 1.0]"
                     group = "PV Inverter"
                     unit = "pu"
                     no_evaluate
@@ -791,7 +870,7 @@ library "OpenDSS" {
                     label = "Eff. η values (Y array)"
                     widget = edit
                     type = generic
-                    default_value = "[.86, .9, .93, .97]"
+                    default_value = "[0.86, 0.9, 0.93, 0.97]"
                     group = "PV Inverter"
                     unit = "pu"
                     no_evaluate
@@ -915,8 +994,10 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
                     ENDCODE
 
                     CODE property_value_edited
@@ -1014,7 +1095,10 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+
+                        comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
+
                         comp_handle = mdl.get_parent(container_handle)
                         comp_position = mdl.get_position(comp_handle)
                         if old_value == "Internal Scada Input" and new_value == "Time Series":
@@ -1036,7 +1120,10 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        comp_script.circuit_dynamics(mdl, container_handle, prop_handle)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle)
+                        mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
 
@@ -1135,7 +1222,7 @@ library "OpenDSS" {
                     label = "Irradiance points"
                     widget = edit
                     type = generic
-                    default_value = "[0, 0, 0, 0, 0, 0, .1, .2, .3, .5, .8, .9, 1.0, 1.0, .99, .9, .7, .4, .1, 0, 0, 0, 0, 0]"
+                    default_value = "[0, 0, 0, 0, 0, 0, 0.1, 0.2, 0.3, 0.5, 0.8, 0.9, 1.0, 1.0, 0.99, 0.9, 0.7, 0.4, 0.1, 0, 0, 0, 0, 0]"
                     unit = "kW/m2"
                     group = "Operating Conditions"
                     no_evaluate
@@ -1321,12 +1408,21 @@ library "OpenDSS" {
                     import importlib
 
                     import dss_thcc_lib.component_scripts.comp_pvsystem as comp_script
+                    import dss_thcc_lib.component_scripts.comp_load as comp_script2
 
                     importlib.reload(comp_script)
+                    importlib.reload(comp_script2)
+
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    def return_comp_script_load():
+                        return comp_script2
+
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None)
                     comp_script.define_icon(mdl, item_handle)
+
+
                 ENDCODE
 
                 CODE define_icon
