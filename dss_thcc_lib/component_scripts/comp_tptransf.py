@@ -1,8 +1,39 @@
 import numpy as np
 from itertools import combinations
+import dss_thcc_lib.component_scripts.util as util
+import importlib
 
 x0, y0 = (8192, 8192)
 old_state = {}
+
+
+def get_sld_conversion_info(mdl, mask_handle, sld_name, multiline_ports, side, terminal_positions, sld_term_position):
+
+    # multiline_ports_1 = ["A1", "B1", "C1"]
+
+    port_config_dict = {
+        sld_name: {
+            "multiline_ports": multiline_ports,
+            "side": side,
+            "bus_terminal_position": sld_term_position,
+            "hide_name": True,
+        },
+    }
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    # terminal_positions = {
+    #     "A1": (-48, -24),
+    #     "B1": (-16, -24),
+    #     "C1": (16, -24),
+    # }
+
+    return port_config_dict, tag_config_dict, terminal_positions
 
 
 def tp_connection_edited(mdl, mask_handle, new_value):
@@ -1046,6 +1077,12 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 def define_icon(mdl, mask_handle):
     wdg_names = ["prim", "sec1", "sec2", "sec3"]
     num_windings = int(mdl.get_property_disp_value(mdl.prop(mask_handle, "num_windings")))
+    sld_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_mode"))
+
+    if sld_mode in (True, "True"):
+        sld = True
+    else:
+        sld = False
 
     #
     # Set image
@@ -1055,15 +1092,25 @@ def define_icon(mdl, mask_handle):
         conn_prop = mdl.prop(mask_handle, wdg_name + "_conn")
         conn_value = mdl.get_property_disp_value(conn_prop)
 
-        if conn_value in ("Y", "Δ"):
+        if sld:
             neutral_strings += "n"
         else:
-            neutral_strings += "g"
+            if conn_value in ("Y", "Δ"):
+                neutral_strings += "n"
+            else:
+                neutral_strings += "g"
 
-    image_name = f"t_3p{num_windings}w_{neutral_strings}.svg"
+    if sld:
+        image_name = f"t_3p{num_windings}w_{neutral_strings}_sld.svg"
+    else:
+        image_name = f"t_3p{num_windings}w_{neutral_strings}.svg"
+
     mdl.set_component_icon_image(mask_handle, f"images/{image_name}")
 
-    wdg_conn_dict = {"Y": "Y", "Δ": "Δ", "Y - Grounded": "Y"}
+    if sld:
+        wdg_conn_dict = {"Y": "Y", "Δ": "Δ", "Y - Grounded": "Yg"}
+    else:
+        wdg_conn_dict = {"Y": "Y", "Δ": "Δ", "Y - Grounded": "Y"}
 
     #
     # Set text
@@ -1074,35 +1121,42 @@ def define_icon(mdl, mask_handle):
         conn_prop = mdl.prop(mask_handle, wdg_name + "_conn")
         conn_value = mdl.get_property_disp_value(conn_prop)
 
-        size_y = 124 + 160 * (int(num_windings) - 2)
+        if sld:
+            size_y = 64 + 64 * (int(num_windings) - 2)
+            port_dist = 64
+            sld_mult = 0.8
+        else:
+            size_y = 124 + 160 * (int(num_windings) - 2)
+            port_dist = 160
+            sld_mult = 1
 
         if wdg_name == "prim":
             # Y or D
             mdl.disp_component_icon_text(mask_handle, wdg_conn_dict[conn_value], rotate="rotate", relpos_x=0.2,
-                                         relpos_y=(6 + 80 * (num_windings - 2)) / size_y,
+                                         relpos_y=(6 + 0.5 * port_dist * (num_windings - 2)) / size_y,
                                          size=8, trim_factor=2)
             # Winding number
             mdl.disp_component_icon_text(mask_handle, "1", rotate="rotate", relpos_x=0.1,
-                                         relpos_y=(60 + 80 * (num_windings - 2)) / size_y,
+                                         relpos_y=(sld_mult * 60 + 0.5 * port_dist * (num_windings - 2)) / size_y,
                                          size=8, trim_factor=2)
             # Neutral
-            if not conn_value == "Δ":
+            if not conn_value == "Δ" and not sld:
                 mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate", relpos_x=0.1,
-                                             relpos_y=(100 + 80 * (num_windings - 2)) / size_y,
+                                             relpos_y=(100 + 0.5 * port_dist * (num_windings - 2)) / size_y,
                                              size=8, trim_factor=2)
         else:
             # Y or D
             mdl.disp_component_icon_text(mask_handle, wdg_conn_dict[conn_value], rotate="rotate", relpos_x=0.8,
-                                         relpos_y=(6 + 160 * (idx - 1)) / size_y,
+                                         relpos_y=(6 + port_dist * (idx - 1)) / size_y,
                                          size=8, trim_factor=2)
             # Winding number
             mdl.disp_component_icon_text(mask_handle, f"{idx + 1}", rotate="rotate", relpos_x=0.9,
-                                         relpos_y=(60 + 160 * (idx - 1)) / size_y,
+                                         relpos_y=(sld_mult * 60 + port_dist * (idx - 1)) / size_y,
                                          size=8, trim_factor=2)
             # Neutral
-            if not conn_value == "Δ":
+            if not conn_value == "Δ" and not sld:
                 mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate", relpos_x=0.95,
-                                             relpos_y=(100 + 160 * (idx - 1)) / size_y,
+                                             relpos_y=(100 + port_dist * (idx - 1)) / size_y,
                                              size=8, trim_factor=2)
 
 
@@ -1183,7 +1237,7 @@ def place_voltage_regulator(mdl, mask_handle, new_value):
                 mdl.delete_item(component)
 
 
-def topology_dynamics(mdl, mask_handle):
+def topology_dynamics(mdl, mask_handle, prop_handle):
     """
     This call the functions to build the transformer configuration according
     to the user selected parameters and configurations.
@@ -1191,13 +1245,24 @@ def topology_dynamics(mdl, mask_handle):
 
     comp_handle = mdl.get_parent(mask_handle)
 
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
+
     #
     # Get new property values to be applied (display values)
     #
+    current_values = {}
     new_prop_values = {}
     for prop in mdl.get_property_values(comp_handle):
         p = mdl.prop(mask_handle, prop)
         new_prop_values[prop] = mdl.get_property_disp_value(p)
+        current_values[prop] = mdl.get_property_value(p)
 
     #
     # If the property values are the same as on the previous run, stop
@@ -1206,9 +1271,265 @@ def topology_dynamics(mdl, mask_handle):
     if new_prop_values == old_state.get(comp_handle):
         return
 
-    mdl.refresh_icon(mask_handle)
-    created_ports, _ = port_dynamics(mdl, mask_handle)
-    update_subsystem_components(mdl, mask_handle, created_ports)
-    enable_disable_conn(mdl, mask_handle)
+    if calling_prop_name == "init_code":
+        mdl.refresh_icon(mask_handle)
+        created_ports, _ = port_dynamics(mdl, mask_handle)
+        update_subsystem_components(mdl, mask_handle, created_ports)
+        enable_disable_conn(mdl, mask_handle)
 
-    old_state[comp_handle] = new_prop_values
+    num_windings = new_prop_values.get("num_windings")
+    if num_windings == "2":
+        Y2_offset = 160
+        Y3_offset = 0
+        Y4_offset = 0
+    elif num_windings == "3":
+        Y2_offset = 80
+        Y3_offset = 80
+        Y4_offset = 0
+    elif num_windings == "4":
+        Y2_offset = 0
+        Y3_offset = 0
+        Y4_offset = 0
+    else:
+        Y2_offset = 160
+        Y3_offset = 0
+        Y4_offset = 0
+
+    sld_info_dict = {
+        "SLD1": {
+            "port_names": ["A1", "B1", "C1"],
+            "side": "left",
+            "multi_term_pos": {
+                "A1": (-32, -48),
+                "B1": (-32, -16),
+                "C1": (-32, 16),
+            },
+            "sld_term_pos": (-32, 0),
+        },
+        "SLD2": {
+            "port_names": ["A2", "B2", "C2"],
+            "side": "right",
+            "multi_term_pos": {
+                "A2": (32, -208 + Y2_offset),
+                "B2": (32, -176 + Y2_offset),
+                "C2": (32, -144 + Y2_offset),
+            },
+            "sld_term_pos": (32, -64 + 32 * Y2_offset / 80),
+        },
+        "SLD3": {
+            "port_names": ["A3", "B3", "C3"],
+            "side": "right",
+            "multi_term_pos": {
+                "A3": (32, -48 + Y3_offset),
+                "B3": (32, -16 + Y3_offset),
+                "C3": (32, 16 + Y3_offset),
+            },
+            "sld_term_pos": (32, 0 + 32 * Y3_offset / 80),
+        },
+        "SLD4": {
+            "port_names": ["A4", "B4", "C4"],
+            "side": "right",
+            "multi_term_pos": {
+                "A4": (32, 112 + Y4_offset),
+                "B4": (32, 144 + Y4_offset),
+                "C4": (32, 176 + Y4_offset),
+            },
+            "sld_term_pos": (32, 64 + 32 * Y4_offset / 80),
+        },
+    }
+
+    if calling_prop_name not in ["sld_mode", "init_code"]:
+
+        if old_state:
+            current_state = old_state[comp_handle]
+        else:
+            current_state = new_prop_values
+
+        prim_config = current_state.get("prim_conn")
+        sec1_config = current_state.get("sec1_conn")
+        sec2_config = current_state.get("sec2_conn")
+        sec3_config = current_state.get("sec3_conn")
+
+        if prim_config in ["Y - Grounded", "Y"]:
+            if "N1" not in sld_info_dict.get("SLD1").get("port_names"):
+                sld_info_dict.get("SLD1").get("port_names").append("N1")
+            if "N1" not in sld_info_dict.get("SLD1").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD1").get("multi_term_pos")["N1"] = (-32, 48)
+        else:
+            if "N1" in sld_info_dict.get("SLD1").get("port_names"):
+                sld_info_dict.get("SLD1").get("port_names").remove("N1")
+            if "N1" in sld_info_dict.get("SLD1").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD1").get("multi_term_pos").pop("N1")
+
+        if sec1_config in ["Y - Grounded", "Y"]:
+            if "N2" not in sld_info_dict.get("SLD2").get("port_names"):
+                sld_info_dict.get("SLD2").get("port_names").append("N2")
+            if "N2" not in sld_info_dict.get("SLD2").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD2").get("multi_term_pos")["N2"] = (32, -112 + Y2_offset)
+        else:
+            if "N2" in sld_info_dict.get("SLD2").get("port_names"):
+                sld_info_dict.get("SLD2").get("port_names").remove("N2")
+            if "N2" in sld_info_dict.get("SLD2").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD2").get("multi_term_pos").pop("N2")
+
+        if sec2_config in ["Y - Grounded", "Y"]:
+            if "N3" not in sld_info_dict.get("SLD3").get("port_names"):
+                sld_info_dict.get("SLD3").get("port_names").append("N3")
+            if "N3" not in sld_info_dict.get("SLD3").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD3").get("multi_term_pos")["N3"] = (32, 48 + Y3_offset)
+        else:
+            if "N3" in sld_info_dict.get("SLD3").get("port_names"):
+                sld_info_dict.get("SLD3").get("port_names").remove("N3")
+            if "N3" in sld_info_dict.get("SLD3").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD3").get("multi_term_pos").pop("N3")
+
+        if sec3_config in ["Y - Grounded", "Y"]:
+            if "N4" not in sld_info_dict.get("SLD4").get("port_names"):
+                sld_info_dict.get("SLD4").get("port_names").append("N4")
+            if "N4" not in sld_info_dict.get("SLD4").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD4").get("multi_term_pos")["N4"] = (32, 208 + Y4_offset)
+        else:
+            if "N4" in sld_info_dict.get("SLD4").get("port_names"):
+                sld_info_dict.get("SLD4").get("port_names").remove("N4")
+            if "N4" in sld_info_dict.get("SLD4").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD4").get("multi_term_pos").pop("N4")
+
+        for sld_winding in sld_info_dict.keys():
+            currently_sld = mdl.get_item(sld_winding, parent=comp_handle, item_type="port")
+            if currently_sld:
+                # The terminal related to the current property hasn't been created yet
+                importlib.reload(util)
+                sld_info = get_sld_conversion_info(mdl, mask_handle, sld_winding,
+                                                   sld_info_dict.get(sld_winding).get("port_names"),
+                                                   sld_info_dict.get(sld_winding).get("side"),
+                                                   sld_info_dict.get(sld_winding).get("multi_term_pos"),
+                                                   sld_info_dict.get(sld_winding).get("sld_term_pos")
+                                                   )
+
+                util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+        mdl.refresh_icon(mask_handle)
+        created_ports, _ = port_dynamics(mdl, mask_handle)
+        update_subsystem_components(mdl, mask_handle, created_ports)
+        enable_disable_conn(mdl, mask_handle)
+        old_state[comp_handle] = current_values
+
+    good_for_sld = []
+    for prop_name in new_prop_values:
+        if prop_name in ["num_windings"]:
+            cur_pass_value = current_pass_prop_values[prop_name]
+            new_value = new_prop_values[prop_name]
+            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
+                if float(cur_pass_value) == float(new_value):
+                    good_for_sld.append(True)
+                    continue
+            else:
+                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                    good_for_sld.append(True)
+                    continue
+            good_for_sld.append(False)
+
+    final_state = all(good_for_sld)
+
+    if final_state:
+
+        old_state[comp_handle] = new_prop_values
+
+        prim_config = new_prop_values.get("prim_conn")
+        sec1_config = new_prop_values.get("sec1_conn")
+        sec2_config = new_prop_values.get("sec2_conn")
+        sec3_config = new_prop_values.get("sec3_conn")
+
+        if prim_config in ["Y - Grounded", "Y"]:
+            if "N1" not in sld_info_dict.get("SLD1").get("port_names"):
+                sld_info_dict.get("SLD1").get("port_names").append("N1")
+            if "N1" not in sld_info_dict.get("SLD1").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD1").get("multi_term_pos")["N1"] = (-32, 48)
+        else:
+            if "N1" in sld_info_dict.get("SLD1").get("port_names"):
+                sld_info_dict.get("SLD1").get("port_names").remove("N1")
+            if "N1" in sld_info_dict.get("SLD1").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD1").get("multi_term_pos").pop("N1")
+
+        if sec1_config in ["Y - Grounded", "Y"]:
+            if "N2" not in sld_info_dict.get("SLD2").get("port_names"):
+                sld_info_dict.get("SLD2").get("port_names").append("N2")
+            if "N2" not in sld_info_dict.get("SLD2").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD2").get("multi_term_pos")["N2"] = (32, -112 + Y2_offset)
+        else:
+            if "N2" in sld_info_dict.get("SLD2").get("port_names"):
+                sld_info_dict.get("SLD2").get("port_names").remove("N2")
+            if "N2" in sld_info_dict.get("SLD2").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD2").get("multi_term_pos").pop("N2")
+
+        if sec2_config in ["Y - Grounded", "Y"]:
+            if "N3" not in sld_info_dict.get("SLD3").get("port_names"):
+                sld_info_dict.get("SLD3").get("port_names").append("N3")
+            if "N3" not in sld_info_dict.get("SLD3").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD3").get("multi_term_pos")["N3"] = (32, 48 + Y3_offset)
+        else:
+            if "N3" in sld_info_dict.get("SLD3").get("port_names"):
+                sld_info_dict.get("SLD3").get("port_names").remove("N3")
+            if "N3" in sld_info_dict.get("SLD3").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD3").get("multi_term_pos").pop("N3")
+
+        if sec3_config in ["Y - Grounded", "Y"]:
+            if "N4" not in sld_info_dict.get("SLD4").get("port_names"):
+                sld_info_dict.get("SLD4").get("port_names").append("N4")
+            if "N4" not in sld_info_dict.get("SLD4").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD4").get("multi_term_pos")["N4"] = (32, 208 + Y4_offset)
+        else:
+            if "N4" in sld_info_dict.get("SLD4").get("port_names"):
+                sld_info_dict.get("SLD4").get("port_names").remove("N4")
+            if "N4" in sld_info_dict.get("SLD4").get("multi_term_pos").keys():
+                sld_info_dict.get("SLD4").get("multi_term_pos").pop("N4")
+
+        importlib.reload(util)
+        num_windings = new_prop_values.get("num_windings")
+        if num_windings == "2":
+            sld_winding_list = ["SLD1", "SLD2"]
+        elif num_windings == "3":
+            sld_winding_list = ["SLD1", "SLD2", "SLD3"]
+        elif num_windings == "4":
+            sld_winding_list = ["SLD1", "SLD2", "SLD3", "SLD4"]
+        else:
+            sld_winding_list = ["SLD1", "SLD2"]
+
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            for sld_winding in sld_winding_list:
+                sld_info = get_sld_conversion_info(mdl, mask_handle, sld_winding,
+                                                   sld_info_dict.get(sld_winding).get("port_names"),
+                                                   sld_info_dict.get(sld_winding).get("side"),
+                                                   sld_info_dict.get(sld_winding).get("multi_term_pos"),
+                                                   sld_info_dict.get(sld_winding).get("sld_term_pos")
+                                                   )
+                util.convert_to_sld(mdl, mask_handle, sld_info)
+        else:
+            for sld_winding in sld_winding_list:
+                currently_sld = mdl.get_item(sld_winding, parent=comp_handle, item_type="port")
+                if currently_sld:
+                    # The terminal related to the current property hasn't been created yet
+                    importlib.reload(util)
+                    sld_info = get_sld_conversion_info(mdl, mask_handle, sld_winding,
+                                                       sld_info_dict.get(sld_winding).get("port_names"),
+                                                       sld_info_dict.get(sld_winding).get("side"),
+                                                       sld_info_dict.get(sld_winding).get("multi_term_pos"),
+                                                       sld_info_dict.get(sld_winding).get("sld_term_pos")
+                                                       )
+
+                    util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+
+    sld_post_processing(mdl, mask_handle)
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    for bus_name in ["SLD1_bus", "SLD2_bus", "SLD3_bus", "SLD4_bus"]:
+        bus = mdl.get_item(bus_name, parent=comp_handle)
+        if bus:
+            bus_size_prop = mdl.prop(bus, "bus_size")
+            mdl.set_property_value(bus_size_prop, 4)

@@ -111,6 +111,23 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">A Vsource object is a voltage source behind an impedance. The most common way to use a voltage source object is with the first terminal connected to one bus with the second terminal connected to ground or neutral point. </p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"> It is possible to connect it to two different buses by selecting “In series” on the connection method property.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=166"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = True
+
+                    CODE property_value_changed
+                        import importlib
+                        import dss_thcc_lib.component_scripts.comp_vsource as comp_script
+                        importlib.reload(comp_script)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
                 basekv {
                     label = "Base Voltage"
                     description = "base or rated Line-to-Line kV"
@@ -174,9 +191,9 @@ library "OpenDSS" {
                     group = "General"
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.update_connections(mdl, container_handle, ports)
+                        if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
                 }
@@ -389,6 +406,14 @@ library "OpenDSS" {
                     no_evaluate
                 }
 
+                library_version {
+                    label = "OpenDSS library version number"
+                    widget = edit
+                    type = real
+                    default_value = 0
+                    nonvisible
+                }
+
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
 
@@ -402,21 +427,25 @@ library "OpenDSS" {
                 ENDCODE
 
                 CODE define_icon
-                    comp_script = return_comp_script(mdl, item_handle)
+                    import dss_thcc_lib.component_scripts.comp_vsource as comp_script
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 
 
                 CODE init
                     import importlib
-
                     import dss_thcc_lib.component_scripts.comp_vsource as comp_script
+
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
+                    if _called_during_load:
+                        comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.update_library_version_info(mdl, item_handle)
+
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
                     comp_script.define_icon(mdl, item_handle)
-                    comp_script.retro_compatibility(mdl, item_handle)
                 ENDCODE
 
                 CODE pre_compile

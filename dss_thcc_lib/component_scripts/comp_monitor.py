@@ -1,3 +1,8 @@
+import numpy as np
+import dss_thcc_lib.component_scripts.util as util
+import importlib
+
+
 old_state = {}
 
 
@@ -12,27 +17,10 @@ def pos_offset(pos):
     return x0 + pos_x, y0 + pos_y
 
 
-def topology_dynamics(mdl, mask_handle):
+def port_dynamics(mdl, mask_handle):
     comp_handle = mdl.get_parent(mask_handle)
 
-    #
-    # Get new property values to be applied (display values)
-    #
-    new_prop_values = {}
-    for prop in mdl.get_property_values(comp_handle):
-        p = mdl.prop(mask_handle, prop)
-        new_prop_values[prop] = mdl.get_property_disp_value(p)
-
-    #
-    # If the property values are the same as on the previous run, stop
-    #
-    global old_state
-    if new_prop_values == old_state.get(comp_handle):
-        return
-
-    # When loading a model
-    if not new_prop_values:
-        new_prop_values = mdl.get_property_values(comp_handle)
+    new_prop_values = mdl.get_property_values(comp_handle)
 
     #
     # Phases checkbox properties
@@ -415,9 +403,243 @@ def topology_dynamics(mdl, mask_handle):
                                                  )
             mdl.create_connection(gnd_tag_handle, mdl.term(ground_handle, "node"))
 
-    old_state[comp_handle] = new_prop_values
+    return
+
+
+def get_sld_conversion_info(mdl, mask_handle, sld_name, multiline_ports, side, terminal_positions, sld_term_position):
+
+
+    port_config_dict = {
+        sld_name: {
+            "multiline_ports": multiline_ports,
+            "side": side,
+            "bus_terminal_position": sld_term_position,
+            "hide_name": True,
+        },
+    }
+    tag_config_dict = {}
+
+    return port_config_dict, tag_config_dict, terminal_positions
+
+
+def topology_dynamics(mdl, mask_handle, prop_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
+
+    #
+    # Get new property values to be applied (display values)
+    #
+    current_values = {}
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+        current_values[prop] = mdl.get_property_value(p)
+
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle):
+        return
+
+    if calling_prop_name == "init_code":
+        define_icon(mdl, mask_handle)
+        port_dynamics(mdl, mask_handle)
+
+    if calling_prop_name not in ["sld_mode", "init_code"]:
+
+        phase_a = new_prop_values.get("phase_a") in ("True", True)
+        phase_b = new_prop_values.get("phase_b") in ("True", True)
+        phase_c = new_prop_values.get("phase_c") in ("True", True)
+        phase_n = new_prop_values.get("phase_n") in ("True", True)
+
+        num_phases = sum((phase_a, phase_b, phase_c))
+
+        sld_bus_count = 2
+
+        for sld_idx in range(sld_bus_count):
+            sld_name = "SLD" + str(sld_idx+1)
+            currently_sld = mdl.get_item(sld_name, parent=comp_handle, item_type="port")
+            if currently_sld:
+                # The terminal related to the current property hasn't been created yet
+                sld_number = {}
+                importlib.reload(util)
+
+                multi_port_list = []
+                terminal_positions = {}
+
+                port_shift = 0
+
+                if sld_idx == 0:
+                    sld_side = "left"
+                    port_x = -24
+                else:
+                    sld_side = "right"
+                    port_x = 24
+
+                sld_term_position = (port_x, 0)
+
+                if phase_a:
+                    multi_port_list.append("A" + str(sld_idx+1))
+                    terminal_positions["A" + str(sld_idx+1)] = (port_x, 32 * port_shift - (16 * num_phases - 16))
+                    port_shift = port_shift + 1
+                else:
+                    multi_port_list.append(None)
+
+                if phase_b:
+                    multi_port_list.append("B" + str(sld_idx+1))
+                    terminal_positions["B" + str(sld_idx+1)] = (port_x, 32 * port_shift - (16 * num_phases - 16))
+                    port_shift = port_shift + 1
+                else:
+                    multi_port_list.append(None)
+
+                if phase_c:
+                    multi_port_list.append("C" + str(sld_idx+1))
+                    terminal_positions["C" + str(sld_idx+1)] = (port_x, 32 * port_shift - (16 * num_phases - 16))
+                else:
+                    multi_port_list.append(None)
+
+
+                sld_number["port_names"] = multi_port_list
+                sld_number["side"] = sld_side
+                sld_number["multi_term_pos"] = terminal_positions
+                sld_number["sld_term_pos"] = sld_term_position
+
+                sld_info = get_sld_conversion_info(mdl, mask_handle, sld_name,
+                                                   sld_number.get("port_names"),
+                                                   sld_number.get("side"),
+                                                   sld_number.get("multi_term_pos"),
+                                                   sld_number.get("sld_term_pos")
+                                                   )
+
+                util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+
+        define_icon(mdl, mask_handle)
+        port_dynamics(mdl, mask_handle)
+        old_state[comp_handle] = current_values
+
+    good_for_sld = []
+    for prop_name in new_prop_values:
+        if prop_name in ["phase_a", "phase_b", "phase_c", "phase_n"]:
+            cur_pass_value = current_pass_prop_values[prop_name]
+            new_value = new_prop_values[prop_name]
+            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
+                if float(cur_pass_value) == float(new_value):
+                    good_for_sld.append(True)
+                    continue
+            else:
+                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                    good_for_sld.append(True)
+                    continue
+            good_for_sld.append(False)
+
+    final_state = all(good_for_sld)
+    # final_state = True
+
+    #
+    # When property values reach the final state, return to single-line if needed
+    #
+    if final_state:
+        old_state[comp_handle] = new_prop_values
+
+        phase_a = new_prop_values.get("phase_a") in ("True", True)
+        phase_b = new_prop_values.get("phase_b") in ("True", True)
+        phase_c = new_prop_values.get("phase_c") in ("True", True)
+        phase_n = new_prop_values.get("phase_n") in ("True", True)
+
+        num_phases = sum((phase_a, phase_b, phase_c))
+
+        sld_bus_count = 2
+
+        sld_info = []
+        for sld_idx in range(sld_bus_count):
+            sld_name = "SLD" + str(sld_idx + 1)
+            # The terminal related to the current property hasn't been created yet
+            sld_number = {}
+            importlib.reload(util)
+
+            multi_port_list = []
+            terminal_positions = {}
+
+            port_shift = 0
+
+            if sld_idx == 0:
+                sld_side = "left"
+                port_x = -24
+            else:
+                sld_side = "right"
+                port_x = 24
+
+            sld_term_position = (port_x, 0)
+
+            if phase_a:
+                multi_port_list.append("A" + str(sld_idx + 1))
+                terminal_positions["A" + str(sld_idx + 1)] = (port_x, 32 * port_shift - (16 * num_phases - 16))
+                port_shift = port_shift + 1
+            else:
+                multi_port_list.append(None)
+
+            if phase_b:
+                multi_port_list.append("B" + str(sld_idx + 1))
+                terminal_positions["B" + str(sld_idx + 1)] = (port_x, 32 * port_shift - (16 * num_phases - 16))
+                port_shift = port_shift + 1
+            else:
+                multi_port_list.append(None)
+
+            if phase_c:
+                multi_port_list.append("C" + str(sld_idx + 1))
+                terminal_positions["C" + str(sld_idx + 1)] = (port_x, 32 * port_shift - (16 * num_phases - 16))
+            else:
+                multi_port_list.append(None)
+
+            sld_number["port_names"] = multi_port_list
+            sld_number["side"] = sld_side
+            sld_number["multi_term_pos"] = terminal_positions
+            sld_number["sld_term_pos"] = sld_term_position
+
+            sld_info.append(get_sld_conversion_info(mdl, mask_handle, sld_name,
+                                               sld_number.get("port_names"),
+                                               sld_number.get("side"),
+                                               sld_number.get("multi_term_pos"),
+                                               sld_number.get("sld_term_pos")
+                                               )
+                            )
+
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            for sld_idx in range(sld_bus_count):
+                util.convert_to_sld(mdl, mask_handle, sld_info[sld_idx])
+        else:
+            for sld_idx in range(sld_bus_count):
+                sld_name = "SLD" + str(sld_idx + 1)
+                currently_sld = mdl.get_item(sld_name, parent=comp_handle, item_type="port")
+                if currently_sld:
+                    util.convert_to_multiline(mdl, mask_handle, sld_info[sld_idx])
+
+    sld_post_processing(mdl, mask_handle)
 
     return
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    for bus_name in ["SLD1_bus", "SLD2_bus"]:
+        bus = mdl.get_item(bus_name, parent=comp_handle)
+        if bus:
+            bus_size_prop = mdl.prop(bus, "bus_size")
+            mdl.set_property_value(bus_size_prop, 4)
 
 
 def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
@@ -585,6 +807,11 @@ def define_icon(mdl, mask_handle):
     phase_b = mdl.get_property_disp_value(mdl.prop(mask_handle, "phase_b"))
     phase_c = mdl.get_property_disp_value(mdl.prop(mask_handle, "phase_c"))
 
+    sld_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_mode"))
+
     num_phases = sum((phase_a, phase_b, phase_c))
+    if sld_mode in (True, "True"):
+        num_phases = 1
+
     image = f"images/monitor_{num_phases}ph.svg"
     mdl.set_component_icon_image(mask_handle, image)
