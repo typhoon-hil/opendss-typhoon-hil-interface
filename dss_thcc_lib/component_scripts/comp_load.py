@@ -547,6 +547,56 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
     pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
+    sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+    sld_mode = mdl.get_property_disp_value(sld_mode_prop)
+
+    if caller_prop_handle:
+        if mdl.get_name(caller_prop_handle) == "sld_mode" and not init:
+            if phases == "1":
+                if tp_connection == "Y - Grounded":
+                    p_term_position = (24, -15)
+                    q_term_position = (24, 15)
+                    term_position = (25, 15)
+                else:
+                    p_term_position = (40, -15)
+                    q_term_position = (40, 15)
+                    term_position = (40, -15)
+            else:
+                if tp_connection == 'Δ':
+                    if sld_mode in (True, "True"):
+                        p_term_position = (40, -15)
+                        q_term_position = (40, 15)
+                        term_position = (40, -15)
+                    else:
+                        p_term_position = (48, -15)
+                        q_term_position = (48, 15)
+                        term_position = (50, 0)
+                else:
+                    if sld_mode in (True, "True"):
+                        p_term_position = (24, -15)
+                        q_term_position = (24, 15)
+                        term_position = (25, 15)
+                    else:
+                        p_term_position = (64, -15)
+                        q_term_position = (64, 15)
+                        term_position = (65, 15)
+
+            p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
+            q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+            t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
+
+            if p_ext:
+                mdl.set_port_properties(p_ext, terminal_position=p_term_position)
+
+            if q_ext:
+                mdl.set_port_properties(q_ext, terminal_position=q_term_position)
+
+            if t_ext:
+                mdl.set_port_properties(t_ext, terminal_position=term_position)
+
+            return
+
+
     if phases == "3":
         port_a = mdl.get_item("A1", parent=comp_handle, item_type="port")
         port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
@@ -559,14 +609,23 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             pos_port_a1 = (-32, -24)
             pos_port_b1 = (0, -24)
             pos_port_c1 = (32, -24)
-            pos_p_ext = (50, -15)
-            pos_q_ext = (50, 15)
+            if sld_mode in (True, "True"):
+                pos_p_ext = (16, -16)
+                pos_q_ext = (16, 16)
+            else:
+                pos_p_ext = (50, -15)
+                pos_q_ext = (50, 15)
         else:
             pos_port_a1 = (-48, -24)
             pos_port_b1 = (-16, -24)
             pos_port_c1 = (16, -24)
-            pos_p_ext = (65, -15)
-            pos_q_ext = (65, 15)
+            if sld_mode in (True, "True"):
+                pos_p_ext = (24, -16)
+                pos_q_ext = (24, 16)
+            else:
+                pos_p_ext = (65, -15)
+                pos_q_ext = (65, 15)
+
 
         if p_ext:
             mdl.set_port_properties(p_ext, terminal_position=pos_p_ext)
@@ -707,15 +766,23 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                     p_term_position = (24, -15)
                     q_term_position = (24, 15)
                 else:
-                    p_term_position = (16, -15)
-                    q_term_position = (16, 15)
+                    p_term_position = (40, -15)
+                    q_term_position = (40, 15)
             else:
                 if tp_connection == 'Δ':
-                    p_term_position = (48, -15)
-                    q_term_position = (48, 15)
+                    if sld_mode in (True, "True"):
+                        p_term_position = (40, -15)
+                        q_term_position = (40, 15)
+                    else:
+                        p_term_position = (48, -15)
+                        q_term_position = (48, 15)
                 else:
-                    p_term_position = (64, -15)
-                    q_term_position = (64, 15)
+                    if sld_mode in (True, "True"):
+                        p_term_position = (24, -15)
+                        q_term_position = (24, 15)
+                    else:
+                        p_term_position = (64, -15)
+                        q_term_position = (64, 15)
 
             p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
             if not p_ext:
@@ -723,6 +790,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                                         kind="sp",
                                         terminal_position=p_term_position,
                                         position=(7680, 8175))
+            else:
+                mdl.set_port_properties(p_ext, terminal_position=p_term_position)
             created_ports.update({"P_ext": p_ext})
 
             q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
@@ -731,6 +800,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                                         kind="sp",
                                         terminal_position=q_term_position,
                                         position=(7680, 8240))
+            else:
+                mdl.set_port_properties(q_ext, terminal_position=q_term_position)
             created_ports.update({"Q_ext": q_ext})
 
             t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
@@ -752,14 +823,20 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
             if phases == "1":
                 if tp_connection == "Y - Grounded":
-                    term_position = (25, 0)
+                    term_position = (25, 15)
                 else:
-                    term_position = (16, 0)
+                    term_position = (40, -15)
             else:
                 if tp_connection == 'Δ':
-                    term_position = (50, 0)
+                    if sld_mode in (True, "True"):
+                        term_position = (40, -15)
+                    else:
+                        term_position = (50, 0)
                 else:
-                    term_position = (65, 0)
+                    if sld_mode in (True, "True"):
+                        term_position = (25, 15)
+                    else:
+                        term_position = (65, 15)
 
             t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
             if not t_ext:
@@ -1115,7 +1192,7 @@ def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
 
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
-    pow_ref_s = mdl.get_property_value(pow_ref_s_prop)
+    pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
     load_model = mdl.get_property_value(mdl.prop(mask_handle, "load_model"))
     if load_model != "Constant Impedance":
@@ -1765,16 +1842,19 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
     # If the property values are the same as on the previous run, stop
     #
     global old_state
-    if new_prop_values == old_state.get(comp_handle):
-        return
+    # if new_prop_values == old_state.get(comp_handle):
+    #    return
 
     if calling_prop_name == "init_code":
         define_icon(mdl, mask_handle)
-        ports = port_dynamics(mdl, mask_handle)
         set_load_model(mdl, mask_handle)
+        ports = port_dynamics(mdl, mask_handle, init=True)
         load_dynamics(mdl, mask_handle, ports)
         connections_gnd_dynamics(mdl, mask_handle, ports)
         connections_dynamics(mdl, mask_handle, ports)
+
+    if calling_prop_name == "sld_mode":
+        port_dynamics(mdl, mask_handle, caller_prop_handle=prop_handle, init=False)
 
     if calling_prop_name not in ["sld_mode", "init_code"]:
 
@@ -1863,8 +1943,8 @@ def topology_dynamics(mdl, mask_handle, prop_handle):
             util.convert_to_multiline(mdl, mask_handle, sld_info)
 
         define_icon(mdl, mask_handle)
-        ports = port_dynamics(mdl, mask_handle)
         set_load_model(mdl, mask_handle)
+        ports = port_dynamics(mdl, mask_handle)
         load_dynamics(mdl, mask_handle, ports)
         connections_gnd_dynamics(mdl, mask_handle, ports)
         connections_dynamics(mdl, mask_handle, ports)
