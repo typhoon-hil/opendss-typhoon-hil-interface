@@ -653,22 +653,18 @@ Te_mem = Te;
                 hide_name = True
             ]
 
-            component "core/Rate Transition" "Rate Transition1" {
-                execution_rate = "execution_rate"
+            component "core/Unit Delay" "Unit Delay14" {
             }
             [
                 position = 4240, 7712
                 hide_name = True
-                size = 32, 32
             ]
 
-            component "core/Rate Transition" "Rate Transition2" {
-                execution_rate = "execution_rate"
+            component "core/Unit Delay" "Unit Delay15" {
             }
             [
                 position = 4240, 7768
                 hide_name = True
-                size = 32, 32
             ]
 
             component "core/Constant" Constant24 {
@@ -1979,10 +1975,10 @@ Te_mem = Te;
             connect Goto75 Junction184 as Connection4896
             connect Junction185 "C function2.Tm" as Connection4899
             connect "Signal switch3.out" "C function2.vfd" as Connection4901
-            connect Vfd_in "Rate Transition1.in" as Connection4902
-            connect "Rate Transition1.out" Goto71 as Connection4903
-            connect Tm_in "Rate Transition2.in" as Connection4904
-            connect "Rate Transition2.out" Goto72 as Connection4905
+            connect Vfd_in "Unit Delay14.in" as Connection4902
+            connect "Unit Delay14.out" Goto71 as Connection4903
+            connect Tm_in "Unit Delay15.in" as Connection4904
+            connect "Unit Delay15.out" Goto72 as Connection4905
             connect Gain5.in Sum2.out as Connection4906
             connect From59 "Signal switch5.in" as Connection4910
             connect "Signal switch5.out" "C function2.V2S" as Connection4911
@@ -2995,7 +2991,7 @@ Te_mem = Te;
                     kvar = mdl.get_property_value(mdl.prop(item_handle, "kvar"))
                     kv = mdl.get_property_value(mdl.prop(item_handle, "kv"))
                     global_basefreq = mdl.get_property_value(mdl.prop(item_handle, "global_basefreq"))
-                    basefreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
+                    baseFreq = mdl.get_property_value(mdl.prop(item_handle, "baseFreq"))
                     nom_rpm = mdl.get_property_value(mdl.prop(item_handle, "nom_rpm"))
                     kVA = mdl.get_property_value(mdl.prop(item_handle, "kVA"))
                     pf = mdl.get_property_value(mdl.prop(item_handle, "pf"))
@@ -3085,7 +3081,7 @@ Te_mem = Te;
                     T_lim_high = mdl.get_property_value(mdl.prop(item_handle, "T_lim_high"))
                     Ts_switch = mdl.get_property_value(mdl.prop(item_handle, "Ts_switch"))
                     # HEADER STOP
-                    prop_dict = {"baseFreq": basefreq,
+                    prop_dict = {"baseFreq": baseFreq,
                                  "nom_rpm": nom_rpm,
                                  "Init_En": Init_En,
                                  "gen_ts_en": gen_ts_en,
