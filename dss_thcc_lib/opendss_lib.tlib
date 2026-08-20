@@ -2000,6 +2000,7 @@ library "OpenDSS" {
                                 mdl.set_property_value(mdl.prop(K_filter, "normalize_flag"), "False")
                                 mdl.set_property_value(mdl.prop(K_filter, "q_gain"), "q_gain_k")
                                 mdl.set_property_value(mdl.prop(K_filter, "r_gain"), "r_gain_k")
+                                mdl.set_property_value(mdl.prop(K_filter, "f_grid"), "Freq")
                         
                                 K_f_term = mdl.get_item("f_term", parent=comp_handle, item_type="component")
                                 if not K_f_term:
@@ -7237,7 +7238,7 @@ if (counter >= Ts) {
                 ]
 
                 component "core/Kalman Filter Sync" "Kalman Filter Sync1" {
-                    f_grid = "60.0"
+                    f_grid = "Freq"
                     q_gain = "q_gain_k"
                     r_gain = "r_gain_k"
                 }
