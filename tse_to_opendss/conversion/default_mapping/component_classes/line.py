@@ -21,7 +21,12 @@ class Line(TwoTerminal):
         self.floating_neutral = self.is_neutral_floating(self, tse_properties, tse_component)
 
         # Get bus connections list
-        self.buses = return_bus_connections(tse_component, self.num_buses, self.num_phases, self.floating_neutral)
+        self.buses = return_bus_connections(
+            tse_component,
+            self.num_buses,
+            self.num_phases if self.num_phases <= 3 else 3,
+            self.floating_neutral,
+        )
 
         # Filter unused TSE properties and create new ones
         self.new_format_properties = self.create_new_format_properties_dict(self, tse_properties, tse_component)

@@ -63,12 +63,13 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
                         bus_terminals = [t[0] for t in term_connected]  # Only the letter
                         order.extend(bus_terminals[0])
 
+                bus_num_phases = calculate_bus_num_phases(bus)
                 terminal_order = []
                 for phase_name in order:
-                    if phase_name in ['A', 'B', 'C']:
+                    if phase_name == "N":
+                        terminal_order.append(str(bus_num_phases))
+                    else:
                         terminal_order.append(str(ord(phase_name[0]) - 64))
-                    elif phase_name == "N":
-                        terminal_order.append(str(num_phases + 1))
                 terminal_order = '.'.join(terminal_order)
                 bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
 
@@ -79,6 +80,16 @@ def return_bus_connections(tse_component, num_buses, num_phases, floating_neutra
             bus_connections.append(f"{conn_bus.name}.{p}.{p}.{p}")
 
     return bus_connections
+
+
+def calculate_bus_num_phases(bus):
+    phase_a = bus.properties.get("phase_a").value in ("True", True)
+    phase_b = bus.properties.get("phase_b").value in ("True", True)
+    phase_c = bus.properties.get("phase_c").value in ("True", True)
+    phase_n = bus.properties.get("phase_n").value in ("True", True)
+
+    num_phases = sum((phase_a, phase_b, phase_c, phase_n))
+    return num_phases
 
 
 def verify_duplicate_names(tse_model):
