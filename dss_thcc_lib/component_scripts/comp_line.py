@@ -1,24 +1,170 @@
 import numpy as np
 import ast
 import re
+import dss_thcc_lib.component_scripts.util as util
+
+def update_library_version_info(mdl, mask_handle):
+    util.set_component_library_version(mdl, mask_handle)
+
+def get_sld_conversion_info(mdl, mask_handle, props_state):
+
+    num_phases = props_state.get("phases")
+
+    #
+    # Which ports are expected
+    #
+    bus_port_1_name = "SLD1"
+    multiline_ports_1 = ["A1", "B1", "C1", "N1"][:int(num_phases)]
+    bus_port_2_name = "SLD2"
+    multiline_ports_2 = ["A2", "B2", "C2", "N2"][:int(num_phases)]
+
+    port_config_dict = {
+        bus_port_1_name: {
+            "multiline_ports": multiline_ports_1,
+            "side": "left",
+            "bus_terminal_position": (-24, 0),
+            "hide_name": True,
+        },
+        bus_port_2_name: {
+            "multiline_ports": multiline_ports_2,
+            "side": "right",
+            "bus_terminal_position": (24, 0),
+            "hide_name": True,
+        },
+    }
+
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    if int(num_phases) == 4:
+        terminal_positions = {
+            "A1": (-32, -48),
+            "A2": (32, -48),
+            "B1": (-32, -16),
+            "B2": (32, -16),
+            "C1": (-32, 16),
+            "C2": (32, 16),
+            "N1": (-32, 48),
+            "N2": (32, 48),
+        }
+    elif int(num_phases) == 3:
+        terminal_positions = {
+            "A1": (-32, -32),
+            "A2": (32, -32),
+            "B1": (-32, 0),
+            "B2": (32, 0),
+            "C1": (-32, 32),
+            "C2": (32, 32),
+        }
+    elif int(num_phases) == 2:
+        terminal_positions = {
+            "A1": (-32, -16),
+            "A2": (32, -16),
+            "B1": (-32, 16),
+            "B2": (32, 16),
+        }
+    elif int(num_phases) == 1:
+        terminal_positions = {
+            "A1": (-32, 0),
+            "A2": (32, 0),
+        }
+
+    return port_config_dict, tag_config_dict, terminal_positions
+
+
+def topology_dynamics(mdl, mask_handle, prop_handle, new_value, old_value):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+    #
+    # Get new property values to be applied
+    # If multiple properties are changed, there is a temporary mismatch between
+    # display values (the final values) and current values.
+    #
+    new_prop_values = {}
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        disp_value = str(mdl.get_property_disp_value(p))
+        new_prop_values[prop] = disp_value
+
+    #
+    # Topology dynamics need to be applied on multiline format
+    #
+    bus1_port = mdl.get_item("SLD1", parent=comp_handle, item_type="port")
+    bus2_port = mdl.get_item("SLD2", parent=comp_handle, item_type="port")
+    if bus1_port or bus2_port:
+        # The terminal related to the current property hasn't been created yet
+        modified_prop_values = dict(current_pass_prop_values)
+        modified_prop_values[calling_prop_name] = old_value
+        sld_info = get_sld_conversion_info(mdl, mask_handle, modified_prop_values)
+        util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+    #
+    # Perform the port / connection changes
+    #
+    created_ports, _ = port_dynamics(mdl, mask_handle)
+    toggle_coupling(mdl, mask_handle, created_ports)
+
+    #
+    # When property values reach the final state, return to single-line if needed
+    #
+    values_equal = []
+    for prop_name in new_prop_values:
+        cur_pass_value = current_pass_prop_values[prop_name]
+        new_value = new_prop_values[prop_name]
+        if util.is_float(cur_pass_value) or util.is_float(new_value):
+            if float(cur_pass_value) == float(new_value):
+                values_equal.append(True)
+                continue
+        else:
+            if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                values_equal.append(True)
+                continue
+        values_equal.append(False)
+
+    final_state = all(values_equal)
+
+    if final_state:
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            sld_info = get_sld_conversion_info(
+                mdl, mask_handle, current_pass_prop_values
+            )
+            util.convert_to_sld(mdl, mask_handle, sld_info)
+
+    sld_post_processing(mdl, mask_handle)
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    bus1 = mdl.get_item("1_bus", parent=comp_handle)
+    if bus1:
+        bus1_size_prop = mdl.prop(bus1, "bus_size")
+        mdl.set_property_value(bus1_size_prop, 4)
+
+    bus2 = mdl.get_item("2_bus", parent=comp_handle)
+    if bus2:
+        bus2_size_prop = mdl.prop(bus2, "bus_size")
+        mdl.set_property_value(bus2_size_prop, 4)
 
 
 def load_line_parameters(mdl, container_handle):
     import os
-    #import sys
     import pathlib
-
-    # try:
-    #from tse_to_opendss.tse2tpt_base_converter import tse2tpt
-    #import tse_to_opendss
-    # except:
-        # If running from development folder instead of installed package
-        # dss_module_folder = str(pathlib.Path(__file__).parent.parent.parent.parent)
-        # if not dss_module_folder in sys.path:
-        #     sys.path.append(dss_module_folder)
-        #
-        # from tse_to_opendss.tse2tpt_base_converter import tse2tpt
-        # import tse_to_opendss
 
     import dss_thcc_lib.gui_scripts.load_object as load_obj
 
@@ -41,7 +187,6 @@ def load_line_parameters(mdl, container_handle):
         getname = "linecodes"
     elif obj_type == "LineGeometry":
         getname = "linegeometries"
-    obj_dicts = {getname: {}}
 
     try:
         with open(fname, 'r') as f:
@@ -722,31 +867,30 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
     # Relocate ports
     mdl.refresh_icon(comp_handle)
-    if caller_prop_handle and mdl.get_name(caller_prop_handle) == "phases":
-        if phase_num == "4":
-            mdl.set_port_properties(port_a1, terminal_position=(-32, -48))
-            mdl.set_port_properties(port_a2, terminal_position=(32, -48))
-            mdl.set_port_properties(port_b1, terminal_position=(-32, -16))
-            mdl.set_port_properties(port_b2, terminal_position=(32, -16))
-            mdl.set_port_properties(port_c1, terminal_position=(-32, 16))
-            mdl.set_port_properties(port_c2, terminal_position=(32, 16))
-            mdl.set_port_properties(port_n1, terminal_position=(-32, 48))
-            mdl.set_port_properties(port_n2, terminal_position=(32, 48))
-        elif phase_num == "3":
-            mdl.set_port_properties(port_a1, terminal_position=(-32, -32))
-            mdl.set_port_properties(port_a2, terminal_position=(32, -32))
-            mdl.set_port_properties(port_b1, terminal_position=(-32, 0))
-            mdl.set_port_properties(port_b2, terminal_position=(32, 0))
-            mdl.set_port_properties(port_c1, terminal_position=(-32, 32))
-            mdl.set_port_properties(port_c2, terminal_position=(32, 32))
-        elif phase_num == "2":
-            mdl.set_port_properties(port_a1, terminal_position=(-32, -16))
-            mdl.set_port_properties(port_a2, terminal_position=(32, -16))
-            mdl.set_port_properties(port_b1, terminal_position=(-32, 16))
-            mdl.set_port_properties(port_b2, terminal_position=(32, 16))
-        elif phase_num == "1":
-            mdl.set_port_properties(port_a1, terminal_position=(-32, 0))
-            mdl.set_port_properties(port_a2, terminal_position=(32, 0))
+    if phase_num == "4":
+        mdl.set_port_properties(port_a1, terminal_position=(-32, -48))
+        mdl.set_port_properties(port_a2, terminal_position=(32, -48))
+        mdl.set_port_properties(port_b1, terminal_position=(-32, -16))
+        mdl.set_port_properties(port_b2, terminal_position=(32, -16))
+        mdl.set_port_properties(port_c1, terminal_position=(-32, 16))
+        mdl.set_port_properties(port_c2, terminal_position=(32, 16))
+        mdl.set_port_properties(port_n1, terminal_position=(-32, 48))
+        mdl.set_port_properties(port_n2, terminal_position=(32, 48))
+    elif phase_num == "3":
+        mdl.set_port_properties(port_a1, terminal_position=(-32, -32))
+        mdl.set_port_properties(port_a2, terminal_position=(32, -32))
+        mdl.set_port_properties(port_b1, terminal_position=(-32, 0))
+        mdl.set_port_properties(port_b2, terminal_position=(32, 0))
+        mdl.set_port_properties(port_c1, terminal_position=(-32, 32))
+        mdl.set_port_properties(port_c2, terminal_position=(32, 32))
+    elif phase_num == "2":
+        mdl.set_port_properties(port_a1, terminal_position=(-32, -16))
+        mdl.set_port_properties(port_a2, terminal_position=(32, -16))
+        mdl.set_port_properties(port_b1, terminal_position=(-32, 16))
+        mdl.set_port_properties(port_b2, terminal_position=(32, 16))
+    elif phase_num == "1":
+        mdl.set_port_properties(port_a1, terminal_position=(-32, 0))
+        mdl.set_port_properties(port_a2, terminal_position=(32, 0))
 
     return created_ports, deleted_ports
 
@@ -842,5 +986,28 @@ def mask_dialog_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
 def define_icon(mdl, mask_handle):
     phases = mdl.get_property_value(mdl.prop(mask_handle, "phases"))
+    sld_mode = mdl.get_property_value(mdl.prop(mask_handle, "sld_mode"))
 
-    mdl.set_component_icon_image(mask_handle, f'images/transmission_line_{phases}.svg')
+    if not sld_mode:
+        mdl.set_component_icon_image(mask_handle, f'images/transmission_line_{phases}.svg')
+    else:
+        mdl.set_component_icon_image(mask_handle, f'images/line__sld.svg')
+        icon_text = "-".join(["A", "B", "C", "N"][:int(phases)])
+        mdl.set_color(mask_handle, "blue")
+        mdl.disp_component_icon_text(
+            mask_handle,
+            text=icon_text,
+            relpos_x=0.5,
+            relpos_y=0.75,
+            size=8,
+            trim_factor=2
+        )
+
+def retro_compatibility(mdl, mask_handle):
+    sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+    libver_prop = mdl.prop(mask_handle, "library_version")
+    lib_version = mdl.get_property_value(libver_prop)
+
+    # Pre-SLD compatibility
+    if lib_version < 51:
+        mdl.set_property_value(sld_mode_prop, False)

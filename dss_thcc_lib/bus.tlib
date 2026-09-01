@@ -3,8 +3,9 @@
 library "OpenDSS" {
 
     component Subsystem Root {
-         component Subsystem Bus {
+        component Subsystem Bus {
             layout = static
+
             component Subsystem "Dummy Circuit" {
                 layout = dynamic
                 component "core/Open Circuit" "Open Circuit2" {
@@ -75,45 +76,25 @@ library "OpenDSS" {
             ]
 
             port A1 {
-                position = -8, -32.0
+                position = -8, -48.0
                 kind = pe
-                direction =  out
+                direction =  in
             }
             [
                 position = 7992, 7992
             ]
 
-            port A2 {
-                position = 8, -32.0
-                kind = pe
-                direction =  out
-            }
-            [
-                position = 8392, 7992
-                scale = -1, 1
-            ]
-
             port B1 {
-                position = -8, 0.0
+                position = -8, -16.0
                 kind = pe
-                direction =  out
+                direction =  in
             }
             [
                 position = 7992, 8192
             ]
 
-            port B2 {
-                position = 8, 0.0
-                kind = pe
-                direction =  out
-            }
-            [
-                position = 8392, 8192
-                scale = -1, 1
-            ]
-
             port C1 {
-                position = -8, 32.0
+                position = -8, 16.0
                 kind = pe
                 direction =  in
             }
@@ -121,8 +102,28 @@ library "OpenDSS" {
                 position = 7992, 8392
             ]
 
+            port A2 {
+                position = 8, -48.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 7992
+                scale = -1, 1
+            ]
+
+            port B2 {
+                position = 8, -16.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 8192
+                scale = -1, 1
+            ]
+
             port C2 {
-                position = 8, 32.0
+                position = 8, 16.0
                 kind = pe
                 direction =  in
             }
@@ -131,21 +132,55 @@ library "OpenDSS" {
                 scale = -1, 1
             ]
 
-            comment Comment1 START <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:'Arial'; font-size:12pt; font-weight:400; font-style:normal;"><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">The compiler doesn't export the Empty</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Subsystems to JSON due</p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">to matrix optimization</p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p><p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">       </p></body></html> ENDCOMMENT
+            port N1 {
+                position = -8, 48.0
+                kind = pe
+                direction =  in
+            }
             [
-                position = 8040, 7752
+                position = 7992, 8592
+            ]
+
+            port N2 {
+                position = 8, 48.0
+                kind = pe
+                direction =  in
+            }
+            [
+                position = 8392, 8592
+                scale = -1, 1
             ]
 
             connect A1 A2 as Connection1
             connect B1 B2 as Connection2
             connect C1 C2 as Connection3
-            connect A1 "Dummy Circuit.Conn" as Connection4
-
-            phase_n = "False"
-            type_prop = "ABC"
+            connect N1 N2 as Connection4
 
             mask {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This component represents a Bus Circuit Element from the OpenDSS and should be connected between any other circuit elements. Terminals from different buses cannot be connected directly.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">For Typhoon HIL Toolchain purposes, the Bus Component has internal meters from which electrical measurements can be accessed. At this moment only the three-phase meter is available, thus, measurements are only available when the phases \'ABC\' are selected.</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br></br></p></body></html>"
+
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        import importlib
+                        import dss_thcc_lib.component_scripts.comp_bus as comp_script
+                        importlib.reload(comp_script)
+
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
 
                 type_prop {
                     label = "Type"
@@ -168,8 +203,13 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                             mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -183,8 +223,13 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                             mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -198,8 +243,13 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                             mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -213,8 +263,13 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                             mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
                     ENDCODE
                 }
 
@@ -229,13 +284,44 @@ library "OpenDSS" {
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
                         if new_value != old_value:
-                            comp_script.topology_dynamics(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                             mdl.refresh_icon(container_handle)
                     ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
+                second_side_is_multiline {
+                    label = "Second side is multiline"
+                    widget = checkbox
+                    type = bool
+                    default_value = "False"
+                    no_evaluate
+
+                    CODE property_value_changed
+                        if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+                }
+
+                library_version {
+                    label = "OpenDSS library version number"
+                    widget = edit
+                    type = real
+                    default_value = 0
+                    nonvisible
                 }
 
                 CODE open
                     from typhoon.apps.schematic_editor.dialogs.component_property_dialogs.general import RegularComponentPropertiesDialog
+
+                    comp_script = return_comp_script(mdl, item_handle)
+                    comp_script.mask_dialog_dynamics(mdl, item_handle, "", "")
 
                     dialog = RegularComponentPropertiesDialog(
                         component=component,
@@ -246,28 +332,30 @@ library "OpenDSS" {
                 ENDCODE
 
                 CODE define_icon
-                    comp_script = return_comp_script(mdl, item_handle)
+                    import dss_thcc_lib.component_scripts.comp_bus as comp_script
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
 
                 CODE init
                     import importlib
-
                     import dss_thcc_lib.component_scripts.comp_bus as comp_script
 
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
-                        
-                    comp_script.retro_compatibility(mdl, item_handle)
-                    comp_script.topology_dynamics(mdl, item_handle)
+
+                    if _called_during_load:
+                        comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.update_library_version_info(mdl, item_handle)
+
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
             }
         }
         [
             position = 4512, 4032
-            size = 16, 96
+            size = 16, 32
         ]
 
     }
