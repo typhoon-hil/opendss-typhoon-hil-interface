@@ -305,7 +305,7 @@ library "OpenDSS" {
                         T_type = mdl.get_component_type_name(T_handle)
                         if "Two Winding" in T_type:
                             prop_name = mdl.get_name(prop_handle)
-                            inner_prop_handle = mdl.prop(T_handle, prop_name)
+                            inner_prop_handle = mdl.prop(T_handle, "embedded_cpl_12")
                             mdl.set_property_value(inner_prop_handle, new_value)
                     ENDCODE
 
