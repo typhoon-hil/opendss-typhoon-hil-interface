@@ -521,8 +521,7 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        if new_value != old_value:
-                            comp_script.zero_seq_removal(mdl, container_handle, new_value)
+                        comp_script.zero_seq_removal(mdl, container_handle, new_value)
                     ENDCODE
                 }
 
