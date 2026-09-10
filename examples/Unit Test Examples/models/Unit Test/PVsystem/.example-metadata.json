@@ -1,0 +1,8 @@
+{
+  "title": "PV System",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS PV System component.",
+  "model": "pvsystem_test.tse",
+  "images": ["pvsystem_test.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}

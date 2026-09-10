@@ -1,0 +1,8 @@
+{
+  "title": "Three winding transformer",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS Three Winding transformer component.",
+  "model": "Three_w_Transformer.tse",
+  "images": ["Three_w_Transformer.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}

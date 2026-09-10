@@ -1,0 +1,8 @@
+{
+  "title": "Generator - Static",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS Generator component operating with static control mode.",
+  "model": "dss_generator_static.tse",
+  "images": ["dss_generator_static.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}

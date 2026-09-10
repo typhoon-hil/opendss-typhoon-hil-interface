@@ -1,7 +1,7 @@
 version = 4.2
 
 //
-// Saved by sw version: 2024.1 DEV
+// Saved by sw version: 2026.3
 //
 
 model "pvsystem_test" {
@@ -10,6 +10,7 @@ model "pvsystem_test" {
         hil_configuration_id = 1
         simulation_method = exact
         simulation_time_step = 2e-6
+        fine_auto_sim_step = False
         simulation_discret_scaling = 1.0
         dsp_timer_periods = 100e-6, 50e-3
         ss_calc_method = "systematic elimination"
@@ -21,6 +22,7 @@ model "pvsystem_test" {
         reset_analog_outputs_on_sim_stop_mode = Offset values
         reset_digital_outputs_on_sim_stop = True
         vhil_adio_loopback = False
+        dma_enable = False
         cpl_stb = False
         enb_dep_sw_detect = False
         code_section = "internal memory"
@@ -47,6 +49,7 @@ model "pvsystem_test" {
         cce_type_mapping_real = "double"
         cce_type_mapping_uint = "unsigned int"
         cce_type_mapping_int = "int"
+        cce_term_var_location = "local"
         cce_directory = ""
         cce_custom_type_int = ""
         cce_custom_type_uint = ""
@@ -57,11 +60,13 @@ model "pvsystem_test" {
         export_resource_list = ""
         export_dependency_list = ""
         excluded_resource_list = ""
+        excluded_component_from_locking_list = ""
         export_out_file = ""
         export_lock_top_level = True
         export_encrypt_library = True
         export_encrypt_resources = True
-        dae_solver = "BDF"
+        solver_type = "DAE"
+        integration_method = "BDF"
         max_sim_step = 1e-4
         simulation_time = 1.0
         abs_tol = 1e-3
@@ -83,7 +88,6 @@ model "pvsystem_test" {
         [
             position = 9016, 4128
             rotation = right
-            size = 64, 96
         ]
 
         component "OpenDSS/Bus" Bus1 {
@@ -93,7 +97,6 @@ model "pvsystem_test" {
         [
             position = 9016, 4312
             rotation = right
-            size = 16, 96
         ]
 
         component "OpenDSS/SimDSS" SimDSS {
@@ -106,7 +109,6 @@ model "pvsystem_test" {
         }
         [
             position = 8664, 4088
-            size = 96, 96
         ]
 
         component "core/SCADA Input" "SCADA Input1" {
@@ -150,7 +152,6 @@ model "pvsystem_test" {
         }
         [
             position = 8424, 4592
-            size = 96, 144
         ]
 
         component "OpenDSS/Bus" "Bus PV2" {
@@ -160,7 +161,6 @@ model "pvsystem_test" {
         }
         [
             position = 8688, 4616
-            size = 16, 64
         ]
 
         component "OpenDSS/Line" Line2 {
@@ -177,7 +177,6 @@ model "pvsystem_test" {
         }
         [
             position = 8824, 4616
-            size = 64, 64
         ]
 
         component "core/Data Type Conversion" "Data Type Conversion1" {
@@ -200,7 +199,6 @@ model "pvsystem_test" {
         }
         [
             position = 8688, 4400
-            size = 16, 96
         ]
 
         component "OpenDSS/Line" Line1 {
@@ -213,7 +211,6 @@ model "pvsystem_test" {
         }
         [
             position = 8824, 4400
-            size = 64, 96
         ]
 
         component "OpenDSS/PV System" PV1 {
@@ -225,7 +222,6 @@ model "pvsystem_test" {
         }
         [
             position = 8432, 4376
-            size = 96, 144
         ]
 
         component "OpenDSS/PV System" PV3 {
@@ -239,7 +235,6 @@ model "pvsystem_test" {
         }
         [
             position = 8432, 4800
-            size = 98, 144
         ]
 
         component "OpenDSS/Bus" "Bus PV3" {
@@ -250,7 +245,6 @@ model "pvsystem_test" {
         }
         [
             position = 8696, 4792
-            size = 16, 32
         ]
 
         component "OpenDSS/Line" Line3 {
@@ -268,13 +262,13 @@ model "pvsystem_test" {
         }
         [
             position = 8824, 4792
-            size = 64, 32
         ]
 
         component "core/Three-phase Meter" PV1_Meter {
             I_rms = "True"
             P_meas = "True"
             P_method = "RMS based"
+            Ts = "replaced_by_execution_rate"
             VLn_rms = "True"
             enable_out = "False"
             freq = "True"
@@ -339,6 +333,7 @@ model "pvsystem_test" {
             I_rms = "True"
             P_meas = "True"
             P_method = "RMS based"
+            Ts = "replaced_by_execution_rate"
             VLn_rms = "True"
             enable_out = "False"
             freq = "True"
@@ -387,7 +382,7 @@ model "pvsystem_test" {
             direction = out
         }
         [
-            position = 8312, 4328
+            position = 8304, 4328
             hide_name = True
             size = 60, 20
         ]
@@ -511,6 +506,7 @@ model "pvsystem_test" {
         "core/Gain" {
             gain = "1"
             multiplication = "Element-wise(K.*u)"
+            force_tml = "True"
             _tunable = "False"
             execution_rate = "inherit"
         }
@@ -525,6 +521,8 @@ model "pvsystem_test" {
             limit_lower = "-inf"
             show_state = "False"
             state_port_type = "inherit"
+            tml_file = "gen_accumulator_integrator"
+            mode = "integrator"
             execution_rate = "inherit"
         }
 
@@ -540,6 +538,7 @@ model "pvsystem_test" {
         }
 
         "core/SCADA Input" {
+            signal_access = "inherit"
             addr = "0"
             format = "real"
             override_signal_name = "False"
@@ -658,6 +657,7 @@ model "pvsystem_test" {
             baseFreq = "60"
             voltagebases = "[0.480, 12.47]"
             tsstp = "1"
+            tsstp_unit = "Hours"
             tspoints = "24"
             append = "Open"
             export_to_dss = "Run"
@@ -690,14 +690,15 @@ model "pvsystem_test" {
         }
 
         "core/Three-phase Meter" {
-            R = "1e5"
             n_cycles = "1"
-            Ts = "100e-6"
             enable_probes = "True"
             enable_out = "True"
             remove_snubber = "False"
+            R = "1e5"
             enable_bandwidth = "False"
             bandwidth = "10e3"
+            execution_rate = "100e-6"
+            Ts = "100e-6"
             VAn = "True"
             VBn = "True"
             VCn = "True"
@@ -710,6 +711,12 @@ model "pvsystem_test" {
             IC = "True"
             IN = "False"
             freq = "False"
+            Vd = "False"
+            Vq = "False"
+            Vz = "False"
+            Vpeak = "False"
+            wt = "False"
+            sin_wt = "False"
             VLn_rms = "False"
             VLL_rms = "False"
             VLn_avg_rms = "False"
@@ -719,8 +726,11 @@ model "pvsystem_test" {
             I_avg_rms = "False"
             IN_rms = "False"
             P_method = "alpha-beta"
-            enable_extra_out = "False"
             P_meas = "False"
+            enable_extra_out = "False"
+            filter_order = "second order"
+            filter_cutoff_Hz = "30"
+            enable_inst_ports = "False"
         }
 
         "OpenDSS/Vsource" {

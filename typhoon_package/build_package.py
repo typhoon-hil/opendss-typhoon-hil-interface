@@ -29,12 +29,12 @@ os.chdir(package_folder)
 
 # -------------------------------------Parameters related to Package title and basic information------------------------
 package_name = "OpenDSS"
-version = "0.5.1"
+version = "0.5.2"
 author = "Typhoon HIL"
 author_website = "https://github.com/typhoon-hil/opendss-typhoon-hil-interface"
 description = ("A library of special components that can be automatically converted to the OpenDSS format and simulated. "
                "The same components are also ready for HIL-simulation.<br><br>\n\n"
-               "The Open Distribution System Simulator (OpenDSS) is a comprehensive electrical system simulation tool for electric utility distribution systems, and is maintained by the Electronic Power Research Institue (EPRI)."
+               "The Open Distribution System Simulator (OpenDSS) is a comprehensive electrical system simulation tool for electric utility distribution systems, and is maintained by the Electronic Power Research Institute (EPRI)."
                "The program basically supports all RMS steady-state (frequency domain) analyses commonly performed for utility distribution systems."
                "More information can be found on: <a href=\"https://www.epri.com/pages/sa/opendss\">https://www.epri.com/pages/sa/opendss.</a><br><br>\n\n"
                "The current version of the package supports Power Flow and Fault Study analyses.<br><br>\n\n"
@@ -42,7 +42,7 @@ description = ("A library of special components that can be automatically conver
 
 library_paths = [os.path.join(package_folder, "../dss_thcc_lib")]
 resource_paths = []
-example_paths = [os.path.join(package_folder, "../examples", "Package Examples")]
+example_paths = [os.path.join(package_folder, "../examples", "Package Examples"), os.path.join(package_folder, "../examples", "Unit Test Examples")]
 additional_files_paths = [os.path.join(package_folder, "../importer")]
 python_packages_paths = [os.path.join(package_folder, "python_packages", "dist", wheel_file)]
 documentation_paths = [os.path.join(package_folder, "../dss_thcc_lib", "help", "OpenDSSManual.pdf")]

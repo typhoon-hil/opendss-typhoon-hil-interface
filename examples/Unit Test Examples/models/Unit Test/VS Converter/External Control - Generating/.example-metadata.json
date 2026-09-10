@@ -1,0 +1,8 @@
+{
+  "title": "VS Converter External Control - Generating",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS VS Converter component with external controls operating as a generating inverter, i.e., injecting power into the grid.",
+  "model": "dss_Inverter_generating_dynamic_external.tse",
+  "images": ["dss_Inverter_generating_dynamic_external.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}

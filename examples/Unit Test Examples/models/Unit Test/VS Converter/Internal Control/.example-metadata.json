@@ -1,0 +1,8 @@
+{
+  "title": "VS Converter Internal Control",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS VS Converter component with internal controls.",
+  "model": "dss_converter_dynamic.tse",
+  "images": ["dss_converter_dynamic.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}
