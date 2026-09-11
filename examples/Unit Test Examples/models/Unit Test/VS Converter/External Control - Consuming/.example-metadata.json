@@ -1,0 +1,8 @@
+{
+  "title": "VS Converter External Control - Consuming",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS VS Converter component with external controls operating as a load, i.e., absorbing power from the grid.",
+  "model": "dss_InverterLoad_dynamic_external.tse",
+  "images": ["dss_InverterLoad_dynamic_external.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}

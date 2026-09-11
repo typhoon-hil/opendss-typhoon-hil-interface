@@ -26,9 +26,8 @@ class Line(TwoTerminal):
         self.buses = return_bus_connections(
             tse_component,
             self.num_buses,
-            self.num_phases,
+            self.num_phases if self.num_phases <= 3 else 3,
             self.floating_neutral,
-            uses_single_line_representation=self.sld_representation,
         )
 
         # Filter unused TSE properties and create new ones

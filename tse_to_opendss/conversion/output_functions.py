@@ -64,40 +64,45 @@ def return_bus_connections(
     #
     if uses_single_line_representation:
         for bus in connected_buses:
-            terminal_order = '.'.join([str(n) for n in range(1, num_phases + 1)])
-            bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
-    else:
-        # Go through each group (must be ordered) and find which bus is connected to it.
-        for group, term_list in terminal_groups_dict.items():
-            for bus in connected_buses:
-                # Get the dictionary of connections between tse_component and bus
-                connected_terminals_dict = tse_fns.connected_terminals(tse_component, bus, term_list)
-                # Iterate over the terminals of the component and find the bus terminal it is connected to
-                # This will determine the order of the connections
-                if connected_terminals_dict:
-                    order = []
-                    for terminal in term_list:
-                        term_connected = connected_terminals_dict.get(terminal)
-                        if term_connected:
-                            bus_terminals = [t[0] for t in term_connected]  # Only the letter
-                            order.extend(bus_terminals[0])
+            # Get the dictionary of connections between tse_component and bus
+            connected_terminals_dict = tse_fns.connected_terminals(tse_component, bus, term_list)
+            # Iterate over the terminals of the component and find the bus terminal it is connected to
+            # This will determine the order of the connections
+            if connected_terminals_dict:
+                order = []
+                for terminal in term_list:
+                    term_connected = connected_terminals_dict.get(terminal)
+                    if term_connected:
+                        bus_terminals = [t[0] for t in term_connected]  # Only the letter
+                        order.extend(bus_terminals[0])
 
-                    terminal_order = []
-                    for phase_name in order:
-                        if phase_name in ['A', 'B', 'C']:
-                            terminal_order.append(str(ord(phase_name[0]) - 64))
-                        elif phase_name == "N":
-                            terminal_order.append(str(num_phases + 1))
-                    terminal_order = '.'.join(terminal_order)
-                    bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
+                bus_num_phases = calculate_bus_num_phases(bus)
+                terminal_order = []
+                for phase_name in order:
+                    if phase_name == "N":
+                        terminal_order.append(str(bus_num_phases))
+                    else:
+                        terminal_order.append(str(ord(phase_name[0]) - 64))
+                terminal_order = '.'.join(terminal_order)
+                bus_connections.append(f'"{bus.name.upper()}.{terminal_order}"')
 
-        if floating_neutral:
-            # Connect to unused bus node (working only for single bus components)
-            p = num_phases + 1
-            for conn_bus in connected_buses:
-                bus_connections.append(f"{conn_bus.name}.{p}.{p}.{p}")
+    if floating_neutral:
+        # Connect to unused bus node (working only for single bus components)
+        p = num_phases + 1
+        for conn_bus in connected_buses:
+            bus_connections.append(f"{conn_bus.name}.{p}.{p}.{p}")
 
     return bus_connections
+
+
+def calculate_bus_num_phases(bus):
+    phase_a = bus.properties.get("phase_a").value in ("True", True)
+    phase_b = bus.properties.get("phase_b").value in ("True", True)
+    phase_c = bus.properties.get("phase_c").value in ("True", True)
+    phase_n = bus.properties.get("phase_n").value in ("True", True)
+
+    num_phases = sum((phase_a, phase_b, phase_c, phase_n))
+    return num_phases
 
 
 def verify_duplicate_names(tse_model):

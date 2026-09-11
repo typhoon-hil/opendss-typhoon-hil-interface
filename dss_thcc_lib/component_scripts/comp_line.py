@@ -487,7 +487,7 @@ def compute_sequence_values(mdl, mask_handle, zseq, mode):
     x1 = xseq[1, 1]
 
     if mode == "symmetrical":
-        return [r0, r1, x0, x1, xcoup]
+        return [float(r0), float(r1), float(x0), float(x1), float(xcoup)]
     elif mode == "matrix":
         return [rseq, xseq, xcoup]
 

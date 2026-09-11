@@ -1,0 +1,8 @@
+{
+  "title": "Generator and Converter",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS Generator component interfaced with the Converter component.",
+  "model": "dss_generator_converter_dynamic.tse",
+  "images": ["dss_generator_converter_dynamic.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}
