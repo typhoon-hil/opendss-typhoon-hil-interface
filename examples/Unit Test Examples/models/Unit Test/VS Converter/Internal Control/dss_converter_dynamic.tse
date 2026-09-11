@@ -257,7 +257,7 @@ model "dss_converter_dynamic" {
         component "core/Ground" gnd2 {
         }
         [
-            position = 8560, 8032
+            position = 8568, 8032
         ]
 
         component "core/Meter Split" "Meter Split2" {

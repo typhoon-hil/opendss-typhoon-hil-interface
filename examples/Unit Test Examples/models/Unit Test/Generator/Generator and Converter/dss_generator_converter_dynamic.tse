@@ -311,7 +311,7 @@ model "dss_generator_converter_dynamic" {
             pf_mode_3ph = "Unit"
         }
         [
-            position = 8164, 8144
+            position = 8160, 8144
             scale = -1, 1
         ]
 

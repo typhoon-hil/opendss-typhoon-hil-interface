@@ -171,14 +171,14 @@ model "Three_w_Transformer" {
             streaming_en = "True"
         }
         [
-            position = 8768, 7512
+            position = 8772, 7512
         ]
 
         component "core/Probe" Qg {
             streaming_en = "True"
         }
         [
-            position = 8768, 7568
+            position = 8772, 7568
         ]
 
         component "core/Probe" TmG1 {
@@ -266,7 +266,7 @@ model "Three_w_Transformer" {
         component "core/Ground" gnd2 {
         }
         [
-            position = 8516, 7772
+            position = 8520, 7772
         ]
 
         component "core/Sum" Sum2 {
@@ -285,7 +285,7 @@ model "Three_w_Transformer" {
             vcn = "False"
         }
         [
-            position = 8656, 8280
+            position = 8652, 8184
             size = 96, 48
         ]
 
@@ -293,7 +293,7 @@ model "Three_w_Transformer" {
             gain = "0.001"
         }
         [
-            position = 8752, 8248
+            position = 8756, 8152
             hide_name = True
         ]
 
@@ -301,7 +301,7 @@ model "Three_w_Transformer" {
             gain = "0.001"
         }
         [
-            position = 8752, 8304
+            position = 8756, 8208
             hide_name = True
         ]
 
@@ -309,14 +309,14 @@ model "Three_w_Transformer" {
             streaming_en = "True"
         }
         [
-            position = 8832, 8248
+            position = 8836, 8152
         ]
 
         component "core/Probe" QL1 {
             streaming_en = "True"
         }
         [
-            position = 8832, 8304
+            position = 8836, 8208
         ]
 
         component "OpenDSS/Generator" Generator1 {
@@ -393,7 +393,7 @@ model "Three_w_Transformer" {
         component "core/Ground" gnd3 {
         }
         [
-            position = 8124, 8128
+            position = 8128, 8128
         ]
 
         component "core/Three-phase Meter" "Three-phase Meter3" {
@@ -460,7 +460,7 @@ model "Three_w_Transformer" {
             streaming_en = "True"
         }
         [
-            position = 7752, 7648
+            position = 7752, 7644
             rotation = left
         ]
 
@@ -468,7 +468,7 @@ model "Three_w_Transformer" {
             streaming_en = "True"
         }
         [
-            position = 7816, 7648
+            position = 7816, 7644
             rotation = left
         ]
 
@@ -488,7 +488,7 @@ model "Three_w_Transformer" {
             gain = "0.001"
         }
         [
-            position = 8320, 7504
+            position = 8328, 7504
             hide_name = True
         ]
 
@@ -496,7 +496,7 @@ model "Three_w_Transformer" {
             gain = "0.001"
         }
         [
-            position = 8320, 7560
+            position = 8328, 7560
             hide_name = True
         ]
 
@@ -504,14 +504,14 @@ model "Three_w_Transformer" {
             streaming_en = "True"
         }
         [
-            position = 8400, 7504
+            position = 8408, 7504
         ]
 
         component "core/Probe" QT2 {
             streaming_en = "True"
         }
         [
-            position = 8400, 7560
+            position = 8408, 7560
         ]
 
         component "core/Meter Split" "Meter Split5" {
