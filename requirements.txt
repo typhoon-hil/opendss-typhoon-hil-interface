@@ -1,3 +1,5 @@
 requests
 wheel
-OpenDSSDirect.py==0.8.0
+OpenDSSDirect.py==0.9.4
+dss-python==0.15.7
+typhoon-hil-api
