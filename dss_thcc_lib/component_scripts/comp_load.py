@@ -3,9 +3,12 @@ import json
 import ast
 import pandas as pd
 from typhoon.api.schematic_editor.const import ITEM_CONNECTION, ITEM_COMPONENT
+import dss_thcc_lib.component_scripts.util as util
+import importlib
 
 got_loadshape_points_list = []
 old_state = {}
+
 
 def mask_edit_restore_visibility(mdl, mask_handle):
     # Restore properties' visual status on load
@@ -74,6 +77,20 @@ def mask_dialog_dynamics(mdl, mask_handle, prop_handle, new_value):
     if prop_name == "tp_connection":
         mask_edit_neutral_impedances(mdl, mask_handle)
 
+    elif prop_name == "sld_mode":
+
+        phases_prop = mdl.prop(mask_handle, "phases")
+        phases_disp = mdl.get_property_disp_value(phases_prop)
+        sld_1ph_pick_prop = mdl.prop(mask_handle, "sld_1ph_pick")
+
+        if new_value:
+            if phases_disp == "1":
+                mdl.show_property(sld_1ph_pick_prop)
+            else:
+                mdl.hide_property(sld_1ph_pick_prop)
+        else:
+            mdl.hide_property(sld_1ph_pick_prop)
+
     elif prop_name == "phases":
         mask_edit_zero_sequence(mdl, mask_handle)
         load_model_prop = mdl.prop(mask_handle, "load_model")
@@ -90,6 +107,18 @@ def mask_dialog_dynamics(mdl, mask_handle, prop_handle, new_value):
         else:
             mdl.enable_property(tp_connection_prop)
         mask_edit_neutral_impedances(mdl, mask_handle)
+
+        sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+        sld_mode_disp = mdl.get_property_disp_value(sld_mode_prop)
+        sld_1ph_pick_prop = mdl.prop(mask_handle, "sld_1ph_pick")
+
+        if new_value == "1":
+            if sld_mode_disp in (True, "True"):
+                mdl.show_property(sld_1ph_pick_prop)
+            else:
+                mdl.hide_property(sld_1ph_pick_prop)
+        else:
+            mdl.hide_property(sld_1ph_pick_prop)
 
     elif prop_name == "load_model":
         
@@ -422,6 +451,8 @@ def update_frequency_property(mdl, mask_handle, init=False):
 def define_icon(mdl, mask_handle):
     phases = mdl.get_property_disp_value(mdl.prop(mask_handle, "phases"))
     tp_connection = mdl.get_property_disp_value(mdl.prop(mask_handle, "tp_connection"))
+    sld_mode = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_mode"))
+    sld_1ph_pick = mdl.get_property_disp_value(mdl.prop(mask_handle, "sld_1ph_pick"))
 
     if tp_connection == "Y - Grounded":
         grounded = True
@@ -430,34 +461,73 @@ def define_icon(mdl, mask_handle):
 
     if int(phases) == 1:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1Yg.svg')
+            if sld_mode in (True, "True"):
+                if sld_1ph_pick == "A":
+                    mdl.set_component_icon_image(mask_handle, 'images/load_1Yg_sld_a.svg')
+                elif sld_1ph_pick == "B":
+                    mdl.set_component_icon_image(mask_handle, 'images/load_1Yg_sld_b.svg')
+                elif sld_1ph_pick == "C":
+                    mdl.set_component_icon_image(mask_handle, 'images/load_1Yg_sld_c.svg')
+                else:
+                    mdl.set_component_icon_image(mask_handle, 'images/load_1Yg_sld_a.svg')
+            else:
+                mdl.set_component_icon_image(mask_handle, 'images/load_1Yg.svg')
         else:
-            mdl.set_component_icon_image(mask_handle, 'images/load_1Y.svg')
+            if sld_mode in (True, "True"):
+                if tp_connection == 'Δ':
+                    if sld_1ph_pick == "A":
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1D_sld_ab.svg')
+                    elif sld_1ph_pick == "B":
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1D_sld_bc.svg')
+                    elif sld_1ph_pick == "C":
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1D_sld_ca.svg')
+                    else:
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1D_sld_ab.svg')
+                else:
+                    if sld_1ph_pick == "A":
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1Y_sld_a.svg')
+                    elif sld_1ph_pick == "B":
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1Y_sld_b.svg')
+                    elif sld_1ph_pick == "C":
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1Y_sld_c.svg')
+                    else:
+                        mdl.set_component_icon_image(mask_handle, 'images/load_1Y_sld_a.svg')
+            else:
+                mdl.set_component_icon_image(mask_handle, 'images/load_1Y.svg')
     else:
         if grounded:
-            mdl.set_component_icon_image(mask_handle, 'images/load_3Yg.svg')
+            if sld_mode in (True, "True"):
+                mdl.set_component_icon_image(mask_handle, 'images/load_3Yg_sld.svg')
+            else:
+                mdl.set_component_icon_image(mask_handle, 'images/load_3Yg.svg')
         else:
             if tp_connection == 'Δ':
-                mdl.set_component_icon_image(mask_handle, 'images/load_3D.svg')
+                if sld_mode in (True, "True"):
+                    mdl.set_component_icon_image(mask_handle, 'images/load_3D_sld.svg')
+                else:
+                    mdl.set_component_icon_image(mask_handle, 'images/load_3D.svg')
             else:
-                mdl.set_component_icon_image(mask_handle, 'images/load_3Y.svg')
+                if sld_mode in (True, "True"):
+                    mdl.set_component_icon_image(mask_handle, 'images/load_3Y_sld.svg')
+                else:
+                    mdl.set_component_icon_image(mask_handle, 'images/load_3Y.svg')
 
     #
     # Set text
     #
 
     mdl.set_color(mask_handle, "blue")
-
-    # Neutral
-    if tp_connection in ("Y", "Y - Grounded"):
-        if phases == "3":
-            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
-                                         relpos_x=0.81, relpos_y=0.12,
-                                         size=8, trim_factor=2)
-        elif tp_connection == "Y":
-            mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
-                                         relpos_x=0.92, relpos_y=0.5,
-                                         size=8, trim_factor=2)
+    if sld_mode in (False, "False"):
+        # Neutral
+        if tp_connection in ("Y", "Y - Grounded"):
+            if phases == "3":
+                mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
+                                             relpos_x=0.81, relpos_y=0.12,
+                                             size=8, trim_factor=2)
+            elif tp_connection == "Y":
+                mdl.disp_component_icon_text(mask_handle, "N", rotate="rotate",
+                                             relpos_x=0.92, relpos_y=0.5,
+                                             size=8, trim_factor=2)
 
 
 def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
@@ -477,6 +547,56 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
     pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
+    sld_mode_prop = mdl.prop(mask_handle, "sld_mode")
+    sld_mode = mdl.get_property_disp_value(sld_mode_prop)
+
+    if caller_prop_handle:
+        if mdl.get_name(caller_prop_handle) == "sld_mode" and not init:
+            if phases == "1":
+                if tp_connection == "Y - Grounded":
+                    p_term_position = (24, -15)
+                    q_term_position = (24, 15)
+                    term_position = (25, 15)
+                else:
+                    p_term_position = (40, -15)
+                    q_term_position = (40, 15)
+                    term_position = (40, -15)
+            else:
+                if tp_connection == 'Δ':
+                    if sld_mode in (True, "True"):
+                        p_term_position = (40, -15)
+                        q_term_position = (40, 15)
+                        term_position = (40, -15)
+                    else:
+                        p_term_position = (48, -15)
+                        q_term_position = (48, 15)
+                        term_position = (50, 0)
+                else:
+                    if sld_mode in (True, "True"):
+                        p_term_position = (24, -15)
+                        q_term_position = (24, 15)
+                        term_position = (25, 15)
+                    else:
+                        p_term_position = (64, -15)
+                        q_term_position = (64, 15)
+                        term_position = (65, 15)
+
+            p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
+            q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
+            t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
+
+            if p_ext:
+                mdl.set_port_properties(p_ext, terminal_position=p_term_position)
+
+            if q_ext:
+                mdl.set_port_properties(q_ext, terminal_position=q_term_position)
+
+            if t_ext:
+                mdl.set_port_properties(t_ext, terminal_position=term_position)
+
+            return
+
+
     if phases == "3":
         port_a = mdl.get_item("A1", parent=comp_handle, item_type="port")
         port_b = mdl.get_item("B1", parent=comp_handle, item_type="port")
@@ -489,14 +609,23 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
             pos_port_a1 = (-32, -24)
             pos_port_b1 = (0, -24)
             pos_port_c1 = (32, -24)
-            pos_p_ext = (50, -15)
-            pos_q_ext = (50, 15)
+            if sld_mode in (True, "True"):
+                pos_p_ext = (16, -16)
+                pos_q_ext = (16, 16)
+            else:
+                pos_p_ext = (50, -15)
+                pos_q_ext = (50, 15)
         else:
             pos_port_a1 = (-48, -24)
             pos_port_b1 = (-16, -24)
             pos_port_c1 = (16, -24)
-            pos_p_ext = (65, -15)
-            pos_q_ext = (65, 15)
+            if sld_mode in (True, "True"):
+                pos_p_ext = (24, -16)
+                pos_q_ext = (24, 16)
+            else:
+                pos_p_ext = (65, -15)
+                pos_q_ext = (65, 15)
+
 
         if p_ext:
             mdl.set_port_properties(p_ext, terminal_position=pos_p_ext)
@@ -637,15 +766,23 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                     p_term_position = (24, -15)
                     q_term_position = (24, 15)
                 else:
-                    p_term_position = (16, -15)
-                    q_term_position = (16, 15)
+                    p_term_position = (40, -15)
+                    q_term_position = (40, 15)
             else:
                 if tp_connection == 'Δ':
-                    p_term_position = (48, -15)
-                    q_term_position = (48, 15)
+                    if sld_mode in (True, "True"):
+                        p_term_position = (40, -15)
+                        q_term_position = (40, 15)
+                    else:
+                        p_term_position = (48, -15)
+                        q_term_position = (48, 15)
                 else:
-                    p_term_position = (64, -15)
-                    q_term_position = (64, 15)
+                    if sld_mode in (True, "True"):
+                        p_term_position = (24, -15)
+                        q_term_position = (24, 15)
+                    else:
+                        p_term_position = (64, -15)
+                        q_term_position = (64, 15)
 
             p_ext = mdl.get_item("P", parent=comp_handle, item_type="port")
             if not p_ext:
@@ -653,6 +790,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                                         kind="sp",
                                         terminal_position=p_term_position,
                                         position=(7680, 8175))
+            else:
+                mdl.set_port_properties(p_ext, terminal_position=p_term_position)
             created_ports.update({"P_ext": p_ext})
 
             q_ext = mdl.get_item("Q", parent=comp_handle, item_type="port")
@@ -661,6 +800,8 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
                                         kind="sp",
                                         terminal_position=q_term_position,
                                         position=(7680, 8240))
+            else:
+                mdl.set_port_properties(q_ext, terminal_position=q_term_position)
             created_ports.update({"Q_ext": q_ext})
 
             t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
@@ -682,14 +823,20 @@ def port_dynamics(mdl, mask_handle, caller_prop_handle=None, init=False):
 
             if phases == "1":
                 if tp_connection == "Y - Grounded":
-                    term_position = (25, 0)
+                    term_position = (25, 15)
                 else:
-                    term_position = (16, 0)
+                    term_position = (40, -15)
             else:
                 if tp_connection == 'Δ':
-                    term_position = (50, 0)
+                    if sld_mode in (True, "True"):
+                        term_position = (40, -15)
+                    else:
+                        term_position = (50, 0)
                 else:
-                    term_position = (65, 0)
+                    if sld_mode in (True, "True"):
+                        term_position = (25, 15)
+                    else:
+                        term_position = (65, 15)
 
             t_ext = mdl.get_item("T", parent=comp_handle, item_type="port")
             if not t_ext:
@@ -1045,7 +1192,7 @@ def connections_pow_ref_dynamics(mdl, mask_handle, created_ports):
     comp_handle = mdl.get_parent(mask_handle)
 
     pow_ref_s_prop = mdl.prop(mask_handle, "Pow_ref_s")
-    pow_ref_s = mdl.get_property_value(pow_ref_s_prop)
+    pow_ref_s = mdl.get_property_disp_value(pow_ref_s_prop)
 
     load_model = mdl.get_property_value(mdl.prop(mask_handle, "load_model"))
     if load_model != "Constant Impedance":
@@ -1636,40 +1783,294 @@ def validate_execution_rate(mdl, mask_handle):
 #         mdl.disable_property(mdl.prop(mask_handle, "T_Ts"))
 
 
-def topology_dynamics(mdl, mask_handle):
+def get_sld_conversion_info(mdl, mask_handle, multiline_ports, terminal_positions, sld_term_position):
+
+    # multiline_ports_1 = ["A1", "B1", "C1"]
+
+    port_config_dict = {
+        "SLD1": {
+            "multiline_ports": multiline_ports,
+            "side": "top",
+            "bus_terminal_position": sld_term_position,
+            "hide_name": True,
+        },
+    }
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    # terminal_positions = {
+    #     "A1": (-48, -24),
+    #     "B1": (-16, -24),
+    #     "C1": (16, -24),
+    # }
+
+    return port_config_dict, tag_config_dict, terminal_positions
+
+
+def topology_dynamics(mdl, mask_handle, prop_handle):
     """
     This function is called when the user changes the configuration on the mask
     """
 
     comp_handle = mdl.get_parent(mask_handle)
 
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
+
     #
     # Get new property values to be applied (display values)
     #
+    current_values = {}
     new_prop_values = {}
     for prop in mdl.get_property_values(comp_handle):
         p = mdl.prop(mask_handle, prop)
         new_prop_values[prop] = mdl.get_property_disp_value(p)
+        current_values[prop] = mdl.get_property_value(p)
     #
     # If the property values are the same as on the previous run, stop
     #
     global old_state
-    if new_prop_values == old_state.get(comp_handle):
-        return
+    # if new_prop_values == old_state.get(comp_handle):
+    #    return
 
-    define_icon(mdl, mask_handle)
+    if calling_prop_name == "init_code":
+        define_icon(mdl, mask_handle)
+        set_load_model(mdl, mask_handle)
+        ports = port_dynamics(mdl, mask_handle, init=True)
+        load_dynamics(mdl, mask_handle, ports)
+        connections_gnd_dynamics(mdl, mask_handle, ports)
+        connections_dynamics(mdl, mask_handle, ports)
 
-    ports = port_dynamics(mdl, mask_handle)
+    if calling_prop_name == "sld_mode":
+        port_dynamics(mdl, mask_handle, caller_prop_handle=prop_handle, init=False)
 
-    set_load_model(mdl, mask_handle)
+    if calling_prop_name not in ["sld_mode", "init_code"]:
 
-    load_dynamics(mdl, mask_handle, ports)
+        if old_state:
+            current_state = old_state[comp_handle]
+        else:
+            current_state = new_prop_values
 
-    connections_gnd_dynamics(mdl, mask_handle, ports)
+        currently_sld = mdl.get_item("SLD1", parent=comp_handle, item_type="port")
+        if currently_sld:
+            # The terminal related to the current property hasn't been created yet
+            importlib.reload(util)
+            phases = current_state.get("phases")
+            tp_connection = current_state.get("tp_connection")
+            sld_1ph_pick = current_state.get("sld_1ph_pick")
+            if phases == "3":
+                if tp_connection == "Δ":
+                    multi_port_list = ["A1", "B1", "C1"]
+                    terminal_positions = {
+                        "A1": (-32, -24),
+                        "B1": (0, -24),
+                        "C1": (32, -24),
+                    }
+                    sld_term_position = (0, -24)
+                else:
+                    multi_port_list = ["A1", "B1", "C1", "N1"]
+                    terminal_positions = {
+                        "A1": (-48, -24),
+                        "B1": (-16, -24),
+                        "C1": (16, -24),
+                        "N1": (48, -24),
+                    }
+                    sld_term_position = (0, -24)
+            elif phases == "1":
+                if tp_connection == "Y - Grounded":
+                    terminal_positions = {
+                        "A1": (0, -24),
+                    }
+                    sld_term_position = (0, -24)
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A1", None, None]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A1", None]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = [None, None, "A1"]
+                    else:
+                        multi_port_list = ["A1", None, None]
+                elif tp_connection == "Y":
+                    terminal_positions = {
+                        "A1": (-16, -12),
+                        "B1": (16, -12),
+                    }
+                    sld_term_position = (0, -24)
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A1", None, None, "B1"]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A1", None, "B1"]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = [None, None, "A1", "B1"]
+                    else:
+                        multi_port_list = ["A1", None, None, "B1"]
+                else:
+                    terminal_positions = {
+                        "A1": (-16, -12),
+                        "B1": (16, -12),
+                    }
+                    sld_term_position = (0, -16)
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A1", "B1", None]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A1", "B1"]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = ["B1", None, "A1"]
+                    else:
+                        multi_port_list = ["A1", "B1", None]
+            else:
+                multi_port_list = ["A1", "B1", "C1"]
+                terminal_positions = {
+                    "A1": (-48, -24),
+                    "B1": (-16, -24),
+                    "C1": (16, -24),
+                }
+                sld_term_position = (0, -24)
 
-    connections_dynamics(mdl, mask_handle, ports)
+            sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, terminal_positions, sld_term_position)
+            util.convert_to_multiline(mdl, mask_handle, sld_info)
 
-    old_state[comp_handle] = new_prop_values
+        define_icon(mdl, mask_handle)
+        set_load_model(mdl, mask_handle)
+        ports = port_dynamics(mdl, mask_handle)
+        load_dynamics(mdl, mask_handle, ports)
+        connections_gnd_dynamics(mdl, mask_handle, ports)
+        connections_dynamics(mdl, mask_handle, ports)
+        if calling_prop_name == "Pow_ref_s":
+            connections_pow_ref_dynamics(mdl, mask_handle, ports)
+        if calling_prop_name == "S_Ts_mode":
+            connections_ts_mode_dynamics(mdl, mask_handle, ports)
+        old_state[comp_handle] = current_values
+
+    #
+    # When property values reach the final state, return to single-line if needed
+    #
+    good_for_sld = []
+    for prop_name in new_prop_values:
+        if prop_name in ["phases", "sld_1ph_pick", "tp_connection", "ground_connected"]:
+            cur_pass_value = current_pass_prop_values[prop_name]
+            new_value = new_prop_values[prop_name]
+            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
+                if float(cur_pass_value) == float(new_value):
+                    good_for_sld.append(True)
+                    continue
+            else:
+                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                    good_for_sld.append(True)
+                    continue
+            good_for_sld.append(False)
+
+    final_state = all(good_for_sld)
+
+    if final_state:
+        old_state[comp_handle] = new_prop_values
+        importlib.reload(util)
+        phases = new_prop_values.get("phases")
+        tp_connection = new_prop_values.get("tp_connection")
+        sld_1ph_pick = new_prop_values.get("sld_1ph_pick")
+        if phases == "3":
+            if tp_connection == "Δ":
+                multi_port_list = ["A1", "B1", "C1"]
+                terminal_positions = {
+                    "A1": (-32, -24),
+                    "B1": (0, -24),
+                    "C1": (32, -24),
+                }
+                sld_term_position = (0, -24)
+            else:
+                multi_port_list = ["A1", "B1", "C1", "N1"]
+                terminal_positions = {
+                    "A1": (-48, -24),
+                    "B1": (-16, -24),
+                    "C1": (16, -24),
+                    "N1": (48, -24),
+                }
+                sld_term_position = (0, -24)
+        elif phases == "1":
+            if tp_connection == "Y - Grounded":
+                terminal_positions = {
+                    "A1": (0, -24),
+                }
+                sld_term_position = (0, -24)
+                if sld_1ph_pick == "A":
+                    multi_port_list = ["A1", None, None]
+                elif sld_1ph_pick == "B":
+                    multi_port_list = [None, "A1", None]
+                elif sld_1ph_pick == "C":
+                    multi_port_list = [None, None, "A1"]
+                else:
+                    multi_port_list = ["A1", None, None]
+            elif tp_connection == "Y":
+                terminal_positions = {
+                    "A1": (-16, -12),
+                    "B1": (16, -12),
+                }
+                sld_term_position = (0, -24)
+                if sld_1ph_pick == "A":
+                    multi_port_list = ["A1", None, None, "B1"]
+                elif sld_1ph_pick == "B":
+                    multi_port_list = [None, "A1", None, "B1"]
+                elif sld_1ph_pick == "C":
+                    multi_port_list = [None, None, "A1", "B1"]
+                else:
+                    multi_port_list = ["A1", None, None, "B1"]
+            else:
+                terminal_positions = {
+                    "A1": (-16, -12),
+                    "B1": (16, -12),
+                }
+                sld_term_position = (0, -16)
+                if sld_1ph_pick == "A":
+                    multi_port_list = ["A1", "B1", None]
+                elif sld_1ph_pick == "B":
+                    multi_port_list = [None, "A1", "B1"]
+                elif sld_1ph_pick == "C":
+                    multi_port_list = ["B1", None, "A1"]
+                else:
+                    multi_port_list = ["A1", "B1", None]
+        else:
+            multi_port_list = ["A1", "B1", "C1"]
+            terminal_positions = {
+                "A1": (-48, -24),
+                "B1": (-16, -24),
+                "C1": (16, -24),
+            }
+            sld_term_position = (0, -24)
+
+        sld_info = get_sld_conversion_info(mdl, mask_handle, multi_port_list, terminal_positions, sld_term_position)
+
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            util.convert_to_sld(mdl, mask_handle, sld_info)
+        else:
+            currently_sld = mdl.get_item("SLD1", parent=comp_handle, item_type="port")
+            if currently_sld:
+                util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+    sld_post_processing(mdl, mask_handle)
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    bus1 = mdl.get_item("SLD1_bus", parent=comp_handle)
+    if bus1:
+        bus1_size_prop = mdl.prop(bus1, "bus_size")
+        mdl.set_property_value(bus1_size_prop, 4)
+
 
 def dialog_close(mdl, mask_handle, reason):
     """

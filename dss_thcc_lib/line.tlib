@@ -92,6 +92,26 @@ library "OpenDSS" {
                 description = "<html><head><meta name=\"qrichtext\" content=\"1\"></meta><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\"\"><p style=\"margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Line component.</p></body></html>"
                 help_file = "help/OpenDSSManual.pdf#page=173"
 
+                sld_mode {
+                    label = "Single-line representation"
+                    widget = checkbox
+                    type = bool
+                    default_value = "True"
+                    group = "Line Parameters:1"
+
+                    CODE property_value_changed
+                        if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
+                        mdl.refresh_icon(container_handle)
+                    ENDCODE
+
+                    CODE property_value_edited
+                        comp_script = return_comp_script(mdl, container_handle)
+                        comp_script.mask_dialog_dynamics(mdl, container_handle, prop_handle, new_value)
+                    ENDCODE
+                }
+
                 input_type {
                     label = "Parameter input"
                     widget = combo
@@ -102,19 +122,18 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
-                        if new_value == "Symmetrical":
-                            mdl.set_property_value(mdl.prop(container_handle, 'phases'), "3")
-                            mdl.disable_property(mdl.prop(container_handle, "phases"))
+                        if new_value != old_value:
+                            if new_value == "Symmetrical":
+                                mdl.set_property_value(mdl.prop(container_handle, 'phases'), "3")
+                                mdl.disable_property(mdl.prop(container_handle, "phases"))
 
-                        if new_value == "Symmetrical":
-                            mdl.set_property_disp_value(mdl.prop(container_handle, 'phases'), "3")
-                            mdl.disable_property(mdl.prop(container_handle, "phases"))
-                        else:
-                            mdl.enable_property(mdl.prop(container_handle, "phases"))
-
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.toggle_coupling(mdl, container_handle, created_ports)
+                            if new_value == "Symmetrical":
+                                mdl.set_property_disp_value(mdl.prop(container_handle, 'phases'), "3")
+                                mdl.disable_property(mdl.prop(container_handle, "phases"))
+                            else:
+                                mdl.enable_property(mdl.prop(container_handle, "phases"))
+                                comp_script = return_comp_script(mdl, container_handle)
+                                comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                         mdl.refresh_icon(container_handle)
 
                     ENDCODE
@@ -204,8 +223,8 @@ library "OpenDSS" {
 
                     CODE property_value_changed
                         comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
-                        comp_script.toggle_coupling(mdl, container_handle, created_ports)
+                        if new_value != old_value:
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                         comp_script.mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=prop_handle)
                         mdl.refresh_icon(container_handle)
                     ENDCODE
@@ -261,10 +280,9 @@ library "OpenDSS" {
                     group = "Line Parameters"
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.toggle_coupling(mdl, container_handle, created_ports)
-
+                        if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                     ENDCODE
                 }
 
@@ -277,10 +295,9 @@ library "OpenDSS" {
                     group = "Line Parameters"
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.toggle_coupling(mdl, container_handle, created_ports)
-
+                        if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                     ENDCODE
                 }
 
@@ -314,10 +331,9 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.toggle_coupling(mdl, container_handle,created_ports)
-
+                        if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                     ENDCODE
                 }
 
@@ -430,10 +446,9 @@ library "OpenDSS" {
                     no_evaluate
 
                     CODE property_value_changed
-                        comp_script = return_comp_script(mdl, container_handle)
-                        created_ports, _ = comp_script.port_dynamics(mdl, container_handle)
-                        comp_script.toggle_coupling(mdl, container_handle, created_ports)
-
+                       if new_value != old_value:
+                            comp_script = return_comp_script(mdl, container_handle)
+                            comp_script.topology_dynamics(mdl, container_handle, prop_handle, new_value, old_value)
                     ENDCODE
                 }
 
@@ -444,6 +459,14 @@ library "OpenDSS" {
                     default_value = "False"
                     group = "Monitoring"
                     no_evaluate
+                }
+
+                library_version {
+                    label = "OpenDSS library version number"
+                    widget = edit
+                    type = real
+                    default_value = 0
+                    nonvisible
                 }
 
                 CODE open
@@ -525,15 +548,19 @@ library "OpenDSS" {
 
                 CODE init
                     import importlib
-
                     import dss_thcc_lib.component_scripts.comp_line as comp_script
+
                     importlib.reload(comp_script)
                     def return_comp_script(mdl, item_handle):
                         return comp_script
 
-                    comp_script.define_icon(mdl, item_handle)
+                    if _called_during_load:
+                        comp_script.retro_compatibility(mdl, item_handle)
+                    comp_script.update_library_version_info(mdl, item_handle)
 
-                    hil_device = mdl.core_model.configuration.hil_device
+                    comp_script.topology_dynamics(mdl, item_handle, prop_handle=None, new_value=_called_during_load, old_value="")
+
+                    hil_device = mdl.get_model_property_value("hil_device")
                     prop_handle = mdl.prop(item_handle, "coupling")
                     prop_combo_values = mdl.get_property_combo_values(prop_handle)
                     if hil_device not in ["HIL404", "HIL602+", "HIL604", "HIL606"]:
@@ -541,11 +568,10 @@ library "OpenDSS" {
                     else:
                         new_combo_values = ["None", "Core coupling", "Device coupling"]
                     mdl.set_property_combo_values(prop_handle, new_combo_values)
-
                 ENDCODE
 
                 CODE configuration_changed
-                    hil_device = mdl.core_model.configuration.hil_device
+                    hil_device = mdl.get_model_property_value("hil_device")
                     prop_handle = mdl.prop(item_handle, "coupling")
                     prop_combo_values = mdl.get_property_combo_values(prop_handle)
                     if hil_device not in ["HIL404", "HIL602+", "HIL604", "HIL606"]:
@@ -557,7 +583,7 @@ library "OpenDSS" {
                 ENDCODE
 
                 CODE define_icon
-                    comp_script = return_comp_script(mdl, item_handle)
+                    import dss_thcc_lib.component_scripts.comp_line as comp_script
                     comp_script.define_icon(mdl, item_handle)
                 ENDCODE
             }

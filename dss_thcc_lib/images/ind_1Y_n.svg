@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg256"
+   width="32"
+   height="64"
+   viewBox="0 0 32 64"
+   version="1.1"
+   sodipodi:docname="ind_1Y_n.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2098" />
+  <sodipodi:namedview
+     id="namedview2096"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="13.640625"
+     inkscape:cx="16.018328"
+     inkscape:cy="32"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg256" />
+  <path
+     id="path304"
+     d="m 2.3518442,6.0206186 c 0,1.66 1.34,3 3,3 1.66,0 3,-1.34 3,-3 0,-1.66 -1.34,-3 -3,-3 -1.66,0 -3,1.34 -3,3"
+     style="fill:#0000ff" />
+  <line
+     x1="15.96"
+     y1="40.58"
+     x2="15.86"
+     y2="52.03"
+     style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round;"
+     id="line2085" />
+  <line
+     x1="15.997703"
+     y1="-0.0077026309"
+     x2="15.972297"
+     y2="6.6777601"
+     style="fill:none;stroke:#000000;stroke-width:0.984595;stroke-linecap:round;stroke-miterlimit:10"
+     id="line2093" />
+  <g
+     id="g1648"
+     transform="rotate(-90,20.809872,46.929258)">
+    <path
+       id="path276-5"
+       data-name="path276"
+       d="m 29.05913,42.089386 c 0.52,-4.2 2.26,-7.12 4.25,-7.12 1.99,0 3.73,2.92 4.25,7.12"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10" />
+    <path
+       id="path280-5"
+       data-name="path280"
+       d="m 36.27913,42.089386 c 0,0.13 -0.01,0.28 -0.01,0.41 0,1.31 0.3,2.38 0.66,2.38 0.37,0 0.66,-1.07 0.66,-2.38 0,-0.13 -0.01,-0.28 -0.01,-0.41"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10" />
+    <path
+       id="path276-6"
+       data-name="path276"
+       d="m 36.27913,42.089386 c 0.52,-4.2 2.26,-7.12 4.25,-7.12 1.99,0 3.73,2.92 4.25,7.12"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10" />
+    <path
+       id="path280-6"
+       data-name="path280"
+       d="m 43.49913,42.089386 c 0,0.13 -0.01,0.28 -0.01,0.41 0,1.31 0.3,2.38 0.66,2.38 0.37,0 0.66,-1.07 0.66,-2.38 0,-0.13 -0.01,-0.28 -0.01,-0.41"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10" />
+    <path
+       id="path276-7"
+       data-name="path276"
+       d="m 43.49913,42.089386 c 0.52,-4.2 2.26,-7.12 4.25,-7.12 1.99,0 3.73,2.92 4.25,7.12"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10" />
+    <path
+       id="path280-7"
+       data-name="path280"
+       d="m 50.71913,42.089386 c 0,0.13 -0.01,0.28 -0.01,0.41 0,1.31 0.3,2.38 0.66,2.38 0.36,0 0.66,-1.07 0.66,-2.38 0,-0.13 -0.01,-0.28 -0.01,-0.41"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10" />
+    <path
+       id="path276-8"
+       data-name="path276"
+       d="m 50.71913,42.089386 c 0.52,-4.2 2.26,-7.12 4.25,-7.12 1.99,0 3.73,2.92 4.25,7.12"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10" />
+    <line
+       x1="61.63913"
+       y1="42.089386"
+       x2="59.229126"
+       y2="42.089386"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10"
+       id="line1057" />
+    <line
+       x1="29.05913"
+       y1="42.089386"
+       x2="26.649126"
+       y2="42.089386"
+       style="fill:none;stroke:#000000;stroke-linecap:round;stroke-miterlimit:10"
+       id="line1057-6" />
+  </g>
+  <rect
+     style="fill:#000000;fill-opacity:1;stroke-width:0.356558;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
+     id="rect24770-0"
+     width="3.2353344"
+     height="2.5989847"
+     x="14.290695"
+     y="51.484013" />
+</svg>
