@@ -1,0 +1,8 @@
+{
+  "title": "Generator - Dynamic",
+  "description": "Unit test to demonstrate the utilization of the OpenDSS Generator component operating with dynamic controls.",
+  "model": "dss_generator_dynamic.tse",
+  "images": ["dss_generator_dynamic.png"],
+  "tags": [],
+  "app_note": [],
+  "tests": []}
