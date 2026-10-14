@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg256"
+   width="64"
+   height="32"
+   viewBox="0 0 64 32"
+   version="1.1"
+   sodipodi:docname="sc_sld.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1429" />
+  <sodipodi:namedview
+     id="namedview1427"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="9.09375"
+     inkscape:cx="31.945017"
+     inkscape:cy="48"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg256" />
+  <line
+     x1="0"
+     y1="16"
+     x2="64"
+     y2="16"
+     style="fill:none;stroke:#000000;stroke-miterlimit:10"
+     id="line1371" />
+  <path
+     d="m 22.7,22.59 c -0.49,-0.01 -0.9,-0.24 -1.11,-0.61 -0.22,-0.39 -0.2,-0.89 0.05,-1.36 0.23,-0.42 0.46,-0.84 0.69,-1.26 l 1.4,-2.55 C 25.27,14 26.8,11.2 28.34,8.39 28.86,7.44 29.37,6.49 29.88,5.54 30.27,4.83 30.65,4.11 31.04,3.4 31.42,2.69 31.9,2.59 32.15,2.59 c 0.25,0 0.73,0.11 1.1,0.82 1.29,2.45 2.58,4.91 3.87,7.36 0,0 4.49,8.53 5.23,9.95 0.25,0.47 0.26,0.96 0.04,1.32 -0.21,0.35 -0.61,0.55 -1.1,0.55 z"
+     style="fill:#fcef00;fill-rule:evenodd"
+     id="path1377" />
+  <path
+     d="m 32.03,22.14 h -8.98 c -0.11,0 -0.23,0 -0.34,0 -0.72,-0.02 -1.04,-0.62 -0.67,-1.3 0.4,-0.74 0.81,-1.48 1.22,-2.22 1.83,-3.34 3.66,-6.67 5.48,-10.01 0.91,-1.66 1.8,-3.32 2.7,-4.98 0.42,-0.77 1.01,-0.77 1.41,0 1.9,3.61 3.8,7.22 5.69,10.83 1.14,2.16 2.27,4.32 3.41,6.48 0.35,0.67 0.06,1.2 -0.65,1.2 -3.09,0 -6.19,0 -9.28,0 z m 8.16,-1.53 C 37.51,15.52 34.85,10.46 32.15,5.34 29.36,10.46 26.62,15.5 23.83,20.61 Z"
+     style="fill-rule:evenodd"
+     id="path1379" />
+  <polygon
+     points="32.49,13.98 29.51,15.8 31.3,8.22 33.18,8.22 31.25,13.43 34.31,11.5 32.8,17.89 33.84,17.67 31.92,20.4 31.09,17.03 31.92,17.75 "
+     style="fill-rule:evenodd"
+     id="polygon1381" />
+  <path
+     d="m 32.03,22.14 h -8.98 c -0.11,0 -0.23,0 -0.34,0 -0.72,-0.02 -1.04,-0.62 -0.67,-1.3 0.4,-0.74 0.81,-1.48 1.22,-2.22 1.83,-3.34 3.66,-6.67 5.48,-10.01 0.91,-1.66 1.8,-3.32 2.7,-4.98 0.42,-0.77 1.01,-0.77 1.41,0 1.9,3.61 3.8,7.22 5.69,10.83 1.14,2.16 2.27,4.32 3.41,6.48 0.35,0.67 0.06,1.2 -0.65,1.2 -3.09,0 -6.19,0 -9.28,0 z m 8.16,-1.53 C 37.51,15.52 34.85,10.46 32.15,5.34 29.36,10.46 26.62,15.5 23.83,20.61 Z"
+     style="fill-rule:evenodd"
+     id="path1383" />
+</svg>

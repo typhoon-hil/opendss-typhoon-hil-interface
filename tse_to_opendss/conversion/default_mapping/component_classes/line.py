@@ -19,6 +19,8 @@ class Line(TwoTerminal):
         self.num_buses = self.define_number_of_buses(self, tse_properties, tse_component)
         # Floating neutral
         self.floating_neutral = self.is_neutral_floating(self, tse_properties, tse_component)
+        # SLD representation
+        self.sld_representation = tse_properties.get("sld_mode") == "True"
 
         # Get bus connections list
         self.buses = return_bus_connections(

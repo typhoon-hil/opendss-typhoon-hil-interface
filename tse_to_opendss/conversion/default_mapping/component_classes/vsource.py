@@ -19,9 +19,17 @@ class Vsource(TwoTerminal):
         self.num_buses = self.define_number_of_buses(self, tse_properties, tse_component)
         # Floating neutral
         self.floating_neutral = self.is_neutral_floating(self, tse_properties, tse_component)
+        # SLD representation
+        self.sld_representation = tse_properties.get("sld_mode") == "True"
 
         # Get bus connections list
-        self.buses = return_bus_connections(tse_component, self.num_buses, self.num_phases, self.floating_neutral)
+        self.buses = return_bus_connections(
+            tse_component,
+            self.num_buses,
+            self.num_phases,
+            self.floating_neutral,
+            uses_single_line_representation=self.sld_representation,
+        )
 
         # Filter unused TSE properties and create new ones
         self.new_format_properties = self.create_new_format_properties_dict(self, tse_properties, tse_component)

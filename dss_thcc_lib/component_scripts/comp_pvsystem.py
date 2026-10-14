@@ -2,8 +2,12 @@ import os
 import pathlib
 import json
 import ast
+import dss_thcc_lib.component_scripts.util as util
+import importlib
+import pandas as pd
 
 got_loadshape_points_list = []
+old_state = {}
 
 
 def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False):
@@ -43,6 +47,13 @@ def circuit_dynamics(mdl, container_handle, caller_prop_handle=None, init=False)
 
         if new_value == "Y":
             # N1 changed to B1 due to the output_functions requirements
+            phase_num = mdl.get_property_disp_value(phases_prop)
+            if phase_num == "3":
+                nport_handle = mdl.get_item("B1", parent=comp_handle, item_type="port")
+                if mdl.find_connections(ntag_handle, nport_handle):
+                    for conn_nport_ntag in mdl.find_connections(ntag_handle, nport_handle):
+                        mdl.delete_item(conn_nport_ntag)
+
             xpos, ypos = get_port_const_attributes(mdl, container_handle, "B1")["pos"]
             gnd_handle = mdl.get_item("gnd", parent=comp_handle)
             if not gnd_handle:
@@ -436,6 +447,9 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
     :return:
     """
     # Property Registration
+    sld_mode_prop = mdl.prop(container_handle, "sld_mode")
+    connection_prop = mdl.prop(container_handle, "connection")
+
     phases_prop = mdl.prop(container_handle, "phases")
     filter_type_prop = mdl.prop(container_handle, "filter_type")
 
@@ -445,16 +459,102 @@ def mask_dialog_dynamics(mdl, container_handle, caller_prop_handle=None, init=Fa
         new_value = mdl.get_property_disp_value(caller_prop_handle)
 
     # ------------------------------------------------------------------------------------------------------------------
+    #  sld property code
+    # ------------------------------------------------------------------------------------------------------------------
+    if caller_prop_handle == sld_mode_prop:
+
+        sld_1ph_pick_prop = mdl.prop(container_handle, "sld_1ph_pick")
+        sld_2ph_pick_prop = mdl.prop(container_handle, "sld_2ph_pick")
+        phase_num = mdl.get_property_disp_value(phases_prop)
+        connection_type = mdl.get_property_disp_value(connection_prop)
+
+        if new_value:
+            if phase_num == "1":
+                if connection_type == "Y":
+                    mdl.show_property(sld_1ph_pick_prop)
+                    mdl.enable_property(sld_1ph_pick_prop)
+                    mdl.disable_property(sld_2ph_pick_prop)
+                    mdl.hide_property(sld_2ph_pick_prop)
+                else:
+                    mdl.disable_property(sld_1ph_pick_prop)
+                    mdl.hide_property(sld_1ph_pick_prop)
+                    mdl.show_property(sld_2ph_pick_prop)
+                    mdl.enable_property(sld_2ph_pick_prop)
+        else:
+            mdl.disable_property(sld_1ph_pick_prop)
+            mdl.hide_property(sld_1ph_pick_prop)
+            mdl.disable_property(sld_2ph_pick_prop)
+            mdl.hide_property(sld_2ph_pick_prop)
+
+    # ------------------------------------------------------------------------------------------------------------------
     #  "phases" property code
     # ------------------------------------------------------------------------------------------------------------------
     if caller_prop_handle == phases_prop:
 
-        connection_prop = mdl.prop(container_handle, "connection")
+        connection_type = mdl.get_property_disp_value(connection_prop)
+        sld_1ph_pick_prop = mdl.prop(container_handle, "sld_1ph_pick")
+        sld_2ph_pick_prop = mdl.prop(container_handle, "sld_2ph_pick")
+        sld_mode = mdl.get_property_disp_value(sld_mode_prop)
         if new_value == "1":
             mdl.enable_property(connection_prop)
+            if sld_mode:
+                if connection_type == "Y":
+                    mdl.show_property(sld_1ph_pick_prop)
+                    mdl.enable_property(sld_1ph_pick_prop)
+                    mdl.disable_property(sld_2ph_pick_prop)
+                    mdl.hide_property(sld_2ph_pick_prop)
+                else:
+                    mdl.disable_property(sld_1ph_pick_prop)
+                    mdl.hide_property(sld_1ph_pick_prop)
+                    mdl.show_property(sld_2ph_pick_prop)
+                    mdl.enable_property(sld_2ph_pick_prop)
+            else:
+                mdl.disable_property(sld_1ph_pick_prop)
+                mdl.hide_property(sld_1ph_pick_prop)
+                mdl.disable_property(sld_2ph_pick_prop)
+                mdl.hide_property(sld_2ph_pick_prop)
         else:
             mdl.disable_property(connection_prop)
             mdl.set_property_disp_value(connection_prop, "Y")
+            mdl.disable_property(sld_1ph_pick_prop)
+            mdl.hide_property(sld_1ph_pick_prop)
+            mdl.disable_property(sld_2ph_pick_prop)
+            mdl.hide_property(sld_2ph_pick_prop)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    #  "connection" property code
+    # ------------------------------------------------------------------------------------------------------------------
+    if caller_prop_handle == connection_prop:
+
+        sld_1ph_pick_prop = mdl.prop(container_handle, "sld_1ph_pick")
+        sld_2ph_pick_prop = mdl.prop(container_handle, "sld_2ph_pick")
+        sld_mode = mdl.get_property_disp_value(sld_mode_prop)
+        phase_num = mdl.get_property_disp_value(phases_prop)
+        if phase_num == "1":
+            mdl.enable_property(connection_prop)
+            if sld_mode:
+                if new_value == "Y":
+                    mdl.show_property(sld_1ph_pick_prop)
+                    mdl.enable_property(sld_1ph_pick_prop)
+                    mdl.disable_property(sld_2ph_pick_prop)
+                    mdl.hide_property(sld_2ph_pick_prop)
+                else:
+                    mdl.disable_property(sld_1ph_pick_prop)
+                    mdl.hide_property(sld_1ph_pick_prop)
+                    mdl.show_property(sld_2ph_pick_prop)
+                    mdl.enable_property(sld_2ph_pick_prop)
+            else:
+                mdl.disable_property(sld_1ph_pick_prop)
+                mdl.hide_property(sld_1ph_pick_prop)
+                mdl.disable_property(sld_2ph_pick_prop)
+                mdl.hide_property(sld_2ph_pick_prop)
+        else:
+            mdl.disable_property(connection_prop)
+            mdl.set_property_disp_value(connection_prop, "Y")
+            mdl.disable_property(sld_1ph_pick_prop)
+            mdl.hide_property(sld_1ph_pick_prop)
+            mdl.disable_property(sld_2ph_pick_prop)
+            mdl.hide_property(sld_2ph_pick_prop)
 
     # ------------------------------------------------------------------------------------------------------------------
     #  "filter_type" property code
@@ -628,11 +728,17 @@ def define_icon(mdl, container_handle):
     connection = mdl.get_property_disp_value(mdl.prop(container_handle, "connection"))
     power_ref = mdl.get_property_disp_value(mdl.prop(container_handle, "power_ref"))
 
+    sld_mode = mdl.get_property_disp_value(mdl.prop(container_handle, "sld_mode"))
+
     img_ctrl = "noctrl" if power_ref == "Internal Scada Input" else "ctrl"
     if phases == "3":
         img_ph = "3ph"
     else:
         img_ph = "1phg" if connection == "Y" else "2ph"
+
+    if sld_mode in (True, "True"):
+        img_ph = "sld"
+
     mdl.set_component_icon_image(mask_handle, f"images/pv_{img_ph}_{img_ctrl}.svg")
     if power_ref != "Internal Scada Input":
         mdl.disp_component_icon_text(mask_handle, "Time Series", relpos_x=0.32, relpos_y=0.06, trim_factor=1.0, size=6)
@@ -646,9 +752,9 @@ def get_port_const_attributes(mdl, container_handle, port_name):
     phases = mdl.get_property_disp_value(mdl.prop(container_handle, "phases"))
 
     if phases == "3":
-        term_positions = [[40.0, -32.0], [40.0, 0.0], [40.0, 32.0], [40.0, 32.0]]
+        term_positions = [[48.0, -32.0], [48.0, 0.0], [48.0, 32.0], [48.0, 32.0]]
     else:
-        term_positions = [[40.0, -32.0], [40.0, 32.0], [40.0, 32.0], [40.0, 32.0]]
+        term_positions = [[48.0, -32.0], [48.0, 32.0], [48.0, 32.0], [48.0, 32.0]]
 
     if power_ref != "Internal Scada Input":
         new_term_positions = [[p[0], p[1]+24] for p in term_positions]
@@ -1215,3 +1321,265 @@ def ini_general_objects_from_json(mdl, mask_handle):
     mdl.set_property_value(loadshape_from_file_path_prop, str(loadshape_from_file_path))
     mdl.set_property_value(loadshape_from_file_header_prop, str(loadshape_from_file_header))
     mdl.set_property_value(loadshape_from_file_column_prop, str(loadshape_from_file_column))
+
+
+def get_sld_conversion_info(mdl, mask_handle, sld_name, multiline_ports, side, terminal_positions, sld_term_position):
+
+    # multiline_ports_1 = ["A1", "B1", "C1"]
+
+    port_config_dict = {
+        sld_name: {
+            "multiline_ports": multiline_ports,
+            "side": side,
+            "bus_terminal_position": sld_term_position,
+            "hide_name": True,
+        },
+    }
+    #
+    # Tag info
+    #
+    tag_config_dict = {}
+
+    #
+    # Terminal positions
+    #
+    # terminal_positions = {
+    #     "A1": (32, -32),
+    #     "B1": (32, 0),
+    #     "C1": (32, 32),
+    # }
+
+    return port_config_dict, tag_config_dict, terminal_positions
+
+
+def topology_dynamics(mdl, mask_handle, prop_handle):
+    """
+    This function is called when the user changes the configuration on the mask
+    """
+
+    comp_handle = mdl.get_parent(mask_handle)
+
+    if prop_handle:
+        calling_prop_name = mdl.get_name(prop_handle)
+    else:
+        calling_prop_name = "init_code"
+
+
+    current_pass_prop_values = {
+        k: str(v) for k, v in mdl.get_property_values(comp_handle).items()
+    }
+
+    #
+    # Get new property values to be applied (display values)
+    #
+    current_values = {}
+    new_prop_values = {}
+    for prop in mdl.get_property_values(comp_handle):
+        p = mdl.prop(mask_handle, prop)
+        new_prop_values[prop] = mdl.get_property_disp_value(p)
+        current_values[prop] = mdl.get_property_value(p)
+    #
+    # If the property values are the same as on the previous run, stop
+    #
+    global old_state
+    if new_prop_values == old_state.get(comp_handle) and mdl.get_name(prop_handle) != "power_ref":
+        return
+
+    if calling_prop_name == "init_code":
+        define_icon(mdl, mask_handle)
+        circuit_dynamics(mdl, mask_handle, init=True)
+
+    if calling_prop_name not in ["sld_mode", "init_code"]:
+
+        if old_state:
+            current_state = old_state[comp_handle]
+        else:
+            current_state = new_prop_values
+
+
+        sld_name = "SLD1"
+        currently_sld = mdl.get_item(sld_name, parent=comp_handle, item_type="port")
+        if currently_sld:
+            # The terminal related to the current property hasn't been created yet
+            sld_number = {}
+            importlib.reload(util)
+            phases = current_state.get("phases")
+            tp_connection = current_state.get("connection")
+            sld_1ph_pick = current_state.get("sld_1ph_pick")
+            sld_2ph_pick = current_state.get("sld_2ph_pick")
+            power_ref = current_state.get("power_ref")
+
+            if power_ref != "Internal Scada Input":
+                power_ref_shift = 24
+            else:
+                power_ref_shift = 0
+
+            multi_port_list = []
+
+            if phases == "3":
+                sld_side = "right"
+                multi_port_list = ["A1", "B1", "C1"]
+                terminal_positions = {
+                    "A1": (48, -32 + power_ref_shift),
+                    "B1": (48, 0 + power_ref_shift),
+                    "C1": (48, 32 + power_ref_shift),
+                }
+                sld_term_position = (48, 0 + power_ref_shift)
+            else:
+                sld_side = "right"
+                sld_term_position = (48, 0 + power_ref_shift)
+                if tp_connection == "Y":
+                    terminal_positions = {
+                        "A1": (48, -32 + power_ref_shift),
+                    }
+                    if sld_1ph_pick == "A":
+                        multi_port_list = ["A1"]
+                    elif sld_1ph_pick == "B":
+                        multi_port_list = [None, "A1"]
+                    elif sld_1ph_pick == "C":
+                        multi_port_list = [None, None, "A1"]
+                else:
+                    terminal_positions = {
+                        "A1": (48, -32 + power_ref_shift),
+                        "B1": (48, 32 + power_ref_shift),
+                    }
+                    if sld_2ph_pick == "A and B":
+                        multi_port_list = ["A1", "B1"]
+                    elif sld_2ph_pick == "B and C":
+                        multi_port_list = [None, "A1", "B1"]
+                    elif sld_2ph_pick == "C and A":
+                        multi_port_list = ["B1", None, "A1"]
+
+
+            sld_number["port_names"] = multi_port_list
+            sld_number["side"] = sld_side
+            sld_number["multi_term_pos"] = terminal_positions
+            sld_number["sld_term_pos"] = sld_term_position
+
+            sld_info = get_sld_conversion_info(mdl, mask_handle, sld_name,
+                                               sld_number.get("port_names"),
+                                               sld_number.get("side"),
+                                               sld_number.get("multi_term_pos"),
+                                               sld_number.get("sld_term_pos")
+                                               )
+
+            util.convert_to_multiline(mdl, mask_handle, sld_info)
+
+
+
+        define_icon(mdl, mask_handle)
+        circuit_dynamics(mdl, mask_handle, caller_prop_handle=prop_handle)
+
+    good_for_sld = []
+    for prop_name in new_prop_values:
+        if prop_name in ["phases", "connection", "sld_1ph_pick", "sld_2ph_pick"]:
+            cur_pass_value = current_pass_prop_values[prop_name]
+            new_value = new_prop_values[prop_name]
+            if util.is_float(str(cur_pass_value)) or util.is_float(str(new_value)):
+                if float(cur_pass_value) == float(new_value):
+                    good_for_sld.append(True)
+                    continue
+            else:
+                if str(current_pass_prop_values[prop_name]) == str(new_prop_values[prop_name]):
+                    good_for_sld.append(True)
+                    continue
+            good_for_sld.append(False)
+
+    final_state = all(good_for_sld)
+    # final_state = True
+
+    #
+    # When property values reach the final state, return to single-line if needed
+    #
+    if final_state:
+        old_state[comp_handle] = new_prop_values
+        sld_bus_count = 1
+
+        sld_info = []
+
+        sld_name = "SLD1"
+        sld_number = {}
+        importlib.reload(util)
+        phases = new_prop_values.get("phases")
+        tp_connection = new_prop_values.get("connection")
+        sld_1ph_pick = new_prop_values.get("sld_1ph_pick")
+        sld_2ph_pick = new_prop_values.get("sld_2ph_pick")
+        power_ref = new_prop_values.get("power_ref")
+
+        if power_ref != "Internal Scada Input":
+            power_ref_shift = 24
+        else:
+            power_ref_shift = 0
+
+        multi_port_list = []
+        if phases == "3":
+            sld_side = "right"
+            multi_port_list = ["A1", "B1", "C1"]
+            terminal_positions = {
+                "A1": (48, -32 + power_ref_shift),
+                "B1": (48, 0 + power_ref_shift),
+                "C1": (48, 32 + power_ref_shift),
+            }
+            sld_term_position = (48, 0 + power_ref_shift)
+        else:
+            sld_side = "right"
+            sld_term_position = (48, 0 + power_ref_shift)
+            if tp_connection == "Y":
+                terminal_positions = {
+                    "A1": (48, -32 + power_ref_shift),
+                }
+                if sld_1ph_pick == "A":
+                    multi_port_list = ["A1"]
+                elif sld_1ph_pick == "B":
+                    multi_port_list = [None, "A1"]
+                elif sld_1ph_pick == "C":
+                    multi_port_list = [None, None, "A1"]
+            else:
+                terminal_positions = {
+                    "A1": (48, -32 + power_ref_shift),
+                    "B1": (48, 32 + power_ref_shift),
+                }
+                if sld_2ph_pick == "A and B":
+                    multi_port_list = ["A1", "B1"]
+                elif sld_2ph_pick == "B and C":
+                    multi_port_list = [None, "A1", "B1"]
+                elif sld_2ph_pick == "C and A":
+                    multi_port_list = ["B1", None, "A1"]
+
+        sld_number["port_names"] = multi_port_list
+        sld_number["side"] = sld_side
+        sld_number["multi_term_pos"] = terminal_positions
+        sld_number["sld_term_pos"] = sld_term_position
+
+        sld_info.append(get_sld_conversion_info(mdl, mask_handle, sld_name,
+                                                sld_number.get("port_names"),
+                                                sld_number.get("side"),
+                                                sld_number.get("multi_term_pos"),
+                                                sld_number.get("sld_term_pos")
+                                                )
+                        )
+
+
+        if new_prop_values.get("sld_mode") in (True, "True"):
+            for sld_idx in range(sld_bus_count):
+                util.convert_to_sld(mdl, mask_handle, sld_info[sld_idx])
+        else:
+            for sld_idx in range(sld_bus_count):
+                sld_name = "SLD" + str(sld_idx + 1)
+                currently_sld = mdl.get_item(sld_name, parent=comp_handle, item_type="port")
+                if currently_sld:
+                    util.convert_to_multiline(mdl, mask_handle, sld_info[sld_idx])
+
+    sld_post_processing(mdl, mask_handle)
+
+
+def sld_post_processing(mdl, mask_handle):
+    comp_handle = mdl.get_parent(mask_handle)
+
+    # Resize the buses to 4
+
+    for bus_name in ["SLD1_bus", "SLD2_bus"]:
+        bus = mdl.get_item(bus_name, parent=comp_handle)
+        if bus:
+            bus_size_prop = mdl.prop(bus, "bus_size")
+            mdl.set_property_value(bus_size_prop, 4)
